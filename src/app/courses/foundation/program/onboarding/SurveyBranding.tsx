@@ -1,31 +1,41 @@
 'use client';
 
 // SurveyBranding — Left column of the OnboardingSurvey two-column layout.
-// Displays the credential callout, step counter, and progress bar.
+// Leads with the value of answering (three questions, two minutes, what it
+// produces), keeps the step progress bar, and renders the live
+// StartingPointPreview that populates as the learner answers.
 //
-// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
+// 2026-05-27 redesign (audit §5): the static credential callout was replaced
+// by a live "Your personalized starting point" card. The lede was rewritten
+// to lead with what answers produce, not what answers are about.
+
+import type { OnboardingAnswers, LearnerRole } from '@/types/course';
+import { StartingPointPreview } from './_local/StartingPointPreview';
 
 const TOTAL_STEPS = 3;
-
-const STEP_LABELS = [
-  'Infrastructure',
-  'Personal capability',
-  'Persona mapping',
-] as const;
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 interface SurveyBrandingProps {
   readonly step: number;
+  readonly uses_m365: OnboardingAnswers['uses_m365'] | null;
+  readonly personal_ai_subscriptions: string[];
+  readonly exclusive_selection: 'free_tiers' | 'none' | null;
+  readonly primary_role: LearnerRole | null;
 }
 
-export function SurveyBranding({ step }: SurveyBrandingProps) {
+export function SurveyBranding({
+  step,
+  uses_m365,
+  personal_ai_subscriptions,
+  exclusive_selection,
+  primary_role,
+}: SurveyBrandingProps) {
   const progressPercent = Math.round(((step - 1) / TOTAL_STEPS) * 100);
-  const stepLabel = STEP_LABELS[step - 1];
 
   return (
-    <div className="lg:col-span-5 flex flex-col" style={{ gap: 40 }}>
+    <div className="lg:col-span-5 flex flex-col" style={{ gap: 32 }}>
       <div>
         <span
           style={{
@@ -39,12 +49,12 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             marginBottom: 16,
           }}
         >
-          Onboarding · Record 1.4
+          Three questions · Two minutes
         </span>
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 44,
+            fontSize: 40,
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: '-0.02em',
@@ -52,11 +62,11 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             margin: 0,
           }}
         >
-          A short read of your context
+          Tune the course to your work.
         </h1>
         <p
           style={{
-            marginTop: 18,
+            marginTop: 16,
             fontFamily: INTER_STACK,
             fontSize: 16,
             fontWeight: 400,
@@ -65,33 +75,27 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
             maxWidth: 420,
           }}
         >
-          Three questions so we can tune the AiBI-Foundation curriculum to your
-          institution and your role. About a minute.
+          We use your answers to surface the modules and prompts that fit your
+          role. Your starting point fills in on the right as you go.
         </p>
       </div>
 
       {/* Step progress indicator */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: 11,
               fontWeight: 700,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'var(--slate-500)',
               fontVariantNumeric: 'tabular-nums',
-              border: '1px solid var(--gold)',
-              color: 'var(--gold-deep)',
-              background: 'var(--cream)',
               flexShrink: 0,
             }}
           >
-            {String(step).padStart(2, '0')}
+            Step {String(step).padStart(2, '0')} / {String(TOTAL_STEPS).padStart(2, '0')}
           </div>
           <div
             style={{
@@ -102,6 +106,10 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
               overflow: 'hidden',
               position: 'relative',
             }}
+            role="progressbar"
+            aria-valuenow={progressPercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
           >
             <div
               style={{
@@ -113,72 +121,15 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
               }}
             />
           </div>
-          <div
-            style={{
-              fontFamily: INTER_STACK,
-              fontSize: 13,
-              fontWeight: 600,
-              fontVariantNumeric: 'tabular-nums',
-              color: 'var(--slate-400)',
-              flexShrink: 0,
-            }}
-          >
-            {String(TOTAL_STEPS).padStart(2, '0')}
-          </div>
         </div>
-        <p
-          style={{
-            fontFamily: INTER_STACK,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--slate-500)',
-            margin: 0,
-          }}
-        >
-          Current phase: {stepLabel}
-        </p>
       </div>
 
-      {/* Credential callout */}
-      <div
-        style={{
-          padding: 28,
-          borderRadius: 16,
-          background: 'var(--cream-2)',
-          border: '1px solid var(--ink-a10)',
-          boxShadow: 'var(--shadow-soft)',
-        }}
-      >
-        <p
-          style={{
-            fontFamily: INTER_STACK,
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: 'var(--gold-deep)',
-            margin: 0,
-            marginBottom: 10,
-          }}
-        >
-          What you&rsquo;re entering
-        </p>
-        <p
-          style={{
-            fontFamily: INTER_STACK,
-            fontSize: 16,
-            fontWeight: 500,
-            lineHeight: 1.55,
-            color: 'var(--ink)',
-            margin: 0,
-          }}
-        >
-          The AiBI-Foundation course meets community bankers where they work —
-          inside the policies, tools, and risk posture you already live with.
-        </p>
-      </div>
+      <StartingPointPreview
+        uses_m365={uses_m365}
+        personal_ai_subscriptions={personal_ai_subscriptions}
+        exclusive_selection={exclusive_selection}
+        primary_role={primary_role}
+      />
     </div>
   );
 }

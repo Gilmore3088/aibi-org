@@ -217,7 +217,13 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
       <div className="relative z-10 w-full max-w-5xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
-          <SurveyBranding step={step} />
+          <SurveyBranding
+            step={step}
+            uses_m365={form.uses_m365}
+            personal_ai_subscriptions={form.personal_ai_subscriptions}
+            exclusive_selection={form.exclusive_selection}
+            primary_role={form.primary_role}
+          />
 
           {/* Right column: survey form */}
           <div
@@ -289,7 +295,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                     className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     style={secondaryButtonStyle}
                   >
-                    &larr; Previous
+                    &larr; PREVIOUS
                   </button>
                 ) : (
                   <span />
@@ -306,7 +312,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                       cursor: canAdvance ? 'pointer' : 'not-allowed',
                     }}
                   >
-                    Continue &rarr;
+                    CONTINUE &rarr;
                   </button>
                 ) : (
                   <button
@@ -319,7 +325,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                       cursor: !canAdvance || isSubmitting ? 'not-allowed' : 'pointer',
                     }}
                   >
-                    {isSubmitting ? 'Saving…' : 'Start Module 1 →'}
+                    {isSubmitting ? 'SAVING…' : 'START MODULE 1 →'}
                   </button>
                 )}
               </div>
