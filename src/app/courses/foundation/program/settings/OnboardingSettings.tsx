@@ -4,12 +4,17 @@
 // Reuses the same three-question structure as OnboardingSurvey.tsx.
 // Submits to /api/courses/save-onboarding (overwrites onboarding_answers).
 // Keyboard accessible: all form elements reachable via Tab, selectable via Enter/Space.
+//
+// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const AI_SUBSCRIPTION_OPTIONS = [
   'ChatGPT Plus',
@@ -59,6 +64,34 @@ function deriveInitialFormState(answers: OnboardingAnswers | null): FormState {
     primary_role: answers.primary_role,
   };
 }
+
+const primaryButtonStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  padding: '12px 26px',
+  borderRadius: 12,
+  background: 'var(--ink)',
+  color: 'var(--cream)',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  border: '1px solid var(--ink)',
+  cursor: 'pointer',
+  transition: 'background var(--t-fast) var(--ease)',
+};
+
+const backLinkStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  textDecoration: 'none',
+};
 
 export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingSettingsProps) {
   const router = useRouter();
@@ -143,26 +176,55 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
   return (
     <div>
       {/* Page heading */}
-      <div className="mb-10">
-        <h1
-          className="text-4xl font-bold leading-tight mb-3"
+      <div style={{ marginBottom: 36 }}>
+        <p
           style={{
-            fontFamily: "'Cormorant', serif",
-            color: 'var(--ledger-ink)',
-            letterSpacing: '-0.02em',
+            fontFamily: INTER_STACK,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-deep)',
+            margin: 0,
+            marginBottom: 10,
           }}
         >
-          Update Your Profile
+          Settings
+        </p>
+        <h1
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 36,
+            fontWeight: 800,
+            lineHeight: 1.1,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: 0,
+            marginBottom: 10,
+          }}
+        >
+          Update your profile
         </h1>
         <p
-          className="text-sm"
-          style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--ledger-ink)', opacity: 0.6 }}
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 14,
+            fontWeight: 400,
+            lineHeight: 1.6,
+            color: 'var(--slate-600)',
+            margin: 0,
+          }}
         >
           Changes take effect on your next page load.
         </p>
       </div>
 
-      <form onSubmit={(e) => { void handleSubmit(e); }} className="space-y-12">
+      <form
+        onSubmit={(e) => {
+          void handleSubmit(e);
+        }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
+      >
         <SettingsQuestions
           uses_m365={form.uses_m365}
           personal_ai_subscriptions={form.personal_ai_subscriptions}
@@ -177,13 +239,16 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         {/* Error message */}
         {errorMessage && (
           <div
-            className="px-5 py-4 rounded-sm text-sm"
             role="alert"
             style={{
-              backgroundColor: 'rgba(155,34,38,0.08)',
-              border: '1px solid var(--ledger-weak)',
-              color: 'var(--ledger-weak)',
-              fontFamily: "'DM Sans', sans-serif",
+              padding: '14px 18px',
+              borderRadius: 12,
+              background: 'var(--cream-2)',
+              border: '1px solid var(--gold-deep)',
+              color: 'var(--gold-deep)',
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
             }}
           >
             {errorMessage}
@@ -193,14 +258,18 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         {/* Save confirmation */}
         {savedMessage && (
           <div
-            className="px-5 py-4 rounded-sm text-sm transition-opacity duration-500"
             role="status"
             aria-live="polite"
             style={{
-              backgroundColor: 'rgba(74,103,65,0.08)',
-              border: '1px solid var(--ledger-accent-2)',
-              color: 'var(--ledger-accent-2)',
-              fontFamily: "'DM Sans', sans-serif",
+              padding: '14px 18px',
+              borderRadius: 12,
+              background: 'var(--emerald-50, #ECFDF5)',
+              border: '1px solid var(--emerald-700)',
+              color: 'var(--emerald-800)',
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
+              transition: 'opacity var(--t-med) var(--ease)',
             }}
           >
             Profile saved successfully.
@@ -209,31 +278,33 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
 
         {/* Footer actions */}
         <div
-          className="flex items-center justify-between pt-8"
-          style={{ borderTop: '1px solid rgba(181,81,46,0.1)' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingTop: 24,
+            borderTop: '1px solid var(--ink-a10)',
+          }}
         >
           <Link
             href="/courses/foundation/program"
-            className="font-mono text-[11px] uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
-            style={{
-              color: 'var(--ledger-ink)',
-              opacity: 0.55,
-            }}
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            style={backLinkStyle}
           >
-            &larr; Back to Course
+            &larr; Back to course
           </Link>
 
           <button
             type="submit"
             disabled={!canSave || isSubmitting}
-            className="px-8 py-3 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             style={{
-              fontFamily: "'DM Sans', sans-serif",
-              backgroundColor: 'var(--ledger-accent)',
-              color: 'var(--ledger-bg)',
+              ...primaryButtonStyle,
+              opacity: !canSave || isSubmitting ? 0.4 : 1,
+              cursor: !canSave || isSubmitting ? 'not-allowed' : 'pointer',
             }}
           >
-            {isSubmitting ? 'Saving...' : 'Save Changes'}
+            {isSubmitting ? 'Saving…' : 'Save changes'}
           </button>
         </div>
       </form>

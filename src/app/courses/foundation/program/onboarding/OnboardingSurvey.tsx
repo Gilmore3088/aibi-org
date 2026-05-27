@@ -7,14 +7,19 @@
 // 2026-04-29: prefixed with the WelcomeFirstPrompt module — a first-prompt-
 // in-90-seconds value moment. Banker sees real AI output before the form.
 // localStorage flag prevents the welcome from re-showing on refresh.
+//
+// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SurveyBranding } from './SurveyBranding';
 import { SurveyStepContent } from './SurveyStepContent';
 import { WelcomeFirstPrompt } from './WelcomeFirstPrompt';
 import { migrateStorageKey } from '@/lib/storage/migrate';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 // localStorage key — namespaced by enrollment to support multiple bankers
 // sharing a browser (rare, but possible at a branch).
@@ -41,6 +46,41 @@ const INITIAL_FORM_STATE: FormState = {
   personal_ai_subscriptions: [],
   exclusive_selection: null,
   primary_role: null,
+};
+
+const primaryButtonStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  padding: '14px 28px',
+  borderRadius: 12,
+  background: 'var(--ink)',
+  color: 'var(--cream)',
+  fontFamily: INTER_STACK,
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  border: '1px solid var(--ink)',
+  cursor: 'pointer',
+  transition: 'background var(--t-fast) var(--ease)',
+};
+
+const secondaryButtonStyle: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  background: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+  padding: '8px 4px',
+  transition: 'color var(--t-fast) var(--ease)',
 };
 
 export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
@@ -170,7 +210,10 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20">
+    <div
+      className="min-h-screen flex items-center justify-center px-6 py-20"
+      style={{ background: 'var(--cream)' }}
+    >
       <div className="relative z-10 w-full max-w-5xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
@@ -178,11 +221,13 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
 
           {/* Right column: survey form */}
           <div
-            className="lg:col-span-7 p-10 lg:p-16 rounded-sm"
+            className="lg:col-span-7"
             style={{
-              backgroundColor: 'white',
-              border: '1px solid rgba(181,81,46,0.1)',
-              boxShadow: '20px 0 40px rgba(30,26,20,0.02)',
+              padding: 40,
+              borderRadius: 24,
+              background: '#FFFFFF',
+              border: '1px solid var(--ink-a10)',
+              boxShadow: 'var(--shadow-feature)',
             }}
           >
             <form
@@ -194,7 +239,7 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   handleNext();
                 }
               }}
-              className="space-y-12"
+              style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
             >
               <SurveyStepContent
                 step={step}
@@ -211,13 +256,16 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
               {/* Error message */}
               {errorMessage && (
                 <div
-                  className="px-5 py-4 rounded-sm text-sm"
                   role="alert"
                   style={{
-                    backgroundColor: 'rgba(155,34,38,0.08)',
-                    border: '1px solid var(--ledger-weak)',
-                    color: 'var(--ledger-weak)',
-                    fontFamily: "'DM Sans', sans-serif",
+                    padding: '14px 18px',
+                    borderRadius: 12,
+                    background: 'var(--cream-2)',
+                    border: '1px solid var(--gold-deep)',
+                    color: 'var(--gold-deep)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 13,
+                    fontWeight: 600,
                   }}
                 >
                   {errorMessage}
@@ -226,19 +274,20 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
 
               {/* Navigation */}
               <div
-                className="pt-8 flex items-center justify-between"
-                style={{ borderTop: '1px solid rgba(181,81,46,0.1)' }}
+                style={{
+                  paddingTop: 24,
+                  borderTop: '1px solid var(--ink-a10)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
               >
                 {step > 1 ? (
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex items-center gap-2 font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      color: 'var(--ledger-ink)',
-                      opacity: 0.6,
-                    }}
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={secondaryButtonStyle}
                   >
                     &larr; Previous
                   </button>
@@ -250,11 +299,11 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   <button
                     type="submit"
                     disabled={!canAdvance}
-                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      backgroundColor: 'var(--ledger-accent)',
-                      color: 'var(--ledger-bg)',
+                      ...primaryButtonStyle,
+                      opacity: canAdvance ? 1 : 0.4,
+                      cursor: canAdvance ? 'pointer' : 'not-allowed',
                     }}
                   >
                     Continue &rarr;
@@ -263,14 +312,14 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                   <button
                     type="submit"
                     disabled={!canAdvance || isSubmitting}
-                    className="flex items-center gap-3 px-10 py-4 rounded-sm uppercase tracking-wider text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      backgroundColor: 'var(--ledger-accent)',
-                      color: 'var(--ledger-bg)',
+                      ...primaryButtonStyle,
+                      opacity: !canAdvance || isSubmitting ? 0.4 : 1,
+                      cursor: !canAdvance || isSubmitting ? 'not-allowed' : 'pointer',
                     }}
                   >
-                    {isSubmitting ? 'Saving...' : <>Start Module 1 &rarr;</>}
+                    {isSubmitting ? 'Saving…' : 'Start Module 1 →'}
                   </button>
                 )}
               </div>

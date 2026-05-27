@@ -2,14 +2,19 @@
 
 // SurveyBranding — Left column of the OnboardingSurvey two-column layout.
 // Displays the credential callout, step counter, and progress bar.
+//
+// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
 const TOTAL_STEPS = 3;
 
 const STEP_LABELS = [
-  'Infrastructure Assessment',
-  'Personal Capability',
-  'Persona Mapping',
+  'Infrastructure',
+  'Personal capability',
+  'Persona mapping',
 ] as const;
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 interface SurveyBrandingProps {
   readonly step: number;
@@ -20,113 +25,158 @@ export function SurveyBranding({ step }: SurveyBrandingProps) {
   const stepLabel = STEP_LABELS[step - 1];
 
   return (
-    <div className="lg:col-span-5 flex flex-col space-y-12">
+    <div className="lg:col-span-5 flex flex-col" style={{ gap: 40 }}>
       <div>
         <span
-          className="text-xs font-bold tracking-widest uppercase mb-4 block"
           style={{
-            fontFamily: "'DM Mono', monospace",
-            color: 'var(--ledger-accent)',
+            display: 'block',
+            fontFamily: INTER_STACK,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-deep)',
+            marginBottom: 16,
           }}
         >
-          Institutional Record 1.4
+          Onboarding · Record 1.4
         </span>
         <h1
-          className="text-5xl font-extrabold leading-none"
           style={{
-            fontFamily: "'Cormorant', serif",
-            color: 'var(--ledger-ink)',
+            fontFamily: INTER_STACK,
+            fontSize: 44,
+            fontWeight: 800,
+            lineHeight: 1.05,
             letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: 0,
           }}
         >
-          Curation of{' '}
-          <span
-            className="italic"
-            style={{ color: 'var(--ledger-accent)' }}
-          >
-            Context
-          </span>
+          A short read of your context
         </h1>
         <p
-          className="mt-6 text-base leading-relaxed max-w-sm"
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            color: 'var(--ledger-ink)',
-            opacity: 0.7,
+            marginTop: 18,
+            fontFamily: INTER_STACK,
+            fontSize: 16,
+            fontWeight: 400,
+            lineHeight: 1.6,
+            color: 'var(--slate-600)',
+            maxWidth: 420,
           }}
         >
-          To personalize your journey through the AiBI-Foundation curriculum, we
-          need a brief read of your current professional environment.
+          Three questions so we can tune the AiBI-Foundation curriculum to your
+          institution and your role. About a minute.
         </p>
       </div>
 
       {/* Step progress indicator */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div
-            className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
             style={{
-              fontFamily: "'DM Mono', monospace",
-              border: '1px solid var(--ledger-accent)',
-              color: 'var(--ledger-accent)',
-              backgroundColor: 'var(--ledger-bg)',
+              width: 44,
+              height: 44,
+              borderRadius: 12,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+              border: '1px solid var(--gold)',
+              color: 'var(--gold-deep)',
+              background: 'var(--cream)',
+              flexShrink: 0,
             }}
           >
             {String(step).padStart(2, '0')}
           </div>
           <div
-            className="flex-1 h-px relative overflow-hidden"
-            style={{ backgroundColor: 'rgba(181,81,46,0.15)' }}
+            style={{
+              flex: 1,
+              height: 4,
+              borderRadius: 999,
+              background: 'var(--ink-a10)',
+              overflow: 'hidden',
+              position: 'relative',
+            }}
           >
             <div
-              className="absolute inset-y-0 left-0 transition-all duration-500"
               style={{
+                position: 'absolute',
+                inset: 0,
                 width: `${progressPercent}%`,
-                backgroundColor: 'var(--ledger-accent)',
+                background: 'var(--gold)',
+                transition: 'width var(--t-med) var(--ease)',
               }}
             />
           </div>
           <div
-            className="text-sm flex-shrink-0"
             style={{
-              fontFamily: "'DM Mono', monospace",
-              color: 'var(--ledger-ink)',
-              opacity: 0.4,
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
+              fontVariantNumeric: 'tabular-nums',
+              color: 'var(--slate-400)',
+              flexShrink: 0,
             }}
           >
             {String(TOTAL_STEPS).padStart(2, '0')}
           </div>
         </div>
         <p
-          className="text-xs font-medium uppercase tracking-tighter"
           style={{
-            fontFamily: "'DM Mono', monospace",
-            color: 'var(--ledger-ink)',
-            opacity: 0.6,
+            fontFamily: INTER_STACK,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'var(--slate-500)',
+            margin: 0,
           }}
         >
-          Current Phase: {stepLabel}
+          Current phase: {stepLabel}
         </p>
       </div>
 
       {/* Credential callout */}
       <div
-        className="p-8 rounded-sm"
         style={{
-          backgroundColor: 'var(--ledger-paper)',
-          border: '1px solid rgba(181,81,46,0.15)',
+          padding: 28,
+          borderRadius: 16,
+          background: 'var(--cream-2)',
+          border: '1px solid var(--ink-a10)',
+          boxShadow: 'var(--shadow-soft)',
         }}
       >
         <p
-          className="text-base italic leading-relaxed"
           style={{
-            fontFamily: "'Cormorant', serif",
-            color: 'var(--ledger-ink)',
-            opacity: 0.75,
+            fontFamily: INTER_STACK,
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-deep)',
+            margin: 0,
+            marginBottom: 10,
           }}
         >
-          &ldquo;The AiBI-Foundation certification bridges the gap
-          between institutional legacy and generative futures.&rdquo;
+          What you&rsquo;re entering
+        </p>
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: 1.55,
+            color: 'var(--ink)',
+            margin: 0,
+          }}
+        >
+          The AiBI-Foundation course meets community bankers where they work —
+          inside the policies, tools, and risk posture you already live with.
         </p>
       </div>
     </div>

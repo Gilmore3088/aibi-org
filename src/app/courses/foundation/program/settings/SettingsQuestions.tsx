@@ -2,8 +2,14 @@
 
 // SettingsQuestions — The three question sections for OnboardingSettings.
 // Renders M365, AI Subscriptions, and Primary Role selectors.
+//
+// 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
+import type { CSSProperties } from 'react';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
+
+const INTER_STACK =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const USES_M365_OPTIONS = [
   { value: 'yes' as const, label: 'Yes, we use M365' },
@@ -39,6 +45,69 @@ const ROLE_OPTIONS: { value: LearnerRole; label: string }[] = [
   { value: 'other', label: 'Other' },
 ];
 
+const eyebrowStyle: CSSProperties = {
+  display: 'block',
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  marginBottom: 10,
+};
+
+const questionTitleStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 20,
+  fontWeight: 700,
+  lineHeight: 1.3,
+  letterSpacing: '-0.01em',
+  color: 'var(--ink)',
+  margin: 0,
+};
+
+const helperStyle: CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--slate-500)',
+  margin: 0,
+};
+
+function optionButtonStyle(isSelected: boolean): CSSProperties {
+  return {
+    padding: '14px 16px',
+    borderRadius: 12,
+    background: isSelected ? 'var(--ink)' : 'var(--cream)',
+    border: `1px solid ${isSelected ? 'var(--ink)' : 'var(--ink-a10)'}`,
+    color: isSelected ? 'var(--cream)' : 'var(--ink)',
+    fontFamily: INTER_STACK,
+    fontSize: 14,
+    fontWeight: 600,
+    textAlign: 'left',
+    cursor: 'pointer',
+    transition:
+      'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
+    boxShadow: isSelected ? 'var(--shadow-soft)' : 'none',
+  };
+}
+
+function checkboxRowStyle(isChecked: boolean): CSSProperties {
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: '14px 16px',
+    borderRadius: 12,
+    cursor: 'pointer',
+    background: isChecked ? 'var(--cream-2)' : 'var(--cream)',
+    border: `1px solid ${isChecked ? 'var(--gold)' : 'var(--ink-a10)'}`,
+    transition: 'background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
+  };
+}
+
 interface SettingsQuestionsProps {
   readonly uses_m365: OnboardingAnswers['uses_m365'] | null;
   readonly personal_ai_subscriptions: string[];
@@ -63,20 +132,10 @@ export function SettingsQuestions({
   return (
     <>
       {/* Question 1: M365 */}
-      <section className="space-y-5">
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div>
-          <span
-            className="block text-xs uppercase tracking-widest mb-2"
-            style={{ fontFamily: "'DM Mono', monospace", color: 'var(--ledger-accent)' }}
-          >
-            Foundational Ecosystem
-          </span>
-          <h2
-            className="text-xl font-bold leading-tight"
-            style={{ fontFamily: "'Cormorant', serif", color: 'var(--ledger-ink)' }}
-          >
-            Does your institution use Microsoft 365?
-          </h2>
+          <span style={eyebrowStyle}>Foundational ecosystem</span>
+          <h2 style={questionTitleStyle}>Does your institution use Microsoft 365?</h2>
         </div>
         <div
           className="grid grid-cols-1 sm:grid-cols-3 gap-3"
@@ -90,17 +149,11 @@ export function SettingsQuestions({
                 key={opt.value}
                 type="button"
                 onClick={() => onM365Select(opt.value)}
-                className="p-4 rounded-sm transition-all duration-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
-                style={{
-                  backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
-                  border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
-                  color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
-                }}
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                style={optionButtonStyle(isSelected)}
                 aria-pressed={isSelected}
               >
-                <span className="font-medium text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  {opt.label}
-                </span>
+                {opt.label}
               </button>
             );
           })}
@@ -108,49 +161,33 @@ export function SettingsQuestions({
       </section>
 
       {/* Question 2: AI Subscriptions */}
-      <section className="space-y-5">
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div>
-          <span
-            className="block text-xs uppercase tracking-widest mb-2"
-            style={{ fontFamily: "'DM Mono', monospace", color: 'var(--ledger-accent)' }}
-          >
-            Personal Capability
-          </span>
-          <h2
-            className="text-xl font-bold leading-tight"
-            style={{ fontFamily: "'Cormorant', serif", color: 'var(--ledger-ink)' }}
-          >
+          <span style={eyebrowStyle}>Personal capability</span>
+          <h2 style={questionTitleStyle}>
             Do you currently have any personal AI subscriptions?
           </h2>
         </div>
-        <div className="space-y-3" role="group" aria-label="AI subscription options">
-          <p
-            className="text-xs uppercase tracking-widest"
-            style={{ fontFamily: "'DM Mono', monospace", color: 'var(--ledger-ink)', opacity: 0.5 }}
-          >
-            Select all that apply
-          </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }} role="group" aria-label="AI subscription options">
+          <p style={helperStyle}>Select all that apply</p>
           <div className="grid grid-cols-2 gap-3">
             {AI_SUBSCRIPTION_OPTIONS.map((label) => {
               const isChecked = personal_ai_subscriptions.includes(label);
               return (
-                <label
-                  key={label}
-                  className="flex items-center gap-3 p-4 rounded-sm cursor-pointer transition-all duration-150"
-                  style={{
-                    backgroundColor: isChecked ? 'var(--ledger-tape)' : 'var(--ledger-paper)',
-                    border: isChecked ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
-                  }}
-                >
+                <label key={label} style={checkboxRowStyle(isChecked)}>
                   <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={(e) => onSubscriptionCheckbox(label, e.target.checked)}
-                    className="rounded-sm accent-[color:var(--ledger-accent)]"
+                    style={{ accentColor: 'var(--gold)' }}
                   />
                   <span
-                    className="text-sm font-medium"
-                    style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--ledger-ink)' }}
+                    style={{
+                      fontFamily: INTER_STACK,
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: 'var(--ink)',
+                    }}
                   >
                     {label}
                   </span>
@@ -158,13 +195,16 @@ export function SettingsQuestions({
               );
             })}
           </div>
-          <div className="pt-2 border-t" style={{ borderColor: 'rgba(181,81,46,0.1)' }}>
-            <p
-              className="text-xs uppercase tracking-widest mb-3"
-              style={{ fontFamily: "'DM Mono', monospace", color: 'var(--ledger-ink)', opacity: 0.5 }}
-            >
-              Or select one
-            </p>
+          <div
+            style={{
+              paddingTop: 14,
+              borderTop: '1px solid var(--ink-a10)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}
+          >
+            <p style={helperStyle}>Or select one</p>
             <div className="grid grid-cols-2 gap-3">
               {EXCLUSIVE_OPTIONS.map((opt) => {
                 const isSelected = exclusive_selection === opt.value;
@@ -173,17 +213,11 @@ export function SettingsQuestions({
                     key={opt.value}
                     type="button"
                     onClick={() => onExclusiveSelect(opt.value)}
-                    className="p-4 rounded-sm transition-all duration-150 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
-                    style={{
-                      backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
-                      border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
-                      color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
-                    }}
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={optionButtonStyle(isSelected)}
                     aria-pressed={isSelected}
                   >
-                    <span className="text-sm font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                      {opt.label}
-                    </span>
+                    {opt.label}
                   </button>
                 );
               })}
@@ -193,20 +227,10 @@ export function SettingsQuestions({
       </section>
 
       {/* Question 3: Primary Role */}
-      <section className="space-y-5">
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div>
-          <span
-            className="block text-xs uppercase tracking-widest mb-2"
-            style={{ fontFamily: "'DM Mono', monospace", color: 'var(--ledger-accent)' }}
-          >
-            Persona Mapping
-          </span>
-          <h2
-            className="text-xl font-bold leading-tight"
-            style={{ fontFamily: "'Cormorant', serif", color: 'var(--ledger-ink)' }}
-          >
-            What is your primary role at your institution?
-          </h2>
+          <span style={eyebrowStyle}>Persona mapping</span>
+          <h2 style={questionTitleStyle}>What is your primary role at your institution?</h2>
         </div>
         <div
           className="grid grid-cols-2 md:grid-cols-3 gap-3"
@@ -220,13 +244,8 @@ export function SettingsQuestions({
                 key={opt.value}
                 type="button"
                 onClick={() => onRoleSelect(opt.value)}
-                className="py-4 px-3 rounded-sm font-medium text-sm transition-all duration-150 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ledger-accent"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  backgroundColor: isSelected ? 'var(--ledger-accent)' : 'var(--ledger-paper)',
-                  color: isSelected ? 'var(--ledger-bg)' : 'var(--ledger-ink)',
-                  border: isSelected ? '1.5px solid var(--ledger-accent)' : '1.5px solid transparent',
-                }}
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                style={{ ...optionButtonStyle(isSelected), textAlign: 'center' }}
                 aria-pressed={isSelected}
               >
                 {opt.label}
