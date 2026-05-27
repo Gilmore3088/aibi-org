@@ -206,9 +206,15 @@ export default function AssessmentPage() {
                       </div>
                     </div>
                     <div className="mk-take-snap-meta">
-                      <ResultMeta label="Dimensions" value="8 scored" />
-                      <ResultMeta label="Artifact" value="Ready" />
-                      <ResultMeta label="Format" value="Email + page" />
+                      <ResultMeta
+                        label="Dimensions scored"
+                        value={String(Object.keys(state.getDimensionBreakdown()).length)}
+                      />
+                      <ResultMeta label="Top gap" value={topGapLabel} />
+                      <ResultMeta
+                        label="Questions"
+                        value={`${QUESTIONS_PER_SESSION} of ${QUESTIONS_PER_SESSION}`}
+                      />
                     </div>
                   </div>
                 </section>

@@ -98,14 +98,14 @@ function isValidPayload(p: CapturePayload): p is {
   if (typeof p.tier !== 'string' || p.tier.length === 0) return false;
   if (typeof p.tierLabel !== 'string' || p.tierLabel.length === 0) return false;
   if (!Array.isArray(p.answers)) return false;
-  // v1 has 8 questions, v2 has 12. Reject any other shape.
+  // v1: 8 questions. v2/v3: 12 questions. Reject any other shape.
   if (p.answers.length !== 8 && p.answers.length !== 12) return false;
   if (!p.answers.every((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4)) return false;
   // Score must equal the sum of answers so an attacker can't persist an
   // inconsistent score that later crashes getTierV2() / getTier().
   const expectedSum = (p.answers as number[]).reduce((acc, n) => acc + n, 0);
   if (p.score !== expectedSum) return false;
-  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2') return false;
+  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2' && p.version !== 'v3') return false;
   if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return false;
   if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return false;
   // Optional profile fields — bounded length so an attacker can't dump megabytes.

@@ -353,20 +353,19 @@ function DeliverablePanel() {
 
 function TrustStrip() {
   return (
-    <div className="mt-6 grid sm:grid-cols-3 gap-x-6 gap-y-3 px-2">
-      {[
-        ['Where this goes', 'Our records and your newsletter list only if you opt in. Never sold.'],
-        ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
-        ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
-      ].map(([title, body]) => (
-        <div key={title} className="border-l-2 border-[color:var(--gold)]/40 pl-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
-            {title}
-          </p>
-          <p className="mt-1 text-xs text-[color:var(--slate-600)] leading-relaxed">{body}</p>
-        </div>
-      ))}
-    </div>
+    <p
+      className="mt-6 px-2 text-sm leading-relaxed"
+      style={{ color: 'var(--slate-600)' }}
+    >
+      Questions? Reach out at{' '}
+      <a
+        href="mailto:hello@aibankinginstitute.com"
+        style={{ color: 'var(--gold-deep)', fontWeight: 600, textDecoration: 'underline' }}
+      >
+        hello@aibankinginstitute.com
+      </a>
+      .
+    </p>
   );
 }
 
