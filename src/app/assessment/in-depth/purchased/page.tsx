@@ -68,32 +68,89 @@ export default async function InDepthPurchasedPage({
     : '';
 
   return (
-    <main className="px-6 py-14 md:py-20">
+    <main
+      className="px-6 py-14 md:py-20"
+      style={{
+        fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+        background: 'var(--cream)',
+        minHeight: '100vh',
+      }}
+    >
       <div className="mx-auto max-w-3xl">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3">
+        <p
+          className="uppercase mb-3"
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            color: 'var(--gold-deep)',
+          }}
+        >
           Purchase confirmed
         </p>
-        <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-ink)] mb-5">
+        <h1
+          className="mb-5"
+          style={{
+            fontSize: 'clamp(36px, 4.5vw, 52px)',
+            fontWeight: 700,
+            lineHeight: 1.08,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+          }}
+        >
           Your In-Depth Assessment is ready.
         </h1>
-        <p className="text-base md:text-lg text-[color:var(--color-ink)]/75 leading-relaxed mb-8 max-w-2xl">
+        <p
+          className="mb-8 max-w-2xl"
+          style={{
+            fontSize: 17,
+            lineHeight: 1.6,
+            color: 'var(--slate-600)',
+          }}
+        >
           Thanks for your purchase. A receipt is on its way from Stripe, and
           a welcome email with the assessment link will follow within minutes.
         </p>
 
-        <section className="border border-[color:var(--gold)]/20 bg-[color:var(--color-parch)] rounded-[3px] p-6 md:p-8 mb-10">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-4">
+        <section
+          className="mb-10"
+          style={{
+            border: '1px solid var(--ink-a10)',
+            background: '#fff',
+            borderRadius: 24,
+            padding: 32,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+          }}
+        >
+          <p
+            className="uppercase"
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              color: 'var(--gold-deep)',
+              marginBottom: 16,
+            }}
+          >
             What you get
           </p>
           <ul className="space-y-3">
             {HIGHLIGHTS.map((line) => (
               <li
                 key={line}
-                className="flex gap-3 text-sm md:text-base text-[color:var(--color-ink)]/85"
+                className="flex gap-3"
+                style={{ fontSize: 15, color: 'var(--ink)', lineHeight: 1.55 }}
               >
                 <span
-                  className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0"
                   aria-hidden="true"
+                  style={{
+                    marginTop: 9,
+                    height: 6,
+                    width: 6,
+                    borderRadius: 999,
+                    background: 'var(--gold)',
+                    flexShrink: 0,
+                  }}
                 />
                 <span>{line}</span>
               </li>
@@ -111,31 +168,43 @@ export default async function InDepthPurchasedPage({
           </p>
         </section>
 
-        <section className="border-t border-[color:var(--color-ink)]/10 pt-8">
+        <section
+          className="pt-8"
+          style={{ borderTop: '1px solid var(--ink-a10)' }}
+        >
           {signedInEmail ? (
             <>
-              <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
+              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
                 You&rsquo;re signed in as{' '}
-                <span className="font-mono text-[color:var(--color-ink)]">
+                <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
                   {signedInEmail}
                 </span>
                 . Begin the 48-question diagnostic — about 20 minutes.
               </p>
               <Link
                 href="/assessment/in-depth/take"
-                className="inline-block bg-[color:var(--gold)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] transition-colors"
+                className="inline-block uppercase transition-colors"
+                style={{
+                  background: 'var(--gold)',
+                  color: '#fff',
+                  padding: '14px 28px',
+                  borderRadius: 12,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.16em',
+                }}
               >
-                Take the assessment
+                TAKE THE ASSESSMENT
               </Link>
             </>
           ) : (
             <>
-              <p className="text-sm text-[color:var(--color-ink)]/75 mb-5">
+              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
                 One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
                 account{prefillEmail ? (
                   <>
                     {' '}for{' '}
-                    <span className="font-mono text-[color:var(--color-ink)]">
+                    <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
                       {prefillEmail}
                     </span>
                   </>
@@ -145,24 +214,46 @@ export default async function InDepthPurchasedPage({
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block bg-[color:var(--gold)] text-[color:var(--color-linen)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--gold-2)] transition-colors"
+                  className="inline-block uppercase transition-colors"
+                  style={{
+                    background: 'var(--gold)',
+                    color: '#fff',
+                    padding: '14px 28px',
+                    borderRadius: 12,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.16em',
+                  }}
                 >
-                  Create my account
+                  CREATE MY ACCOUNT
                 </Link>
                 <Link
                   href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] px-8 py-3 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] hover:bg-[color:var(--color-parch)] transition-colors"
+                  className="inline-block uppercase transition-colors"
+                  style={{
+                    border: '1px solid var(--ink-a15)',
+                    color: 'var(--ink)',
+                    padding: '14px 28px',
+                    borderRadius: 12,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.16em',
+                  }}
                 >
-                  I already have one
+                  I ALREADY HAVE ONE
                 </Link>
               </div>
             </>
           )}
-          <p className="text-xs text-[color:var(--color-ink)]/55 mt-6">
+          <p style={{ fontSize: 12, color: 'var(--slate-500)', marginTop: 24 }}>
             Trouble? Reply to your receipt email or write to{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
-              className="underline hover:text-[color:var(--gold)]"
+              style={{
+                color: 'var(--gold-deep)',
+                textDecoration: 'underline',
+                fontWeight: 600,
+              }}
             >
               hello@aibankinginstitute.com
             </a>
@@ -170,14 +261,49 @@ export default async function InDepthPurchasedPage({
           </p>
         </section>
 
-        <section className="mt-10 rounded-[3px] border border-[color:var(--color-ink)]/10 border-l-4 border-l-[color:var(--gold)] bg-[color:var(--color-parch)] p-6 md:p-8">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2.5">
+        <section
+          className="mt-10"
+          style={{
+            border: '1px solid var(--ink-a10)',
+            borderLeft: '4px solid var(--gold)',
+            background: '#fff',
+            padding: 32,
+            borderRadius: 24,
+          }}
+        >
+          <p
+            className="uppercase"
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              color: 'var(--gold-deep)',
+              marginBottom: 10,
+            }}
+          >
             Included with your purchase
           </p>
-          <h2 className="font-serif text-2xl font-medium leading-tight tracking-[-0.02em] text-[color:var(--color-ink)] mb-2.5">
+          <h2
+            style={{
+              fontSize: 26,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+              color: 'var(--ink)',
+              marginBottom: 10,
+            }}
+          >
             Your AI Starter Toolkit
           </h2>
-          <p className="text-sm md:text-[14.5px] leading-relaxed text-[color:var(--color-ink)]/75 mb-5 max-w-[60ch]">
+          <p
+            className="mb-5"
+            style={{
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: 'var(--slate-600)',
+              maxWidth: '60ch',
+            }}
+          >
             Read-only access to the Library and Cookbook — banker-vetted
             prompts you can copy into Claude, ChatGPT, or Gemini. Build and
             Playground access with the AiBI-Foundation course.
@@ -185,15 +311,33 @@ export default async function InDepthPurchasedPage({
           <div className="flex flex-wrap gap-4">
             <Link
               href="/dashboard/toolbox/library"
-              className="inline-block rounded-sm bg-[color:var(--gold)] px-8 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-linen)] transition-colors hover:bg-[color:var(--gold-2)]"
+              className="inline-block uppercase transition-colors"
+              style={{
+                background: 'var(--gold)',
+                color: '#fff',
+                padding: '14px 28px',
+                borderRadius: 12,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.16em',
+              }}
             >
-              Browse the Library →
+              BROWSE THE LIBRARY →
             </Link>
             <Link
               href="/courses/foundation/program"
-              className="inline-block rounded-sm border border-[color:var(--color-ink)]/20 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--color-ink)] transition-colors hover:bg-[color:var(--color-linen)]"
+              className="inline-block uppercase transition-colors"
+              style={{
+                border: '1px solid var(--ink-a15)',
+                color: 'var(--ink)',
+                padding: '14px 28px',
+                borderRadius: 12,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.16em',
+              }}
             >
-              See the Foundation upgrade
+              SEE THE FOUNDATION UPGRADE
             </Link>
           </div>
         </section>
