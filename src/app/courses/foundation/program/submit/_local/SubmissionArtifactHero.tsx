@@ -8,15 +8,6 @@
 
 import type { CSSProperties } from 'react';
 
-const kicker: CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: 'var(--gold-deep)',
-  margin: 0,
-};
-
 const card: CSSProperties = {
   background: 'var(--cream)',
   border: '1px solid var(--ink-a10)',
@@ -90,21 +81,23 @@ export function SubmissionArtifactHero() {
         marginBottom: 40,
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-          marginBottom: 16,
-        }}
-      >
-        <span style={{ ...kicker, color: 'var(--gold-soft)' }}>
+      <div style={{ marginBottom: 18 }}>
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '6px 14px',
+            borderRadius: 999,
+            background: 'rgba(200, 162, 74, 0.18)',
+            color: 'var(--gold-soft)',
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+          }}
+        >
           AiBI-Foundation · Reviewed work product
         </span>
-        <span
-          style={{ flex: 1, height: 1, background: 'rgba(230, 211, 155, 0.18)' }}
-          aria-hidden="true"
-        />
       </div>
 
       <h1

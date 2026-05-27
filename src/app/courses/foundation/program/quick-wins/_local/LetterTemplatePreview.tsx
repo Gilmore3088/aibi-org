@@ -23,14 +23,6 @@ interface LetterTemplatePreviewProps {
   readonly totalQuarterlyHours: number;
 }
 
-const kicker: CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: 'var(--gold-soft)',
-  margin: 0,
-};
 
 const linedPaper: CSSProperties = {
   background: 'var(--cream)',
@@ -131,19 +123,23 @@ export function LetterTemplatePreview({
         marginBottom: 40,
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-          marginBottom: 14,
-        }}
-      >
-        <span style={kicker}>The artifact · Recommendation letter</span>
+      <div style={{ marginBottom: 16 }}>
         <span
-          aria-hidden="true"
-          style={{ flex: 1, height: 1, background: 'rgba(230, 211, 155, 0.18)' }}
-        />
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '6px 14px',
+            borderRadius: 999,
+            background: 'rgba(200, 162, 74, 0.18)',
+            color: 'var(--gold-soft)',
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+          }}
+        >
+          The artifact · Recommendation letter
+        </span>
       </div>
 
       <h1

@@ -220,18 +220,23 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
           <div>
             {/* Context header + comparison preview */}
             <div className="max-w-2xl mx-auto mb-10">
-              <p
+              <span
                 style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: 'rgba(200, 162, 74, 0.14)',
                   color: 'var(--gold-deep)',
-                  margin: '0 0 8px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  marginBottom: 12,
                 }}
               >
                 AiBI-Foundation · Measure your growth
-              </p>
+              </span>
               <h1
                 style={{
                   fontWeight: 700,
@@ -276,18 +281,23 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {phase === 'score' && isComplete && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
-              <p
+              <span
                 style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: 'rgba(200, 162, 74, 0.14)',
                   color: 'var(--gold-deep)',
-                  margin: '0 0 24px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  marginBottom: 24,
                 }}
               >
                 Post-course score
-              </p>
+              </span>
               <ScoreRing
                 score={totalScore}
                 minScore={12}
@@ -356,26 +366,39 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {/* ── Results phase ────────────────────────────────────────────── */}
         {phase === 'results' && postTier && (
           <div className="max-w-3xl mx-auto space-y-8">
-            <div>
-              <p
+            <div
+              style={{
+                background: 'var(--ink)',
+                color: '#fff',
+                borderRadius: 28,
+                padding: 'clamp(28px, 4vw, 40px)',
+                boxShadow: 'var(--shadow-hero)',
+              }}
+            >
+              <span
                 style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: 'rgba(200, 162, 74, 0.18)',
+                  color: 'var(--gold-soft)',
                   fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: '0.2em',
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--gold-deep)',
-                  margin: '0 0 8px',
+                  marginBottom: 14,
                 }}
               >
                 AiBI-Foundation · Measure your growth
-              </p>
+              </span>
               <h1
                 style={{
                   fontWeight: 700,
                   fontSize: 'clamp(36px, 4.6vw, 56px)',
-                  lineHeight: 1.05,
-                  letterSpacing: '-0.025em',
-                  color: 'var(--ink)',
+                  lineHeight: 1.04,
+                  letterSpacing: '-0.028em',
+                  color: '#fff',
                   margin: 0,
                 }}
               >
