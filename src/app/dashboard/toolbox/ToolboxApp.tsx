@@ -34,8 +34,6 @@ const ALL_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier
   { id: 'toolbox', label: 'My Toolbox', tiers: ['full', 'starter'] },
 ];
 
-const TABS = ALL_TABS;
-
 function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
   return ALL_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
 }
