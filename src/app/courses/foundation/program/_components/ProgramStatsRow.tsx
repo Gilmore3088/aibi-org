@@ -1,5 +1,8 @@
 // ProgramStatsRow — four-column key/value grid (progress, time, price, format).
 
+const FONT_INTER =
+  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 interface ProgramStatsRowProps {
   readonly completedCount: number;
   readonly totalModules: number;
@@ -42,8 +45,9 @@ export function ProgramStatsRow({
         marginTop: 18,
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
-        borderTop: '1px solid var(--ledger-rule-strong)',
-        borderBottom: '1px solid var(--ledger-rule)',
+        borderTop: '1px solid var(--ink-a15)',
+        borderBottom: '1px solid var(--ink-a10)',
+        fontFamily: FONT_INTER,
       }}
     >
       {rows.map((r, i) => (
@@ -51,37 +55,39 @@ export function ProgramStatsRow({
           key={r.k}
           style={{
             padding: '18px 22px',
-            borderRight: i < 3 ? '1px solid var(--ledger-rule)' : 'none',
+            borderRight: i < 3 ? '1px solid var(--ink-a10)' : 'none',
           }}
         >
           <div
             style={{
-              fontFamily: 'var(--ledger-mono)',
-              fontSize: 9.5,
+              fontFamily: FONT_INTER,
+              fontSize: 10,
+              fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'var(--ledger-muted)',
+              color: 'var(--slate-500)',
             }}
           >
             {r.k}
           </div>
           <div
             style={{
-              fontFamily: 'var(--ledger-serif)',
-              fontWeight: 500,
+              fontFamily: FONT_INTER,
+              fontWeight: 700,
               fontSize: 30,
               letterSpacing: '-0.02em',
               lineHeight: 1,
               marginTop: 6,
-              color: 'var(--ledger-ink)',
+              color: 'var(--ink)',
             }}
           >
             {r.v}
           </div>
           <div
             style={{
+              fontFamily: FONT_INTER,
               fontSize: 12,
-              color: 'var(--ledger-slate)',
+              color: 'var(--slate-600)',
               marginTop: 4,
             }}
           >
