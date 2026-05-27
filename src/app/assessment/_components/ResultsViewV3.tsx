@@ -95,24 +95,24 @@ export function ResultsViewV3({
   return (
     <div className="w-full max-w-4xl mx-auto">
       <header
-        className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
+        className="mb-14 border-b border-[color:var(--ink)]/15 pb-8"
         style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
-          <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+          <p className="text-sm uppercase tracking-[0.22em] text-[color:var(--gold)]">
             AI Readiness Briefing
           </p>
-          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
+          <p className="text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/65 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
           </p>
         </div>
-        <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
+        <h1 className="text-3xl md:text-4xl text-[color:var(--ink)] leading-tight">
           {firstName
             ? `${firstName.trim()}, here is your assessment in brief.`
             : 'Your assessment, in brief.'}
         </h1>
         <p
-          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
+          className="mt-5 text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/65"
           data-print-hide="true"
         >
           A 5-minute read
@@ -138,12 +138,12 @@ export function ResultsViewV3({
 
       <SectionAnchor id="section-2" />
       <section className="space-y-8" aria-labelledby="section-2-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
           The big insight
         </p>
         <h2 id="section-2-heading" className="sr-only">The big insight</h2>
-        <div className="bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-[3px] p-8 md:p-10">
-          <p className="font-serif text-2xl md:text-3xl leading-snug">
+        <div className="bg-[color:var(--ink)] text-[color:var(--cream)] rounded-2xl p-8 md:p-10">
+          <p className="text-2xl md:text-3xl leading-snug">
             {BIG_INSIGHT[tierId]}
           </p>
         </div>
@@ -152,16 +152,16 @@ export function ResultsViewV3({
 
       <SectionAnchor id="section-2b" />
       <section className="space-y-6" aria-labelledby="section-2b-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
           Implications for financial professionals
         </p>
         <h2
           id="section-2b-heading"
-          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+          className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
         >
           In operating terms.
         </h2>
-        <dl className="border-t border-[color:var(--color-ink)]/15">
+        <dl className="border-t border-[color:var(--ink)]/15">
           <ImplicationRow
             label="Operational efficiency"
             body={FINANCIAL_IMPLICATIONS[tierId].operational}
@@ -180,12 +180,12 @@ export function ResultsViewV3({
 
       <SectionAnchor id="section-4" />
       <section className="space-y-8" aria-labelledby="section-4-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
           Strengths and gaps
         </p>
         <h2
           id="section-4-heading"
-          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+          className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
         >
           Where you&apos;re strong. Where you&apos;re exposed.
         </h2>
@@ -194,7 +194,7 @@ export function ResultsViewV3({
 
         {grouped.critical.length > 0 && (
           <div className="space-y-5 pt-2">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] flex items-center gap-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] flex items-center gap-2">
               <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-error)]" />
               Closest look · your biggest gaps
             </p>
@@ -217,83 +217,83 @@ export function ResultsViewV3({
         <>
           <SectionAnchor id="section-5" />
           <section className="space-y-6" aria-labelledby="section-5-heading">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
               Your first AI move
             </p>
             <h2
               id="section-5-heading"
-              className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)]"
+              className="text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--ink)]"
             >
               Start with {fastestRoi.title.toLowerCase()}.
             </h2>
 
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-7 md:p-9 space-y-7">
+            <div className="bg-[color:var(--cream-2)] border border-[color:var(--ink)]/15 rounded-2xl p-7 md:p-9 space-y-7">
               <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   Why this is the right starting point
                 </p>
                 <ul className="mt-3 space-y-2">
                   {fastestRoi.whyRightNow.map((reason) => (
                     <li
                       key={reason}
-                      className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+                      className="text-[15px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
                     >
-                      <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
                       <span>{reason}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="border-l-2 border-[color:var(--color-ink)]/20 pl-5">
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+              <div className="border-l-2 border-[color:var(--ink)]/20 pl-5">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   What this looks like in practice
                 </p>
-                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
                   {fastestRoi.inPractice}
                 </p>
               </div>
 
               <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   Where this works best
                 </p>
                 <ul className="mt-2 grid gap-1 sm:grid-cols-3">
                   {fastestRoi.worksBestFor.map((useCase) => (
                     <li
                       key={useCase}
-                      className="text-[14px] text-[color:var(--color-ink)]/75 flex gap-2"
+                      className="text-[14px] text-[color:var(--ink)]/75 flex gap-2"
                     >
-                      <span aria-hidden className="font-mono text-[color:var(--color-terra)]">·</span>
+                      <span aria-hidden className="text-[color:var(--gold)]">·</span>
                       <span>{useCase}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--color-ink)]/10 text-sm">
+              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--ink)]/10 text-sm">
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Risk
                   </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
+                  <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.riskLevel}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Time saved
                   </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
+                  <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.timeSaved}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
+                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Owner
                   </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
+                  <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.owner}</dd>
                 </div>
               </dl>
             </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
               Surfaced by your weakest dimension: {focusGap.label}
             </p>
             <ContinueLink to="section-6" label="Starter prompt" />
@@ -305,24 +305,24 @@ export function ResultsViewV3({
         <>
           <SectionAnchor id="section-6" />
           <section className="space-y-5" aria-labelledby="section-6-heading">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+            <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
               Starter prompt
             </p>
             <h2
               id="section-6-heading"
-              className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+              className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
             >
               Copy it. Run it. Refine it.
             </h2>
-            <p className="text-[16px] leading-[1.6] text-[color:var(--color-ink)]/80 max-w-2xl">
+            <p className="text-[16px] leading-[1.6] text-[color:var(--ink)]/80 max-w-2xl">
               Take this prompt to the AI tool your institution already trusts. Run it on a real workflow this week. Bring back what worked and what did not.
             </p>
             <StarterPrompt prompt={starterPrompt} />
             {starterArtifact && focusGap && (
-              <details className="group border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden" data-print-hide="true">
-                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70 hover:bg-[color:var(--color-parch)] transition-colors">
+              <details className="group border border-[color:var(--ink)]/15 rounded-2xl bg-[color:var(--cream)] overflow-hidden" data-print-hide="true">
+                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] text-[color:var(--ink)]/70 hover:bg-[color:var(--cream-2)] transition-colors">
                   <span>Show printable starter artifact</span>
-                  <span aria-hidden className="font-mono text-[12px] transition-transform group-open:rotate-180">▾</span>
+                  <span aria-hidden className="text-[12px] transition-transform group-open:rotate-180">▾</span>
                 </summary>
                 <div className="p-5">
                   <StarterArtifactCard artifact={starterArtifact} tierLabel={tier.label} topGapLabel={focusGap.label} />
@@ -336,25 +336,25 @@ export function ResultsViewV3({
 
       <SectionAnchor id="section-7" />
       <section className="space-y-6 mb-20" aria-labelledby="section-7-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+        <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
           Your 7-day AI activation plan
         </p>
-        <h2 id="section-7-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
+        <h2 id="section-7-heading" className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]">
           What to do this week.
         </h2>
-        <ol className="border-l-2 border-[color:var(--color-terra)]/40 space-y-5 pl-6">
+        <ol className="border-l-2 border-[color:var(--gold)]/40 space-y-5 pl-6">
           {SEVEN_DAY_PLAN.map(({ day, action }) => (
             <li key={day} className="relative">
               <span
                 aria-hidden
-                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-mono text-[11px] tabular-nums font-semibold"
+                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[11px] tabular-nums font-semibold"
               >
                 {day}
               </span>
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-1">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55 mb-1">
                 Day {day}
               </p>
-              <p className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85">
+              <p className="text-[15px] leading-[1.55] text-[color:var(--ink)]/85">
                 {action}
               </p>
             </li>
@@ -365,7 +365,7 @@ export function ResultsViewV3({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      <div className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12" data-print-hide="true">
+      <div className="mt-16 border-t border-[color:var(--ink)]/15 pt-12" data-print-hide="true">
         <NewsletterCTA email={email} />
       </div>
 
@@ -383,10 +383,10 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
     <div className="pt-6 mb-16" data-print-hide="true">
       <a
         href={`#${to}`}
-        className="inline-flex items-center justify-between gap-4 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors group"
+        className="inline-flex items-center justify-between gap-4 bg-[color:var(--gold)] text-[color:var(--cream)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors group"
       >
         <span>{label}</span>
-        <span aria-hidden className="font-mono transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
+        <span aria-hidden className="transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
       </a>
     </div>
   );
@@ -394,11 +394,11 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
 
 function ImplicationRow({ label, body }: { readonly label: string; readonly body: string }) {
   return (
-    <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--color-ink)]/15">
-      <dt className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-terra)] md:pt-1">
+    <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--ink)]/15">
+      <dt className="text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] md:pt-1">
         {label}
       </dt>
-      <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+      <dd className="text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
         {body}
       </dd>
     </div>
@@ -412,7 +412,7 @@ function StrengthsChart({
 }) {
   return (
     <figure
-      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-7 md:p-9"
+      className="border border-[color:var(--ink)]/20 rounded-2xl bg-[color:var(--cream)] p-7 md:p-9"
       aria-label="Twelve-dimension readiness chart, sorted weakest first"
     >
       <ZoneLegend />
@@ -424,22 +424,22 @@ function StrengthsChart({
             zone === 'critical'
               ? 'bg-[color:var(--color-error)]'
               : zone === 'strong'
-                ? 'bg-[color:var(--color-ink)]/75'
-                : 'bg-[color:var(--color-terra)]';
+                ? 'bg-[color:var(--ink)]/75'
+                : 'bg-[color:var(--gold)]';
           const pctLabel = Math.round(row.pct * 100);
           return (
             <li key={row.id} className="space-y-2">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0 font-serif text-[17px] md:text-[18px] text-[color:var(--color-ink)] truncate leading-tight">
+                <span className="min-w-0 text-[17px] md:text-[18px] text-[color:var(--ink)] truncate leading-tight">
                   {row.label}
                 </span>
-                <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
+                <span className="text-[13px] text-[color:var(--ink)]/75 tabular-nums shrink-0">
                   {row.score}/{row.maxScore}
-                  <span className="text-[color:var(--color-ink)]/45"> · {pctLabel}%</span>
+                  <span className="text-[color:var(--ink)]/45"> · {pctLabel}%</span>
                 </span>
               </div>
               <div
-                className="relative h-4 bg-[color:var(--color-ink)]/8"
+                className="relative h-4 bg-[color:var(--ink)]/8"
                 role="presentation"
               >
                 <div
@@ -448,12 +448,12 @@ function StrengthsChart({
                 />
                 <span
                   aria-hidden
-                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--ink)]/25"
                   style={{ left: '50%' }}
                 />
                 <span
                   aria-hidden
-                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
+                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--ink)]/25"
                   style={{ left: '75%' }}
                 />
               </div>
@@ -472,18 +472,18 @@ function ZoneLegend() {
     readonly range: string;
   }> = [
     { label: 'Critical', className: 'bg-[color:var(--color-error)]', range: '< 50%' },
-    { label: 'Developing', className: 'bg-[color:var(--color-terra)]', range: '50–74%' },
-    { label: 'Strong', className: 'bg-[color:var(--color-ink)]/75', range: '≥ 75%' },
+    { label: 'Developing', className: 'bg-[color:var(--gold)]', range: '50–74%' },
+    { label: 'Strong', className: 'bg-[color:var(--ink)]/75', range: '≥ 75%' },
   ];
   return (
-    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/20">
+    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-4 border-b border-[color:var(--ink)]/20">
       {zones.map((zone) => (
         <div key={zone.label} className="flex items-center gap-2.5">
           <span aria-hidden className={'inline-block h-3 w-6 ' + zone.className} />
-          <span className="font-serif-sc text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80">
+          <span className="text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/80">
             {zone.label}
           </span>
-          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/55 tabular-nums">
+          <span className="text-[11px] text-[color:var(--ink)]/55 tabular-nums">
             {zone.range}
           </span>
         </div>
@@ -496,30 +496,30 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
   const cta = TIER_CLOSING_CTA[tierId];
   return (
     <section aria-labelledby="section-9-heading" className="space-y-6">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)]">
+      <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)]">
         {cta.eyebrow}
       </p>
       <h2
         id="section-9-heading"
-        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
+        className="text-3xl md:text-4xl leading-tight text-[color:var(--ink)]"
       >
         {cta.headline}
       </h2>
-      <article className="border-2 border-[color:var(--color-terra)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
-        <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
+      <article className="border-2 border-[color:var(--gold)] rounded-2xl p-6 md:p-8 bg-[color:var(--cream)]">
+        <p className="text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
           {cta.body}
         </p>
         <a
           href={cta.primary.href}
           data-print-hide="true"
           data-plausible-event-source={cta.primary.source}
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--color-terra)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--color-terra-light)] transition-colors"
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors"
         >
           {cta.primary.label}
         </a>
       </article>
       <ul
-        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-2"
+        className="border-t border-[color:var(--ink)]/15 pt-4 space-y-2"
         data-print-hide="true"
       >
         {[cta.secondary, cta.tertiary].map((offer) => (
@@ -527,7 +527,7 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
             <a
               href={offer.href}
               data-plausible-event-source={offer.source}
-              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--color-terra)] underline underline-offset-4 decoration-[color:var(--color-ink)]/25 hover:decoration-[color:var(--color-terra)] transition-colors"
+              className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--ink)]/70 hover:text-[color:var(--gold)] underline underline-offset-4 decoration-[color:var(--ink)]/25 hover:decoration-[color:var(--gold)] transition-colors"
             >
               {offer.label}
             </a>
@@ -542,45 +542,45 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
   const content = GAP_CONTENT[gap.id];
   if (!content) return null;
   return (
-    <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
+    <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--cream)] rounded-2xl p-6">
       <header className="flex items-baseline justify-between gap-4">
-        <h3 className="min-w-0 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] break-words">
+        <h3 className="min-w-0 text-xl md:text-2xl text-[color:var(--ink)] break-words">
           {gap.label}
         </h3>
-        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
+        <span className="text-xs text-[color:var(--slate-600)] tabular-nums shrink-0">
           {gap.score}/{gap.maxScore}
         </span>
       </header>
-      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80">
+      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--ink)]/80">
         {content.explanation}
       </p>
       <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
           What this leads to
         </p>
         <ul className="mt-2 space-y-1.5">
           {content.impacts.map((impact) => (
             <li
               key={impact}
-              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+              className="text-[14px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
             >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/30 shrink-0" />
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--ink)]/30 shrink-0" />
               <span>{impact}</span>
             </li>
           ))}
         </ul>
       </div>
       <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-terra)]">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
           What good looks like
         </p>
         <ul className="mt-2 space-y-1.5">
           {content.whatGoodLooksLike.map((vision) => (
             <li
               key={vision}
-              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
+              className="text-[14px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
             >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-terra)] shrink-0" />
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
               <span>{vision}</span>
             </li>
           ))}
