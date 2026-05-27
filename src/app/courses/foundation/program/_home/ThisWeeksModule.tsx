@@ -113,30 +113,38 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         marginBottom: 40,
         background: '#FFFFFF',
         border: '1px solid var(--slate-200)',
-        borderRadius: 24,
-        padding: 'clamp(24px, 3vw, 32px)',
-        boxShadow: 'var(--shadow-soft)',
+        borderRadius: 28,
+        overflow: 'hidden',
+        boxShadow: 'var(--shadow-hero)',
         fontFamily: FONT_INTER,
       }}
       aria-labelledby="this-weeks-heading"
     >
+      {/* Dark navy header band — kicker pill chip + module meta */}
       <div
         style={{
+          background: 'var(--ink)',
+          color: '#fff',
+          padding: 'clamp(18px, 2.4vw, 22px) clamp(20px, 3vw, 28px)',
           display: 'flex',
-          alignItems: 'baseline',
+          alignItems: 'center',
           justifyContent: 'space-between',
           gap: 16,
-          marginBottom: 6,
           flexWrap: 'wrap',
         }}
       >
         <span
           style={{
-            fontSize: 10.5,
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '6px 14px',
+            borderRadius: 999,
+            background: 'rgba(200, 162, 74, 0.18)',
+            color: 'var(--gold-soft)',
+            fontSize: 11,
             fontWeight: 700,
-            letterSpacing: '0.2em',
+            letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--gold-deep)',
           }}
         >
           This module
@@ -147,38 +155,41 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             fontWeight: 700,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--slate-500)',
+            color: 'var(--gold-soft)',
           }}
         >
           Module {String(currentModule.num).padStart(2, '0')} &middot; {currentModule.mins} min
         </span>
       </div>
-      <h2
-        id="this-weeks-heading"
-        style={{
-          margin: '4px 0 6px',
-          fontSize: 24,
-          fontWeight: 700,
-          letterSpacing: '-0.01em',
-          color: 'var(--ink)',
-          lineHeight: 1.2,
-        }}
-      >
-        {currentModule.title}
-      </h2>
-      <p
-        style={{
-          margin: '0 0 24px',
-          fontSize: 14,
-          lineHeight: 1.55,
-          color: 'var(--slate-600)',
-          maxWidth: '62ch',
-        }}
-      >
-        {currentModule.goal}
-      </p>
 
-      <ol
+      {/* White body — title, goal, sub-tasks, CTA */}
+      <div style={{ padding: 'clamp(24px, 3vw, 32px)' }}>
+        <h2
+          id="this-weeks-heading"
+          style={{
+            margin: '0 0 8px',
+            fontSize: 'clamp(24px, 2.6vw, 30px)',
+            fontWeight: 700,
+            letterSpacing: '-0.015em',
+            color: 'var(--ink)',
+            lineHeight: 1.15,
+          }}
+        >
+          {currentModule.title}
+        </h2>
+        <p
+          style={{
+            margin: '0 0 24px',
+            fontSize: 15,
+            lineHeight: 1.55,
+            color: 'var(--slate-600)',
+            maxWidth: '62ch',
+          }}
+        >
+          {currentModule.goal}
+        </p>
+
+        <ol
         style={{
           listStyle: 'none',
           margin: 0,
@@ -239,27 +250,28 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         ))}
       </ol>
 
-      <div style={{ marginTop: 24 }}>
-        <Link
-          href={href}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '12px 18px',
-            borderRadius: 12,
-            background: 'var(--ink)',
-            color: 'var(--cream)',
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-          }}
-        >
-          Open module
-          <span aria-hidden="true" style={{ fontWeight: 600, letterSpacing: 0 }}>→</span>
-        </Link>
+        <div style={{ marginTop: 24 }}>
+          <Link
+            href={href}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '12px 22px',
+              borderRadius: 12,
+              background: 'var(--gold)',
+              color: 'var(--ink)',
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+            }}
+          >
+            Open module
+            <span aria-hidden="true" style={{ fontWeight: 700, letterSpacing: 0 }}>→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

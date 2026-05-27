@@ -95,39 +95,32 @@ export function YourWorkStrip({ completedModules }: YourWorkStripProps) {
       }}
       aria-labelledby="your-work-heading"
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'space-between',
-          marginBottom: 16,
-          flexWrap: 'wrap',
-          gap: 12,
-        }}
-      >
+      <div style={{ marginBottom: 16 }}>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-deep)',
+            marginBottom: 8,
+          }}
+        >
+          Your work
+        </div>
         <h2
           id="your-work-heading"
           style={{
             margin: 0,
-            fontSize: 22,
+            fontSize: 'clamp(22px, 2.4vw, 28px)',
             fontWeight: 700,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.015em',
             color: 'var(--ink)',
-          }}
-        >
-          Your work
-        </h2>
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--slate-500)',
+            lineHeight: 1.2,
           }}
         >
           Artifacts you have produced
-        </span>
+        </h2>
       </div>
 
       <div

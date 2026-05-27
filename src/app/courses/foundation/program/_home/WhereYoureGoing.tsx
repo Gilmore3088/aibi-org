@@ -82,8 +82,8 @@ export function WhereYoureGoing({
             style={{
               display: 'grid',
               gridTemplateColumns: 'auto 1fr',
-              alignItems: 'baseline',
-              gap: 14,
+              alignItems: 'center',
+              gap: 16,
               padding: '14px 16px',
               borderRadius: 16,
               background: '#FFFFFF',
@@ -91,16 +91,23 @@ export function WhereYoureGoing({
             }}
           >
             <span
+              aria-label={`Module ${mod.num}`}
               style={{
-                fontSize: 11,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 36,
+                height: 36,
+                borderRadius: 999,
+                background: 'var(--ink)',
+                color: 'var(--gold)',
+                fontSize: 13,
                 fontWeight: 700,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                color: 'var(--slate-500)',
-                whiteSpace: 'nowrap',
+                letterSpacing: 0,
+                flex: 'none',
               }}
             >
-              Module {String(mod.num).padStart(2, '0')}
+              {String(mod.num).padStart(2, '0')}
             </span>
             <div>
               <div
