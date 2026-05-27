@@ -83,7 +83,7 @@ const cormorantSC = Cormorant_SC({
 //   - Split into two configs (Wave A3): hero (400 + italic, preloaded)
 //     covers ledes/body; heavy (500/600/700, no preload) covers section
 //     titles + the few bold serif pulls. Two distinct CSS variables —
-//     tokens.css and tokens-ledger.css chain them in font-family so the
+//     tokens.css chains them in font-family so the
 //     browser resolves heavy weights to newsreaderHeavy's family when
 //     they're requested. (Spec said "both bind --font-newsreader" but a
 //     single variable can't expose two families — see audit trail.)
@@ -113,9 +113,8 @@ const newsreaderHeavy = Newsreader({
 });
 
 // Geist ships its own variable font wrapper — `--font-geist-sans`.
-// We alias it via tokens-ledger.css's `--ledger-sans → var(--font-geist)`.
-// To keep the variable name `--font-geist` (referenced in tokens-ledger.css),
-// we re-export GeistSans's variable under that name on the body class.
+// We re-export GeistSans's variable as `--font-geist` on the body class
+// so legacy consumers (Ledger-era fallback chains) continue to resolve.
 // 2026-05-17 perf: dropped weight 500 — no `font-mono font-medium` usage
 // in src/. Weights 400 (default) and 600 (font-semibold on mono buttons,
 // kicker labels, plan markers) cover every observed usage.
