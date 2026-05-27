@@ -22,6 +22,8 @@ import { GrowthComparison } from '../_components/GrowthComparison';
 import { TransformationCard } from '../_components/TransformationCard';
 import { TOTAL_ANNUAL_HOURS } from '../_lib/activitySavings';
 import type { ReadinessResult } from '@/lib/user-data';
+import { GrowthPreview } from './_local/GrowthPreview';
+import { ShareDelta } from './_local/ShareDelta';
 
 const QUESTIONS_PER_SESSION = 12;
 const STORAGE_KEY = 'foundations-post-assessment-v2';
@@ -216,7 +218,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
         {/* ── Questions phase ─────────────────────────────────────────── */}
         {phase === 'questions' && selectedQuestions.length > 0 && (
           <div>
-            {/* Context header */}
+            {/* Context header + comparison preview */}
             <div className="max-w-2xl mx-auto mb-10">
               <p
                 style={{
@@ -230,17 +232,34 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               >
                 AiBI-Foundation · Measure your growth
               </p>
+              <h1
+                style={{
+                  fontWeight: 700,
+                  fontSize: 'clamp(28px, 3.4vw, 36px)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.022em',
+                  color: 'var(--ink)',
+                  margin: '0 0 14px',
+                }}
+              >
+                You finished the course. Answer the same 12 questions again.
+              </h1>
               <p
                 style={{
                   fontSize: 14,
                   color: 'var(--slate-600)',
                   lineHeight: 1.6,
-                  margin: 0,
+                  margin: '0 0 24px',
                 }}
               >
-                You have completed all 12 modules. Answer these questions honestly —
-                the same way you did before the course. The comparison shows your transformation.
+                Answer honestly — the same way you did before the course. The point
+                is the comparison, not the score.
               </p>
+
+              <GrowthPreview
+                preScore={preData?.score ?? null}
+                preTierLabel={preData?.tierLabel ?? null}
+              />
             </div>
 
             <QuestionCard
@@ -402,6 +421,13 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               postTierLabel={postTier.label}
               postTierColorVar={postTier.colorVar}
               dimensionDeltas={dimensionDeltas}
+            />
+
+            <ShareDelta
+              preScore={preData?.score ?? null}
+              postScore={totalScore}
+              preTierLabel={preData?.tierLabel ?? null}
+              postTierLabel={postTier.label}
             />
           </div>
         )}

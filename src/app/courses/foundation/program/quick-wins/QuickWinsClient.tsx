@@ -18,6 +18,7 @@ import {
   QUICK_WIN_WEEKLY_RUNS as WEEKLY_RUNS,
   QUICK_WINS_FOR_LETTER as WINS_FOR_LETTER,
 } from '../_lib/quickWinsData';
+import { LetterTemplatePreview } from './_local/LetterTemplatePreview';
 
 // ---- Types ----
 
@@ -70,15 +71,6 @@ function quarterlyHours(win: QuickWin): number {
 
 // ---- Shared styles ----
 
-const kickerStyle: CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: 'var(--gold-deep)',
-  margin: 0,
-};
-
 const fieldLabelStyle: CSSProperties = {
   display: 'block',
   fontSize: 11,
@@ -99,14 +91,6 @@ const inputStyle: CSSProperties = {
   color: 'var(--ink)',
   outline: 'none',
   fontFamily: 'inherit',
-};
-
-const statCardStyle: CSSProperties = {
-  background: 'var(--cream-2)',
-  border: '1px solid var(--ink-a10)',
-  borderRadius: 16,
-  padding: 20,
-  boxShadow: 'var(--shadow-soft)',
 };
 
 // ---- Main Component ----
@@ -228,199 +212,262 @@ export function QuickWinsClient() {
         </ol>
       </nav>
 
-      {/* Page header */}
-      <header style={{ marginBottom: 40 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 14,
-            marginBottom: 18,
-          }}
-        >
-          <span style={kickerStyle}>AiBI-Foundation · Value log</span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} aria-hidden="true" />
-        </div>
+      {/* Artifact-first: render the letter template the wins are for */}
+      <LetterTemplatePreview
+        wins={wins.map((w) => ({
+          description: w.description,
+          toolLabel: toolLabel(w.tool),
+          department: w.department,
+          quarterlyHours: quarterlyHours(w),
+        }))}
+        winsForLetter={WINS_FOR_LETTER}
+        totalQuarterlyHours={totalQuarterlyHours}
+      />
 
-        <h1
-          style={{
-            fontWeight: 700,
-            fontSize: 'clamp(36px, 4.6vw, 56px)',
-            lineHeight: 1.05,
-            letterSpacing: '-0.025em',
-            color: 'var(--ink)',
-            margin: '0 0 16px',
-          }}
-        >
-          Quick win tracker
-        </h1>
-
-        <p
-          style={{
-            fontSize: 19,
-            lineHeight: 1.45,
-            color: 'var(--slate-600)',
-            margin: 0,
-            maxWidth: '60ch',
-          }}
-        >
-          Log every workflow you have automated. Each entry builds your professional
-          record and proves the return on your AiBI-Foundation training.
-        </p>
-      </header>
-
-      {/* Stats row */}
+      {/* Compact summary strip — no more 2-card stats block; the letter is the headline */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 16,
-          marginBottom: 40,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px 24px',
+          alignItems: 'baseline',
+          marginBottom: 36,
+          paddingBottom: 18,
+          borderBottom: '1px solid var(--ink-a10)',
         }}
+        aria-label="Logging summary"
       >
-        <div style={statCardStyle} aria-label="Time saved this quarter">
-          <p
-            style={{
-              ...kickerStyle,
-              color: 'var(--slate-500)',
-              marginBottom: 6,
-            }}
-          >
-            Saved this quarter
-          </p>
-          <div
-            style={{
-              fontSize: 36,
-              fontWeight: 700,
-              color: 'var(--ink)',
-              fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {totalQuarterlyHours.toFixed(1)}
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'var(--slate-500)',
+          }}
+        >
+          {wins.length} {wins.length === 1 ? 'win' : 'wins'} logged
+        </span>
+        <span
+          aria-hidden="true"
+          style={{ fontSize: 11, color: 'var(--slate-400)' }}
+        >
+          ·
+        </span>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'var(--slate-500)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {totalQuarterlyHours.toFixed(1)} hrs / quarter saved
+        </span>
+        {winsToGo > 0 && (
+          <>
             <span
-              style={{
-                fontSize: 16,
-                fontWeight: 400,
-                color: 'var(--slate-500)',
-                marginLeft: 6,
-              }}
+              aria-hidden="true"
+              style={{ fontSize: 11, color: 'var(--slate-400)' }}
             >
-              hrs
+              ·
             </span>
-          </div>
-        </div>
-
-        <div style={statCardStyle} aria-label="Quick wins logged">
-          <p
-            style={{
-              ...kickerStyle,
-              color: 'var(--slate-500)',
-              marginBottom: 6,
-            }}
-          >
-            Wins logged
-          </p>
-          <div
-            style={{
-              fontSize: 36,
-              fontWeight: 700,
-              color: 'var(--ink)',
-              fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {wins.length}
-          </div>
-        </div>
-      </div>
-
-      {/* Artifact banner — recommendation letter template */}
-      <div
-        style={{
-          marginBottom: 40,
-          borderLeft: '3px solid var(--gold)',
-          background: 'var(--cream-2)',
-          borderRadius: 16,
-          padding: '18px 20px',
-        }}
-        role="status"
-        aria-live="polite"
-      >
-        <p style={{ ...kickerStyle, marginBottom: 6 }}>Artifact · Recommendation letter</p>
-        {winsToGo === 0 ? (
-          <p
-            style={{
-              fontSize: 15,
-              color: 'var(--ink)',
-              lineHeight: 1.55,
-              margin: 0,
-            }}
-          >
-            You have logged{' '}
             <span
               style={{
-                fontWeight: 700,
-                fontVariantNumeric: 'tabular-nums',
-                color: 'var(--ink)',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
               }}
             >
-              {wins.length}
-            </span>{' '}
-            quick wins. Your <span style={{ fontWeight: 700 }}>recommendation-letter template</span>{' '}
-            is ready — download it from your{' '}
-            <Link
-              href="/courses/foundation/program/certificate"
-              style={{
-                color: 'var(--ink)',
-                textDecoration: 'underline',
-                textUnderlineOffset: 2,
-              }}
-            >
-              certificate page
-            </Link>
-            .
-          </p>
-        ) : (
-          <p
-            style={{
-              fontSize: 15,
-              color: 'var(--ink)',
-              lineHeight: 1.55,
-              margin: 0,
-            }}
-          >
-            Log{' '}
-            <span
-              style={{
-                fontWeight: 700,
-                fontVariantNumeric: 'tabular-nums',
-                color: 'var(--ink)',
-              }}
-            >
-              {winsToGo}
-            </span>{' '}
-            more quick {winsToGo === 1 ? 'win' : 'wins'} and the{' '}
-            <span style={{ fontWeight: 700 }}>recommendation-letter template</span> is yours — a
-            ready-to-edit letter your manager can sign that cites the wins you logged here.
-          </p>
+              {winsToGo} more to fill the template
+            </span>
+          </>
         )}
       </div>
 
-      {/* Log form */}
+      {/* Logged wins list — first so the learner sees what they've already done */}
+      <section aria-labelledby="wins-list-heading" style={{ marginBottom: 48 }}>
+        <h2
+          id="wins-list-heading"
+          style={{
+            fontWeight: 700,
+            fontSize: 22,
+            letterSpacing: '-0.02em',
+            color: 'var(--ink)',
+            margin: '0 0 18px',
+          }}
+        >
+          Your wins
+        </h2>
+
+        {loading && (
+          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
+        )}
+
+        {!loading && wins.length === 0 && (
+          <div
+            style={{
+              border: '1px dashed var(--ink-a15)',
+              borderRadius: 16,
+              padding: '20px 22px',
+              background: 'var(--cream)',
+            }}
+          >
+            <p
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--slate-500)',
+                margin: '0 0 8px',
+              }}
+            >
+              Sample line — what a win looks like
+            </p>
+            <p
+              style={{
+                fontSize: 15,
+                fontWeight: 600,
+                color: 'var(--ink)',
+                margin: '0 0 8px',
+                lineHeight: 1.4,
+              }}
+            >
+              Weekly exception report drafting · 45 min saved each Friday
+            </p>
+            <p
+              style={{
+                fontSize: 13,
+                color: 'var(--slate-500)',
+                margin: 0,
+                lineHeight: 1.55,
+              }}
+            >
+              Use the form below to log your first one.
+            </p>
+          </div>
+        )}
+
+        {!loading && wins.length > 0 && (
+          <ol
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+            }}
+            aria-label="Logged quick wins"
+          >
+            {wins.map((win) => (
+              <li
+                key={win.id}
+                style={{
+                  background: 'var(--cream-2)',
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 16,
+                  padding: '18px 20px',
+                  boxShadow: 'var(--shadow-soft)',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: 16,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: 'var(--ink)',
+                      lineHeight: 1.4,
+                      flex: 1,
+                      margin: 0,
+                    }}
+                  >
+                    {win.description}
+                  </p>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: 'var(--ink)',
+                      fontVariantNumeric: 'tabular-nums',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {minutesToLabel(win.time_saved_minutes)}
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '4px 16px',
+                  }}
+                >
+                  {[
+                    toolLabel(win.tool),
+                    win.skill_name,
+                    win.frequency,
+                    win.department,
+                  ].map((meta, i) => (
+                    <span
+                      key={`${win.id}-meta-${i}`}
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        letterSpacing: '0.16em',
+                        textTransform: 'uppercase',
+                        color: 'var(--slate-500)',
+                      }}
+                    >
+                      {meta}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
+
+      {/* Log form — focused, small, below the list */}
       <section aria-labelledby="log-form-heading" style={{ marginBottom: 56 }}>
         <h2
           id="log-form-heading"
           style={{
             fontWeight: 700,
-            fontSize: 24,
+            fontSize: 22,
             letterSpacing: '-0.02em',
             color: 'var(--ink)',
-            margin: '0 0 24px',
+            margin: '0 0 6px',
           }}
         >
-          Log a new quick win
+          Add a win
         </h2>
+        <p
+          style={{
+            fontSize: 14,
+            color: 'var(--slate-600)',
+            lineHeight: 1.55,
+            margin: '0 0 20px',
+            maxWidth: '60ch',
+          }}
+        >
+          What you automated · what it saved · which tool and skill you used.
+        </p>
 
         {error && (
           <div
@@ -615,121 +662,6 @@ export function QuickWinsClient() {
             {submitting ? 'LOGGING...' : 'LOG QUICK WIN'}
           </button>
         </form>
-      </section>
-
-      {/* Logged wins list */}
-      <section aria-labelledby="wins-list-heading">
-        <h2
-          id="wins-list-heading"
-          style={{
-            fontWeight: 700,
-            fontSize: 24,
-            letterSpacing: '-0.02em',
-            color: 'var(--ink)',
-            margin: '0 0 24px',
-          }}
-        >
-          Your wins
-        </h2>
-
-        {loading && (
-          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
-        )}
-
-        {!loading && wins.length === 0 && (
-          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
-            No quick wins logged yet. Use the form above to add your first one.
-          </p>
-        )}
-
-        {!loading && wins.length > 0 && (
-          <ol
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              margin: 0,
-              padding: 0,
-              listStyle: 'none',
-            }}
-            aria-label="Logged quick wins"
-          >
-            {wins.map((win) => (
-              <li
-                key={win.id}
-                style={{
-                  background: 'var(--cream-2)',
-                  border: '1px solid var(--ink-a10)',
-                  borderRadius: 16,
-                  padding: '18px 20px',
-                  boxShadow: 'var(--shadow-soft)',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between',
-                    gap: 16,
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: 'var(--ink)',
-                      lineHeight: 1.4,
-                      flex: 1,
-                      margin: 0,
-                    }}
-                  >
-                    {win.description}
-                  </p>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: 'var(--ink)',
-                      fontVariantNumeric: 'tabular-nums',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {minutesToLabel(win.time_saved_minutes)}
-                  </span>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: 10,
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '4px 16px',
-                  }}
-                >
-                  {[
-                    toolLabel(win.tool),
-                    win.skill_name,
-                    win.frequency,
-                    win.department,
-                  ].map((meta, i) => (
-                    <span
-                      key={`${win.id}-meta-${i}`}
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        letterSpacing: '0.16em',
-                        textTransform: 'uppercase',
-                        color: 'var(--slate-500)',
-                      }}
-                    >
-                      {meta}
-                    </span>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
       </section>
     </div>
   );

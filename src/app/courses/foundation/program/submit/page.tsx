@@ -3,7 +3,13 @@
 // Server Component: enrollment check + module completion check happen at render time.
 // Delegates interactive form to WorkProductForm (client component).
 //
-// Access rules:
+// Layout (audit §9 redesign — 2026-05-27):
+//   1. SubmissionArtifactHero — the four-item package the learner is submitting,
+//      shown as the artifact (not abstract copy). Sets the promise.
+//   2. Status panel — gate, under-review, approved, or "ready to submit" form.
+//   3. RubricAccordion — quiet, opens to the five reviewer checks.
+//
+// Access rules unchanged:
 //   - Unauthenticated / not enrolled → redirect to /courses/foundation/program/purchase
 //   - Enrolled but not all 12 modules complete → show completion gate message
 //   - Submission pending or under re-review → show "under review" message
@@ -18,12 +24,15 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { WorkProductForm } from '../_components/WorkProductForm';
 import type { WorkSubmission } from '@/types/course';
+import { SubmissionArtifactHero } from './_local/SubmissionArtifactHero';
+import { RubricAccordion } from './_local/RubricAccordion';
 
 export const metadata: Metadata = {
   title: 'Work Product Submission | AiBI-Foundation',
 };
 
 const ALL_MODULES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const REVIEW_TURNAROUND_BUSINESS_DAYS = 5;
 
 function allModulesComplete(completedModules: readonly number[]): boolean {
   return ALL_MODULES.every((m) => completedModules.includes(m));
@@ -44,6 +53,20 @@ const statusPanel = {
   borderRadius: 24,
   padding: '22px 24px',
   boxShadow: 'var(--shadow-soft)',
+};
+
+const inlineCtaInk = {
+  display: 'inline-flex' as const,
+  alignItems: 'center' as const,
+  padding: '10px 18px',
+  borderRadius: 12,
+  background: 'var(--ink)',
+  color: 'var(--cream-2)',
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase' as const,
+  textDecoration: 'none',
 };
 
 export default async function SubmitPage() {
@@ -73,47 +96,12 @@ export default async function SubmitPage() {
   }
 
   const modulesComplete = allModulesComplete(enrollment.completed_modules);
+  const status = submission?.review_status ?? null;
+  const showForm = modulesComplete && (!submission || status === 'failed');
 
   return (
     <CourseShellWrapper crumbs={['Education', 'AiBI-Foundation', 'Work Product']}>
-      <header style={{ marginBottom: 40 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 14,
-            marginBottom: 18,
-          }}
-        >
-          <span style={kicker}>AiBI-Foundation Credential</span>
-          <span style={{ flex: 1, height: 1, background: 'var(--ink-a10)' }} />
-        </div>
-        <h1
-          style={{
-            fontWeight: 700,
-            fontSize: 'clamp(36px, 4.6vw, 56px)',
-            lineHeight: 1.05,
-            letterSpacing: '-0.025em',
-            margin: '0 0 16px',
-            color: 'var(--ink)',
-          }}
-        >
-          Work product submission
-        </h1>
-        <p
-          style={{
-            fontSize: 19,
-            lineHeight: 1.45,
-            color: 'var(--slate-600)',
-            margin: 0,
-            maxWidth: '60ch',
-          }}
-        >
-          Submit your four-item package to earn the AiBI-Foundation credential. A
-          reviewer will assess your submission against the five-dimension rubric
-          within five business days.
-        </p>
-      </header>
+      <SubmissionArtifactHero />
 
       <article>
         {!modulesComplete && (
@@ -129,31 +117,16 @@ export default async function SubmitPage() {
             >
               Complete all 12 modules before submitting your work product.
             </p>
-            <a
-              href="/courses/foundation/program"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                padding: '10px 18px',
-                borderRadius: 12,
-                background: 'var(--ink)',
-                color: 'var(--cream-2)',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-              }}
-            >
+            <a href="/courses/foundation/program" style={inlineCtaInk}>
               Return to course
             </a>
           </div>
         )}
 
         {modulesComplete && submission &&
-          (submission.review_status === 'pending' || submission.review_status === 'resubmitted') && (
+          (status === 'pending' || status === 'resubmitted') && (
           <div style={statusPanel}>
-            <p style={{ ...kicker, margin: '0 0 8px' }}>Under review</p>
+            <p style={{ ...kicker, margin: '0 0 8px' }}>Your work is in review</p>
             <p
               style={{
                 fontSize: 16,
@@ -162,7 +135,8 @@ export default async function SubmitPage() {
                 lineHeight: 1.55,
               }}
             >
-              Your submission is under review.
+              Typical turnaround is {REVIEW_TURNAROUND_BUSINESS_DAYS} business days.
+              You will receive an email when your score is issued — no need to refresh this page.
             </p>
             <p
               style={{
@@ -178,12 +152,12 @@ export default async function SubmitPage() {
                 month: 'long',
                 day: 'numeric',
               })}
-              . You will receive feedback within five business days.
+              .
             </p>
           </div>
         )}
 
-        {modulesComplete && submission && submission.review_status === 'approved' && (
+        {modulesComplete && submission && status === 'approved' && (
           <div
             style={{
               ...statusPanel,
@@ -212,17 +186,9 @@ export default async function SubmitPage() {
             <a
               href="/courses/foundation/program/certificate"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                padding: '10px 18px',
-                borderRadius: 12,
+                ...inlineCtaInk,
                 background: 'var(--emerald-700)',
                 color: 'var(--cream)',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
               }}
             >
               View certificate
@@ -230,13 +196,17 @@ export default async function SubmitPage() {
           </div>
         )}
 
-        {modulesComplete && (!submission || submission.review_status === 'failed') && (
-          <WorkProductForm
-            enrollmentId={enrollment.id}
-            isResubmission={submission?.review_status === 'failed'}
-            reviewFeedback={submission?.review_feedback ?? null}
-          />
+        {showForm && (
+          <div style={{ marginTop: 8 }}>
+            <WorkProductForm
+              enrollmentId={enrollment.id}
+              isResubmission={status === 'failed'}
+              reviewFeedback={submission?.review_feedback ?? null}
+            />
+          </div>
         )}
+
+        <RubricAccordion />
       </article>
     </CourseShellWrapper>
   );
