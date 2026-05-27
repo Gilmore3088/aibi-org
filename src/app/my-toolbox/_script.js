@@ -292,7 +292,7 @@ const dbg = document.getElementById('dbg');
           { n:'02', t:'Sources',     d:'Income streams, collateral, secondary repayment.' },
           { n:'03', t:'Risk',        d:'Concentrations, leverage, sensitivity, conditions.' },
           { n:'04', t:'Recommend',   d:'Structure, covenants, monitoring, fallback action.' },
-        ].map(p => `<div style="background:var(--terra-soft);border:1px solid var(--ledger-accent-a40);padding:12px 14px"><span style="font-family:var(--serif);font-style:italic;font-size:20px;color:var(--terra);font-weight:500;line-height:1">${p.n}</span><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-top:4px">${p.t}</div><div style="font-family:var(--serif);font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:4px">${p.d}</div></div>`).join('')}
+        ].map(p => `<div style="background:var(--terra-soft);border:1px solid rgba(200,162,74,0.40);padding:12px 14px"><span style="font-family:var(--serif);font-style:italic;font-size:20px;color:var(--terra);font-weight:500;line-height:1">${p.n}</span><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-top:4px">${p.t}</div><div style="font-family:var(--serif);font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:4px">${p.d}</div></div>`).join('')}
       </div>`,
       footer: () => footerHTML('Human writes each section · AI compiles · reviewer rubric attached', 'Saved from Mod 05'),
     },
@@ -360,7 +360,7 @@ const dbg = document.getElementById('dbg');
           { roman:'i',   pass:'Facts',  status:'✓', clr:'var(--green)', detail:'All quantitative claims trace to a source span.' },
           { roman:'ii',  pass:'Tense',  status:'✓', clr:'var(--green)', detail:'Past tense + third person throughout.' },
           { roman:'iii', pass:'Hedges', status:'3', clr:'var(--terra)', detail:'3 hedge words found — surfaced for fix.' },
-        ].map(p => `<div style="display:grid;grid-template-columns:32px 1fr 50px;gap:14px;align-items:center;padding:12px 14px;background:${p.clr === 'var(--green)' ? 'rgba(31,138,91,0.06)' : 'var(--ledger-accent-a08)'};border:1px solid var(--rule)">
+        ].map(p => `<div style="display:grid;grid-template-columns:32px 1fr 50px;gap:14px;align-items:center;padding:12px 14px;background:${p.clr === 'var(--green)' ? 'rgba(31,138,91,0.06)' : 'rgba(200,162,74,0.08)'};border:1px solid var(--rule)">
           <span style="font-family:var(--serif);font-style:italic;font-size:24px;color:${p.clr};font-weight:500;line-height:1">${p.roman}</span>
           <div><div style="font-family:var(--serif);font-size:15px;font-weight:500;color:var(--ink)">Pass ${p.pass}</div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">${p.detail}</div></div>
           <span style="font-family:var(--serif);font-style:italic;font-size:22px;color:${p.clr};font-weight:500;text-align:right">${p.status}</span>
