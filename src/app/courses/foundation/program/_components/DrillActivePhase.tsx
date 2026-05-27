@@ -2,10 +2,12 @@
 
 // DrillActivePhase — The timed scenario UI shown during an active ClassificationDrill.
 // Renders the timer bar, scenario text, and classification radio options.
+// Ported to mockup tokens 2026-05-27.
 
 import type { Activity } from '@content/courses/foundation-program';
 
 const SCENARIO_TIME_SECONDS = 20;
+const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 interface DrillActivePhaseProps {
   readonly activity: Activity;
@@ -18,6 +20,15 @@ interface DrillActivePhaseProps {
   readonly onKeyFocus: () => void;
   readonly onKeyBlur: () => void;
 }
+
+const eyebrowStyle: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  margin: 0,
+};
 
 export function DrillActivePhase({
   activity,
@@ -32,29 +43,59 @@ export function DrillActivePhase({
 }: DrillActivePhaseProps) {
   const timerPct = (timeLeft / SCENARIO_TIME_SECONDS) * 100;
   const isUrgent = timeLeft <= 5;
-  const timerColorStyle = isUrgent ? 'var(--ledger-accent)' : 'var(--ledger-accent-2)';
+  // Urgent: gold accent; normal: ink — restrained two-tone, single accent for emphasis.
+  const timerColor = isUrgent ? 'var(--gold-deep)' : 'var(--ink)';
+  const timerFill = isUrgent ? 'var(--gold)' : 'var(--ink)';
+
+  const options = activity.fields[0]?.options ?? [];
 
   return (
     <div>
       {/* Timer bar */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-1">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)]">
+      <div style={{ marginBottom: 16 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 6,
+          }}
+        >
+          <p style={{ ...eyebrowStyle, color: 'var(--slate-500)' }}>
             Scenario {currentIndex + 1} of {totalScenarios}
           </p>
           <p
-            className="font-mono text-sm font-bold"
-            style={{ color: timerColorStyle }}
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+              color: timerColor,
+              margin: 0,
+            }}
             aria-live="polite"
             aria-atomic="true"
           >
-            {isUrgent ? `Hurry! ${timeLeft}s remaining` : `Time remaining: ${timeLeft}s`}
+            {isUrgent ? `Hurry — ${timeLeft}s remaining` : `Time remaining: ${timeLeft}s`}
           </p>
         </div>
-        <div className="w-full h-1.5 bg-[color:var(--ledger-parch)] rounded-full overflow-hidden">
+        <div
+          style={{
+            width: '100%',
+            height: 6,
+            background: 'var(--ink-a10)',
+            borderRadius: 999,
+            overflow: 'hidden',
+          }}
+        >
           <div
-            className="h-full rounded-full transition-all duration-1000"
-            style={{ width: `${timerPct}%`, backgroundColor: timerColorStyle }}
+            style={{
+              height: '100%',
+              width: `${timerPct}%`,
+              background: timerFill,
+              borderRadius: 999,
+              transition: 'width 1s linear, background var(--t-fast) var(--ease)',
+            }}
             role="progressbar"
             aria-valuenow={timeLeft}
             aria-valuemin={0}
@@ -65,44 +106,80 @@ export function DrillActivePhase({
       </div>
 
       {/* Scenario text */}
-      <div className="mb-6 p-5 bg-[color:var(--ledger-paper)] rounded-sm border border-[color:var(--ledger-parch)]">
-        <p className="font-sans text-base text-[color:var(--ledger-ink)] leading-relaxed">
+      <div
+        style={{
+          marginBottom: 24,
+          padding: 20,
+          background: 'var(--cream-2)',
+          borderRadius: 16,
+          border: '1px solid var(--ink-a10)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 16,
+            color: 'var(--ink)',
+            lineHeight: 1.6,
+            margin: 0,
+          }}
+        >
           {scenarioText}
         </p>
       </div>
 
       {/* Classification options */}
-      <fieldset className="border-0 m-0 p-0">
-        <legend className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-3">
+      <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
+        <legend style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 12 }}>
           Classify this scenario
           <span className="sr-only"> — Press 1, 2, or 3 to select</span>
         </legend>
-        <div className="flex flex-col gap-3">
-          {(activity.fields[0]?.options ?? []).map((opt) => (
-            <label
-              key={opt.value}
-              className={[
-                'flex items-center gap-3 cursor-pointer px-4 py-3 rounded-sm border transition-colors',
-                currentSelection === opt.value
-                  ? 'border-[color:var(--ledger-accent)] bg-[color:var(--ledger-accent)]/5'
-                  : 'border-[color:var(--ledger-parch)] hover:border-[color:var(--ledger-accent)]/40',
-              ].join(' ')}
-            >
-              <input
-                type="radio"
-                name="drill-response"
-                value={opt.value}
-                checked={currentSelection === opt.value}
-                onChange={() => onSelection(opt.value)}
-                onFocus={onKeyFocus}
-                onBlur={onKeyBlur}
-                className="w-4 h-4 accent-[color:var(--ledger-accent)] focus:ring-2 focus:ring-[color:var(--ledger-accent)]"
-              />
-              <span className="text-sm font-sans text-[color:var(--ledger-ink)]">
-                {opt.label}
-              </span>
-            </label>
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {options.map((opt) => {
+            const selected = currentSelection === opt.value;
+            return (
+              <label
+                key={opt.value}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  cursor: 'pointer',
+                  padding: '14px 16px',
+                  borderRadius: 12,
+                  border: '1px solid',
+                  borderColor: selected ? 'var(--gold)' : 'var(--ink-a10)',
+                  background: selected ? 'var(--gold-a10)' : 'var(--cream)',
+                  transition:
+                    'background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
+                }}
+              >
+                <input
+                  type="radio"
+                  name="drill-response"
+                  value={opt.value}
+                  checked={selected}
+                  onChange={() => onSelection(opt.value)}
+                  onFocus={onKeyFocus}
+                  onBlur={onKeyBlur}
+                  style={{
+                    width: 16,
+                    height: 16,
+                    accentColor: 'var(--gold)',
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: INTER_STACK,
+                    fontSize: 14,
+                    color: 'var(--ink)',
+                  }}
+                >
+                  {opt.label}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
     </div>

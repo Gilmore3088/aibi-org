@@ -6,6 +6,8 @@
 // A11Y-01: keyboard accessible radio groups; timer does not auto-advance mid-keyboard-navigation.
 //          Keyboard shortcuts 1/2/3 available during active drill (announced via sr-only hint).
 // A11Y-02: text labels for all correctness indicators (not color-only), timer urgency announced by text.
+// Ported to mockup tokens 2026-05-27: ink/cream/gold/slate, Inter only, sentence-case headings,
+// UPPER CASE button labels, no italics.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Activity } from '@content/courses/foundation-program';
@@ -38,6 +40,36 @@ type DrillPhase = 'ready' | 'active' | 'review' | 'submitted';
 
 const SCENARIO_TIME_SECONDS = 20;
 const ADVANCE_DELAY_MS = 300;
+
+const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
+
+const eyebrowStyle: React.CSSProperties = {
+  fontFamily: INTER_STACK,
+  fontSize: 10,
+  fontWeight: 700,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: 0,
+};
+
+const ctaButtonStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '12px 28px',
+  background: 'var(--ink)',
+  color: 'var(--cream)',
+  border: '1px solid var(--ink)',
+  borderRadius: 12,
+  fontFamily: INTER_STACK,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  cursor: 'pointer',
+  transition: 'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease)',
+};
 
 export function ClassificationDrill({
   activity,
@@ -177,42 +209,104 @@ export function ClassificationDrill({
 
   return (
     <div
-      className="border border-[color:var(--ledger-parch)] border-l-4 rounded-sm p-6 bg-white/40 mb-8"
-      style={{ borderLeftColor: 'var(--ledger-accent)' }}
+      style={{
+        border: '1px solid var(--ink-a10)',
+        borderLeft: '4px solid var(--gold)',
+        borderRadius: 16,
+        padding: 24,
+        background: 'var(--cream)',
+        boxShadow: 'var(--shadow-soft)',
+        marginBottom: 32,
+      }}
     >
       {/* Activity header */}
-      <div className="mb-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent)] mb-1">
+      <div style={{ marginBottom: 20 }}>
+        <p style={{ ...eyebrowStyle, marginBottom: 6 }}>
           Activity {activity.id}
         </p>
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-xl font-bold text-[color:var(--ledger-ink)] mb-2">{activity.title}</h3>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+          <h3
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 20,
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--ink)',
+              margin: '0 0 8px 0',
+              lineHeight: 1.3,
+            }}
+          >
+            {activity.title}
+          </h3>
           {phase === 'submitted' && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--ledger-accent-2)]/10 border border-[color:var(--ledger-accent-2)] rounded-sm font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)]">
+            <span
+              style={{
+                flexShrink: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '4px 10px',
+                background: 'var(--emerald-50)',
+                border: '1px solid var(--emerald-700)',
+                borderRadius: 999,
+                fontFamily: INTER_STACK,
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--emerald-800)',
+              }}
+            >
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--ledger-muted)] leading-relaxed">{activity.description}</p>
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 14,
+            color: 'var(--slate-600)',
+            lineHeight: 1.6,
+            margin: 0,
+          }}
+        >
+          {activity.description}
+        </p>
       </div>
 
       {phase === 'ready' && (
-        <div className="text-center py-8">
-          <p className="font-sans text-sm text-[color:var(--ledger-muted)] mb-2">
+        <div style={{ textAlign: 'center', padding: '32px 0' }}>
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 14,
+              color: 'var(--slate-600)',
+              margin: '0 0 8px 0',
+            }}
+          >
             {totalScenarios} scenarios · 20 seconds each · score shown at end
           </p>
-          <p className="font-sans text-sm text-[color:var(--ledger-muted)] mb-4">
+          <p
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 14,
+              color: 'var(--slate-600)',
+              margin: '0 0 16px 0',
+            }}
+          >
             Classify each scenario as Tier 1 (Public), Tier 2 (Internal Only), or Tier 3 (Highly Restricted).
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-muted)] mb-8">
+          <p style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 32 }}>
             Keyboard shortcut: press 1, 2, or 3 to select during the drill
           </p>
           <button
             type="button"
             onClick={handleStartDrill}
-            className="px-8 py-3 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+            style={ctaButtonStyle}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--ink-2)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--ink)'; }}
           >
-            Start Drill
+            START DRILL
           </button>
         </div>
       )}
@@ -240,18 +334,43 @@ export function ClassificationDrill({
         >
           <DrillReadOnlyReview scenarios={scenarios} answers={answers} score={score} />
           {serverError && (
-            <p className="mt-4 text-sm font-sans text-[color:var(--ledger-weak)] bg-[color:var(--ledger-weak)]/5 border border-[color:var(--ledger-weak)]/20 rounded-sm px-3 py-2" role="alert">
+            <p
+              style={{
+                marginTop: 16,
+                fontFamily: INTER_STACK,
+                fontSize: 14,
+                color: '#B91C1C',
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                borderRadius: 12,
+                padding: '8px 14px',
+              }}
+              role="alert"
+            >
               {serverError}
             </p>
           )}
-          <div className="mt-6 pt-4 border-t border-[color:var(--ledger-parch)]">
+          <div
+            style={{
+              marginTop: 24,
+              paddingTop: 16,
+              borderTop: '1px solid var(--ink-a10)',
+            }}
+          >
             <button
               type="button"
               onClick={handleSubmitDrill}
               disabled={submitting}
-              className="px-6 py-2.5 bg-[color:var(--ledger-accent)] hover:bg-[color:var(--ledger-accent-light)] disabled:bg-[color:var(--ledger-parch)] disabled:text-[color:var(--ledger-soft)] text-[color:var(--ledger-bg)] text-[11px] font-mono uppercase tracking-widest rounded-sm transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--ledger-accent)] focus:ring-offset-2"
+              style={{
+                ...ctaButtonStyle,
+                padding: '10px 24px',
+                opacity: submitting ? 0.55 : 1,
+                cursor: submitting ? 'not-allowed' : 'pointer',
+              }}
+              onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--ink-2)'; }}
+              onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--ink)'; }}
             >
-              {submitting ? 'Submitting…' : 'Submit Results'}
+              {submitting ? 'SUBMITTING…' : 'SUBMIT RESULTS'}
             </button>
           </div>
         </div>
@@ -264,7 +383,14 @@ export function ClassificationDrill({
             answers={existingAnswers}
             score={existingScore ?? existingAnswers.filter((a) => a.selected === a.correct).length}
           />
-          <p className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ledger-accent-2)] text-center">
+          <p
+            style={{
+              ...eyebrowStyle,
+              marginTop: 24,
+              color: 'var(--emerald-700)',
+              textAlign: 'center',
+            }}
+          >
             Drill results saved
           </p>
         </div>
