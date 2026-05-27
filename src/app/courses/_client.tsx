@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -11,7 +11,7 @@ import {
   CtaBand,
 } from '@/components/mockup';
 
-// ---------- Icons ----------
+// ---------- Icons (inline SVG, no lucide-react dep) ----------
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -27,167 +27,125 @@ const sw = (p: IconProps) => ({
   'aria-hidden': true,
 });
 
-const LayersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>);
-const LayersOnlyIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M22 10v6M2 10l10-5 10 5-10 5z" /></svg>);
+const GradCapIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M22 10L12 5 2 10l10 5 10-5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>);
+const BookIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>);
 const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>);
-const RectIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 12h4M14 12h4" /></svg>);
+const WorkflowIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="15" y="15" width="6" height="6" rx="1" /><path d="M9 6h3a3 3 0 0 1 3 3v3" /></svg>);
 const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
-const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
-const StackIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="22 12 12 17 2 12" /><polygon points="12 2 22 7 12 12 2 7" /></svg>);
-const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
-const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
-const PlayIcon = (p: IconProps) => (<svg {...sw(p)}><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none" /></svg>);
+const SparklesIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z" /><path d="M5 17l.7 2.3L8 20l-2.3.7L5 23l-.7-2.3L2 20l2.3-.7z" /></svg>);
+const ClipboardIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="8" y="3" width="8" height="4" rx="1" /><path d="M16 5h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2" /><polyline points="9 14 11 16 15 12" /></svg>);
+const PlayCircleIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></svg>);
 const FlaskIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M10 2v7.31" /><path d="M14 9.3V2" /><path d="M8.5 2h7" /><path d="M14 9.3a6.5 6.5 0 1 1-4 0" /></svg>);
+const Layers3Icon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 2L2 7l10 5 10-5z" /><path d="M2 12l10 5 10-5" /><path d="M2 17l10 5 10-5" /></svg>);
+const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
+const CheckCircleIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>);
+const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
 
-// ---------- Artifact reel (auto-cycling) ----------
+// ---------- Modules ----------
 
-type Artifact = {
+type ModuleData = {
   title: string;
-  kicker: string;
+  lessons: string;
+  time: string;
+  desc: string;
+  artifact: string;
   icon: (p: IconProps) => JSX.Element;
-  inputLabel: string;
-  input: string;
-  outputLabel: string;
-  output: string;
-  meta: string;
 };
 
-const ARTIFACTS: Artifact[] = [
-  {
-    title: 'Prompt Card',
-    kicker: 'Output of Module 2 · Prompt Foundations',
-    icon: ChatIcon,
-    inputLabel: 'You write',
-    input: 'A weak prompt: "Help me with this procedure."',
-    outputLabel: 'You leave with',
-    output: 'A reviewed prompt with role, task, constraints, and review checklist — ready to reuse.',
-    meta: 'Saved to your Toolbox',
-  },
-  {
-    title: 'Saved Skill',
-    kicker: 'Output of Module 3 · Skills',
-    icon: RectIcon,
-    inputLabel: 'You promote',
-    input: 'A working prompt you ran three times with the same banker context.',
-    outputLabel: 'You leave with',
-    output: 'A named, tagged Skill with run history — promote a prompt into a team asset.',
-    meta: 'Owner attached · Versioned',
-  },
-  {
-    title: 'Workflow SOP',
-    kicker: 'Output of Module 4 · Workflows',
-    icon: FileIcon,
-    inputLabel: 'You document',
-    input: 'A real banking workflow that uses AI somewhere in the chain.',
-    outputLabel: 'You leave with',
-    output: 'Input, output, retention, and review documented — the unit examiners actually read.',
-    meta: 'Examiner-readable format',
-  },
-  {
-    title: 'Review Checklist',
-    kicker: 'Output of every module',
-    icon: CheckIcon,
-    inputLabel: 'You attach',
-    input: 'A named reviewer to each AI-assisted artifact before it goes into real work.',
-    outputLabel: 'You leave with',
-    output: 'A human-approval log on every output — what got reviewed, by whom, when.',
-    meta: 'Audit-trail ready',
-  },
-];
-
-// ---------- Inside one lesson (auto-cycling loop) ----------
-
-type LessonStep = { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element };
-const LESSON_STEPS: LessonStep[] = [
-  { step: 'watch', title: 'Watch', body: '5–8 minute concept video. Why the technique works, where it fails.', icon: PlayIcon },
-  { step: 'practice', title: 'Practice', body: 'Run a sandbox scenario with realistic synthetic banking data.', icon: FlaskIcon },
-  { step: 'build', title: 'Build', body: 'Save the working output as a reusable asset to your Toolbox.', icon: RectIcon },
-  { step: 'review', title: 'Review', body: 'Run the human-approval checklist before the artifact goes into real work.', icon: CheckIcon },
-];
-
-const ARTIFACT_MS = 5000;
-const LESSON_STEP_MS = 1500;
-
-// ---------- Module data ----------
-
-type ModuleIcon = typeof LayersOnlyIcon;
-
-const MODULES: { title: string; desc: string; activity: string; artifact: string; icon: ModuleIcon; meta: string }[] = [
+const MODULES: ModuleData[] = [
   {
     title: 'AI Landscape',
-    desc: "Models, tools, limits, and fit. What's available, what it does well, where it fails.",
-    activity: 'Map three AI tools to a banking task and rate fit/risk.',
-    artifact: 'AI tool-fit decision sheet (saved to your Pack).',
-    icon: LayersOnlyIcon,
-    meta: '6 lessons · 50 min',
+    lessons: '6 lessons',
+    time: '50 min',
+    desc: 'Understand models, tools, limits, and where AI fits inside a bank or credit union.',
+    artifact: 'Tool Selection Card',
+    icon: BookIcon,
   },
   {
     title: 'Prompt Foundations',
-    desc: 'Clear instructions with built-in review standards. The way bankers should write to a model.',
-    activity: 'Rewrite a vague prompt three times until the output passes the review checklist.',
-    artifact: 'Reviewed prompt template (saved to your Pack).',
+    lessons: '8 lessons',
+    time: '75 min',
+    desc: 'Learn one best-practice prompt structure for banking work: Role, Task, Context, Constraints, Output, and Review.',
+    artifact: 'Reviewed Prompt Card',
     icon: ChatIcon,
-    meta: '8 lessons · 75 min',
   },
   {
     title: 'Skills',
-    desc: 'Turn prompts into repeatable assets. Saved, named, tagged, owned.',
-    activity: 'Promote two working prompts into named, tagged Skills with run histories.',
-    artifact: 'Two saved Skills with metadata + owner.',
-    icon: RectIcon,
-    meta: '7 lessons · 80 min',
+    lessons: '7 lessons',
+    time: '80 min',
+    desc: 'Turn useful prompts into named, tagged, versioned skills with allowed inputs, guardrails, and output formats.',
+    artifact: 'Reusable Skill Template',
+    icon: WorkflowIcon,
   },
   {
     title: 'Workflows',
-    desc: 'Document input, output, review, and retention. The unit examiners actually look at.',
-    activity: 'Document a real banking workflow as an SOP with retention + review attached.',
-    artifact: 'Workbench Pack workflow SOP (the unit examiners look at).',
+    lessons: '9 lessons',
+    time: '90 min',
+    desc: 'Map where AI fits into real work: trigger, input, AI draft, human review, approval, storage, and reuse.',
+    artifact: 'Mapped Workflow SOP',
     icon: FileIcon,
-    meta: '9 lessons · 90 min · Pack lab',
   },
   {
     title: 'Agents',
-    desc: "Triggers, controls, and escalation. Where automation is appropriate and where it isn't.",
-    activity: 'Decide for three scenarios whether to ship an agent or keep it human-in-the-loop.',
-    artifact: 'Agent fit/risk worksheet (kept in your Pack).',
-    icon: StarIcon,
-    meta: '6 lessons · 70 min',
+    lessons: '6 lessons',
+    time: '70 min',
+    desc: 'Introduce agentic workflows by watching a task move from trigger to draft output, review checkpoint, and completion log.',
+    artifact: 'Agent Task Map',
+    icon: SparklesIcon,
   },
+];
+
+const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
+  {
+    title: 'Prompt Card',
+    desc: 'A reusable prompt with role, task, context, constraints, output format, and review standard.',
+    icon: ChatIcon,
+  },
+  {
+    title: 'Saved Skill',
+    desc: 'A tested prompt promoted into a named, tagged, versioned asset for repeat use.',
+    icon: WorkflowIcon,
+  },
+  {
+    title: 'Workflow SOP',
+    desc: 'A reviewable workflow packet covering tool, data, output, reviewer, approval, and retention.',
+    icon: FileIcon,
+  },
+  {
+    title: 'Review Checklist',
+    desc: 'A human approval checklist for accuracy, data handling, escalation, and final use.',
+    icon: ClipboardIcon,
+  },
+];
+
+const LESSON_FLOW: { step: string; title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
+  { step: '01', title: 'Watch', desc: 'Short concept lesson with banking-specific examples.', icon: PlayCircleIcon },
+  { step: '02', title: 'Practice', desc: 'Run a sandbox scenario with safe sample data.', icon: FlaskIcon },
+  { step: '03', title: 'Build', desc: 'Create a reusable work product.', icon: Layers3Icon },
+  { step: '04', title: 'Review', desc: 'Apply the human approval checklist.', icon: ShieldIcon },
+];
+
+const PRICING_BULLETS = [
+  'Self-paced course',
+  'Sandbox practice',
+  'Toolbox assets',
+  'Three reviewed artifacts',
+  'Completion credential',
+  'Lifetime access',
 ];
 
 // ---------- Page ----------
 
 export default function CoursesIndexPage() {
-  const [active, setActive] = useState(0);
-  const m = MODULES[active];
-  const ActiveIcon = m.icon;
-
-  // Artifact reel — auto-cycle every 5s through ARTIFACTS, hover pauses
-  const [artIdx, setArtIdx] = useState(0);
-  const [artPaused, setArtPaused] = useState(false);
-  useEffect(() => {
-    if (artPaused) return;
-    const t = setTimeout(() => setArtIdx((i) => (i + 1) % ARTIFACTS.length), ARTIFACT_MS);
-    return () => clearTimeout(t);
-  }, [artIdx, artPaused]);
-  const art = ARTIFACTS[artIdx];
-  const ArtIcon = art.icon;
-
-  // Lesson loop — each of Watch/Practice/Build/Review lights up for 1.5s
-  const [lessonIdx, setLessonIdx] = useState(0);
-  const [lessonPaused, setLessonPaused] = useState(false);
-  useEffect(() => {
-    if (lessonPaused) return;
-    const t = setTimeout(() => setLessonIdx((i) => (i + 1) % LESSON_STEPS.length), LESSON_STEP_MS);
-    return () => clearTimeout(t);
-  }, [lessonIdx, lessonPaused]);
-
-  // Curriculum module expand — click a module to reveal its artifact inline
-  const [openMod, setOpenMod] = useState<number | null>(null);
+  const [activeModule, setActiveModule] = useState<ModuleData>(MODULES[1]);
+  const ActiveIcon = activeModule.icon;
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/courses" cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }} />
+      <SiteHeader
+        activePath="/courses"
+        cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }}
+      />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -197,20 +155,20 @@ export default function CoursesIndexPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<LayersIcon className="mk-ic" />}>
-              AiBI-Foundation · $295 · Self-paced
+            <EyebrowChip icon={<GradCapIcon className="mk-ic" />}>
+              AiBI-Foundation · self-paced
             </EyebrowChip>
             <h1>Learn AI by building reviewed banking workflows.</h1>
             <p className="mk-lede">
-              A self-paced course for bankers who need practical AI skills, safe practice, and reusable
-              work products — not generic AI theory.
+              A hands-on course for bankers who need safe practice, reusable work products, and a
+              credential — not generic AI theory.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
                 View curriculum <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#what-you-build">
-                See what learners build
+              <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
+                Enroll · $295
               </Button>
             </div>
             <p className="mk-hero-foot">
@@ -222,236 +180,396 @@ export default function CoursesIndexPage() {
             </p>
           </div>
 
-          <div className="mk-cmp">
-            <div className="mk-cmp-top">
-              <div>
-                <div className="mk-cmp-k">Course Preview</div>
-                <div className="mk-cmp-t">Prompt → Skill → Workflow</div>
-              </div>
-              <div className="mk-cmp-price">$295</div>
-            </div>
-            <div className="mk-cmp-grid">
-              <div className="mk-cmp-list">
-                <div className="mk-cmp-list-k">Learning Path</div>
-                {MODULES.map((mod, i) => {
-                  const Icon = mod.icon;
-                  return (
-                    <button
-                      key={mod.title}
-                      type="button"
-                      onClick={() => setActive(i)}
-                      className={`mk-cmp-mod${active === i ? ' is-active' : ''}`}
-                    >
-                      <span className="mk-cmp-icon">
-                        <Icon size={20} />
-                      </span>
-                      <div>
-                        <div className="mk-cmp-meta">Module {i + 1}</div>
-                        <div className="mk-cmp-name">{mod.title}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mk-cmp-detail">
-                <span className="mk-cmp-icon">
-                  <ActiveIcon size={24} />
-                </span>
-                <div className="mk-cmp-k">Selected · {m.meta}</div>
-                <h3>{m.title}</h3>
-                <p className="mk-cmp-desc">{m.desc}</p>
-                <div className="mk-cmp-info">
-                  <div className="mk-cmp-k">Practice activity</div>
-                  <div className="mk-cmp-v">{m.activity}</div>
-                </div>
-                <div className="mk-cmp-info mk-line">
-                  <div className="mk-cmp-k">Learner leaves with</div>
-                  <div className="mk-cmp-v">{m.artifact}</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CoursePreview
+            activeModule={activeModule}
+            setActiveModule={setActiveModule}
+            ActiveIcon={ActiveIcon}
+          />
         </div>
       </section>
 
-      {/* ARTIFACT REEL — auto-cycling */}
+      {/* WHAT LEARNERS BUILD — 4 cards */}
       <Section variant="std" surface="white">
-        <div id="what-you-build" />
         <SectionHead
-          kicker="What you build"
-          heading={<>Four artifacts. One Toolbox.</>}
+          kicker="What learners build"
+          heading={<>Four artifacts. One completion packet.</>}
+          lede={
+            <>
+              Every module connects to a practical work product the learner can review, save, and
+              reuse.
+            </>
+          }
         />
-        <div
-          className="mk-reel"
-          onMouseEnter={() => setArtPaused(true)}
-          onMouseLeave={() => setArtPaused(false)}
-        >
-          <div className="mk-reel-dots">
-            {ARTIFACTS.map((a, i) => (
-              <button
-                key={a.title}
-                type="button"
-                onClick={() => setArtIdx(i)}
-                className={`mk-reel-dot${i === artIdx ? ' is-active' : ''}`}
-                aria-label={`Show ${a.title}`}
-              />
-            ))}
-          </div>
-
-          <div key={artIdx} className="mk-reel-card is-animated">
-            <div className="mk-reel-head">
-              <span className="mk-pic-ink-gold">
-                <ArtIcon size={22} />
-              </span>
-              <div>
-                <div className="mk-k">{art.kicker}</div>
+        <div className="mk-build4">
+          {ARTIFACTS.map((art) => {
+            const Icon = art.icon;
+            return (
+              <div key={art.title} className="mk-build-card">
+                <span className="mk-pic-ink-gold">
+                  <Icon size={22} />
+                </span>
                 <h3>{art.title}</h3>
+                <p>{art.desc}</p>
               </div>
-            </div>
-            <div className="mk-reel-flow">
-              <div className="mk-reel-step">
-                <div className="mk-k">{art.inputLabel}</div>
-                <div className="mk-reel-text">{art.input}</div>
-              </div>
-              <div className="mk-reel-arrow" aria-hidden="true">→</div>
-              <div className="mk-reel-step mk-reel-step-out">
-                <div className="mk-k">{art.outputLabel}</div>
-                <div className="mk-reel-text">{art.output}</div>
-                <div className="mk-reel-meta">
-                  <CheckIcon size={14} /> {art.meta}
-                </div>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </Section>
 
-      {/* LESSON LOOP — auto-cycling */}
+      {/* INSIDE ONE LESSON — 4-step row */}
       <Section variant="std">
         <SectionHead
           kicker="Inside one lesson"
           heading={<>Watch → Practice → Build → Review.</>}
+          lede={
+            <>
+              The course experience makes the learning model obvious before someone enrolls.
+            </>
+          }
         />
-        <div
-          className="mk-loop"
-          onMouseEnter={() => setLessonPaused(true)}
-          onMouseLeave={() => setLessonPaused(false)}
-        >
-          <div className="mk-loop-track">
-            <div
-              className="mk-loop-fill"
-              style={{ width: `${((lessonIdx + 1) / LESSON_STEPS.length) * 100}%` }}
-            />
-          </div>
-          <div className="mk-loop-steps">
-            {LESSON_STEPS.map(({ step, title, body, icon: Icon }, i) => {
-              const state = i === lessonIdx ? 'is-active' : i < lessonIdx ? 'is-done' : '';
-              return (
-                <div key={step} className={`mk-loop-step ${state}`}>
-                  <span className="mk-pic">
-                    <Icon size={20} />
-                  </span>
-                  <div className="mk-loop-name">{title}</div>
-                  <p>{body}</p>
-                </div>
-              );
-            })}
-          </div>
+        <div className="mk-flow4">
+          {LESSON_FLOW.map(({ step, title, desc, icon: Icon }) => (
+            <div key={step} className="mk-flow4-card">
+              <div className="mk-flow4-top">
+                <span className="mk-pic-ink-gold">
+                  <Icon size={20} />
+                </span>
+                <span className="mk-flow4-step">{step}</span>
+              </div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </div>
+          ))}
         </div>
       </Section>
 
-      {/* CURRICULUM — tight, click to expand */}
+      {/* CURRICULUM — 5 module cards */}
       <Section variant="std" surface="white">
         <div id="curriculum" />
         <SectionHead
-          kicker="Curriculum"
-          heading={<>Five modules. Tap to see what you build.</>}
+          kicker="Curriculum snapshot"
+          heading={<>Five modules. One practical progression.</>}
+          lede={
+            <>
+              Prompt foundations lead to skills, workflows, and agent-readiness concepts.
+            </>
+          }
         />
-        <div className="mk-curr">
+        <div className="mk-curr5">
           {MODULES.map((mod, i) => {
             const Icon = mod.icon;
-            const isOpen = openMod === i;
+            const isActive = activeModule.title === mod.title;
             return (
               <button
                 key={mod.title}
                 type="button"
-                className={`mk-curr-row${isOpen ? ' is-open' : ''}`}
-                onClick={() => setOpenMod(isOpen ? null : i)}
-                aria-expanded={isOpen}
+                onClick={() => setActiveModule(mod)}
+                className={`mk-curr5-card${isActive ? ' is-active' : ''}`}
               >
-                <span className="mk-curr-num">0{i + 1}</span>
-                <span className="mk-pic-ink-gold mk-curr-icon">
-                  <Icon size={20} />
-                </span>
-                <div className="mk-curr-main">
-                  <div className="mk-curr-title">{mod.title}</div>
-                  <div className="mk-curr-meta">
-                    {mod.meta}
-                    {i === 0 && ' · Free preview'}
-                  </div>
+                <div className="mk-curr5-top">
+                  <span className="mk-pic-ink-gold">
+                    <Icon size={20} />
+                  </span>
+                  <span className="mk-curr5-num">0{i + 1}</span>
                 </div>
-                <span className="mk-curr-chev" aria-hidden="true">{isOpen ? '−' : '+'}</span>
-                {isOpen && (
-                  <div className="mk-curr-detail">
-                    <div className="mk-k">You leave with</div>
-                    <div className="mk-curr-art">{mod.artifact}</div>
-                  </div>
-                )}
+                <h3>{mod.title}</h3>
+                <p className="mk-curr5-meta">{mod.lessons} · {mod.time}</p>
+                <p className="mk-curr5-desc">{mod.desc}</p>
               </button>
             );
           })}
-          <div className="mk-curr-bonus">
-            <span className="mk-pic-gold-ink mk-curr-icon">
-              <StackIcon size={20} />
-            </span>
-            <div className="mk-curr-main">
-              <div className="mk-curr-title">Bonus · Full Toolbox access</div>
-              <div className="mk-curr-meta">Lifetime · 18 reusable assets, role playbooks, prompt library</div>
-            </div>
-          </div>
         </div>
       </Section>
 
       {/* PRICING */}
-      <Section variant="std" surface="white">
-        <div className="mk-pricing">
-          <div>
-            <div className="mk-k">One-time · No subscription</div>
-            <div className="mk-price">
-              <div className="mk-v">$295</div>
-              <div className="mk-u">individual</div>
+      <Section variant="std">
+        <div className="mk-pricing-wrap">
+          <div className="mk-pricing-card">
+            <header>
+              <p className="mk-k">One-time · No subscription</p>
+              <h3>AiBI-Foundation</h3>
+            </header>
+            <div className="mk-pricing-amount">
+              <p className="mk-k">Individual enrollment</p>
+              <p className="mk-pricing-value">$295</p>
+              <p>Team pricing available at 10+ seats.</p>
             </div>
-            <p>
-              Includes course, sandbox practice, Toolbox assets, reviewed artifacts, and the
-              AiBI-Foundation credential. Team pricing available at 10+ seats.
-            </p>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <ul className="mk-pricing-bullets">
+              {PRICING_BULLETS.map((item) => (
+                <li key={item}>
+                  <CheckCircleIcon size={18} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mk-pricing-ctas">
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
                 Enroll in AiBI-Foundation
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/for-institutions">
-                Ask about team enrollment <ArrowR className="mk-ic" />
+              <Button variant="ghost-light" size="lg" href="/for-institutions">
+                Ask about team enrollment
               </Button>
             </div>
           </div>
-          <ul>
-            <li><CheckIcon className="mk-ic" />Self-paced · Lifetime access</li>
-            <li><CheckIcon className="mk-ic" />Sandbox practice + Toolbox assets</li>
-            <li><CheckIcon className="mk-ic" />Three reviewed artifacts you keep</li>
-            <li><CheckIcon className="mk-ic" />AiBI-Foundation credential on completion</li>
-          </ul>
         </div>
       </Section>
 
       {/* FINAL CTA */}
       <CtaBand
-        heading={<>Ready to build your first reviewed AI workflow?</>}
-        body={<>Three reviewed artifacts. One credential. No subscription.</>}
+        kicker="Ready to build?"
+        heading={<>Build your first reviewed AI workflow.</>}
         actions={[
           { label: 'Enroll in AiBI-Foundation', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Ask about team enrollment', href: '/for-institutions', variant: 'ghost-dark' },
+          { label: 'Get readiness score first', href: '/assessment/take', variant: 'ghost-dark' },
         ]}
       />
+    </div>
+  );
+}
+
+// ---------- Course preview (hero side) ----------
+
+function CoursePreview({
+  activeModule,
+  setActiveModule,
+  ActiveIcon,
+}: {
+  activeModule: ModuleData;
+  setActiveModule: (m: ModuleData) => void;
+  ActiveIcon: (p: IconProps) => JSX.Element;
+}) {
+  return (
+    <div className="mk-cpv">
+      <div className="mk-cpv-top">
+        <div>
+          <p className="mk-k">Course Preview</p>
+          <h3>Prompt → Skill → Workflow</h3>
+        </div>
+        <span className="mk-cpv-tag">See what learners build</span>
+      </div>
+      <div className="mk-cpv-grid">
+        <div className="mk-cpv-list">
+          <p className="mk-k">Learning Path</p>
+          {MODULES.map((mod, i) => {
+            const Icon = mod.icon;
+            const active = activeModule.title === mod.title;
+            return (
+              <button
+                key={mod.title}
+                type="button"
+                onClick={() => setActiveModule(mod)}
+                className={`mk-cpv-mod${active ? ' is-active' : ''}`}
+              >
+                <span className="mk-cpv-mod-icon">
+                  <Icon size={18} />
+                </span>
+                <div>
+                  <p className="mk-cpv-mod-meta">Module {i + 1}</p>
+                  <p className="mk-cpv-mod-name">{mod.title}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="mk-cpv-detail">
+          <span className="mk-pic-ink-gold mk-cpv-detail-icon">
+            <ActiveIcon size={22} />
+          </span>
+          <p className="mk-k">Selected module</p>
+          <h3>{activeModule.title}</h3>
+          <p className="mk-cpv-detail-desc">{activeModule.desc}</p>
+          <ModuleDemo activeModule={activeModule} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------- Module demo visuals (illustration-style, minimal text) ----------
+
+function ModuleDemo({ activeModule }: { activeModule: ModuleData }) {
+  if (activeModule.title === 'Prompt Foundations') return <PromptVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Skills') return <SkillVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Workflows') return <WorkflowVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Agents') return <AgentVisual artifact={activeModule.artifact} />;
+  return <LandscapeVisual artifact={activeModule.artifact} />;
+}
+
+function PromptVisual({ artifact }: { artifact: string }) {
+  return (
+    <div className="mk-demo">
+      <div className="mk-demo-inner">
+        <div className="mk-demo-bar mk-demo-bar-lg" />
+        <div className="mk-demo-grid6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="mk-demo-pcard"
+              style={{ animationDelay: `${i * 0.18}s` }}
+            >
+              <span className="mk-demo-pcard-edge" />
+              <span className="mk-demo-pcard-h1" />
+              <span className="mk-demo-pcard-h2" />
+              <span className="mk-demo-pcard-h3" />
+              <span className="mk-demo-pcard-h3 mk-w-50" />
+            </div>
+          ))}
+        </div>
+        <div className="mk-demo-cta">
+          <span className="mk-demo-cta-h" />
+          <span className="mk-demo-cta-sub" />
+        </div>
+      </div>
+      <LeaveWith artifact={artifact} />
+    </div>
+  );
+}
+
+function SkillVisual({ artifact }: { artifact: string }) {
+  return (
+    <div className="mk-demo">
+      <div className="mk-demo-inner mk-demo-skill">
+        <div className="mk-demo-skill-l">
+          <ChatIcon size={22} className="mk-demo-skill-icon" />
+          <span className="mk-demo-bar" />
+          <span className="mk-demo-bar mk-w-80" />
+          <span className="mk-demo-bar mk-w-66" />
+        </div>
+        <div className="mk-demo-arrow">
+          <ArrowR size={22} />
+        </div>
+        <div className="mk-demo-skill-r">
+          <WorkflowIcon size={22} className="mk-demo-skill-icon" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="mk-demo-skill-row"
+              style={{ animationDelay: `${i * 0.2}s` }}
+            >
+              <span className="mk-demo-bar" />
+              <span className="mk-demo-dot" />
+            </div>
+          ))}
+        </div>
+      </div>
+      <LeaveWith artifact={artifact} />
+    </div>
+  );
+}
+
+function WorkflowVisual({ artifact }: { artifact: string }) {
+  return (
+    <div className="mk-demo">
+      <div className="mk-demo-inner">
+        <div className="mk-demo-wf">
+          <svg className="mk-demo-wf-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M18 25 C32 14, 48 16, 55 26 S73 39, 82 26" className="mk-demo-wf-path" />
+            <path d="M82 33 C78 51, 70 62, 63 69" className="mk-demo-wf-path mk-demo-wf-path-2" />
+            <path d="M59 75 C47 88, 34 85, 27 71" className="mk-demo-wf-path mk-demo-wf-path-3" />
+          </svg>
+          {[
+            { x: '8%', y: '14%', icon: <span className="mk-demo-dot mk-demo-dot-lg" /> },
+            { x: '40%', y: '14%', icon: <FileIcon size={18} /> },
+            { x: '70%', y: '14%', icon: <SparklesIcon size={18} /> },
+            { x: '22%', y: '60%', icon: <ShieldIcon size={18} /> },
+            { x: '58%', y: '60%', icon: <CheckCircleIcon size={18} /> },
+          ].map((n, i) => (
+            <div
+              key={i}
+              className="mk-demo-wf-node"
+              style={{ left: n.x, top: n.y, animationDelay: `${i * 0.22}s` }}
+            >
+              <span className="mk-demo-wf-node-icon">{n.icon}</span>
+              <span className="mk-demo-bar mk-w-80" />
+              <span className="mk-demo-bar mk-w-50" />
+            </div>
+          ))}
+          <div className="mk-demo-wf-foot">
+            <span className="mk-demo-wf-foot-icon">
+              <CheckCircleIcon size={18} />
+            </span>
+            <span className="mk-demo-wf-foot-bar" />
+            <span className="mk-demo-wf-foot-pill" />
+          </div>
+        </div>
+      </div>
+      <LeaveWith artifact={artifact} />
+    </div>
+  );
+}
+
+function AgentVisual({ artifact }: { artifact: string }) {
+  return (
+    <div className="mk-demo">
+      <div className="mk-demo-inner mk-demo-agent">
+        <div className="mk-demo-agent-l">
+          <div className="mk-demo-agent-stage">
+            <div className="mk-demo-agent-bot">
+              <SparklesIcon size={22} />
+            </div>
+            <span className="mk-demo-bar mk-w-66 mk-demo-agent-bar" />
+            <span className="mk-demo-bar mk-w-50 mk-demo-agent-bar" />
+            <div className="mk-demo-agent-grid">
+              <div className="mk-demo-agent-tile" />
+              <div className="mk-demo-agent-tile" />
+              <div className="mk-demo-agent-tile" />
+            </div>
+            <div className="mk-demo-agent-track">
+              <div className="mk-demo-agent-fill" />
+            </div>
+          </div>
+        </div>
+        <div className="mk-demo-agent-r">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="mk-demo-agent-task"
+              style={{ animationDelay: `${i * 0.25}s` }}
+            >
+              <span className="mk-demo-agent-task-icon">
+                {i === 3 ? <ShieldIcon size={14} /> : i === 4 ? <CheckCircleIcon size={14} /> : <span className="mk-demo-dot" />}
+              </span>
+              <div>
+                <span className="mk-demo-bar mk-w-80" />
+                <span className="mk-demo-bar mk-w-50" />
+              </div>
+              <span className={`mk-demo-agent-pill mk-demo-agent-pill-${i === 3 ? 'review' : i === 4 ? 'done' : 'go'}`} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <LeaveWith artifact={artifact} />
+    </div>
+  );
+}
+
+function LandscapeVisual({ artifact }: { artifact: string }) {
+  const icons = [BookIcon, ShieldIcon, WorkflowIcon];
+  return (
+    <div className="mk-demo">
+      <div className="mk-demo-inner mk-demo-land">
+        {icons.map((Icon, i) => (
+          <div
+            key={i}
+            className="mk-demo-land-card"
+            style={{ animationDelay: `${i * 0.2}s` }}
+          >
+            <Icon size={22} className="mk-demo-land-icon" />
+            <span className="mk-demo-bar mk-w-80" />
+            <span className="mk-demo-bar mk-w-50" />
+          </div>
+        ))}
+      </div>
+      <LeaveWith artifact={artifact} />
+    </div>
+  );
+}
+
+function LeaveWith({ artifact }: { artifact: string }) {
+  return (
+    <div className="mk-demo-leave">
+      <p className="mk-k">Learner leaves with</p>
+      <p>{artifact}</p>
     </div>
   );
 }
