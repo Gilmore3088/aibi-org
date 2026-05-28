@@ -277,6 +277,18 @@ export default function AssessmentLandingPage() {
             variant="ink"
           />
         </div>
+        {/* On mobile + at desktop ≤ 1024px the upgrade tiers demote to chip
+            links so the free Snapshot card stands alone as the unambiguous
+            primary CTA. Audit 2026-05-28 desktop reframe. CSS rules in
+            mockup.css under .mk-tier-chips. */}
+        <div className="mk-tier-chips">
+          <a href="/assessment/in-depth" className="mk-tier-chip">
+            or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="/for-institutions" className="mk-tier-chip">
+            for institutions: team view <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
       </Section>
 
       {/* ── 12 SIGNALS (FREE) ───────────────────────────────────── */}

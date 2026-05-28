@@ -911,9 +911,44 @@ section.mk-std { padding: 56px 0; }
    Assessment landing — sections specific to /assessment
    ============================================================ */
 
-/* Tier grid (Free / $99 / Institutional) */
-.mk-tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
-@media (min-width: 860px) { .mk-tier-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Tier grid (Free / $99 / Institutional).
+   2026-05-28 audit reframe: free Snapshot is the unambiguous hero.
+   In-Depth + Institutional demote to chip links rendered by
+   .mk-tier-chips below. Applies at every viewport — desktop and mobile
+   both show one card. */
+.mk-tier-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.mk-tier-grid > .mk-tier:not(:first-child) { display: none; }
+.mk-tier-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px auto 0;
+  max-width: 520px;
+}
+.mk-tier-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mk-tier-chip:hover { background: var(--cream-2); border-color: var(--gold); }
+@media (min-width: 768px) {
+  .mk-tier-chips { flex-direction: row; }
+  .mk-tier-chip { flex: 1; }
+}
 .mk-tier {
   background: #fff; border: 1px solid var(--ink-a10);
   border-radius: var(--r-xl); overflow: hidden;
