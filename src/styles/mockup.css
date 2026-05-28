@@ -913,6 +913,36 @@ section.mk-std { padding: 56px 0; }
 /* Tier grid (Free / $99 / Institutional) */
 .mk-tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
 @media (min-width: 860px) { .mk-tier-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Mobile (audit 2026-05-28 final iteration): collapse to ONE card — the
+   free Snapshot. Upgrade tiers demote to chip links rendered by the
+   .mk-tier-mobile-chips block below. Removes ~1000px of stack and makes
+   the free path the unambiguous primary. */
+.mk-tier-mobile-chips {
+  display: none;
+}
+@media (max-width: 639px) {
+  .mk-tier-grid > .mk-tier:not(:first-child) { display: none; }
+  .mk-tier-mobile-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .mk-tier-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mk-tier-chip:hover { background: var(--cream-2); }
+}
 .mk-tier {
   background: #fff; border: 1px solid var(--ink-a10);
   border-radius: var(--r-xl); overflow: hidden;
@@ -1109,6 +1139,121 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-cpv-grid { display: grid; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .mk-cpv-grid { grid-template-columns: 0.46fr 0.54fr; } }
+/* Mobile (audit 2026-05-28 final): detail panel renders first, the
+   inline module list hides entirely, and a "Browse modules" trigger
+   opens the list as a true bottom sheet. Desktop keeps the inline
+   side-by-side layout untouched. */
+.mk-cpv-sheet-trigger {
+  display: none;
+}
+@media (max-width: 899px) {
+  .mk-cpv-detail { order: 1; }
+  .mk-cpv-list { display: none; }
+  .mk-cpv-sheet-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 12px 0 16px;
+    padding: 14px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+  }
+  .mk-cpv-sheet-trigger:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+.mk-cpv-sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ─── BottomSheet primitive ────────────────────────────────────────────
+   Used by CoursePreview module picker; reusable for any mobile picker
+   that wants modal overlay semantics. Renders via createPortal into
+   document.body, so it escapes parent stacking contexts. */
+.mk-bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 26, 47, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  animation: mk-bs-fade-in 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mk-bottom-sheet {
+  width: 100%;
+  max-width: 640px;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: mk-bs-slide-up 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.mk-bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--slate-200);
+  border-radius: 999px;
+  margin: 10px auto 6px;
+  flex-shrink: 0;
+}
+.mk-bottom-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 12px;
+  border-bottom: 1px solid var(--slate-200);
+  flex-shrink: 0;
+}
+.mk-bottom-sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+.mk-bottom-sheet-close {
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--slate-600);
+  border-radius: 8px;
+}
+.mk-bottom-sheet-close:hover { background: var(--cream); }
+.mk-bottom-sheet-close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.mk-bottom-sheet-body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@keyframes mk-bs-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mk-bs-slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-bottom-sheet-overlay,
+  .mk-bottom-sheet { animation: none; }
+}
 .mk-cpv-list {
   background: var(--cream); padding: 18px 20px;
   border-right: 1px solid var(--slate-200);
@@ -3090,6 +3235,27 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-dept-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .mk-dept-grid { grid-template-columns: 1fr 1fr; } }
+/* Mobile: show only the first dept card as a single named metric (audit
+   2026-05-28). The full 6-card grid stacks on phones and reads as a
+   spreadsheet — the link below routes to the live dashboard demo. */
+.mk-dept-mobile-link {
+  display: none;
+}
+@media (max-width: 759px) {
+  .mk-dept-grid > .mk-dpt:not(:first-child) { display: none; }
+  .mk-dept-mobile-link {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+  }
+}
 .mk-dpt {
   display: grid; grid-template-columns: 1fr auto auto; gap: 16px;
   align-items: center; padding: 16px 20px;
@@ -3640,6 +3806,25 @@ section.mk-std { padding: 56px 0; }
 .mk-value-path {
   display: grid; gap: 16px; grid-template-columns: 1fr;
 }
+@media (max-width: 639px) {
+  /* Mobile: horizontal scroll rail with snap (matches .mk-chain pattern) */
+  .mk-value-path {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .mk-value-path::-webkit-scrollbar { display: none; }
+  .mk-value-path > .mk-vp-card {
+    flex: 0 0 76vw;
+    max-width: 300px;
+    scroll-snap-align: start;
+  }
+}
 @media (min-width: 640px) { .mk-value-path { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mk-value-path { grid-template-columns: repeat(4, 1fr); } }
 .mk-vp-card {
@@ -4012,6 +4197,26 @@ section.mk-std { padding: 56px 0; }
 @media (min-width: 900px) { .mk-resources-grid.mk-resources-3up { grid-template-columns: repeat(3, 1fr); } }
 .mk-resources-grid.mk-resources-2up { grid-template-columns: 1fr; }
 @media (min-width: 720px) { .mk-resources-grid.mk-resources-2up { grid-template-columns: repeat(2, 1fr); } }
+/* Mobile: convert to horizontal-scroll rail to compress vertical stacks
+   on /research and /resources catalogs. Per 2026-05-28 audit. */
+@media (max-width: 639px) {
+  .mk-resources-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .mk-resources-grid::-webkit-scrollbar { display: none; }
+  .mk-resources-grid > * {
+    flex: 0 0 78vw;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
+}
 
 .mk-resource-card {
   background: #fff;
@@ -4169,6 +4374,20 @@ section.mk-std { padding: 56px 0; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 8px 24px;
+}
+@media (max-width: 767px) {
+  /* Mobile: 2-col grid (~50% scroll reduction vs single column).
+     Audit punch list 2026-05-28 — was 12 vertical accordion-like rows. */
+  .mk-curriculum-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 12px;
+  }
+  .mk-curriculum-row {
+    padding: 6px 0;
+  }
+  .mk-curriculum-title {
+    font-size: 13px;
+  }
 }
 .mk-curriculum-row {
   display: flex; align-items: baseline; gap: 10px;
@@ -4908,6 +5127,38 @@ section.mk-std { padding: 56px 0; }
 /* 4. CtaBand: hidden on mobile (StickyMobileCta covers the action) */
 @media (max-width: 767px) {
   .mk-cta-band-desktop { display: none; }
+}
+
+/* 5. ROI calculator accordion (mobile only).
+   Body renders inline on desktop; collapsed behind a trigger on mobile. */
+.mk-roi-accordion-trigger {
+  display: none;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.mk-roi-accordion-trigger:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .mk-roi-accordion-trigger {
+    display: block;
+  }
+  .mk-roi-accordion .mk-roi-accordion-body {
+    display: none;
+  }
+  .mk-roi-accordion.is-open .mk-roi-accordion-body {
+    display: block;
+    margin-top: 16px;
+  }
 }
 
 /* ── Course Preview Demos (cpd-*) — concrete animated demos on /courses (2026-05-28) ── */

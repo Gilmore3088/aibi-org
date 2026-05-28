@@ -8,6 +8,7 @@ import {
   Section,
   SectionHead,
   SiteHeader,
+  StickyMobileCta,
 } from '@/components/mockup';
 import {
   ArrowRight,
@@ -174,6 +175,7 @@ export function ResourcesExperience() {
       </Section>
 
       <CtaBand
+        hiddenOnMobile
         kicker="Not sure where to start?"
         heading={<>Get the recommended resource path.</>}
         body={<>The readiness assessment recommends a role path, top gap, and starter artifact.</>}
@@ -181,6 +183,12 @@ export function ResourcesExperience() {
           { label: 'Get readiness score', href: '/assessment', variant: 'gold' },
           { label: 'Browse all downloads', href: '#templates', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Get readiness score"
+        href="/assessment"
+        source="sticky-mobile-cta-resources"
       />
     </div>
   );
