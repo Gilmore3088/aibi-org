@@ -205,7 +205,7 @@ export default function ForInstitutionsPage() {
                 'Three reviewed AI artifacts per practitioner',
                 '$295 individual · $199/seat at 10+ · lifetime access',
               ],
-              ctaHref: '/courses/foundation/program',
+              ctaHref: '/courses',
               ctaLabel: 'View the curriculum',
               ctaVariant: 'ink' as const,
             },
@@ -456,7 +456,7 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'See pricing', href: '/education', variant: 'ghost-dark' },
+          { label: 'See pricing', href: '/courses', variant: 'ghost-dark' },
         ]}
       />
     </div>
