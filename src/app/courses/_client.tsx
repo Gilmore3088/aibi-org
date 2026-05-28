@@ -49,45 +49,105 @@ type ModuleData = {
   icon: (p: IconProps) => JSX.Element;
 };
 
+// #350 — sidebar previewed 5 hand-curated modules but AiBI-Foundation
+// ships 12. Each entry below mirrors a real module from
+// content/courses/foundation-program/module-{1..12}.ts; title and
+// keyOutput pull from those module definitions verbatim.
 const MODULES: ModuleData[] = [
   {
-    title: 'AI Landscape',
-    lessons: '6 lessons',
-    time: '50 min',
-    desc: 'Understand models, tools, limits, and where AI fits inside a bank or credit union.',
-    artifact: 'Tool Selection Card',
+    title: 'AI for Your Workday',
+    lessons: 'Module 1',
+    time: '25 min',
+    desc: 'See how AI fits the work you already do — and the regulatory frame around it.',
+    artifact: 'Rewritten Email',
     icon: BookIcon,
   },
   {
-    title: 'Prompt Foundations',
-    lessons: '8 lessons',
-    time: '75 min',
-    desc: 'Learn one best-practice prompt structure for banking work: Role, Task, Context, Constraints, Output, and Review.',
-    artifact: 'Reviewed Prompt Card',
+    title: 'What AI Is and Is Not',
+    lessons: 'Module 2',
+    time: '20 min',
+    desc: 'Build a working mental model of generative AI, then learn to spot inflated claims.',
+    artifact: 'AI Claim Review',
+    icon: ClipboardIcon,
+  },
+  {
+    title: 'Prompting Fundamentals',
+    lessons: 'Module 3',
+    time: '30 min',
+    desc: 'Learn one best-practice prompt shape for banking work — role, task, context, constraints, output, review.',
+    artifact: 'Prompt Strategy Cheat Sheet',
     icon: ChatIcon,
   },
   {
-    title: 'Skills',
-    lessons: '7 lessons',
-    time: '80 min',
-    desc: 'Turn useful prompts into named, tagged, versioned skills with allowed inputs, guardrails, and output formats.',
-    artifact: 'Reusable Skill Template',
-    icon: WorkflowIcon,
-  },
-  {
-    title: 'Workflows',
-    lessons: '9 lessons',
-    time: '90 min',
-    desc: 'Map where AI fits into real work: trigger, input, AI draft, human review, approval, storage, and reuse.',
-    artifact: 'Mapped Workflow SOP',
+    title: 'Your AI Work Profile',
+    lessons: 'Module 4',
+    time: '30 min',
+    desc: 'Define which tasks AI assists with, which it never touches, and how you review what comes back.',
+    artifact: 'AI Work Profile',
     icon: FileIcon,
   },
   {
-    title: 'Agents',
-    lessons: '6 lessons',
-    time: '70 min',
-    desc: 'Introduce agentic workflows by watching a task move from trigger to draft output, review checkpoint, and completion log.',
-    artifact: 'Agent Task Map',
+    title: 'Projects and Context',
+    lessons: 'Module 5',
+    time: '35 min',
+    desc: 'Set up a Project per recurring work surface so AI has the context it needs without you re-explaining.',
+    artifact: 'Project Brief Template',
+    icon: FileIcon,
+  },
+  {
+    title: 'Files and Document Workflows',
+    lessons: 'Module 6',
+    time: '35 min',
+    desc: 'Move from one-shot prompts to document workflows — the AI reads, drafts, you review.',
+    artifact: 'Document Workflow Prompt',
+    icon: FileIcon,
+  },
+  {
+    title: 'AI Tools Landscape',
+    lessons: 'Module 7',
+    time: '35 min',
+    desc: 'Match the tool class to the task class. Avoid over-tooling and avoid leaking NPI.',
+    artifact: 'Tool Choice Map',
+    icon: BookIcon,
+  },
+  {
+    title: 'Agents and Workflow Thinking',
+    lessons: 'Module 8',
+    time: '35 min',
+    desc: 'Trigger → AI draft → human review → approval → audit log. Sequence the work, not just the prompt.',
+    artifact: 'Workflow Map',
+    icon: WorkflowIcon,
+  },
+  {
+    title: 'Safe AI Use in Banking',
+    lessons: 'Module 9',
+    time: '35 min',
+    desc: 'NPI boundaries, SR 11-7, fair-lending review — apply the controls you already know to AI-assisted work.',
+    artifact: 'Safe AI Use Checklist',
+    icon: ClipboardIcon,
+  },
+  {
+    title: 'Role-Based Use Cases',
+    lessons: 'Module 10',
+    time: '35 min',
+    desc: 'Walk through the highest-leverage AI use cases for your role with realistic synthetic scenarios.',
+    artifact: 'Role Use-Case Card',
+    icon: WorkflowIcon,
+  },
+  {
+    title: 'Personal Prompt Library',
+    lessons: 'Module 11',
+    time: '35 min',
+    desc: 'Promote your best prompts into a named, tagged, reusable library you keep using after the course.',
+    artifact: 'Personal Prompt Library',
+    icon: ChatIcon,
+  },
+  {
+    title: 'Final Foundation Lab',
+    lessons: 'Module 12',
+    time: '45 min',
+    desc: 'A reviewed capstone — pull the prompts, workflows, and checklists from earlier modules into a finished work product.',
+    artifact: 'Final Foundation Lab Package',
     icon: SparklesIcon,
   },
 ];
@@ -119,7 +179,7 @@ const PRICING_BULLETS = [
   'Self-paced course',
   'Sandbox practice',
   'Toolbox assets',
-  'Three reviewed artifacts',
+  'Twelve reviewed artifacts (one per module)',
   'Completion credential',
   'Lifetime access',
 ];
@@ -196,7 +256,7 @@ export default function CoursesIndexPage() {
       <Section variant="std" surface="white">
         <SectionHead
           kicker="What learners build"
-          heading={<>Four artifacts. One completion packet.</>}
+          heading={<>Twelve modules. Twelve artifacts. One completion packet.</>}
           lede={
             <>
               Every module connects to a practical work product the learner can review, save, and
@@ -327,10 +387,21 @@ function CoursePreview({
 // ---------- Module demo visuals (illustration-style, minimal text) ----------
 
 function ModuleDemo({ activeModule }: { activeModule: ModuleData }) {
-  if (activeModule.title === 'Prompt Foundations') return <PromptVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Skills') return <SkillVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Workflows') return <WorkflowVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Agents') return <AgentVisual artifact={activeModule.artifact} />;
+  // Map real module titles to the existing illustration components.
+  // Modules without a tailored visual fall back to LandscapeVisual.
+  const t = activeModule.title;
+  if (t === 'Prompting Fundamentals' || t === 'Personal Prompt Library')
+    return <PromptVisual artifact={activeModule.artifact} />;
+  if (t === 'Your AI Work Profile' || t === 'Role-Based Use Cases')
+    return <SkillVisual artifact={activeModule.artifact} />;
+  if (
+    t === 'Files and Document Workflows' ||
+    t === 'Projects and Context' ||
+    t === 'Final Foundation Lab'
+  )
+    return <WorkflowVisual artifact={activeModule.artifact} />;
+  if (t === 'Agents and Workflow Thinking')
+    return <AgentVisual artifact={activeModule.artifact} />;
   return <LandscapeVisual artifact={activeModule.artifact} />;
 }
 
