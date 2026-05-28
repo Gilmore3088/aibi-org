@@ -27,12 +27,17 @@ interface CourseLayoutProps {
 }
 
 // Paths that must never trigger the auth or onboarding redirects.
-//   /purchase  — public buy funnel; account creation happens after Stripe
+//   /purchase   — public buy funnel; account creation happens after Stripe
+//   /purchased  — Stripe success URL; buyer hasn't signed in yet by definition.
+//                 The page itself validates the session_id server-side against
+//                 Stripe and shows the Create-Account / Sign-In CTA ladder. If
+//                 auth-gated here, a fresh buyer dead-ends on "Welcome back."
+//                 with no path to the course they just paid for. Issue #310.
 //   /onboarding — destination of the onboarding redirect; exempting it
 //                 prevents an infinite loop
 //   /settings  — onboarding edit surface, must be reachable mid-onboarding
-const AUTH_EXEMPT_SUFFIXES = ['/purchase'] as const;
-const ONBOARDING_EXEMPT_SUFFIXES = ['/onboarding', '/settings', '/purchase'] as const;
+const AUTH_EXEMPT_SUFFIXES = ['/purchase', '/purchased'] as const;
+const ONBOARDING_EXEMPT_SUFFIXES = ['/onboarding', '/settings', '/purchase', '/purchased'] as const;
 
 export default async function CourseLayout({ children }: CourseLayoutProps) {
   // Preview/local bypass — skip auth + onboarding gates entirely when
