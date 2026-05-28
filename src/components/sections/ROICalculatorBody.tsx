@@ -157,23 +157,29 @@ interface SliderProps {
 }
 
 function Slider({ label, value, min, max, step, onChange, display }: SliderProps) {
+  const inputId = `roi-slider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
     <div>
       <div className="flex items-baseline justify-between mb-2">
-        <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70">
+        <label
+          htmlFor={inputId}
+          className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70"
+        >
           {label}
         </label>
-        <span className="font-mono text-base text-[color:var(--ink)]">
+        <span className="font-mono text-base text-[color:var(--ink)]" aria-hidden="true">
           {display}
         </span>
       </div>
       <input
+        id={inputId}
         type="range"
         min={min}
         max={max}
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
+        aria-valuetext={display}
         className="w-full accent-[color:var(--gold)]"
       />
     </div>

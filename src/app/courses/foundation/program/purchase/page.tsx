@@ -66,7 +66,47 @@ async function getUserEmail(): Promise<string | null> {
   }
 }
 
-export default async function PurchasePage() {
+// Role-aware framing for visitors arriving from /playbooks/<role>. The
+// ?role= query is set by the playbook hero CTA (#327D). When present, we
+// surface a small banner naming the playbook so the funnel feels
+// continuous rather than dumping the visitor on a generic page.
+const ROLE_BANNER: Record<
+  string,
+  { label: string; lede: string }
+> = {
+  'bsa-aml': {
+    label: 'BSA / AML',
+    lede: 'Modules 2, 4, and 6 carry the BSA / AML weight — narrative discipline, alert triage, and the FinCEN typology vocabulary.',
+  },
+  compliance: {
+    label: 'Compliance',
+    lede: 'Modules 2, 4, 7, and 11 are the compliance spine — use-case intake, the human-review step, audit trails, and the AIEOG / SR 11-7 lens.',
+  },
+  infosec: {
+    label: 'IT / InfoSec',
+    lede: 'Modules 3, 5, and 9 anchor the IT view — data classification, tool verdicts, and the identity model around AI access.',
+  },
+  lending: {
+    label: 'Lending',
+    lede: 'Modules 6, 8, and 10 are the lending spine — adverse-action specificity, fair-lending phrasing review, and decision-memo discipline.',
+  },
+  marketing: {
+    label: 'Marketing',
+    lede: 'Modules 5, 8, and 12 are the marketing arc — campaign briefs, disclosure review, and plain-language translation that preserves the claim.',
+  },
+  retail: {
+    label: 'Branch / Retail',
+    lede: 'Modules 1, 4, and 9 are the branch arc — coaching kits, service recovery, and one-page procedure cleanup that survives the window.',
+  },
+};
+
+export default async function PurchasePage({
+  searchParams,
+}: {
+  searchParams?: { role?: string };
+}) {
+  const role = searchParams?.role;
+  const roleBanner = role ? ROLE_BANNER[role] ?? null : null;
   const enrollment = await getEnrollment();
   const userEmail = await getUserEmail();
   const lmsModules: readonly LMSModule[] = toLMSModules(
@@ -215,6 +255,46 @@ export default async function PurchasePage() {
       />
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}>
+        {/* #327D — role-aware banner. Only rendered when the visitor
+            arrives from a /playbooks/<role> CTA. The label is honest:
+            it acknowledges the source playbook and names the modules
+            that carry the role's weight inside the course. */}
+        {roleBanner && (
+          <aside
+            aria-label={`Coming from the ${roleBanner.label} playbook`}
+            style={{
+              marginBottom: 24,
+              background: 'var(--cream-2)',
+              borderLeft: '3px solid var(--gold)',
+              borderRadius: 12,
+              padding: '14px 18px',
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-deep)',
+              }}
+            >
+              From the {roleBanner.label} playbook
+            </p>
+            <p
+              style={{
+                margin: '4px 0 0',
+                color: 'var(--ink)',
+                fontSize: 14,
+                lineHeight: 1.55,
+              }}
+            >
+              {roleBanner.lede}
+            </p>
+          </aside>
+        )}
         {/* 1. HERO — dark navy. Real artifact on the right. */}
         <section
           style={{

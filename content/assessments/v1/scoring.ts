@@ -17,7 +17,7 @@ export const tiers: readonly Tier[] = [
     label: 'Starting Point',
     min: 8,
     max: 14,
-    colorVar: 'var(--color-error)',
+    colorVar: 'var(--ink)',
     headline: 'You are at the beginning of your AI journey.',
     summary:
       'Your institution has meaningful ground to cover before AI adoption produces operational value. The first priority is building staff literacy and identifying one to two repetitive workflows where a quick win is possible.',
@@ -27,7 +27,7 @@ export const tiers: readonly Tier[] = [
     label: 'Early Stage',
     min: 15,
     max: 21,
-    colorVar: 'var(--color-terra)',
+    colorVar: 'var(--gold)',
     headline: 'You are experimenting but not yet coordinated.',
     summary:
       'Early signals exist inside your institution, but adoption is uneven and governance is informal. The opportunity is to convert isolated experiments into a coordinated program with a written use policy and a prioritized automation backlog.',
@@ -37,7 +37,7 @@ export const tiers: readonly Tier[] = [
     label: 'Building Momentum',
     min: 22,
     max: 27,
-    colorVar: 'var(--color-terra-light)',
+    colorVar: 'var(--gold-deep)',
     headline: 'You have real traction. The next step is scale.',
     summary:
       'Multiple teams are using AI tools with leadership awareness and a working governance posture. The next move is disciplined scaling: documented use cases, measured outcomes, and a training function that can sustain the program.',
@@ -47,7 +47,7 @@ export const tiers: readonly Tier[] = [
     label: 'Ready to Scale',
     min: 28,
     max: 32,
-    colorVar: 'var(--color-sage)',
+    colorVar: 'var(--slate-600)',
     headline: 'You are positioned to lead your peer group.',
     summary:
       'Your institution has the culture, governance, and leadership commitment to operate AI as a strategic capability. The opportunity is compounding — codify what works, train the next wave of builders, and convert capability into measurable efficiency gains.',
