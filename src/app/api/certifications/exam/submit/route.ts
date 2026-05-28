@@ -19,6 +19,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { normalizeProduct, dbReadValues } from '@/lib/products/normalize';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 interface TopicScoreInput {
   readonly topic: unknown;
@@ -118,6 +119,17 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (authError || !user) {
     return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
   }
+
+  // Per-user rate limit — 10 exam submissions per hour. The exam is a
+  // one-time event; this caps cost-abuse if a session token leaks.
+  const limited = await rateLimitOrFail({
+    key: 'exam-submit',
+    scope: 'user',
+    identifier: user.id,
+    max: 10,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   // --- Verify enrollment ---
   // The exam is only available to enrolled learners. We accept any
