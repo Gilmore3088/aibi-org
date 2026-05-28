@@ -95,6 +95,9 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
+      // Card only — see #319. BNPL/Cash App/etc. off-brand for a $99
+      // community-bank-staff diagnostic.
+      payment_method_types: ['card'],
       line_items: [{ price: STRIPE_INDEPTH_PRICE_ID, quantity: 1 }],
       success_url: `${origin}/assessment/in-depth/purchased?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/assessment/in-depth`,
