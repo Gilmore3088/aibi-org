@@ -3090,6 +3090,27 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-dept-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .mk-dept-grid { grid-template-columns: 1fr 1fr; } }
+/* Mobile: show only the first dept card as a single named metric (audit
+   2026-05-28). The full 6-card grid stacks on phones and reads as a
+   spreadsheet — the link below routes to the live dashboard demo. */
+.mk-dept-mobile-link {
+  display: none;
+}
+@media (max-width: 759px) {
+  .mk-dept-grid > .mk-dpt:not(:first-child) { display: none; }
+  .mk-dept-mobile-link {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+  }
+}
 .mk-dpt {
   display: grid; grid-template-columns: 1fr auto auto; gap: 16px;
   align-items: center; padding: 16px 20px;
