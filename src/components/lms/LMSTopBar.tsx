@@ -64,8 +64,18 @@ export function LMSTopBar({ crumbs, right }: Props) {
           scrolls with the page so its breadcrumb + right-slot content
           doesn't multi-line and occlude content below. The bar is also
           slightly tighter on mobile padding-wise to keep the height
-          compact. See #205. */}
-      <style>{`
+          compact. See #205.
+
+          dangerouslySetInnerHTML is intentional: previously rendered as
+          inline `<style>{template-string}</style>` which triggered React
+          hydration mismatches (#315). React's text-content reconciler
+          re-parsed the CSS-comment block on the client and diverged
+          from the SSR string when quotes appeared inside the comment.
+          Using dangerouslySetInnerHTML treats the body as opaque and
+          keeps SSR/CSR byte-for-byte identical. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @media (min-width: 768px) {
           .lms-topbar {
             position: sticky;
@@ -81,16 +91,14 @@ export function LMSTopBar({ crumbs, right }: Props) {
           .lms-topbar nav {
             font-size: 11px !important;
           }
-          /* The right slot ("Not yet enrolled", "N/M complete") is
-             informational. On narrow viewports it pushes the breadcrumb
-             onto a second line. Hide it on mobile — the same info is
-             surfaced inline elsewhere on the page (e.g. EnrollButton CTA,
-             course-overview progress meter). */
+          /* Hide the right slot on mobile so the breadcrumb stays one line. */
           .lms-topbar__right {
             display: none !important;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </div>
   );
 }
