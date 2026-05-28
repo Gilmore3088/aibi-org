@@ -244,11 +244,15 @@ const PHASE_MS: Record<DemoPhase, number> = {
   score: 1700,
 };
 
+const VISIBLE_DIMS_INITIAL = 3;
+
 export default function AssessmentLandingPage() {
   const [qIdx, setQIdx] = useState(0);
   const [phase, setPhase] = useState<DemoPhase>('question');
   const [dimScores, setDimScores] = useState<Partial<Record<Dim, number>>>({});
   const [paused, setPaused] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const [dimsExpanded, setDimsExpanded] = useState(false);
 
   // Auto-cycle through the demo. Hover pauses; mouse-leave resumes.
   useEffect(() => {
@@ -329,7 +333,7 @@ export default function AssessmentLandingPage() {
             </p>
           </div>
 
-          {/* Hero cards column: free v3 on top, In-Depth $99 below */}
+          {/* Hero cards column: free v3 on top, In-Depth $99 below (desktop only) */}
           <div className="mk-hero-cards">
             {/* Free v3 sample report card — 32/48, Building Momentum */}
             <div className="mk-hreport">
@@ -361,8 +365,8 @@ export default function AssessmentLandingPage() {
               </div>
             </div>
 
-            {/* In-Depth $99 sample report card — unchanged */}
-            <div className="mk-hreport mk-hreport-sm">
+            {/* In-Depth $99 sample report card — hidden on mobile, visible on desktop */}
+            <div className="mk-hreport mk-hreport-sm mk-indepth-card-desktop">
               <div className="mk-hreport-left">
                 <div className="mk-k">$99 In-Depth · Sample</div>
                 <div className="mk-v">62</div>
@@ -389,6 +393,14 @@ export default function AssessmentLandingPage() {
                 </div>
               </div>
             </div>
+
+            {/* Mobile-only: inline chip replacing the In-Depth card */}
+            <p className="mk-indepth-chip-mobile">
+              Need deeper analysis?{' '}
+              <a href="/assessment/in-depth" className="mk-hero-foot-link">
+                $99 In-Depth Report <ArrowR className="mk-ic" />
+              </a>
+            </p>
           </div>
         </div>
       </section>
@@ -406,6 +418,23 @@ export default function AssessmentLandingPage() {
           }
         />
 
+        {/* Mobile accordion trigger — hidden on desktop */}
+        <button
+          className="mk-demo-accordion-trigger"
+          aria-expanded={demoOpen}
+          aria-controls="mk-demo-accordion-region"
+          onClick={() => setDemoOpen((v) => !v)}
+        >
+          <span>Try the live demo</span>
+          <ArrowR className={`mk-ic mk-demo-accordion-arrow${demoOpen ? ' is-open' : ''}`} />
+        </button>
+
+        <div
+          id="mk-demo-accordion-region"
+          role="region"
+          aria-labelledby="mk-demo-accordion-trigger-label"
+          className={`mk-demo-accordion-body${demoOpen ? ' is-open' : ''}`}
+        >
         <div className="mk-quiz">
           <div
             className="mk-quiz-card"
@@ -492,6 +521,7 @@ export default function AssessmentLandingPage() {
             </div>
           </div>
         </div>
+        </div>{/* end mk-demo-accordion-body */}
       </Section>
 
       {/* CHOOSE YOUR ASSESSMENT */}
@@ -571,8 +601,8 @@ export default function AssessmentLandingPage() {
           kicker="What we measure"
           heading={<>Twelve readiness dimensions.</>}
         />
-        <div className="mk-dims-grid mk-dims-compact">
-          {[
+        {(() => {
+          const ALL_DIM_CARDS = [
             { icon: ShieldIcon,      title: 'Strategic Value',          desc: 'Business case and executive buy-in' },
             { icon: ScreenIcon,      title: 'Infrastructure Readiness', desc: 'Tools and access in place' },
             { icon: DatabaseIcon,    title: 'Data Quality',             desc: 'Clean, trusted data to act on' },
@@ -585,7 +615,10 @@ export default function AssessmentLandingPage() {
             { icon: FileIcon,        title: 'Data Safety Reflexes',     desc: 'What staff know not to enter' },
             { icon: RefreshIcon,     title: 'Continuous Validation',    desc: 'Ongoing model monitoring' },
             { icon: PackageIcon,     title: 'Vendor Risk',              desc: 'Third-party AI due diligence' },
-          ].map(({ icon: Icon, title, desc }) => (
+          ];
+          const visibleCards = ALL_DIM_CARDS.slice(0, VISIBLE_DIMS_INITIAL);
+          const hiddenCards = ALL_DIM_CARDS.slice(VISIBLE_DIMS_INITIAL);
+          const renderCard = ({ icon: Icon, title, desc }: typeof ALL_DIM_CARDS[number]) => (
             <div key={title} className="mk-dcard">
               <span className="mk-pic">
                 <Icon className="mk-ic-xl" size={22} />
@@ -593,20 +626,47 @@ export default function AssessmentLandingPage() {
               <h4>{title}</h4>
               <p>{desc}</p>
             </div>
-          ))}
-        </div>
+          );
+          return (
+            <>
+              <div className="mk-dims-grid mk-dims-compact">
+                {visibleCards.map(renderCard)}
+                {/* Remaining 9 cards: always visible on desktop, accordion on mobile */}
+                <div
+                  id="mk-dims-accordion-region"
+                  role="region"
+                  aria-labelledby="mk-dims-accordion-trigger"
+                  className={`mk-dims-accordion-body${dimsExpanded ? ' is-open' : ''}`}
+                >
+                  {hiddenCards.map(renderCard)}
+                </div>
+              </div>
+              <button
+                id="mk-dims-accordion-trigger"
+                className="mk-dims-accordion-trigger"
+                aria-expanded={dimsExpanded}
+                aria-controls="mk-dims-accordion-region"
+                onClick={() => setDimsExpanded((v) => !v)}
+              >
+                {dimsExpanded ? 'Show fewer dimensions' : `See all 12 dimensions →`}
+              </button>
+            </>
+          );
+        })()}
       </Section>
 
-      {/* CTA */}
-      <CtaBand
-        kicker="Already know your baseline?"
-        heading={<>The $99 report tells you what to do next.</>}
-        body={<>The free assessment shows where you stand. The In-Depth Report gives you the role-specific action plan and a reviewer-ready PDF to bring to leadership.</>}
-        actions={[
-          { label: 'Get the in-depth report', href: '/assessment/in-depth', variant: 'gold' },
-          { label: 'Start free first', href: '/assessment/take', variant: 'ghost-dark' },
-        ]}
-      />
+      {/* CTA — hidden on mobile; StickyMobileCta keeps the action in reach */}
+      <div className="mk-cta-band-desktop">
+        <CtaBand
+          kicker="Already know your baseline?"
+          heading={<>The $99 report tells you what to do next.</>}
+          body={<>The free assessment shows where you stand. The In-Depth Report gives you the role-specific action plan and a reviewer-ready PDF to bring to leadership.</>}
+          actions={[
+            { label: 'Get the in-depth report', href: '/assessment/in-depth', variant: 'gold' },
+            { label: 'Start free first', href: '/assessment/take', variant: 'ghost-dark' },
+          ]}
+        />
+      </div>
 
       <StickyMobileCta
         label="Start the free assessment"
