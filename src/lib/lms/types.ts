@@ -17,11 +17,22 @@ export type CourseSlug = 'foundation' | 'aibi-s' | (string & {});
 
 // ─── Brand + terminology ─────────────────────────────────────────────────────
 
+// Constrained to the mockup palette — pillar/Ledger colors are retired.
+// See CLAUDE.md § Color Variables.
+export type MockupAccentVar =
+  | 'var(--ink)'
+  | 'var(--ink-2)'
+  | 'var(--gold)'
+  | 'var(--gold-2)'
+  | 'var(--gold-deep)'
+  | 'var(--slate-500)'
+  | 'var(--slate-600)';
+
 export interface CourseBrand {
   readonly name: string;            // 'AiBI-Foundation' | 'Banking AI Specialist'
   readonly shortCode: string;       // 'AiBI-Foundation' | 'AiBI-S'
   readonly wordmark: string;        // displayed in sidebar (may equal shortCode)
-  readonly accentColorVar: string;  // 'var(--gold)' | 'var(--ink)' (was Ledger; now mockup)
+  readonly accentColorVar: MockupAccentVar;
 }
 
 export interface CourseTerminology {
@@ -43,7 +54,7 @@ export interface CourseSection {
   readonly id: string;              // 'awareness' | 'foundation-phase'
   readonly label: string;
   readonly description?: string;
-  readonly colorVar?: string;
+  readonly colorVar?: MockupAccentVar;
 }
 
 export interface CourseModule {

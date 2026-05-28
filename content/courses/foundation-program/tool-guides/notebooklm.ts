@@ -6,7 +6,7 @@ export const notebooklmGuide: ToolGuide = {
   platformId: 'notebooklm',
   platformLabel: 'NotebookLM',
   platform: 'notebooklm',
-  colorVar: 'var(--ledger-accent)',
+  colorVar: 'var(--gold)',
   tagline:
     'Your private regulatory research library — grounded entirely in your own documents.',
   url: 'https://notebooklm.google.com',

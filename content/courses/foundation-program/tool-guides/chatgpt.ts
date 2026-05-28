@@ -8,7 +8,7 @@ export const chatgptGuide: ToolGuide = {
   platformId: 'chatgpt',
   platformLabel: 'ChatGPT',
   platform: 'chatgpt',
-  colorVar: 'var(--ledger-accent-2)',
+  colorVar: 'var(--ink)',
   tagline:
     'The widely adopted default — strong on drafting, summarizing, and custom GPTs that carry your institution into every chat.',
   url: 'https://chatgpt.com',

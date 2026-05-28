@@ -4,7 +4,7 @@ import type { CourseConfig, CourseProgress } from './types';
 
 const fixture: CourseConfig = {
   slug: 'test',
-  brand: { name: 'Test', shortCode: 'T', wordmark: 'T', accentColorVar: 'var(--x)' },
+  brand: { name: 'Test', shortCode: 'T', wordmark: 'T', accentColorVar: 'var(--gold)' },
   terminology: { itemLabel: 'Unit', sectionLabel: 'Phase' },
   sections: [
     {

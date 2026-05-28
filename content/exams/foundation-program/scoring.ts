@@ -18,7 +18,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     label: 'Foundational',
     minPct: 0,
     maxPct: 40,
-    colorVar: 'var(--color-error)',
+    colorVar: 'var(--ink)',
     headline: 'You are building the foundation.',
     summary:
       'Your understanding of AI in a banking context is in its early stages. This is normal if you have not yet worked through the AI Foundations curriculum.',
@@ -30,7 +30,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     label: 'Developing',
     minPct: 41,
     maxPct: 60,
-    colorVar: 'var(--color-terra)',
+    colorVar: 'var(--gold)',
     headline: 'You have a working base. Specific gaps remain.',
     summary:
       'You understand several core concepts but have gaps in specific areas. Your topic breakdown below shows where to focus your study before submitting a work product for certification.',
@@ -42,7 +42,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     label: 'Proficient',
     minPct: 61,
     maxPct: 80,
-    colorVar: 'var(--color-terra-light)',
+    colorVar: 'var(--gold-deep)',
     headline: 'You are ready to pursue certification.',
     summary:
       'You have demonstrated sufficient knowledge across the five assessment dimensions to submit a work product for the Foundation credential. Your submission will be evaluated against the AiBI-Foundation rubric.',
@@ -54,7 +54,7 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     label: 'Advanced',
     minPct: 81,
     maxPct: 100,
-    colorVar: 'var(--color-sage)',
+    colorVar: 'var(--slate-600)',
     headline: 'Strong mastery. Proceed with confidence.',
     summary:
       'You have demonstrated strong knowledge across all five assessment dimensions. Your readiness for the Foundation credential is clear.',

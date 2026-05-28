@@ -6,7 +6,7 @@ export const perplexityGuide: ToolGuide = {
   platformId: 'perplexity',
   platformLabel: 'Perplexity',
   platform: 'perplexity',
-  colorVar: 'var(--ledger-accent-2)',
+  colorVar: 'var(--ink)',
   tagline:
     'Cited research, every time. The only AI that treats every claim as a footnote.',
   url: 'https://perplexity.ai',
