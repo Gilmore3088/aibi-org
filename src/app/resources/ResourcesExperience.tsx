@@ -9,7 +9,6 @@ import { useMemo, useState } from 'react';
 import {
   Button,
   CtaBand,
-  EyebrowChip,
   Section,
   SectionHead,
   SiteHeader,
@@ -20,7 +19,6 @@ import {
   CheckCircle,
   Download,
   Layers,
-  Library,
 } from './icons';
 import {
   type ChooserTab,

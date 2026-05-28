@@ -17,7 +17,6 @@ import {
   Section,
   SectionHead,
   Button,
-  EyebrowChip,
   CtaBand,
   StickyMobileCta,
 } from '@/components/mockup';
@@ -38,12 +37,6 @@ const sw = (p: IconProps) => ({
   'aria-hidden': true,
 });
 
-const GaugeIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M12 14l4-4" />
-    <path d="M3.34 19a10 10 0 1 1 17.32 0" />
-  </svg>
-);
 const ArrowR = (p: IconProps) => (
   <svg {...sw(p)}>
     <line x1="5" y1="12" x2="19" y2="12" />

@@ -6,7 +6,6 @@ import {
   SiteHeader,
   Section,
   Button,
-  EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
 
@@ -26,12 +25,6 @@ const sw = (p: IconProps) => ({
   'aria-hidden': true,
 });
 
-const GaugeIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M12 14l4-4" />
-    <path d="M3.34 19a10 10 0 1 1 17.32 0" />
-  </svg>
-);
 const DownloadIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
