@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { signUp, sanitizeNext } from '@/lib/supabase/auth';
-
-const MIN_PASSWORD_LENGTH = 8;
+import { MIN_PASSWORD_LENGTH, PASSWORD_HINT, validatePassword } from '@/lib/auth/password-policy';
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
 // a crafted URL. The form's own type="email" validation is the real gate.
@@ -152,8 +151,9 @@ export default function SignupPage() {
       setError('You must accept the terms to create an account.');
       return;
     }
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.ok) {
+      setError(passwordCheck.error);
       return;
     }
     if (password !== confirmPassword) {
@@ -271,8 +271,15 @@ export default function SignupPage() {
             autoComplete="new-password"
             required
             minLength={MIN_PASSWORD_LENGTH}
-            placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
+            placeholder={`${MIN_PASSWORD_LENGTH}+ characters, one number or symbol`}
+            aria-describedby="password-hint"
           />
+          <p
+            id="password-hint"
+            style={{ marginTop: -6, marginBottom: 14, fontSize: 12, color: 'var(--slate-500)' }}
+          >
+            {PASSWORD_HINT}
+          </p>
           <Field
             label="Confirm password"
             name="confirmPassword"

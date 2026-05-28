@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { updatePassword } from '@/lib/supabase/auth';
-
-const MIN_PASSWORD_LENGTH = 8;
+import { MIN_PASSWORD_LENGTH, PASSWORD_HINT, validatePassword } from '@/lib/auth/password-policy';
 
 const cardStyle: CSSProperties = {
   width: '100%',
@@ -129,8 +128,9 @@ export default function ResetPasswordPage() {
     const password = data.get('password') as string;
     const confirmPassword = data.get('confirmPassword') as string;
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.ok) {
+      setError(passwordCheck.error);
       return;
     }
     if (password !== confirmPassword) {
@@ -159,7 +159,7 @@ export default function ResetPasswordPage() {
 
       <div style={cardStyle}>
         <p style={{ margin: '0 0 16px', fontSize: 15, lineHeight: 1.5, color: 'var(--slate-600)' }}>
-          Choose a password you don&apos;t use anywhere else. Eight characters minimum.
+          Choose a password you don&apos;t use anywhere else. {PASSWORD_HINT}
         </p>
 
         {error && (
@@ -176,7 +176,7 @@ export default function ResetPasswordPage() {
             autoComplete="new-password"
             required
             minLength={MIN_PASSWORD_LENGTH}
-            placeholder={`${MIN_PASSWORD_LENGTH}+ characters`}
+            placeholder={`${MIN_PASSWORD_LENGTH}+ characters, one number or symbol`}
           />
           <Field
             label="Confirm password"

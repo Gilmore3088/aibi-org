@@ -4,7 +4,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { signIn, signInWithMagicLink, sanitizeNext } from '@/lib/supabase/auth';
+import { signIn, sanitizeNext } from '@/lib/supabase/auth';
 
 // ── Shared inline styles (mockup tokens) ─────────────────────────────────────
 
@@ -127,8 +127,9 @@ function Field({
   );
 }
 
-// ── Dev bypass ───────────────────────────────────────────────────────────────
-
+// Dev convenience: a one-click bypass that works only when NODE_ENV !==
+// 'production'. The dashboard's preview-auth-bypass handles the same case
+// in deployed previews; this just saves a click during local development.
 function DevSkipButton() {
   if (process.env.NODE_ENV !== 'development') return null;
   return (
@@ -145,7 +146,19 @@ function DevSkipButton() {
   );
 }
 
-// ── Password form ────────────────────────────────────────────────────────────
+// ── Password form (the only sign-in path) ────────────────────────────────────
+//
+// Magic-link sign-in was retired 2026-05-28 (#187). Community-bank users
+// expect institutional-grade auth: a password they choose, optional MFA
+// (Phase 2), and optional Microsoft SSO (Phase 3). Magic links also
+// routinely get held by corporate email security gateways (Mimecast,
+// Proofpoint, Microsoft Defender) past their expiry, which makes them
+// unreliable for the audience.
+//
+// Existing users who only ever used a magic link have an auth.users row
+// with no password. They use /auth/forgot-password to set one — Supabase's
+// resetPasswordForEmail works regardless of whether a password was ever
+// set, so the "migration" is implicit and on-demand.
 
 function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
   const router = useRouter();
@@ -208,134 +221,6 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
   );
 }
 
-// ── Magic link form ──────────────────────────────────────────────────────────
-
-function MagicLinkForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
-  const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
-  const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    setPending(true);
-
-    const data = new FormData(e.currentTarget);
-    const email = data.get('email') as string;
-
-    const result = await signInWithMagicLink(email, redirectTo);
-    setPending(false);
-
-    if (result.error) {
-      setError(result.error);
-      setState('error');
-      return;
-    }
-    setState('sent');
-  }
-
-  if (state === 'sent') {
-    return (
-      <div style={{ padding: '12px 0', textAlign: 'center' }}>
-        <p style={{ margin: 0, fontSize: 16, color: 'var(--ink)', fontWeight: 500 }}>
-          Check your inbox. A sign-in link is on its way.
-        </p>
-        <p
-          style={{
-            margin: '8px 0 0',
-            fontSize: 11,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'var(--slate-500)',
-            fontWeight: 600,
-          }}
-        >
-          The link expires in 1 hour
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      {error && (
-        <div role="alert" style={{ ...alertStyle, marginBottom: 14 }}>
-          {error}
-        </div>
-      )}
-      <Field
-        label="Email"
-        name="email"
-        type="email"
-        autoComplete="email"
-        required
-        placeholder="you@yourbank.com"
-        defaultValue={prefillEmail}
-      />
-      <button type="submit" style={ghostBtnStyle} disabled={pending}>
-        {pending ? 'SENDING LINK…' : 'SEND MAGIC LINK'}
-      </button>
-    </form>
-  );
-}
-
-// ── Mode toggle ──────────────────────────────────────────────────────────────
-
-function ModeToggle({
-  value,
-  onChange,
-}: {
-  value: 'password' | 'magic';
-  onChange: (v: 'password' | 'magic') => void;
-}) {
-  const base: CSSProperties = {
-    flex: 1,
-    height: 36,
-    border: 'none',
-    background: 'transparent',
-    fontSize: 13,
-    fontWeight: 600,
-    color: 'var(--slate-600)',
-    cursor: 'pointer',
-    borderRadius: 10,
-    fontFamily: 'inherit',
-  };
-  const active: CSSProperties = { ...base, background: 'var(--ink)', color: '#fff' };
-  return (
-    <div
-      role="tablist"
-      aria-label="Sign-in method"
-      style={{
-        display: 'flex',
-        gap: 4,
-        padding: 4,
-        background: 'var(--cream-2)',
-        borderRadius: 12,
-        marginBottom: 20,
-      }}
-    >
-      <button
-        type="button"
-        role="tab"
-        aria-selected={value === 'password'}
-        style={value === 'password' ? active : base}
-        onClick={() => onChange('password')}
-      >
-        Password
-      </button>
-      <button
-        type="button"
-        role="tab"
-        aria-selected={value === 'magic'}
-        style={value === 'magic' ? active : base}
-        onClick={() => onChange('magic')}
-      >
-        Magic Link
-      </button>
-    </div>
-  );
-}
-
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
@@ -353,12 +238,6 @@ export default function LoginPage() {
   // they used at checkout. Keeps the field editable.
   const rawEmail = searchParams.get('email');
   const prefillEmail = rawEmail && EMAIL_RE_LOGIN.test(rawEmail) ? rawEmail : '';
-  // #324 — let the In-Depth purchased page link directly to the magic-link
-  // tab via ?mode=magic. Default to password for everyone else.
-  const initialMode: 'password' | 'magic' =
-    searchParams.get('mode') === 'magic' ? 'magic' : 'password';
-
-  const [mode, setMode] = useState<'password' | 'magic'>(initialMode);
 
   return (
     <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -371,20 +250,14 @@ export default function LoginPage() {
         {urlError && (
           <div role="alert" style={{ ...alertStyle, marginBottom: 16 }}>
             {urlError === 'missing_code'
-              ? 'The sign-in link is invalid or has expired. Please try again.'
+              ? 'The link is invalid or has expired. Please sign in with your password, or use Forgot password to reset it.'
               : urlError === 'not_configured'
                 ? 'Authentication is not yet configured.'
                 : urlError}
           </div>
         )}
 
-        <ModeToggle value={mode} onChange={setMode} />
-
-        {mode === 'password' ? (
-          <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
-        ) : (
-          <MagicLinkForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
-        )}
+        <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
 
         <DevSkipButton />
       </div>
