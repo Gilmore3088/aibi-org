@@ -51,7 +51,10 @@ export interface SiteFooterProps {
   readonly showNewsletter?: boolean;
 }
 
-export function SiteFooter({ showNewsletter = true }: SiteFooterProps = {}) {
+// Newsletter retired 2026-05-27 (#339) — default the slot off across the
+// site. The `showNewsletter` prop is kept for callers that opt-in explicitly,
+// but defaults to false now that no active cadence exists.
+export function SiteFooter({ showNewsletter = false }: SiteFooterProps = {}) {
   const year = new Date().getFullYear();
 
   return (

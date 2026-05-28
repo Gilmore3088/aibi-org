@@ -4,7 +4,6 @@ import { questions } from '@content/assessments/v1/questions';
 import type { Tier } from '@content/assessments/v1/scoring';
 import { ScoreRing } from './ScoreRing';
 import { NextStepCards } from './NextStepCards';
-import { NewsletterCTA } from './NewsletterCTA';
 import { PrintButton } from './PrintButton';
 
 interface ResultsViewProps {
@@ -92,10 +91,7 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
       {/* Tier-specific next steps */}
       <NextStepCards tierId={tier.id} />
 
-      {/* Newsletter */}
-      <div data-print-hide="true">
-        <NewsletterCTA email={email} />
-      </div>
+      {/* Newsletter CTA removed 2026-05-27 (#339) — no active cadence. */}
 
       {/* Download */}
       <div className="text-center" data-print-hide="true">
