@@ -97,7 +97,8 @@ export default function HomePage() {
             </EyebrowChip>
             <h1>AI training that becomes real banking work.</h1>
             <p className="mk-lede">
-              Assess readiness, train by role, practice safely, and build reusable prompts, skills, SOPs, and review checklists.
+              Score your readiness in three minutes. Train your team by role.
+              Walk away with prompts, SOPs, and review checklists your examiner can read.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
@@ -107,6 +108,64 @@ export default function HomePage() {
                 See what learners build
               </Button>
             </div>
+            {/* #353 — price-anchor row so a B2B buyer can answer the
+                "is this in our budget bucket?" question without leaving
+                the hero. Three named, linked price points. */}
+            <ul
+              aria-label="What it costs"
+              style={{
+                listStyle: 'none',
+                margin: '24px 0 0',
+                padding: 0,
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px 22px',
+                color: 'rgba(247, 243, 234, 0.78)',
+                fontSize: 13,
+                lineHeight: 1.5,
+              }}
+            >
+              <li>
+                <strong style={{ color: 'var(--gold-soft)' }}>Free</strong>{' '}
+                ·{' '}
+                <a
+                  href="/assessment/take"
+                  style={{ color: 'inherit', textDecoration: 'underline' }}
+                >
+                  Readiness assessment
+                </a>
+              </li>
+              <li>
+                <strong style={{ color: 'var(--gold-soft)' }}>$99</strong>{' '}
+                ·{' '}
+                <a
+                  href="/assessment/in-depth"
+                  style={{ color: 'inherit', textDecoration: 'underline' }}
+                >
+                  In-depth diagnostic
+                </a>
+              </li>
+              <li>
+                <strong style={{ color: 'var(--gold-soft)' }}>$295</strong>{' '}
+                ·{' '}
+                <a
+                  href="/courses"
+                  style={{ color: 'inherit', textDecoration: 'underline' }}
+                >
+                  AiBI-Foundation course
+                </a>
+              </li>
+              <li>
+                <strong style={{ color: 'var(--gold-soft)' }}>Custom</strong>{' '}
+                ·{' '}
+                <a
+                  href="/for-institutions"
+                  style={{ color: 'inherit', textDecoration: 'underline' }}
+                >
+                  Institutional rollout
+                </a>
+              </li>
+            </ul>
           </div>
           <HeroReportCard />
         </div>
@@ -183,10 +242,18 @@ function HeroReportCard() {
 }
 
 function ImpactCalculator() {
+  // #355 — restore the 4-input spec from CLAUDE.md: fte, hourly cost, plus
+  // a candid low/high hours-per-week range so the output is a credible
+  // range (low/mid/high) instead of a hardcoded 1-hour midpoint.
   const [fte, setFte] = useState<number>(50);
   const [hourly, setHourly] = useState<number>(45);
-  const annual = Math.round(fte * 1 * hourly * 50);
-  const formatted = annual.toLocaleString('en-US');
+  const [loHours, setLoHours] = useState<number>(2);
+  const [hiHours, setHiHours] = useState<number>(5);
+  const midHours = (loHours + hiHours) / 2;
+  const low = Math.round(fte * loHours * hourly * 50);
+  const mid = Math.round(fte * midHours * hourly * 50);
+  const high = Math.round(fte * hiHours * hourly * 50);
+  const fmt = (n: number) => n.toLocaleString('en-US');
 
   return (
     <div className="mk-impact">
@@ -215,12 +282,45 @@ function ImpactCalculator() {
             aria-label="Fully-loaded hourly cost in dollars"
           />
         </label>
+        <label className="mk-impact-field">
+          <span className="mk-k">Hours / FTE / week — low estimate</span>
+          <input
+            type="number"
+            min={0}
+            max={20}
+            value={loHours}
+            onChange={(e) =>
+              setLoHours(
+                Math.max(0, Math.min(20, Number(e.target.value) || 0)),
+              )
+            }
+            className="mk-impact-input"
+            aria-label="Low estimate of automatable hours per FTE per week"
+          />
+        </label>
+        <label className="mk-impact-field">
+          <span className="mk-k">Hours / FTE / week — high estimate</span>
+          <input
+            type="number"
+            min={0}
+            max={20}
+            value={hiHours}
+            onChange={(e) =>
+              setHiHours(
+                Math.max(0, Math.min(20, Number(e.target.value) || 0)),
+              )
+            }
+            className="mk-impact-input"
+            aria-label="High estimate of automatable hours per FTE per week"
+          />
+        </label>
       </div>
       <div className="mk-impact-result">
-        <div className="mk-k">Annual value at one hour saved per week</div>
-        <div className="mk-impact-v">${formatted}</div>
+        <div className="mk-k">Annual labor value at the midpoint</div>
+        <div className="mk-impact-v">${fmt(mid)}</div>
         <div className="mk-impact-meta">
-          {fte} FTE × 1 hour × ${hourly}/hr × 50 weeks
+          Range: ${fmt(low)} (low) — ${fmt(high)} (high) · {fte} FTE ×{' '}
+          {loHours}–{hiHours} hrs × ${hourly}/hr × 50 weeks
         </div>
       </div>
     </div>
