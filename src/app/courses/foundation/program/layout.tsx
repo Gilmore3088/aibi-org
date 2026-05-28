@@ -20,6 +20,7 @@ import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 import { getEnrollment } from './_lib/getEnrollment';
 
 interface CourseLayoutProps {
@@ -92,6 +93,15 @@ export default async function CourseLayout({ children }: CourseLayoutProps) {
 
     if (!user) {
       redirect(loginHref);
+    }
+
+    // #187 PR 2 — new-device trust gate, mirrors /dashboard/layout. If the
+    // session is valid but this browser doesn't carry a non-expired
+    // aibi-trusted-device cookie bound to this user, bounce to the
+    // confirmation holding page.
+    const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
+    if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
+      redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
     }
   }
 
