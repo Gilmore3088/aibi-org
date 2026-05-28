@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagement Report Cover — The AI Banking Institute</title>
+<style>
+  /* Print-first stylesheet. Single Letter page (8.5×11), navy-dominant
+     hero with editorial typography. Use any browser's File → Print →
+     Save as PDF (Letter, no margins), or run through the project's
+     scripts/generate-template-pdfs.mjs pipeline. */
+
+  @page { size: Letter; margin: 0; }
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    color: #071A2F;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 8.5in;
+    height: 11in;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: 6.6in 1fr;
+    background: #F7F3EA;
+    position: relative;
+  }
+
+  /* ── NAVY HERO ────────────────────────────────────────────────── */
+
+  .hero {
+    background: #071A2F;
+    color: #F7F3EA;
+    padding: 0.75in 0.85in 0.65in;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Hairline grid in the hero, faint gold, decorative. */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(200,162,74,0.06) 1px, transparent 1px);
+    background-size: 0.85in 100%;
+    background-position: 0.85in 0;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative; z-index: 1;
+  }
+
+  /* Wordmark (seal + 2-line text) */
+  .lockup {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .seal {
+    width: 44px; height: 44px;
+    background: #F7F3EA;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wordmark .line1 {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: #F7F3EA;
+    line-height: 1;
+  }
+  .wordmark .line2 {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    color: #C8A24A;
+    margin-top: 4px;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+
+  /* Document classification block (top-right) */
+  .doc-meta {
+    text-align: right;
+    font-family: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    color: #C8A24A;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .doc-meta .row { display: block; }
+  .doc-meta .row .label {
+    color: rgba(247,243,234,0.42);
+    margin-right: 8px;
+  }
+
+  /* Hero title block — vertically centered in the available space */
+  .hero-mid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative; z-index: 1;
+    padding-top: 0.4in;
+  }
+
+  .kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #C8A24A;
+    margin: 0 0 28px;
+  }
+  .kicker::before {
+    content: "";
+    display: inline-block;
+    width: 28px; height: 2px;
+    background: #C8A24A;
+    margin-right: 14px;
+    vertical-align: middle;
+  }
+
+  .title {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    color: #F7F3EA;
+    margin: 0;
+    max-width: 6.3in;
+  }
+  .title .accent { color: #C8A24A; }
+
+  .dek {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgba(247,243,234,0.78);
+    margin: 24px 0 0;
+    max-width: 5in;
+    font-style: italic;
+  }
+
+  /* Hero footer line — institution name */
+  .hero-bottom {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(200,162,74,0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    position: relative; z-index: 1;
+  }
+  .prepared-for-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(247,243,234,0.45);
+  }
+  .institution {
+    font-size: 18px;
+    font-weight: 600;
+    color: #F7F3EA;
+    letter-spacing: -0.005em;
+  }
+
+  /* ── CREAM FOOTER PANEL ───────────────────────────────────────── */
+
+  .footer-panel {
+    padding: 0.55in 0.85in 0.55in;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    background: #F7F3EA;
+    color: #071A2F;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .meta-item .label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #9A7A2F;
+    margin-bottom: 6px;
+  }
+  .meta-item .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #071A2F;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+  }
+
+  .footer-rule {
+    height: 1px;
+    background: #071A2F;
+    margin-bottom: 16px;
+  }
+
+  .footer-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+  .footer-strip .confidential {
+    color: #9A7A2F;
+    border: 1px solid #9A7A2F;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+  }
+
+  @media screen {
+    body { background: #d8d4cb; padding: 24px 0; }
+    .page { box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+  }
+</style>
+</head>
+<body>
+<!--
+  USAGE
+  -----
+  Edit the four placeholders to produce a cover for one engagement:
+    1. .kicker          engagement type (e.g. "AI Readiness Briefing")
+    2. .title           engagement title — gold .accent span optional
+                        for a one-word emphasis
+    3. .dek             optional one-sentence subtitle, omit if not needed
+    4. .institution     bank/credit union name
+    5. .meta-grid       date + report number + lead + classification
+    6. .doc-meta        document classification top-right (mono)
+
+  Then File → Print → Save as PDF (Letter, no margins).
+-->
+<div class="page">
+
+  <!-- ── NAVY HERO ──────────────────────────────────────────────── -->
+  <section class="hero">
+
+    <div class="hero-top">
+      <div class="lockup">
+        <div class="seal" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 26 26">
+            <path d="M3 9 L13 4 L23 9 L23 10 L3 10 Z" fill="#071A2F"/>
+            <rect x="5" y="11" width="2.5" height="9" fill="#071A2F"/>
+            <rect x="9.25" y="11" width="2.5" height="9" fill="#071A2F"/>
+            <rect x="13.75" y="11" width="2.5" height="9" fill="#071A2F"/>
+            <rect x="18" y="11" width="2.5" height="9" fill="#071A2F"/>
+            <rect x="3" y="20.5" width="20" height="2" fill="#071A2F"/>
+          </svg>
+        </div>
+        <div class="wordmark">
+          <span class="line1">The AI Banking Institute</span>
+          <span class="line2">Regulated Intelligence</span>
+        </div>
+      </div>
+
+      <div class="doc-meta" aria-label="Document classification">
+        <span class="row"><span class="label">Doc</span>AiBI-BR-0001</span>
+        <span class="row"><span class="label">Rev</span>1.0 · 2026-05-28</span>
+        <span class="row"><span class="label">Cls</span>Confidential</span>
+      </div>
+    </div>
+
+    <div class="hero-mid">
+      <p class="kicker">AI Readiness Briefing</p>
+      <h1 class="title">From the branch <span class="accent">to the board.</span></h1>
+      <p class="dek">An evidence-graded read of how artificial intelligence is changing the operating economics of community banking — and what your institution should do next.</p>
+    </div>
+
+    <div class="hero-bottom">
+      <span class="prepared-for-label">Prepared for</span>
+      <span class="institution">First Community Bank &amp; Trust</span>
+    </div>
+
+  </section>
+
+  <!-- ── CREAM FOOTER ──────────────────────────────────────────── -->
+  <section class="footer-panel">
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <span class="label">Date prepared</span>
+        <span class="value">May&nbsp;28,&nbsp;2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Engagement lead</span>
+        <span class="value">James&nbsp;Gilmore, Founder</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Institution AUM</span>
+        <span class="value">$842M</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Report pages</span>
+        <span class="value">28</span>
+      </div>
+    </div>
+
+    <div class="footer-rule"></div>
+
+    <div class="footer-strip">
+      <span>The AI Banking Institute &middot; aibankinginstitute.com</span>
+      <span class="confidential">Confidential</span>
+    </div>
+
+  </section>
+
+</div>
+</body>
+</html>

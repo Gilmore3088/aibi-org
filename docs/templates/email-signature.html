@@ -1,0 +1,93 @@
+<!--
+  HTML email signature — The AI Banking Institute.
+
+  HOW TO INSTALL
+  --------------
+  Gmail:
+    1. Open this file in a browser.
+    2. Select all (Cmd+A), copy (Cmd+C).
+    3. Gmail → Settings (gear) → See all settings → General → Signature.
+    4. Click into the signature editor and paste (Cmd+V). Save changes.
+    5. Send a test email to yourself; verify the seal renders and the
+       wordmark stays on two lines.
+
+  Outlook (desktop):
+    1. Open Outlook → File → Options → Mail → Signatures.
+    2. Click New, give it a name.
+    3. Paste the HTML directly OR open this file in a browser, select
+       all, copy the rendered output, paste into the signature editor.
+    4. Set as default for new messages + replies.
+
+  Outlook (web / OWA):
+    1. Settings → Mail → Compose and reply → Email signature.
+    2. Paste the rendered content from your browser.
+
+  Apple Mail:
+    1. Mail → Settings → Signatures.
+    2. Drag this .html file onto the signature pane, or open in
+       browser → select-all → copy → paste into the editor.
+
+  WHY INLINE EVERYTHING
+  ---------------------
+  Outlook (Word rendering engine) strips external stylesheets and
+  most modern CSS. This signature uses inline styles on a <table>
+  layout with system fonts and an inline SVG seal so it renders
+  identically in Gmail, Outlook desktop, Outlook web, and Apple Mail.
+
+  EDITING
+  -------
+  - Change name / title in the highlighted block below.
+  - Tagline line is optional — comment out the <p> block to remove.
+  - Seal SVG can be swapped for a hosted .png if you ever need to
+    match a brand-asset URL.
+-->
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#071A2F;font-size:13px;line-height:1.45;">
+  <tr>
+    <!-- Seal column -->
+    <td valign="top" style="padding:0 14px 0 0;width:40px;">
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+        <tr>
+          <td style="background:#071A2F;border-radius:6px;width:40px;height:40px;text-align:center;vertical-align:middle;">
+            <!-- Inline SVG gold landmark on navy. 26x26, centered. -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" style="display:block;margin:0 auto;" aria-hidden="true">
+              <!-- Pediment -->
+              <path d="M3 9 L13 4 L23 9 L23 10 L3 10 Z" fill="#C8A24A"/>
+              <!-- Columns -->
+              <rect x="5" y="11" width="2.5" height="9" fill="#C8A24A"/>
+              <rect x="9.25" y="11" width="2.5" height="9" fill="#C8A24A"/>
+              <rect x="13.75" y="11" width="2.5" height="9" fill="#C8A24A"/>
+              <rect x="18" y="11" width="2.5" height="9" fill="#C8A24A"/>
+              <!-- Base -->
+              <rect x="3" y="20.5" width="20" height="2" fill="#C8A24A"/>
+            </svg>
+          </td>
+        </tr>
+      </table>
+    </td>
+
+    <!-- Text column -->
+    <td valign="top" style="padding:0;border-left:1px solid #E2E8F0;padding-left:14px;">
+
+      <!-- Name + title block (edit here) -->
+      <p style="margin:0;padding:0;font-size:14px;font-weight:700;color:#071A2F;line-height:1.2;">
+        James Gilmore
+      </p>
+      <p style="margin:2px 0 0;padding:0;font-size:12px;color:#475569;line-height:1.3;">
+        Founder &middot; The AI Banking Institute
+      </p>
+
+      <!-- Contact line -->
+      <p style="margin:8px 0 0;padding:0;font-size:12px;color:#475569;line-height:1.4;">
+        <a href="mailto:hello@aibankinginstitute.com" style="color:#475569;text-decoration:none;">hello@aibankinginstitute.com</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://www.aibankinginstitute.com" style="color:#475569;text-decoration:none;">aibankinginstitute.com</a>
+      </p>
+
+      <!-- Tagline (optional — delete the next <p> to remove) -->
+      <p style="margin:8px 0 0;padding:0;font-size:10px;font-weight:700;letter-spacing:1.6px;color:#9A7A2F;text-transform:uppercase;line-height:1.3;">
+        Turning Bankers into Builders
+      </p>
+
+    </td>
+  </tr>
+</table>
