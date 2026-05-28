@@ -32,11 +32,13 @@ const ROUTES = [
     changeFrequency: 'monthly' as const,
   },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
   { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
 
-  // Research hub + every published essay. The six legacy /resources/<slug>
-  // paths permanently redirect to /research/<slug> via next.config — only
-  // the canonical /research/* URLs ship in the sitemap.
+  // Research hub + every published essay. Legacy /resources/<slug> paths
+  // (sub-paths only — the bare /resources path is now the Artifact Library)
+  // permanently redirect to /research/<slug> via next.config; only the
+  // canonical /research/* URLs ship in the sitemap.
   { path: '/research', priority: 0.7, changeFrequency: 'weekly' as const },
   { path: '/research/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
   { path: '/research/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },

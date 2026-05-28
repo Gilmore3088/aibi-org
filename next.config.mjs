@@ -85,14 +85,12 @@ const nextConfig = {
       { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
-      // 2026-05-26: /resources → /research consolidation. Article folders
-      // were moved to src/app/research/<slug>/ so they render at the new
-      // URLs natively (the static routes take precedence over the dynamic
-      // [slug] catch-all in /research). These permanent redirects preserve
-      // every external link to the old URLs (newsletters, social shares,
-      // search results).
-      { source: '/resources', destination: '/research', permanent: true },
-      { source: '/resources/:slug*', destination: '/research/:slug*', permanent: true },
+      // 2026-05-28: /resources is now the canonical Artifact Library
+      // (playbooks, checklists, templates, prompt cards). The exact-match
+      // redirect to /research was removed so the new src/app/resources/
+      // page renders. Legacy article slugs still live at /research/<slug>,
+      // so the sub-path redirect is preserved for inbound links.
+      { source: '/resources/:slug+', destination: '/research/:slug+', permanent: true },
       // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
       // redirects to /courses/foundation/program. permanent: true emits HTTP
       // 308 (method-preserving, cacheable, search-engine-friendly). Keep
