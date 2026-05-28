@@ -1,6 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+// Guided artifact-finder layout (2026-05-28 audit Bucket B).
+// Sticky left-rail FilterRail on desktop (≥1024px); collapsible <details>
+// strip on mobile/tablet. Filters: Role, Format, Search. Sections filter
+// themselves; their headings hide when 0 items match.
+
+import { useMemo, useState } from 'react';
 import {
   Button,
   CtaBand,
@@ -33,9 +38,93 @@ import {
   templates,
 } from './data';
 
+// ─── Filter taxonomy ─────────────────────────────────────────────────────
+// Roles map 1:1 to RolePlaybook slugs. Formats are descriptive labels that
+// span Template.format, DeskCard.type, and a synthetic "Playbook" / "Sample".
+const ROLE_OPTIONS = ['Compliance', 'Retail', 'Marketing', 'Lending', 'BSA/AML', 'IT/InfoSec'] as const;
+type RoleFilter = (typeof ROLE_OPTIONS)[number];
+
+const FORMAT_OPTIONS = ['Playbook', 'Template', 'Desk card', 'Sample'] as const;
+type FormatFilter = (typeof FORMAT_OPTIONS)[number];
+
+interface FilterState {
+  readonly roles: ReadonlySet<RoleFilter>;
+  readonly formats: ReadonlySet<FormatFilter>;
+  readonly search: string;
+}
+
+const EMPTY_FILTERS: FilterState = {
+  roles: new Set(),
+  formats: new Set(),
+  search: '',
+};
+
+function matchesSearch(text: string, search: string): boolean {
+  if (!search) return true;
+  return text.toLowerCase().includes(search.toLowerCase());
+}
+
+function playbookMatches(playbook: RolePlaybook, f: FilterState): boolean {
+  if (f.formats.size && !f.formats.has('Playbook')) return false;
+  if (f.roles.size && !roleMatchesPlaybook(playbook, f.roles)) return false;
+  return matchesSearch(`${playbook.title} ${playbook.desc}`, f.search);
+}
+
+const ROLE_SLUG_MAP: Record<RoleFilter, string[]> = {
+  Compliance: ['compliance'],
+  Retail: ['retail'],
+  Marketing: ['marketing'],
+  Lending: ['lending'],
+  'BSA/AML': ['bsa-aml'],
+  'IT/InfoSec': ['infosec'],
+};
+
+function roleMatchesPlaybook(p: RolePlaybook, roles: ReadonlySet<RoleFilter>): boolean {
+  const selected = Array.from(roles);
+  return selected.some((r) => ROLE_SLUG_MAP[r].includes(p.slug));
+}
+
+function templateMatches(template: TemplateData, f: FilterState): boolean {
+  if (f.formats.size && !f.formats.has('Template')) return false;
+  // Templates aren't role-scoped — only honor role filter when search is
+  // also empty to avoid hiding the entire grid on a role-only filter.
+  if (f.roles.size && !f.search) return false;
+  return matchesSearch(`${template.title} ${template.desc} ${template.format}`, f.search);
+}
+
+function deskCardMatches(card: DeskCardData, f: FilterState): boolean {
+  if (f.formats.size && !f.formats.has('Desk card')) return false;
+  if (f.roles.size && !f.search) return false;
+  return matchesSearch(`${card.title} ${card.desc} ${card.type}`, f.search);
+}
+
+function paidPreviewMatches(preview: PaidPreviewData, f: FilterState): boolean {
+  if (f.formats.size && !f.formats.has('Sample')) return false;
+  if (f.roles.size && !f.search) return false;
+  return matchesSearch(`${preview.title} ${preview.desc}`, f.search);
+}
+
 export function ResourcesExperience() {
   const [activeTab, setActiveTab] = useState<ChooserTab>('By role');
   const [selectedKit, setSelectedKit] = useState<StarterKit>(starterKits[0]);
+  const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
+
+  const visiblePlaybooks = useMemo(
+    () => rolePlaybooks.filter((p) => playbookMatches(p, filters)),
+    [filters],
+  );
+  const visibleTemplates = useMemo(
+    () => templates.filter((t) => templateMatches(t, filters)),
+    [filters],
+  );
+  const visibleDeskCards = useMemo(
+    () => deskCards.filter((c) => deskCardMatches(c, filters)),
+    [filters],
+  );
+  const visiblePaidPreviews = useMemo(
+    () => paidPreviews.filter((p) => paidPreviewMatches(p, filters)),
+    [filters],
+  );
 
   return (
     <div className="mockup-scope" style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
@@ -67,6 +156,11 @@ export function ResourcesExperience() {
           <FeaturedKit selectedKit={selectedKit} setSelectedKit={setSelectedKit} />
         </div>
       </section>
+
+      {/* 2-col grid: sticky filter rail (left, desktop) + filtered content. */}
+      <div className="rx-page-grid">
+        <FilterRail filters={filters} setFilters={setFilters} />
+        <div className="rx-page-main">
 
       <Section variant="std">
         <div className="rx-chooser">
@@ -109,69 +203,94 @@ export function ResourcesExperience() {
         </div>
       </Section>
 
-      <Section variant="std" surface="white" id="role-playbooks">
-        <SectionHead
-          kicker="Role playbooks"
-          heading="Six playbooks. Built around the work each role actually owns."
-          lede="Open the role path, then copy the templates and prompts that come with it."
-        />
-        <div className="rx-grid rx-grid-3">
-          {rolePlaybooks.map((playbook) => (
-            <RolePlaybookCard key={playbook.slug} playbook={playbook} />
-          ))}
-        </div>
-      </Section>
-
-      <Section variant="std" id="templates">
-        <SectionHead
-          kicker="Templates"
-          heading="Copy these into your next meeting."
-          lede="Starter documents for policy, workflow, board review, and AI use-case governance."
-        />
-        <div className="rx-grid rx-grid-4">
-          {templates.map((template) => (
-            <TemplateCard key={template.title} template={template} />
-          ))}
-        </div>
-      </Section>
-
-      <Section variant="std" surface="white" id="desk-cards">
-        <div className="rx-desk-grid">
-          <div>
-            <SectionHead
-              kicker="Desk cards"
-              heading="One-page references your staff can use Monday."
-              lede="Short, printable, and built for quick decisions before someone pastes work into an AI tool."
-            />
-            <Button variant="ink" href="/prompt-cards">
-              Browse prompt cards <ArrowRight size={16} />
-            </Button>
-          </div>
-          <div className="rx-grid rx-grid-2">
-            {deskCards.map((card) => (
-              <DeskCard key={card.title} card={card} />
+      {visiblePlaybooks.length > 0 && (
+        <Section variant="std" surface="white" id="role-playbooks">
+          <SectionHead
+            kicker="Role playbooks"
+            heading={`${visiblePlaybooks.length} playbook${visiblePlaybooks.length === 1 ? '' : 's'} for the role you picked.`}
+            lede="Open the role path, then copy the templates and prompts that come with it."
+          />
+          <div className="rx-grid rx-grid-3">
+            {visiblePlaybooks.map((playbook) => (
+              <RolePlaybookCard key={playbook.slug} playbook={playbook} />
             ))}
           </div>
-        </div>
-      </Section>
+        </Section>
+      )}
 
-      <Section variant="std" id="preview-paid">
-        <div className="rx-paid-grid">
-          <div>
-            <SectionHead
-              kicker="Preview paid outputs"
-              heading="See what the assessments produce before you buy."
-              lede="Use sample reports and buyer guides to decide whether the free snapshot or in-depth assessment is the right next step."
-            />
+      {visibleTemplates.length > 0 && (
+        <Section variant="std" id="templates">
+          <SectionHead
+            kicker="Templates"
+            heading="Copy these into your next meeting."
+            lede="Starter documents for policy, workflow, board review, and AI use-case governance."
+          />
+          <div className="rx-grid rx-grid-4">
+            {visibleTemplates.map((template) => (
+              <TemplateCard key={template.title} template={template} />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {visibleDeskCards.length > 0 && (
+        <Section variant="std" surface="white" id="desk-cards">
+          <div className="rx-desk-grid">
+            <div>
+              <SectionHead
+                kicker="Desk cards"
+                heading="One-page references your staff can use Monday."
+                lede="Short, printable, and built for quick decisions before someone pastes work into an AI tool."
+              />
+              <Button variant="ink" href="/prompt-cards">
+                Browse prompt cards <ArrowRight size={16} />
+              </Button>
+            </div>
             <div className="rx-grid rx-grid-2">
-              {paidPreviews.map((preview) => (
-                <PaidPreviewCard key={preview.title} preview={preview} />
+              {visibleDeskCards.map((card) => (
+                <DeskCard key={card.title} card={card} />
               ))}
             </div>
           </div>
-          <AssessmentCTA />
-        </div>
-      </Section>
+        </Section>
+      )}
+
+      {visiblePaidPreviews.length > 0 && (
+        <Section variant="std" id="preview-paid">
+          <div className="rx-paid-grid">
+            <div>
+              <SectionHead
+                kicker="Preview paid outputs"
+                heading="See what the assessments produce before you buy."
+                lede="Use sample reports and buyer guides to decide whether the free snapshot or in-depth assessment is the right next step."
+              />
+              <div className="rx-grid rx-grid-2">
+                {visiblePaidPreviews.map((preview) => (
+                  <PaidPreviewCard key={preview.title} preview={preview} />
+                ))}
+              </div>
+            </div>
+            <AssessmentCTA />
+          </div>
+        </Section>
+      )}
+
+      {/* Empty-state when every filter excludes everything. */}
+      {visiblePlaybooks.length + visibleTemplates.length + visibleDeskCards.length + visiblePaidPreviews.length === 0 && (
+        <Section variant="std" surface="white">
+          <div className="rx-empty-state">
+            <p className="mk-k">No matches</p>
+            <h2>No artifacts match those filters.</h2>
+            <p>Try clearing one filter, or browse all artifacts with no filter selected.</p>
+            <Button variant="ink" onClick={() => setFilters(EMPTY_FILTERS)}>
+              Reset filters
+            </Button>
+          </div>
+        </Section>
+      )}
+
+        </div>{/* /.rx-page-main */}
+      </div>{/* /.rx-page-grid */}
 
       <CtaBand
         kicker="Not sure where to start?"
@@ -444,6 +563,117 @@ function AssessmentCTA() {
           Get readiness score <ArrowRight size={16} />
         </Button>
       </div>
+    </aside>
+  );
+}
+
+/* ─── FilterRail ──────────────────────────────────────────────────────
+   Sticky-left filter on desktop (≥1024px), collapsible <details> on
+   smaller screens. Three groups: Role, Format, Search. Drives the
+   per-section visibility on the right column. */
+function FilterRail({
+  filters,
+  setFilters,
+}: {
+  readonly filters: FilterState;
+  readonly setFilters: (f: FilterState) => void;
+}) {
+  function toggleRole(role: RoleFilter) {
+    const next = new Set(filters.roles);
+    if (next.has(role)) next.delete(role);
+    else next.add(role);
+    setFilters({ ...filters, roles: next });
+  }
+
+  function toggleFormat(format: FormatFilter) {
+    const next = new Set(filters.formats);
+    if (next.has(format)) next.delete(format);
+    else next.add(format);
+    setFilters({ ...filters, formats: next });
+  }
+
+  const hasAny = filters.roles.size > 0 || filters.formats.size > 0 || filters.search.length > 0;
+
+  const railBody = (
+    <div className="rx-filter-rail-body">
+      <label className="rx-filter-search" htmlFor="rx-filter-search-input">
+        <span className="rx-filter-search-label">Search</span>
+        <input
+          id="rx-filter-search-input"
+          type="search"
+          placeholder="Search titles + descriptions"
+          value={filters.search}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+          className="rx-filter-search-input"
+        />
+      </label>
+
+      <div className="rx-filter-group">
+        <div className="rx-filter-group-label">Role</div>
+        <div className="rx-filter-chips">
+          {ROLE_OPTIONS.map((role) => {
+            const active = filters.roles.has(role);
+            return (
+              <button
+                key={role}
+                type="button"
+                onClick={() => toggleRole(role)}
+                aria-pressed={active}
+                className={`rx-filter-chip${active ? ' is-active' : ''}`}
+              >
+                {role}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="rx-filter-group">
+        <div className="rx-filter-group-label">Format</div>
+        <div className="rx-filter-chips">
+          {FORMAT_OPTIONS.map((format) => {
+            const active = filters.formats.has(format);
+            return (
+              <button
+                key={format}
+                type="button"
+                onClick={() => toggleFormat(format)}
+                aria-pressed={active}
+                className={`rx-filter-chip${active ? ' is-active' : ''}`}
+              >
+                {format}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {hasAny && (
+        <button
+          type="button"
+          className="rx-filter-reset"
+          onClick={() => setFilters(EMPTY_FILTERS)}
+        >
+          Reset all filters
+        </button>
+      )}
+    </div>
+  );
+
+  return (
+    <aside className="rx-filter-rail" aria-label="Filter artifacts">
+      {/* Desktop view: static, sticky. */}
+      <div className="rx-filter-rail-desktop">
+        <h2 className="rx-filter-rail-title">Find an artifact</h2>
+        {railBody}
+      </div>
+      {/* Mobile/tablet view: collapsible. */}
+      <details className="rx-filter-rail-mobile">
+        <summary className="rx-filter-rail-summary">
+          {hasAny ? `${filters.roles.size + filters.formats.size + (filters.search ? 1 : 0)} filters active` : 'Filter artifacts'}
+        </summary>
+        {railBody}
+      </details>
     </aside>
   );
 }
