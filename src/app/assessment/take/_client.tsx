@@ -30,6 +30,7 @@ export default function AssessmentPage() {
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
+  const [capturedMagicLinkUrl, setCapturedMagicLinkUrl] = useState<string | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
@@ -297,6 +298,7 @@ export default function AssessmentPage() {
                         setCapturedFirstName(extras.firstName ?? null);
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(extras.profileId ?? null);
+                        setCapturedMagicLinkUrl(extras.magicLinkUrl ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
                         if (extras.profileId) {
                           try {
@@ -342,6 +344,7 @@ export default function AssessmentPage() {
                 firstName={capturedFirstName}
                 institutionName={capturedInstitution}
                 profileId={capturedProfileId}
+                magicLinkUrl={capturedMagicLinkUrl}
               />
             </>
           )}

@@ -16,7 +16,7 @@ import {
   type TierId,
 } from '@/lib/mailerlite/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
-import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   checkEmailCaptureLimit,
   hashIp,
@@ -175,12 +175,21 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] mailerlite skip', err));
   }
 
-  // Provision a Supabase Auth account for this email (idempotent, fire-and-
-  // forget). Lets the assessment-taker log into /dashboard later without a
-  // separate sign-up step.
-  ensureAuthUser(email).catch((err) =>
-    console.warn('[capture-email] auth-admin skip', err),
-  );
+  // Provision a Supabase Auth account for this email (idempotent), then
+  // generate a one-click magic link so the inline report + Resend email
+  // can surface a "View your dashboard" CTA. #303 — previously fire-and-
+  // forget; now awaited so the URL can be plumbed downstream. Best-effort:
+  // a Supabase failure must not block the response — the report still
+  // renders, and the email template falls back to /auth/login.
+  let magicLinkUrl: string | null = null;
+  try {
+    const authResult = await ensureAuthUser(email);
+    if (authResult.userId) {
+      magicLinkUrl = await generateMagicLink(email, '/dashboard');
+    }
+  } catch (err) {
+    console.warn('[capture-email] auth-admin skip', err);
+  }
 
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the
@@ -291,6 +300,7 @@ export async function POST(request: Request) {
         starterArtifactTitle: artifact?.title,
         starterArtifactBody: artifact?.body,
         profileId,
+        ...(magicLinkUrl ? { magicLinkUrl } : {}),
       }).catch((err) => console.warn('[capture-email] resend skip', err));
     } catch (err) {
       console.error('[capture-email] email-prep threw:', err);
@@ -303,5 +313,6 @@ export async function POST(request: Request) {
     ok: true,
     profileId,
     mailerliteTagAdded: mailerliteTagged,
+    magicLinkUrl,
   });
 }

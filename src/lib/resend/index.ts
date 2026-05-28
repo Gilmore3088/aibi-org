@@ -99,6 +99,10 @@ export interface AssessmentBreakdownEmailPayload {
   readonly starterArtifactTitle?: string;
   readonly starterArtifactBody?: string;
   readonly profileId?: string | null;
+  /** One-click magic-link login URL. When present, DASHBOARD_URL in the
+      Resend template resolves to a signed-in landing; absent, it falls
+      back to /auth/login with a return path. */
+  readonly magicLinkUrl?: string;
 }
 
 export function sendAssessmentBreakdown(
@@ -121,6 +125,9 @@ export function sendAssessmentBreakdown(
       TIER_HEADLINE: payload.tierHeadline,
       TIER_SUMMARY: payload.tierSummary,
       RESULTS_URL: resultsUrl,
+      DASHBOARD_URL:
+        payload.magicLinkUrl ??
+        'https://aibankinginstitute.com/auth/login?next=/dashboard',
     },
   });
 }
