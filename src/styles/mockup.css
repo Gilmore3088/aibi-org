@@ -4189,6 +4189,20 @@ section.mk-std { padding: 56px 0; }
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 8px 24px;
 }
+@media (max-width: 767px) {
+  /* Mobile: 2-col grid (~50% scroll reduction vs single column).
+     Audit punch list 2026-05-28 — was 12 vertical accordion-like rows. */
+  .mk-curriculum-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 12px;
+  }
+  .mk-curriculum-row {
+    padding: 6px 0;
+  }
+  .mk-curriculum-title {
+    font-size: 13px;
+  }
+}
 .mk-curriculum-row {
   display: flex; align-items: baseline; gap: 10px;
   padding: 8px 0;
