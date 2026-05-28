@@ -22,6 +22,9 @@ export type { CardProps, InfoBoxProps, IconBadgeProps } from './Card';
 export { CtaBand } from './CtaBand';
 export type { CtaBandProps, CtaAction } from './CtaBand';
 
+export { StickyMobileCta } from './StickyMobileCta';
+export type { StickyMobileCtaProps } from './StickyMobileCta';
+
 export { EyebrowChip } from './EyebrowChip';
 export type { EyebrowChipProps } from './EyebrowChip';
 

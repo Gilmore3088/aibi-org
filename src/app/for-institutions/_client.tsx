@@ -9,6 +9,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
@@ -471,6 +472,12 @@ export default function ForInstitutionsPage() {
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
           { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Book a briefing"
+        href="/for-institutions/advisory"
+        source="institutions-sticky"
       />
     </div>
   );

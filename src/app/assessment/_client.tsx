@@ -9,6 +9,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 
 // ---------- Icons ----------
@@ -605,6 +606,12 @@ export default function AssessmentLandingPage() {
           { label: 'Get the in-depth report', href: '/assessment/in-depth', variant: 'gold' },
           { label: 'Start free first', href: '/assessment/take', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Start the free assessment"
+        href="/assessment/take"
+        source="assessment-sticky"
       />
     </div>
   );
