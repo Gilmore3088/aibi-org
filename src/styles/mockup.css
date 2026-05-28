@@ -6076,3 +6076,80 @@ section.mk-std { padding: 56px 0; }
 @media (min-width: 768px) {
   .mk-three-ways-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }
+
+/* ─── Mobile hero polish (2026-05-28 feedback) ──────────────────────────
+   The hero felt edge-flush on Pixel/Chrome. Adds breathing room to inner
+   padding, tightens headline at narrow widths, stacks CTAs as full-width
+   buttons below 430px, and converts the horizontal-scroll nav into a
+   5-column grid so the right-edge scroll affordance disappears. */
+
+@media (max-width: 640px) {
+  /* JSX is <div className="mk-container mk-hero-inner"> — both classes
+     on the same element — so .mk-hero-inner's padding-inline overrides
+     .mk-container's 24px. Set the full intended inset here directly. */
+  .mk-hero-inner {
+    padding-block: 56px 64px;
+    padding-inline: clamp(28px, 7vw, 40px);
+  }
+
+  /* Tighter headline: was clamp(40px, 6vw, 72px) — locked at 40px under
+     ~667px width which read as wall-text on Pixel. Now responsive. */
+  .mk-hero h1 {
+    font-size: clamp(36px, 9.5vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 14ch;
+  }
+
+  /* Lede readable but tighter — was 18px / 36ch. */
+  .mk-hero .mk-lede {
+    font-size: 17px;
+    line-height: 1.55;
+    max-width: 30ch;
+    margin-top: 18px;
+  }
+}
+
+/* Stack hero CTAs as full-width buttons on narrow phones. Wrap below 430px
+   so longer button labels ("Get my AI readiness score") don't crash. */
+@media (max-width: 430px) {
+  .mk-hero .mk-ctas {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .mk-hero .mk-ctas > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Mobile nav: 5-column grid instead of horizontal-scroll. Labels are
+   short enough (Home / Assessment / Course / Resources / Institutions)
+   to fit at narrow widths with tightened padding. */
+@media (max-width: 1179px) {
+  .mk-nav-mobile {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 6px;
+    overflow-x: visible;  /* kill the scroll affordance */
+  }
+  .mk-nav-mobile a {
+    flex: initial;
+    padding: 8px 6px;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 0;
+  }
+}
+@media (max-width: 380px) {
+  /* Very narrow phones — drop font + padding one more step. */
+  .mk-nav-mobile a {
+    font-size: 12px;
+    padding: 8px 4px;
+    letter-spacing: -0.01em;
+  }
+}
