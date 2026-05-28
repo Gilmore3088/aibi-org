@@ -14,14 +14,12 @@ import { notFound } from 'next/navigation';
 import {
   SiteHeader,
   Section,
-  Button,
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
 import {
   PLAYBOOK_ASSETS,
   getPlaybookAsset,
-  type PlaybookAsset,
   type AssetSection,
 } from '@content/playbook-assets/data';
 import { PLAYBOOKS } from '../../data';
