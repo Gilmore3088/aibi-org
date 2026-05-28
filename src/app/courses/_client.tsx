@@ -10,6 +10,7 @@ import {
   EyebrowChip,
   CtaBand,
   StickyMobileCta,
+  BottomSheet,
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
@@ -324,6 +325,10 @@ function CoursePreview({
   setActiveModule: (m: ModuleData) => void;
   ActiveIcon: (p: IconProps) => JSX.Element;
 }) {
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const activeIndex = MODULES.findIndex((m) => m.title === activeModule.title);
+  const sheetTriggerLabel = `Module ${activeIndex + 1} of ${MODULES.length} · Browse modules`;
+
   return (
     <div className="mk-cpv">
       <div className="mk-cpv-top">
@@ -333,6 +338,18 @@ function CoursePreview({
         </div>
         <span className="mk-cpv-tag">See what learners build</span>
       </div>
+
+      {/* Mobile-only sheet trigger — opens the module picker as a true
+          bottom sheet. Hidden on desktop via .mk-cpv-sheet-trigger CSS. */}
+      <button
+        type="button"
+        className="mk-cpv-sheet-trigger"
+        onClick={() => setSheetOpen(true)}
+        aria-haspopup="dialog"
+      >
+        {sheetTriggerLabel} <span aria-hidden="true">↑</span>
+      </button>
+
       <div className="mk-cpv-grid">
         <div className="mk-cpv-list">
           <p className="mk-k">Learning Path</p>
@@ -367,6 +384,38 @@ function CoursePreview({
           <ModuleDemo activeModule={activeModule} />
         </div>
       </div>
+
+      <BottomSheet
+        open={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        title="Browse modules"
+      >
+        <div className="mk-cpv-sheet-list">
+          {MODULES.map((mod, i) => {
+            const Icon = mod.icon;
+            const active = activeModule.title === mod.title;
+            return (
+              <button
+                key={mod.title}
+                type="button"
+                onClick={() => {
+                  setActiveModule(mod);
+                  setSheetOpen(false);
+                }}
+                className={`mk-cpv-mod${active ? ' is-active' : ''}`}
+              >
+                <span className="mk-cpv-mod-icon">
+                  <Icon size={18} />
+                </span>
+                <div>
+                  <p className="mk-cpv-mod-meta">Module {i + 1}</p>
+                  <p className="mk-cpv-mod-name">{mod.title}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </BottomSheet>
     </div>
   );
 }

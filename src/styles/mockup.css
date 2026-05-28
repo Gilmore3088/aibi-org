@@ -1139,29 +1139,120 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-cpv-grid { display: grid; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .mk-cpv-grid { grid-template-columns: 0.46fr 0.54fr; } }
-/* Mobile: detail panel first, picker list second + horizontally
-   scrollable so 5 module buttons don't push the demo below the fold.
-   Audit 2026-05-28: "left rail of module buttons is buried under
-   the right detail panel". */
+/* Mobile (audit 2026-05-28 final): detail panel renders first, the
+   inline module list hides entirely, and a "Browse modules" trigger
+   opens the list as a true bottom sheet. Desktop keeps the inline
+   side-by-side layout untouched. */
+.mk-cpv-sheet-trigger {
+  display: none;
+}
 @media (max-width: 899px) {
   .mk-cpv-detail { order: 1; }
-  .mk-cpv-list {
-    order: 2;
-    margin-top: 16px;
+  .mk-cpv-list { display: none; }
+  .mk-cpv-sheet-trigger {
     display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 8px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 12px 0 16px;
+    padding: 14px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
   }
-  .mk-cpv-list::-webkit-scrollbar { display: none; }
-  .mk-cpv-list > .mk-k { display: none; } /* "Learning Path" label */
-  .mk-cpv-list > .mk-cpv-mod {
-    flex: 0 0 auto;
-    min-width: 200px;
-    scroll-snap-align: start;
+  .mk-cpv-sheet-trigger:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
+}
+.mk-cpv-sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ─── BottomSheet primitive ────────────────────────────────────────────
+   Used by CoursePreview module picker; reusable for any mobile picker
+   that wants modal overlay semantics. Renders via createPortal into
+   document.body, so it escapes parent stacking contexts. */
+.mk-bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 26, 47, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  animation: mk-bs-fade-in 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mk-bottom-sheet {
+  width: 100%;
+  max-width: 640px;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: mk-bs-slide-up 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.mk-bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--slate-200);
+  border-radius: 999px;
+  margin: 10px auto 6px;
+  flex-shrink: 0;
+}
+.mk-bottom-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 12px;
+  border-bottom: 1px solid var(--slate-200);
+  flex-shrink: 0;
+}
+.mk-bottom-sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+.mk-bottom-sheet-close {
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--slate-600);
+  border-radius: 8px;
+}
+.mk-bottom-sheet-close:hover { background: var(--cream); }
+.mk-bottom-sheet-close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.mk-bottom-sheet-body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@keyframes mk-bs-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mk-bs-slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-bottom-sheet-overlay,
+  .mk-bottom-sheet { animation: none; }
 }
 .mk-cpv-list {
   background: var(--cream); padding: 18px 20px;
