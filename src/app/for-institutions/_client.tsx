@@ -459,7 +459,8 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'See pricing', href: '/education', variant: 'ghost-dark' },
+          // /education is a legacy redirect to /courses. Skip the hop. Issue #333.
+          { label: 'See pricing', href: '/courses', variant: 'ghost-dark' },
         ]}
       />
     </div>
