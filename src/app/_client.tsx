@@ -12,6 +12,7 @@ import {
   CtaBand,
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
+import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -72,11 +73,11 @@ const ToolboxStackIcon = (p: IconProps) => (
 
 // ---------- Static data ----------
 
-const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element }[] = [
-  { step: 'Assess', title: 'Find readiness gaps', body: 'Twelve questions, three minutes. Score, tier, and a starter artifact.', icon: CheckSquareIcon },
-  { step: 'Train', title: 'Learn by role', body: 'Foundation Course modules that map to compliance, retail, ops, and marketing work.', icon: LayersIcon },
-  { step: 'Practice', title: 'Use safe scenarios', body: 'Realistic synthetic banking scenarios. Compare model output before you take it to real work.', icon: FlaskIcon },
-  { step: 'Build', title: 'Save reviewed workflows', body: 'Prompts, SOPs, and review checklists you keep — reusable across your team.', icon: ToolboxStackIcon },
+const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element; tier: 'free' | 'paid' }[] = [
+  { step: 'Assess', title: 'Find readiness gaps', body: 'Twelve questions, three minutes. Score, tier, and a starter artifact.', icon: CheckSquareIcon, tier: 'free' },
+  { step: 'Train', title: 'Learn by role', body: 'Foundation Course modules that map to compliance, retail, ops, and marketing work.', icon: LayersIcon, tier: 'paid' },
+  { step: 'Practice', title: 'Use safe scenarios', body: 'Realistic synthetic banking scenarios. Compare model output before you take it to real work.', icon: FlaskIcon, tier: 'paid' },
+  { step: 'Build', title: 'Save reviewed workflows', body: 'Prompts, SOPs, and review checklists you keep — reusable across your team.', icon: ToolboxStackIcon, tier: 'paid' },
 ];
 
 // ---------- Page ----------
@@ -119,7 +120,7 @@ export default function HomePage() {
           heading={<>Start with readiness. Leave with reviewed workflows.</>}
         />
         <div className="mk-value-path">
-          {VALUE_PATH.map(({ step, title, body, icon: Icon }) => (
+          {VALUE_PATH.map(({ step, title, body, icon: Icon, tier }) => (
             <div key={step} className="mk-vp-card">
               <span className="mk-pic">
                 <Icon className="mk-ic-lg" size={20} />
@@ -127,10 +128,15 @@ export default function HomePage() {
               <div className="mk-k">{step}</div>
               <h3 className="mk-vp-title">{title}</h3>
               <p className="mk-vp-body">{body}</p>
+              <span className={`mk-vp-tier mk-vp-tier-${tier}`}>
+                {tier === 'free' ? 'Free' : 'In Foundation course'}
+              </span>
             </div>
           ))}
         </div>
       </Section>
+
+      <AdvisorsStrip />
 
       <PriceStrip />
 

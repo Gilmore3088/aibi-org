@@ -10,6 +10,7 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
+import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -454,6 +455,8 @@ export default function ForInstitutionsPage() {
           </div>
         </div>
       </Section>
+
+      <AdvisorsStrip />
 
       <CtaBand
         kicker="Start with the assessment"
