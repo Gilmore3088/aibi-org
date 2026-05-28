@@ -175,9 +175,6 @@ export default function AssessmentLandingPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
-              Free readiness snapshot · 3 minutes
-            </EyebrowChip>
             <h1>Get your AI readiness snapshot in 3 minutes.</h1>
             <p className="mk-lede">
               Answer 12 questions. Get a score, maturity tier, top gap, and starter

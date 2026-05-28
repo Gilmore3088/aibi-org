@@ -87,9 +87,6 @@ export default function CoursesIndexPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<GradCapIcon className="mk-ic" />}>
-              AiBI-Foundation · self-paced
-            </EyebrowChip>
             <h1>Learn AI by building reviewed banking workflows.</h1>
             <p className="mk-lede">
               A hands-on course for bankers who need safe practice, reusable artifacts, and a

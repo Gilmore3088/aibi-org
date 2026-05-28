@@ -53,7 +53,6 @@ export default function PlaybooksIndexPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<InboxIcon className="mk-ic" />}>Role Playbooks · For the people who run the bank</EyebrowChip>
             <h1>Six role playbooks. Each one ends with usable artifacts.</h1>
             <p className="mk-lede">
               Pick the playbook for your role. Each is built around the same shape — use cases,

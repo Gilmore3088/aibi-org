@@ -220,9 +220,6 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
-              Sample report · Yours after the 12-question assessment
-            </EyebrowChip>
             <h1>What your AI readiness snapshot will look like.</h1>
             <p className="mk-lede">
               A walkthrough of the report you receive after the free 12-question assessment.

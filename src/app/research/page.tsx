@@ -337,7 +337,6 @@ export default function ResourcesHubPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip>Research &middot; field notes</EyebrowChip>
             <h1>Plain-language research for practical banking AI.</h1>
             <p className="mk-lede">
               Essays, field notes, and templates on AI governance, training,
