@@ -145,13 +145,16 @@ export function GuidedFilterProvider({ children }: { children: ReactNode }) {
       };
       if (facet === 'role') {
         const t = tag as RoleTag;
-        next.roles.has(t) ? next.roles.delete(t) : next.roles.add(t);
+        if (next.roles.has(t)) next.roles.delete(t);
+        else next.roles.add(t);
       } else if (facet === 'problem') {
         const t = tag as ProblemTag;
-        next.problems.has(t) ? next.problems.delete(t) : next.problems.add(t);
+        if (next.problems.has(t)) next.problems.delete(t);
+        else next.problems.add(t);
       } else {
         const t = tag as FormatTag;
-        next.formats.has(t) ? next.formats.delete(t) : next.formats.add(t);
+        if (next.formats.has(t)) next.formats.delete(t);
+        else next.formats.add(t);
       }
       return next;
     });
