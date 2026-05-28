@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagement Report Cover — The AI Banking Institute</title>
+<style>
+  /* Print-first stylesheet. Renders as one Letter (8.5×11) page,
+     centered title block, mockup design tokens. Use any
+     browser's File → Print → Save as PDF, or run through the
+     project's existing scripts/generate-template-pdfs.mjs pipeline. */
+
+  @page {
+    size: Letter;          /* 8.5 × 11 in. Change to "A4" for A4. */
+    margin: 0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #F7F3EA;
+    color: #071A2F;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 0.9in 1in;
+    display: flex;
+    flex-direction: column;
+    background: #F7F3EA;
+  }
+
+  /* Top — wordmark lockup */
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .seal {
+    width: 56px;
+    height: 56px;
+    background: #071A2F;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .wordmark {
+    line-height: 1;
+  }
+  .wordmark .line1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: #071A2F;
+    display: block;
+  }
+  .wordmark .line2 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748B;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* Middle — title block (vertical centered using flex-grow) */
+  .middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #9A7A2F;
+    margin: 0 0 24px;
+  }
+  .title {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #071A2F;
+    margin: 0 0 32px;
+    max-width: 7.5in;
+  }
+  .institution {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #475569;
+    margin: 0;
+  }
+
+  /* Hairline meta row above the footer */
+  .meta {
+    display: flex;
+    gap: 48px;
+    border-top: 1px solid #071A2F;
+    padding-top: 18px;
+    margin-top: 36px;
+  }
+  .meta-item .label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #94A3B8;
+    margin-bottom: 6px;
+  }
+  .meta-item .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #071A2F;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Bottom — prepared-by + confidentiality */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #64748B;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .footer .right {
+    color: #9A7A2F;
+  }
+
+  /* Print refinement — hide on-screen scrollbars etc. */
+  @media print {
+    .page { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<!--
+  USAGE
+  -----
+  Edit the four placeholders below to produce a cover for one engagement:
+    1. .kicker         — engagement type (e.g. "AI Readiness Briefing")
+    2. .title          — engagement title (e.g. "From the Branch to the Board")
+    3. .institution    — bank or credit union name
+    4. .meta values    — date prepared + report number / version
+
+  Then File → Print → Save as PDF (Letter, no margins).
+  Or pipe through scripts/generate-template-pdfs.mjs if you want
+  consistency with the other generated templates.
+-->
+<div class="page">
+
+  <!-- TOP LOCKUP -->
+  <div class="lockup">
+    <div class="seal" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 26 26">
+        <path d="M3 9 L13 4 L23 9 L23 10 L3 10 Z" fill="#C8A24A"/>
+        <rect x="5" y="11" width="2.5" height="9" fill="#C8A24A"/>
+        <rect x="9.25" y="11" width="2.5" height="9" fill="#C8A24A"/>
+        <rect x="13.75" y="11" width="2.5" height="9" fill="#C8A24A"/>
+        <rect x="18" y="11" width="2.5" height="9" fill="#C8A24A"/>
+        <rect x="3" y="20.5" width="20" height="2" fill="#C8A24A"/>
+      </svg>
+    </div>
+    <div class="wordmark">
+      <span class="line1">The AI Banking Institute</span>
+      <span class="line2">Regulated Intelligence</span>
+    </div>
+  </div>
+
+  <!-- MIDDLE: TITLE BLOCK -->
+  <div class="middle">
+    <p class="kicker">AI Readiness Briefing</p>
+    <h1 class="title">From the branch to the board.</h1>
+    <p class="institution">Prepared for First Community Bank &amp; Trust</p>
+
+    <div class="meta">
+      <div class="meta-item">
+        <span class="label">Date prepared</span>
+        <span class="value">May 28, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Report</span>
+        <span class="value">No. 0001 &middot; v1.0</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Engagement lead</span>
+        <span class="value">James Gilmore, Founder</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM FOOTER -->
+  <div class="footer">
+    <span>Prepared by The AI Banking Institute</span>
+    <span class="right">Confidential</span>
+  </div>
+
+</div>
+</body>
+</html>
