@@ -6128,9 +6128,10 @@ section.mk-std { padding: 56px 0; }
 /* Mobile header redesign (2026-05-28):
    - Center the brand row (no top-right CTA — the sticky bottom CTA covers
      the same surface, no reason to duplicate it in the header)
-   - Restructure the nav pill into a 5-cell grid: 4 primary routes +
+   - Nav pill is a 4-cell grid: 3 primary routes (Home/Assess/Course) +
      a "More" button that expands an inline panel below
-   - The More panel hosts Institutions, About, Security */
+   - The More panel hosts Resources + Institutions (About + Security + FAQ
+     live in the footer) */
 @media (max-width: 1179px) {
   /* Center brand, hide desktop CTA. */
   .mk-header-inner {
@@ -6140,13 +6141,13 @@ section.mk-std { padding: 56px 0; }
     display: none;
   }
 
-  /* Mobile nav pill — 5-column grid (4 primary + More button). */
+  /* Mobile nav pill — 4-column grid (3 primary + More button). */
   .mk-nav-mobile-wrap {
     padding-bottom: 12px;
   }
   .mk-nav-mobile {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 4px;
     padding: 6px;
     overflow-x: visible;
