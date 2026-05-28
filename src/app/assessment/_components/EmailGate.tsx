@@ -309,20 +309,24 @@ function DeliverablePanel() {
             12 dimensions
           </p>
         </div>
-        {/* TODO(#349): replace these 8 v2 sample bars with the 12 v3 dimension labels (rebuild widget) */}
+        {/* 12 v3 dimension labels with illustrative sample bars */}
         <div className="space-y-2">
           {([
-            ['Awareness', 0.65],
-            ['Use cases', 0.50],
-            ['Governance', 0.40],
-            ['Data', 0.35],
-            ['Skills', 0.55],
-            ['Vendor', 0.70],
-            ['Comms', 0.45],
-            ['Roadmap', 0.30],
+            ['Strategic Value',          0.50],
+            ['Infrastructure Readiness', 0.42],
+            ['Data Quality',             0.38],
+            ['Security & Approved Tools',0.55],
+            ['Runtime Safeguards',       0.35],
+            ['Regulatory Compliance',    0.48],
+            ['Fair Lending Testing',     0.30],
+            ['Human-in-the-Loop',        0.56],
+            ['Talent & Culture',         0.44],
+            ['Data Safety Reflexes',     0.40],
+            ['Continuous Validation',    0.28],
+            ['Vendor Risk',              0.62],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-20 shrink-0">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-28 shrink-0 truncate">
                 {label}
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--ink)]/10 rounded-sm overflow-hidden">

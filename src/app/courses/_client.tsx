@@ -10,6 +10,7 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
+import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
 // ---------- Icons (inline SVG, no lucide-react dep) ----------
 
@@ -287,6 +288,8 @@ export default function CoursesIndexPage() {
           </div>
         </div>
       </Section>
+
+      <AdvisorsStrip />
 
       {/* FINAL CTA */}
       <CtaBand
