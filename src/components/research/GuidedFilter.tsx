@@ -1,22 +1,24 @@
 'use client';
 
-// GuidedFilter — "What are you trying to do?" guided selector for /research.
+// GuidedFilter — compact facet-picker for /research.
 //
-// Renders three chip rows (role / problem / format). Selected chips are
-// removable pills above the results. "Clear all filters" link when any chip
-// is active. No selection → show all (default catalog behavior preserved).
+// UI: three trigger buttons (Role · Problem · Format). Each opens a popover
+// on desktop (≥768px) or a full-width bottom drawer on mobile (<768px).
+// Selected chips appear as removable gold pills above the catalog.
+// No selection → show everything (default behavior preserved).
 //
-// Filter state lives here; downstream sections receive a `hidden` prop
-// derived from FilterContext. The page passes each artifact's tags as a
-// data-attribute pattern — sections use the exported `useFilter` hook to
-// decide visibility.
+// WCAG: button[aria-expanded] + panel[role="dialog"][aria-labelledby] +
+// focus trap when open + Esc closes + click-outside dismisses.
 
 import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
+  type KeyboardEvent,
   type ReactNode,
 } from 'react';
 
@@ -167,7 +169,42 @@ export function GuidedFilterProvider({ children }: { children: ReactNode }) {
   return <FilterContext.Provider value={value}>{children}</FilterContext.Provider>;
 }
 
-// ─── Chip button ─────────────────────────────────────────────────────────────
+// ─── Focus trap hook ──────────────────────────────────────────────────────────
+
+function useFocusTrap(panelRef: React.MutableRefObject<HTMLElement | null>, isOpen: boolean) {
+  useEffect(() => {
+    if (!isOpen || !panelRef.current) return;
+
+    const panel = panelRef.current;
+    const focusable = panel.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    first?.focus();
+
+    function handleKeyDown(e: globalThis.KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    }
+
+    panel.addEventListener('keydown', handleKeyDown);
+    return () => panel.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, panelRef]);
+}
+
+// ─── Chip button (inside popover/drawer) ──────────────────────────────────────
 
 interface ChipButtonProps {
   label: string;
@@ -213,10 +250,107 @@ function ActivePill({ label, facet, tag, toggle }: ActivePillProps) {
   );
 }
 
+// ─── Facet popover/drawer ────────────────────────────────────────────────────
+
+interface FacetPanelProps {
+  facet: TagFacet;
+  labelId: string;
+  chips: readonly AnyTag[];
+  selectedSet: Set<AnyTag>;
+  onToggle: (tag: AnyTag) => void;
+  onClose: () => void;
+  triggerRef: React.MutableRefObject<HTMLButtonElement | null>;
+}
+
+function FacetPanel({
+  facet,
+  labelId,
+  chips,
+  selectedSet,
+  onToggle,
+  onClose,
+  triggerRef,
+}: FacetPanelProps) {
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  useFocusTrap(panelRef, true);
+
+  // Close on Esc
+  function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    if (e.key === 'Escape') {
+      onClose();
+      triggerRef.current?.focus();
+    }
+  }
+
+  // Click-outside dismiss
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(e.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target as Node)
+      ) {
+        onClose();
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose, triggerRef]);
+
+  const facetLabel = facet === 'role' ? 'By role' : facet === 'problem' ? 'By problem' : 'By format';
+
+  return (
+    <div
+      ref={panelRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={labelId}
+      className={`mk-guided-panel mk-guided-panel--${facet}`}
+      onKeyDown={handleKeyDown}
+    >
+      <div className="mk-guided-panel-header">
+        <span id={labelId} className="mk-guided-panel-title">{facetLabel}</span>
+        <button
+          type="button"
+          onClick={() => { onClose(); triggerRef.current?.focus(); }}
+          className="mk-guided-panel-close"
+          aria-label="Close filter panel"
+        >
+          &times;
+        </button>
+      </div>
+      <div className="mk-guided-chips mk-guided-panel-chips" role="group" aria-label={facetLabel}>
+        {chips.map((chip) => (
+          <ChipButton
+            key={chip}
+            label={chip}
+            selected={selectedSet.has(chip)}
+            onClick={() => onToggle(chip)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function GuidedFilter() {
   const { filter, toggle, clear } = useFilter();
+  const [openFacet, setOpenFacet] = useState<TagFacet | null>(null);
+
+  const roleTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const problemTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const formatTriggerRef = useRef<HTMLButtonElement | null>(null);
+
+  function openPanel(facet: TagFacet) {
+    setOpenFacet((prev) => (prev === facet ? null : facet));
+  }
+
+  function closePanel() {
+    setOpenFacet(null);
+  }
 
   const activePills: { label: string; facet: TagFacet; tag: AnyTag }[] = [
     ...Array.from(filter.roles).map((t) => ({ label: t, facet: 'role' as TagFacet, tag: t as AnyTag })),
@@ -226,80 +360,115 @@ export function GuidedFilter() {
 
   const hasActive = activePills.length > 0;
 
+  // Count active chips per facet for badge display
+  const roleCount = filter.roles.size;
+  const problemCount = filter.problems.size;
+  const formatCount = filter.formats.size;
+
+  const facetConfig: { facet: TagFacet; label: string; count: number; chips: readonly AnyTag[]; ref: React.MutableRefObject<HTMLButtonElement | null> }[] = [
+    { facet: 'role', label: 'Role', count: roleCount, chips: ROLE_CHIPS, ref: roleTriggerRef },
+    { facet: 'problem', label: 'Problem', count: problemCount, chips: PROBLEM_CHIPS, ref: problemTriggerRef },
+    { facet: 'format', label: 'Format', count: formatCount, chips: FORMAT_CHIPS, ref: formatTriggerRef },
+  ];
+
   return (
-    <section className="mk-guided-filter" aria-label="Filter resources by role, problem, or format">
+    <section
+      className="mk-guided-filter"
+      aria-label="Filter resources by role, problem, or format"
+    >
       <div className="mk-container">
         <div className="mk-guided-filter-inner">
 
-          <div className="mk-guided-filter-header">
-            <span className="mk-guided-kicker">What are you trying to do?</span>
-            <p className="mk-guided-hint">
-              Select one or more to filter the library below. No selection shows everything.
-            </p>
-          </div>
-
-          {/* Row: By role */}
-          <div className="mk-guided-row">
-            <span className="mk-guided-row-label" id="filter-role-label">By role</span>
-            <div className="mk-guided-chips" role="group" aria-labelledby="filter-role-label">
-              {ROLE_CHIPS.map((chip) => (
-                <ChipButton
-                  key={chip}
-                  label={chip}
-                  selected={filter.roles.has(chip)}
-                  onClick={() => toggle('role', chip)}
-                />
-              ))}
+          {/* Trigger row — 3 buttons */}
+          <div className="mk-guided-trigger-row">
+            <span className="mk-guided-filter-label">Filter by:</span>
+            <div className="mk-guided-trigger-buttons">
+              {facetConfig.map(({ facet, label, count, chips, ref }) => {
+                const isOpen = openFacet === facet;
+                const panelLabelId = `filter-panel-${facet}-label`;
+                const selectedSet = facet === 'role'
+                  ? (filter.roles as Set<AnyTag>)
+                  : facet === 'problem'
+                    ? (filter.problems as Set<AnyTag>)
+                    : (filter.formats as Set<AnyTag>);
+                return (
+                  <div key={facet} className="mk-guided-trigger-wrap">
+                    <button
+                      ref={ref}
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={`filter-panel-${facet}`}
+                      onClick={() => openPanel(facet)}
+                      className={`mk-guided-trigger${count > 0 ? ' mk-guided-trigger--active' : ''}${isOpen ? ' mk-guided-trigger--open' : ''}`}
+                    >
+                      {label}
+                      {count > 0 && (
+                        <span className="mk-guided-trigger-badge" aria-label={`${count} selected`}>
+                          {count}
+                        </span>
+                      )}
+                      <span className="mk-guided-trigger-caret" aria-hidden="true">
+                        {isOpen ? '▴' : '▾'}
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div id={`filter-panel-${facet}`} className="mk-guided-panel-anchor">
+                        <FacetPanel
+                          facet={facet}
+                          labelId={panelLabelId}
+                          chips={chips}
+                          selectedSet={selectedSet}
+                          onToggle={(tag) => toggle(facet, tag)}
+                          onClose={closePanel}
+                          triggerRef={ref}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
+            {hasActive && (
+              <button type="button" onClick={clear} className="mk-guided-clear">
+                Clear all
+              </button>
+            )}
           </div>
 
-          {/* Row: By problem */}
-          <div className="mk-guided-row">
-            <span className="mk-guided-row-label" id="filter-problem-label">By problem</span>
-            <div className="mk-guided-chips" role="group" aria-labelledby="filter-problem-label">
-              {PROBLEM_CHIPS.map((chip) => (
-                <ChipButton
-                  key={chip}
-                  label={chip}
-                  selected={filter.problems.has(chip)}
-                  onClick={() => toggle('problem', chip)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Row: By format */}
-          <div className="mk-guided-row">
-            <span className="mk-guided-row-label" id="filter-format-label">By format</span>
-            <div className="mk-guided-chips" role="group" aria-labelledby="filter-format-label">
-              {FORMAT_CHIPS.map((chip) => (
-                <ChipButton
-                  key={chip}
-                  label={chip}
-                  selected={filter.formats.has(chip)}
-                  onClick={() => toggle('format', chip)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Active pills + clear */}
+          {/* Active pills */}
           {hasActive && (
-            <div className="mk-guided-active-row" role="status" aria-live="polite" aria-label="Active filters">
+            <div
+              className="mk-guided-active-row"
+              role="status"
+              aria-live="polite"
+              aria-label="Active filters"
+            >
               <span className="mk-guided-active-label">Showing:</span>
               <div className="mk-guided-active-pills">
                 {activePills.map(({ label, facet, tag }) => (
-                  <ActivePill key={`${facet}-${label}`} label={label} facet={facet} tag={tag} toggle={toggle} />
+                  <ActivePill
+                    key={`${facet}-${label}`}
+                    label={label}
+                    facet={facet}
+                    tag={tag}
+                    toggle={toggle}
+                  />
                 ))}
               </div>
-              <button type="button" onClick={clear} className="mk-guided-clear">
-                Clear all filters
-              </button>
             </div>
           )}
 
         </div>
       </div>
+
+      {/* Mobile drawer backdrop */}
+      {openFacet && (
+        <div
+          className="mk-guided-backdrop"
+          aria-hidden="true"
+          onClick={closePanel}
+        />
+      )}
     </section>
   );
 }
