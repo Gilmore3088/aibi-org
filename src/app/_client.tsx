@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -147,16 +147,17 @@ export default function HomePage() {
           heading={<>What could one hour saved per employee be worth?</>}
           lede={<>Adjust team size, cost, and the low/high range of hours automatable per week. See annual value, hours recaptured, and payroll percentage.</>}
         />
-        <div className="mk-roi-wrap">
+        <ROIAccordion>
           <ROICalculatorBody
             ctaLabel="Take the Assessment"
             ctaHref="/assessment/take"
             briefingSource="home"
           />
-        </div>
+        </ROIAccordion>
       </Section>
 
       <CtaBand
+        hiddenOnMobile
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
           { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },
@@ -169,6 +170,27 @@ export default function HomePage() {
         href="/assessment/take"
         source="home-sticky"
       />
+    </div>
+  );
+}
+
+// Mobile: collapses the ROI calculator behind a "See what an hour saved is
+// worth →" trigger so the 4 sliders + result block don't eat ~600px of
+// vertical scroll. Desktop: trigger hidden, body always visible.
+// 2026-05-28 mobile audit punch-list item.
+function ROIAccordion({ children }: { readonly children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`mk-roi-wrap mk-roi-accordion${open ? ' is-open' : ''}`}>
+      <button
+        type="button"
+        className="mk-roi-accordion-trigger"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? 'Hide the calculator' : 'See what an hour saved is worth →'}
+      </button>
+      <div className="mk-roi-accordion-body">{children}</div>
     </div>
   );
 }

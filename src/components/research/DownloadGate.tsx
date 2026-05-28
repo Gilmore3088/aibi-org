@@ -13,7 +13,14 @@
 // for this component to compile. When the files land under /downloads/ or
 // /artifacts/, this component works without any changes.
 
-import { useState, useId } from 'react';
+import { useEffect, useState, useId } from 'react';
+
+// Session-scoped capture flag. Once a visitor submits their email on any
+// /research download card, all subsequent cards in the same browser
+// session skip the email form and go straight to the download. Audit
+// 2026-05-28: per-card gates created friction stacks ("the same form 3
+// times" on a 3-artifact tap path). Cleared when the tab closes.
+const SESSION_KEY = 'aibi.research.email-captured';
 
 interface DownloadGateProps {
   /** The artifact title shown in confirmation copy. */
@@ -32,11 +39,27 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function DownloadGate({ title, downloadHref, slug, meta }: DownloadGateProps) {
   const [phase, setPhase] = useState<GatePhase>('idle');
+  const [captured, setCaptured] = useState(false);
   const [email, setEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const inputId = useId();
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (window.sessionStorage.getItem(SESSION_KEY) === '1') setCaptured(true);
+    } catch {
+      // sessionStorage can throw in private mode — fail open to the gated path.
+    }
+  }, []);
+
   function handleGetClick() {
+    if (captured) {
+      // Already captured this session — go straight to download.
+      window.location.href = downloadHref;
+      setPhase('done');
+      return;
+    }
     setPhase('form');
   }
 
@@ -67,6 +90,15 @@ export function DownloadGate({ title, downloadHref, slug, meta }: DownloadGatePr
         const data = (await res.json()) as { error?: string };
         throw new Error(data.error ?? `Request failed (${res.status})`);
       }
+
+      // Mark this browser session as already-captured so subsequent
+      // DownloadGate instances on the page skip the form.
+      try {
+        window.sessionStorage.setItem(SESSION_KEY, '1');
+      } catch {
+        // ignore — fail-open to next-card capture
+      }
+      setCaptured(true);
 
       // Trigger the download before showing success state.
       window.location.href = downloadHref;

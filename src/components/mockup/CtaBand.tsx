@@ -18,6 +18,8 @@ export interface CtaBandProps {
   actions: CtaAction[];
   /** Render the surrounding dark .mk-cta wrapper. Defaults to true. */
   wrap?: boolean;
+  /** Hide on mobile (<768px). Use when StickyMobileCta already covers the same action. */
+  hiddenOnMobile?: boolean;
 }
 
 export function CtaBand({
@@ -26,6 +28,7 @@ export function CtaBand({
   body,
   actions,
   wrap = true,
+  hiddenOnMobile = false,
 }: CtaBandProps) {
   const band = (
     <div className="mk-cta-band">
@@ -47,7 +50,7 @@ export function CtaBand({
   if (!wrap) return band;
 
   return (
-    <section className="mk-cta">
+    <section className={`mk-cta${hiddenOnMobile ? ' mk-cta-band-desktop' : ''}`}>
       <div className="mk-container">{band}</div>
     </section>
   );

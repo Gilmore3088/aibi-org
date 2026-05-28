@@ -482,6 +482,11 @@ export default function ForInstitutionsPage() {
               </div>
             ))}
           </div>
+          {/* Mobile-only: link to the live dashboard demo since the grid above
+              gets visually compressed to ~80px-tall cards on a phone. */}
+          <a className="mk-dept-mobile-link" href="/for-institutions/advisory">
+            See the full department dashboard →
+          </a>
         </div>
       </Section>
 
@@ -569,6 +574,7 @@ export default function ForInstitutionsPage() {
       <AdvisorsStrip />
 
       <CtaBand
+        hiddenOnMobile
         kicker="Start with the assessment"
         heading={<>Your baseline costs nothing. Your rollout plan starts there.</>}
         body={

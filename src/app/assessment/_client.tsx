@@ -11,6 +11,7 @@
 // Free assessment vocabulary: 12 "readiness signals" (one question each).
 // In-depth assessment vocabulary: 8 "scored dimensions". Don't conflate.
 
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -18,6 +19,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 
 // ---------- Icons ----------
@@ -118,6 +120,45 @@ const SAMPLE = {
   artifact: 'AI Workflow SOP Template',
   nextStep: 'Foundation Course or In-Depth Report',
 };
+
+// ---------- 12-signals grid with mobile accordion (rows 5-12) ----------
+//
+// On desktop: all 12 signal cards render inline (CSS uses display:contents).
+// On mobile: first 4 cards visible; rows 5-12 hidden behind a "Show all 12"
+// trigger. CSS lives in src/styles/mockup.css under ".mk-dims-accordion-*".
+// 2026-05-28 mobile audit punch-list item.
+
+function SignalsGrid() {
+  const [open, setOpen] = useState(false);
+  const headSignals = SIGNALS.slice(0, 4);
+  const tailSignals = SIGNALS.slice(4);
+  return (
+    <div className="mk-dims-grid mk-dims-compact">
+      {headSignals.map((s) => (
+        <div key={s.title} className="mk-dcard">
+          <h4>{s.title}</h4>
+          <p>{s.desc}</p>
+        </div>
+      ))}
+      <div className={`mk-dims-accordion-body${open ? ' is-open' : ''}`}>
+        {tailSignals.map((s) => (
+          <div key={s.title} className="mk-dcard">
+            <h4>{s.title}</h4>
+            <p>{s.desc}</p>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="mk-dims-accordion-trigger"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? 'Show fewer signals' : `Show all 12 signals (${tailSignals.length} more)`}
+      </button>
+    </div>
+  );
+}
 
 // ---------- Page ----------
 
@@ -277,11 +318,12 @@ export default function AssessmentLandingPage() {
             variant="ink"
           />
         </div>
-        {/* On mobile + at desktop ≤ 1024px the upgrade tiers demote to chip
-            links so the free Snapshot card stands alone as the unambiguous
-            primary CTA. Audit 2026-05-28 desktop reframe. CSS rules in
+        {/* Upgrade tiers demote to chip links at every viewport so the free
+            Snapshot card stands alone as the unambiguous primary CTA. Audit
+            2026-05-28 (Bucket B): "free is the unambiguous hero". CSS in
             mockup.css under .mk-tier-chips. */}
         <div className="mk-tier-chips">
+
           <a href="/assessment/in-depth" className="mk-tier-chip">
             or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
           </a>
@@ -303,14 +345,7 @@ export default function AssessmentLandingPage() {
             </>
           }
         />
-        <div className="mk-dims-grid mk-dims-compact">
-          {SIGNALS.map((s) => (
-            <div key={s.title} className="mk-dcard">
-              <h4>{s.title}</h4>
-              <p>{s.desc}</p>
-            </div>
-          ))}
-        </div>
+        <SignalsGrid />
       </Section>
 
       {/* ── 8 DIMENSIONS (IN-DEPTH) ─────────────────────────────── */}
@@ -365,6 +400,7 @@ export default function AssessmentLandingPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────── */}
       <CtaBand
+        hiddenOnMobile
         heading={<>Take the free snapshot first.</>}
         body={
           <>
@@ -376,6 +412,12 @@ export default function AssessmentLandingPage() {
           { label: 'Start free assessment', href: '/assessment/take', variant: 'gold' },
           { label: 'Get in-depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Start the free assessment"
+        href="/assessment/take"
+        source="sticky-mobile-cta-assessment"
       />
     </div>
   );

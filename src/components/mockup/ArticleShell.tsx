@@ -15,6 +15,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { SiteHeader } from './SiteHeader';
 import { ArticleTOC } from './ArticleTOC';
+import { StickyMobileCta } from './StickyMobileCta';
 
 export interface ArticleShellProps {
   readonly children: ReactNode;
@@ -61,6 +62,11 @@ export function ArticleShell({
       </div>
       {showTOC && <ArticleTOC />}
       {children}
+      <StickyMobileCta
+        label="Take the free assessment"
+        href="/assessment/take"
+        source="sticky-mobile-cta-research-article"
+      />
     </div>
   );
 }

@@ -35,3 +35,6 @@ export { ArticleShell } from './ArticleShell';
 export type { ArticleShellProps } from './ArticleShell';
 
 export { ArticleTOC } from './ArticleTOC';
+
+export { BottomSheet } from './BottomSheet';
+export type { BottomSheetProps } from './BottomSheet';

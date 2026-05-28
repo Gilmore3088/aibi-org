@@ -10,6 +10,35 @@
 @media (min-width: 768px) { .mockup-scope .rx-grid-4 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mockup-scope .rx-grid-4 { grid-template-columns: repeat(4, 1fr); } }
 
+/* Mobile: turn every rx-grid catalog into a horizontal swipe rail so the
+   buyer doesn't slog through a vertical stack of 4+ cards. Audit
+   2026-05-28: "/resources is the worst public page by height (13,816px)". */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    scrollbar-width: none;
+  }
+  .mockup-scope .rx-grid::-webkit-scrollbar { display: none; }
+  .mockup-scope .rx-grid > * {
+    flex: 0 0 78vw;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
+}
+
+/* Featured kit on mobile: drop the kit-picker rail (rx-featured-pick).
+   The kit cards in the rail below already let the user switch — having
+   the picker AND the cards is duplicative. Saves ~250px. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-featured-pick { display: none; }
+}
+
 /* Featured-kit panel (hero right side) */
 .mockup-scope .rx-featured {
   background: #fff;
