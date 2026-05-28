@@ -4124,3 +4124,71 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-vp-tier-free { color: var(--ink);       background: var(--cream-2); border: 1px solid var(--slate-200); }
 .mk-vp-tier-paid { color: var(--gold-deep); background: rgba(200, 162, 74, 0.12); border: 1px solid rgba(200, 162, 74, 0.45); }
+
+/* Sticky mobile CTA bar — production audit 2026-05-28 found 4–6 swipe
+   "dead zones" between consecutive primary CTAs on every parent page.
+   This bar appears after the user has scrolled past the hero so an
+   action prompt stays in reach. Desktop renders nothing. */
+.mk-sticky-mobile-cta {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  display: none;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+  background: var(--ink);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 24px -8px rgba(0, 0, 0, 0.35);
+  transform: translateY(110%);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 40;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0));
+}
+@media (max-width: 767px) {
+  .mk-sticky-mobile-cta { display: flex; }
+}
+.mk-sticky-mobile-cta[data-visible="true"] {
+  transform: translateY(0);
+}
+.mk-sticky-mobile-cta-action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  min-height: 48px;
+}
+.mk-sticky-mobile-cta-action:hover,
+.mk-sticky-mobile-cta-action:focus-visible {
+  background: var(--gold-2);
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
+}
+.mk-sticky-mobile-cta-close {
+  background: transparent;
+  border: 1px solid rgba(247, 243, 234, 0.25);
+  color: var(--cream);
+  border-radius: 12px;
+  width: 44px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mk-sticky-mobile-cta-close:hover,
+.mk-sticky-mobile-cta-close:focus-visible {
+  background: rgba(247, 243, 234, 0.08);
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
+}

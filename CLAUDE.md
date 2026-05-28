@@ -727,6 +727,32 @@ Run `/simplify` before committing. Skip for trivial one-liners.
 
 ---
 
+## Accessibility — Custom Form Controls
+
+**Every `<input>`, `<select>`, `<textarea>`, and custom interactive control must have a programmatically associated label before merge.** Options, in order of preference:
+
+1. Wrapped `<label>` (text inside `<label>` element containing the input)
+2. `htmlFor` + `id` pair (label is sibling, programmatically linked)
+3. `aria-label` (only when a visible label would be redundant — e.g. icon-only buttons)
+4. `aria-labelledby` (when the label exists but is not a `<label>` element)
+
+A visible `<label>` next to an input in a sibling div with no `htmlFor` is **not** a label — it's decorative text. Axe-core treats it as a critical violation (rule `label`, WCAG 4.1.2).
+
+**For sliders / numeric inputs:** also add `aria-valuetext` whenever the visible value is formatted (e.g. `$85,000` instead of `85000`), so screen readers announce the human-readable value, and mark the visible value span `aria-hidden="true"` to avoid double-read.
+
+Example pattern from `ROICalculatorBody.tsx` (fixed 2026-05-28 after 313 critical violations on `/`):
+
+```tsx
+const inputId = `slider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+<label htmlFor={inputId}>{label}</label>
+<span aria-hidden="true">{display}</span>
+<input id={inputId} type="range" aria-valuetext={display} ... />
+```
+
+The axe-core CI check (`e2e/a11y.spec.ts`) blocks PRs that ship critical/serious violations on public routes.
+
+---
+
 ## Feature Development Workflow
 
 **Before any feature:** "Which branch — main, or new feature branch?"

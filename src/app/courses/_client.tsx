@@ -9,6 +9,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
@@ -300,6 +301,12 @@ export default function CoursesIndexPage() {
           { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
           { label: 'Enroll · $295', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Enroll · $295"
+        href="/courses/foundation/program/purchase"
+        source="courses-sticky"
       />
     </div>
   );

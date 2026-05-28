@@ -15,6 +15,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 import { DownloadGate } from '@/components/research/DownloadGate';
 import { PLAYBOOK_INDEX } from '@/app/playbooks/data';
@@ -311,6 +312,12 @@ export default function ResourcesHubPage() {
           { label: 'Free assessment', href: '/assessment', variant: 'gold' },
           { label: 'In-Depth ($99)', href: '/assessment/in-depth', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Take the free assessment"
+        href="/assessment"
+        source="research-sticky"
       />
     </div>
   );

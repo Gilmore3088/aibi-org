@@ -10,6 +10,7 @@ import {
   ArrowGlyph,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
@@ -163,6 +164,11 @@ export default function HomePage() {
         ]}
       />
 
+      <StickyMobileCta
+        label="Get my AI readiness score"
+        href="/assessment/take"
+        source="home-sticky"
+      />
     </div>
   );
 }
