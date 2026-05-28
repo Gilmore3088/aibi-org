@@ -4052,6 +4052,26 @@ section.mk-std { padding: 56px 0; }
 @media (min-width: 900px) { .mk-resources-grid.mk-resources-3up { grid-template-columns: repeat(3, 1fr); } }
 .mk-resources-grid.mk-resources-2up { grid-template-columns: 1fr; }
 @media (min-width: 720px) { .mk-resources-grid.mk-resources-2up { grid-template-columns: repeat(2, 1fr); } }
+/* Mobile: convert to horizontal-scroll rail to compress vertical stacks
+   on /research and /resources catalogs. Per 2026-05-28 audit. */
+@media (max-width: 639px) {
+  .mk-resources-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .mk-resources-grid::-webkit-scrollbar { display: none; }
+  .mk-resources-grid > * {
+    flex: 0 0 78vw;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
+}
 
 .mk-resource-card {
   background: #fff;
