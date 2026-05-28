@@ -4,6 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { SiteHeader } from '@/components/mockup';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2';
+import { getTierV3 } from '@content/assessments/v3';
+
+// Free assessment v3 is scored on a raw 12-48 scale (12 questions x 1-4
+// points). Tier bands come from getTierV3:
+//   12-22 Starting Point | 23-32 Early Stage
+//   33-40 Building Momentum | 41-48 Ready to Scale
+const MAX_RAW_SCORE = QUESTIONS_PER_SESSION * 4;
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 
@@ -62,16 +69,25 @@ export default function AssessmentPage() {
         {state.phase === 'questions' && state.selectedQuestions.length > 0 && (() => {
           const q = state.selectedQuestions[state.currentQuestion];
           const selected = state.answers[state.currentQuestion];
-          const liveScore = state.answers
-            .filter((a) => a > 0)
-            .reduce((sum, a, _, arr) => sum + a / arr.length / 4 * 100, 0);
-          const livePct = Math.round(liveScore || 0);
-          const liveBand = livePct === 0
-            ? 'Pending'
-            : livePct >= 80 ? 'Ready to Scale'
-            : livePct >= 60 ? 'Building Momentum'
-            : livePct >= 40 ? 'Early Stage'
-            : 'Starting Point';
+          // Running raw score on the canonical 12-48 scale — matches the
+          // final report. Each answer adds 1-4 points; the value the user sees
+          // ticking up corresponds to what they'll see at the end. Before this
+          // fix, the live panel showed a rolling-average percentage (/100)
+          // that looked unpredictable next to a /48 final score.
+          const answered = state.answers.filter((a) => a > 0);
+          const liveScore = answered.reduce((sum, a) => sum + a, 0);
+          // Project tier by extrapolating the current per-question average
+          // across all 12 questions. Empty-state shows "Pending".
+          const projectedScore =
+            answered.length > 0
+              ? Math.round((liveScore / answered.length) * QUESTIONS_PER_SESSION)
+              : 0;
+          const liveBand =
+            answered.length === 0
+              ? 'Pending'
+              : getTierV3(
+                  Math.min(MAX_RAW_SCORE, Math.max(QUESTIONS_PER_SESSION, projectedScore)),
+                ).label;
           const breakdown = state.getDimensionBreakdown();
           const topEntry = Object.entries(breakdown)
             .filter(([, v]) => v.score > 0)
@@ -96,8 +112,8 @@ export default function AssessmentPage() {
                   <div className="mk-take-q-card-score">
                     <p className="mk-k">Live score</p>
                     <div className="mk-take-q-card-num">
-                      <span className="mk-v">{livePct}</span>
-                      <span className="mk-u">/ 100</span>
+                      <span className="mk-v">{liveScore}</span>
+                      <span className="mk-u">/ {MAX_RAW_SCORE}</span>
                     </div>
                     <div className="mk-take-q-card-tier">
                       <p className="mk-k">Tier</p>
