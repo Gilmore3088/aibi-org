@@ -11,7 +11,7 @@ import { Button } from './Button';
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assessment', href: '/assessment' },
-  { label: 'Course', href: '/courses' },
+  { label: 'Learn', href: '/courses' },
   { label: 'Resources', href: '/research' },
   { label: 'Institutions', href: '/for-institutions' },
 ];
@@ -23,7 +23,7 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
 const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assess', href: '/assessment' },
-  { label: 'Course', href: '/courses' },
+  { label: 'Learn', href: '/courses' },
 ];
 
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
