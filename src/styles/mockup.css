@@ -4942,3 +4942,35 @@ section.mk-std { padding: 56px 0; }
 @media (max-width: 767px) {
   .mk-cta-band-desktop { display: none; }
 }
+
+/* 5. ROI calculator accordion (mobile only).
+   Body renders inline on desktop; collapsed behind a trigger on mobile. */
+.mk-roi-accordion-trigger {
+  display: none;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.mk-roi-accordion-trigger:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .mk-roi-accordion-trigger {
+    display: block;
+  }
+  .mk-roi-accordion .mk-roi-accordion-body {
+    display: none;
+  }
+  .mk-roi-accordion.is-open .mk-roi-accordion-body {
+    display: block;
+    margin-top: 16px;
+  }
+}
