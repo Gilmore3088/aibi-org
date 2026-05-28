@@ -114,24 +114,38 @@ export default function ForInstitutionsPage() {
             </EyebrowChip>
             <h1>Capability — not a platform.</h1>
             <p className="mk-lede">
-              An education engagement for community banks and credit unions.
+              An education engagement for banks and credit unions that need staff
+              readiness, role-based training, and leadership visibility.
+            </p>
+            <p
+              style={{
+                margin: '24px 0 8px',
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-soft)',
+              }}
+            >
+              For teams that need
             </p>
             <ul
               style={{
                 listStyle: 'none',
                 padding: 0,
-                margin: '20px 0 0',
+                margin: 0,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 8,
                 fontSize: 15,
-                fontWeight: 600,
-                color: 'var(--gold-soft)',
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.88)',
               }}
             >
-              <li>A coached cohort.</li>
-              <li>An institution-wide rollout.</li>
-              <li>Leadership advisory.</li>
+              <li>— Staff readiness measured</li>
+              <li>— Role-based training delivered</li>
+              <li>— Reusable AI workflows documented</li>
+              <li>— Leadership briefed on progress</li>
             </ul>
             <p
               style={{
