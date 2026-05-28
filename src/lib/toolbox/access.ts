@@ -100,12 +100,14 @@ export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
   if (products.length === 0) return null;
 
   // Tier resolution: any full-tier product collapses the user to 'full'.
-  // Otherwise fall back to the per-row tier column (which defaults to
-  // 'full' in the schema, so legacy rows continue to behave correctly).
+  // Otherwise fall back to the per-row tier column. Fail-closed default:
+  // a row without an explicit tier value resolves to 'starter', so a
+  // missing backfill in migration 00035 can never silently grant Full
+  // access to an In-Depth-only ($99) buyer.
   const hasFullProduct = products.some((p) => FULL_TIER_PRODUCTS.includes(p));
   const tier: ToolboxTier = hasFullProduct
     ? 'full'
-    : rows.some((row) => (row.tier ?? 'full') !== 'starter')
+    : rows.some((row) => (row.tier ?? 'starter') === 'full')
       ? 'full'
       : 'starter';
 
