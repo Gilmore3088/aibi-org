@@ -9,6 +9,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { SiteHeader } from './SiteHeader';
+import { StickyMobileCta } from './StickyMobileCta';
 
 export function ArticleShell({ children }: { children: ReactNode }) {
   return (
@@ -40,6 +41,11 @@ export function ArticleShell({ children }: { children: ReactNode }) {
         </Link>
       </div>
       {children}
+      <StickyMobileCta
+        label="Take the free assessment"
+        href="/assessment/take"
+        source="sticky-mobile-cta-research-article"
+      />
     </div>
   );
 }
