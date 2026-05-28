@@ -85,15 +85,15 @@ export default function CoursesIndexPage() {
           <div className="mk-deco-ring" />
           <div className="mk-deco-blur" />
         </div>
-        <div className="mk-container mk-hero-inner mk-hero-inner-full">
+        <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<GradCapIcon className="mk-ic" />}>
               AiBI-Foundation · self-paced
             </EyebrowChip>
             <h1>Learn AI by building reviewed banking workflows.</h1>
             <p className="mk-lede">
-              A hands-on course for bankers who need safe practice, reusable work products, and a
-              credential — not generic AI theory.
+              A hands-on course for bankers who need safe practice, reusable artifacts, and a
+              completion credential.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
@@ -111,6 +111,8 @@ export default function CoursesIndexPage() {
               .
             </p>
           </div>
+
+          <HeroPacketCard />
         </div>
       </section>
 
@@ -210,6 +212,49 @@ export default function CoursesIndexPage() {
         href="/courses/foundation/program/purchase"
         source="courses-sticky"
       />
+    </div>
+  );
+}
+
+// Course hero proof object — mirrors the .mk-hreport pattern used on Home
+// and Assessment. Shows the artifact packet a learner walks away with so
+// the hero answers "what do I get?", not just "what is this?". Audit
+// 2026-05-28 hero-system feedback: Course was the biggest visual mismatch
+// because it was text-only while every other primary hero had a right-side
+// proof object.
+function HeroPacketCard() {
+  return (
+    <div className="mk-hreport">
+      <div className="mk-hreport-left">
+        <div className="mk-k">Learner output packet</div>
+        <div className="mk-v">4</div>
+        <div className="mk-u">reusable artifacts</div>
+        <div className="mk-tier">
+          <CheckCircleIcon size={16} />
+          Reviewed
+        </div>
+      </div>
+      <div className="mk-hreport-right">
+        <div className="mk-k">What you keep</div>
+        <div className="mk-hresult">
+          <div className="mk-hresult-row">
+            <div className="mk-rk">01</div>
+            <div className="mk-rv">Prompt Strategy Cheat Sheet</div>
+          </div>
+          <div className="mk-hresult-row">
+            <div className="mk-rk">02</div>
+            <div className="mk-rv">Saved Skill Template</div>
+          </div>
+          <div className="mk-hresult-row">
+            <div className="mk-rk">03</div>
+            <div className="mk-rv">AI Workflow SOP</div>
+          </div>
+          <div className="mk-hresult-row">
+            <div className="mk-rk">04</div>
+            <div className="mk-rv">Agent Review Checklist</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

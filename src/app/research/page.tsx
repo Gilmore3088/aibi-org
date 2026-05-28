@@ -1,12 +1,10 @@
-// /research — AI Banking Resources hub.
+// /research — Research and field notes for practical banking AI.
 //
-// 2026-05-27 rework: the page is the public downloads library. Every
-// practical artifact the Institute publishes — playbooks, cheatsheets,
-// reference cards, checklists, inline templates — is listed here.
-// Downloads + templates only; no newsletter framing.
-//
-// 2026-05-28 guided filter: GuidedFilter + FilteredCard client islands wrap
-// each catalog section so visitors can filter by role, problem, or format.
+// 2026-05-28 hero-system reframe: the hero is now research-framed (essays,
+// field notes, templates) since the artifact-library lives at /resources.
+// The downstream catalog sections (playbooks, reference cards, samples)
+// are kept here for now; a future PR will split research-flavored content
+// (essays + briefings + research templates) from artifact downloads.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -36,19 +34,19 @@ function slugFromHref(href: string): string {
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research' },
-  title: 'Resources & downloads',
+  title: 'Research & field notes',
   description:
-    'Role playbooks, cheatsheets, reference cards, and starter templates for community banks and credit unions adopting AI safely.',
+    'Plain-language essays, field notes, and templates on AI governance, training, productivity, and risk in community banking and credit unions.',
   openGraph: {
-    title: 'Resources & downloads',
+    title: 'Research & field notes',
     description:
-      'Role playbooks, cheatsheets, reference cards, and starter templates for community banks and credit unions adopting AI safely.',
+      'Plain-language essays, field notes, and templates on AI governance, training, productivity, and risk in community banking and credit unions.',
     url: '/research',
     type: 'website',
   },
   twitter: {
-    title: 'Resources & downloads',
-    description: 'Role playbooks, cheatsheets, and starter templates.',
+    title: 'Research & field notes',
+    description: 'Essays, field notes, and templates on practical banking AI.',
   },
 };
 
@@ -327,7 +325,11 @@ export default function ResourcesHubPage() {
     <div className="mockup-scope">
       <SiteHeader activePath="/research" />
 
-      {/* HERO */}
+      {/* HERO — research framing. Audit 2026-05-28 hero-system feedback:
+          /research's title used to read like a downloads catalog while
+          /resources lives at /resources for that. Research is now research:
+          essays, field notes, templates on AI in community banking. The
+          right-side card surfaces three featured reads as the proof object. */}
       <section className="mk-hero">
         <div className="mk-deco">
           <div className="mk-deco-ring" />
@@ -335,21 +337,23 @@ export default function ResourcesHubPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip>Resources &middot; Free downloads</EyebrowChip>
-            <h1>Practical artifacts for community banks and credit unions.</h1>
+            <EyebrowChip>Research &middot; field notes</EyebrowChip>
+            <h1>Plain-language research for practical banking AI.</h1>
             <p className="mk-lede">
-              Role playbooks, cheatsheets, reference cards, and starter templates.
-              Every artifact is sourced, named, and adaptable.
+              Essays, field notes, and templates on AI governance, training,
+              productivity, and risk.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="#playbooks">
-                Browse role playbooks
+              <Button variant="gold" size="lg" href="#featured-essays">
+                Read the latest
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#downloads">
-                Jump to downloads
+              <Button variant="ghost-dark" size="lg" href="#templates">
+                Browse templates
               </Button>
             </div>
           </div>
+
+          <ResearchHeroFeaturedCard />
         </div>
       </section>
 
@@ -358,6 +362,7 @@ export default function ResourcesHubPage() {
           curated content before being asked to filter (audit 2026-05-28).
           To revise: swap slugs/copy in FEATURED_ESSAYS below. */}
       <Section variant="std" surface="white">
+        <span id="featured-essays" />
         <SectionHead
           kicker="Featured essays"
           heading={<>Three reads to start with.</>}
@@ -582,6 +587,36 @@ export default function ResourcesHubPage() {
         href="/assessment"
         source="research-sticky"
       />
+    </div>
+  );
+}
+
+// Hero proof card — three featured reads, mirrors the .mk-hreport pattern
+// used on Home and Courses so the research hero matches the rest of the
+// design system. Slugs/copy must stay in sync with FEATURED_ESSAYS above.
+function ResearchHeroFeaturedCard() {
+  return (
+    <div className="mk-hreport">
+      <div className="mk-hreport-left">
+        <div className="mk-k">Start here</div>
+        <div className="mk-v">3</div>
+        <div className="mk-u">featured reads</div>
+        <div className="mk-tier">
+          <span aria-hidden="true">★</span>
+          Hand-picked
+        </div>
+      </div>
+      <div className="mk-hreport-right">
+        <div className="mk-k">One per persona</div>
+        <div className="mk-hresult">
+          {FEATURED_ESSAYS.map((e) => (
+            <Link key={e.slug} href={`/research/${e.slug}`} className="mk-hresult-row mk-hresult-row-link">
+              <div className="mk-rk">{e.persona}</div>
+              <div className="mk-rv">{e.title}</div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

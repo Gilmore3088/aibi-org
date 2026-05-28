@@ -180,9 +180,8 @@ export default function AssessmentLandingPage() {
             </EyebrowChip>
             <h1>Get your AI readiness snapshot in 3 minutes.</h1>
             <p className="mk-lede">
-              Answer 12 questions and receive your score, maturity tier, top gap, and a
-              starter artifact your team can use immediately. Upgrade later for the full
-              8-dimension diagnostic.
+              Answer 12 questions. Get a score, maturity tier, top gap, and starter
+              artifact. Upgrade later for the full 8-dimension diagnostic.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
