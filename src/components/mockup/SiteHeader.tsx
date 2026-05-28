@@ -1,7 +1,10 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from './Button';
 
-// Public marketing nav — buyer-facing destinations only.
+// Desktop primary nav — buyer-facing destinations only.
 // Sandbox + Toolbox are product surfaces that confuse first-time visitors;
 // they live inside the signed-in experience (dashboard chrome) and as
 // references inside the course/assessment pages, not in the top nav.
@@ -13,11 +16,30 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Institutions', href: '/for-institutions' },
 ];
 
+// Mobile primary nav — 4 buttons + a "More" overflow. Labels shortened
+// ("Assessment" → "Assess") so all five mobile slots fit on a 360px phone
+// without horizontal scroll. Institutions moves to MORE_MOBILE_NAV below.
+const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Assess', href: '/assessment' },
+  { label: 'Course', href: '/courses' },
+  { label: 'Resources', href: '/research' },
+];
+
+// Mobile More panel — secondary routes. FAQ lives in the footer, not nav.
+const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
+  { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
+  { label: 'About', href: '/about', helper: 'Why the Institute exists' },
+  { label: 'Security', href: '/security', helper: 'Safe AI use and governance' },
+];
+
 export interface SiteHeaderProps {
   /** Active route path (e.g. '/courses'). The matching nav item gets the
    * active styling. Pass `undefined` to render no active state. */
   activePath?: string;
-  /** Primary CTA in the top-right. Defaults to "Get readiness score" → /assessment. */
+  /** Primary CTA in the top-right (desktop only — hidden on mobile because
+   * the sticky bottom CTA covers the same surface). Defaults to "Get
+   * readiness score" → /assessment. */
   cta?: { label: string; href: string };
 }
 
@@ -25,6 +47,11 @@ export function SiteHeader({
   activePath,
   cta = { label: 'Get readiness score', href: '/assessment/take' },
 }: SiteHeaderProps) {
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreActive = MORE_MOBILE_NAV.some((item) => activePath === item.href);
+
+  const isActive = (href: string) => activePath === href;
+
   return (
     <header className="mk-header">
       <div className="mk-container mk-header-inner">
@@ -52,42 +79,71 @@ export function SiteHeader({
         </Link>
 
         <nav className="mk-nav" aria-label="Primary">
-          {PRIMARY_NAV.map((item) => {
-            const isActive = activePath === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={isActive ? 'is-active' : ''}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {PRIMARY_NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={isActive(item.href) ? 'is-active' : ''}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        <Button variant="gold" href={cta.href}>
-          {cta.label}
-        </Button>
+        {/* Desktop-only CTA — hidden on mobile via .mk-header-cta CSS so the
+            mobile header is just centered logo + nav pill. */}
+        <div className="mk-header-cta">
+          <Button variant="gold" href={cta.href}>
+            {cta.label}
+          </Button>
+        </div>
       </div>
 
-      <div className="mk-container">
+      <div className="mk-container mk-nav-mobile-wrap">
         <nav className="mk-nav-mobile" aria-label="Primary (mobile)">
-          {PRIMARY_NAV.map((item) => {
-            const isActive = activePath === item.href;
-            return (
+          {PRIMARY_MOBILE_NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={isActive(item.href) ? 'is-active' : ''}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <button
+            type="button"
+            onClick={() => setMoreOpen((v) => !v)}
+            className={`mk-nav-mobile-more${moreActive || moreOpen ? ' is-active' : ''}`}
+            aria-expanded={moreOpen}
+            aria-controls="mk-nav-mobile-more-panel"
+          >
+            {moreOpen ? 'Close' : 'More'}
+          </button>
+        </nav>
+
+        {moreOpen && (
+          <div
+            id="mk-nav-mobile-more-panel"
+            className="mk-nav-mobile-more-panel"
+            role="region"
+            aria-label="More navigation"
+          >
+            {MORE_MOBILE_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={isActive ? 'is-active' : ''}
-                aria-current={isActive ? 'page' : undefined}
+                className={`mk-nav-mobile-more-link${isActive(item.href) ? ' is-active' : ''}`}
+                onClick={() => setMoreOpen(false)}
+                aria-current={isActive(item.href) ? 'page' : undefined}
               >
-                {item.label}
+                <span className="mk-nav-mobile-more-link-label">{item.label}</span>
+                <span className="mk-nav-mobile-more-link-helper">{item.helper}</span>
               </Link>
-            );
-          })}
-        </nav>
+            ))}
+          </div>
+        )}
       </div>
     </header>
   );

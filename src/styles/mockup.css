@@ -6125,31 +6125,92 @@ section.mk-std { padding: 56px 0; }
   }
 }
 
-/* Mobile nav: 5-column grid instead of horizontal-scroll. Labels are
-   short enough (Home / Assessment / Course / Resources / Institutions)
-   to fit at narrow widths with tightened padding. */
+/* Mobile header redesign (2026-05-28):
+   - Center the brand row (no top-right CTA — the sticky bottom CTA covers
+     the same surface, no reason to duplicate it in the header)
+   - Restructure the nav pill into a 5-cell grid: 4 primary routes +
+     a "More" button that expands an inline panel below
+   - The More panel hosts Institutions, About, Security */
 @media (max-width: 1179px) {
+  /* Center brand, hide desktop CTA. */
+  .mk-header-inner {
+    justify-content: center;
+  }
+  .mk-header-cta {
+    display: none;
+  }
+
+  /* Mobile nav pill — 5-column grid (4 primary + More button). */
+  .mk-nav-mobile-wrap {
+    padding-bottom: 12px;
+  }
   .mk-nav-mobile {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 4px;
     padding: 6px;
-    overflow-x: visible;  /* kill the scroll affordance */
+    overflow-x: visible;
   }
-  .mk-nav-mobile a {
+  .mk-nav-mobile a,
+  .mk-nav-mobile-more {
     flex: initial;
-    padding: 8px 6px;
+    padding: 10px 6px;
     font-size: 13px;
     text-align: center;
     white-space: nowrap;
     min-width: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--r-md);
+    font-weight: 600;
+    color: var(--slate-600);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .mk-nav-mobile a.is-active,
+  .mk-nav-mobile-more.is-active {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  /* More panel — secondary routes with helper copy. */
+  .mk-nav-mobile-more-panel {
+    margin-top: 8px;
+    padding: 8px;
+    background: #fff;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-feature);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mk-nav-mobile-more-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .mk-nav-mobile-more-link:hover { background: var(--cream); }
+  .mk-nav-mobile-more-link.is-active { background: var(--cream-2); }
+  .mk-nav-mobile-more-link-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .mk-nav-mobile-more-link-helper {
+    font-size: 12px;
+    color: var(--slate-500);
   }
 }
 @media (max-width: 380px) {
-  /* Very narrow phones — drop font + padding one more step. */
-  .mk-nav-mobile a {
+  /* Very narrow phones — drop font + padding one more step so 5 cells fit. */
+  .mk-nav-mobile a,
+  .mk-nav-mobile-more {
     font-size: 12px;
-    padding: 8px 4px;
+    padding: 10px 4px;
     letter-spacing: -0.01em;
   }
 }
