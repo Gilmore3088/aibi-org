@@ -205,7 +205,10 @@ export default function ForInstitutionsPage() {
                 'Three reviewed AI artifacts per practitioner',
                 '$295 individual · $199/seat at 10+ · lifetime access',
               ],
-              ctaHref: '/courses/foundation/program',
+              // Was '/courses/foundation/program' (auth-gated → login wall).
+              // Send buyers to the public catalog so they can actually see
+              // the curriculum without a Supabase session. Issue #330.
+              ctaHref: '/courses',
               ctaLabel: 'View the curriculum',
               ctaVariant: 'ink' as const,
             },
