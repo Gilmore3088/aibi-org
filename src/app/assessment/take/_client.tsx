@@ -190,12 +190,10 @@ export default function AssessmentPage() {
                   aria-label="Readiness snapshot"
                 >
                   <div className="mk-take-snap-copy">
-                    <p className="mk-take-snap-k">12 of 12 · Diagnostic complete</p>
-                    <h2>Your readiness snapshot is ready.</h2>
+                    <p className="mk-take-snap-k">Diagnostic complete</p>
+                    <h2>Your top gap: {topGapLabel}.</h2>
                     <p className="mk-take-snap-lede">
-                      Your top gap is <strong>{topGapLabel}</strong>. Start with a simple review
-                      path for AI-supported work, then send yourself the full breakdown and a
-                      copy-ready starter artifact.
+                      Enter your work email below for the full breakdown and a starter artifact you can use this week.
                     </p>
                   </div>
                   <div className="mk-take-snap-card">
