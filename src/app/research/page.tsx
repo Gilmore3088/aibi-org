@@ -13,7 +13,6 @@ import {
   Section,
   SectionHead,
   Button,
-  EyebrowChip,
   CtaBand,
   StickyMobileCta,
 } from '@/components/mockup';

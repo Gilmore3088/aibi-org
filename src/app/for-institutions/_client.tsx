@@ -7,7 +7,6 @@ import {
   Section,
   SectionHead,
   Button,
-  EyebrowChip,
   CtaBand,
   StickyMobileCta,
 } from '@/components/mockup';
@@ -27,7 +26,6 @@ const sw = (p: IconProps) => ({
   'aria-hidden': true,
 });
 
-const BuildingIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" /></svg>);
 const BarsIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="16" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
 const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
