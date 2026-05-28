@@ -406,8 +406,8 @@ export default function ForInstitutionsPage() {
             <div className="mk-lab">Self-serve</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
-              <div className="mk-v">$195</div>
-              <div className="mk-u">/ seat · volume pricing</div>
+              <div className="mk-v">$199</div>
+              <div className="mk-u">/ seat at 10+ · volume pricing</div>
             </div>
             <p>
               Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org

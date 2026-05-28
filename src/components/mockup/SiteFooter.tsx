@@ -17,6 +17,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
       { href: '/research/archive', label: 'Brief archive' },
       { href: '/research/templates/ai-use-policy-starter', label: 'Templates' },
       { href: '/playbooks', label: 'Role playbooks' },
+      { href: '/for-institutions/samples/efficiency-ratio-workbook', label: 'Efficiency ratio workbook' },
     ],
   },
   {
