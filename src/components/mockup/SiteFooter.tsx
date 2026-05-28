@@ -26,6 +26,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
     label: 'Institute',
     links: [
       { href: '/about', label: 'About' },
+      { href: '/faq', label: 'FAQ' },
       { href: '/security', label: 'Security & governance' },
       { href: '/for-institutions/advisory', label: 'Leadership advisory' },
       { href: 'mailto:hello@aibankinginstitute.com', label: 'hello@aibankinginstitute.com' },

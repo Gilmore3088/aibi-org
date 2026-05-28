@@ -354,7 +354,10 @@ export default function AdvisoryPage() {
           >
             BOOK AN EXECUTIVE BRIEFING
           </BriefingButton>
-          <style>{`
+          {/* dangerouslySetInnerHTML — see LMSTopBar pattern (#315). */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
             .aibi-advisory-cta {
               display: inline-block;
               padding: 14px 28px;
@@ -371,7 +374,9 @@ export default function AdvisoryPage() {
             }
             .aibi-advisory-cta:hover { background: var(--gold-2); }
             .aibi-advisory-cta:active { transform: scale(0.98); }
-          `}</style>
+          `,
+            }}
+          />
         </div>
       </section>
       </main>

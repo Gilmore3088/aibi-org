@@ -259,7 +259,7 @@ export default function CoursesIndexPage() {
         heading={<>Build your first reviewed AI workflow.</>}
         actions={[
           { label: 'Enroll in AiBI-Foundation', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Get readiness score first', href: '/assessment/take', variant: 'ghost-dark' },
+          { label: 'See the artifact gallery', href: '/courses/foundation/gallery', variant: 'ghost-dark' },
         ]}
       />
     </div>

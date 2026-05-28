@@ -52,7 +52,12 @@ export function CourseShell({ modules, completed, current, learner, children }: 
         learner={learner}
       />
       <main style={{ minWidth: 0 }}>{children}</main>
-      <style>{`
+      {/* Inline <style> as dangerouslySetInnerHTML — same hydration-mismatch
+          fix as LMSTopBar (#315). Avoids React's text-content reconciler
+          re-parsing the CSS string between SSR and CSR. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .lms-shell {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -61,7 +66,9 @@ export function CourseShell({ modules, completed, current, learner, children }: 
             grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </div>
   );
 }

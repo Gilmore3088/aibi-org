@@ -300,13 +300,18 @@ export default async function AiBIPurchasedPage({
         </section>
       </div>
 
-      <style>{`
+      {/* dangerouslySetInnerHTML — see LMSTopBar pattern (#315). */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @media (max-width: 760px) {
           .purchased-grid {
             grid-template-columns: minmax(0, 1fr) !important;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   );
 }
