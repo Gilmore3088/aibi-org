@@ -4192,3 +4192,190 @@ section.mk-std { padding: 56px 0; }
   outline: 2px solid var(--gold-soft);
   outline-offset: 2px;
 }
+
+/* ── GuidedFilter ──────────────────────────────────────────────────────────── */
+
+.mk-guided-filter {
+  background: var(--cream);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 32px 0 24px;
+}
+
+.mk-guided-filter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mk-guided-filter-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mk-guided-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.mk-guided-hint {
+  font-size: 14px;
+  color: var(--slate-500);
+  margin: 0;
+}
+
+/* Row: label + chip group */
+.mk-guided-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .mk-guided-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+.mk-guided-row-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+  white-space: nowrap;
+  padding-top: 6px;
+  min-width: 80px;
+}
+
+@media (min-width: 640px) {
+  .mk-guided-row-label {
+    min-width: 80px;
+    text-align: right;
+  }
+}
+
+/* Chip group — wrap on mobile, scroll if truly long */
+.mk-guided-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Chip button */
+.mk-guided-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--slate-200);
+  background: transparent;
+  color: var(--slate-600);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.mk-guided-chip:hover {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.mk-guided-chip:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.mk-guided-chip--active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-soft);
+}
+
+.mk-guided-chip--active:hover {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--gold-soft);
+}
+
+/* Active pills row */
+.mk-guided-active-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--slate-200);
+}
+
+.mk-guided-active-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.mk-guided-active-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Active removable pill */
+.mk-guided-active-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 12px;
+  border-radius: 999px;
+  background: var(--gold);
+  border: none;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.mk-guided-active-pill:hover {
+  background: var(--gold-2);
+}
+
+.mk-guided-active-pill:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.mk-guided-pill-x {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+/* Clear link */
+.mk-guided-clear {
+  background: transparent;
+  border: none;
+  color: var(--slate-500);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: auto;
+}
+
+.mk-guided-clear:hover {
+  color: var(--ink);
+}
+
+.mk-guided-clear:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
