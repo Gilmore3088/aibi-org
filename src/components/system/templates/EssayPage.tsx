@@ -2,8 +2,7 @@
  * <EssayPage> — long-form research essay archetype.
  *
  * Used for every /research/[slug] page. Designed to render MDX content with a
- * narrow reading column, sourced citations, a NewsletterCard at the close, and
- * a "back to archive" link.
+ * narrow reading column, sourced citations, and a "back to archive" link.
  *
  * MDX bodies should use H2 (##), H3 (###), `<EditorialQuote>`, `<KPIRibbon>`,
  * `<Marginalia>` — the design system primitives. Plain markdown also renders
@@ -14,7 +13,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Section } from "../Section";
 import { EssayMeta } from "../EssayMeta";
-import { NewsletterCard } from "../NewsletterCard";
 
 export interface EssaySource {
   readonly label: string;
@@ -51,7 +49,7 @@ export function EssayPage({
           href="/research"
           className="font-serif-sc text-label-md uppercase tracking-widest text-slate hover:text-gold transition-colors duration-fast"
         >
-          ← The AI Banking Brief
+          ← Research
         </Link>
         {category && (
           <p className="font-serif-sc text-label-md uppercase tracking-widest text-gold mt-s8">
@@ -103,12 +101,6 @@ export function EssayPage({
         </Section>
       )}
 
-      <Section variant="parchDark" divider="none" padding="default" container="narrow">
-        <NewsletterCard
-          heading="Read this regularly."
-          blurb="The AI Banking Brief — fortnightly, sourced commentary on community-bank AI adoption."
-        />
-      </Section>
     </main>
   );
 }

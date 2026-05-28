@@ -401,7 +401,6 @@ export function ResultsViewV2({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      {/* Newsletter CTA removed 2026-05-27 (#339) — no active cadence. */}
       {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
     </div>
   );

@@ -13,7 +13,7 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 | `SUPABASE_SERVICE_ROLE_KEY` | server DB writes / RLS-bypass reads |
 | `STRIPE_SECRET_KEY` | checkout + webhook |
 | `STRIPE_WEBHOOK_SECRET` | webhook signature verification |
-| `MAILERLITE_API_KEY` | assessment/newsletter subscribe + tier groups |
+| `MAILERLITE_API_KEY` | assessment tier-routing groups |
 | `RESEND_API_KEY` | transactional email (assessment breakdown) |
 | `ANTHROPIC_API_KEY` | Toolbox playground + practice sandbox |
 | `CRON_SECRET` | auth for `/api/cron/*` and `/api/assessment/pdf/cron-cleanup` |
@@ -30,7 +30,6 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 | Var | Notes |
 |-----|-------|
 | `MAILERLITE_GROUP_ID_ASSESSMENT` | tier-routing group |
-| `MAILERLITE_GROUP_ID_NEWSLETTER` | newsletter group |
 | `RESEND_FROM` | verified sender, e.g. `hello@aibankinginstitute.com` |
 | `RESEND_FROM_NAME` | display name |
 

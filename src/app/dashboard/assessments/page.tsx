@@ -1,8 +1,11 @@
 // /dashboard/assessments — history of the current user's completed
 // assessments (free + in-depth) plus links into each result. Scoped in
-// PR #44 and carried forward via #48. Reads from assessment_responses
-// and course_enrollments by email-variants + user_id, matching the
-// gating pattern used elsewhere via findEnrollmentByEmailOrUserId.
+// PR #44 and carried forward via #48. Reads readiness data from
+// user_profiles (the canonical store — assessment_responses was a
+// legacy reference that never existed remotely; the table was retired
+// when assessment data was consolidated onto user_profiles) and
+// In-Depth purchases from course_enrollments, matching the gating
+// pattern used elsewhere via findEnrollmentByEmailOrUserId.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -22,9 +25,9 @@ export const dynamic = 'force-dynamic';
 
 interface FreeAssessmentRow {
   readonly id: string;
-  readonly score: number;
-  readonly tier: string | null;
-  readonly created_at: string;
+  readonly readiness_score: number;
+  readonly readiness_tier_label: string | null;
+  readonly readiness_at: string;
 }
 
 interface InDepthEnrollmentRow {
@@ -65,10 +68,11 @@ export default async function DashboardAssessmentsPage() {
 
   const [freeResult, indepthResult] = await Promise.all([
     supabase
-      .from('assessment_responses')
-      .select('id, score, tier, created_at')
+      .from('user_profiles')
+      .select('id, readiness_score, readiness_tier_label, readiness_at')
       .or(orClause)
-      .order('created_at', { ascending: false })
+      .not('readiness_score', 'is', null)
+      .order('readiness_at', { ascending: false })
       .limit(20),
     supabase
       .from('course_enrollments')
@@ -172,7 +176,7 @@ export default async function DashboardAssessmentsPage() {
                     color: 'var(--slate-500)',
                   }}
                 >
-                  {new Date(row.created_at).toLocaleDateString()}
+                  {new Date(row.readiness_at).toLocaleDateString()}
                 </span>
                 <span
                   style={{
@@ -182,7 +186,7 @@ export default async function DashboardAssessmentsPage() {
                     color: 'var(--ink)',
                   }}
                 >
-                  {row.score}
+                  {row.readiness_score}
                 </span>
                 <Link
                   href={`/results/${row.id}`}

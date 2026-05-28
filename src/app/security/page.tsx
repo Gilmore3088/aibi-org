@@ -155,7 +155,7 @@ export default function SecurityPage() {
               Companion takeaways
             </div>
             <a
-              href="/downloads/safe-ai-use-checklist.pdf"
+              href="/api/resources/safe-ai-use-checklist/download"
               download
               style={{
                 display: 'block',
@@ -170,7 +170,7 @@ export default function SecurityPage() {
               Safe AI Use Checklist (PDF) →
             </a>
             <a
-              href="/downloads/red-yellow-green-use-card.pdf"
+              href="/api/resources/red-yellow-green-use-card/download"
               download
               style={{
                 display: 'block',

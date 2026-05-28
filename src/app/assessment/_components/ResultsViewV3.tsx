@@ -3,7 +3,6 @@
 import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
-import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
@@ -139,10 +138,6 @@ export function ResultsViewV3({
       <SevenDayPlanGrid />
 
       <ClosingCtaBand cta={cta} />
-
-      <div className="border-t border-[color:var(--ink)]/10 pt-12" data-print-hide="true">
-        <NewsletterCTA email={email} />
-      </div>
 
       {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
     </div>

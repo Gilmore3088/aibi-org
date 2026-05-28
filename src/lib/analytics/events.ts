@@ -55,18 +55,6 @@ export function trackBriefingBooked(props: {
 }
 
 /**
- * Fired when a visitor successfully subscribes to The AI Banking Brief.
- * Captures source so we can attribute pre-launch list growth to which
- * surface (footer card, /research page, end-of-essay CTA, assessment
- * results page). See #190.
- */
-export function trackBriefSubscribed(props: {
-  readonly source: 'footer' | 'research' | 'essay' | 'assessment-results' | 'home' | 'unknown';
-}): void {
-  track('brief_subscribed', { ...props });
-}
-
-/**
  * Fired when the user clicks an Enroll/Purchase CTA (before Stripe redirect).
  * Pairs with purchase_completed on success.
  */

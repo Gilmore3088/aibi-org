@@ -1,7 +1,10 @@
-/* Data model for /resources. Each item links to a real artifact in
- * public/downloads/ or public/artifacts/, or to a live route. The page
- * must not reference an href that does not resolve — the Playwright
- * suite asserts HTTP 200 on every download link rendered here. */
+/* Data model for /resources. Downloadable binaries (PDF + ZIP) are served
+ * from Supabase Storage via /api/resources/[slug]/download (302 → signed URL,
+ * 5-min TTL). The download API verifies entitlement (free vs gated tier)
+ * and logs each download into resource_downloads. A few links point at
+ * in-app HTML routes (/resources/templates/*, /research/templates/*)
+ * which remain as ordinary Next.js pages. The Playwright suite asserts
+ * HTTP 200 on every link returned by allDownloadHrefs(). */
 
 import type { ComponentType, SVGProps } from 'react';
 import {
@@ -29,8 +32,8 @@ export interface StarterKit {
   desc: string;
   audience: string;
   items: { label: string; href: string }[];
-  /** Downloadable ZIP bundle of every artifact in the kit + a START-HERE.pdf
-   * and README.md. Source files live in public/downloads/. */
+  /** Download URL for the ZIP bundle of every artifact in the kit
+   * (routed through /api/resources/[slug]/download). */
   zip: string;
   /** Approximate uncompressed size shown next to the download CTA. */
   zipSize: string;
@@ -44,12 +47,12 @@ export const starterKits: StarterKit[] = [
     desc: 'Start here if your team is beginning to allow AI tools.',
     audience: 'Compliance, risk, executive team',
     items: [
-      { label: 'Safe AI Use Checklist', href: '/downloads/safe-ai-use-checklist.pdf' },
-      { label: 'Red / Yellow / Green Use Card', href: '/downloads/red-yellow-green-use-card.pdf' },
-      { label: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf' },
+      { label: 'Safe AI Use Checklist', href: '/api/resources/safe-ai-use-checklist/download' },
+      { label: 'Red / Yellow / Green Use Card', href: '/api/resources/red-yellow-green-use-card/download' },
+      { label: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
-    zip: '/downloads/governance-starter-kit.zip',
+    zip: '/api/resources/governance-starter-kit/download',
     zipSize: '459 KB',
     icon: ShieldCheck,
   },
@@ -59,12 +62,12 @@ export const starterKits: StarterKit[] = [
     desc: 'Give branch and contact center teams safer AI practice routines.',
     audience: 'Retail, branch, contact center',
     items: [
-      { label: 'Retail Playbook', href: '/downloads/retail-playbook.pdf' },
-      { label: 'Safe AI Use Checklist', href: '/downloads/safe-ai-use-checklist.pdf' },
-      { label: 'Prompt Strategy Cheat Sheet', href: '/downloads/prompt-strategy-cheat-sheet.pdf' },
-      { label: 'Data Handling Reference Card', href: '/downloads/artifact-data-handling-reference-card.pdf' },
+      { label: 'Retail Playbook', href: '/api/resources/retail-playbook/download' },
+      { label: 'Safe AI Use Checklist', href: '/api/resources/safe-ai-use-checklist/download' },
+      { label: 'Prompt Strategy Cheat Sheet', href: '/api/resources/prompt-strategy-cheat-sheet/download' },
+      { label: 'Data Handling Reference Card', href: '/api/resources/artifact-data-handling-reference-card/download' },
     ],
-    zip: '/downloads/frontline-enablement-kit.zip',
+    zip: '/api/resources/frontline-enablement-kit/download',
     zipSize: '695 KB',
     icon: Users,
   },
@@ -74,12 +77,12 @@ export const starterKits: StarterKit[] = [
     desc: 'Create faster campaign drafts without skipping claims and disclosure review.',
     audience: 'Marketing, product, compliance',
     items: [
-      { label: 'Marketing Playbook', href: '/downloads/marketing-playbook.pdf' },
-      { label: 'Prompt Strategy Cheat Sheet', href: '/downloads/prompt-strategy-cheat-sheet.pdf' },
+      { label: 'Marketing Playbook', href: '/api/resources/marketing-playbook/download' },
+      { label: 'Prompt Strategy Cheat Sheet', href: '/api/resources/prompt-strategy-cheat-sheet/download' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
       { label: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter' },
     ],
-    zip: '/downloads/marketing-review-kit.zip',
+    zip: '/api/resources/marketing-review-kit/download',
     zipSize: '563 KB',
     icon: Megaphone,
   },
@@ -89,12 +92,12 @@ export const starterKits: StarterKit[] = [
     desc: 'Keep adverse-action, fair-lending, and decision packet work traceable.',
     audience: 'Lending, credit, compliance',
     items: [
-      { label: 'Lending Playbook', href: '/downloads/lending-playbook.pdf' },
-      { label: 'Fair-Lending AI Review Checklist', href: '/downloads/artifact-fair-lending-ai-review-checklist.pdf' },
-      { label: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf' },
+      { label: 'Lending Playbook', href: '/api/resources/lending-playbook/download' },
+      { label: 'Fair-Lending AI Review Checklist', href: '/api/resources/artifact-fair-lending-ai-review-checklist/download' },
+      { label: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
-    zip: '/downloads/lending-review-kit.zip',
+    zip: '/api/resources/lending-review-kit/download',
     zipSize: '308 KB',
     icon: FileText,
   },
@@ -115,7 +118,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'Compliance',
     desc: 'Governance, use-case review, workflow SOPs, evidence packets, and board update rhythm.',
     includes: ['Use-case intake', 'Review checklist', 'Board update'],
-    pdf: '/downloads/compliance-playbook.pdf',
+    pdf: '/api/resources/compliance-playbook/download',
     icon: ShieldCheck,
   },
   {
@@ -123,7 +126,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'Branch / Retail',
     desc: 'Frontline summaries, service replies, coaching cards, huddle scripts, and customer signal reports.',
     includes: ['Reply library', 'Coaching card', 'Voice report'],
-    pdf: '/downloads/retail-playbook.pdf',
+    pdf: '/api/resources/retail-playbook/download',
     icon: Users,
   },
   {
@@ -131,7 +134,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'Marketing',
     desc: 'Brand voice, campaign kits, disclosure flags, reporting narratives, and segment-safe messaging.',
     includes: ['Brand prompt', 'Campaign kit', 'Review route'],
-    pdf: '/downloads/marketing-playbook.pdf',
+    pdf: '/api/resources/marketing-playbook/download',
     icon: Megaphone,
   },
   {
@@ -139,7 +142,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'Lending',
     desc: 'Adverse-action traceability, fair-lending checks, decision packet indexes, and language coaching.',
     includes: ['Traceability', 'Phrase screen', 'Packet index'],
-    pdf: '/downloads/lending-playbook.pdf',
+    pdf: '/api/resources/lending-playbook/download',
     icon: FileText,
   },
   {
@@ -147,7 +150,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'BSA / AML',
     desc: 'SAR scaffolds, CDD baselines, synthetic typology training, alert patterning, and SOPs.',
     includes: ['SAR scaffold', 'CDD baseline', 'Training scenario'],
-    pdf: '/downloads/bsa-aml-playbook.pdf',
+    pdf: '/api/resources/bsa-aml-playbook/download',
     icon: Target,
   },
   {
@@ -155,7 +158,7 @@ export const rolePlaybooks: RolePlaybook[] = [
     title: 'IT / InfoSec',
     desc: 'Data classes, approved tools, AI vetting memos, gateway rules, and AgentSecOps controls.',
     includes: ['Tool verdict', 'Data matrix', 'Agent review'],
-    pdf: '/downloads/infosec-playbook.pdf',
+    pdf: '/api/resources/infosec-playbook/download',
     icon: LockKeyhole,
   },
 ];
@@ -169,11 +172,11 @@ export interface ProblemPath {
 
 export const problemPaths: ProblemPath[] = [
   { title: 'Set AI rules', artifact: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter', icon: ShieldCheck },
-  { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf', icon: ClipboardCheck },
-  { title: 'Train staff', artifact: 'Safe AI Use + R/Y/G cards', href: '/downloads/safe-ai-use-checklist.pdf', icon: BookOpen },
+  { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download', icon: ClipboardCheck },
+  { title: 'Train staff', artifact: 'Safe AI Use + R/Y/G cards', href: '/api/resources/safe-ai-use-checklist/download', icon: BookOpen },
   { title: 'Build a workflow SOP', artifact: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop', icon: Workflow },
   { title: 'Brief leadership', artifact: 'Board Briefing Checklist', href: '/research/templates/board-briefing-checklist', icon: BarChart3 },
-  { title: 'Preview paid output', artifact: 'Sample Readiness Report', href: '/downloads/sample-readiness-report.pdf', icon: Eye },
+  { title: 'Preview paid output', artifact: 'Sample Readiness Report', href: '/api/resources/sample-readiness-report/download', icon: Eye },
 ];
 
 export interface Template {
@@ -194,7 +197,7 @@ export const templates: Template[] = [
     format: 'Template · Register',
     desc: 'Document purpose, tool, data class, owner, risk tier, reviewer, and cadence.',
     preview: ['Use case', 'Tool', 'Data', 'Reviewer'],
-    href: '/downloads/artifact-ai-use-case-inventory.pdf',
+    href: '/api/resources/artifact-ai-use-case-inventory/download',
     icon: ClipboardCheck,
   },
   {
@@ -203,7 +206,7 @@ export const templates: Template[] = [
     desc: 'Capture tool, input, output, reviewer, approval checkpoint, and retention rule.',
     preview: ['Tool', 'Input', 'Output', 'Review'],
     href: '/resources/templates/ai-workflow-sop',
-    pdf: '/downloads/template-ai-workflow-sop.pdf',
+    pdf: '/api/resources/template-ai-workflow-sop/download',
     icon: Workflow,
   },
   {
@@ -212,7 +215,7 @@ export const templates: Template[] = [
     desc: 'What to show before, during, and after an AI rollout conversation.',
     preview: ['Policy', 'Inventory', 'Risk', 'Next'],
     href: '/research/templates/board-briefing-checklist',
-    pdf: '/downloads/template-board-briefing-checklist.pdf',
+    pdf: '/api/resources/template-board-briefing-checklist/download',
     icon: BarChart3,
   },
   {
@@ -221,7 +224,7 @@ export const templates: Template[] = [
     desc: 'A practical starter policy defining tools, data, review, incidents, and ownership.',
     preview: ['Allowed', 'Blocked', 'Review', 'Escalate'],
     href: '/research/templates/ai-use-policy-starter',
-    pdf: '/downloads/template-ai-use-policy-starter.pdf',
+    pdf: '/api/resources/template-ai-use-policy-starter/download',
     icon: FileText,
   },
 ];
@@ -239,28 +242,28 @@ export const deskCards: DeskCard[] = [
     title: 'Safe AI Use Checklist',
     type: 'Staff card',
     desc: 'Strip data, ask clearly, fact-check, escalate.',
-    href: '/downloads/safe-ai-use-checklist.pdf',
+    href: '/api/resources/safe-ai-use-checklist/download',
     icon: ShieldCheck,
   },
   {
     title: 'Red / Yellow / Green Use Card',
     type: 'Staff card',
     desc: 'Classify AI use cases in ten seconds.',
-    href: '/downloads/red-yellow-green-use-card.pdf',
+    href: '/api/resources/red-yellow-green-use-card/download',
     icon: BadgeCheck,
   },
   {
     title: 'Prompt Strategy Cheat Sheet',
     type: 'Prompt card',
     desc: 'Write prompts with role, context, format, constraints, and review.',
-    href: '/downloads/prompt-strategy-cheat-sheet.pdf',
+    href: '/api/resources/prompt-strategy-cheat-sheet/download',
     icon: Sparkles,
   },
   {
     title: 'Regulatory Cheatsheet',
     type: 'Reference',
     desc: 'SR 11-7, ECOA / Reg B, TPRM, and AI lexicon basics.',
-    href: '/downloads/regulatory-cheatsheet.pdf',
+    href: '/api/resources/regulatory-cheatsheet/download',
     icon: BookOpen,
   },
 ];
@@ -276,13 +279,13 @@ export const paidPreviews: PaidPreview[] = [
   {
     title: 'Sample Readiness Report',
     desc: 'Score, maturity tier, top gap, dimension snapshot, and starter artifact.',
-    href: '/downloads/sample-readiness-report.pdf',
+    href: '/api/resources/sample-readiness-report/download',
     icon: BarChart3,
   },
   {
     title: 'In-Depth Assessment Playbook',
     desc: 'How the $99 report turns assessment results into a 90-day AI win.',
-    href: '/downloads/in-depth-playbook.pdf',
+    href: '/api/resources/in-depth-playbook/download',
     icon: Library,
   },
 ];

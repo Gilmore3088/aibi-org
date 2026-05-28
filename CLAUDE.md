@@ -116,7 +116,7 @@ The user is not a developer. Before implementing anything proposed:
 - **Hosting:** Vercel (AIBankingInstitute.com on main branch)
 - **Database / Auth:** Supabase (Postgres + RLS)
 - **Payments:** Stripe — In-Depth Assessment ($99) and AiBI-Foundation course ($295). Live unit prices in `src/app/courses/foundation/program/page.tsx` (`priceUSD: 295`) and the In-Depth purchase flow.
-- **Email / Sequences:** MailerLite (assessment tier-routing groups, newsletter, automations) + Resend (transactional — assessment breakdown, course/cert emails). *(Replaced ConvertKit, 2026-05; some `lib/mailerlite` function names still read "convertkit" — legacy naming only.)*
+- **Email / Sequences:** MailerLite (assessment tier-routing groups + automations) + Resend (transactional — assessment breakdown, course/cert emails). *(Replaced ConvertKit, 2026-05; some `lib/mailerlite` function names still read "convertkit" — legacy naming only.)* Newsletter retired 2026-05-27 / fully evicted from code 2026-05-28; no `_NEWSLETTER` group, subscribe surface, or AI Banking Brief framing remains.
 - **CRM:** None. *(HubSpot removed — 0 refs in code as of 2026-05-21.)*
 - **Analytics:** `@vercel/analytics` + Plausible coexist (2026-05-21; Plausible still has ~7 call sites — the deferred-queue pattern below still applies). Full cutover to `@vercel/analytics` is in progress, not complete.
 - **Scheduling:** Calendly (popup or inline embed — Executive Briefing link)
@@ -201,7 +201,6 @@ SUPABASE_SERVICE_ROLE_KEY=             # server-only; mark Sensitive in Vercel
 # --- Email (MailerLite + Resend) ---
 MAILERLITE_API_KEY=
 MAILERLITE_GROUP_ID_ASSESSMENT=        # assessment tier-routing group
-MAILERLITE_GROUP_ID_NEWSLETTER=        # AI Banking Brief subscribers
 RESEND_API_KEY=                        # transactional email (assessment breakdown)
 RESEND_FROM=hello@aibankinginstitute.com   # verified sender (lowercase exact)
 RESEND_FROM_NAME=The AI Banking Institute

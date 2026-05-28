@@ -307,17 +307,22 @@ export async function GET(request: Request): Promise<Response> {
   const workProductSubmitted = submission !== null;
   const workProductReviewed = submission?.review_status === 'approved';
 
-  // Fetch pre-assessment score from assessment_responses (if captured)
+  // Fetch pre-assessment readiness from user_profiles. Assessment data was
+  // consolidated onto user_profiles.readiness_* columns; the legacy
+  // assessment_responses table never existed in remote and is retired.
   const { data: preAssessmentRow } = await serviceClient
-    .from('assessment_responses')
-    .select('score, tier')
+    .from('user_profiles')
+    .select('readiness_score, readiness_tier_label')
     .eq('email', enrollment.email)
-    .order('created_at', { ascending: false })
+    .not('readiness_score', 'is', null)
+    .order('readiness_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 
-  const preScore = (preAssessmentRow as { score: number } | null)?.score ?? null;
-  const preTierLabel = (preAssessmentRow as { tier: string } | null)?.tier ?? null;
+  const preScore =
+    (preAssessmentRow as { readiness_score: number } | null)?.readiness_score ?? null;
+  const preTierLabel =
+    (preAssessmentRow as { readiness_tier_label: string } | null)?.readiness_tier_label ?? null;
 
   // Build PDF props
   const postScore = enrollment.post_assessment_score ?? 0;
