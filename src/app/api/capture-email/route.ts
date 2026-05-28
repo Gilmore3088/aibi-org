@@ -105,7 +105,7 @@ function isValidPayload(p: CapturePayload): p is {
   // inconsistent score that later crashes getTierV2() / getTier().
   const expectedSum = (p.answers as number[]).reduce((acc, n) => acc + n, 0);
   if (p.score !== expectedSum) return false;
-  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2') return false;
+  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2' && p.version !== 'v3') return false;
   if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return false;
   if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return false;
   // Optional profile fields — bounded length so an attacker can't dump megabytes.
@@ -270,7 +270,7 @@ export async function POST(request: Request) {
   console.log(
     `[capture-email] reached email gate version=${version ?? 'unset'} hasBreakdown=${Boolean(dimensionBreakdown)}`,
   );
-  if (version === 'v2' && dimensionBreakdown) {
+  if ((version === 'v2' || version === 'v3') && dimensionBreakdown) {
     try {
       const tierData = getTierV2(score);
       const lowest = Object.entries(dimensionBreakdown)

@@ -23,7 +23,7 @@ export interface SiteHeaderProps {
 
 export function SiteHeader({
   activePath,
-  cta = { label: 'Get readiness score', href: '/assessment' },
+  cta = { label: 'Get readiness score', href: '/assessment/take' },
 }: SiteHeaderProps) {
   return (
     <header className="mk-header">
