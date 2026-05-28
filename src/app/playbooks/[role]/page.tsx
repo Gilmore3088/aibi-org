@@ -45,7 +45,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation' }} />
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation/program/purchase' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -59,7 +59,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
             <h1>{data.title}</h1>
             <p className="mk-lede">{data.lede}</p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation">
+              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
                 Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
               </Button>
               <PlaybookDownloadButton
@@ -204,7 +204,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         heading={<>{data.cta.heading}</>}
         body={<>{data.cta.body}</>}
         actions={[
-          { label: 'Start the Course', href: '/courses/foundation', variant: 'gold' },
+          { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
           { label: 'Browse Toolbox', href: '/my-toolbox', variant: 'ghost-dark' },
         ]}
       />

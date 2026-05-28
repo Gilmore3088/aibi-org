@@ -14,6 +14,7 @@ import {
   type ToolboxTemplateSkill,
   type ToolboxWorkflowSkill,
 } from '@/lib/toolbox/types';
+import type { ToolboxTier } from '@/lib/toolbox/access';
 import { renderMarkdown } from '@/lib/sandbox/markdown-renderer';
 import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
@@ -22,7 +23,6 @@ import { ToolboxHomeV5 } from './_components/ToolboxHomeV5';
 import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
-export type ToolboxTier = 'full' | 'starter';
 
 // All tabs in canonical order. Per #219, Starter-tier (In-Depth Assessment
 // buyers) only sees the read-only tabs — Build + Playground are hidden.
@@ -121,15 +121,16 @@ function slugFromCommand(cmd: string): string {
 
 interface ToolboxAppProps {
   /**
-   * Entitlement tier resolved on the server (#219). Defaults to 'full' so
-   * existing callers + tests that don't pass the prop yet behave exactly
-   * as before. Starter-tier (In-Depth buyers) hides Build + Playground
-   * tabs; mutating API endpoints are gated server-side regardless.
+   * Entitlement tier resolved on the server (#219). Defaults to 'starter'
+   * (fail-closed): if a caller forgets to pass the prop, the UI will hide
+   * Build + Playground rather than silently un-gate them for a free user.
+   * Mutating API endpoints are gated server-side regardless, so this is
+   * defense-in-depth, not the only barrier.
    */
   readonly tier?: ToolboxTier;
 }
 
-export function ToolboxApp({ tier = 'full' }: ToolboxAppProps = {}) {
+export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
