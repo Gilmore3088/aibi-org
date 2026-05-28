@@ -77,6 +77,7 @@ const nextConfig = {
       { source: '/education/:path*', destination: '/courses', permanent: true },
       { source: '/certifications', destination: '/courses', permanent: true },
       { source: '/services', destination: '/for-institutions', permanent: true },
+      { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
