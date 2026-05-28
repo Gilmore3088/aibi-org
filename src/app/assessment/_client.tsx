@@ -50,7 +50,7 @@ const CheckIcon = (p: IconProps) => (
   </svg>
 );
 
-// Dimension icons (8)
+// Dimension icons (12)
 const ShieldIcon = (p: IconProps) => <svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>;
 const ScreenIcon = (p: IconProps) => <svg {...sw(p)}><rect x="2" y="6" width="20" height="12" rx="2" /></svg>;
 const AlertIcon = (p: IconProps) => (
@@ -87,6 +87,33 @@ const ChatIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+  </svg>
+);
+const ScaleIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <line x1="12" y1="3" x2="12" y2="21" />
+    <path d="M5 3l7 3 7-3" />
+    <path d="M5 21l7-3 7 3" />
+    <path d="M3 9l9 3 9-3" />
+  </svg>
+);
+const EyeIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+const PackageIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <path d="M12 2l10 6.5v7L12 22 2 15.5v-7z" />
+    <line x1="12" y1="22" x2="12" y2="9" />
+    <path d="M7 4.5l5 3 5-3" />
+  </svg>
+);
+const RefreshIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <polyline points="1 4 1 10 7 10" />
+    <path d="M3.51 15a9 9 0 1 0 .49-4" />
   </svg>
 );
 
@@ -169,10 +196,11 @@ const BASELINE: Partial<Record<Dim, number>> = {
   Leadership: 3,
 };
 
+// v3 tier thresholds (score range 12–48, matching content/assessments/v3/scoring.ts)
 function tierFor(score: number) {
-  if (score >= 80) return { label: 'Ready to Scale', cls: 'mk-t4' };
-  if (score >= 60) return { label: 'Building Momentum', cls: 'mk-t3' };
-  if (score >= 40) return { label: 'Early Stage', cls: 'mk-t2' };
+  if (score >= 41) return { label: 'Ready to Scale', cls: 'mk-t4' };
+  if (score >= 33) return { label: 'Building Momentum', cls: 'mk-t3' };
+  if (score >= 23) return { label: 'Early Stage', cls: 'mk-t2' };
   return { label: 'Starting Point', cls: 'mk-t1' };
 }
 
@@ -219,12 +247,17 @@ export default function AssessmentLandingPage() {
     return () => clearTimeout(t);
   }, [phase, qIdx, paused]);
 
+  // TODO(#349): rebuild this demo to drive from the real 12 v3 questions/dims.
+  // For now: sum the filled dimension scores (1–4 each) to produce a /48 raw score.
   function computeScore() {
     const all = ALL_DIMS.map((d) => dimScores[d] ?? BASELINE[d] ?? 0);
     const filled = all.filter((v) => v > 0);
     if (!filled.length) return null;
-    const avg = filled.reduce((a, b) => a + b, 0) / filled.length;
-    return Math.round((avg / 4) * 100);
+    // Scale filled scores up to the full 12-dim range so the demo reads credibly.
+    // Each dim is 1–4; 12 dims = 12–48 total. Extrapolate from however many dims are filled.
+    const filledSum = filled.reduce((a, b) => a + b, 0);
+    const extrapolated = Math.round((filledSum / filled.length) * 12);
+    return Math.min(48, Math.max(12, extrapolated));
   }
 
   const score = computeScore();
@@ -366,7 +399,7 @@ export default function AssessmentLandingPage() {
               <div className="mk-k">Live score</div>
               <div className="mk-qs-num">
                 <span className="mk-score">{score ?? '—'}</span>
-                <span className="mk-qs-of">/ 100</span>
+                <span className="mk-qs-of">/ 48</span>
               </div>
               <div className={`mk-qs-tier${tier ? ` ${tier.cls}` : ''}`}>
                 {tier ? tier.label : 'Answer to start'}
@@ -392,7 +425,7 @@ export default function AssessmentLandingPage() {
             </div>
             <div className="mk-qs-foot">
               <p>
-                The full free assessment scores all <strong>8 dimensions</strong> across{' '}
+                The full free assessment scores all <strong>12 dimensions</strong> across{' '}
                 <strong>12 questions</strong> in about three minutes.
               </p>
             </div>
@@ -471,22 +504,26 @@ export default function AssessmentLandingPage() {
         </div>
       </Section>
 
-      {/* 8 DIMENSIONS */}
+      {/* 12 DIMENSIONS */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="What we measure"
-          heading={<>Eight readiness dimensions.</>}
+          heading={<>Twelve readiness dimensions.</>}
         />
         <div className="mk-dims-grid mk-dims-compact">
           {[
-            { icon: ShieldIcon, title: 'Governance', desc: 'Policy and oversight' },
-            { icon: ScreenIcon, title: 'Tool fluency', desc: 'Practical AI use' },
-            { icon: AlertIcon, title: 'Risk awareness', desc: 'What can go wrong' },
-            { icon: CheckSquareIcon, title: 'Workflow fit', desc: 'Where AI belongs' },
-            { icon: DatabaseIcon, title: 'Data judgment', desc: 'What not to enter' },
-            { icon: FileIcon, title: 'Documentation', desc: 'What gets recorded' },
-            { icon: UsersIcon, title: 'Role readiness', desc: 'Job-specific use' },
-            { icon: ChatIcon, title: 'Leadership', desc: 'Sponsorship and budget' },
+            { icon: ShieldIcon,      title: 'Strategic Value',          desc: 'Business case and executive buy-in' },
+            { icon: ScreenIcon,      title: 'Infrastructure Readiness', desc: 'Tools and access in place' },
+            { icon: DatabaseIcon,    title: 'Data Quality',             desc: 'Clean, trusted data to act on' },
+            { icon: CheckSquareIcon, title: 'Security & Approved Tools',desc: 'Sanctioned tools and access controls' },
+            { icon: AlertIcon,       title: 'Runtime Safeguards',       desc: 'Guardrails on live outputs' },
+            { icon: ScaleIcon,       title: 'Regulatory Compliance',    desc: 'SR 11-7, TPRM, and fair lending alignment' },
+            { icon: EyeIcon,         title: 'Fair Lending Testing',     desc: 'Bias detection and Reg B controls' },
+            { icon: UsersIcon,       title: 'Human-in-the-Loop',        desc: 'Human review before consequential outputs' },
+            { icon: ChatIcon,        title: 'Talent & Culture',         desc: 'Skills, training, and adoption' },
+            { icon: FileIcon,        title: 'Data Safety Reflexes',     desc: 'What staff know not to enter' },
+            { icon: RefreshIcon,     title: 'Continuous Validation',    desc: 'Ongoing model monitoring' },
+            { icon: PackageIcon,     title: 'Vendor Risk',              desc: 'Third-party AI due diligence' },
           ].map(({ icon: Icon, title, desc }) => (
             <div key={title} className="mk-dcard">
               <span className="mk-pic">

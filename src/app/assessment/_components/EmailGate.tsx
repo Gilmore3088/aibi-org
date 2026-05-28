@@ -306,9 +306,10 @@ function DeliverablePanel() {
             Readiness breakdown
           </p>
           <p className="font-mono text-[10px] tabular-nums text-[color:var(--slate-600)]">
-            8 dimensions
+            12 dimensions
           </p>
         </div>
+        {/* TODO(#349): replace these 8 v2 sample bars with the 12 v3 dimension labels (rebuild widget) */}
         <div className="space-y-2">
           {([
             ['Awareness', 0.65],
@@ -340,7 +341,7 @@ function DeliverablePanel() {
 
       <ul className="mt-6 space-y-3">
         {[
-          ['Score across 8 dimensions', 'Where you stand on awareness, governance, skills, data, and four more.'],
+          ['Score across 12 dimensions', 'Where you stand on strategic value, compliance, data safety, vendor risk, and eight more.'],
           ['Tailored starter artifact', 'A copy-paste-ready Markdown deliverable for your weakest dimension.'],
           ['Email copy of both', 'Yours to share with your team, your board, or your examiners.'],
         ].map(([title, body]) => (
