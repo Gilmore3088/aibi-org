@@ -5850,3 +5850,8 @@ section.mk-std { padding: 56px 0; }
 .mk-gallery-chip.is-active .mk-gallery-chip-count {
   opacity: 0.85;
 }
+
+/* Three-ways grid on /assessment/in-depth — 3 cards on desktop, stack on mobile */
+@media (min-width: 768px) {
+  .mk-three-ways-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
