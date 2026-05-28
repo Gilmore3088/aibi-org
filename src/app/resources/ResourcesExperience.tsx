@@ -189,7 +189,7 @@ export function ResourcesExperience() {
           heading="Start with a bundle, not a blank page."
           lede="Each kit groups the practical artifacts a team needs for a specific job."
         />
-        <div className="rx-grid rx-grid-4">
+        <div className="rx-grid rx-grid-4 rx-rail-mobile">
           {starterKits.map((kit) => (
             <StarterKitCard
               key={kit.id}
@@ -208,7 +208,7 @@ export function ResourcesExperience() {
             heading={`${visiblePlaybooks.length} playbook${visiblePlaybooks.length === 1 ? '' : 's'} for the role you picked.`}
             lede="Open the role path, then copy the templates and prompts that come with it."
           />
-          <div className="rx-grid rx-grid-3">
+          <div className="rx-grid rx-grid-3 rx-grid-2col-mobile">
             {visiblePlaybooks.map((playbook) => (
               <RolePlaybookCard key={playbook.slug} playbook={playbook} />
             ))}
@@ -223,7 +223,7 @@ export function ResourcesExperience() {
             heading="Copy these into your next meeting."
             lede="Starter documents for policy, workflow, board review, and AI use-case governance."
           />
-          <div className="rx-grid rx-grid-4">
+          <div className="rx-grid rx-grid-4 rx-list-mobile">
             {visibleTemplates.map((template) => (
               <TemplateCard key={template.title} template={template} />
             ))}
@@ -244,7 +244,7 @@ export function ResourcesExperience() {
                 Browse prompt cards <ArrowRight size={16} />
               </Button>
             </div>
-            <div className="rx-grid rx-grid-2">
+            <div className="rx-grid rx-grid-2 rx-chips-mobile">
               {visibleDeskCards.map((card) => (
                 <DeskCard key={card.title} card={card} />
               ))}
@@ -262,7 +262,7 @@ export function ResourcesExperience() {
                 heading="See what the assessments produce before you buy."
                 lede="Use sample reports and buyer guides to decide whether the free snapshot or in-depth assessment is the right next step."
               />
-              <div className="rx-grid rx-grid-2">
+              <div className="rx-grid rx-grid-2 rx-feature-mobile">
                 {visiblePaidPreviews.map((preview) => (
                   <PaidPreviewCard key={preview.title} preview={preview} />
                 ))}

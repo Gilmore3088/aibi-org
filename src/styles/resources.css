@@ -10,11 +10,23 @@
 @media (min-width: 768px) { .mockup-scope .rx-grid-4 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mockup-scope .rx-grid-4 { grid-template-columns: repeat(4, 1fr); } }
 
-/* Mobile: turn every rx-grid catalog into a horizontal swipe rail so the
-   buyer doesn't slog through a vertical stack of 4+ cards. Audit
-   2026-05-28: "/resources is the worst public page by height (13,816px)". */
+/* Mobile rhythm — per-section layouts so /resources doesn't read as
+   "rail / rail / rail / rail / rail" stacked. 2026-05-28 feedback:
+   "one rail feels premium; five rails feels like the page is dodging
+   structure". Each modifier opts a section into a different mobile
+   layout (rail / 2-col grid / list / chips / feature). */
+
+/* Default mobile: 1-col stack (was: universal rail — too repetitive). */
 @media (max-width: 767px) {
   .mockup-scope .rx-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* rx-rail-mobile — horizontal swipe rail. Use sparingly: starter kits
+   are bundles that feel browseable; almost nothing else is. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid.rx-rail-mobile {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -24,11 +36,66 @@
     padding-bottom: 0.75rem;
     scrollbar-width: none;
   }
-  .mockup-scope .rx-grid::-webkit-scrollbar { display: none; }
-  .mockup-scope .rx-grid > * {
+  .mockup-scope .rx-grid.rx-rail-mobile::-webkit-scrollbar { display: none; }
+  .mockup-scope .rx-grid.rx-rail-mobile > * {
     flex: 0 0 78vw;
     max-width: 320px;
     scroll-snap-align: start;
+  }
+}
+
+/* rx-grid-2col-mobile — 2-col grid on mobile (role playbooks). Choices,
+   not browse-and-decide. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid.rx-grid-2col-mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .mockup-scope .rx-grid.rx-grid-2col-mobile > * {
+    padding: 14px 12px;
+  }
+}
+
+/* rx-list-mobile — vertical "resource list" (templates). Slim rows,
+   utility feel — easier to scan than 4 vertically stacked cards. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid.rx-list-mobile {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .mockup-scope .rx-grid.rx-list-mobile > * {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--slate-200);
+    padding: 14px 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .mockup-scope .rx-grid.rx-list-mobile > *:first-child {
+    border-top: 1px solid var(--slate-200);
+  }
+}
+
+/* rx-chips-mobile — compact 2-col grid (desk cards). Smaller padding,
+   tighter typography — references, not feature content. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid.rx-chips-mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .mockup-scope .rx-grid.rx-chips-mobile > * {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* rx-feature-mobile — full-width stacked feature cards (paid previews).
+   These are conversion surfaces; let them breathe at full mobile width. */
+@media (max-width: 767px) {
+  .mockup-scope .rx-grid.rx-feature-mobile {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
