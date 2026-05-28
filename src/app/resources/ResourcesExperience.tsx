@@ -175,6 +175,7 @@ export function ResourcesExperience() {
       </Section>
 
       <CtaBand
+        hiddenOnMobile
         kicker="Not sure where to start?"
         heading={<>Get the recommended resource path.</>}
         body={<>The readiness assessment recommends a role path, top gap, and starter artifact.</>}

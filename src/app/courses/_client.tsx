@@ -294,6 +294,7 @@ export default function CoursesIndexPage() {
 
       {/* FINAL CTA */}
       <CtaBand
+        hiddenOnMobile
         kicker="Not sure yet?"
         heading={<>See what a finished artifact looks like before you commit.</>}
         body={<>The gallery shows real completion work from the course — the exact kind of reviewed artifact you'd take to your next team meeting.</>}

@@ -157,6 +157,7 @@ export default function HomePage() {
       </Section>
 
       <CtaBand
+        hiddenOnMobile
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
           { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },

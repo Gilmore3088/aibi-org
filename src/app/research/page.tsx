@@ -509,6 +509,7 @@ export default function ResourcesHubPage() {
 
       {/* ASSESSMENTS CTA */}
       <CtaBand
+        hiddenOnMobile
         kicker="Measure where you stand"
         heading={<>Two assessments. One tier model, two depths.</>}
         body={

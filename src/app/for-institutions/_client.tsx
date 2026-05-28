@@ -569,6 +569,7 @@ export default function ForInstitutionsPage() {
       <AdvisorsStrip />
 
       <CtaBand
+        hiddenOnMobile
         kicker="Start with the assessment"
         heading={<>Your baseline costs nothing. Your rollout plan starts there.</>}
         body={

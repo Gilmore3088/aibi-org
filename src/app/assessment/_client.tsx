@@ -354,6 +354,7 @@ export default function AssessmentLandingPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────── */}
       <CtaBand
+        hiddenOnMobile
         heading={<>Take the free snapshot first.</>}
         body={
           <>

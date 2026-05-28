@@ -3640,6 +3640,25 @@ section.mk-std { padding: 56px 0; }
 .mk-value-path {
   display: grid; gap: 16px; grid-template-columns: 1fr;
 }
+@media (max-width: 639px) {
+  /* Mobile: horizontal scroll rail with snap (matches .mk-chain pattern) */
+  .mk-value-path {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .mk-value-path::-webkit-scrollbar { display: none; }
+  .mk-value-path > .mk-vp-card {
+    flex: 0 0 76vw;
+    max-width: 300px;
+    scroll-snap-align: start;
+  }
+}
 @media (min-width: 640px) { .mk-value-path { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mk-value-path { grid-template-columns: repeat(4, 1fr); } }
 .mk-vp-card {
