@@ -37,7 +37,7 @@ import { CurriculumByArtifact } from './_components/CurriculumByArtifact';
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
   description:
-    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and the AiBI-Foundation credential your examiner respects.',
+    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and a credential aligned with SR 11-7, Interagency TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
 };
 
 const INTER_STACK =
@@ -262,9 +262,9 @@ export default async function PurchasePage() {
                 color: '#fff',
               }}
             >
-              Walk away with a saved-prompt library and a credential your{' '}
+              Walk away with a saved-prompt library and{' '}
               <span style={{ color: 'var(--gold)', fontWeight: 700 }}>
-                examiner respects
+                documented workflows your examiner can read
               </span>
               .
             </h1>
@@ -356,7 +356,7 @@ export default async function PurchasePage() {
                 color: '#fff',
               }}
             >
-              Earn the credential your examiner respects.
+              Earn the AiBI-Foundation credential.
             </h2>
             <p
               style={{

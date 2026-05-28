@@ -59,8 +59,12 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
             <h1>{data.title}</h1>
             <p className="mk-lede">{data.lede}</p>
             <div className="mk-ctas">
+              {/* Was "Start {role} Path" — but the destination is the generic
+                  Foundation purchase page, not a role-specific track. Until
+                  role-specific paths exist, the label needs to match the
+                  destination. Issue #327 (part D). */}
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
+                Enroll in AiBI-Foundation <ArrowR className="mk-ic" />
               </Button>
               <PlaybookDownloadButton
                 role={role}

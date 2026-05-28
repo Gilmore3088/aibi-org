@@ -67,7 +67,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Start the AiBI-Foundation course',
           description:
-            'You have traction. Twelve self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and earn the credential your examiner respects.',
+            'You have traction. Twelve self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and walk away with documented workflows your examiner can read.',
           href: '/courses/foundation/program/purchase',
           cta: 'Enroll · $295',
           accent: 'var(--ink-2)',
