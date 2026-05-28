@@ -222,6 +222,11 @@ export default function ForInstitutionsPage() {
               ctaHref: '/for-institutions/advisory',
               ctaLabel: 'Request a pilot',
               ctaVariant: 'gold' as const,
+              // #352 — Organizational Rollout had no pricing path on this
+              // page. The bulk-seat price lives in the "Two ways to work
+              // with us" section below; the pricing footnote here closes
+              // the gap without restructuring the section.
+              pricingNote: 'Starts at $199/seat (10+ seats) · custom for coached cohorts',
             },
           ].map((tier) => (
             <article
@@ -303,6 +308,18 @@ export default function ForInstitutionsPage() {
                 ))}
               </ul>
               <div style={{ marginTop: 'auto' }}>
+                {('pricingNote' in tier) && tier.pricingNote && (
+                  <p
+                    style={{
+                      margin: '0 0 12px',
+                      fontSize: 12,
+                      color: 'var(--slate-600)',
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {tier.pricingNote}
+                  </p>
+                )}
                 <Button variant={tier.ctaVariant} size="md" href={tier.ctaHref}>
                   {tier.ctaLabel}
                 </Button>
@@ -321,11 +338,14 @@ export default function ForInstitutionsPage() {
         />
         <div className="mk-chain">
           {[
-            { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
-            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
-            { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
-            { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
-            { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+            // #358 — each card title now names the direct outcome of its
+            // verb so the column header → card-title pairing reads as a
+            // single thought (verb · its product), not two registers.
+            { icon: TargetIcon, num: '01 · Assess', h: 'Find the readiness gaps', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Close the role-specific gaps', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
+            { icon: FileIcon, num: '03 · Document', h: 'Prove the work', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: LockIcon, num: '04 · Govern', h: 'Defend the practice', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
+            { icon: NetworkIcon, num: '05 · Consult', h: 'Compound the lift', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
           ].map(({ icon: Icon, num, h, p }) => (
             <div key={num} className="mk-step">
               <span className="mk-pic">
@@ -419,7 +439,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
             <Button variant="ink" size="lg" href="/for-institutions/advisory">
-              Get a Quote <ArrowR className="mk-ic" />
+              Request a seat quote <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
