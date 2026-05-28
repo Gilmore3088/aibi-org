@@ -109,9 +109,6 @@ export default function ForInstitutionsPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<BuildingIcon className="mk-ic" />}>
-              Institutions & Teams · For community banks & credit unions
-            </EyebrowChip>
             <h1>Capability — not a platform.</h1>
             <p className="mk-lede">
               An education engagement for banks and credit unions that need staff

@@ -138,7 +138,6 @@ export function ResourcesExperience() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<Library size={16} />}>Artifact library</EyebrowChip>
             <h1>Find the AI artifact your team needs next.</h1>
             <p className="mk-lede">
               Playbooks, checklists, templates, and prompt cards for banks and credit unions

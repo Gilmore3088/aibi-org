@@ -95,9 +95,6 @@ export default function HomePage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<LockKeyholeIcon className="mk-ic" />}>
-              Built for banks, credit unions, and regulated teams
-            </EyebrowChip>
             <h1>AI training that becomes real banking work.</h1>
             <p className="mk-lede">
               Score your readiness. Train by role. Build workflows your team reuses.
