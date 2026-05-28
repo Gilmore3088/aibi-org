@@ -77,6 +77,9 @@ const nextConfig = {
       { source: '/education/:path*', destination: '/courses', permanent: true },
       { source: '/certifications', destination: '/courses', permanent: true },
       { source: '/services', destination: '/for-institutions', permanent: true },
+      // 2026-05-27: /teams was reachable from sent emails and historical
+      // nav copy; redirect to the canonical institutional surface. Issue #311.
+      { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
