@@ -131,6 +131,14 @@ const nextConfig = {
       // moved to /results/sample with prominent "SAMPLE" badges; this
       // 308 keeps old bookmarks landing somewhere sensible.
       { source: '/results', destination: '/assessment', permanent: true },
+      // 2026-05-28: every downloadable artifact moved to Supabase Storage
+      // and is served via /api/resources/[slug]/download (signed URLs +
+      // entitlement gating + per-download logging). Public-facing legacy
+      // /downloads/<slug>.{pdf,zip} URLs (sent emails, external links,
+      // any straggling code refs) redirect to the API. 308 = permanent,
+      // method-preserving, cacheable. See DECISIONS.md 2026-05-28.
+      { source: '/downloads/:slug.pdf', destination: '/api/resources/:slug/download', permanent: true },
+      { source: '/downloads/:slug.zip', destination: '/api/resources/:slug/download', permanent: true },
     ];
   },
   // Security headers applied to every route.

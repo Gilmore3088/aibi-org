@@ -25,8 +25,12 @@ import { FilteredCard, FilteredSection } from '@/components/research/FilteredSec
 import { TEMPLATES } from './templates/data';
 import type { ArtifactTags } from '@/components/research/GuidedFilter';
 
-/** Derive a short slug from a download href, e.g. "/downloads/foo.pdf" → "foo". */
+/** Derive a short slug from a download href. Handles both the current
+ * API form "/api/resources/foo/download" (→ "foo") and legacy
+ * "/downloads/foo.pdf" or "/artifacts/foo.md" (→ "foo"). */
 function slugFromHref(href: string): string {
+  const apiMatch = href.match(/^\/api\/resources\/([^/]+)\/download/);
+  if (apiMatch) return apiMatch[1];
   return href.split('/').pop()?.replace(/\.[^.]+$/, '') ?? href;
 }
 
@@ -78,7 +82,7 @@ const REFERENCE_CARDS: readonly DownloadItem[] = [
   {
     title: 'Safe AI Use Checklist',
     desc: 'A reflex for the moment before staff paste anything into a chat tool. Strip data, ask clearly, fact-check, escalate.',
-    href: '/downloads/safe-ai-use-checklist.pdf',
+    href: '/api/resources/safe-ai-use-checklist/download',
     meta: 'PDF · Staff card',
     tags: {
       roles: ['Compliance', 'Operations', 'BSA'],
@@ -89,7 +93,7 @@ const REFERENCE_CARDS: readonly DownloadItem[] = [
   {
     title: 'Red / Yellow / Green AI Use Card',
     desc: 'Short staff-facing classification of which AI uses are safe, which need approved tools, and which to avoid.',
-    href: '/downloads/red-yellow-green-use-card.pdf',
+    href: '/api/resources/red-yellow-green-use-card/download',
     meta: 'PDF · Staff card',
     tags: {
       roles: ['Compliance', 'Operations', 'IT/Executive'],
@@ -100,7 +104,7 @@ const REFERENCE_CARDS: readonly DownloadItem[] = [
   {
     title: 'Regulatory Cheatsheet',
     desc: 'One-page reference: SR 11-7, ECOA / Reg B, Interagency TPRM, and the AIEOG AI Lexicon.',
-    href: '/downloads/regulatory-cheatsheet.pdf',
+    href: '/api/resources/regulatory-cheatsheet/download',
     meta: 'PDF · Reference',
     tags: {
       roles: ['Compliance', 'IT/Executive', 'BSA'],
@@ -111,7 +115,7 @@ const REFERENCE_CARDS: readonly DownloadItem[] = [
   {
     title: 'Platform Feature Reference Card',
     desc: 'Quick reference for the AI features baked into platforms your institution likely already uses.',
-    href: '/downloads/platform-feature-reference-card.pdf',
+    href: '/api/resources/platform-feature-reference-card/download',
     meta: 'PDF · Reference',
     tags: {
       roles: ['IT/Executive', 'Operations'],
@@ -122,7 +126,7 @@ const REFERENCE_CARDS: readonly DownloadItem[] = [
   {
     title: 'Prompt Strategy Cheat Sheet',
     desc: 'A short guide to writing prompts that produce safe, on-brief, reviewable AI output.',
-    href: '/downloads/prompt-strategy-cheat-sheet.pdf',
+    href: '/api/resources/prompt-strategy-cheat-sheet/download',
     meta: 'PDF · Staff card',
     tags: {
       roles: ['Operations', 'Marketing', 'Lending', 'Compliance'],
@@ -172,7 +176,7 @@ const SAMPLES: readonly DownloadItem[] = [
   {
     title: 'Sample Readiness Report',
     desc: 'Example of the full PDF report buyers receive after the In-Depth Assessment — score, dimensions, role plan.',
-    href: '/downloads/sample-readiness-report.pdf',
+    href: '/api/resources/sample-readiness-report/download',
     meta: 'PDF · Sample',
     tags: {
       roles: ['IT/Executive', 'Compliance'],
@@ -183,7 +187,7 @@ const SAMPLES: readonly DownloadItem[] = [
   {
     title: 'In-Depth Assessment Playbook',
     desc: 'What the $99 In-Depth Assessment covers, how to use the report, and what to bring to your AI committee.',
-    href: '/downloads/in-depth-playbook.pdf',
+    href: '/api/resources/in-depth-playbook/download',
     meta: 'PDF · Buyer guide',
     tags: {
       roles: ['IT/Executive'],
