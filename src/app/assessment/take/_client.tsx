@@ -4,13 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { SiteHeader } from '@/components/mockup';
 import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2';
-import { getTierV3 } from '@content/assessments/v3';
-
-// Free assessment v3 is scored on a raw 12-48 scale (12 questions x 1-4
-// points). Tier bands come from getTierV3:
-//   12-22 Starting Point | 23-32 Early Stage
-//   33-40 Building Momentum | 41-48 Ready to Scale
-const MAX_RAW_SCORE = QUESTIONS_PER_SESSION * 4;
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 
@@ -30,7 +23,6 @@ export default function AssessmentPage() {
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
-  const [capturedMagicLinkUrl, setCapturedMagicLinkUrl] = useState<string | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
@@ -70,55 +62,44 @@ export default function AssessmentPage() {
         {state.phase === 'questions' && state.selectedQuestions.length > 0 && (() => {
           const q = state.selectedQuestions[state.currentQuestion];
           const selected = state.answers[state.currentQuestion];
-          // Running raw score on the canonical 12-48 scale — matches the
-          // final report. Each answer adds 1-4 points; the value the user sees
-          // ticking up corresponds to what they'll see at the end. Before this
-          // fix, the live panel showed a rolling-average percentage (/100)
-          // that looked unpredictable next to a /48 final score.
-          const answered = state.answers.filter((a) => a > 0);
-          const liveScore = answered.reduce((sum, a) => sum + a, 0);
-          // Project tier by extrapolating the current per-question average
-          // across all 12 questions. Empty-state shows "Pending".
-          const projectedScore =
-            answered.length > 0
-              ? Math.round((liveScore / answered.length) * QUESTIONS_PER_SESSION)
-              : 0;
-          const liveBand =
-            answered.length === 0
-              ? 'Pending'
-              : getTierV3(
-                  Math.min(MAX_RAW_SCORE, Math.max(QUESTIONS_PER_SESSION, projectedScore)),
-                ).label;
-          const breakdown = state.getDimensionBreakdown();
-          const topEntry = Object.entries(breakdown)
-            .filter(([, v]) => v.score > 0)
-            .sort((a, b) => a[1].score / a[1].maxScore - b[1].score / b[1].maxScore)[0];
-          const topGapLabel = topEntry?.[1].label ?? 'Pending';
+          // Live running score on the canonical raw scale (12–48) so the
+          // number we show during taking matches what the results page
+          // shows. The previous percentage-of-answered projection was
+          // mathematically confusing — a single 2/4 answer on Q1 read as
+          // "50/100" which looks like a wild swing instead of "2 so far,
+          // 11 more to go".
+          const answered = state.answers.filter((a) => a > 0).length;
+          const runningScore = state.answers.reduce((sum, a) => sum + (a > 0 ? a : 0), 0);
           const completePct = Math.round((state.currentQuestion / QUESTIONS_PER_SESSION) * 100);
           return (
-            <>
-              {/* Persistent dark navy hero — live score panel */}
+            <div className="mk-take-inner">
+              {/* Persistent dark navy hero — live score panel.
+                  Copy is intentionally minimal here. The user clicked
+                  a "Take the assessment" CTA to land on this page, so
+                  selling the assessment again is redundant — the next
+                  question should be the focus. */}
               <section className="mk-take-q-hero">
                 <div className="mk-take-q-hero-copy">
                   <div className="mk-take-q-hero-chip">
-                    <span className="mk-dot" /> {QUESTIONS_PER_SESSION} questions · about 3 minutes
+                    <span className="mk-dot" /> Question {state.currentQuestion + 1} of {QUESTIONS_PER_SESSION}
                   </div>
-                  <h2>Get your AI readiness score.</h2>
+                  <h2>Answer the question below.</h2>
                   <p>
-                    One question per screen. Live scoring. Your final result shows your tier,
-                    top gap, and starter artifact.
+                    Pick the option that&rsquo;s closest to true for your
+                    institution today. There&rsquo;s no right answer — only
+                    your honest read.
                   </p>
                 </div>
                 <div className="mk-take-q-card">
                   <div className="mk-take-q-card-score">
-                    <p className="mk-k">Live score</p>
+                    <p className="mk-k">Running score</p>
                     <div className="mk-take-q-card-num">
-                      <span className="mk-v">{liveScore}</span>
-                      <span className="mk-u">/ {MAX_RAW_SCORE}</span>
+                      <span className="mk-v">{runningScore}</span>
+                      <span className="mk-u">/ 48</span>
                     </div>
                     <div className="mk-take-q-card-tier">
                       <p className="mk-k">Tier</p>
-                      <p className="mk-take-q-card-tier-v">{liveBand}</p>
+                      <p className="mk-take-q-card-tier-v">Revealed at the end</p>
                     </div>
                   </div>
                   <div className="mk-take-q-card-progress">
@@ -135,11 +116,11 @@ export default function AssessmentPage() {
                     <div className="mk-take-q-card-meta">
                       <div className="mk-take-snap-meta-card">
                         <p className="mk-k">Answered</p>
-                        <p className="mk-take-snap-meta-v">{state.currentQuestion}</p>
+                        <p className="mk-take-snap-meta-v">{answered}</p>
                       </div>
                       <div className="mk-take-snap-meta-card">
-                        <p className="mk-k">Top gap</p>
-                        <p className="mk-take-snap-meta-v">{topGapLabel}</p>
+                        <p className="mk-k">Remaining</p>
+                        <p className="mk-take-snap-meta-v">{QUESTIONS_PER_SESSION - answered}</p>
                       </div>
                       <div className="mk-take-snap-meta-card">
                         <p className="mk-k">Complete</p>
@@ -184,7 +165,7 @@ export default function AssessmentPage() {
                   })}
                 </div>
               </section>
-            </>
+            </div>
           );
         })()}
 
@@ -209,12 +190,10 @@ export default function AssessmentPage() {
                   aria-label="Readiness snapshot"
                 >
                   <div className="mk-take-snap-copy">
-                    <p className="mk-take-snap-k">12 of 12 · Diagnostic complete</p>
-                    <h2>Your readiness snapshot is ready.</h2>
+                    <p className="mk-take-snap-k">Diagnostic complete</p>
+                    <h2>Your top gap: {topGapLabel}.</h2>
                     <p className="mk-take-snap-lede">
-                      Your top gap is <strong>{topGapLabel}</strong>. Start with a simple review
-                      path for AI-supported work, then send yourself the full breakdown and a
-                      copy-ready starter artifact.
+                      Enter your work email below for the full breakdown and a starter artifact you can use this week.
                     </p>
                   </div>
                   <div className="mk-take-snap-card">
@@ -230,9 +209,15 @@ export default function AssessmentPage() {
                       </div>
                     </div>
                     <div className="mk-take-snap-meta">
-                      <ResultMeta label="Dimensions" value="8 scored" />
-                      <ResultMeta label="Artifact" value="Ready" />
-                      <ResultMeta label="Format" value="Email + page" />
+                      <ResultMeta
+                        label="Dimensions scored"
+                        value={String(Object.keys(state.getDimensionBreakdown()).length)}
+                      />
+                      <ResultMeta label="Top gap" value={topGapLabel} />
+                      <ResultMeta
+                        label="Questions"
+                        value={`${QUESTIONS_PER_SESSION} of ${QUESTIONS_PER_SESSION}`}
+                      />
                     </div>
                   </div>
                 </section>
@@ -298,7 +283,6 @@ export default function AssessmentPage() {
                         setCapturedFirstName(extras.firstName ?? null);
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(extras.profileId ?? null);
-                        setCapturedMagicLinkUrl(extras.magicLinkUrl ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
                         if (extras.profileId) {
                           try {
@@ -344,7 +328,6 @@ export default function AssessmentPage() {
                 firstName={capturedFirstName}
                 institutionName={capturedInstitution}
                 profileId={capturedProfileId}
-                magicLinkUrl={capturedMagicLinkUrl}
               />
             </>
           )}

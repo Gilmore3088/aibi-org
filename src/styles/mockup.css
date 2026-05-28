@@ -4241,6 +4241,96 @@ section.mk-std { padding: 56px 0; }
   max-width: 40rem; margin: 0;
 }
 
+/* ── /assessment landing — snapshot positioning (2026-05-28) ── */
+
+/* Hero result card right-side: 3 labelled rows replacing the old dim list */
+.mk-hreport-right .mk-hresult { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.mk-hreport-right .mk-hresult-row { padding: 12px 14px; background: var(--cream); border-radius: 12px; }
+.mk-hreport-right .mk-hresult-row .mk-rk {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--slate-500); margin-bottom: 4px;
+}
+.mk-hreport-right .mk-hresult-row .mk-rv {
+  font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.35;
+}
+
+/* "What you get" — 4 result cards */
+.mk-result-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+@media (min-width: 860px) { .mk-result-grid { grid-template-columns: repeat(4, 1fr); } }
+.mk-rescard {
+  background: #fff; border: 1px solid var(--ink-a10); border-radius: 20px;
+  padding: 22px; display: flex; flex-direction: column; gap: 8px;
+}
+.mk-rescard .mk-rescard-icon { color: var(--gold); }
+.mk-rescard .mk-rescard-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--slate-500); margin-top: 8px;
+}
+.mk-rescard .mk-rescard-value {
+  font-size: 19px; font-weight: 600; color: var(--ink); line-height: 1.3;
+}
+
+/* Compact dims grid for 12 signals — 3 columns on wide screens, no icon col */
+.mk-dims-grid.mk-dims-compact .mk-dcard { padding: 18px; }
+.mk-dims-grid.mk-dims-compact .mk-dcard h4 { margin: 0 0 6px; font-size: 16px; font-weight: 700; color: var(--ink); }
+.mk-dims-grid.mk-dims-compact .mk-dcard p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--slate-600); }
+
+/* In-depth section — 2-column split with sample card on the right */
+.mk-indepth-grid {
+  display: grid; gap: 32px; grid-template-columns: 1fr; align-items: start;
+}
+@media (min-width: 960px) { .mk-indepth-grid { grid-template-columns: 0.42fr 0.58fr; align-items: center; } }
+
+.mk-indepth-grid .mk-kicker {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; margin: 0 0 8px; color: var(--slate-500);
+}
+.mk-indepth-grid .mk-kicker-gold { color: var(--gold-deep); }
+.mk-indepth-grid .mk-section-h {
+  font-size: clamp(28px, 3.4vw, 40px); font-weight: 700;
+  line-height: 1.08; letter-spacing: -0.02em;
+  margin: 0 0 16px; color: var(--ink);
+}
+.mk-indepth-grid .mk-lede-light {
+  font-size: 17px; line-height: 1.6; color: var(--slate-600);
+  margin: 0 0 24px; max-width: 56ch;
+}
+
+.mk-indepth-sample {
+  background: #fff; border: 1px solid var(--ink-a10);
+  border-radius: 28px; overflow: hidden;
+  box-shadow: var(--shadow-feature);
+}
+.mk-indepth-head {
+  background: var(--ink); color: #fff; padding: 22px 24px;
+}
+.mk-indepth-head .mk-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold-soft); margin-bottom: 12px;
+}
+.mk-indepth-num { display: flex; align-items: baseline; gap: 10px; }
+.mk-indepth-num .mk-v { font-size: 56px; font-weight: 700; color: var(--gold-soft); line-height: 1; }
+.mk-indepth-num .mk-u { font-size: 13px; color: var(--on-dark-50); }
+
+.mk-indepth-dims {
+  display: grid; gap: 12px; padding: 20px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 600px) { .mk-indepth-dims { grid-template-columns: 1fr 1fr; } }
+.mk-indepth-dim {
+  background: var(--cream); border-radius: 14px; padding: 14px;
+}
+.mk-indepth-dim .mk-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.mk-indepth-dim .mk-nm { font-size: 14px; font-weight: 700; color: var(--ink); }
+.mk-indepth-dim .mk-lv { font-size: 11px; font-weight: 700; color: var(--gold-deep); letter-spacing: 0.08em; }
+.mk-indepth-dim .mk-bar {
+  height: 6px; background: #fff; border-radius: 999px; overflow: hidden;
+}
+.mk-indepth-dim .mk-fill { height: 100%; background: var(--gold); border-radius: 999px; }
+.mk-indepth-dim .mk-indepth-desc {
+  font-size: 12px; line-height: 1.5; color: var(--slate-600); margin: 10px 0 0;
+}
+
 /* AdvisorsStrip (#356) — renders only when content/advisors.ts is populated. */
 .mk-advisors-strip {
   background: var(--cream-2);

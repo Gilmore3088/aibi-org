@@ -3,7 +3,6 @@
 import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
-import { ResultsDashboardV3 } from './ResultsDashboardV3';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
@@ -20,12 +19,9 @@ import {
   FINANCIAL_IMPLICATIONS,
   TIER_CLOSING_CTA,
 } from '@content/assessments/v3/personalization';
+import type { StarterPrompt as StarterPromptType } from '@content/assessments/v3/personalization';
 
-const BRIEFING_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-});
+const V3_MAX_SCORE = 48;
 
 interface ResultsViewV3Props {
   readonly score: number;
@@ -36,10 +32,6 @@ interface ResultsViewV3Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
-  /** One-click magic-link URL into /dashboard. Null when Supabase isn't
-      configured or link generation failed — the AccountReady panel renders
-      a "check your inbox" message instead of an active button. #303. */
-  readonly magicLinkUrl?: string | null;
 }
 
 interface RankedDimension {
@@ -48,6 +40,17 @@ interface RankedDimension {
   readonly score: number;
   readonly maxScore: number;
   readonly pct: number;
+}
+
+type Band = 'critical' | 'developing' | 'strong';
+type Recommendation = (typeof RECOMMENDATIONS)[Dimension];
+type StarterArtifact = ReturnType<typeof getStarterArtifact>;
+type ClosingCta = (typeof TIER_CLOSING_CTA)[Tier['id']];
+
+function bandFor(pct: number): Band {
+  if (pct >= 0.75) return 'strong';
+  if (pct >= 0.5) return 'developing';
+  return 'critical';
 }
 
 function groupDimensions(
@@ -84,502 +87,269 @@ export function ResultsViewV3({
   dimensionBreakdown,
   email,
   firstName,
-  institutionName,
   profileId,
-  magicLinkUrl,
 }: ResultsViewV3Props) {
-  const subjectName = institutionName?.trim() || 'Your institution';
   const grouped = groupDimensions(dimensionBreakdown);
   const focusGap =
     grouped.critical[0] ?? grouped.developing[0] ?? grouped.all[0] ?? null;
   const fastestRoi = focusGap ? RECOMMENDATIONS[focusGap.id] : null;
   const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
   const starterArtifact = focusGap ? getStarterArtifact(focusGap.id) : null;
+  const cta = TIER_CLOSING_CTA[tierId];
+  const implications = FINANCIAL_IMPLICATIONS[tierId];
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <header
-        className="mb-14 border-b border-[color:var(--color-ink)]/15 pb-8"
-        style={{ animation: 'fadeInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
-      >
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
-          <p className="font-serif-sc text-sm uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
-            AI Readiness Briefing
-          </p>
-          <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65 shrink-0">
-            {BRIEFING_DATE_FORMATTER.format(new Date())}
-          </p>
-        </div>
-        <h1 className="font-serif text-3xl md:text-4xl text-[color:var(--color-ink)] leading-tight">
-          {firstName
-            ? `${firstName.trim()}, here is your assessment in brief.`
-            : 'Your assessment, in brief.'}
-        </h1>
-        <p
-          className="mt-5 font-mono text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/65"
-          data-print-hide="true"
-        >
-          A 5-minute read
-        </p>
-      </header>
-
-      <AccountReadyPanel email={email} magicLinkUrl={magicLinkUrl ?? null} />
-
-      <SectionAnchor id="section-1" />
-      <ResultsDashboardV3
+    <div className="w-full max-w-6xl mx-auto space-y-16 md:space-y-20">
+      <HeroSplitCard
         score={score}
         tier={tier}
-        tierId={tierId}
-        subjectName={subjectName}
-        dimensionBreakdown={dimensionBreakdown}
+        firstName={firstName}
+        focusGap={focusGap}
+        fastestRoi={fastestRoi}
+        starterArtifact={starterArtifact}
+        cta={cta}
       />
-      <ContinueLink to="section-1a" label="What this looks like in practice" />
 
-      <SectionAnchor id="section-1a" />
-      <SignatureInsight />
+      <DimensionGrid rows={grouped.all} />
 
-      <SectionAnchor id="section-1b" />
-      <PracticePicture tierId={tierId} />
-      <ContinueLink to="section-2" label="The big insight" />
-
-      <SectionAnchor id="section-2" />
-      <section className="space-y-8" aria-labelledby="section-2-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-          The big insight
-        </p>
-        <h2 id="section-2-heading" className="sr-only">The big insight</h2>
-        <div className="bg-[color:var(--color-ink)] text-[color:var(--color-linen)] rounded-[3px] p-8 md:p-10">
-          <p className="font-serif text-2xl md:text-3xl leading-snug">
-            {BIG_INSIGHT[tierId]}
-          </p>
-        </div>
-        <ContinueLink to="section-2b" label="Implications for your institution" />
-      </section>
-
-      <SectionAnchor id="section-2b" />
-      <section className="space-y-6" aria-labelledby="section-2b-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-          Implications for financial professionals
-        </p>
-        <h2
-          id="section-2b-heading"
-          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
-        >
-          In operating terms.
-        </h2>
-        <dl className="border-t border-[color:var(--color-ink)]/15">
-          <ImplicationRow
-            label="Operational efficiency"
-            body={FINANCIAL_IMPLICATIONS[tierId].operational}
-          />
-          <ImplicationRow
-            label="Risk management"
-            body={FINANCIAL_IMPLICATIONS[tierId].risk}
-          />
-          <ImplicationRow
-            label="Cost & dependency"
-            body={FINANCIAL_IMPLICATIONS[tierId].cost}
-          />
-        </dl>
-        <ContinueLink to="section-4" label="Where you're strong vs exposed" />
-      </section>
-
-      <SectionAnchor id="section-4" />
-      <section className="space-y-8" aria-labelledby="section-4-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-          Strengths and gaps
-        </p>
-        <h2
-          id="section-4-heading"
-          className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
-        >
-          Where you&apos;re strong. Where you&apos;re exposed.
-        </h2>
-
-        <StrengthsChart rows={grouped.all} />
-
-        {grouped.critical.length > 0 && (
-          <div className="space-y-5 pt-2">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-error)] flex items-center gap-2">
-              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-error)]" />
-              Closest look · your biggest gaps
-            </p>
-            <div className="grid gap-5">
-              {grouped.critical.map((gap) => (
-                <GapCard key={gap.id} gap={gap} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        <ContinueLink to="section-4b" label="Where this leads" />
-      </section>
-
-      <SectionAnchor id="section-4b" />
-      <MaturityLadder tierId={tierId} />
-      <ContinueLink to="section-5" label="Your first move" />
-
-      {fastestRoi && focusGap && (
-        <>
-          <SectionAnchor id="section-5" />
-          <section className="space-y-6" aria-labelledby="section-5-heading">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-              Your first AI move
-            </p>
-            <h2
-              id="section-5-heading"
-              className="font-serif text-3xl md:text-5xl leading-[1.05] tracking-[-0.01em] text-[color:var(--color-ink)]"
-            >
-              Start with {fastestRoi.title.toLowerCase()}.
-            </h2>
-
-            <div className="bg-[color:var(--color-parch)] border border-[color:var(--color-ink)]/15 rounded-[3px] p-7 md:p-9 space-y-7">
-              <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-                  Why this is the right starting point
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {fastestRoi.whyRightNow.map((reason) => (
-                    <li
-                      key={reason}
-                      className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
-                    >
-                      <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
-                      <span>{reason}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-l-2 border-[color:var(--color-ink)]/20 pl-5">
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-                  What this looks like in practice
-                </p>
-                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
-                  {fastestRoi.inPractice}
-                </p>
-              </div>
-
-              <div>
-                <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-                  Where this works best
-                </p>
-                <ul className="mt-2 grid gap-1 sm:grid-cols-3">
-                  {fastestRoi.worksBestFor.map((useCase) => (
-                    <li
-                      key={useCase}
-                      className="text-[14px] text-[color:var(--color-ink)]/75 flex gap-2"
-                    >
-                      <span aria-hidden className="font-mono text-[color:var(--gold-deep)]">·</span>
-                      <span>{useCase}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--color-ink)]/10 text-sm">
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
-                    Risk
-                  </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.riskLevel}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
-                    Time saved
-                  </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.timeSaved}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/55">
-                    Owner
-                  </dt>
-                  <dd className="mt-1 text-[color:var(--color-ink)]">{fastestRoi.owner}</dd>
-                </div>
-              </dl>
-            </div>
-
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-              Surfaced by your weakest dimension: {focusGap.label}
-            </p>
-            <ContinueLink to="section-6" label="Starter prompt" />
-          </section>
-        </>
+      {grouped.critical.length > 0 && (
+        <CriticalGapsSection gaps={grouped.critical} />
       )}
+
+      <PracticeAndSignature tierId={tierId} />
+
+      <BigInsightCard insight={BIG_INSIGHT[tierId]} />
+
+      <ImplicationsGrid implications={implications} />
+
+      <MaturityLadder tierId={tierId} />
+
+      {fastestRoi && <FirstMoveCard fastestRoi={fastestRoi} />}
 
       {starterPrompt && (
-        <>
-          <SectionAnchor id="section-6" />
-          <section className="space-y-5" aria-labelledby="section-6-heading">
-            <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-              Starter prompt
-            </p>
-            <h2
-              id="section-6-heading"
-              className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
-            >
-              Copy it. Run it. Refine it.
-            </h2>
-            <p className="text-[16px] leading-[1.6] text-[color:var(--color-ink)]/80 max-w-2xl">
-              Take this prompt to the AI tool your institution already trusts. Run it on a real workflow this week. Bring back what worked and what did not.
-            </p>
-            <StarterPrompt prompt={starterPrompt} />
-            {starterArtifact && focusGap && (
-              <details className="group border border-[color:var(--color-ink)]/15 rounded-[3px] bg-[color:var(--color-linen)] overflow-hidden" data-print-hide="true">
-                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/70 hover:bg-[color:var(--color-parch)] transition-colors">
-                  <span>Show printable starter artifact</span>
-                  <span aria-hidden className="font-mono text-[12px] transition-transform group-open:rotate-180">▾</span>
-                </summary>
-                <div className="p-5">
-                  <StarterArtifactCard artifact={starterArtifact} tierLabel={tier.label} topGapLabel={focusGap.label} />
-                </div>
-              </details>
-            )}
-            <ContinueLink to="section-7" label="Your 7-day plan" />
-          </section>
-        </>
+        <StarterPromptSection
+          starterPrompt={starterPrompt}
+          starterArtifact={starterArtifact}
+          focusGap={focusGap}
+          tier={tier}
+        />
       )}
 
-      <SectionAnchor id="section-7" />
-      <section className="space-y-6 mb-20" aria-labelledby="section-7-heading">
-        <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-          Your 7-day AI activation plan
-        </p>
-        <h2 id="section-7-heading" className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]">
-          What to do this week.
-        </h2>
-        <ol className="border-l-2 border-[color:var(--gold)]/40 space-y-5 pl-6">
-          {SEVEN_DAY_PLAN.map(({ day, action }) => (
-            <li key={day} className="relative">
-              <span
-                aria-hidden
-                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--ink)] text-[color:var(--color-linen)] font-mono text-[11px] tabular-nums font-semibold"
-              >
-                {day}
-              </span>
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55 mb-1">
-                Day {day}
-              </p>
-              <p className="text-[15px] leading-[1.55] text-[color:var(--color-ink)]/85">
-                {action}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <SevenDayPlanGrid />
 
-      <SectionAnchor id="section-9" />
-      <ClosingCta tierId={tierId} />
-
-      {/* Account affordance — tells the user that an account was provisioned
-          server-side during capture (see /api/capture-email ensureAuthUser)
-          and gives them a path to reach their dashboard. Without this the
-          buyer had a Supabase account but no idea, and /dashboard bounced
-          them to /auth/login with no context. Issue #303. */}
-      <div
-        className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12"
-        data-print-hide="true"
-      >
-        <AccountAffordance email={email} />
-      </div>
+      <ClosingCtaBand cta={cta} />
 
       {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
     </div>
   );
 }
 
-function SectionAnchor({ id }: { readonly id: string }) {
-  return <span id={id} tabIndex={-1} className="block scroll-mt-16 outline-none" />;
+/* -------------------------------------------------------------------- */
+/* HERO — split-card pattern from public/sketches/results.html          */
+/* -------------------------------------------------------------------- */
+
+function HeroSplitCard({
+  score,
+  tier,
+  firstName,
+  focusGap,
+  fastestRoi,
+  starterArtifact,
+  cta,
+}: {
+  readonly score: number;
+  readonly tier: Tier;
+  readonly firstName?: string | null;
+  readonly focusGap: RankedDimension | null;
+  readonly fastestRoi: Recommendation | null;
+  readonly starterArtifact: StarterArtifact | null;
+  readonly cta: ClosingCta;
+}) {
+  const greeting = firstName?.trim()
+    ? `${firstName.trim()}, your AI readiness snapshot.`
+    : 'Your AI readiness snapshot.';
+  return (
+    <header className="space-y-10">
+      <div className="space-y-5 max-w-3xl">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[color:var(--gold-a10)] border border-[color:var(--gold-a20)] text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+          <span aria-hidden>●</span>
+          AI Readiness Result
+        </div>
+        <h1 className="text-[clamp(32px,5vw,56px)] leading-[1.05] tracking-[-0.01em] font-semibold text-[color:var(--ink)]">
+          {greeting}
+        </h1>
+        <div className="flex flex-wrap gap-3 pt-2">
+          <a
+            href={cta.primary.href}
+            data-plausible-event-source={cta.primary.source}
+            className="inline-flex items-center justify-center px-6 py-3.5 rounded-[12px] bg-[color:var(--ink)] text-white text-[13px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[color:var(--ink-2)]"
+          >
+            {cta.primary.label}
+          </a>
+          <a
+            href={cta.secondary.href}
+            data-plausible-event-source={cta.secondary.source}
+            className="inline-flex items-center justify-center px-6 py-3.5 rounded-[12px] bg-white border border-[color:var(--ink-a15)] text-[color:var(--ink)] text-[13px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[color:var(--cream)]"
+          >
+            {cta.secondary.label}
+          </a>
+        </div>
+      </div>
+
+      <article
+        className="rounded-[28px] overflow-hidden bg-white border border-[color:var(--ink-a10)]"
+        style={{ boxShadow: 'var(--shadow-hero)' }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-[0.42fr_0.58fr]">
+          <div className="bg-[color:var(--ink)] text-white p-7 md:p-9">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-soft)]">
+              Readiness Score
+            </p>
+            <p className="mt-3 text-[72px] md:text-[80px] leading-[0.95] font-bold tabular-nums text-[color:var(--gold-soft)]">
+              {score}
+            </p>
+            <p className="mt-1 text-[14px] text-[color:var(--on-dark-50)]">/ {V3_MAX_SCORE}</p>
+            <div className="mt-6 px-4 py-3.5 rounded-[14px] bg-[color:var(--on-dark-10)]">
+              <p className="text-[13px] text-[color:var(--on-dark-65)]">Maturity level</p>
+              <p className="mt-1 text-[20px] md:text-[22px] font-bold leading-tight">
+                {tier.label}
+              </p>
+            </div>
+          </div>
+          <div className="p-6 md:p-7 space-y-2.5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+              Recommended Path
+            </p>
+            <h2 className="text-[22px] md:text-[24px] font-semibold leading-[1.2] text-[color:var(--ink)]">
+              {fastestRoi ? `Start with ${fastestRoi.title.toLowerCase()}.` : tier.label}
+            </h2>
+            <div className="space-y-2 pt-2">
+              <PathRow label="Top gap" value={focusGap?.label ?? '—'} />
+              {fastestRoi && <PathRow label="Best for" value={fastestRoi.worksBestFor[0]} />}
+              {starterArtifact && (
+                <PathRow label="Artifact" value={starterArtifact.title} />
+              )}
+            </div>
+            {fastestRoi && (
+              <div className="mt-4 px-4 py-3.5 rounded-[14px] bg-[color:var(--cream)]">
+                <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[color:var(--slate-600)]">
+                  Path
+                </p>
+                <p className="mt-1.5 text-[14px] font-semibold leading-[1.5] text-[color:var(--ink)]">
+                  {fastestRoi.title} → {fastestRoi.riskLevel} → {fastestRoi.owner}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </article>
+    </header>
+  );
 }
 
-function AccountAffordance({ email }: { readonly email: string }) {
-  const loginHref = `/auth/login?next=%2Fdashboard&email=${encodeURIComponent(email)}`;
+function PathRow({ label, value }: { readonly label: string; readonly value: string }) {
   return (
-    <section
-      aria-labelledby="account-affordance-heading"
-      className="bg-[color:var(--color-ink)]/[0.03] rounded-[3px] px-6 py-8 md:px-10 md:py-10 max-w-3xl"
-    >
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
-        Your account is ready
-      </p>
-      <h3
-        id="account-affordance-heading"
-        className="font-serif text-2xl md:text-[28px] leading-tight text-[color:var(--color-ink)] mb-3"
-      >
-        We saved your results to your AI Banking Institute account.
-      </h3>
-      <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80 mb-6 max-w-prose">
-        We created an account for <span className="font-semibold">{email}</span>{' '}
-        so you can come back to your dashboard, retake the assessment, and
-        keep the artifacts you build. Sign in any time with a magic link sent
-        to that address.
-      </p>
-      <a
-        href={loginHref}
-        className="inline-block px-7 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[3px] bg-[color:var(--color-ink)] text-[color:var(--color-linen)] hover:opacity-90 transition-opacity"
-      >
-        Sign in to your dashboard →
-      </a>
+    <div className="flex items-center gap-3 px-3.5 py-3 rounded-[12px] bg-[color:var(--cream)]">
+      <span
+        aria-hidden
+        className="inline-block h-2 w-2 rounded-full bg-[color:var(--gold)] shrink-0"
+      />
+      <div className="min-w-0">
+        <p className="text-[11px] text-[color:var(--slate-600)]">{label}</p>
+        <p className="mt-0.5 text-[14px] font-bold text-[color:var(--ink)] truncate">
+          {value}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* DIMENSION BREAKDOWN — 4-col card grid with strong/dev/critical badges */
+/* -------------------------------------------------------------------- */
+
+function DimensionGrid({ rows }: { readonly rows: ReadonlyArray<RankedDimension> }) {
+  return (
+    <section className="space-y-8">
+      <SectionKicker
+        kicker="Dimension Breakdown"
+        heading={<>Where you&apos;re ready. Where structure is needed.</>}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {rows.map((row) => (
+          <DimCard key={row.id} row={row} />
+        ))}
+      </div>
     </section>
   );
 }
 
-function ContinueLink({ to, label }: { readonly to: string; readonly label: string }) {
-  return (
-    <div className="pt-6 mb-16" data-print-hide="true">
-      <a
-        href={`#${to}`}
-        className="inline-flex items-center justify-between gap-4 bg-[color:var(--ink)] text-[color:var(--color-linen)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-[2px] hover:bg-[color:var(--ink-2)] transition-colors group"
-      >
-        <span>{label}</span>
-        <span aria-hidden className="font-mono transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
-      </a>
-    </div>
-  );
-}
+const BAND_BADGE: Record<Band, { label: string; bg: string; color: string }> = {
+  strong: { label: 'Strong', bg: 'rgba(4,120,87,0.12)', color: 'var(--emerald-700)' },
+  developing: { label: 'Developing', bg: 'var(--gold-a20)', color: 'var(--gold-deep)' },
+  critical: { label: 'Needs structure', bg: 'rgba(155,34,38,0.10)', color: '#9b2226' },
+};
 
-function ImplicationRow({ label, body }: { readonly label: string; readonly body: string }) {
-  return (
-    <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--color-ink)]/15">
-      <dt className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold-deep)] md:pt-1">
-        {label}
-      </dt>
-      <dd className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
-        {body}
-      </dd>
-    </div>
-  );
-}
+const BAND_FILL: Record<Band, string> = {
+  strong: 'var(--emerald-700)',
+  developing: 'var(--gold)',
+  critical: '#9b2226',
+};
 
-function StrengthsChart({
-  rows,
-}: {
-  readonly rows: ReadonlyArray<RankedDimension>;
-}) {
+function DimCard({ row }: { readonly row: RankedDimension }) {
+  const band = bandFor(row.pct);
+  const pct = Math.round(row.pct * 100);
   return (
-    <figure
-      className="border border-[color:var(--color-ink)]/20 rounded-[3px] bg-[color:var(--color-linen)] p-7 md:p-9"
-      aria-label="Twelve-dimension readiness chart, sorted weakest first"
-    >
-      <ZoneLegend />
-      <ul className="space-y-4 mt-6">
-        {rows.map((row) => {
-          const zone =
-            row.pct < 0.5 ? 'critical' : row.pct >= 0.75 ? 'strong' : 'developing';
-          const fill =
-            zone === 'critical'
-              ? 'bg-[color:var(--color-error)]'
-              : zone === 'strong'
-                ? 'bg-[color:var(--color-ink)]/75'
-                : 'bg-[color:var(--gold)]';
-          const pctLabel = Math.round(row.pct * 100);
-          return (
-            <li key={row.id} className="space-y-2">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0 font-serif text-[17px] md:text-[18px] text-[color:var(--color-ink)] truncate leading-tight">
-                  {row.label}
-                </span>
-                <span className="font-mono text-[13px] text-[color:var(--color-ink)]/75 tabular-nums shrink-0">
-                  {row.score}/{row.maxScore}
-                  <span className="text-[color:var(--color-ink)]/45"> · {pctLabel}%</span>
-                </span>
-              </div>
-              <div
-                className="relative h-4 bg-[color:var(--color-ink)]/8"
-                role="presentation"
-              >
-                <div
-                  className={'absolute inset-y-0 left-0 ' + fill}
-                  style={{ width: `${Math.max(row.pct * 100, 2)}%` }}
-                />
-                <span
-                  aria-hidden
-                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
-                  style={{ left: '50%' }}
-                />
-                <span
-                  aria-hidden
-                  className="absolute top-0 bottom-0 w-[1px] bg-[color:var(--color-ink)]/25"
-                  style={{ left: '75%' }}
-                />
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </figure>
-  );
-}
-
-function ZoneLegend() {
-  const zones: ReadonlyArray<{
-    readonly label: string;
-    readonly className: string;
-    readonly range: string;
-  }> = [
-    { label: 'Critical', className: 'bg-[color:var(--color-error)]', range: '< 50%' },
-    { label: 'Developing', className: 'bg-[color:var(--gold)]', range: '50–74%' },
-    { label: 'Strong', className: 'bg-[color:var(--color-ink)]/75', range: '≥ 75%' },
-  ];
-  return (
-    <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 pb-4 border-b border-[color:var(--color-ink)]/20">
-      {zones.map((zone) => (
-        <div key={zone.label} className="flex items-center gap-2.5">
-          <span aria-hidden className={'inline-block h-3 w-6 ' + zone.className} />
-          <span className="font-serif-sc text-[12px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/80">
-            {zone.label}
-          </span>
-          <span className="font-mono text-[11px] text-[color:var(--color-ink)]/55 tabular-nums">
-            {zone.range}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
-  const cta = TIER_CLOSING_CTA[tierId];
-  return (
-    <section aria-labelledby="section-9-heading" className="space-y-6">
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-        {cta.eyebrow}
-      </p>
-      <h2
-        id="section-9-heading"
-        className="font-serif text-3xl md:text-4xl leading-tight text-[color:var(--color-ink)]"
-      >
-        {cta.headline}
-      </h2>
-      <article className="border-2 border-[color:var(--gold)] rounded-[3px] p-6 md:p-8 bg-[color:var(--color-linen)]">
-        <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/85">
-          {cta.body}
-        </p>
-        <a
-          href={cta.primary.href}
-          data-print-hide="true"
-          data-plausible-event-source={cta.primary.source}
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--ink)] text-[color:var(--color-linen)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--ink-2)] transition-colors"
+    <article className="bg-white border border-[color:var(--ink-a10)] rounded-[20px] p-5 transition-shadow hover:shadow-[var(--shadow-hover)]">
+      <div className="flex justify-between items-center gap-2">
+        <span
+          aria-hidden
+          className="inline-block h-2.5 w-2.5 rounded-full"
+          style={{ background: BAND_FILL[band] }}
+        />
+        <span
+          className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.08em]"
+          style={{ background: BAND_BADGE[band].bg, color: BAND_BADGE[band].color }}
         >
-          {cta.primary.label}
-        </a>
-      </article>
-      <ul
-        className="border-t border-[color:var(--color-ink)]/15 pt-4 space-y-2"
-        data-print-hide="true"
+          {BAND_BADGE[band].label}
+        </span>
+      </div>
+      <h3 className="mt-3.5 text-[17px] font-semibold leading-[1.2] text-[color:var(--ink)]">
+        {row.label}
+      </h3>
+      <div className="mt-3 h-1 rounded-full bg-[color:var(--slate-100)] overflow-hidden">
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${Math.max(row.pct * 100, 2)}%`,
+            background: BAND_FILL[band],
+            transition: 'width .8s cubic-bezier(0.2,0.8,0.2,1)',
+          }}
+        />
+      </div>
+      <p
+        className="mt-2.5 text-[13px] font-bold tabular-nums"
+        style={{ color: BAND_FILL[band] }}
       >
-        {[cta.secondary, cta.tertiary].map((offer) => (
-          <li key={offer.source} className="leading-snug">
-            <a
-              href={offer.href}
-              data-plausible-event-source={offer.source}
-              className="font-serif-sc text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink)]/70 hover:text-[color:var(--gold-deep)] underline underline-offset-4 decoration-[color:var(--color-ink)]/25 hover:decoration-[color:var(--gold-deep)] transition-colors"
-            >
-              {offer.label}
-            </a>
-          </li>
+        {row.score}/{row.maxScore} · {pct}%
+      </p>
+    </article>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* CRITICAL GAPS — cream cards stacked                                  */
+/* -------------------------------------------------------------------- */
+
+function CriticalGapsSection({ gaps }: { readonly gaps: ReadonlyArray<RankedDimension> }) {
+  return (
+    <section className="space-y-8">
+      <SectionKicker kicker="Closest look" heading="Where you’re most exposed." />
+      <div className="grid gap-5">
+        {gaps.map((gap) => (
+          <GapCard key={gap.id} gap={gap} />
         ))}
-      </ul>
+      </div>
     </section>
   );
 }
@@ -588,104 +358,356 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
   const content = GAP_CONTENT[gap.id];
   if (!content) return null;
   return (
-    <article className="border-l-2 border-[color:var(--color-error)] bg-[color:var(--color-linen)] rounded-[3px] p-6">
+    <article className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[24px] p-6 md:p-8">
       <header className="flex items-baseline justify-between gap-4">
-        <h3 className="min-w-0 font-serif text-xl md:text-2xl text-[color:var(--color-ink)] break-words">
+        <h3 className="min-w-0 text-[22px] md:text-[24px] font-semibold leading-tight text-[color:var(--ink)] break-words">
           {gap.label}
         </h3>
-        <span className="font-mono text-xs text-[color:var(--color-slate)] tabular-nums shrink-0">
+        <span className="text-[13px] text-[color:var(--slate-600)] tabular-nums shrink-0">
           {gap.score}/{gap.maxScore}
         </span>
       </header>
-      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80">
+      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
         {content.explanation}
       </p>
-      <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-ink)]/55">
-          What this leads to
-        </p>
-        <ul className="mt-2 space-y-1.5">
-          {content.impacts.map((impact) => (
-            <li
-              key={impact}
-              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
-            >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--color-ink)]/30 shrink-0" />
-              <span>{impact}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-5">
-        <p className="font-serif-sc text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
-          What good looks like
-        </p>
-        <ul className="mt-2 space-y-1.5">
-          {content.whatGoodLooksLike.map((vision) => (
-            <li
-              key={vision}
-              className="text-[14px] leading-[1.55] text-[color:var(--color-ink)]/85 flex gap-3"
-            >
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
-              <span>{vision}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="mt-6 grid md:grid-cols-2 gap-5">
+        <BulletBlock
+          kicker="What this leads to"
+          items={content.impacts}
+          markerColor="var(--ink-a15)"
+        />
+        <BulletBlock
+          kicker="What good looks like"
+          items={content.whatGoodLooksLike}
+          markerColor="var(--gold)"
+        />
       </div>
     </article>
   );
 }
 
-// AccountReadyPanel — closes the "what just happened" loop. The API
-// silently provisioned a Supabase Auth user for this email; without a
-// surfacing prompt, the visitor has no way to discover their dashboard.
-// When a magic link is available, the button is one-click. When the link
-// failed to generate (Supabase down, generateLink error), we still tell
-// them the account exists and point them at /auth/login. #303.
-function AccountReadyPanel({
-  email,
-  magicLinkUrl,
+function BulletBlock({
+  kicker,
+  items,
+  markerColor,
 }: {
-  readonly email: string;
-  readonly magicLinkUrl: string | null;
+  readonly kicker: string;
+  readonly items: ReadonlyArray<string>;
+  readonly markerColor: string;
 }) {
   return (
-    <aside
-      aria-label="Your account is ready"
-      className="mb-14 rounded-[3px] border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] p-6 md:p-8"
-    >
-      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold-deep)] mb-3">
-        Your account is ready
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
+        {kicker}
       </p>
-      <p className="font-serif text-xl md:text-2xl leading-snug text-[color:var(--color-ink)] mb-2">
-        We&rsquo;ve saved this briefing to your dashboard.
-      </p>
-      <p className="text-[15px] leading-relaxed text-[color:var(--color-ink)]/75 mb-5">
-        Come back any time to retake the assessment, see how your readiness
-        shifts over a quarter, and keep the saved prompts in your Toolbox.
-        We also sent a copy of this briefing to <strong>{email}</strong>.
-      </p>
-      {magicLinkUrl ? (
-        <a
-          href={magicLinkUrl}
-          style={{ color: 'var(--color-linen, #FFFFFF)' }}
-          className="inline-flex items-center gap-2 rounded-[3px] bg-[color:var(--color-ink)] px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.12em] no-underline transition-colors hover:bg-[color:var(--color-ink)]/85"
-        >
-          View your dashboard
-          <span aria-hidden>→</span>
-        </a>
-      ) : (
-        <p className="text-[13px] text-[color:var(--color-ink)]/70">
-          Check your inbox for a one-click sign-in link, or visit{' '}
-          <a
-            href="/auth/login?next=/dashboard"
-            className="underline decoration-[color:var(--color-ink)]/40 underline-offset-2 hover:decoration-[color:var(--color-ink)]"
+      <ul className="mt-2.5 space-y-2">
+        {items.map((item) => (
+          <li
+            key={item}
+            className="text-[14px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
           >
-            /auth/login
-          </a>{' '}
-          to access your dashboard.
+            <span
+              aria-hidden
+              className="mt-2 h-1.5 w-1.5 rounded-full shrink-0"
+              style={{ background: markerColor }}
+            />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* PRACTICE PICTURE + SIGNATURE INSIGHT                                 */
+/* -------------------------------------------------------------------- */
+
+function PracticeAndSignature({ tierId }: { readonly tierId: Tier['id'] }) {
+  return (
+    <section className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <PracticePicture tierId={tierId} />
+      <SignatureInsight />
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* BIG INSIGHT — ink-filled card                                        */
+/* -------------------------------------------------------------------- */
+
+function BigInsightCard({ insight }: { readonly insight: string }) {
+  return (
+    <section className="space-y-6">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+        The big insight
+      </p>
+      <article
+        className="rounded-[24px] p-8 md:p-12 bg-[color:var(--ink)] text-white"
+        style={{ boxShadow: 'var(--shadow-ink)' }}
+      >
+        <p className="text-[22px] md:text-[28px] leading-[1.3] font-medium">
+          {insight}
         </p>
+      </article>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* IMPLICATIONS — 3-col card grid                                       */
+/* -------------------------------------------------------------------- */
+
+function ImplicationsGrid({
+  implications,
+}: {
+  readonly implications: {
+    readonly operational: string;
+    readonly risk: string;
+    readonly cost: string;
+  };
+}) {
+  const rows: ReadonlyArray<{ readonly label: string; readonly body: string }> = [
+    { label: 'Operational efficiency', body: implications.operational },
+    { label: 'Risk management', body: implications.risk },
+    { label: 'Cost & dependency', body: implications.cost },
+  ];
+  return (
+    <section className="space-y-8">
+      <SectionKicker kicker="Implications" heading="In operating terms." />
+      <div className="grid gap-4 md:grid-cols-3">
+        {rows.map((row) => (
+          <article
+            key={row.label}
+            className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[20px] p-6"
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+              {row.label}
+            </p>
+            <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
+              {row.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* FIRST MOVE — ink-headed feature card                                 */
+/* -------------------------------------------------------------------- */
+
+function FirstMoveCard({
+  fastestRoi,
+}: {
+  readonly fastestRoi: NonNullable<Recommendation>;
+}) {
+  return (
+    <section className="space-y-6">
+      <article
+        className="overflow-hidden rounded-[28px] bg-white border border-[color:var(--ink-a10)]"
+        style={{ boxShadow: 'var(--shadow-feature)' }}
+      >
+        <header className="bg-[color:var(--ink)] text-white px-7 py-6 md:px-9 md:py-7">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-soft)]">
+            Your first AI move
+          </p>
+          <h2 className="mt-2 text-[26px] md:text-[32px] leading-tight font-semibold">
+            Start with {fastestRoi.title.toLowerCase()}.
+          </h2>
+        </header>
+        <div className="p-7 md:p-9 space-y-7">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-600)]">
+              Why this is the right starting point
+            </p>
+            <ul className="mt-3 space-y-2">
+              {fastestRoi.whyRightNow.map((reason) => (
+                <li
+                  key={reason}
+                  className="text-[15px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-2 h-1.5 w-1.5 rounded-full bg-[color:var(--gold)] shrink-0"
+                  />
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="px-5 py-4 rounded-[16px] bg-[color:var(--cream)] border-l-4 border-[color:var(--gold)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-600)]">
+              What this looks like in practice
+            </p>
+            <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
+              {fastestRoi.inPractice}
+            </p>
+          </div>
+          <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[color:var(--ink-a10)]">
+            <MetaCell label="Risk" value={fastestRoi.riskLevel} />
+            <MetaCell label="Time saved" value={fastestRoi.timeSaved} />
+            <MetaCell label="Owner" value={fastestRoi.owner} />
+          </dl>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function MetaCell({ label, value }: { readonly label: string; readonly value: string }) {
+  return (
+    <div>
+      <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
+        {label}
+      </dt>
+      <dd className="mt-1.5 text-[15px] font-semibold text-[color:var(--ink)]">
+        {value}
+      </dd>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* STARTER PROMPT                                                       */
+/* -------------------------------------------------------------------- */
+
+function StarterPromptSection({
+  starterPrompt,
+  starterArtifact,
+  focusGap,
+  tier,
+}: {
+  readonly starterPrompt: StarterPromptType;
+  readonly starterArtifact: StarterArtifact | null;
+  readonly focusGap: RankedDimension | null;
+  readonly tier: Tier;
+}) {
+  return (
+    <section className="space-y-6">
+      <SectionKicker kicker="Starter prompt" heading="Copy it. Run it. Refine it." />
+      <StarterPrompt prompt={starterPrompt} />
+      {starterArtifact && focusGap && (
+        <details
+          className="group bg-white border border-[color:var(--ink-a10)] rounded-[20px] overflow-hidden"
+          data-print-hide="true"
+        >
+          <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] hover:bg-[color:var(--cream)] transition-colors">
+            <span>Show printable starter artifact</span>
+            <span
+              aria-hidden
+              className="text-[12px] transition-transform group-open:rotate-180"
+            >
+              ▾
+            </span>
+          </summary>
+          <div className="p-5 border-t border-[color:var(--ink-a10)]">
+            <StarterArtifactCard
+              artifact={starterArtifact}
+              tierLabel={tier.label}
+              topGapLabel={focusGap.label}
+            />
+          </div>
+        </details>
       )}
-    </aside>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* 7-DAY PLAN — numbered card grid                                      */
+/* -------------------------------------------------------------------- */
+
+function SevenDayPlanGrid() {
+  return (
+    <section className="space-y-8">
+      <SectionKicker kicker="Your 7-day plan" heading="What to do this week." />
+      <ol className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        {SEVEN_DAY_PLAN.map(({ day, action }) => (
+          <li
+            key={day}
+            className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[20px] p-5"
+          >
+            <span
+              aria-hidden
+              className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[color:var(--ink)] text-white text-[12px] tabular-nums font-bold"
+            >
+              {day}
+            </span>
+            <p className="mt-3 text-[15px] leading-[1.55] text-[color:var(--ink)]/85">
+              {action}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* CLOSING CTA — mockup band pattern                                    */
+/* -------------------------------------------------------------------- */
+
+function ClosingCtaBand({ cta }: { readonly cta: ClosingCta }) {
+  return (
+    <section data-print-hide="true">
+      <article
+        className="rounded-[32px] p-8 md:p-12 bg-[color:var(--ink)] text-white"
+        style={{ boxShadow: 'var(--shadow-hero)' }}
+      >
+        <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+          <div className="space-y-4">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-soft)]">
+              {cta.eyebrow}
+            </p>
+            <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold">
+              {cta.headline}
+            </h2>
+            <p className="text-[15px] md:text-[16px] leading-[1.6] text-[color:var(--on-dark-80)] max-w-xl">
+              {cta.body}
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 md:items-end">
+            <a
+              href={cta.primary.href}
+              data-plausible-event-source={cta.primary.source}
+              className="inline-flex items-center justify-center px-6 py-3.5 rounded-[12px] bg-[color:var(--gold)] text-[color:var(--ink)] text-[14px] font-bold uppercase tracking-[0.08em] transition-colors hover:bg-[color:var(--gold-2)]"
+            >
+              {cta.primary.label}
+            </a>
+            <div className="flex flex-col items-stretch md:items-end gap-1.5 pt-2">
+              {[cta.secondary, cta.tertiary].map((offer) => (
+                <a
+                  key={offer.source}
+                  href={offer.href}
+                  data-plausible-event-source={offer.source}
+                  className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[color:var(--on-dark-65)] hover:text-[color:var(--gold-soft)] underline underline-offset-4 decoration-[color:var(--on-dark-20)] hover:decoration-[color:var(--gold-soft)] transition-colors"
+                >
+                  {offer.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------- */
+/* Shared helpers                                                       */
+/* -------------------------------------------------------------------- */
+
+function SectionKicker({ kicker, heading }: { readonly kicker: string; readonly heading: React.ReactNode }) {
+  return (
+    <header className="space-y-2">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+        {kicker}
+      </p>
+      <h2 className="text-[28px] md:text-[36px] leading-tight tracking-[-0.01em] font-semibold text-[color:var(--ink)] max-w-3xl">
+        {heading}
+      </h2>
+    </header>
   );
 }
