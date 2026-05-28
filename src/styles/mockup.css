@@ -5777,3 +5777,41 @@ section.mk-std { padding: 56px 0; }
   .mk-article-toc-mobile { display: none; }
   .mk-article-toc-desktop { display: block; }
 }
+
+/* ─── Gallery filter chips (2026-05-28 desktop audit) ─────────────── */
+.mk-gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.mk-gallery-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.mk-gallery-chip:hover {
+  background: var(--cream);
+  border-color: var(--gold);
+}
+.mk-gallery-chip.is-active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.mk-gallery-chip-count {
+  font-weight: 500;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+.mk-gallery-chip.is-active .mk-gallery-chip-count {
+  opacity: 0.85;
+}
