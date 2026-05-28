@@ -985,3 +985,48 @@ Net changes this session:
   certificates, workbench packs, In-Depth flow). Documented in the audit
   doc with keep-verdicts.
 
+
+**2026-05-28 — Newsletter fully evicted from code.** Follow-up to the
+2026-05-27 retirement. The 2026-05-28 Supabase audit removed the route
++ migration; this second pass cleaned every remaining surface that
+referenced the newsletter or its "AI Banking Brief" framing.
+
+Deleted:
+- `src/app/assessment/_components/NewsletterCTA.tsx` (orphan since 05-27)
+- `src/components/system/NewsletterCard.tsx`
+- `subscribeToNewsletterForm` helper in `src/lib/mailerlite/index.ts`
+- `trackBriefSubscribed` analytics event in `src/lib/analytics/events.ts`
+- `showNewsletter` prop + Newsletter column in `src/components/system/SiteFooter.tsx`
+- Bottom-of-essay `<NewsletterCard>` in `src/components/system/templates/EssayPage.tsx`
+- `MAILERLITE_GROUP_ID_NEWSLETTER` from `CLAUDE.md` env block + `docs/env-vars.md`
+
+Rewrote:
+- `EmailGate` — removed the "Also subscribe me to The AI Banking Brief"
+  opt-in checkbox + the `marketingOptIn` UI state. The payload still
+  sends `marketingOptIn: true` so MailerLite tier-routing still fires
+  for every completer; the gate is now implicit consent at submit.
+- `EmailGate` "Where this goes" trust strip — "newsletter list" →
+  "tier-routed follow-ups about your result."
+- `privacy/page.tsx` — "If you opt into the newsletter, your email goes
+  to MailerLite" rewritten to describe the actual flow (assessment
+  completion → MailerLite tier-routing).
+- "← The AI Banking Brief" back-link in `ArticleShell` → "← Research".
+- Docstrings / comments in `EssayPage`, `SiteFooter` (system + mockup),
+  `mailerlite/index.ts`, `auth-admin.ts`, `mockup.css`, `research/page.tsx`,
+  `capture-email/route.ts`.
+
+Kept (not the newsletter):
+- `marketingOptIn` field in capture-email payload + Supabase logging —
+  still gates MailerLite tier routing; field is now hard-coded `true`
+  from the only caller.
+- "Newsletter Draft" skill in `skillBuilderData.ts` — Foundation course
+  content teaching bankers to draft a MEMBER newsletter; not our product.
+- "Marketing and member communications. Newsletter content…" passage in
+  `/research/what-your-efficiency-ratio-is-hiding` — essay content
+  about banking practices; not our newsletter.
+
+Three intentional `newsletter` comments left as regression receipts
+(`research/page.tsx:6`, `EmailGate.tsx:129`, `capture-email/route.ts:302`).
+
+Verified: `grep -rln 'NewsletterCard|NewsletterCTA|trackBriefSubscribed|subscribeToNewsletterForm|MAILERLITE_GROUP_ID_NEWSLETTER' src/` returns zero matches. `npx tsc --noEmit` clean.
+

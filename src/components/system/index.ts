@@ -65,9 +65,6 @@ export type { DimensionScore, DimensionGridProps, DimensionTag } from "./Dimensi
 export { EssayArchive } from "./EssayArchive";
 export type { EssayArchiveItem, EssayArchiveProps } from "./EssayArchive";
 
-export { NewsletterCard } from "./NewsletterCard";
-export type { NewsletterCardProps } from "./NewsletterCard";
-
 // ---- Site chrome ------------------------------------------------------------
 export { SiteNav } from "./SiteNav";
 export { SiteFooter } from "./SiteFooter";

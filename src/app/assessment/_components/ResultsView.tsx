@@ -91,8 +91,6 @@ export function ResultsView({ score, tier, answers, email }: ResultsViewProps) {
       {/* Tier-specific next steps */}
       <NextStepCards tierId={tier.id} />
 
-      {/* Newsletter CTA removed 2026-05-27 (#339) — no active cadence. */}
-
       {/* Download */}
       <div className="text-center" data-print-hide="true">
         <PrintButton />

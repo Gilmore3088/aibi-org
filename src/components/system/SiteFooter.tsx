@@ -5,12 +5,10 @@
  *   - <TrustStrip> at the top (regulatory citations)
  *   - Brand wordmark + tagline + mission paragraph
  *   - Three-group link nav (Start here / Education / Institute)
- *   - Optional <NewsletterCard> slot on the right
  *   - Mono copyright row
  */
 
 import Link from "next/link";
-import { NewsletterCard } from "./NewsletterCard";
 
 interface LinkGroup {
   readonly label: string;
@@ -46,27 +44,15 @@ const LEGAL_LINKS: readonly { readonly href: string; readonly label: string }[] 
   { href: "/ai-use-disclaimer", label: "AI Use Disclaimer" },
 ];
 
-export interface SiteFooterProps {
-  /** Show the newsletter signup card. Defaults to true. */
-  readonly showNewsletter?: boolean;
-}
+export type SiteFooterProps = Record<string, never>;
 
-// Newsletter retired 2026-05-27 (#339) — default the slot off across the
-// site. The `showNewsletter` prop is kept for callers that opt-in explicitly,
-// but defaults to false now that no active cadence exists.
-export function SiteFooter({ showNewsletter = false }: SiteFooterProps = {}) {
+export function SiteFooter(_props: SiteFooterProps = {} as SiteFooterProps) {
   const year = new Date().getFullYear();
 
   return (
     <footer className="border-t border-hairline mt-s16">
       <div className="bg-parch px-s7 py-s12">
-        <div
-          className={
-            showNewsletter
-              ? "max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr]"
-              : "max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]"
-          }
-        >
+        <div className="max-w-wide mx-auto grid gap-s10 md:gap-s12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
           {/* Brand column — Ledger lockup */}
           <div>
             <div className="flex flex-col" style={{ lineHeight: 0.95 }}>
@@ -115,13 +101,6 @@ export function SiteFooter({ showNewsletter = false }: SiteFooterProps = {}) {
             </nav>
           ))}
 
-          {/* Newsletter column */}
-          {showNewsletter && (
-            <NewsletterCard
-              heading="The AI Banking Brief."
-              blurb="Fortnightly research, no marketing."
-            />
-          )}
         </div>
 
         <div className="max-w-wide mx-auto border-t border-hairline mt-s10 pt-s6 flex flex-col md:flex-row md:items-center md:justify-between gap-s3 font-mono text-mono-sm text-slate">

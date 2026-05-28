@@ -13,12 +13,12 @@ export default function PrivacyPage() {
       activePath="/about"
       eyebrow="Legal · Privacy"
       title={<>What we collect. What we do not.</>}
-      lede="We collect the minimum needed to run the assessment, deliver the course, and send the emails you opt into. We never sell data. Member or customer data from your institution never enters any model."
+      lede="We collect the minimum needed to run the assessment, deliver the course, and send your results. We never sell data. Member or customer data from your institution never enters any model."
       sections={[
         {
           kicker: 'What we collect',
           heading: <>Email, assessment responses, course progress.</>,
-          lede: <>If you opt into the newsletter, your email goes to MailerLite. Assessment responses live in Supabase. Course progress lives in Supabase. That is it.</>,
+          lede: <>When you complete an assessment, your email goes to MailerLite so we can send tier-routed follow-up notes about your result. Assessment responses live in Supabase. Course progress lives in Supabase. That is it.</>,
         },
         {
           kicker: 'What we do not',

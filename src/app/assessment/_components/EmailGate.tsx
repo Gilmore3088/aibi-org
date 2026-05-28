@@ -72,7 +72,6 @@ export function EmailGate({
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [institutionName, setInstitutionName] = useState('');
-  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
@@ -126,7 +125,9 @@ export function EmailGate({
           dimensionBreakdown,
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
-          marketingOptIn,
+          // Every completer gets tier-routed follow-ups about their result —
+          // there is no separate newsletter to opt into.
+          marketingOptIn: true,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -256,20 +257,6 @@ export function EmailGate({
               />
             </FormField>
 
-            <label className="flex gap-3 cursor-pointer text-sm text-[color:var(--ink)]/80 leading-relaxed">
-              <input
-                type="checkbox"
-                checked={marketingOptIn}
-                onChange={(e) => setMarketingOptIn(e.target.checked)}
-                className="mt-1 shrink-0 h-4 w-4 accent-[color:var(--gold)]"
-              />
-              <span>
-                Also subscribe me to{' '}
-                <span className="text-[color:var(--ink)]">The AI Banking Brief</span>
-                {' '}— twice-monthly research notes for community-bank executives. Unsubscribe anytime.
-              </span>
-            </label>
-
             <button
               type="submit"
               disabled={status === 'submitting'}
@@ -366,7 +353,7 @@ function TrustStrip() {
   return (
     <div className="mt-6 grid sm:grid-cols-3 gap-x-6 gap-y-3 px-2">
       {[
-        ['Where this goes', 'Our records and your newsletter list only if you opt in. Never sold.'],
+        ['Where this goes', 'Our records, plus tier-routed follow-ups about your result. Never sold.'],
         ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
         ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
       ].map(([title, body]) => (
