@@ -8,9 +8,11 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -55,13 +57,33 @@ export default async function InDepthPurchasedPage({
     signedInEmail = user?.email ?? null;
   }
 
+  const sp = (await searchParams) ?? {};
+
+  // Validate the session against Stripe before rendering the success view.
+  // Without this gate, /assessment/in-depth/purchased renders for any
+  // visitor regardless of session_id — including bogus values — leaking
+  // the "INCLUDED WITH YOUR PURCHASE" toolkit framing to people who
+  // never paid (issue #321).
+  //
+  // Exception 1: signed-in user — legitimate bookmark / return visit.
+  // Exception 2: STRIPE_SECRET_KEY not configured — local/preview env
+  // without keys; let the page render so QA can still walk the flow.
+  const validSession = await getValidatedPaidSession(sp.session_id);
+  if (
+    process.env.STRIPE_SECRET_KEY &&
+    !validSession &&
+    !signedInEmail
+  ) {
+    redirect('/assessment/in-depth');
+  }
+
   // Recover the email from the Stripe session so the auth links are
   // pre-filled — buyer typed it once at Stripe Checkout, never again.
-  const sp = (await searchParams) ?? {};
-  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
   const stripeEmail = signedInEmail
     ? null
-    : await getSessionEmail(sp.session_id);
+    : validSession?.customer_details?.email ??
+      validSession?.customer_email ??
+      null;
   const prefillEmail = signedInEmail ?? stripeEmail ?? null;
   const emailQs = prefillEmail
     ? `&email=${encodeURIComponent(prefillEmail)}`

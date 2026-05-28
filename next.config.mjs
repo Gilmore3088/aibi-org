@@ -75,7 +75,11 @@ const nextConfig = {
       // page at /courses (see src/app/courses/_client.tsx).
       { source: '/education', destination: '/courses', permanent: true },
       { source: '/education/:path*', destination: '/courses', permanent: true },
-      { source: '/certifications', destination: '/courses', permanent: true },
+      // /certifications redirect removed 2026-05-27 — the route has a real
+      // page at src/app/certifications/page.tsx and is referenced by
+      // CLAUDE.md §16 launch gate as an inquiry surface. The redirect was
+      // suppressing the existing page. Issue #317.
+      // (Sub-route redirect kept: /certifications/exam/aibi-p is below.)
       { source: '/services', destination: '/for-institutions', permanent: true },
       { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
