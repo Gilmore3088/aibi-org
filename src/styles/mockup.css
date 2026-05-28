@@ -6110,18 +6110,36 @@ section.mk-std { padding: 56px 0; }
   }
 }
 
-/* Stack hero CTAs as full-width buttons on narrow phones. Wrap below 430px
-   so longer button labels ("Get my AI readiness score") don't crash. */
-@media (max-width: 430px) {
+/* Hero CTAs on mobile: keep both buttons on a single row. Switches the
+   default flex-wrap behavior to a 2-col grid below 640px so the two
+   buttons sit side-by-side, and tightens padding + font so longer labels
+   ("Get my AI readiness score") still fit on a 360px phone. 2026-05-28
+   user direction: "ensure cta buttons on 1 line instead of 2". */
+@media (max-width: 640px) {
   .mk-hero .mk-ctas {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     margin-top: 28px;
+    flex-wrap: nowrap;
   }
   .mk-hero .mk-ctas > * {
     width: 100%;
+    min-width: 0;
+    padding-inline: 12px;
+    font-size: 13px;
     justify-content: center;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+}
+@media (max-width: 380px) {
+  /* Very narrow phones — drop font + padding one more notch. */
+  .mk-hero .mk-ctas > * {
+    padding-inline: 8px;
+    font-size: 12px;
+    letter-spacing: -0.01em;
   }
 }
 
