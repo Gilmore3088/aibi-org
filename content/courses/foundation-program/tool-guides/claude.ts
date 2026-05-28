@@ -8,7 +8,7 @@ export const claudeGuide: ToolGuide = {
   platformId: 'claude',
   platformLabel: 'Claude',
   platform: 'claude',
-  colorVar: 'var(--ledger-ink)',
+  colorVar: 'var(--ink)',
   tagline:
     'A 200K-token context window plus Projects — built for policy manuals, loan files, and persistent institutional memory.',
   url: 'https://claude.ai',

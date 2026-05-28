@@ -31,7 +31,7 @@ export const certifications: readonly Certification[] = [
     ],
     format: 'Assessed by a real work output — something they would actually submit to a supervisor.',
     timeCommitment: 'Self-paced online',
-    accent: 'var(--color-terra)',
+    accent: 'var(--gold)',
   },
   {
     id: 'aibi-s',
@@ -49,7 +49,7 @@ export const certifications: readonly Certification[] = [
     ],
     format: 'Assessed by a submitted process improvement with measured time savings — not a test.',
     timeCommitment: 'Live cohort',
-    accent: 'var(--color-cobalt)',
+    accent: 'var(--ink)',
   },
   {
     id: 'aibi-l',
@@ -67,6 +67,6 @@ export const certifications: readonly Certification[] = [
     ],
     format: '1-day in-person workshop.',
     timeCommitment: '1 day (in-person)',
-    accent: 'var(--color-sage)',
+    accent: 'var(--slate-600)',
   },
 ];

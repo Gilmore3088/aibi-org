@@ -8,7 +8,7 @@ export const geminiGuide: ToolGuide = {
   platformId: 'gemini',
   platformLabel: 'Google Gemini',
   platform: 'gemini',
-  colorVar: 'var(--ledger-accent)',
+  colorVar: 'var(--gold)',
   tagline:
     'Google Workspace-native AI with a 1-million-token context window — built for whole-manual regulatory research.',
   url: 'https://gemini.google.com',

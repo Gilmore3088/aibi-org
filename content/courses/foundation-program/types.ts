@@ -5,10 +5,10 @@
 export type Pillar = 'awareness' | 'understanding' | 'creation' | 'application';
 
 export const PILLAR_META: Record<Pillar, { readonly label: string; readonly colorVar: string }> = {
-  awareness:     { label: 'Awareness',     colorVar: 'var(--color-sage)' },
-  understanding: { label: 'Understanding', colorVar: 'var(--color-cobalt)' },
-  creation:      { label: 'Creation',      colorVar: 'var(--color-amber)' },
-  application:   { label: 'Application',   colorVar: 'var(--color-terra)' },
+  awareness:     { label: 'Awareness',     colorVar: 'var(--slate-600)' },
+  understanding: { label: 'Understanding', colorVar: 'var(--ink)' },
+  creation:      { label: 'Creation',      colorVar: 'var(--gold)' },
+  application:   { label: 'Application',   colorVar: 'var(--gold)' },
 } as const;
 
 export const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
