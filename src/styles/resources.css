@@ -400,3 +400,183 @@
   transition: background .15s ease;
 }
 .mockup-scope .rx-kit-card-zip:hover { background: var(--cream-2); }
+
+/* ─── 2-col guided artifact-finder layout (2026-05-28) ──────────────────
+   Sticky left rail on desktop ≥1024px, collapsible <details> below.
+   The rail sits in normal flow on small screens. */
+.mockup-scope .rx-page-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.mockup-scope .rx-page-main { min-width: 0; }
+@media (min-width: 1024px) {
+  .mockup-scope .rx-page-grid {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+}
+
+.mockup-scope .rx-filter-rail {
+  background: #fff;
+  border-bottom: 1px solid var(--slate-200);
+}
+@media (min-width: 1024px) {
+  .mockup-scope .rx-filter-rail {
+    align-self: start;
+    position: sticky;
+    top: 80px;
+    background: transparent;
+    border-bottom: 0;
+    padding: 24px 0;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+}
+.mockup-scope .rx-filter-rail-desktop { display: none; }
+.mockup-scope .rx-filter-rail-mobile { display: block; }
+@media (min-width: 1024px) {
+  .mockup-scope .rx-filter-rail-desktop { display: block; }
+  .mockup-scope .rx-filter-rail-mobile { display: none; }
+}
+
+.mockup-scope .rx-filter-rail-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0 0 16px;
+}
+.mockup-scope .rx-filter-rail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+}
+@media (min-width: 1024px) {
+  .mockup-scope .rx-filter-rail-body { padding: 0; }
+}
+
+.mockup-scope .rx-filter-rail-summary {
+  list-style: none;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  border-bottom: 1px solid var(--slate-200);
+}
+.mockup-scope .rx-filter-rail-summary::-webkit-details-marker { display: none; }
+.mockup-scope .rx-filter-rail-summary::after {
+  content: '↓';
+  float: right;
+  color: var(--slate-500);
+  transition: transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mockup-scope .rx-filter-rail-mobile[open] .rx-filter-rail-summary::after {
+  transform: rotate(180deg);
+}
+
+.mockup-scope .rx-filter-search {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mockup-scope .rx-filter-search-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mockup-scope .rx-filter-search-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+  color: var(--ink);
+}
+.mockup-scope .rx-filter-search-input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+  border-color: var(--gold);
+}
+
+.mockup-scope .rx-filter-group { display: flex; flex-direction: column; gap: 8px; }
+.mockup-scope .rx-filter-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mockup-scope .rx-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mockup-scope .rx-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.mockup-scope .rx-filter-chip:hover {
+  background: var(--cream);
+  border-color: var(--gold);
+}
+.mockup-scope .rx-filter-chip.is-active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.mockup-scope .rx-filter-reset {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-deep);
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mockup-scope .rx-empty-state {
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.mockup-scope .rx-empty-state .mk-k {
+  color: var(--gold-deep);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.mockup-scope .rx-empty-state h2 {
+  font-size: 28px;
+  margin: 8px 0 12px;
+  color: var(--ink);
+}
+.mockup-scope .rx-empty-state p {
+  color: var(--slate-600);
+  margin: 0 0 20px;
+}

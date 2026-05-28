@@ -55,7 +55,8 @@ section.mk-std { padding: 56px 0; }
   letter-spacing: -0.015em;
   margin: 8px 0 0;
 }
-.mk-section-head p {
+.mk-section-head p,
+.mk-section-head .mk-section-lede {
   color: var(--slate-600);
   margin: 16px 0 0;
   max-width: 60ch;
@@ -910,38 +911,43 @@ section.mk-std { padding: 56px 0; }
    Assessment landing — sections specific to /assessment
    ============================================================ */
 
-/* Tier grid (Free / $99 / Institutional) */
-.mk-tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
-@media (min-width: 860px) { .mk-tier-grid { grid-template-columns: repeat(3, 1fr); } }
-/* Mobile (audit 2026-05-28 final iteration): collapse to ONE card — the
-   free Snapshot. Upgrade tiers demote to chip links rendered by the
-   .mk-tier-mobile-chips block below. Removes ~1000px of stack and makes
-   the free path the unambiguous primary. */
-.mk-tier-mobile-chips {
-  display: none;
+/* Tier grid (Free / $99 / Institutional).
+   2026-05-28 audit reframe: free Snapshot is the unambiguous hero.
+   In-Depth + Institutional demote to chip links rendered by
+   .mk-tier-chips below. Applies at every viewport — desktop and mobile
+   both show one card. */
+.mk-tier-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  max-width: 520px;
+  margin: 0 auto;
 }
-@media (max-width: 639px) {
-  .mk-tier-grid > .mk-tier:not(:first-child) { display: none; }
-  .mk-tier-mobile-chips {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 16px;
-  }
-  .mk-tier-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--cream);
-    border: 1px solid var(--slate-200);
-    border-radius: var(--r-xl);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .mk-tier-chip:hover { background: var(--cream-2); }
+.mk-tier-grid > .mk-tier:not(:first-child) { display: none; }
+.mk-tier-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px auto 0;
+  max-width: 520px;
+}
+.mk-tier-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mk-tier-chip:hover { background: var(--cream-2); border-color: var(--gold); }
+@media (min-width: 768px) {
+  .mk-tier-chips { flex-direction: row; }
+  .mk-tier-chip { flex: 1; }
 }
 .mk-tier {
   background: #fff; border: 1px solid var(--ink-a10);
@@ -5912,4 +5918,161 @@ section.mk-std { padding: 56px 0; }
   font-size: 14px;
   font-weight: 600;
   margin: 4px 0 0;
+}
+
+/* ─── ArticleShell head + chips + auto-TOC (2026-05-28 desktop audit) ─── */
+.mk-article-head {
+  max-width: 1200px;
+  margin: 24px auto 0;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.mk-article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-600);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+.mk-article-back:hover { color: var(--ink); }
+.mk-article-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mk-article-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(7, 26, 47, 0.05);
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.mk-article-chip-muted { color: var(--slate-500); font-weight: 500; }
+
+.mk-article-toc {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding: 0 24px;
+}
+.mk-article-toc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0 0 8px;
+}
+.mk-article-toc-details {
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  background: #fff;
+}
+.mk-article-toc-summary {
+  list-style: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+.mk-article-toc-summary::-webkit-details-marker { display: none; }
+.mk-article-toc-summary::after {
+  content: '↓';
+  float: right;
+  color: var(--slate-500);
+  transition: transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mk-article-toc-details[open] .mk-article-toc-summary::after {
+  transform: rotate(180deg);
+}
+.mk-article-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mk-article-toc-link {
+  display: block;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: var(--slate-600);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.mk-article-toc-link:hover { color: var(--ink); background: var(--cream); }
+.mk-article-toc-link.is-active {
+  color: var(--ink);
+  border-left-color: var(--gold);
+  font-weight: 600;
+}
+/* Default: show the mobile collapsible <details>, hide the desktop static panel. */
+.mk-article-toc-desktop { display: none; }
+.mk-article-toc-static > .mk-article-toc-list {
+  padding: 12px 16px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  background: #fff;
+}
+@media (min-width: 1024px) {
+  .mk-article-toc-mobile { display: none; }
+  .mk-article-toc-desktop { display: block; }
+}
+
+/* ─── Gallery filter chips (2026-05-28 desktop audit) ─────────────── */
+.mk-gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.mk-gallery-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.mk-gallery-chip:hover {
+  background: var(--cream);
+  border-color: var(--gold);
+}
+.mk-gallery-chip.is-active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.mk-gallery-chip-count {
+  font-weight: 500;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+.mk-gallery-chip.is-active .mk-gallery-chip-count {
+  opacity: 0.85;
+}
+
+/* Three-ways grid on /assessment/in-depth — 3 cards on desktop, stack on mobile */
+@media (min-width: 768px) {
+  .mk-three-ways-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }

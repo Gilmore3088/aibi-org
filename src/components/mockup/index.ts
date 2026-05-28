@@ -32,6 +32,9 @@ export { MockupShell } from './MockupShell';
 export type { MockupShellProps, MockupShellBlock } from './MockupShell';
 
 export { ArticleShell } from './ArticleShell';
+export type { ArticleShellProps } from './ArticleShell';
+
+export { ArticleTOC } from './ArticleTOC';
 
 export { BottomSheet } from './BottomSheet';
 export type { BottomSheetProps } from './BottomSheet';

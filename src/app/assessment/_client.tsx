@@ -318,11 +318,12 @@ export default function AssessmentLandingPage() {
             variant="ink"
           />
         </div>
-        {/* Mobile-only chip links — see CSS rule for .mk-tier-mobile-chips.
-            Audit 2026-05-28 prescription: collapse to ONE card on mobile,
-            demote upgrade tiers to chip links so the free option is the
-            unambiguous primary path. */}
-        <div className="mk-tier-mobile-chips">
+        {/* Upgrade tiers demote to chip links at every viewport so the free
+            Snapshot card stands alone as the unambiguous primary CTA. Audit
+            2026-05-28 (Bucket B): "free is the unambiguous hero". CSS in
+            mockup.css under .mk-tier-chips. */}
+        <div className="mk-tier-chips">
+
           <a href="/assessment/in-depth" className="mk-tier-chip">
             or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
           </a>

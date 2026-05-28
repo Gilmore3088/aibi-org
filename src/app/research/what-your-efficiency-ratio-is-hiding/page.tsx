@@ -33,7 +33,7 @@ const STAT_CARDS = [
 
 export default function EfficiencyRatioArticle() {
   return (
-    <ArticleShell>
+    <ArticleShell readMinutes={11} byline="The AI Banking Institute" lastUpdated="May 2026" showTOC>
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
