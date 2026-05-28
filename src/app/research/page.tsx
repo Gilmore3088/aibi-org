@@ -303,7 +303,7 @@ export default function ResourcesHubPage() {
       {/* ASSESSMENTS CTA */}
       <CtaBand
         kicker="Measure where you stand"
-        heading={<>Two assessments. Same scoring engine.</>}
+        heading={<>Two assessments. One tier model, two depths.</>}
         body={
           <>
             The free assessment gives you a tier and your top gap in three minutes.

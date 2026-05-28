@@ -45,7 +45,10 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation/program/purchase' }} />
+      {/* Nav CTA matches the rest of the site (top-of-funnel readiness),
+          so the playbook doesn't ship three identical enroll CTAs (hero +
+          footer + nav). Issue #327 (part C). */}
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -209,7 +212,9 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         body={<>{data.cta.body}</>}
         actions={[
           { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Browse Toolbox', href: '/my-toolbox', variant: 'ghost-dark' },
+          // /my-toolbox is now auth-gated (#318). Unauth playbook readers
+          // would hit a login wall. Send them to the public artifacts hub.
+          { label: 'Browse downloads', href: '/research', variant: 'ghost-dark' },
         ]}
       />
     </div>

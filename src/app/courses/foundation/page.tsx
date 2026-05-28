@@ -13,7 +13,10 @@
 import { redirect } from 'next/navigation';
 
 export default function FoundationOverviewPage() {
-  // /courses itself 308s to /education (see next.config.mjs).
-  // Send the consumer there directly to skip the redirect chain.
-  redirect('/education');
+  // 2026-05-27: previous implementation redirected to /education which
+  // then 308'd to /courses — two hops where one suffices. Per #316 the
+  // canonical Foundation detail page is /courses (its H1 is
+  // "Learn AI by building reviewed banking workflows" and the entire
+  // page is Foundation-centric). Land there directly.
+  redirect('/courses');
 }

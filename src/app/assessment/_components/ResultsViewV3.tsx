@@ -4,7 +4,6 @@ import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
 import { ResultsDashboardV3 } from './ResultsDashboardV3';
-import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
@@ -365,8 +364,16 @@ export function ResultsViewV3({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      <div className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12" data-print-hide="true">
-        <NewsletterCTA email={email} />
+      {/* Account affordance — tells the user that an account was provisioned
+          server-side during capture (see /api/capture-email ensureAuthUser)
+          and gives them a path to reach their dashboard. Without this the
+          buyer had a Supabase account but no idea, and /dashboard bounced
+          them to /auth/login with no context. Issue #303. */}
+      <div
+        className="mt-16 border-t border-[color:var(--color-ink)]/15 pt-12"
+        data-print-hide="true"
+      >
+        <AccountAffordance email={email} />
       </div>
 
       {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
@@ -376,6 +383,38 @@ export function ResultsViewV3({
 
 function SectionAnchor({ id }: { readonly id: string }) {
   return <span id={id} tabIndex={-1} className="block scroll-mt-16 outline-none" />;
+}
+
+function AccountAffordance({ email }: { readonly email: string }) {
+  const loginHref = `/auth/login?next=%2Fdashboard&email=${encodeURIComponent(email)}`;
+  return (
+    <section
+      aria-labelledby="account-affordance-heading"
+      className="bg-[color:var(--color-ink)]/[0.03] rounded-[3px] px-6 py-8 md:px-10 md:py-10 max-w-3xl"
+    >
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--color-ink)]/60 mb-3">
+        Your account is ready
+      </p>
+      <h3
+        id="account-affordance-heading"
+        className="font-serif text-2xl md:text-[28px] leading-tight text-[color:var(--color-ink)] mb-3"
+      >
+        We saved your results to your AI Banking Institute account.
+      </h3>
+      <p className="text-[15px] leading-[1.6] text-[color:var(--color-ink)]/80 mb-6 max-w-prose">
+        We created an account for <span className="font-semibold">{email}</span>{' '}
+        so you can come back to your dashboard, retake the assessment, and
+        keep the artifacts you build. Sign in any time with a magic link sent
+        to that address.
+      </p>
+      <a
+        href={loginHref}
+        className="inline-block px-7 py-3 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[3px] bg-[color:var(--color-ink)] text-[color:var(--color-linen)] hover:opacity-90 transition-opacity"
+      >
+        Sign in to your dashboard →
+      </a>
+    </section>
+  );
 }
 
 function ContinueLink({ to, label }: { readonly to: string; readonly label: string }) {

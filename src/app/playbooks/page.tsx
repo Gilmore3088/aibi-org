@@ -73,7 +73,7 @@ export default function PlaybooksIndexPage() {
       </section>
 
       <Section variant="std">
-        <SectionHead kicker="Pick your playbook" heading={<>Six roles. Same craft.</>} />
+        <SectionHead kicker="Pick your playbook" heading={<>Pick the playbook for your role.</>} />
         <div className="mk-playbooks" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
           {PLAYBOOK_INDEX.map(({ slug, title, desc }) => {
             const Icon = ICONS[slug] ?? ShieldIcon;

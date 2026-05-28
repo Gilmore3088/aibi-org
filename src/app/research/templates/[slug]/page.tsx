@@ -50,7 +50,7 @@ export default function TemplatePage({ params }: PageProps) {
     <div className="mockup-scope">
       <SiteHeader
         activePath="/research"
-        cta={{ label: 'Subscribe to the Brief', href: '/research#subscribe' }}
+        cta={{ label: 'Get readiness score', href: '/assessment/take' }}
       />
 
       <section className="mk-hero mk-hero-compact">
