@@ -37,23 +37,6 @@ const ClipboardIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="8" y="3" width
 const CheckCircleIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
 
-// ---------- Full 12-module curriculum ----------
-
-const ALL_MODULES: { title: string; number: number }[] = [
-  { number: 1,  title: 'AI for Your Workday' },
-  { number: 2,  title: 'What AI Is and Is Not' },
-  { number: 3,  title: 'Prompting Fundamentals' },
-  { number: 4,  title: 'Your AI Work Profile' },
-  { number: 5,  title: 'Projects and Context' },
-  { number: 6,  title: 'Files and Document Workflows' },
-  { number: 7,  title: 'AI Tools Landscape' },
-  { number: 8,  title: 'Agents and Workflow Thinking' },
-  { number: 9,  title: 'Safe AI Use in Banking' },
-  { number: 10, title: 'Role-Based Use Cases' },
-  { number: 11, title: 'Personal Prompt Library' },
-  { number: 12, title: 'Final Foundation Lab' },
-];
-
 const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
     title: 'Prompt Card',
@@ -140,25 +123,11 @@ export default function CoursesIndexPage() {
           lede={
             <>
               Pick a milepost on the left to see what learners actually do at that step. Each
-              demo runs the real banking content the artifact is built from. The full 12-module
-              syllabus is listed below.
+              demo runs the real banking content the artifact is built from.
             </>
           }
         />
         <CoursePreviewDemos />
-
-        {/* Full 12-module list */}
-        <div className="mk-full-curriculum">
-          <p className="mk-k" style={{ marginBottom: '1rem' }}>Full curriculum — all 12 modules</p>
-          <ol className="mk-curriculum-list">
-            {ALL_MODULES.map((mod) => (
-              <li key={mod.number} className="mk-curriculum-row">
-                <span className="mk-curriculum-num">{mod.number}</span>
-                <span className="mk-curriculum-title">{mod.title}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
       </Section>
 
       {/* WHAT LEARNERS BUILD — 4 cards */}
