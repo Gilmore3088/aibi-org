@@ -70,3 +70,51 @@ docs/superpowers/design-system/ui-review.html
 docs/reviews/lighthouse-*/
 
 .superpowers/
+
+# ─── Internal planning docs — keep local, never in the public repo ─────
+# (2026-05-28: pulled from git index. Files preserved on local disk.)
+#
+# Anything operational / reference-grade stays tracked:
+#   docs/README.md, docs/env-vars.md, docs/manual-verification-runbook.md,
+#   docs/compliance/, docs/mailerlite-emails/, docs/mailerlite-automations-overview.html,
+#   docs/stripe-products.md
+#
+# CHRONOLOGY.md, DECISIONS.md, CLAUDE.md stay tracked — they're load-bearing
+# for AI-session continuity. Migrate later if you want a fully scrubbed repo.
+
+# Top-level planning
+/tasks/
+
+# docs/ subdirectories — planning, handoffs, reviews, archives, brainstorms
+/docs/Plans/
+/docs/handoffs/
+/docs/reviews/
+/docs/Foundation-Course-ADDIE/
+/docs/brand-refresh-2026-05-09/
+/docs/_archive/
+/docs/superpowers/
+/docs/research/
+
+# docs/ top-level planning / audit / status / review files
+/docs/content-manifest.md
+/docs/curriculum-notes-tool-calling.md
+/docs/foundation-*.md
+/docs/foundation-*.html
+/docs/gtm-copy-review-*.md
+/docs/lms-hub.html
+/docs/lms-layout-audit-*.md
+/docs/lms-page-map-*.md
+/docs/page-tree-status-*.html
+/docs/redesign-copy-*.md
+/docs/route-map-*.md
+/docs/ux-review-*.md
+
+# Catch-all for future dated planning files at docs/ top level
+/docs/*-audit-2026-*.md
+/docs/*-audit-2026-*.html
+/docs/*-review-2026-*.md
+/docs/*-handoff-2026-*.md
+/docs/*-handoff-2026-*.html
+/docs/session-*.md
+/docs/session-*.html
+
