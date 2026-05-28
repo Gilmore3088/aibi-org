@@ -18,6 +18,7 @@ import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 
 // Authed surface — never index dashboard pages in search engines.
 export const metadata: Metadata = {
@@ -67,6 +68,17 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   if (!user) {
     redirect(loginHref);
+  }
+
+  // #187 PR 2 — also enforce new-device trust at the layout level. If the
+  // session is valid but the aibi-trusted-device cookie is missing or
+  // not bound to this user, send the visitor to the pending holding page.
+  // /auth/login already does this check at sign-in time; the layout-level
+  // check is defense-in-depth — it covers a session cookie that arrived
+  // by any other route (browser session import, cookie theft, etc.).
+  const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
+  if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
+    redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
   }
 
   return <>{children}</>;
