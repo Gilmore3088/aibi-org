@@ -42,10 +42,10 @@ export default async function ToolboxPage() {
               COOKBOOK →
             </Link>
             <Link
-              href={access.tier === 'starter' ? '/assessment/in-depth/dashboard' : '/courses/foundation/program'}
+              href={access.tier === 'starter' ? '/assessment/in-depth/access' : '/courses/foundation/program'}
               className="inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
-              {access.tier === 'starter' ? '← IN-DEPTH DASHBOARD' : '← COURSEWORK'}
+              {access.tier === 'starter' ? '← IN-DEPTH ACCESS' : '← COURSEWORK'}
             </Link>
           </div>
         </div>

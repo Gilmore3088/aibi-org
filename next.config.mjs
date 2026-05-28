@@ -85,6 +85,15 @@ const nextConfig = {
       { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      // 2026-05-28: /assessment/in-depth/dashboard renamed to /access.
+      // The page is a gated cohort-leader view; "dashboard" implied a live
+      // analytics surface it wasn't. Permanent redirect so external links
+      // (Stripe receipts, ConvertKit-era emails) keep working.
+      {
+        source: '/assessment/in-depth/dashboard',
+        destination: '/assessment/in-depth/access',
+        permanent: true,
+      },
       // 2026-05-28: /resources is now the canonical Artifact Library
       // (playbooks, checklists, templates, prompt cards). The exact-match
       // redirect to /research was removed so the new src/app/resources/

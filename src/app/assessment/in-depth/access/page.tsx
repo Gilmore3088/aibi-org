@@ -1,4 +1,4 @@
-// /assessment/in-depth/dashboard — institution-leader dashboard for the
+// /assessment/in-depth/access — institution-leader dashboard for the
 // In-Depth Assessment cohort. Ported to the mockup design system 2026-05-27.
 // Invite + aggregate surfaces remain scaffolded as "Coming soon" sections
 // until institution_invites + Stripe seat-tier land.
@@ -25,7 +25,7 @@ const PAGE_STYLE = {
 
 export default async function InDepthDashboardPage() {
   if (!isSupabaseConfigured()) {
-    redirect('/auth/login?next=/assessment/in-depth/dashboard');
+    redirect('/auth/login?next=/assessment/in-depth/access');
   }
 
   const enrollment = await getInDepthEnrollment();
