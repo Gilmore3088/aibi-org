@@ -8,6 +8,7 @@ import {
   Section,
   SectionHead,
   SiteHeader,
+  StickyMobileCta,
 } from '@/components/mockup';
 import {
   ArrowRight,
@@ -181,6 +182,12 @@ export function ResourcesExperience() {
           { label: 'Get readiness score', href: '/assessment', variant: 'gold' },
           { label: 'Browse all downloads', href: '#templates', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Get readiness score"
+        href="/assessment"
+        source="sticky-mobile-cta-resources"
       />
     </div>
   );
