@@ -10,6 +10,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { advisoryTiers } from '@content/advisory/v1';
 import { BriefingButton } from '@/components/analytics/BriefingButton';
+import { SiteHeader } from '@/components/mockup';
 
 export const metadata: Metadata = {
   title: 'Advisory | For Institutions · The AI Banking Institute',
@@ -31,6 +32,15 @@ const notWhatWeDo: readonly string[] = [
 export default function AdvisoryPage() {
   return (
     <main style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
+      {/* /for-institutions/* is in CHROMELESS_PATHS (layout.tsx) — the
+          global SiteNav is suppressed and each route renders its own
+          header. Sibling /for-institutions/_client.tsx does this; the
+          advisory page was missing it. Issue #331. */}
+      <SiteHeader
+        activePath="/for-institutions"
+        cta={{ label: 'Get readiness score', href: '/assessment/take' }}
+      />
+
       {/* Hero */}
       <section className="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
         <div className="max-w-4xl mx-auto">
