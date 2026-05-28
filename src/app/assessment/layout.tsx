@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Free AI Readiness Assessment',
   description:
-    'Twelve questions. Under three minutes. See where your community bank stands on AI readiness across eight dimensions, with a tier classification and next-step recommendations.',
+    'Twelve questions. Under three minutes. Get your AI readiness score, maturity tier, top gap, and a starter artifact your team can use immediately.',
   alternates: { canonical: '/assessment' },
 };
 
