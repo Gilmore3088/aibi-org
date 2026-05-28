@@ -907,3 +907,126 @@ end-to-end on each PR. The "background-agent storm" pattern surfaced
 twice (one over-staging incident, one peer-WIP absorption) — flagged in
 memory `feedback_background_agent_storm.md` and the second batch of
 agents was given explicit `git add` hygiene rules that held.
+
+**2026-05-28 — Supabase audit + downloadable-resources migration to Supabase Storage.**
+End-to-end audit of the AiBI Supabase project (`gbmhrqubbervdltvtpur`) and
+restructuring of the resources pipeline. Full audit doc at
+[`docs/handoffs/supabase-audit-2026-05-28.md`](docs/handoffs/supabase-audit-2026-05-28.md).
+
+Net changes this session:
+
+- **4 migrations applied to production Supabase:**
+  - `00035_entitlements_tier_and_indepth` — adds `entitlements.tier`
+    (`full`/`starter`), extends product CHECK for `in-depth-assessment`,
+    rewrites `sync_entitlement_from_enrollment` trigger + `has_toolbox_access`
+    helper to assign Starter tier to In-Depth buyers, backfills existing rows.
+  - `00036_certificates_drop_public_enumeration` — drops the blanket
+    "Public read certificates" RLS policy. The anon key could enumerate
+    every graduate's holder name / designation / issue date; verification
+    now runs only through the service-role client at
+    `src/app/verify/[certificateId]/page.tsx`.
+  - `00037_lms_practice_prompts_artifacts` — creates `practice_rep_completions`,
+    `saved_prompts`, `user_artifacts` (referenced by `/api/practice-reps/complete`,
+    `/api/dashboard/learner`, `/api/courses/submit-activity` but never existed
+    in the database — broken paths since day one). RLS-scoped per user.
+  - `00038_resources_and_downloads` — new `resources` + `resource_downloads`
+    tables + `resources` storage bucket (private, 10 MB limit, PDF/ZIP only).
+    RLS: anon reads free-tier metadata; authenticated reads gated metadata
+    only when entitlements match.
+
+- **5 broken code paths repaired.** `assessment_responses` references in
+  `src/app/dashboard/assessments/page.tsx` and
+  `src/app/api/courses/generate-transformation-report/route.ts` repointed at
+  `user_profiles` (where `readiness_*` actually lives). The
+  `assessment_responses` table never existed remotely — it was a legacy
+  reference that survived the consolidation onto `user_profiles`.
+
+- **Newsletter dead code deleted.** `src/app/api/subscribe-newsletter/route.ts`
+  + `supabase/migrations/00034_newsletter_subscribers.sql` removed. Newsletter
+  was retired 2026-05-27 per memory `project_no_active_newsletter`; the route
+  was writing to a nonexistent table. `NewsletterCard` (gated off via
+  `showNewsletter=false` default) and the orphan `NewsletterCTA.tsx` left for
+  a future cleanup PR — scope creep this session.
+
+- **24 downloadable resources moved from Vercel CDN to Supabase Storage.**
+  All `/public/downloads/*.{pdf,zip}` files uploaded into the new `resources`
+  bucket (12 MB total) and seeded into the `resources` table with category +
+  tier + display_order. New API route `/api/resources/[slug]/download`
+  verifies entitlement (free vs gated), generates 5-minute signed URLs,
+  302-redirects the browser, and logs each download into
+  `resource_downloads` with hashed IP + user agent + referrer. Page hrefs
+  in `src/app/resources/data.ts` (37 occurrences) rewritten from
+  `/downloads/X.pdf|.zip` → `/api/resources/X/download` via perl one-liner;
+  typecheck clean. Categorization metadata in `data.ts` (icons, audience
+  labels, starter-kit grouping) stays as React component config —
+  user-facing FILES live in Supabase, page LAYOUT stays as code.
+
+  Smoke-tested end-to-end on local dev:
+  `curl -sSL http://localhost:3000/api/resources/safe-ai-use-checklist/download`
+  returned a valid 373082-byte PDF (exact byte match to the original) after
+  one 302 hop; download log row written with hashed IP + curl UA. After
+  verification the 24 binary files were deleted from `public/downloads/`
+  (only `public/downloads/source/` markdown sources remain). Seed script
+  preserved at `scripts/seed-resources-bucket.mjs` (idempotent — re-runs
+  upsert metadata and overwrite storage objects).
+
+- **Wrong-project safety stop.** First MCP auth attempt connected to
+  `rmhwbbjjctzfaqjyhomu` (BankFeeIndex's Supabase), which has 90+ unrelated
+  tables (fees / crawl / Hamilton). Noticed before any writes; user
+  re-authed to the AiBI project (`gbmhrqubbervdltvtpur`). Worth flagging
+  for future sessions: when the Supabase MCP loads, verify the project ref
+  matches `gbmhrqubbervdltvtpur` (or read `NEXT_PUBLIC_SUPABASE_URL` from
+  `.env.local`) before any queries.
+
+- **Audit findings not actioned this session.** Four empty Supabase storage
+  buckets (`work-products`, `addie-course-media`, `addie-toolbox-exports`,
+  `addie-assessment-deliverables`) and eight empty tables left in place —
+  all are legitimate reservations for features-not-yet-shipped (LMS activity,
+  certificates, workbench packs, In-Depth flow). Documented in the audit
+  doc with keep-verdicts.
+
+
+**2026-05-28 — Newsletter fully evicted from code.** Follow-up to the
+2026-05-27 retirement. The 2026-05-28 Supabase audit removed the route
++ migration; this second pass cleaned every remaining surface that
+referenced the newsletter or its "AI Banking Brief" framing.
+
+Deleted:
+- `src/app/assessment/_components/NewsletterCTA.tsx` (orphan since 05-27)
+- `src/components/system/NewsletterCard.tsx`
+- `subscribeToNewsletterForm` helper in `src/lib/mailerlite/index.ts`
+- `trackBriefSubscribed` analytics event in `src/lib/analytics/events.ts`
+- `showNewsletter` prop + Newsletter column in `src/components/system/SiteFooter.tsx`
+- Bottom-of-essay `<NewsletterCard>` in `src/components/system/templates/EssayPage.tsx`
+- `MAILERLITE_GROUP_ID_NEWSLETTER` from `CLAUDE.md` env block + `docs/env-vars.md`
+
+Rewrote:
+- `EmailGate` — removed the "Also subscribe me to The AI Banking Brief"
+  opt-in checkbox + the `marketingOptIn` UI state. The payload still
+  sends `marketingOptIn: true` so MailerLite tier-routing still fires
+  for every completer; the gate is now implicit consent at submit.
+- `EmailGate` "Where this goes" trust strip — "newsletter list" →
+  "tier-routed follow-ups about your result."
+- `privacy/page.tsx` — "If you opt into the newsletter, your email goes
+  to MailerLite" rewritten to describe the actual flow (assessment
+  completion → MailerLite tier-routing).
+- "← The AI Banking Brief" back-link in `ArticleShell` → "← Research".
+- Docstrings / comments in `EssayPage`, `SiteFooter` (system + mockup),
+  `mailerlite/index.ts`, `auth-admin.ts`, `mockup.css`, `research/page.tsx`,
+  `capture-email/route.ts`.
+
+Kept (not the newsletter):
+- `marketingOptIn` field in capture-email payload + Supabase logging —
+  still gates MailerLite tier routing; field is now hard-coded `true`
+  from the only caller.
+- "Newsletter Draft" skill in `skillBuilderData.ts` — Foundation course
+  content teaching bankers to draft a MEMBER newsletter; not our product.
+- "Marketing and member communications. Newsletter content…" passage in
+  `/research/what-your-efficiency-ratio-is-hiding` — essay content
+  about banking practices; not our newsletter.
+
+Three intentional `newsletter` comments left as regression receipts
+(`research/page.tsx:6`, `EmailGate.tsx:129`, `capture-email/route.ts:302`).
+
+Verified: `grep -rln 'NewsletterCard|NewsletterCTA|trackBriefSubscribed|subscribeToNewsletterForm|MAILERLITE_GROUP_ID_NEWSLETTER' src/` returns zero matches. `npx tsc --noEmit` clean.
+

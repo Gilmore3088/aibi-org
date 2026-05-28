@@ -298,7 +298,8 @@ export async function POST(request: Request) {
     profileId = result.id;
   }
 
-  // MailerLite tier-routing. Honors marketing_opt_in only.
+  // MailerLite tier-routing. Honors the marketingOptIn flag from the client
+  // (always true post-newsletter-retirement; field kept for back-compat).
   // Retake re-route: if the prior tier differs, remove its group first so
   // the user lands cleanly in the new tier's automation.
   const VALID_TIERS: ReadonlySet<string> = new Set([

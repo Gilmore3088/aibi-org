@@ -3,8 +3,7 @@
  * The archive at /research uses MockupShell. Article bodies are
  * bespoke long-form layouts that don't fit a section-based shell,
  * so they wrap themselves in this component to inherit the
- * site-wide mockup SiteHeader + a "back to The AI Banking Brief"
- * crumb at the top.
+ * site-wide mockup SiteHeader + a "back to Research" crumb at the top.
  */
 
 import type { ReactNode } from 'react';
@@ -37,7 +36,7 @@ export function ArticleShell({ children }: { children: ReactNode }) {
             paddingBottom: 2,
           }}
         >
-          ← The AI Banking Brief
+          ← Research
         </Link>
       </div>
       {children}

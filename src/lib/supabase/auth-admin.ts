@@ -1,6 +1,6 @@
 // Admin-side Supabase Auth helpers.
 //
-// Used by API routes that capture an email (assessment, inquiry, newsletter,
+// Used by API routes that capture an email (assessment, inquiry,
 // waitlist, stripe webhook) to provision a Supabase Auth account for that
 // email — so every captured email becomes a real user the platform can
 // authenticate later.

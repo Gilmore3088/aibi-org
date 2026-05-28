@@ -3,8 +3,7 @@
 // 2026-05-27 rework: the page is the public downloads library. Every
 // practical artifact the Institute publishes — playbooks, cheatsheets,
 // reference cards, checklists, inline templates — is listed here.
-// The "AI Banking Brief" framing was retired on 2026-05-27; this page
-// is downloads + templates only.
+// Downloads + templates only; no newsletter framing.
 //
 // 2026-05-28 guided filter: GuidedFilter + FilteredCard client islands wrap
 // each catalog section so visitors can filter by role, problem, or format.

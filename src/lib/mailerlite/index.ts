@@ -1,7 +1,7 @@
 // MailerLite Connect API adapter — subscribe + group assign.
 //
-// Used by /api/capture-email (assessment) and /api/subscribe-newsletter
-// (AI Banking Brief). Replaces the prior ConvertKit adapter.
+// Used by /api/capture-email (assessment tier routing) and the role-playbook
+// download form. Replaces the prior ConvertKit adapter.
 //
 // API: https://connect.mailerlite.com/api  (auth: Bearer)
 // All MailerLite calls are best-effort, non-blocking, and no-op when env
@@ -104,25 +104,6 @@ export async function subscribeToAssessmentForm(
   payload: Omit<MailerLiteSubscribePayload, 'groupIds'> & { tags?: readonly string[] },
 ): Promise<SubscribeResult> {
   const groupId = process.env.MAILERLITE_GROUP_ID_ASSESSMENT;
-  if (!groupId) {
-    return { status: 'skipped', reason: 'no-group-id' };
-  }
-  return postSubscriber({
-    email: payload.email,
-    firstName: payload.firstName,
-    fields: payload.fields,
-    groupIds: [groupId],
-  });
-}
-
-/**
- * Subscribe a visitor to the AI Banking Brief newsletter group.
- * No-op when MAILERLITE_GROUP_ID_NEWSLETTER is unset.
- */
-export async function subscribeToNewsletterForm(
-  payload: Omit<MailerLiteSubscribePayload, 'groupIds'>,
-): Promise<SubscribeResult> {
-  const groupId = process.env.MAILERLITE_GROUP_ID_NEWSLETTER;
   if (!groupId) {
     return { status: 'skipped', reason: 'no-group-id' };
   }
