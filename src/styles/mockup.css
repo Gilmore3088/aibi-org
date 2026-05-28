@@ -913,6 +913,27 @@ section.mk-std { padding: 56px 0; }
 /* Tier grid (Free / $99 / Institutional) */
 .mk-tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
 @media (min-width: 860px) { .mk-tier-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Mobile: convert to horizontal swipe rail so 3 large tier cards don't
+   stack to ~1500px on a phone. The featured ($99) card scrolls in first
+   since it's the headline upgrade path. Audit 2026-05-28. */
+@media (max-width: 639px) {
+  .mk-tier-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .mk-tier-grid::-webkit-scrollbar { display: none; }
+  .mk-tier-grid > .mk-tier {
+    flex: 0 0 82vw;
+    max-width: 340px;
+    scroll-snap-align: start;
+  }
+}
 .mk-tier {
   background: #fff; border: 1px solid var(--ink-a10);
   border-radius: var(--r-xl); overflow: hidden;
