@@ -87,7 +87,12 @@ export function MockupShell({
           <div>
             <EyebrowChip icon={<ChipBookIcon />}>{eyebrow}</EyebrowChip>
             <h1>{title}</h1>
-            <p className="mk-lede">{lede}</p>
+            {/* div, not p — lede is a ReactNode slot that may contain
+                block-level children (<ul>, <ol>, <details>). A <p> wrapper
+                caused a hydration error on /about ("<ul> cannot be a
+                descendant of <p>"), which surfaced as the red "1 error"
+                toast in the audit. */}
+            <div className="mk-lede">{lede}</div>
             {heroActions && heroActions.length > 0 && (
               <div className="mk-ctas">
                 {heroActions.map((a) => (

@@ -57,7 +57,9 @@ export function SectionHead({ kicker, heading, lede, className }: SectionHeadPro
     <div className={`mk-section-head${className ? ` ${className}` : ''}`}>
       {kicker && <div className="k">{kicker}</div>}
       <h2>{heading}</h2>
-      {lede && <p>{lede}</p>}
+      {/* div, not p — lede is a ReactNode slot that may contain
+          block-level children. Matches MockupShell's hero lede. */}
+      {lede && <div className="mk-section-lede">{lede}</div>}
     </div>
   );
 }

@@ -55,7 +55,8 @@ section.mk-std { padding: 56px 0; }
   letter-spacing: -0.015em;
   margin: 8px 0 0;
 }
-.mk-section-head p {
+.mk-section-head p,
+.mk-section-head .mk-section-lede {
   color: var(--slate-600);
   margin: 16px 0 0;
   max-width: 60ch;
