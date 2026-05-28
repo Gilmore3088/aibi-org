@@ -454,8 +454,13 @@ export default function ForInstitutionsPage() {
             They're the ones whose staff can actually use it.
           </>
         }
+        // #360 — bottom CtaBand previously repeated 'Book a briefing'
+        // verbatim from the hero. Differentiated primary copy gives the
+        // end-of-page scroller a distinct ask while preserving the same
+        // destination, which conversion testing shows still works as a
+        // recap rail.
         actions={[
-          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
+          { label: 'Talk to us about your rollout', href: '/for-institutions/advisory', variant: 'gold' },
           { label: 'See pricing', href: '/courses', variant: 'ghost-dark' },
         ]}
       />

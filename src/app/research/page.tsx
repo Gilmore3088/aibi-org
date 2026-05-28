@@ -128,10 +128,11 @@ export default function ResourcesHubPage() {
           <div>
             <EyebrowChip>Resources &middot; Free downloads</EyebrowChip>
             <h1>Practical artifacts for community banks and credit unions.</h1>
+            {/* #361 R5 — was a 29-word run-on. Now two short, scannable
+                sentences keyed to the page's two promises. */}
             <p className="mk-lede">
               Role playbooks, cheatsheets, reference cards, and starter templates.
-              Every artifact is sourced and adaptable &mdash; bring it to your committee,
-              your auditor, and your examiner before adoption.
+              Every artifact is sourced and ready to take to your committee.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#playbooks">
@@ -144,6 +145,70 @@ export default function ResourcesHubPage() {
           </div>
         </div>
       </section>
+
+      {/* #357 — JUMP-TO BAR. The page is dense (~5 sections, 30 headings,
+          ~9k px mobile scroll). A sticky in-page nav lets a BSA officer
+          looking for one specific cheatsheet skip the playbooks above. */}
+      <nav
+        aria-label="Sections on this page"
+        style={{
+          position: 'sticky',
+          top: 64,
+          zIndex: 5,
+          background: 'var(--cream)',
+          borderBottom: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
+          padding: '10px 0',
+        }}
+      >
+        <div
+          className="mk-container"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 8,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--slate-500)',
+              marginRight: 6,
+            }}
+          >
+            Jump to:
+          </span>
+          {[
+            { label: 'Playbooks', href: '#playbooks' },
+            { label: 'Cheatsheets', href: '#cheatsheets' },
+            { label: 'Starter artifacts', href: '#starter-artifacts' },
+            { label: 'Inline templates', href: '#inline-templates' },
+            { label: 'Sample report', href: '#sample-report' },
+          ].map((j) => (
+            <a
+              key={j.href}
+              href={j.href}
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--ink)',
+                background: '#FFFFFF',
+                border: '1px solid var(--ink-a15, rgba(7,26,47,0.15))',
+                padding: '6px 14px',
+                borderRadius: 999,
+                textDecoration: 'none',
+              }}
+            >
+              {j.label}
+            </a>
+          ))}
+        </div>
+      </nav>
 
       {/* ROLE PLAYBOOKS */}
       <Section variant="std" surface="white">
@@ -181,6 +246,7 @@ export default function ResourcesHubPage() {
       {/* DOWNLOADS — REFERENCE CARDS */}
       <Section variant="std">
         <div id="downloads" />
+        <div id="cheatsheets" />
         <SectionHead
           kicker="Cheatsheets &amp; reference cards"
           heading={<>One-page references your staff can keep on their desk.</>}
@@ -213,6 +279,7 @@ export default function ResourcesHubPage() {
 
       {/* NEW ARTIFACTS (.md) */}
       <Section variant="std" surface="white">
+        <div id="starter-artifacts" />
         <SectionHead
           kicker="Starter artifacts"
           heading={<>Editable templates you can adapt today.</>}
@@ -245,6 +312,7 @@ export default function ResourcesHubPage() {
 
       {/* INLINE TEMPLATES */}
       <Section variant="std">
+        <div id="inline-templates" />
         <SectionHead
           kicker="Inline templates"
           heading={<>Longer-form starter documents.</>}
@@ -276,6 +344,7 @@ export default function ResourcesHubPage() {
 
       {/* SAMPLES */}
       <Section variant="std" surface="white">
+        <div id="sample-report" />
         <SectionHead
           kicker="See it before you buy"
           heading={<>Sample reports and buyer guides.</>}
