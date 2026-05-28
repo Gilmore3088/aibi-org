@@ -197,6 +197,33 @@ const SAMPLES: readonly DownloadItem[] = [
   },
 ];
 
+// 2026-05-28 audit: surface 3 featured essays above GuidedFilter — one per
+// buyer persona (governance / operator / executive). Revise by editing this
+// array; visible above the filter on every viewport.
+const FEATURED_ESSAYS = [
+  {
+    slug: 'ai-governance-without-the-jargon',
+    title: 'AI Governance Without the Jargon',
+    dek: 'A plain-language guide to AI governance for community bankers — SR 11-7, TPRM, ECOA, and the AIEOG lexicon, translated.',
+    persona: 'Governance',
+    readMinutes: 12,
+  },
+  {
+    slug: 'the-skill-not-the-prompt',
+    title: 'The Skill, Not the Prompt',
+    dek: 'Why community bankers need a different frame for AI — workflow craft beats prompt cleverness when the work is reviewed by examiners.',
+    persona: 'Operator',
+    readMinutes: 9,
+  },
+  {
+    slug: 'what-your-efficiency-ratio-is-hiding',
+    title: "What Your Efficiency Ratio Is Hiding",
+    dek: "Community bank median efficiency ratio sits ~10 points above the industry — where AI actually moves it and where it doesn't.",
+    persona: 'Executive',
+    readMinutes: 11,
+  },
+] as const;
+
 const TAGGED_PLAYBOOKS: readonly PlaybookItem[] = [
   {
     slug: 'compliance',
@@ -325,6 +352,31 @@ export default function ResourcesHubPage() {
           </div>
         </div>
       </section>
+
+      {/* FEATURED ESSAYS — three picks across compliance / operator / executive
+          buyer personas. Renders ABOVE the GuidedFilter so mobile visitors see
+          curated content before being asked to filter (audit 2026-05-28).
+          To revise: swap slugs/copy in FEATURED_ESSAYS below. */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="Featured essays"
+          heading={<>Three reads to start with.</>}
+          lede={<>If you only read three pieces, start here — one each for governance, operator skill, and executive ROI.</>}
+        />
+        <div className="mk-resources-grid mk-resources-3up">
+          {FEATURED_ESSAYS.map((e) => (
+            <Link key={e.slug} href={`/research/${e.slug}`} className="mk-resource-card">
+              <div className="mk-resource-tag">{e.persona}</div>
+              <h3>{e.title}</h3>
+              <p>{e.dek}</p>
+              <div className="mk-resource-foot">
+                <span>{e.readMinutes} min read</span>
+                <span>Read &rarr;</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
 
       {/*
         Client shell: GuidedFilterProvider + GuidedFilter selector.
