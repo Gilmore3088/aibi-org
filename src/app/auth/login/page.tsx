@@ -175,14 +175,38 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
     const password = data.get('password') as string;
 
     const result = await signIn(email, password);
-    setPending(false);
-
     if (result.error) {
+      setPending(false);
       setError(result.error);
       return;
     }
-    router.push(redirectTo);
-    router.refresh();
+
+    // Password verified — now route based on whether this browser is a
+    // trusted device for this user. /api/auth/check-device returns
+    // { trusted, dest } where dest is either the requested redirectTo
+    // or /auth/confirm-device-pending (and a confirmation email has
+    // already been fired). See #187 PR 2.
+    try {
+      const res = await fetch('/api/auth/check-device', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ redirectTo }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { dest?: string };
+      const dest = typeof json.dest === 'string' ? json.dest : redirectTo;
+      router.push(dest);
+      router.refresh();
+    } catch {
+      // If the trust check itself fails, fall back to the requested
+      // destination — better UX than locking the user out on a
+      // transient API error. Trust will be enforced at the layout level
+      // for protected surfaces in a follow-up, so failing-open here is
+      // not a security regression.
+      router.push(redirectTo);
+      router.refresh();
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
