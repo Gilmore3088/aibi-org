@@ -22,7 +22,7 @@ import {
 } from '@/components/mockup';
 import { DownloadGate } from '@/components/research/DownloadGate';
 import { ResearchPageClient } from '@/components/research/ResearchPageClient';
-import { FilteredCard } from '@/components/research/FilteredSection';
+import { FilteredCard, FilteredSection } from '@/components/research/FilteredSection';
 import { TEMPLATES } from './templates/data';
 import type { ArtifactTags } from '@/components/research/GuidedFilter';
 
@@ -330,152 +330,177 @@ export default function ResourcesHubPage() {
       <ResearchPageClient>
 
         {/* ROLE PLAYBOOKS */}
-        <Section variant="std" surface="white">
-          <div id="playbooks" />
-          <SectionHead
-            kicker="Role playbooks"
-            heading={<>Six playbooks. One for each role that runs the bank.</>}
-            lede={
-              <>
-                Each playbook lists role-specific AI use cases, the artifacts produced,
-                the review path, and the Toolbox assets that ship with it. Open the
-                detail page to read the playbook online or download the PDF.
-              </>
-            }
-          />
-          <div className="mk-resources-grid mk-resources-3up">
-            {TAGGED_PLAYBOOKS.map((p) => (
-              <FilteredCard key={p.slug} tags={p.tags}>
-                <Link href={`/playbooks/${p.slug}`} className="mk-resource-card">
-                  <div className="mk-resource-tag">Playbook</div>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
-                  <div className="mk-resource-foot">
-                    <span>By role</span>
-                    <span>Open &rarr;</span>
-                  </div>
-                </Link>
-              </FilteredCard>
-            ))}
-          </div>
-        </Section>
+        <FilteredSection
+          sectionName="Role playbooks"
+          artifactTags={Object.fromEntries(TAGGED_PLAYBOOKS.map((p) => [p.slug, p.tags]))}
+        >
+          <Section variant="std" surface="white">
+            <div id="playbooks" />
+            <SectionHead
+              kicker="Role playbooks"
+              heading={<>Six playbooks. One for each role that runs the bank.</>}
+              lede={
+                <>
+                  Each playbook lists role-specific AI use cases, the artifacts produced,
+                  the review path, and the Toolbox assets that ship with it. Open the
+                  detail page to read the playbook online or download the PDF.
+                </>
+              }
+            />
+            <div className="mk-resources-grid mk-resources-3up">
+              {TAGGED_PLAYBOOKS.map((p) => (
+                <FilteredCard key={p.slug} tags={p.tags}>
+                  <Link href={`/playbooks/${p.slug}`} className="mk-resource-card">
+                    <div className="mk-resource-tag">Playbook</div>
+                    <h3>{p.title}</h3>
+                    <p>{p.desc}</p>
+                    <div className="mk-resource-foot">
+                      <span>By role</span>
+                      <span>Open &rarr;</span>
+                    </div>
+                  </Link>
+                </FilteredCard>
+              ))}
+            </div>
+          </Section>
+        </FilteredSection>
 
         {/* DOWNLOADS — REFERENCE CARDS */}
-        <Section variant="std">
-          <div id="downloads" />
-          <SectionHead
-            kicker="Cheatsheets &amp; reference cards"
-            heading={<>One-page references your staff can keep on their desk.</>}
-            lede={
-              <>
-                Free downloads. Enter your work email to receive the file.
-                Each one names a section your institution should adapt before adopting.
-              </>
-            }
-          />
-          <div className="mk-resources-grid mk-resources-3up">
-            {REFERENCE_CARDS.map((d) => (
-              <FilteredCard key={d.href} tags={d.tags}>
-                <div className="mk-resource-card">
-                  <div className="mk-resource-tag">PDF</div>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                  <DownloadGate
-                    title={d.title}
-                    downloadHref={d.href}
-                    slug={slugFromHref(d.href)}
-                    meta={d.meta}
-                  />
-                </div>
-              </FilteredCard>
-            ))}
-          </div>
-        </Section>
+        <FilteredSection
+          sectionName="Cheatsheets & reference cards"
+          artifactTags={Object.fromEntries(REFERENCE_CARDS.map((d) => [d.href, d.tags]))}
+        >
+          <Section variant="std">
+            <div id="downloads" />
+            <SectionHead
+              kicker="Cheatsheets &amp; reference cards"
+              heading={<>One-page references your staff can keep on their desk.</>}
+              lede={
+                <>
+                  Free downloads. Enter your work email to receive the file.
+                  Each one names a section your institution should adapt before adopting.
+                </>
+              }
+            />
+            <div className="mk-resources-grid mk-resources-3up">
+              {REFERENCE_CARDS.map((d) => (
+                <FilteredCard key={d.href} tags={d.tags}>
+                  <div className="mk-resource-card">
+                    <div className="mk-resource-tag">PDF</div>
+                    <h3>{d.title}</h3>
+                    <p>{d.desc}</p>
+                    <DownloadGate
+                      title={d.title}
+                      downloadHref={d.href}
+                      slug={slugFromHref(d.href)}
+                      meta={d.meta}
+                    />
+                  </div>
+                </FilteredCard>
+              ))}
+            </div>
+          </Section>
+        </FilteredSection>
 
         {/* NEW ARTIFACTS (.md) */}
-        <Section variant="std" surface="white">
-          <SectionHead
-            kicker="Starter artifacts"
-            heading={<>Editable templates you can adapt today.</>}
-            lede={
-              <>
-                Markdown files you can copy into your own docs, edit, and circulate.
-                Built around sourced regulation and named guidance.
-              </>
-            }
-          />
-          <div className="mk-resources-grid mk-resources-3up">
-            {NEW_ARTIFACTS.map((d) => (
-              <FilteredCard key={d.href} tags={d.tags}>
-                <div className="mk-resource-card">
-                  <div className="mk-resource-tag">Markdown</div>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                  <DownloadGate
-                    title={d.title}
-                    downloadHref={d.href}
-                    slug={slugFromHref(d.href)}
-                    meta={d.meta}
-                  />
-                </div>
-              </FilteredCard>
-            ))}
-          </div>
-        </Section>
+        <FilteredSection
+          sectionName="Starter artifacts"
+          artifactTags={Object.fromEntries(NEW_ARTIFACTS.map((d) => [d.href, d.tags]))}
+        >
+          <Section variant="std" surface="white">
+            <SectionHead
+              kicker="Starter artifacts"
+              heading={<>Editable templates you can adapt today.</>}
+              lede={
+                <>
+                  Markdown files you can copy into your own docs, edit, and circulate.
+                  Built around sourced regulation and named guidance.
+                </>
+              }
+            />
+            <div className="mk-resources-grid mk-resources-3up">
+              {NEW_ARTIFACTS.map((d) => (
+                <FilteredCard key={d.href} tags={d.tags}>
+                  <div className="mk-resource-card">
+                    <div className="mk-resource-tag">Markdown</div>
+                    <h3>{d.title}</h3>
+                    <p>{d.desc}</p>
+                    <DownloadGate
+                      title={d.title}
+                      downloadHref={d.href}
+                      slug={slugFromHref(d.href)}
+                      meta={d.meta}
+                    />
+                  </div>
+                </FilteredCard>
+              ))}
+            </div>
+          </Section>
+        </FilteredSection>
 
         {/* INLINE TEMPLATES */}
-        <Section variant="std">
-          <SectionHead
-            kicker="Inline templates"
-            heading={<>Longer-form starter documents.</>}
-            lede={
-              <>
-                Read these on the site, then adapt for your institution. Each cites the
-                named regulation or guidance it&rsquo;s grounded in.
-              </>
-            }
-          />
-          <div className="mk-resources-grid mk-resources-2up">
-            {TAGGED_TEMPLATES.map((t) => (
-              <FilteredCard key={t.slug} tags={t.tags}>
-                <Link href={`/research/templates/${t.slug}`} className="mk-resource-card">
-                  <div className="mk-resource-tag">Template</div>
-                  <h3>{t.title}</h3>
-                  <p>{t.dek}</p>
-                  <div className="mk-resource-foot">
-                    <span>{t.audience}</span>
-                    <span>{t.readMinutes} min</span>
-                  </div>
-                </Link>
-              </FilteredCard>
-            ))}
-          </div>
-        </Section>
+        <FilteredSection
+          sectionName="Inline templates"
+          artifactTags={Object.fromEntries(TAGGED_TEMPLATES.map((t) => [t.slug, t.tags]))}
+        >
+          <Section variant="std">
+            <SectionHead
+              kicker="Inline templates"
+              heading={<>Longer-form starter documents.</>}
+              lede={
+                <>
+                  Read these on the site, then adapt for your institution. Each cites the
+                  named regulation or guidance it&rsquo;s grounded in.
+                </>
+              }
+            />
+            <div className="mk-resources-grid mk-resources-2up">
+              {TAGGED_TEMPLATES.map((t) => (
+                <FilteredCard key={t.slug} tags={t.tags}>
+                  <Link href={`/research/templates/${t.slug}`} className="mk-resource-card">
+                    <div className="mk-resource-tag">Template</div>
+                    <h3>{t.title}</h3>
+                    <p>{t.dek}</p>
+                    <div className="mk-resource-foot">
+                      <span>{t.audience}</span>
+                      <span>{t.readMinutes} min</span>
+                    </div>
+                  </Link>
+                </FilteredCard>
+              ))}
+            </div>
+          </Section>
+        </FilteredSection>
 
         {/* SAMPLES */}
-        <Section variant="std" surface="white">
-          <SectionHead
-            kicker="See it before you buy"
-            heading={<>Sample reports and buyer guides.</>}
-          />
-          <div className="mk-resources-grid mk-resources-2up">
-            {SAMPLES.map((d) => (
-              <FilteredCard key={d.href} tags={d.tags}>
-                <div className="mk-resource-card">
-                  <div className="mk-resource-tag">PDF</div>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                  <DownloadGate
-                    title={d.title}
-                    downloadHref={d.href}
-                    slug={slugFromHref(d.href)}
-                    meta={d.meta}
-                  />
-                </div>
-              </FilteredCard>
-            ))}
-          </div>
-        </Section>
+        <FilteredSection
+          sectionName="Sample reports & buyer guides"
+          artifactTags={Object.fromEntries(SAMPLES.map((d) => [d.href, d.tags]))}
+        >
+          <Section variant="std" surface="white">
+            <SectionHead
+              kicker="See it before you buy"
+              heading={<>Sample reports and buyer guides.</>}
+            />
+            <div className="mk-resources-grid mk-resources-2up">
+              {SAMPLES.map((d) => (
+                <FilteredCard key={d.href} tags={d.tags}>
+                  <div className="mk-resource-card">
+                    <div className="mk-resource-tag">PDF</div>
+                    <h3>{d.title}</h3>
+                    <p>{d.desc}</p>
+                    <DownloadGate
+                      title={d.title}
+                      downloadHref={d.href}
+                      slug={slugFromHref(d.href)}
+                      meta={d.meta}
+                    />
+                  </div>
+                </FilteredCard>
+              ))}
+            </div>
+          </Section>
+        </FilteredSection>
 
       </ResearchPageClient>
 
