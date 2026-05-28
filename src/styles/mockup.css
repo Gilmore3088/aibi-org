@@ -1130,6 +1130,30 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-cpv-grid { display: grid; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .mk-cpv-grid { grid-template-columns: 0.46fr 0.54fr; } }
+/* Mobile: detail panel first, picker list second + horizontally
+   scrollable so 5 module buttons don't push the demo below the fold.
+   Audit 2026-05-28: "left rail of module buttons is buried under
+   the right detail panel". */
+@media (max-width: 899px) {
+  .mk-cpv-detail { order: 1; }
+  .mk-cpv-list {
+    order: 2;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mk-cpv-list::-webkit-scrollbar { display: none; }
+  .mk-cpv-list > .mk-k { display: none; } /* "Learning Path" label */
+  .mk-cpv-list > .mk-cpv-mod {
+    flex: 0 0 auto;
+    min-width: 200px;
+    scroll-snap-align: start;
+  }
+}
 .mk-cpv-list {
   background: var(--cream); padding: 18px 20px;
   border-right: 1px solid var(--slate-200);
