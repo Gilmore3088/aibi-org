@@ -8,11 +8,23 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
+import Link from 'next/link';
 import { PLAYBOOKS, type RoleSlug } from '../data';
 import { PlaybookDownloadButton } from '../_components/PlaybookDownloadButton';
+import { getAssetsForPlaybook, type PlaybookSlug } from '@content/playbook-assets/data';
 
 export function generateStaticParams() {
   return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
+}
+
+// Best-effort slug derivation when the playbook data.ts asset name doesn't
+// match an asset registry entry by exact title — kebab the name, drop
+// punctuation, and let the registry's slug field match.
+function toSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 type IconProps = { className?: string; size?: number };
@@ -45,7 +57,10 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation' }} />
+      {/* Nav CTA matches the rest of the site (top-of-funnel readiness),
+          so the playbook doesn't ship three identical enroll CTAs (hero +
+          footer + nav). Issue #327 (part C). */}
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -59,8 +74,17 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
             <h1>{data.title}</h1>
             <p className="mk-lede">{data.lede}</p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation">
-                Start {data.eyebrow.split(' ')[0]} Path <ArrowR className="mk-ic" />
+              {/* #327D — restored role-specific label with a real
+                  destination context: the purchase page now reads the
+                  ?role= query and surfaces role-tailored framing. The
+                  label is honest because the param leads somewhere that
+                  acknowledges the role, not a generic page. */}
+              <Button
+                variant="gold"
+                size="lg"
+                href={`/courses/foundation/program/purchase?role=${role}`}
+              >
+                Start your {data.eyebrow.replace(/ Playbook$/, '')} path <ArrowR className="mk-ic" />
               </Button>
               <PlaybookDownloadButton
                 role={role}
@@ -173,7 +197,11 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         </div>
       </Section>
 
-      {/* TOOLBOX ASSETS */}
+      {/* TOOLBOX ASSETS — #327B: each "Ready" asset now resolves to a
+          real page at /playbooks/<role>/<asset-slug>. "Draft" assets stay
+          listed (the playbook scope hasn't changed) but render as visibly
+          unclickable cards with a "Coming soon" status so the page no
+          longer promises what we don't deliver. */}
       <Section variant="std">
         <SectionHead
           kicker="Toolbox Assets"
@@ -181,21 +209,59 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
           lede={<>A strong role playbook ends with downloadable, customizable work products — not slides.</>}
         />
         <div className="mk-cats">
-          {data.assets.map((a) => (
-            <div key={a.name} className="mk-cat">
-              <div className="mk-bar" />
-              <div className="mk-body">
-                <div className="mk-top">
-                  <span className="mk-pic">
-                    <FileIcon size={20} />
-                  </span>
-                  <span className={`mk-risk is-${a.status === 'Ready' ? 'low' : 'med'}`}>{a.status}</span>
+          {data.assets.map((asset) => {
+            const built = getAssetsForPlaybook(role as PlaybookSlug).find(
+              (a) =>
+                a.title.toLowerCase() === asset.name.toLowerCase() ||
+                a.slug === toSlug(asset.name),
+            );
+            const isLinkable = asset.status === 'Ready' && built;
+            const statusLabel = isLinkable
+              ? 'Open template'
+              : asset.status === 'Draft'
+                ? 'Coming soon'
+                : 'In review';
+
+            const cardBody = (
+              <div className="mk-bar" style={{ display: 'contents' }}>
+                <div className="mk-bar" />
+                <div className="mk-body">
+                  <div className="mk-top">
+                    <span className="mk-pic">
+                      <FileIcon size={20} />
+                    </span>
+                    <span
+                      className={`mk-risk is-${isLinkable ? 'low' : 'med'}`}
+                    >
+                      {statusLabel}
+                    </span>
+                  </div>
+                  <h3 style={{ fontSize: 18 }}>{asset.name}</h3>
+                  <p style={{ minHeight: 'auto' }}>{asset.type}</p>
                 </div>
-                <h3 style={{ fontSize: 18 }}>{a.name}</h3>
-                <p style={{ minHeight: 'auto' }}>{a.type}</p>
               </div>
-            </div>
-          ))}
+            );
+
+            return isLinkable && built ? (
+              <Link
+                key={asset.name}
+                href={`/playbooks/${role}/${built.slug}`}
+                className="mk-cat"
+                style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
+              >
+                {cardBody}
+              </Link>
+            ) : (
+              <div
+                key={asset.name}
+                className="mk-cat"
+                aria-disabled="true"
+                style={{ opacity: 0.78, cursor: 'not-allowed' }}
+              >
+                {cardBody}
+              </div>
+            );
+          })}
         </div>
       </Section>
 
@@ -204,8 +270,10 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         heading={<>{data.cta.heading}</>}
         body={<>{data.cta.body}</>}
         actions={[
-          { label: 'Start the Course', href: '/courses/foundation', variant: 'gold' },
-          { label: 'Browse Toolbox', href: '/my-toolbox', variant: 'ghost-dark' },
+          { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
+          // /my-toolbox is now auth-gated (#318). Unauth playbook readers
+          // would hit a login wall. Send them to the public artifacts hub.
+          { label: 'Browse downloads', href: '/research', variant: 'ghost-dark' },
         ]}
       />
     </div>

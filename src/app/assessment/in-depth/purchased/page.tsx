@@ -8,9 +8,11 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -55,13 +57,33 @@ export default async function InDepthPurchasedPage({
     signedInEmail = user?.email ?? null;
   }
 
+  const sp = (await searchParams) ?? {};
+
+  // Validate the session against Stripe before rendering the success view.
+  // Without this gate, /assessment/in-depth/purchased renders for any
+  // visitor regardless of session_id — including bogus values — leaking
+  // the "INCLUDED WITH YOUR PURCHASE" toolkit framing to people who
+  // never paid (issue #321).
+  //
+  // Exception 1: signed-in user — legitimate bookmark / return visit.
+  // Exception 2: STRIPE_SECRET_KEY not configured — local/preview env
+  // without keys; let the page render so QA can still walk the flow.
+  const validSession = await getValidatedPaidSession(sp.session_id);
+  if (
+    process.env.STRIPE_SECRET_KEY &&
+    !validSession &&
+    !signedInEmail
+  ) {
+    redirect('/assessment/in-depth');
+  }
+
   // Recover the email from the Stripe session so the auth links are
   // pre-filled — buyer typed it once at Stripe Checkout, never again.
-  const sp = (await searchParams) ?? {};
-  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
   const stripeEmail = signedInEmail
     ? null
-    : await getSessionEmail(sp.session_id);
+    : validSession?.customer_details?.email ??
+      validSession?.customer_email ??
+      null;
   const prefillEmail = signedInEmail ?? stripeEmail ?? null;
   const emailQs = prefillEmail
     ? `&email=${encodeURIComponent(prefillEmail)}`
@@ -232,6 +254,27 @@ export default async function InDepthPurchasedPage({
                 >
                   I ALREADY HAVE ONE
                 </Link>
+                {/* #324 — third option for the common case of "I bought
+                    with this email but I don't remember my password" or
+                    "I paid with a different email than the one I sign in
+                    with". Pre-fills the email and lands on the magic-link
+                    tab so the buyer is one click + one email away from
+                    being signed in. */}
+                <Link
+                  href={`/auth/login?mode=magic&next=/assessment/in-depth/take${emailQs}`}
+                  className="inline-block uppercase transition-colors"
+                  style={{
+                    border: '1px solid var(--ink-a15)',
+                    color: 'var(--ink)',
+                    padding: '14px 28px',
+                    borderRadius: 12,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.16em',
+                  }}
+                >
+                  EMAIL ME A SIGN-IN LINK
+                </Link>
               </div>
             </>
           )}
@@ -299,8 +342,13 @@ export default async function InDepthPurchasedPage({
             Playground access with the AiBI-Foundation course.
           </p>
           <div className="flex flex-wrap gap-4">
+            {/* Was /dashboard/toolbox/library — auth-walled, so a just-paid
+                unauthenticated buyer hit a login wall when clicking the
+                toolkit framed as "INCLUDED WITH YOUR PURCHASE". Send them
+                to the public /research hub which surfaces the same library
+                artifacts as free downloads. Issue #323. */}
             <Link
-              href="/dashboard/toolbox/library"
+              href="/research"
               className="inline-block uppercase transition-colors"
               style={{
                 background: 'var(--gold)',
@@ -314,8 +362,11 @@ export default async function InDepthPurchasedPage({
             >
               BROWSE THE LIBRARY →
             </Link>
+            {/* Was /courses/foundation/program — auth-walled. Send unauth
+                buyers to the public purchase landing so the upsell actually
+                works. Issue #322. */}
             <Link
-              href="/courses/foundation/program"
+              href="/courses/foundation/program/purchase"
               className="inline-block uppercase transition-colors"
               style={{
                 border: '1px solid var(--ink-a15)',

@@ -22,6 +22,7 @@ import {
   type QuickWinEntry,
   type DimensionEntry,
 } from '@/lib/pdf/TransformationReportDocument';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 const PDF_FILENAME = 'AiBI-Foundation-Transformation-Report.pdf';
 
@@ -234,6 +235,16 @@ export async function GET(request: Request): Promise<Response> {
   const authResult = await authenticate();
   if (authResult.error) return authResult.error;
   const { userId } = authResult;
+
+  // Per-user rate limit — 20 PDF renders/hour is generous for legit reissue.
+  const limited = await rateLimitOrFail({
+    key: 'transformation-report',
+    scope: 'user',
+    identifier: userId,
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   const serviceClient = createServiceRoleClient();
 

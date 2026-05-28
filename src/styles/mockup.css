@@ -465,6 +465,18 @@ section.mk-std { padding: 56px 0; }
 .mk-hdim .mk-lv { font-size: 12px; color: var(--gold-deep); font-weight: 700; }
 .mk-hdim .mk-bar { height: 6px; background: var(--slate-200); border-radius: var(--r-pill); overflow: hidden; }
 .mk-hdim .mk-fill { height: 100%; background: var(--gold); }
+/* Note line beneath the dim grid (free hero card) */
+.mk-hdim-note {
+  grid-column: 1 / -1;
+  font-size: 11px; color: var(--slate-500);
+  margin-top: 4px; letter-spacing: 0.02em;
+}
+/* Hero cards column — stacks free + in-depth cards vertically */
+.mk-hero-cards { display: flex; flex-direction: column; gap: 20px; }
+/* Compact variant for the secondary (In-Depth) card */
+.mk-hreport-sm .mk-hreport-left .mk-v { font-size: 64px; }
+.mk-hreport-sm .mk-hdims { grid-template-columns: 1fr 1fr; gap: 8px; }
+.mk-hreport-sm .mk-hdim { padding: 10px 12px; }
 
 /* Platform Preview */
 .mk-pp { display: grid; gap: 16px; grid-template-columns: 1fr; }
@@ -3030,6 +3042,28 @@ section.mk-std { padding: 56px 0; }
 .mk-chain { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .mk-chain { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) { .mk-chain { grid-template-columns: repeat(5, 1fr); } }
+
+/* Mobile: horizontal scroll rail with snap */
+@media (max-width: 767px) {
+  .mk-chain {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    /* hide scrollbar visually but keep functional */
+    scrollbar-width: none;
+  }
+  .mk-chain::-webkit-scrollbar { display: none; }
+  .mk-chain .mk-step {
+    flex: 0 0 76vw;
+    max-width: 300px;
+    scroll-snap-align: start;
+  }
+}
+
 .mk-step {
   background: #fff; border: 1px solid var(--ink-a10);
   border-radius: 20px; padding: 24px;
@@ -3124,6 +3158,149 @@ section.mk-std { padding: 56px 0; }
 .mk-ccard ul { list-style: none; padding: 0; margin: 0 0 20px; }
 .mk-ccard li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 14px; }
 .mk-ccard li svg { color: var(--gold); flex: none; margin-top: 3px; }
+
+/* Three ways to build — desktop/mobile visibility toggle */
+@media (max-width: 767px) { .mk-tier-grid-desktop { display: none !important; } }
+@media (min-width: 768px) { .mk-tier-accordion-list { display: none !important; } }
+
+/* Mobile accordion — Three ways to build */
+@media (max-width: 767px) {
+  .mk-tier-accordion {
+    background: var(--cream);
+    border: 1px solid var(--ink-a10);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .mk-tier-accordion + .mk-tier-accordion { margin-top: 10px; }
+  .mk-tier-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+  }
+  .mk-tier-trigger-label { display: flex; flex-direction: column; gap: 2px; }
+  .mk-tier-trigger-scale {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .mk-tier-trigger-name { font-size: 17px; font-weight: 600; color: var(--ink); }
+  .mk-tier-chevron {
+    flex: none; width: 20px; height: 20px;
+    color: var(--slate-400);
+    transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .mk-tier-chevron.is-open { transform: rotate(180deg); }
+  .mk-tier-body {
+    padding: 0 20px 20px;
+  }
+  .mk-tier-tagline {
+    font-size: 14px; line-height: 1.55;
+    color: var(--slate-600); margin: 0 0 14px;
+  }
+  .mk-tier-list {
+    list-style: none; padding: 12px 0; margin: 0 0 16px;
+    border-top: 1px solid var(--ink-a10);
+    border-bottom: 1px solid var(--ink-a10);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .mk-tier-list li {
+    display: grid; grid-template-columns: 14px 1fr;
+    gap: 10px; font-size: 14px; line-height: 1.5; color: var(--ink);
+  }
+  .mk-tier-list li span:first-child { color: var(--gold-deep); font-weight: 700; }
+}
+
+/* Mobile dashboard metric summary */
+@media (max-width: 767px) {
+  .mk-dash-mobile-summary {
+    background: #fff;
+    border: 1px solid var(--ink-a10);
+    border-radius: var(--r-2xl);
+    padding: 20px;
+    box-shadow: var(--shadow-hero);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .mk-dash-mobile-header {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .mk-dash-mobile-title {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .mk-dash-mobile-sub {
+    font-size: 15px; font-weight: 600; color: var(--ink); margin-top: 2px;
+  }
+  .mk-dash-mobile-metric {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--cream); border-radius: var(--r-md);
+    padding: 16px 18px;
+  }
+  .mk-dash-mobile-score {
+    font-size: 40px; font-weight: 700;
+    color: var(--ink); line-height: 1;
+    flex: none;
+  }
+  .mk-dash-mobile-score-unit {
+    font-size: 18px; font-weight: 500;
+    color: var(--slate-400);
+  }
+  .mk-dash-mobile-dept-label {
+    font-size: 13px; font-weight: 600; color: var(--ink);
+  }
+  .mk-dash-mobile-dept-sub {
+    font-size: 12px; color: var(--slate-500); margin-top: 2px;
+  }
+  .mk-dash-modal-trigger {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600;
+    color: var(--ink);
+    border: none; background: none; cursor: pointer;
+    padding: 0; text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* full chart hidden on mobile unless modal open */
+  .mk-dash { display: none; }
+  .mk-dash.is-modal-open {
+    display: block;
+    position: fixed; inset: 0; z-index: 200;
+    border-radius: 0; overflow-y: auto;
+    box-shadow: none;
+  }
+  .mk-dash-modal-overlay {
+    display: none;
+  }
+  .mk-dash-modal-overlay.is-open {
+    display: block;
+    position: fixed; inset: 0; z-index: 199;
+    background: rgba(7, 26, 47, 0.72);
+  }
+  .mk-dash-modal-close {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 1;
+  }
+}
+
+/* On desktop, hide the mobile-only summary */
+@media (min-width: 768px) {
+  .mk-dash-mobile-summary { display: none; }
+  .mk-dash-modal-overlay { display: none; }
+  .mk-dash-modal-close { display: none; }
+}
 
 /* Sizer */
 .mk-sizer { display: grid; gap: 24px; grid-template-columns: 1fr; }
@@ -3877,6 +4054,55 @@ section.mk-std { padding: 56px 0; }
   border-bottom: 2px solid var(--gold); padding-bottom: 2px;
 }
 
+/* DownloadGate — inline email gate for /research artifact downloads */
+.mk-download-gate-trigger {
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--ink); font-weight: 600; font-size: 12px;
+  border-bottom: 2px solid var(--gold); padding-bottom: 2px;
+  font-family: inherit;
+  transition: color 120ms;
+}
+.mk-download-gate-trigger:hover { color: var(--gold-deep); }
+.mk-download-gate-trigger:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px;
+}
+.mk-download-gate-form {
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--slate-200);
+}
+.mk-download-gate-field { display: flex; flex-direction: column; gap: 6px; }
+.mk-download-gate-label {
+  font-size: 11px; font-weight: 600; color: var(--slate-500);
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+.mk-download-gate-row { display: flex; gap: 8px; align-items: stretch; }
+.mk-download-gate-input {
+  flex: 1; min-width: 0;
+  font-size: 13px; padding: 7px 10px; border-radius: 8px;
+  border: 1px solid var(--slate-200); background: var(--slate-50);
+  color: var(--ink); font-family: inherit;
+  transition: border-color 120ms, background 120ms;
+}
+.mk-download-gate-input:focus {
+  outline: none; border-color: var(--gold); background: #fff;
+}
+.mk-download-gate-input:disabled { opacity: 0.6; cursor: not-allowed; }
+.mk-download-gate-submit {
+  font-size: 11px !important; padding: 7px 12px !important;
+  white-space: nowrap; flex-shrink: 0;
+}
+.mk-download-gate-error {
+  font-size: 12px; color: #b91c1c; margin: 0; line-height: 1.4;
+}
+.mk-download-gate-confirm {
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--slate-200);
+  font-size: 13px; color: var(--slate-600);
+}
+.mk-download-gate-ok {
+  color: var(--emerald-700); font-weight: 600;
+}
+
 /* Template document (/research/templates/[slug]) */
 .mk-tpl-meta {
   margin-top: 18px;
@@ -3929,6 +4155,76 @@ section.mk-std { padding: 56px 0; }
 .mk-tpl-actions {
   margin-top: 36px;
   display: flex; gap: 12px; flex-wrap: wrap;
+}
+
+/* Full curriculum list — /courses */
+.mk-full-curriculum {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--slate-200);
+}
+.mk-curriculum-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px 24px;
+}
+.mk-curriculum-row {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--slate-100);
+}
+.mk-curriculum-num {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--gold-deep); min-width: 20px; flex-shrink: 0;
+}
+.mk-curriculum-title {
+  font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.4;
+}
+
+/* ============================================================
+   Home price strip (#353)
+   ============================================================ */
+.mk-price-strip {
+  background: var(--cream-2);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 28px 0;
+}
+.mk-price-strip .mk-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--slate-200);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .mk-price-strip .mk-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.mk-price-tile {
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--cream); padding: 20px 24px;
+}
+.mk-price-amount {
+  font-size: 22px; font-weight: 800; color: var(--ink);
+  line-height: 1; letter-spacing: -0.02em;
+}
+.mk-price-label {
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  line-height: 1.3;
+}
+.mk-price-note {
+  font-size: 12px; color: var(--slate-500); font-weight: 400;
+}
+
+/* ROI section wrapper — constrains the calculator width on wide screens */
+.mk-roi-wrap {
+  max-width: 680px;
 }
 
 /* Coming-soon holding page */
@@ -4033,4 +4329,583 @@ section.mk-std { padding: 56px 0; }
 .mk-indepth-dim .mk-fill { height: 100%; background: var(--gold); border-radius: 999px; }
 .mk-indepth-dim .mk-indepth-desc {
   font-size: 12px; line-height: 1.5; color: var(--slate-600); margin: 10px 0 0;
+}
+
+/* AdvisorsStrip (#356) — renders only when content/advisors.ts is populated. */
+.mk-advisors-strip {
+  background: var(--cream-2);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+}
+.mk-advisors-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0;
+}
+.mk-advisors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 40px;
+  justify-content: center;
+  max-width: 920px;
+}
+.mk-advisors-entry { display: flex; flex-direction: column; gap: 2px; max-width: 280px; }
+.mk-advisors-name  { font-size: 14px; font-weight: 600; color: var(--ink);       margin: 0; }
+.mk-advisors-role  { font-size: 12px; color: var(--slate-600);                    margin: 0; }
+.mk-advisors-quote { font-size: 13px; color: var(--slate-600); margin: 6px 0 0; line-height: 1.45; }
+
+/* Funnel value-path tier badge (#354) — distinguishes free vs paid surfaces. */
+.mk-vp-tier {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.mk-vp-tier-free { color: var(--ink);       background: var(--cream-2); border: 1px solid var(--slate-200); }
+.mk-vp-tier-paid { color: var(--gold-deep); background: rgba(200, 162, 74, 0.12); border: 1px solid rgba(200, 162, 74, 0.45); }
+
+/* Sticky mobile CTA bar — production audit 2026-05-28 found 4–6 swipe
+   "dead zones" between consecutive primary CTAs on every parent page.
+   This bar appears after the user has scrolled past the hero so an
+   action prompt stays in reach. Desktop renders nothing. */
+.mk-sticky-mobile-cta {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  display: none;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+  background: var(--ink);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 24px -8px rgba(0, 0, 0, 0.35);
+  transform: translateY(110%);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 40;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0));
+}
+@media (max-width: 767px) {
+  .mk-sticky-mobile-cta { display: flex; }
+}
+.mk-sticky-mobile-cta[data-visible="true"] {
+  transform: translateY(0);
+}
+.mk-sticky-mobile-cta-action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  min-height: 48px;
+}
+.mk-sticky-mobile-cta-action:hover,
+.mk-sticky-mobile-cta-action:focus-visible {
+  background: var(--gold-2);
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
+}
+.mk-sticky-mobile-cta-close {
+  background: transparent;
+  border: 1px solid rgba(247, 243, 234, 0.25);
+  color: var(--cream);
+  border-radius: 12px;
+  width: 44px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mk-sticky-mobile-cta-close:hover,
+.mk-sticky-mobile-cta-close:focus-visible {
+  background: rgba(247, 243, 234, 0.08);
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
+}
+
+/* ── GuidedFilter ──────────────────────────────────────────────────────────── */
+
+/* ─── GuidedFilter — compact 3-button trigger + popover/drawer ─────────────── */
+
+.mk-guided-filter {
+  background: var(--cream);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 14px 0;
+  position: relative;
+}
+
+.mk-guided-filter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Trigger row */
+.mk-guided-trigger-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mk-guided-filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+  white-space: nowrap;
+}
+
+.mk-guided-trigger-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+/* Facet trigger button */
+.mk-guided-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--slate-200);
+  background: transparent;
+  color: var(--slate-600);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.mk-guided-trigger:hover {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.mk-guided-trigger:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.mk-guided-trigger--active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--gold-soft);
+}
+
+.mk-guided-trigger--active:hover {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--gold-soft);
+}
+
+.mk-guided-trigger--open {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.mk-guided-trigger--active.mk-guided-trigger--open {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--gold-soft);
+}
+
+/* Badge count on trigger */
+.mk-guided-trigger-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.mk-guided-trigger--active .mk-guided-trigger-badge {
+  background: var(--gold-soft);
+}
+
+.mk-guided-trigger-caret {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* ─── Popover anchor (relative to trigger button) ─────────────────────────── */
+
+.mk-guided-trigger-wrap {
+  position: relative;
+}
+
+.mk-guided-panel-anchor {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+}
+
+/* ─── Panel — desktop popover / mobile drawer ──────────────────────────────── */
+
+.mk-guided-panel {
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 16px;
+  box-shadow: var(--shadow-feature);
+  padding: 16px;
+  min-width: 260px;
+  max-width: 340px;
+}
+
+/* Mobile: full-width bottom drawer */
+@media (max-width: 767px) {
+  .mk-guided-panel-anchor {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+  }
+
+  .mk-guided-panel {
+    border-radius: 16px 16px 0 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 20px 16px 32px;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
+  }
+}
+
+.mk-guided-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.mk-guided-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.mk-guided-panel-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--slate-200);
+  background: transparent;
+  color: var(--slate-500);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.mk-guided-panel-close:hover {
+  background: var(--slate-100);
+  color: var(--ink);
+}
+
+.mk-guided-panel-close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Chip group inside panel */
+.mk-guided-panel-chips {
+  flex-wrap: wrap;
+}
+
+/* Mobile backdrop */
+.mk-guided-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 26, 47, 0.4);
+  z-index: 299;
+}
+
+/* ─── Chip button (shared — used inside panel) ──────────────────────────────── */
+
+.mk-guided-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mk-guided-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--slate-200);
+  background: transparent;
+  color: var(--slate-600);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.mk-guided-chip:hover {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.mk-guided-chip:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.mk-guided-chip--active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-soft);
+}
+
+.mk-guided-chip--active:hover {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--gold-soft);
+}
+
+/* ─── Active pills row ──────────────────────────────────────────────────────── */
+
+.mk-guided-active-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mk-guided-active-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.mk-guided-active-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mk-guided-active-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 12px;
+  border-radius: 999px;
+  background: var(--gold);
+  border: none;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.mk-guided-active-pill:hover {
+  background: var(--gold-2);
+}
+
+.mk-guided-active-pill:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.mk-guided-pill-x {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+/* Clear all button */
+.mk-guided-clear {
+  background: transparent;
+  border: none;
+  color: var(--slate-500);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: auto;
+}
+
+.mk-guided-clear:hover {
+  color: var(--ink);
+}
+
+.mk-guided-clear:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Empty-section one-liner ───────────────────────────────────────────────── */
+
+.mk-guided-empty-section {
+  padding: 20px 24px;
+  font-size: 14px;
+  color: var(--slate-400);
+  border-top: 1px solid var(--slate-200);
+}
+
+.mk-guided-empty-section-name {
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+
+/* ============================================================
+   /assessment — mobile compression  (@media max-width: 767px)
+   All rules here are mobile-only. Desktop is unchanged.
+   ============================================================ */
+
+/* 1. Hero: hide In-Depth card on mobile; show chip instead */
+@media (max-width: 767px) {
+  .mk-indepth-card-desktop { display: none; }
+  .mk-indepth-chip-mobile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--slate-500);
+    margin: 0;
+  }
+  .mk-indepth-chip-mobile .mk-ic {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+  }
+}
+@media (min-width: 768px) {
+  .mk-indepth-chip-mobile { display: none; }
+}
+
+/* 2. Live-score demo: accordion on mobile, always-visible on desktop */
+.mk-demo-accordion-trigger {
+  display: none;
+}
+@media (max-width: 767px) {
+  .mk-demo-accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 20px;
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+  .mk-demo-accordion-trigger:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .mk-demo-accordion-arrow {
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+  }
+  .mk-demo-accordion-arrow.is-open {
+    transform: rotate(90deg);
+  }
+  .mk-demo-accordion-body {
+    display: none;
+    margin-top: 12px;
+  }
+  .mk-demo-accordion-body.is-open {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .mk-demo-accordion-body {
+    display: block;
+  }
+}
+
+/* 3. Dimensions: accordion for rows 4–12 on mobile */
+.mk-dims-accordion-body {
+  display: contents; /* participates in the grid at all sizes */
+}
+@media (max-width: 767px) {
+  .mk-dims-accordion-body {
+    display: none;
+  }
+  .mk-dims-accordion-body.is-open {
+    display: contents;
+  }
+  .mk-dims-accordion-trigger {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: center;
+  }
+  .mk-dims-accordion-trigger:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+@media (min-width: 768px) {
+  .mk-dims-accordion-body {
+    display: contents;
+  }
+  .mk-dims-accordion-trigger {
+    display: none;
+  }
+}
+
+/* 4. CtaBand: hidden on mobile (StickyMobileCta covers the action) */
+@media (max-width: 767px) {
+  .mk-cta-band-desktop { display: none; }
 }

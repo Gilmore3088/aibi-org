@@ -55,7 +55,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
       return {
         title: 'Move from usage to measured wins.',
         description:
-          'Your next step is the AiBI-Foundation course — twelve modules to turn experimentation into documented workflows your examiner respects.',
+          'Your next step is the AiBI-Foundation course — twelve modules to turn experimentation into documented workflows your examiner can read.',
         href: '/courses/foundation/program/purchase',
         cta: 'Enroll · $295',
       };

@@ -12,7 +12,7 @@ export default function CertificationsPage() {
     <MockupShell
       activePath="/certifications"
       eyebrow="Credentials · For bankers"
-      title={<>The credential your examiner respects.</>}
+      title={<>The AiBI-Foundation credential.</>}
       lede="AiBI-Foundation is earned by completing reviewed work products — not by clicking through a video. Your Workbench Pack is reviewed by the Institute, and the certificate ships with a public verification URL."
       heroActions={[
         { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },

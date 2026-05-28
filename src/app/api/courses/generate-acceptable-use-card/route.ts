@@ -20,6 +20,7 @@ import React from 'react';
 import type { DocumentProps } from '@react-pdf/renderer';
 import { renderToBuffer } from '@react-pdf/renderer';
 import { AcceptableUseCardDocument } from '@/lib/pdf/AcceptableUseCardDocument';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 const ACTIVITY_5_2 = '5.2';
 const PDF_FILENAME = 'AiBI-Acceptable-Use-Card.pdf';
@@ -168,6 +169,16 @@ export async function GET(request: Request): Promise<Response> {
   const authResult = await authenticate();
   if (authResult.error) return authResult.error;
   const { userId } = authResult;
+
+  // Per-user rate limit — 20 PDF downloads/hour is plenty for legit reissue.
+  const limited = await rateLimitOrFail({
+    key: 'acceptable-use-card',
+    scope: 'user',
+    identifier: userId,
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   // Verify ownership
   const ownerResult = await verifyEnrollmentOwnership(enrollmentId, userId);

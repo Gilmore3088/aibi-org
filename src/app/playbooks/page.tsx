@@ -44,7 +44,7 @@ const ICONS: Record<string, typeof ShieldIcon> = {
 export default function PlaybooksIndexPage() {
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation' }} />
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation/program/purchase' }} />
 
       <section className="mk-hero">
         <div className="mk-deco">
@@ -73,7 +73,7 @@ export default function PlaybooksIndexPage() {
       </section>
 
       <Section variant="std">
-        <SectionHead kicker="Pick your playbook" heading={<>Six roles. Same craft.</>} />
+        <SectionHead kicker="Pick your playbook" heading={<>Pick the playbook for your role.</>} />
         <div className="mk-playbooks" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
           {PLAYBOOK_INDEX.map(({ slug, title, desc }) => {
             const Icon = ICONS[slug] ?? ShieldIcon;
@@ -96,7 +96,7 @@ export default function PlaybooksIndexPage() {
         heading={<>Six roles. One unified craft.</>}
         body={<>Each playbook is built around the same operating model so the institution gets a coherent rollout instead of six disconnected efforts.</>}
         actions={[
-          { label: 'Start the Course', href: '/courses/foundation', variant: 'gold' },
+          { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
           { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
       />

@@ -5,7 +5,6 @@ import type { DimensionScore } from '@content/assessments/v2/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
 import { ResultsDashboard } from './ResultsDashboard';
-import { NewsletterCTA } from './NewsletterCTA';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { StarterArtifactCard } from './StarterArtifactCard';
 import { StarterPrompt } from './StarterPrompt';
@@ -402,11 +401,7 @@ export function ResultsViewV2({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      {/* Newsletter + PDF (full dimension chart now lives in the dashboard at top) */}
-      <div className="mt-16 border-t border-[color:var(--ink)]/15 pt-12" data-print-hide="true">
-        <NewsletterCTA email={email} />
-      </div>
-
+      {/* Newsletter CTA removed 2026-05-27 (#339) — no active cadence. */}
       {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
     </div>
   );

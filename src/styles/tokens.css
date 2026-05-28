@@ -1,144 +1,40 @@
-/* AiBI design tokens — single source of truth at runtime.
- * Intent contract: docs/superpowers/design-system/03-tokens.md
+/* Legacy alias shim — color + font names only.
  *
- * Components and pages NEVER use hex literals. Reference tokens by name only.
+ * The canonical token system is tokens-mockup.css. This file exists to
+ * keep the older --color-* and --font-serif-sc names resolving while a
+ * follow-up sweep migrates remaining consumers (notably the V3 results
+ * components — ResultsViewV3, ResultsDashboardV3 — and src/lib/design-system/tokens.ts).
  *
- * 2026-05-10: legacy --color-* and --font-* tokens REMAPPED to point at
- * the Ledger palette (defined in tokens-ledger.css). Every component that
- * references a legacy token now renders Ledger gold/navy/parchment instead
- * of the old terra/sage/cobalt.
+ * Migration plan: once the V3 sweep lands, every --color-* + --font-serif-sc
+ * reference will be gone and this file gets deleted along with its
+ * @import in globals.css.
  *
- * 2026-05-15: marketing-site migration — sage/amber/cobalt-pale also
- * remapped (no remaining unmapped legacy hex in token system). Pillar
- * discipline officially retired. New code SHOULD use Ledger token names
- * directly; legacy --color-* names exist as aliases only.
+ * Do NOT add new tokens here. New tokens belong in tokens-mockup.css.
+ * Do NOT introduce new --color-* / --font-serif-sc consumers.
+ *
+ * Spacing / type-size / motion / radius / z / focus / leading / tracking
+ * scales moved into tokens-mockup.css on 2026-05-27 (Checkpoint 4 QA).
  */
 
 :root {
-  /* ---- Pillar palette RETIRED 2026-05-26 ----------------------------------
-   * The terra / sage / cobalt / amber / -pale tokens are gone from source.
-   * The operator request was a complete removal of the pillar palette. If
-   * a stray reference resurfaces (legacy MDX, third-party HTML import),
-   * grep `var(--color-(terra|sage|cobalt|amber))` to surface it.
-   * Mockup palette aliases live in tokens-mockup.css.
-   * ---------------------------------------------------------------------- */
+  /* Surfaces (remapped to mockup palette) */
+  --color-linen:        #F7F3EA;  /* mockup --cream */
+  --color-parch:        #FFFFFF;  /* mockup white surface */
+  --color-parch-dark:   #EFE7D7;  /* mockup --cream-2 */
+  --color-ink:          #071A2F;  /* mockup --ink */
 
-  /* ---- Color · Surfaces (REMAPPED to mockup) ------------------------- */
-  --color-linen:        #F7F3EA;  /* mockup --cream (was Ledger #ECE9DF, original #f9f6f0) */
-  --color-parch:        #FFFFFF;  /* mockup white surface (was Ledger #F4F1E7) */
-  --color-parch-dark:   #EFE7D7;  /* mockup --cream-2 (was Ledger #E4E0D2) */
-  --color-ink:          #071A2F;  /* mockup --ink (was Ledger #0E1B2D) */
+  /* Text (remapped to mockup palette) */
+  --color-slate:        #475569;  /* mockup --slate-600 */
+  --color-dust:         #94A3B8;  /* mockup --slate-400 */
+  --color-bone:         #FFFFFF;
+  --color-cream:        #EFE7D7;  /* mockup --cream-2 */
 
-  /* ---- Color · Text (REMAPPED to mockup) ----------------------------- */
-  --color-slate:        #475569;  /* mockup --slate-600 (was Ledger #4F5C6E) */
-  --color-dust:         #94A3B8;  /* mockup --slate-400 (was Ledger #8C95A8) */
-  --color-bone:         #FFFFFF;  /* mockup white surface (was Ledger #F4F1E7) */
-  --color-cream:        #EFE7D7;  /* mockup --cream-2 (was Ledger #F1E9D0) */
-
-  /* ---- Color · Semantic ----------------------------------------------- */
+  /* Semantic */
   --color-error:        #9b2226;
-  --color-success:      var(--emerald-700, #047857);  /* mockup saved/success */
+  --color-success:      var(--emerald-700, #047857);
   --color-warning:      var(--gold-deep,   #9A7A2F);
 
-  /* ---- Dividers ------------------------------------------------------- */
-  --divider-hairline:   rgba(30, 26, 20, 0.10);
-  --divider-strong:     var(--color-ink);
-
-  /* ---- Typography · Family (REMAPPED to Ledger) --------------------- *
-   * --font-serif/-sans/-mono now point at Newsreader / Geist / JetBrains
-   * Mono (the Ledger stack). The Cormorant / DM Sans / DM Mono fonts
-   * remain loaded in layout.tsx for the few places that import them
-   * directly via --font-cormorant etc., but the unprefixed --font-* tokens
-   * resolve to Ledger.
-   * --font-serif-sc keeps Cormorant SC because Newsreader has no small
-   * caps glyph set.
-   */
-  --font-serif:         var(--font-newsreader-hero), var(--font-newsreader-heavy), "Newsreader Fallback", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  /* Serif-SC — used in a few editorial kickers that want a small-caps face.
+   * Newsreader has no small-caps glyph set so this stays on Cormorant SC. */
   --font-serif-sc:      var(--font-cormorant-sc), Georgia, "Times New Roman", serif;
-  --font-sans:          var(--font-geist-sans),    -apple-system, "Helvetica Neue", system-ui, sans-serif;
-  --font-mono:          var(--font-jetbrains-mono),"SF Mono", Menlo, Consolas, ui-monospace, monospace;
-
-  /* ---- Typography · Size --------------------------------------------- */
-  --text-display-xl:    4rem;        /*  64 */
-  --text-display-lg:    3.25rem;     /*  52 */
-  --text-display-md:    2.5rem;      /*  40 */
-  --text-display-sm:    1.875rem;    /*  30 */
-  --text-display-xs:    1.375rem;    /*  22 */
-  --text-body-lg:       1.0625rem;   /*  17 */
-  --text-body-md:       0.9375rem;   /*  15 */
-  --text-body-sm:       0.8125rem;   /*  13 */
-  --text-mono-md:       0.875rem;    /*  14 */
-  --text-mono-sm:       0.75rem;     /*  12 */
-  --text-label-md:      0.6875rem;   /*  11 */
-  --text-label-sm:      0.625rem;    /*  10 */
-
-  /* ---- Typography · Line-height -------------------------------------- */
-  --leading-tight:      1.05;
-  --leading-snug:       1.15;
-  --leading-normal:     1.5;
-  --leading-relaxed:    1.6;
-
-  /* ---- Typography · Tracking ----------------------------------------- */
-  --tracking-tight:     -0.01em;
-  --tracking-normal:    0;
-  --tracking-wide:      0.06em;
-  --tracking-wider:     0.12em;
-  --tracking-widest:    0.18em;
-
-  /* ---- Spacing scale -------------------------------------------------- */
-  --space-1:            0.25rem;
-  --space-2:            0.5rem;
-  --space-3:            0.75rem;
-  --space-4:            1rem;
-  --space-5:            1.25rem;
-  --space-6:            1.5rem;
-  --space-7:            1.75rem;     /* page-section horizontal padding (canonical) */
-  --space-8:            2rem;
-  --space-9:            2.25rem;
-  --space-10:           2.75rem;
-  --space-12:           3.5rem;
-  --space-16:           4.5rem;
-
-  /* ---- Container widths ---------------------------------------------- */
-  --container-narrow:   42rem;
-  --container-default:  64rem;
-  --container-wide:     72rem;
-
-  /* ---- Radius -------------------------------------------------------- */
-  --radius-none:        0;
-  --radius-hairline:    1px;
-  --radius-sharp:       2px;
-  --radius-circle:      999px;
-
-  /* ---- Shadow (deliberately none) ------------------------------------ */
-  --shadow-none:        none;
-
-  /* ---- Motion -------------------------------------------------------- */
-  --motion-instant:     0ms;
-  --motion-fast:        120ms;
-  --motion-medium:      240ms;
-  --motion-slow:        400ms;
-
-  --ease-default:       cubic-bezier(0.2, 0, 0, 1);
-  --ease-spring:        cubic-bezier(0.5, 1.5, 0.5, 1);
-
-  /* ---- Z-index ------------------------------------------------------- */
-  --z-base:             0;
-  --z-sticky:           30;
-  --z-overlay:          40;
-  --z-modal:            50;
-  --z-skip:             100;
-
-  /* ---- Focus --------------------------------------------------------- */
-  --focus-ring:         2px solid var(--gold, #C8A24A);
-  --focus-offset:       2px;
-}
-
-/* Reduced-motion users get instant transitions globally. */
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --motion-fast:      var(--motion-instant);
-    --motion-medium:    var(--motion-instant);
-    --motion-slow:      var(--motion-instant);
-  }
 }

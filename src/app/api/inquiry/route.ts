@@ -9,6 +9,38 @@ import { subscribeToPlaybookForm } from '@/lib/mailerlite';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Input-length caps. The pre-existing validator only checked non-empty;
+// any unbounded field could be emailed to ops via Resend or templated
+// into MailerLite. These limits comfortably exceed legit input.
+const MAX_NAME = 120;
+const MAX_EMAIL = 254; // RFC 5321 path-length bound
+const MAX_INSTITUTION = 200;
+const MAX_TRACK = 64;
+const MAX_NOTES = 2000;
+const MAX_TYPE = 32;
+
+// Inquiry `type` allowlist. Each value matches a known caller (the
+// playbook download modal, the safe-AI-use guide form, the certifications
+// inquiry form). Unknown types reach the API but get rejected here so an
+// attacker cannot inject arbitrary segmentation tags into MailerLite.
+const ALLOWED_TYPES = new Set([
+  'guide-request',
+  'playbook-request',
+  'certification-inquiry',
+  'briefing-request',
+]);
+
+// Role allowlist for playbook-request `track` (which is "{role}-playbook").
+// Mirrors PLAYBOOK_INDEX in src/app/playbooks/data.ts.
+const ALLOWED_PLAYBOOK_ROLES = new Set([
+  'compliance',
+  'retail',
+  'marketing',
+  'lending',
+  'bsa-aml',
+  'infosec',
+]);
+
 interface InquiryPayload {
   name?: unknown;
   email?: unknown;
@@ -26,12 +58,13 @@ function isValid(p: InquiryPayload): p is {
   notes: string;
   type: string;
 } {
-  if (typeof p.name !== 'string' || p.name.trim().length === 0) return false;
-  if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
-  if (typeof p.institution !== 'string' || p.institution.trim().length === 0) return false;
-  if (typeof p.track !== 'string') return false;
-  if (typeof p.notes !== 'string') return false;
-  if (typeof p.type !== 'string') return false;
+  if (typeof p.name !== 'string' || p.name.trim().length === 0 || p.name.length > MAX_NAME) return false;
+  if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email) || p.email.length > MAX_EMAIL) return false;
+  if (typeof p.institution !== 'string' || p.institution.trim().length === 0 || p.institution.length > MAX_INSTITUTION) return false;
+  if (typeof p.track !== 'string' || p.track.length > MAX_TRACK) return false;
+  if (typeof p.notes !== 'string' || p.notes.length > MAX_NOTES) return false;
+  if (typeof p.type !== 'string' || p.type.length > MAX_TYPE) return false;
+  if (!ALLOWED_TYPES.has(p.type)) return false;
   return true;
 }
 
@@ -78,16 +111,20 @@ export async function POST(request: Request) {
 
   // Playbook PDF requests route to the playbook MailerLite group with
   // role stored as a custom field so per-role segments can fan out.
-  // Track is "{role}-playbook" e.g. "compliance-playbook".
+  // Track is "{role}-playbook" e.g. "compliance-playbook". Role is
+  // allowlisted to the six canonical playbooks so an attacker cannot
+  // inject arbitrary segmentation labels into MailerLite.
   if (body.type === 'playbook-request') {
     const role = body.track.replace(/-playbook$/, '');
-    if (role.length > 0) {
+    if (ALLOWED_PLAYBOOK_ROLES.has(role)) {
       subscribeToPlaybookForm({
         email: body.email,
         firstName: body.name.split(' ')[0] ?? body.name,
         role,
         institution: body.institution,
       }).catch((err) => console.warn('[inquiry] mailerlite skip', err));
+    } else {
+      console.warn('[inquiry] playbook-request with disallowed role:', role);
     }
   }
 

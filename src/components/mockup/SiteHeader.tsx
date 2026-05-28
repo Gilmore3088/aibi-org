@@ -10,7 +10,7 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Assessment', href: '/assessment' },
   { label: 'Course', href: '/courses' },
   { label: 'Resources', href: '/research' },
-  { label: 'Teams', href: '/for-institutions' },
+  { label: 'Institutions', href: '/for-institutions' },
 ];
 
 export interface SiteHeaderProps {
@@ -23,7 +23,7 @@ export interface SiteHeaderProps {
 
 export function SiteHeader({
   activePath,
-  cta = { label: 'Get readiness score', href: '/assessment' },
+  cta = { label: 'Get readiness score', href: '/assessment/take' },
 }: SiteHeaderProps) {
   return (
     <header className="mk-header">

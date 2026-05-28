@@ -9,7 +9,9 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
+import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
 // ---------- Icons (inline SVG, no lucide-react dep) ----------
 
@@ -49,48 +51,69 @@ type ModuleData = {
   icon: (p: IconProps) => JSX.Element;
 };
 
-const MODULES: ModuleData[] = [
+// PREVIEW_MODULES — 5 of the 12 modules wired to interactive demo visuals below.
+// Full curriculum: modules 1–12 listed in ALL_MODULES.
+const PREVIEW_MODULES: ModuleData[] = [
   {
-    title: 'AI Landscape',
+    title: 'AI for Your Workday',
     lessons: '6 lessons',
     time: '50 min',
-    desc: 'Understand models, tools, limits, and where AI fits inside a bank or credit union.',
-    artifact: 'Tool Selection Card',
+    desc: 'Understand where AI fits in daily banking work, what it cannot do, and the five regulatory frameworks every banker should know.',
+    artifact: 'Regulatory Cheatsheet',
     icon: BookIcon,
   },
   {
-    title: 'Prompt Foundations',
+    title: 'Prompting Fundamentals',
     lessons: '8 lessons',
     time: '75 min',
     desc: 'Learn one best-practice prompt structure for banking work: Role, Task, Context, Constraints, Output, and Review.',
-    artifact: 'Reviewed Prompt Card',
+    artifact: 'Prompt Strategy Cheat Sheet',
     icon: ChatIcon,
   },
   {
-    title: 'Skills',
+    title: 'Projects and Context',
     lessons: '7 lessons',
     time: '80 min',
-    desc: 'Turn useful prompts into named, tagged, versioned skills with allowed inputs, guardrails, and output formats.',
-    artifact: 'Reusable Skill Template',
+    desc: 'Organise multi-step work inside AI Projects: write a Project Brief, pin source context, and reuse outputs across tasks.',
+    artifact: 'Project Brief',
     icon: WorkflowIcon,
   },
   {
-    title: 'Workflows',
+    title: 'Files and Document Workflows',
     lessons: '9 lessons',
     time: '90 min',
-    desc: 'Map where AI fits into real work: trigger, input, AI draft, human review, approval, storage, and reuse.',
-    artifact: 'Mapped Workflow SOP',
+    desc: 'Upload, summarise, and redline documents using AI — with a review step built in before anything leaves your hands.',
+    artifact: 'Document Workflow Prompt',
     icon: FileIcon,
   },
   {
-    title: 'Agents',
+    title: 'Agents and Workflow Thinking',
     lessons: '6 lessons',
     time: '70 min',
-    desc: 'Introduce agentic workflows by watching a task move from trigger to draft output, review checkpoint, and completion log.',
-    artifact: 'Agent Task Map',
+    desc: 'Map agentic workflows: trigger, input, AI draft, human review checkpoint, approval, and completion log.',
+    artifact: 'AI Workflow Map',
     icon: SparklesIcon,
   },
 ];
+
+// All 12 modules — used for the full curriculum list.
+const ALL_MODULES: { title: string; number: number }[] = [
+  { number: 1,  title: 'AI for Your Workday' },
+  { number: 2,  title: 'What AI Is and Is Not' },
+  { number: 3,  title: 'Prompting Fundamentals' },
+  { number: 4,  title: 'Your AI Work Profile' },
+  { number: 5,  title: 'Projects and Context' },
+  { number: 6,  title: 'Files and Document Workflows' },
+  { number: 7,  title: 'AI Tools Landscape' },
+  { number: 8,  title: 'Agents and Workflow Thinking' },
+  { number: 9,  title: 'Safe AI Use in Banking' },
+  { number: 10, title: 'Role-Based Use Cases' },
+  { number: 11, title: 'Personal Prompt Library' },
+  { number: 12, title: 'Final Foundation Lab' },
+];
+
+// Keep the name MODULES pointing at the preview set so the interactive panel below compiles unchanged.
+const MODULES = PREVIEW_MODULES;
 
 const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
@@ -119,7 +142,7 @@ const PRICING_BULLETS = [
   'Self-paced course',
   'Sandbox practice',
   'Toolbox assets',
-  'Three reviewed artifacts',
+  'Four reviewed artifacts',
   'Completion credential',
   'Lifetime access',
 ];
@@ -176,12 +199,13 @@ export default function CoursesIndexPage() {
       <Section variant="std" surface="white">
         <div id="curriculum" />
         <SectionHead
-          kicker="Course preview"
+          kicker="12-module curriculum · 5 previewed below"
           heading={<>Prompt → Skill → Workflow.</>}
           lede={
             <>
               Pick a module on the left to see the learning visual on the right. Each module
-              ends with an artifact the learner keeps.
+              ends with a work product the learner keeps. All 12 modules are listed in the full
+              curriculum below.
             </>
           }
         />
@@ -190,6 +214,19 @@ export default function CoursesIndexPage() {
           setActiveModule={setActiveModule}
           ActiveIcon={ActiveIcon}
         />
+
+        {/* Full 12-module list */}
+        <div className="mk-full-curriculum">
+          <p className="mk-k" style={{ marginBottom: '1rem' }}>Full curriculum — all 12 modules</p>
+          <ol className="mk-curriculum-list">
+            {ALL_MODULES.map((mod) => (
+              <li key={mod.number} className="mk-curriculum-row">
+                <span className="mk-curriculum-num">{mod.number}</span>
+                <span className="mk-curriculum-title">{mod.title}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </Section>
 
       {/* WHAT LEARNERS BUILD — 4 cards */}
@@ -253,14 +290,23 @@ export default function CoursesIndexPage() {
         </div>
       </Section>
 
+      <AdvisorsStrip />
+
       {/* FINAL CTA */}
       <CtaBand
-        kicker="Ready to build?"
-        heading={<>Build your first reviewed AI workflow.</>}
+        kicker="Not sure yet?"
+        heading={<>See what a finished artifact looks like before you commit.</>}
+        body={<>The gallery shows real completion work from the course — the exact kind of reviewed artifact you'd take to your next team meeting.</>}
         actions={[
-          { label: 'Enroll in AiBI-Foundation', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Get readiness score first', href: '/assessment/take', variant: 'ghost-dark' },
+          { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
+          { label: 'Enroll · $295', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Enroll · $295"
+        href="/courses/foundation/program/purchase"
+        source="courses-sticky"
       />
     </div>
   );
@@ -327,10 +373,10 @@ function CoursePreview({
 // ---------- Module demo visuals (illustration-style, minimal text) ----------
 
 function ModuleDemo({ activeModule }: { activeModule: ModuleData }) {
-  if (activeModule.title === 'Prompt Foundations') return <PromptVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Skills') return <SkillVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Workflows') return <WorkflowVisual artifact={activeModule.artifact} />;
-  if (activeModule.title === 'Agents') return <AgentVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Prompting Fundamentals') return <PromptVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Projects and Context') return <SkillVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Files and Document Workflows') return <WorkflowVisual artifact={activeModule.artifact} />;
+  if (activeModule.title === 'Agents and Workflow Thinking') return <AgentVisual artifact={activeModule.artifact} />;
   return <LandscapeVisual artifact={activeModule.artifact} />;
 }
 

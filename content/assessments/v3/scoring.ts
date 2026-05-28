@@ -23,7 +23,7 @@ export const tiers: readonly Tier[] = [
     label: 'Starting Point',
     min: 12,
     max: 22,
-    colorVar: 'var(--ledger-weak)',
+    colorVar: 'var(--ink)',
     headline: 'You are at the beginning of your AI journey.',
     summary:
       'Your institution has meaningful ground to cover before AI adoption produces operational value. The first priority is building foundational staff literacy and identifying one to two repetitive workflows where a quick win is achievable without significant infrastructure investment.',
@@ -33,7 +33,7 @@ export const tiers: readonly Tier[] = [
     label: 'Early Stage',
     min: 23,
     max: 32,
-    colorVar: 'var(--ledger-accent)',
+    colorVar: 'var(--gold)',
     headline: 'You are experimenting but not yet coordinated.',
     summary:
       'Early signals exist inside your institution, but adoption is uneven and governance is informal. The opportunity is to convert isolated experiments into a coordinated program with a written use policy, a prioritized automation backlog, and a clear owner for AI strategy.',
@@ -43,7 +43,7 @@ export const tiers: readonly Tier[] = [
     label: 'Building Momentum',
     min: 33,
     max: 40,
-    colorVar: 'var(--ledger-accent)',
+    colorVar: 'var(--gold)',
     headline: 'You have real traction. The next step is scale.',
     summary:
       'Multiple teams are using AI tools with leadership awareness and a working governance posture. The next move is disciplined scaling: documented use cases, measured outcomes, and a training function that can sustain the program through turnover and expansion.',
@@ -53,7 +53,7 @@ export const tiers: readonly Tier[] = [
     label: 'Ready to Scale',
     min: 41,
     max: 48,
-    colorVar: 'var(--ledger-accent-2)',
+    colorVar: 'var(--ink)',
     headline: 'You are positioned to lead your peer group.',
     summary:
       'Your institution has the culture, governance, and leadership commitment to operate AI as a strategic capability. The opportunity is compounding — codify what works, train the next wave of builders, and convert capability into measurable efficiency gains that compound over time.',

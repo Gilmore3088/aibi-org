@@ -174,6 +174,16 @@ export async function POST(request: Request) {
 
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
+        // Restrict to card only. BNPL (Klarna/Affirm) and consumer-fintech
+        // rails (Cash App Pay, US bank with promo badge) are off-brand for
+        // a $295 community-bank-staff product. Issue #319.
+        payment_method_types: ['card'],
+        // #314 — disable the Stripe Link 'Save my information' toggle.
+        // Default-on, the toggle silently requires a phone number to
+        // enroll the customer in Link, and the Pay button stays inert
+        // until that field is filled. Card-only buyers should not be
+        // routed through Link enrollment without opting in.
+        saved_payment_method_options: { payment_method_save: 'disabled' },
         line_items: [{ price: priceId, quantity: 1 }],
         success_url: `${origin}/courses/foundation/program/purchased?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/courses/foundation/program/purchase`,
@@ -202,6 +212,7 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
+      payment_method_types: ['card'],  // #319 — card-only for institutional too
       line_items: [{ price: STRIPE_AIBIP_INSTITUTION_PRICE_ID, quantity }],
       success_url: `${origin}/courses/foundation/program?enrolled=true`,
       cancel_url: `${origin}/courses/foundation/program/purchase`,

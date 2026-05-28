@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-// no runtime state needed
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -9,7 +9,9 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  StickyMobileCta,
 } from '@/components/mockup';
+import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -40,7 +42,61 @@ const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10
 const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>);
 const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
 
+const ChevronDownIcon = (p: IconProps) => (
+  <svg {...sw(p)}><polyline points="6 9 12 15 18 9" /></svg>
+);
+const XIcon = (p: IconProps) => (
+  <svg {...sw(p)}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+);
+
+const TIERS = [
+  {
+    scale: 'Free · diagnostic',
+    name: 'Readiness Assessment',
+    tagline: 'Twelve questions, three minutes — see where you stand.',
+    included: [
+      'Your readiness score and tier',
+      'The dimension dragging you down',
+      'A starter artifact you can take to your team this week',
+    ],
+    ctaHref: '/assessment',
+    ctaLabel: 'Take the assessment',
+    ctaVariant: 'ink' as const,
+  },
+  {
+    scale: 'Per-banker',
+    name: 'AiBI-Foundation course',
+    tagline: 'Self-paced, scored on reviewed work.',
+    included: [
+      'Twelve self-paced modules',
+      'Three reviewed AI artifacts per practitioner',
+      '$295 individual · $199/seat at 10+ · lifetime access',
+    ],
+    ctaHref: '/courses',
+    ctaLabel: 'View the curriculum',
+    ctaVariant: 'ink' as const,
+  },
+  {
+    scale: 'Institution-wide',
+    name: 'Organizational Rollout',
+    tagline: 'A coached cohort, an aggregate dashboard, a defensible posture.',
+    included: [
+      '10-seat coached cohort over eight weeks',
+      'Institutional readiness baseline + post-engagement diagnostic',
+      'Aggregate dashboard for your champion',
+    ],
+    ctaHref: '/for-institutions/advisory',
+    ctaLabel: 'Request a pilot',
+    ctaVariant: 'gold' as const,
+  },
+];
+
 export default function ForInstitutionsPage() {
+  // Mobile accordion state — index of open tier (-1 = all closed)
+  const [openTier, setOpenTier] = useState<number>(-1);
+  // Mobile dashboard modal state
+  const [dashModalOpen, setDashModalOpen] = useState(false);
+
   return (
     <div className="mockup-scope">
       <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions/advisory' }} />
@@ -93,13 +149,59 @@ export default function ForInstitutionsPage() {
               <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Book a briefing <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                See pricing
+              <Button variant="ghost-dark" size="lg" href="#engagement">
+                See enrollment options
               </Button>
             </div>
           </div>
 
-          <div className="mk-dash">
+          {/* Mobile-only: compact metric summary */}
+          <div className="mk-dash-mobile-summary" aria-label="Sample institution dashboard">
+            <div className="mk-dash-mobile-header">
+              <div>
+                <div className="mk-dash-mobile-title">Institution Dashboard</div>
+                <div className="mk-dash-mobile-sub">First National · Sample</div>
+              </div>
+              <BarsIcon size={24} />
+            </div>
+            <div className="mk-dash-mobile-metric">
+              <div>
+                <div className="mk-dash-mobile-score">
+                  67<span className="mk-dash-mobile-score-unit">/100</span>
+                </div>
+              </div>
+              <div>
+                <div className="mk-dash-mobile-dept-label">Compliance readiness</div>
+                <div className="mk-dash-mobile-dept-sub">Highest-scoring department · 18 staff</div>
+              </div>
+            </div>
+            <button
+              className="mk-dash-modal-trigger"
+              onClick={() => setDashModalOpen(true)}
+              aria-label="See the full institution dashboard"
+            >
+              See the full dashboard <ArrowR className="mk-ic" />
+            </button>
+          </div>
+
+          {/* Modal overlay (mobile only) */}
+          <div
+            className={`mk-dash-modal-overlay${dashModalOpen ? ' is-open' : ''}`}
+            onClick={() => setDashModalOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Desktop full chart (always visible on desktop; modal on mobile) */}
+          <div className={`mk-dash${dashModalOpen ? ' is-modal-open' : ''}`} style={{ position: 'relative' }}>
+            {dashModalOpen && (
+              <button
+                className="mk-dash-modal-close"
+                onClick={() => setDashModalOpen(false)}
+                aria-label="Close dashboard"
+              >
+                <XIcon size={16} />
+              </button>
+            )}
             <div className="mk-head">
               <div>
                 <div className="mk-k">Institution Dashboard</div>
@@ -144,7 +246,7 @@ export default function ForInstitutionsPage() {
                   ['Marketing', 'Med', 64],
                   ['Operations', 'Low', 49],
                 ].map(([nm, level, pct]) => (
-                  <div key={nm} className="mk-d-row">
+                  <div key={nm as string} className="mk-d-row">
                     <div className="mk-top">
                       <div className="mk-nm">{nm}</div>
                       <div className="mk-vv">
@@ -162,7 +264,7 @@ export default function ForInstitutionsPage() {
         </div>
       </section>
 
-      {/* THREE WAYS TO BUILD — restored from main */}
+      {/* THREE WAYS TO BUILD */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="Engagement"
@@ -174,7 +276,10 @@ export default function ForInstitutionsPage() {
             </>
           }
         />
+
+        {/* Desktop: card grid (hidden on mobile via CSS) */}
         <div
+          className="mk-tier-grid-desktop"
           style={{
             display: 'grid',
             gap: 20,
@@ -182,48 +287,7 @@ export default function ForInstitutionsPage() {
             marginTop: 32,
           }}
         >
-          {[
-            {
-              scale: 'Free · diagnostic',
-              name: 'Readiness Assessment',
-              tagline: 'Twelve questions, three minutes — see where you stand.',
-              included: [
-                'Your readiness score and tier',
-                'The dimension dragging you down',
-                'A starter artifact you can take to your team this week',
-              ],
-              ctaHref: '/assessment',
-              ctaLabel: 'Take the assessment',
-              ctaVariant: 'ink' as const,
-            },
-            {
-              scale: 'Per-banker',
-              name: 'AiBI-Foundation course',
-              tagline: 'Self-paced, scored on reviewed work.',
-              included: [
-                'Twelve self-paced modules',
-                'Three reviewed AI artifacts per practitioner',
-                '$295 individual · $199/seat at 10+ · lifetime access',
-              ],
-              ctaHref: '/courses/foundation/program',
-              ctaLabel: 'View the curriculum',
-              ctaVariant: 'ink' as const,
-            },
-            {
-              scale: 'Institution-wide',
-              name: 'Organizational Rollout',
-              tagline:
-                'A coached cohort, an aggregate dashboard, a defensible posture.',
-              included: [
-                '10-seat coached cohort over eight weeks',
-                'Institutional readiness baseline + post-engagement diagnostic',
-                'Aggregate dashboard for your champion',
-              ],
-              ctaHref: '/for-institutions/advisory',
-              ctaLabel: 'Request a pilot',
-              ctaVariant: 'gold' as const,
-            },
-          ].map((tier) => (
+          {TIERS.map((tier) => (
             <article
               key={tier.name}
               style={{
@@ -292,10 +356,7 @@ export default function ForInstitutionsPage() {
                       color: 'var(--ink)',
                     }}
                   >
-                    <span
-                      aria-hidden="true"
-                      style={{ color: 'var(--gold-deep)', fontWeight: 700 }}
-                    >
+                    <span aria-hidden="true" style={{ color: 'var(--gold-deep)', fontWeight: 700 }}>
                       —
                     </span>
                     <span>{item}</span>
@@ -310,6 +371,56 @@ export default function ForInstitutionsPage() {
             </article>
           ))}
         </div>
+
+        {/* Mobile: accordion list (hidden on desktop via CSS) */}
+        <div className="mk-tier-accordion-list" style={{ marginTop: 24 }} aria-label="Engagement options">
+          {TIERS.map((tier, idx) => {
+            const isOpen = openTier === idx;
+            const triggerId = `tier-trigger-${idx}`;
+            const bodyId = `tier-body-${idx}`;
+            return (
+              <div key={tier.name} className="mk-tier-accordion">
+                <button
+                  id={triggerId}
+                  className="mk-tier-trigger"
+                  aria-expanded={isOpen}
+                  aria-controls={bodyId}
+                  onClick={() => setOpenTier(isOpen ? -1 : idx)}
+                >
+                  <div className="mk-tier-trigger-label">
+                    <span className="mk-tier-trigger-scale">{tier.scale}</span>
+                    <span className="mk-tier-trigger-name">{tier.name}</span>
+                  </div>
+                  <ChevronDownIcon
+                    size={20}
+                    className={`mk-tier-chevron${isOpen ? ' is-open' : ''}`}
+                  />
+                </button>
+                {isOpen && (
+                  <div
+                    id={bodyId}
+                    role="region"
+                    aria-labelledby={triggerId}
+                    className="mk-tier-body"
+                  >
+                    <p className="mk-tier-tagline">{tier.tagline}</p>
+                    <ul className="mk-tier-list">
+                      {tier.included.map((item) => (
+                        <li key={item}>
+                          <span aria-hidden="true">—</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button variant={tier.ctaVariant} size="md" href={tier.ctaHref}>
+                      {tier.ctaLabel}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </Section>
 
       {/* 5-STEP CHAIN */}
@@ -321,11 +432,11 @@ export default function ForInstitutionsPage() {
         />
         <div className="mk-chain">
           {[
-            { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
-            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
-            { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
-            { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
-            { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+            { icon: TargetIcon, num: '01 · Assess', h: 'Baseline your readiness', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
+            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: LockIcon, num: '04 · Govern', h: 'Establish approval and data rules', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
+            { icon: NetworkIcon, num: '05 · Consult', h: 'Engage ongoing advisory', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
           ].map(({ icon: Icon, num, h, p }) => (
             <div key={num} className="mk-step">
               <span className="mk-pic">
@@ -399,15 +510,25 @@ export default function ForInstitutionsPage() {
 
 
       {/* PRICING / ADVISORY */}
-      <Section variant="std" surface="white">
-        <SectionHead kicker="How to engage" heading={<>Two ways to work with us.</>} />
+      <Section id="engagement" variant="std" surface="white">
+        <SectionHead
+          kicker="How to engage"
+          heading={<>Enrollment &amp; advisory.</>}
+          lede={
+            <>
+              Self-serve seat blocks for institutions buying in volume, and a hands-on Leadership
+              Advisory for institutions running a coached cohort. Organizational Rollout pricing is
+              discussed in your Executive Briefing.
+            </>
+          }
+        />
         <div className="mk-contact-grid">
           <div className="mk-ccard">
             <div className="mk-lab">Self-serve</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
-              <div className="mk-v">$195</div>
-              <div className="mk-u">/ seat · volume pricing</div>
+              <div className="mk-v">$199</div>
+              <div className="mk-u">/ seat at 10+ · volume pricing</div>
             </div>
             <p>
               Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org
@@ -419,7 +540,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
             <Button variant="ink" size="lg" href="/for-institutions/advisory">
-              Get a Quote <ArrowR className="mk-ic" />
+              Get seat pricing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
@@ -445,19 +566,27 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
+      <AdvisorsStrip />
+
       <CtaBand
-        kicker="Institutions & Teams"
-        heading={<>Train the people who already run the bank.</>}
+        kicker="Start with the assessment"
+        heading={<>Your baseline costs nothing. Your rollout plan starts there.</>}
         body={
           <>
-            The institutions that win with AI aren't the ones with the slickest policy doc.
-            They're the ones whose staff can actually use it.
+            Run your team through the free readiness check first — then bring the department
+            breakdown to your Executive Briefing.
           </>
         }
         actions={[
-          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'See pricing', href: '/education', variant: 'ghost-dark' },
+          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
+      />
+
+      <StickyMobileCta
+        label="Book a briefing"
+        href="/for-institutions/advisory"
+        source="institutions-sticky"
       />
     </div>
   );

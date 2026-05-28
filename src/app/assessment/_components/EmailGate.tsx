@@ -22,6 +22,10 @@ interface EmailGateProps {
           Lets the post-capture surface show a soft nudge to re-submit with
           a work email. See #189 + 2026-05-18 product call. */
       readonly usedFreeEmail?: boolean;
+      /** One-click magic-link URL into /dashboard. Null when Supabase isn't
+          configured locally or when link generation failed — the report
+          still renders, just without the dashboard CTA. #303. */
+      readonly magicLinkUrl?: string | null;
     },
   ) => void;
 }
@@ -129,6 +133,7 @@ export function EmailGate({
         error?: string;
         profileId?: string | null;
         mailerliteTagAdded?: boolean;
+        magicLinkUrl?: string | null;
       };
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
@@ -148,6 +153,7 @@ export function EmailGate({
         institutionName: institutionName.trim() || undefined,
         profileId: data.profileId ?? null,
         usedFreeEmail: isFreeEmailDomain(emailToUse),
+        magicLinkUrl: data.magicLinkUrl ?? null,
       });
     } catch (err) {
       setStatus('error');
@@ -178,14 +184,14 @@ export function EmailGate({
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-3xl overflow-hidden" style={{ boxShadow: 'var(--shadow-feature)' }}>
+      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-[3px] overflow-hidden">
         <DeliverablePanel />
 
         <div className="bg-[color:#FFFFFF] p-8 md:p-10 lg:p-12">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
             See your full results
           </p>
-          <h3 className="text-3xl leading-tight text-[color:var(--ink)]">
+          <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
             Where should we send your breakdown?
           </h3>
 
@@ -284,10 +290,10 @@ export function EmailGate({
 function DeliverablePanel() {
   return (
     <div className="bg-[color:var(--cream)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--ink)]/10">
-      <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         What you get
       </p>
-      <h3 className="text-3xl leading-tight text-[color:var(--ink)]">
+      <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
         A working diagnostic, not a teaser.
       </h3>
 
@@ -296,26 +302,31 @@ function DeliverablePanel() {
         aria-hidden="true"
       >
         <div className="flex items-baseline justify-between mb-3">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
             Readiness breakdown
           </p>
-          <p className="text-[10px] tabular-nums text-[color:var(--slate-600)]">
-            8 dimensions
+          <p className="font-mono text-[10px] tabular-nums text-[color:var(--slate-600)]">
+            12 dimensions
           </p>
         </div>
+        {/* 12 v3 dimension labels with illustrative sample bars */}
         <div className="space-y-2">
           {([
-            ['Awareness', 0.65],
-            ['Use cases', 0.50],
-            ['Governance', 0.40],
-            ['Data', 0.35],
-            ['Skills', 0.55],
-            ['Vendor', 0.70],
-            ['Comms', 0.45],
-            ['Roadmap', 0.30],
+            ['Strategic Value',          0.50],
+            ['Infrastructure Readiness', 0.42],
+            ['Data Quality',             0.38],
+            ['Security & Approved Tools',0.55],
+            ['Runtime Safeguards',       0.35],
+            ['Regulatory Compliance',    0.48],
+            ['Fair Lending Testing',     0.30],
+            ['Human-in-the-Loop',        0.56],
+            ['Talent & Culture',         0.44],
+            ['Data Safety Reflexes',     0.40],
+            ['Continuous Validation',    0.28],
+            ['Vendor Risk',              0.62],
           ] as const).map(([label, value]) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-20 shrink-0">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-28 shrink-0 truncate">
                 {label}
               </span>
               <div className="flex-1 h-1.5 bg-[color:var(--ink)]/10 rounded-sm overflow-hidden">
@@ -327,21 +338,21 @@ function DeliverablePanel() {
             </div>
           ))}
         </div>
-        <p className="mt-3 text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
+        <p className="mt-3 font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
           Sample only — yours will reflect your actual answers
         </p>
       </div>
 
       <ul className="mt-6 space-y-3">
         {[
-          ['Score across 8 dimensions', 'Where you stand on awareness, governance, skills, data, and four more.'],
+          ['Score across 12 dimensions', 'Where you stand on strategic value, compliance, data safety, vendor risk, and eight more.'],
           ['Tailored starter artifact', 'A copy-paste-ready Markdown deliverable for your weakest dimension.'],
           ['Email copy of both', 'Yours to share with your team, your board, or your examiners.'],
         ].map(([title, body]) => (
           <li key={title} className="flex gap-3">
             <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
             <div>
-              <p className="text-base text-[color:var(--ink)]">{title}</p>
+              <p className="font-serif text-base text-[color:var(--ink)]">{title}</p>
               <p className="text-sm text-[color:var(--slate-600)] leading-relaxed">{body}</p>
             </div>
           </li>
@@ -353,19 +364,20 @@ function DeliverablePanel() {
 
 function TrustStrip() {
   return (
-    <p
-      className="mt-6 px-2 text-sm leading-relaxed"
-      style={{ color: 'var(--slate-600)' }}
-    >
-      Questions? Reach out at{' '}
-      <a
-        href="mailto:hello@aibankinginstitute.com"
-        style={{ color: 'var(--gold-deep)', fontWeight: 600, textDecoration: 'underline' }}
-      >
-        hello@aibankinginstitute.com
-      </a>
-      .
-    </p>
+    <div className="mt-6 grid sm:grid-cols-3 gap-x-6 gap-y-3 px-2">
+      {[
+        ['Where this goes', 'Our records and your newsletter list only if you opt in. Never sold.'],
+        ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
+        ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
+      ].map(([title, body]) => (
+        <div key={title} className="border-l-2 border-[color:var(--gold)]/40 pl-3">
+          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
+            {title}
+          </p>
+          <p className="mt-1 text-xs text-[color:var(--slate-600)] leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -389,7 +401,7 @@ function FormField({
       <div className="flex items-baseline justify-between gap-3">
         <label
           htmlFor={id}
-          className="text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
+          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
         >
           {label}
           {required && <span className="ml-1 text-[color:var(--gold)]">*</span>}
@@ -405,7 +417,7 @@ function FormField({
           className="mt-1.5 text-xs text-[color:#9b2226] flex items-start gap-1.5"
           role="alert"
         >
-          <span aria-hidden="true" className="leading-tight">!</span>
+          <span aria-hidden="true" className="font-mono leading-tight">!</span>
           <span>{error}</span>
         </p>
       )}

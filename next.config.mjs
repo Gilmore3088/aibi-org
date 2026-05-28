@@ -75,19 +75,28 @@ const nextConfig = {
       // page at /courses (see src/app/courses/_client.tsx).
       { source: '/education', destination: '/courses', permanent: true },
       { source: '/education/:path*', destination: '/courses', permanent: true },
-      { source: '/certifications', destination: '/courses', permanent: true },
+      // /certifications redirect removed 2026-05-27 — the route has a real
+      // page at src/app/certifications/page.tsx and is referenced by
+      // CLAUDE.md §16 launch gate as an inquiry surface. The redirect was
+      // suppressing the existing page. Issue #317.
+      // (Sub-route redirect kept: /certifications/exam/aibi-p is below.)
       { source: '/services', destination: '/for-institutions', permanent: true },
+      { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
-      // 2026-05-26: /resources → /research consolidation. Article folders
-      // were moved to src/app/research/<slug>/ so they render at the new
-      // URLs natively (the static routes take precedence over the dynamic
-      // [slug] catch-all in /research). These permanent redirects preserve
-      // every external link to the old URLs (newsletters, social shares,
-      // search results).
-      { source: '/resources', destination: '/research', permanent: true },
-      { source: '/resources/:slug*', destination: '/research/:slug*', permanent: true },
+      // 2026-05-28: /resources is now the canonical Artifact Library
+      // (playbooks, checklists, templates, prompt cards). The exact-match
+      // redirect to /research was removed so the new src/app/resources/
+      // page renders. The sub-path redirect must NOT be a catch-all
+      // (would shadow /resources/templates/*); constrain it to the six
+      // legacy article slugs that were moved into /research/<slug>.
+      {
+        source:
+          '/resources/:slug(the-widening-ai-gap|members-will-switch|six-ways-ai-fails-in-banking|ai-governance-without-the-jargon|the-skill-not-the-prompt|what-your-efficiency-ratio-is-hiding)',
+        destination: '/research/:slug',
+        permanent: true,
+      },
       // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
       // redirects to /courses/foundation/program. permanent: true emits HTTP
       // 308 (method-preserving, cacheable, search-engine-friendly). Keep

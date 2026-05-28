@@ -4,7 +4,7 @@ import { checkPerMinuteLimits, checkRateLimit, hashIp, logUsage } from '@/lib/ai
 import { LLMError, type ProviderName } from '@/lib/ai-harness/types';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
-import { getPaidToolboxAccess } from '@/lib/toolbox/access';
+import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { buildToolboxSystemPrompt } from '@/lib/toolbox/markdown';
 import { isAllowedModel } from '@/lib/toolbox/playground-models';
 import type { ToolboxMessage, ToolboxSkill } from '@/lib/toolbox/types';
@@ -47,6 +47,13 @@ function isProviderName(value: unknown): value is ProviderName {
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
+  // Starter-tier guard (#219): running a skill requires the Foundation tier.
+  if (!canBuildOrRun(access)) {
+    return NextResponse.json(
+      { error: 'Running a skill requires the AiBI-Foundation tier.' },
+      { status: 403 },
+    );
+  }
 
   let body: RunBody;
   try {

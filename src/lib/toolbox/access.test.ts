@@ -25,7 +25,7 @@ vi.mock('@/lib/supabase/client', () => ({
   isSupabaseConfigured: () => true,
 }));
 
-import { getPaidToolboxAccess } from './access';
+import { canBuildOrRun, getPaidToolboxAccess, type PaidAccess, type ToolboxTier } from './access';
 
 describe('getPaidToolboxAccess (reads from entitlements)', () => {
   beforeEach(() => {
@@ -44,7 +44,10 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
   it('returns access and queries the entitlements table', async () => {
     mockGetUser.mockResolvedValueOnce({ data: { user: { id: 'user-1' } } });
     mockEqActive.mockResolvedValueOnce({
-      data: [{ product: 'foundation' }, { product: 'aibi-s' }],
+      data: [
+        { product: 'foundation', tier: 'full' },
+        { product: 'aibi-s', tier: 'full' },
+      ],
       error: null,
     });
 
@@ -52,19 +55,50 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
     expect(result).not.toBeNull();
     expect(result!.userId).toBe('user-1');
     expect(result!.products).toEqual(['foundation', 'aibi-s']);
+    expect(result!.tier).toBe('full');
     expect(mockFrom).toHaveBeenCalledWith('entitlements');
   });
 
   it('also recognizes the legacy aibi-p slug from pre-rename entitlements', async () => {
     mockGetUser.mockResolvedValueOnce({ data: { user: { id: 'user-1' } } });
     mockEqActive.mockResolvedValueOnce({
-      data: [{ product: 'aibi-p' }],
+      data: [{ product: 'aibi-p', tier: 'full' }],
       error: null,
     });
 
     const result = await getPaidToolboxAccess();
     expect(result).not.toBeNull();
     expect(result!.products).toEqual(['aibi-p']);
+    expect(result!.tier).toBe('full');
+  });
+
+  it('resolves Starter tier for an In-Depth-only entitlement (#219)', async () => {
+    mockGetUser.mockResolvedValueOnce({ data: { user: { id: 'user-1' } } });
+    mockEqActive.mockResolvedValueOnce({
+      data: [{ product: 'in-depth-assessment', tier: 'starter' }],
+      error: null,
+    });
+
+    const result = await getPaidToolboxAccess();
+    expect(result).not.toBeNull();
+    expect(result!.products).toEqual(['in-depth-assessment']);
+    expect(result!.tier).toBe('starter');
+  });
+
+  it('collapses to Full when a user has BOTH In-Depth and Foundation', async () => {
+    // A learner who bought the In-Depth diagnostic FIRST and then enrolled
+    // in Foundation should be Full tier — Foundation wins.
+    mockGetUser.mockResolvedValueOnce({ data: { user: { id: 'user-1' } } });
+    mockEqActive.mockResolvedValueOnce({
+      data: [
+        { product: 'in-depth-assessment', tier: 'starter' },
+        { product: 'foundation', tier: 'full' },
+      ],
+      error: null,
+    });
+
+    const result = await getPaidToolboxAccess();
+    expect(result!.tier).toBe('full');
   });
 
   it('returns null when there are no active entitlements', async () => {
@@ -85,5 +119,42 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
     const result = await getPaidToolboxAccess();
     expect(result).not.toBeNull();
     expect(result!.userId).toBe('dev-bypass');
+    // Dev bypass is treated as Full tier so the local dev surface keeps
+    // working without needing to seed an entitlement row.
+    expect(result!.tier).toBe('full');
+  });
+});
+
+describe('canBuildOrRun (#219 Starter-tier gate)', () => {
+  function mk(tier: ToolboxTier, products: readonly string[]): PaidAccess {
+    return { userId: 'u-1', products, tier };
+  }
+
+  it('allows full-tier access', () => {
+    expect(canBuildOrRun(mk('full', ['foundation']))).toBe(true);
+  });
+
+  it('allows full-tier with the legacy aibi-p slug', () => {
+    expect(canBuildOrRun(mk('full', ['aibi-p']))).toBe(true);
+  });
+
+  it('rejects starter tier (In-Depth Assessment buyers)', () => {
+    expect(canBuildOrRun(mk('starter', ['in-depth-assessment']))).toBe(false);
+  });
+
+  it('rejects null access (no entitlement at all)', () => {
+    expect(canBuildOrRun(null)).toBe(false);
+  });
+
+  it('fails closed when tier is an unknown string', () => {
+    // Forward-compatibility: if a new tier is introduced in the schema
+    // before the application code is updated, mutating endpoints MUST
+    // continue to reject — never silently allow writes.
+    const unknown = {
+      userId: 'u-1',
+      products: ['toolbox-only'],
+      tier: 'enterprise' as unknown as ToolboxTier,
+    } as PaidAccess;
+    expect(canBuildOrRun(unknown)).toBe(false);
   });
 });

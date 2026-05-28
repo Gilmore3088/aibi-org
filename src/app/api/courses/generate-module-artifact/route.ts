@@ -13,6 +13,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -36,6 +37,19 @@ export async function GET(request: NextRequest) {
   const enrollment = await getEnrollment();
   if (!enrollment) {
     return NextResponse.json({ error: 'Enrollment required.' }, { status: 401 });
+  }
+
+  // Per-user rate limit — 60/hour covers 12 modules × multiple legit
+  // re-downloads each; throttles a cost-abuse loop on the markdown render.
+  if (enrollment.user_id) {
+    const limited = await rateLimitOrFail({
+      key: 'module-artifact',
+      scope: 'user',
+      identifier: enrollment.user_id,
+      max: 60,
+      windowSeconds: 3600,
+    });
+    if (limited) return limited;
   }
 
   if (!isSupabaseConfigured()) {

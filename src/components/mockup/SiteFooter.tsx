@@ -13,16 +13,20 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
   {
     label: 'Resources',
     links: [
-      { href: '/research', label: 'AI Banking Brief' },
-      { href: '/research/archive', label: 'Brief archive' },
+      // "AI Banking Brief" / "Brief archive" removed 2026-05-27 (#339) — no
+      // active newsletter cadence; archived essays remain readable at their
+      // /research/<slug> URLs and surface from /research itself.
+      { href: '/research', label: 'Downloads & templates' },
       { href: '/research/templates/ai-use-policy-starter', label: 'Templates' },
       { href: '/playbooks', label: 'Role playbooks' },
+      { href: '/for-institutions/samples/efficiency-ratio-workbook', label: 'Efficiency ratio workbook' },
     ],
   },
   {
     label: 'Institute',
     links: [
       { href: '/about', label: 'About' },
+      { href: '/faq', label: 'FAQ' },
       { href: '/security', label: 'Security & governance' },
       { href: '/for-institutions/advisory', label: 'Leadership advisory' },
       { href: 'mailto:hello@aibankinginstitute.com', label: 'hello@aibankinginstitute.com' },

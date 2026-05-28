@@ -28,6 +28,7 @@ import {
 } from '@content/assessments/v2/scoring';
 import { emailVariants } from '@/lib/email/canonicalize';
 import { parseRole } from '@content/assessments/v2/role';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -131,6 +132,17 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!user || !user.email) {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   }
+
+  // Per-user rate limit — 10 submissions per hour is plenty for legit
+  // resubmission while blocking cost-abuse from a stolen session.
+  const limited = await rateLimitOrFail({
+    key: 'in-depth-submit',
+    scope: 'user',
+    identifier: user.id,
+    max: 10,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   // Variant-aware entitlement lookup — matches the take page + dashboard
   // patterns so Gmail "+alias" buyers are not locked out.

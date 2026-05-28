@@ -16,8 +16,8 @@ import { listAllEssays } from '@content/essays/_lib/registry';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research/archive' },
-  title: 'AI Banking Brief — Archive',
-  description: 'Every published essay from the AI Banking Brief, newest first.',
+  title: 'Essay archive — The AI Banking Institute',
+  description: 'Every published essay, newest first.',
 };
 
 function formatDate(iso: string): string {
@@ -30,12 +30,12 @@ export default async function ResearchArchiveFullPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/research" cta={{ label: 'Subscribe to the Brief', href: '/research#subscribe' }} />
+      <SiteHeader activePath="/research" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
       <section className="mk-hero mk-hero-compact">
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip>AI Banking Brief · Archive</EyebrowChip>
+            <EyebrowChip>Essays · Archive</EyebrowChip>
             <h1>Every published essay, newest first.</h1>
             <p className="mk-lede">
               Sourced AI research, field notes, and practical artifacts for community banks and

@@ -4,11 +4,22 @@ import type { ReactNode } from 'react';
 
 // ================= STATIC CONFIG (per course, serializable) =================
 
+// Constrained to the mockup palette — pillar/Ledger colors are retired.
+// See CLAUDE.md § Color Variables.
+export type MockupAccentVar =
+  | 'var(--ink)'
+  | 'var(--ink-2)'
+  | 'var(--gold)'
+  | 'var(--gold-2)'
+  | 'var(--gold-deep)'
+  | 'var(--slate-500)'
+  | 'var(--slate-600)';
+
 export interface CourseBrand {
   readonly name: string;              // 'AiBI-Foundation'
   readonly shortCode: string;         // 'AiBI-Foundation'
   readonly wordmark: string;          // displayed in sidebar
-  readonly accentColorVar: string;    // 'var(--gold)' | 'var(--ink-2)' | ...
+  readonly accentColorVar: MockupAccentVar;
 }
 
 export interface CourseTerminology {
@@ -29,7 +40,7 @@ export interface CourseItem {
 export interface CourseSection {
   readonly id: string;                // 'awareness' | 'foundation' | 'theme-kyc'
   readonly label: string;             // display label
-  readonly colorVar?: string;         // optional per-section color
+  readonly colorVar?: MockupAccentVar;  // optional per-section color
   readonly items: readonly CourseItem[];
 }
 

@@ -15,9 +15,11 @@
 // not a separate section. Receipt + access info is a quiet strip.
 
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
 import { PrimaryButton, GhostButton } from '@/components/lms';
 import { SavedPromptPreview } from './_local/SavedPromptPreview';
 
@@ -57,13 +59,29 @@ export default async function AiBIPurchasedPage({
     signedInEmail = user?.email ?? null;
   }
 
+  const sp = (await searchParams) ?? {};
+
+  // Validate the session against Stripe before rendering the success view.
+  // Without this gate, /courses/foundation/program/purchased renders for
+  // any visitor regardless of session_id — same leak documented for the
+  // In-Depth surface in #321. Apply the same protection here per #326.
+  //
+  // Exception 1: signed-in user — legitimate return visit. Downstream
+  // enrollment / onboarding checks will gate course access.
+  // Exception 2: STRIPE_SECRET_KEY not configured — local / preview env;
+  // page renders so QA can still walk the flow.
+  const validSession = await getValidatedPaidSession(sp.session_id);
+  if (process.env.STRIPE_SECRET_KEY && !validSession && !signedInEmail) {
+    redirect('/courses/foundation/program/purchase');
+  }
+
   // Recover the email from the Stripe Checkout Session so the auth links
   // pre-fill — buyer typed their email once at Stripe, never again.
-  const sp = (await searchParams) ?? {};
-  const { getSessionEmail } = await import('@/lib/stripe/get-session-email');
   const stripeEmail = signedInEmail
     ? null
-    : await getSessionEmail(sp.session_id);
+    : validSession?.customer_details?.email ??
+      validSession?.customer_email ??
+      null;
   const prefillEmail = signedInEmail ?? stripeEmail ?? null;
   const emailQs = prefillEmail
     ? `&email=${encodeURIComponent(prefillEmail)}`
@@ -282,13 +300,18 @@ export default async function AiBIPurchasedPage({
         </section>
       </div>
 
-      <style>{`
+      {/* dangerouslySetInnerHTML — see LMSTopBar pattern (#315). */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @media (max-width: 760px) {
           .purchased-grid {
             grid-template-columns: minmax(0, 1fr) !important;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   );
 }

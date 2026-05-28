@@ -16,7 +16,7 @@ import {
   type TierId,
 } from '@/lib/mailerlite/sequences';
 import { sendAssessmentBreakdown } from '@/lib/resend';
-import { ensureAuthUser } from '@/lib/supabase/auth-admin';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   checkEmailCaptureLimit,
   hashIp,
@@ -55,10 +55,15 @@ interface CapturePayload {
   firstName?: unknown;
   institutionName?: unknown;
   marketingOptIn?: unknown;
+  // Research-library gate additions (optional on all calls, required on none).
+  lead_source?: unknown;
+  requested_artifact?: unknown;
 }
 
 const NAME_MAX_LEN = 80;
 const INSTITUTION_MAX_LEN = 120;
+const LEAD_SOURCE_MAX_LEN = 64;
+const ARTIFACT_MAX_LEN = 128;
 
 interface DimensionEntry {
   score: number;
@@ -80,7 +85,10 @@ function isDimensionBreakdown(value: unknown): value is DimensionBreakdown {
   return true;
 }
 
-function isValidPayload(p: CapturePayload): p is {
+// ── Assessment payload (full) ────────────────────────────────────────────────
+
+type AssessmentPayload = {
+  kind: 'assessment';
   email: string;
   score: number;
   tier: string;
@@ -92,27 +100,78 @@ function isValidPayload(p: CapturePayload): p is {
   firstName?: string;
   institutionName?: string;
   marketingOptIn?: boolean;
-} {
-  if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
-  if (typeof p.score !== 'number') return false;
-  if (typeof p.tier !== 'string' || p.tier.length === 0) return false;
-  if (typeof p.tierLabel !== 'string' || p.tierLabel.length === 0) return false;
-  if (!Array.isArray(p.answers)) return false;
-  // v1: 8 questions. v2/v3: 12 questions. Reject any other shape.
-  if (p.answers.length !== 8 && p.answers.length !== 12) return false;
-  if (!p.answers.every((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4)) return false;
+  lead_source?: string;
+  requested_artifact?: string;
+};
+
+// ── Research-library payload (email-only) ─────────────────────────────────
+
+type ResearchPayload = {
+  kind: 'research';
+  email: string;
+  lead_source: string;
+  requested_artifact?: string;
+};
+
+type ValidatedPayload = AssessmentPayload | ResearchPayload;
+
+function parsePayload(p: CapturePayload): ValidatedPayload | null {
+  if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return null;
+
+  // Shared optional-field validation for both paths.
+  if (p.lead_source !== undefined && (typeof p.lead_source !== 'string' || p.lead_source.length > LEAD_SOURCE_MAX_LEN)) return null;
+  if (p.requested_artifact !== undefined && (typeof p.requested_artifact !== 'string' || p.requested_artifact.length > ARTIFACT_MAX_LEN)) return null;
+
+  // If score is absent this is a research-library call — much lighter shape.
+  if (p.score === undefined) {
+    // lead_source is required for the research path so the route can log intent.
+    if (typeof p.lead_source !== 'string' || p.lead_source.length === 0) return null;
+    return {
+      kind: 'research',
+      email: p.email,
+      lead_source: p.lead_source,
+      ...(typeof p.requested_artifact === 'string' && p.requested_artifact.length > 0
+        ? { requested_artifact: p.requested_artifact }
+        : {}),
+    };
+  }
+
+  // Assessment path — full validation unchanged from the original.
+  if (typeof p.score !== 'number') return null;
+  if (typeof p.tier !== 'string' || p.tier.length === 0) return null;
+  if (typeof p.tierLabel !== 'string' || p.tierLabel.length === 0) return null;
+  if (!Array.isArray(p.answers)) return null;
+  // v1 has 8 questions, v2 has 12. Reject any other shape.
+  if (p.answers.length !== 8 && p.answers.length !== 12) return null;
+  if (!p.answers.every((n: unknown) => typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 4)) return null;
   // Score must equal the sum of answers so an attacker can't persist an
   // inconsistent score that later crashes getTierV2() / getTier().
   const expectedSum = (p.answers as number[]).reduce((acc, n) => acc + n, 0);
-  if (p.score !== expectedSum) return false;
-  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2' && p.version !== 'v3') return false;
-  if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return false;
-  if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return false;
+  if (p.score !== expectedSum) return null;
+  if (p.version !== undefined && p.version !== 'v1' && p.version !== 'v2' && p.version !== 'v3') return null;
+  if (p.maxScore !== undefined && (typeof p.maxScore !== 'number' || p.maxScore < 8 || p.maxScore > 48)) return null;
+  if (p.dimensionBreakdown !== undefined && !isDimensionBreakdown(p.dimensionBreakdown)) return null;
   // Optional profile fields — bounded length so an attacker can't dump megabytes.
-  if (p.firstName !== undefined && (typeof p.firstName !== 'string' || p.firstName.length > NAME_MAX_LEN)) return false;
-  if (p.institutionName !== undefined && (typeof p.institutionName !== 'string' || p.institutionName.length > INSTITUTION_MAX_LEN)) return false;
-  if (p.marketingOptIn !== undefined && typeof p.marketingOptIn !== 'boolean') return false;
-  return true;
+  if (p.firstName !== undefined && (typeof p.firstName !== 'string' || p.firstName.length > NAME_MAX_LEN)) return null;
+  if (p.institutionName !== undefined && (typeof p.institutionName !== 'string' || p.institutionName.length > INSTITUTION_MAX_LEN)) return null;
+  if (p.marketingOptIn !== undefined && typeof p.marketingOptIn !== 'boolean') return null;
+
+  return {
+    kind: 'assessment',
+    email: p.email,
+    score: p.score,
+    tier: p.tier,
+    tierLabel: p.tierLabel,
+    answers: p.answers as number[],
+    ...(p.version !== undefined ? { version: p.version as 'v1' | 'v2' | 'v3' } : {}),
+    ...(p.maxScore !== undefined ? { maxScore: p.maxScore as number } : {}),
+    ...(p.dimensionBreakdown !== undefined ? { dimensionBreakdown: p.dimensionBreakdown as DimensionBreakdown } : {}),
+    ...(typeof p.firstName === 'string' ? { firstName: p.firstName } : {}),
+    ...(typeof p.institutionName === 'string' ? { institutionName: p.institutionName } : {}),
+    ...(typeof p.marketingOptIn === 'boolean' ? { marketingOptIn: p.marketingOptIn } : {}),
+    ...(typeof p.lead_source === 'string' ? { lead_source: p.lead_source } : {}),
+    ...(typeof p.requested_artifact === 'string' ? { requested_artifact: p.requested_artifact } : {}),
+  };
 }
 
 export async function POST(request: Request) {
@@ -123,7 +182,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  if (!isValidPayload(body)) {
+  const parsed = parsePayload(body);
+  if (!parsed) {
     return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 });
   }
 
@@ -148,6 +208,25 @@ export async function POST(request: Request) {
   // counts even if downstream adapters fail.
   await logEmailCapture(ipHash);
 
+  // ── Research-library path: email-only capture, no assessment data ──────────
+  // Subscribes to the assessment MailerLite group for nurture, then returns.
+  // No Supabase profile upsert, no Resend breakdown — just list membership.
+  if (parsed.kind === 'research') {
+    const { email: researchEmail, lead_source, requested_artifact } = parsed;
+    console.log(
+      `[capture-email] research-library gate email=${researchEmail} artifact=${requested_artifact ?? 'none'}`,
+    );
+    if (process.env.SKIP_MAILERLITE !== 'true') {
+      await subscribeToAssessmentForm({
+        email: researchEmail,
+        fields: { lead_source, ...(requested_artifact ? { requested_artifact } : {}) },
+      }).catch((err) => console.warn('[capture-email] mailerlite research skip', err));
+    }
+    return NextResponse.json({ ok: true });
+  }
+
+  // ── Assessment path (existing logic below, unchanged) ─────────────────────
+
   const {
     email,
     score,
@@ -159,7 +238,7 @@ export async function POST(request: Request) {
     dimensionBreakdown,
     firstName,
     marketingOptIn,
-  } = body;
+  } = parsed;
 
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
@@ -175,12 +254,21 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[capture-email] mailerlite skip', err));
   }
 
-  // Provision a Supabase Auth account for this email (idempotent, fire-and-
-  // forget). Lets the assessment-taker log into /dashboard later without a
-  // separate sign-up step.
-  ensureAuthUser(email).catch((err) =>
-    console.warn('[capture-email] auth-admin skip', err),
-  );
+  // Provision a Supabase Auth account for this email (idempotent), then
+  // generate a one-click magic link so the inline report + Resend email
+  // can surface a "View your dashboard" CTA. #303 — previously fire-and-
+  // forget; now awaited so the URL can be plumbed downstream. Best-effort:
+  // a Supabase failure must not block the response — the report still
+  // renders, and the email template falls back to /auth/login.
+  let magicLinkUrl: string | null = null;
+  try {
+    const authResult = await ensureAuthUser(email);
+    if (authResult.userId) {
+      magicLinkUrl = await generateMagicLink(email, '/dashboard');
+    }
+  } catch (err) {
+    console.warn('[capture-email] auth-admin skip', err);
+  }
 
   // Persist to Supabase user_profiles when configured.
   // Best-effort: a Supabase failure must not block the response — the
@@ -270,7 +358,7 @@ export async function POST(request: Request) {
   console.log(
     `[capture-email] reached email gate version=${version ?? 'unset'} hasBreakdown=${Boolean(dimensionBreakdown)}`,
   );
-  if (version === 'v2' && dimensionBreakdown) {
+  if ((version === 'v2' || version === 'v3') && dimensionBreakdown) {
     try {
       const tierData = getTierV2(score);
       const lowest = Object.entries(dimensionBreakdown)
@@ -291,6 +379,7 @@ export async function POST(request: Request) {
         starterArtifactTitle: artifact?.title,
         starterArtifactBody: artifact?.body,
         profileId,
+        ...(magicLinkUrl ? { magicLinkUrl } : {}),
       }).catch((err) => console.warn('[capture-email] resend skip', err));
     } catch (err) {
       console.error('[capture-email] email-prep threw:', err);
@@ -303,5 +392,6 @@ export async function POST(request: Request) {
     ok: true,
     profileId,
     mailerliteTagAdded: mailerliteTagged,
+    magicLinkUrl,
   });
 }
