@@ -46,7 +46,7 @@ export const starterKits: StarterKit[] = [
     items: [
       { label: 'Safe AI Use Checklist', href: '/downloads/safe-ai-use-checklist.pdf' },
       { label: 'Red / Yellow / Green Use Card', href: '/downloads/red-yellow-green-use-card.pdf' },
-      { label: 'AI Use-Case Inventory', href: '/artifacts/ai-use-case-inventory.md' },
+      { label: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
     zip: '/downloads/governance-starter-kit.zip',
@@ -62,7 +62,7 @@ export const starterKits: StarterKit[] = [
       { label: 'Retail Playbook', href: '/downloads/retail-playbook.pdf' },
       { label: 'Safe AI Use Checklist', href: '/downloads/safe-ai-use-checklist.pdf' },
       { label: 'Prompt Strategy Cheat Sheet', href: '/downloads/prompt-strategy-cheat-sheet.pdf' },
-      { label: 'Data Handling Reference Card', href: '/artifacts/data-handling-reference-card.md' },
+      { label: 'Data Handling Reference Card', href: '/downloads/artifact-data-handling-reference-card.pdf' },
     ],
     zip: '/downloads/frontline-enablement-kit.zip',
     zipSize: '695 KB',
@@ -90,8 +90,8 @@ export const starterKits: StarterKit[] = [
     audience: 'Lending, credit, compliance',
     items: [
       { label: 'Lending Playbook', href: '/downloads/lending-playbook.pdf' },
-      { label: 'Fair-Lending AI Review Checklist', href: '/artifacts/fair-lending-ai-review-checklist.md' },
-      { label: 'AI Use-Case Inventory', href: '/artifacts/ai-use-case-inventory.md' },
+      { label: 'Fair-Lending AI Review Checklist', href: '/downloads/artifact-fair-lending-ai-review-checklist.pdf' },
+      { label: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
     zip: '/downloads/lending-review-kit.zip',
@@ -169,7 +169,7 @@ export interface ProblemPath {
 
 export const problemPaths: ProblemPath[] = [
   { title: 'Set AI rules', artifact: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter', icon: ShieldCheck },
-  { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/artifacts/ai-use-case-inventory.md', icon: ClipboardCheck },
+  { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/downloads/artifact-ai-use-case-inventory.pdf', icon: ClipboardCheck },
   { title: 'Train staff', artifact: 'Safe AI Use + R/Y/G cards', href: '/downloads/safe-ai-use-checklist.pdf', icon: BookOpen },
   { title: 'Build a workflow SOP', artifact: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop', icon: Workflow },
   { title: 'Brief leadership', artifact: 'Board Briefing Checklist', href: '/research/templates/board-briefing-checklist', icon: BarChart3 },
@@ -191,10 +191,10 @@ export interface Template {
 export const templates: Template[] = [
   {
     title: 'AI Use-Case Inventory',
-    format: 'Markdown · Register',
+    format: 'Template · Register',
     desc: 'Document purpose, tool, data class, owner, risk tier, reviewer, and cadence.',
     preview: ['Use case', 'Tool', 'Data', 'Reviewer'],
-    href: '/artifacts/ai-use-case-inventory.md',
+    href: '/downloads/artifact-ai-use-case-inventory.pdf',
     icon: ClipboardCheck,
   },
   {
