@@ -13,7 +13,7 @@ if (!STRIPE_SECRET_KEY) {
 }
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2026-03-25.dahlia',
+  apiVersion: '2026-04-22.dahlia',
   appInfo: {
     name: 'The AI Banking Institute',
     url: 'https://aibankinginstitute.com',
