@@ -353,8 +353,12 @@ export default function LoginPage() {
   // they used at checkout. Keeps the field editable.
   const rawEmail = searchParams.get('email');
   const prefillEmail = rawEmail && EMAIL_RE_LOGIN.test(rawEmail) ? rawEmail : '';
+  // #324 — let the In-Depth purchased page link directly to the magic-link
+  // tab via ?mode=magic. Default to password for everyone else.
+  const initialMode: 'password' | 'magic' =
+    searchParams.get('mode') === 'magic' ? 'magic' : 'password';
 
-  const [mode, setMode] = useState<'password' | 'magic'>('password');
+  const [mode, setMode] = useState<'password' | 'magic'>(initialMode);
 
   return (
     <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
