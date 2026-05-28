@@ -27,7 +27,7 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
       'Verifiable credential on completion',
     ],
     cta: { label: 'See certification tracks', href: '/education' },
-    accent: 'var(--color-terra)',
+    accent: 'var(--gold)',
   },
   {
     id: 'team',
@@ -42,7 +42,7 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
       'Group reporting for the executive sponsor',
     ],
     cta: { label: 'Request team pricing', href: '/for-institutions#inquiry' },
-    accent: 'var(--color-cobalt)',
+    accent: 'var(--ink)',
   },
   {
     id: 'institution-wide',
@@ -58,6 +58,6 @@ export const enrollmentTiers: readonly EnrollmentTier[] = [
       'Named program lead and annual capability review',
     ],
     cta: { label: 'Book an Executive Briefing', href: 'calendly' },
-    accent: 'var(--color-sage)',
+    accent: 'var(--slate-600)',
   },
 ];
