@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useState, use } from 'react';
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -39,8 +39,11 @@ const VERSIONS: { key: VersionKey; name: string; status: string; date: string; n
   { key: 'v1', name: 'v1', status: 'Draft', date: '2026-05-12', note: 'Initial build from procedure SOP.' },
 ];
 
-export default function SavedSkillPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+// Next 14 client-component params are a plain object — Promise + React.use()
+// is Next 15 / React 19 syntax. Using it here threw "use is not a function"
+// on every render and returned 500 for any slug. Issue #312.
+export default function SavedSkillPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const [version, setVersion] = useState<VersionKey>('v3');
   const active = VERSIONS.find((v) => v.key === version) ?? VERSIONS[0];
 
