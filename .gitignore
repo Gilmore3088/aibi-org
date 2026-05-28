@@ -118,3 +118,13 @@ docs/reviews/lighthouse-*/
 /docs/session-*.md
 /docs/session-*.html
 
+# AI session brief + project ledger — kept LOCAL, never in the public repo.
+# (2026-05-28: split out of CLAUDE.md / CHRONOLOGY.md / DECISIONS.md.)
+# Pattern: any *.local.md is treated as private by convention. The split
+# follows Claude Code's own convention — it reads both CLAUDE.md and
+# CLAUDE.local.md when present, so the operator keeps full context on
+# their machine while public viewers see only README.md + the operational
+# docs under docs/.
+*.local.md
+
+
