@@ -20,16 +20,40 @@ test.describe('/resources page', () => {
     await expect(page.getByRole('link', { name: /get readiness score/i }).first()).toBeVisible();
   });
 
+  test('every starter kit card exposes a ZIP download link to a valid path', async ({ page }) => {
+    await page.goto('/resources');
+    const expected = [
+      { id: 'governance', zip: '/downloads/governance-starter-kit.zip' },
+      { id: 'frontline', zip: '/downloads/frontline-enablement-kit.zip' },
+      { id: 'marketing', zip: '/downloads/marketing-review-kit.zip' },
+      { id: 'lending', zip: '/downloads/lending-review-kit.zip' },
+    ];
+    for (const { id, zip } of expected) {
+      const card = page.locator(`[data-kit-id="${id}"]`);
+      await expect(card).toBeVisible();
+      const zipLink = card.locator(`a[href="${zip}"]`);
+      await expect(zipLink, `kit ${id} ZIP link`).toBeVisible();
+    }
+  });
+
+  test('featured-kit panel ZIP CTA updates when selection changes', async ({ page }) => {
+    await page.goto('/resources');
+    const featured = page.getByTestId('featured-kit');
+    // Default selection is governance.
+    await expect(featured.locator('a[href="/downloads/governance-starter-kit.zip"]')).toBeVisible();
+
+    // Select Lending Review Kit and confirm the CTA flips.
+    await page.locator('[data-kit-id="lending"] .rx-kit-card-body').click();
+    await expect(featured.locator('a[href="/downloads/lending-review-kit.zip"]')).toBeVisible();
+  });
+
   test('starter-kit chooser updates the recommended-kit panel', async ({ page }) => {
     await page.goto('/resources');
     const featuredTitle = page.getByTestId('featured-kit-title');
     await expect(featuredTitle).toHaveText(/AI Governance Starter Kit/i);
 
     // Click a second kit card and confirm the featured panel updates.
-    await page
-      .getByRole('button', { name: /Lending Review Kit/i, exact: false })
-      .first()
-      .click();
+    await page.locator('[data-kit-id="lending"] .rx-kit-card-body').click();
     await expect(featuredTitle).toHaveText(/Lending Review Kit/i);
 
     // The featured panel should now list the lending playbook artifact.

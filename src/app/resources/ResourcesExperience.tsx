@@ -235,8 +235,8 @@ function FeaturedKit({
               </li>
             ))}
           </ul>
-          <Button variant="ink" href={`#starter-kits`} className="rx-featured-cta">
-            Open starter kit <ArrowRight size={16} />
+          <Button variant="ink" href={selectedKit.zip} className="rx-featured-cta">
+            Download kit ZIP · {selectedKit.zipSize} <Download size={16} />
           </Button>
         </div>
       </div>
@@ -313,20 +313,29 @@ function StarterKitCard({
 }) {
   const Icon = kit.icon;
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={selected}
+    <article
       className={`rx-kit-card${selected ? ' rx-kit-card-active' : ''}`}
+      data-kit-id={kit.id}
     >
-      <div className="rx-kit-card-head">
-        <Icon size={28} className="rx-kit-icon" />
-        <span className="rx-pill">Kit</span>
-      </div>
-      <h3 className="rx-kit-title">{kit.title}</h3>
-      <p className="rx-kit-desc">{kit.desc}</p>
-      <p className="rx-kit-audience">{kit.audience}</p>
-    </button>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={selected}
+        aria-label={`Preview ${kit.title} in the featured panel`}
+        className="rx-kit-card-body"
+      >
+        <div className="rx-kit-card-head">
+          <Icon size={28} className="rx-kit-icon" />
+          <span className="rx-pill">Kit</span>
+        </div>
+        <h3 className="rx-kit-title">{kit.title}</h3>
+        <p className="rx-kit-desc">{kit.desc}</p>
+        <p className="rx-kit-audience">{kit.audience}</p>
+      </button>
+      <a className="rx-kit-card-zip" href={kit.zip}>
+        Download kit ZIP · {kit.zipSize} <Download size={14} />
+      </a>
+    </article>
   );
 }
 

@@ -29,6 +29,11 @@ export interface StarterKit {
   desc: string;
   audience: string;
   items: { label: string; href: string }[];
+  /** Downloadable ZIP bundle of every artifact in the kit + a START-HERE.pdf
+   * and README.md. Source files live in public/downloads/. */
+  zip: string;
+  /** Approximate uncompressed size shown next to the download CTA. */
+  zipSize: string;
   icon: IconType;
 }
 
@@ -44,6 +49,8 @@ export const starterKits: StarterKit[] = [
       { label: 'AI Use-Case Inventory', href: '/artifacts/ai-use-case-inventory.md' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
+    zip: '/downloads/governance-starter-kit.zip',
+    zipSize: '459 KB',
     icon: ShieldCheck,
   },
   {
@@ -57,6 +64,8 @@ export const starterKits: StarterKit[] = [
       { label: 'Prompt Strategy Cheat Sheet', href: '/downloads/prompt-strategy-cheat-sheet.pdf' },
       { label: 'Data Handling Reference Card', href: '/artifacts/data-handling-reference-card.md' },
     ],
+    zip: '/downloads/frontline-enablement-kit.zip',
+    zipSize: '695 KB',
     icon: Users,
   },
   {
@@ -70,6 +79,8 @@ export const starterKits: StarterKit[] = [
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
       { label: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter' },
     ],
+    zip: '/downloads/marketing-review-kit.zip',
+    zipSize: '563 KB',
     icon: Megaphone,
   },
   {
@@ -83,6 +94,8 @@ export const starterKits: StarterKit[] = [
       { label: 'AI Use-Case Inventory', href: '/artifacts/ai-use-case-inventory.md' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
     ],
+    zip: '/downloads/lending-review-kit.zip',
+    zipSize: '308 KB',
     icon: FileText,
   },
 ];
@@ -280,7 +293,10 @@ export type ChooserTab = (typeof chooserTabs)[number];
 /** Used by Playwright to enumerate every downloadable href on the page. */
 export function allDownloadHrefs(): string[] {
   const hrefs = new Set<string>();
-  starterKits.forEach((k) => k.items.forEach((i) => hrefs.add(i.href)));
+  starterKits.forEach((k) => {
+    k.items.forEach((i) => hrefs.add(i.href));
+    hrefs.add(k.zip);
+  });
   rolePlaybooks.forEach((r) => hrefs.add(r.pdf));
   problemPaths.forEach((p) => hrefs.add(p.href));
   templates.forEach((t) => {

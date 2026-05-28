@@ -352,3 +352,22 @@
 .sop-scope .sop-guide-item p {
   font-size: .875rem; line-height: 1.5; color: var(--slate-600); margin-top: .5rem;
 }
+
+/* Kit card split: button body (selects + previews) + zip download footer */
+.mockup-scope .rx-kit-card { padding: 0; cursor: default; }
+.mockup-scope .rx-kit-card-body {
+  width: 100%; background: transparent; border: 0; cursor: pointer;
+  text-align: left; padding: 1.5rem 1.5rem 1.25rem; color: inherit;
+  font-family: inherit;
+}
+.mockup-scope .rx-kit-card-zip {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  margin: 0 1.5rem 1.5rem;
+  padding: .75rem 1rem;
+  background: var(--cream);
+  border-radius: .75rem;
+  font-size: .8125rem; font-weight: 600; color: var(--ink);
+  text-decoration: none;
+  transition: background .15s ease;
+}
+.mockup-scope .rx-kit-card-zip:hover { background: var(--cream-2); }
