@@ -22,6 +22,10 @@ interface EmailGateProps {
           Lets the post-capture surface show a soft nudge to re-submit with
           a work email. See #189 + 2026-05-18 product call. */
       readonly usedFreeEmail?: boolean;
+      /** One-click magic-link URL into /dashboard. Null when Supabase isn't
+          configured locally or when link generation failed — the report
+          still renders, just without the dashboard CTA. #303. */
+      readonly magicLinkUrl?: string | null;
     },
   ) => void;
 }
@@ -129,6 +133,7 @@ export function EmailGate({
         error?: string;
         profileId?: string | null;
         mailerliteTagAdded?: boolean;
+        magicLinkUrl?: string | null;
       };
       if (!res.ok) {
         throw new Error(data.error ?? 'Something went wrong. Please try again.');
@@ -148,6 +153,7 @@ export function EmailGate({
         institutionName: institutionName.trim() || undefined,
         profileId: data.profileId ?? null,
         usedFreeEmail: isFreeEmailDomain(emailToUse),
+        magicLinkUrl: data.magicLinkUrl ?? null,
       });
     } catch (err) {
       setStatus('error');

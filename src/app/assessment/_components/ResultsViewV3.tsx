@@ -37,6 +37,10 @@ interface ResultsViewV3Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
+  /** One-click magic-link URL into /dashboard. Null when Supabase isn't
+      configured or link generation failed — the AccountReady panel renders
+      a "check your inbox" message instead of an active button. #303. */
+  readonly magicLinkUrl?: string | null;
 }
 
 interface RankedDimension {
@@ -83,6 +87,7 @@ export function ResultsViewV3({
   firstName,
   institutionName,
   profileId,
+  magicLinkUrl,
 }: ResultsViewV3Props) {
   const subjectName = institutionName?.trim() || 'Your institution';
   const grouped = groupDimensions(dimensionBreakdown);
@@ -118,6 +123,8 @@ export function ResultsViewV3({
           A 5-minute read
         </p>
       </header>
+
+      <AccountReadyPanel email={email} magicLinkUrl={magicLinkUrl ?? null} />
 
       <SectionAnchor id="section-1" />
       <ResultsDashboardV3
@@ -587,5 +594,59 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
         </ul>
       </div>
     </article>
+  );
+}
+
+// AccountReadyPanel — closes the "what just happened" loop. The API
+// silently provisioned a Supabase Auth user for this email; without a
+// surfacing prompt, the visitor has no way to discover their dashboard.
+// When a magic link is available, the button is one-click. When the link
+// failed to generate (Supabase down, generateLink error), we still tell
+// them the account exists and point them at /auth/login. #303.
+function AccountReadyPanel({
+  email,
+  magicLinkUrl,
+}: {
+  readonly email: string;
+  readonly magicLinkUrl: string | null;
+}) {
+  return (
+    <aside
+      aria-label="Your account is ready"
+      className="mb-14 rounded-[3px] border border-[color:var(--color-ink)]/15 bg-[color:var(--color-parch)] p-6 md:p-8"
+    >
+      <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--color-terra)] mb-3">
+        Your account is ready
+      </p>
+      <p className="font-serif text-xl md:text-2xl leading-snug text-[color:var(--color-ink)] mb-2">
+        We&rsquo;ve saved this briefing to your dashboard.
+      </p>
+      <p className="text-[15px] leading-relaxed text-[color:var(--color-ink)]/75 mb-5">
+        Come back any time to retake the assessment, see how your readiness
+        shifts over a quarter, and keep the saved prompts in your Toolbox.
+        We also sent a copy of this briefing to <strong>{email}</strong>.
+      </p>
+      {magicLinkUrl ? (
+        <a
+          href={magicLinkUrl}
+          style={{ color: 'var(--color-linen, #FFFFFF)' }}
+          className="inline-flex items-center gap-2 rounded-[3px] bg-[color:var(--color-ink)] px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.12em] no-underline transition-colors hover:bg-[color:var(--color-ink)]/85"
+        >
+          View your dashboard
+          <span aria-hidden>→</span>
+        </a>
+      ) : (
+        <p className="text-[13px] text-[color:var(--color-ink)]/70">
+          Check your inbox for a one-click sign-in link, or visit{' '}
+          <a
+            href="/auth/login?next=/dashboard"
+            className="underline decoration-[color:var(--color-ink)]/40 underline-offset-2 hover:decoration-[color:var(--color-ink)]"
+          >
+            /auth/login
+          </a>{' '}
+          to access your dashboard.
+        </p>
+      )}
+    </aside>
   );
 }
