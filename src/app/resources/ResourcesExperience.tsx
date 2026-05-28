@@ -370,9 +370,16 @@ function TemplateCard({ template }: { template: TemplateData }) {
           <span key={item} className="rx-chip">{item}</span>
         ))}
       </div>
-      <Button variant="ghost-light" href={template.href}>
-        Copy template <Download size={16} />
-      </Button>
+      <div className="rx-pb-actions">
+        <Button variant="ink" href={template.href}>
+          Open
+        </Button>
+        {template.pdf && (
+          <Button variant="ghost-light" href={template.pdf}>
+            PDF <Download size={16} />
+          </Button>
+        )}
+      </div>
     </article>
   );
 }
