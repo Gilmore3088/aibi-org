@@ -22,6 +22,7 @@ import React from 'react';
 import type { DocumentProps } from '@react-pdf/renderer';
 import { renderToBuffer } from '@react-pdf/renderer';
 import { CertificateDocument } from '@/lib/pdf/CertificateDocument';
+import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -300,6 +301,17 @@ export async function GET(request: Request): Promise<Response> {
   const authResult = await authenticate();
   if (authResult.error) return authResult.error;
   const { userId } = authResult;
+
+  // Per-user rate limit on PDF download — 20/hour covers any legit
+  // re-download cadence while capping PDF-render cost if a session leaks.
+  const limited = await rateLimitOrFail({
+    key: 'cert-download',
+    scope: 'user',
+    identifier: userId,
+    max: 20,
+    windowSeconds: 3600,
+  });
+  if (limited) return limited;
 
   const serviceClient = createServiceRoleClient();
 
