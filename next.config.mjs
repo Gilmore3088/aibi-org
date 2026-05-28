@@ -88,9 +88,15 @@ const nextConfig = {
       // 2026-05-28: /resources is now the canonical Artifact Library
       // (playbooks, checklists, templates, prompt cards). The exact-match
       // redirect to /research was removed so the new src/app/resources/
-      // page renders. Legacy article slugs still live at /research/<slug>,
-      // so the sub-path redirect is preserved for inbound links.
-      { source: '/resources/:slug+', destination: '/research/:slug+', permanent: true },
+      // page renders. The sub-path redirect must NOT be a catch-all
+      // (would shadow /resources/templates/*); constrain it to the six
+      // legacy article slugs that were moved into /research/<slug>.
+      {
+        source:
+          '/resources/:slug(the-widening-ai-gap|members-will-switch|six-ways-ai-fails-in-banking|ai-governance-without-the-jargon|the-skill-not-the-prompt|what-your-efficiency-ratio-is-hiding)',
+        destination: '/research/:slug',
+        permanent: true,
+      },
       // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
       // redirects to /courses/foundation/program. permanent: true emits HTTP
       // 308 (method-preserving, cacheable, search-engine-friendly). Keep
