@@ -96,7 +96,7 @@ export default function HomePage() {
                 Get my AI readiness score <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses">
-                See what learners build
+                Start learning
               </Button>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function HomePage() {
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
           { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },
-          { label: 'See what learners build', href: '/courses/foundation', variant: 'ghost-dark' },
+          { label: 'Start learning', href: '/courses/foundation', variant: 'ghost-dark' },
         ]}
       />
 
