@@ -538,11 +538,12 @@ export default function AssessmentLandingPage() {
 
       {/* CTA */}
       <CtaBand
-        heading={<>You can't fix what you can't see.</>}
-        body={<>Start with the free baseline. Upgrade only when you need the deeper report.</>}
+        kicker="Already know your baseline?"
+        heading={<>The $99 report tells you what to do next.</>}
+        body={<>The free assessment shows where you stand. The In-Depth Report gives you the role-specific action plan and a reviewer-ready PDF to bring to leadership.</>}
         actions={[
-          { label: 'Start free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'See in-depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
+          { label: 'Get the in-depth report', href: '/assessment/in-depth', variant: 'gold' },
+          { label: 'Start free first', href: '/assessment/take', variant: 'ghost-dark' },
         ]}
       />
     </div>

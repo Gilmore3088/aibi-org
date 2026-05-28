@@ -456,17 +456,17 @@ export default function ForInstitutionsPage() {
       </Section>
 
       <CtaBand
-        kicker="Institutions & Teams"
-        heading={<>Train the people who already run the bank.</>}
+        kicker="Start with the assessment"
+        heading={<>Your baseline costs nothing. Your rollout plan starts there.</>}
         body={
           <>
-            The institutions that win with AI aren't the ones with the slickest policy doc.
-            They're the ones whose staff can actually use it.
+            Run your team through the free readiness check first — then bring the department
+            breakdown to your Executive Briefing.
           </>
         }
         actions={[
-          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'See pricing', href: '/courses', variant: 'ghost-dark' },
+          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
       />
     </div>

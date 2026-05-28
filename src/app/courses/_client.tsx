@@ -290,11 +290,12 @@ export default function CoursesIndexPage() {
 
       {/* FINAL CTA */}
       <CtaBand
-        kicker="Ready to build?"
-        heading={<>Build your first reviewed AI workflow.</>}
+        kicker="Not sure yet?"
+        heading={<>See what a finished artifact looks like before you commit.</>}
+        body={<>The gallery shows real completion work from the course — the exact kind of reviewed artifact you'd take to your next team meeting.</>}
         actions={[
-          { label: 'Enroll in AiBI-Foundation', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'See the artifact gallery', href: '/courses/foundation/gallery', variant: 'ghost-dark' },
+          { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
+          { label: 'Enroll · $295', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
         ]}
       />
     </div>

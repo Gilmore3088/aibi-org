@@ -130,8 +130,7 @@ export default function ResourcesHubPage() {
             <h1>Practical artifacts for community banks and credit unions.</h1>
             <p className="mk-lede">
               Role playbooks, cheatsheets, reference cards, and starter templates.
-              Every artifact is sourced and adaptable &mdash; bring it to your committee,
-              your auditor, and your examiner before adoption.
+              Every artifact is sourced, named, and adaptable.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#playbooks">
