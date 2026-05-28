@@ -1,16 +1,26 @@
 'use server';
 
 // Server actions for auth flows. Keep these here so client components
-// can call signOut / sendMagicLink without importing the Supabase browser
-// client — otherwise the SDK (+ Web3 auth providers) gets bundled into
-// every page that mounts a client component referencing those helpers.
+// can call signOut / sendPasswordSetupAction without importing the Supabase
+// browser client — otherwise the SDK gets bundled into every page that
+// mounts a client component referencing those helpers.
 
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
 import { sanitizeNext } from '@/lib/supabase/auth';
 
-export async function sendMagicLinkAction(
+/**
+ * Send a "set your password" email — the post-assessment account-completion
+ * flow. Internally this is a Supabase recovery email; we frame it as
+ * "set your password" because the caller is typically a brand-new soft
+ * account created by /api/capture-email's ensureAuthUser. Replaces the
+ * prior sendMagicLinkAction (#187, magic-link retirement 2026-05-28).
+ *
+ * Works for legacy magic-link users too — resetPasswordForEmail does not
+ * care whether a password was set previously.
+ */
+export async function sendPasswordSetupAction(
   email: string,
   redirectTo?: string,
 ): Promise<{ error: string | null }> {
@@ -24,11 +34,12 @@ export async function sendMagicLinkAction(
   const next = sanitizeNext(redirectTo);
   const cookieStore = await cookies();
   const supabase = createServerClientWithCookies(cookieStore);
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
-    },
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    // Recovery callback runs through /auth/callback, which detects
+    // type=recovery and routes the verified user to /auth/reset-password.
+    // The next param is preserved through the recovery handshake so the
+    // user lands on the page they were trying to reach.
+    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
   });
   return { error: error?.message ?? null };
 }

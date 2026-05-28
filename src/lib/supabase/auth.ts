@@ -81,28 +81,12 @@ export async function signIn(email: string, password: string): Promise<AuthResul
   return { error: error?.message ?? null };
 }
 
-/**
- * Send a one-time magic link to the given email.
- * The link redirects to /auth/callback which exchanges it for a session.
- */
-export async function signInWithMagicLink(
-  email: string,
-  redirectTo?: string,
-): Promise<AuthResult> {
-  if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured. Set Supabase environment variables.' };
-  }
-  const origin =
-    typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
-  const next = sanitizeNext(redirectTo);
-  const { error } = await client().auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
-    },
-  });
-  return { error: error?.message ?? null };
-}
+// signInWithMagicLink removed 2026-05-28 (#187). Magic-link auth is
+// a B2C pattern misaligned with the community-bank audience and gets
+// routinely held by corporate email security gateways. Sign-in is
+// password-only; the post-assessment "complete your account" flow
+// uses resetPasswordForEmail framed as "Set your password" (see
+// sendPasswordSetupAction in src/app/auth/actions.ts).
 
 /**
  * Sign out the current user and clear the session cookie.
