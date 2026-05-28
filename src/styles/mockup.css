@@ -913,26 +913,35 @@ section.mk-std { padding: 56px 0; }
 /* Tier grid (Free / $99 / Institutional) */
 .mk-tier-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
 @media (min-width: 860px) { .mk-tier-grid { grid-template-columns: repeat(3, 1fr); } }
-/* Mobile: convert to horizontal swipe rail so 3 large tier cards don't
-   stack to ~1500px on a phone. The featured ($99) card scrolls in first
-   since it's the headline upgrade path. Audit 2026-05-28. */
+/* Mobile (audit 2026-05-28 final iteration): collapse to ONE card — the
+   free Snapshot. Upgrade tiers demote to chip links rendered by the
+   .mk-tier-mobile-chips block below. Removes ~1000px of stack and makes
+   the free path the unambiguous primary. */
+.mk-tier-mobile-chips {
+  display: none;
+}
 @media (max-width: 639px) {
-  .mk-tier-grid {
+  .mk-tier-grid > .mk-tier:not(:first-child) { display: none; }
+  .mk-tier-mobile-chips {
     display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 12px;
-    padding-bottom: 12px;
-    scrollbar-width: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
   }
-  .mk-tier-grid::-webkit-scrollbar { display: none; }
-  .mk-tier-grid > .mk-tier {
-    flex: 0 0 82vw;
-    max-width: 340px;
-    scroll-snap-align: start;
+  .mk-tier-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--cream);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--r-xl);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
   }
+  .mk-tier-chip:hover { background: var(--cream-2); }
 }
 .mk-tier {
   background: #fff; border: 1px solid var(--ink-a10);

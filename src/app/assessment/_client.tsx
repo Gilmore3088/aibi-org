@@ -318,6 +318,18 @@ export default function AssessmentLandingPage() {
             variant="ink"
           />
         </div>
+        {/* Mobile-only chip links — see CSS rule for .mk-tier-mobile-chips.
+            Audit 2026-05-28 prescription: collapse to ONE card on mobile,
+            demote upgrade tiers to chip links so the free option is the
+            unambiguous primary path. */}
+        <div className="mk-tier-mobile-chips">
+          <a href="/assessment/in-depth" className="mk-tier-chip">
+            or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="/for-institutions" className="mk-tier-chip">
+            for institutions: team view <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
       </Section>
 
       {/* ── 12 SIGNALS (FREE) ───────────────────────────────────── */}
