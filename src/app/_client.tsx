@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 import {
   SiteHeader,
   Section,
@@ -11,6 +11,7 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
+import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -97,7 +98,7 @@ export default function HomePage() {
             </EyebrowChip>
             <h1>AI training that becomes real banking work.</h1>
             <p className="mk-lede">
-              Assess readiness, train by role, practice safely, and build reusable prompts, skills, SOPs, and review checklists.
+              Score your readiness. Train by role. Build workflows your team reuses.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
@@ -131,13 +132,21 @@ export default function HomePage() {
         </div>
       </Section>
 
+      <PriceStrip />
+
       <Section variant="std">
         <SectionHead
           kicker="Impact"
           heading={<>What could one hour saved per employee be worth?</>}
-          lede={<>Adjust the inputs to see annual value. Conservative — assumes one hour saved each week, fully-loaded labor cost, 50 working weeks.</>}
+          lede={<>Adjust team size, cost, and the low/high range of hours automatable per week. See annual value, hours recaptured, and payroll percentage.</>}
         />
-        <ImpactCalculator />
+        <div className="mk-roi-wrap">
+          <ROICalculatorBody
+            ctaLabel="Take the Assessment"
+            ctaHref="/assessment/take"
+            briefingSource="home"
+          />
+        </div>
       </Section>
 
       <CtaBand
@@ -182,46 +191,24 @@ function HeroReportCard() {
   );
 }
 
-function ImpactCalculator() {
-  const [fte, setFte] = useState<number>(50);
-  const [hourly, setHourly] = useState<number>(45);
-  const annual = Math.round(fte * 1 * hourly * 50);
-  const formatted = annual.toLocaleString('en-US');
+const PRICE_TIERS: { label: string; price: string; note: string }[] = [
+  { label: 'Readiness baseline', price: 'Free', note: '12 questions, 3 minutes' },
+  { label: 'In-Depth Report', price: '$99', note: '48-question deep dive' },
+  { label: 'AiBI-Foundation Course', price: '$295', note: 'Full curriculum + certificate' },
+  { label: 'Institutional pricing', price: 'Custom', note: 'Team seats, on request' },
+];
 
+function PriceStrip() {
   return (
-    <div className="mk-impact">
-      <div className="mk-impact-inputs">
-        <label className="mk-impact-field">
-          <span className="mk-k">Team size (FTE)</span>
-          <input
-            type="number"
-            min={1}
-            max={5000}
-            value={fte}
-            onChange={(e) => setFte(Math.max(1, Number(e.target.value) || 0))}
-            className="mk-impact-input"
-            aria-label="Team size in full-time equivalents"
-          />
-        </label>
-        <label className="mk-impact-field">
-          <span className="mk-k">Fully-loaded hourly cost ($)</span>
-          <input
-            type="number"
-            min={1}
-            max={500}
-            value={hourly}
-            onChange={(e) => setHourly(Math.max(1, Number(e.target.value) || 0))}
-            className="mk-impact-input"
-            aria-label="Fully-loaded hourly cost in dollars"
-          />
-        </label>
-      </div>
-      <div className="mk-impact-result">
-        <div className="mk-k">Annual value at one hour saved per week</div>
-        <div className="mk-impact-v">${formatted}</div>
-        <div className="mk-impact-meta">
-          {fte} FTE × 1 hour × ${hourly}/hr × 50 weeks
-        </div>
+    <div className="mk-price-strip">
+      <div className="mk-container">
+        {PRICE_TIERS.map(({ label, price, note }) => (
+          <div key={label} className="mk-price-tile">
+            <span className="mk-price-amount">{price}</span>
+            <span className="mk-price-label">{label}</span>
+            <span className="mk-price-note">{note}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

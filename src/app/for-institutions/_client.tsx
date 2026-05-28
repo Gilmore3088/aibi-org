@@ -93,8 +93,8 @@ export default function ForInstitutionsPage() {
               <Button variant="gold" size="lg" href="/for-institutions/advisory">
                 Book a briefing <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                See pricing
+              <Button variant="ghost-dark" size="lg" href="#engagement">
+                See enrollment options
               </Button>
             </div>
           </div>
@@ -321,11 +321,11 @@ export default function ForInstitutionsPage() {
         />
         <div className="mk-chain">
           {[
-            { icon: TargetIcon, num: '01 · Assess', h: 'Where you are', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
-            { icon: LayersIcon, num: '02 · Train', h: 'Where you should go', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
-            { icon: FileIcon, num: '03 · Document', h: "What you've done", p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
-            { icon: LockIcon, num: '04 · Govern', h: 'How you stay safe', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
-            { icon: NetworkIcon, num: '05 · Consult', h: "What's next", p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+            { icon: TargetIcon, num: '01 · Assess', h: 'Baseline your readiness', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
+            { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
+            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: LockIcon, num: '04 · Govern', h: 'Establish approval and data rules', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
+            { icon: NetworkIcon, num: '05 · Consult', h: 'Engage ongoing advisory', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
           ].map(({ icon: Icon, num, h, p }) => (
             <div key={num} className="mk-step">
               <span className="mk-pic">
@@ -399,8 +399,18 @@ export default function ForInstitutionsPage() {
 
 
       {/* PRICING / ADVISORY */}
-      <Section variant="std" surface="white">
-        <SectionHead kicker="How to engage" heading={<>Two ways to work with us.</>} />
+      <Section id="engagement" variant="std" surface="white">
+        <SectionHead
+          kicker="How to engage"
+          heading={<>Enrollment &amp; advisory.</>}
+          lede={
+            <>
+              Self-serve seat blocks for institutions buying in volume, and a hands-on Leadership
+              Advisory for institutions running a coached cohort. Organizational Rollout pricing is
+              discussed in your Executive Briefing.
+            </>
+          }
+        />
         <div className="mk-contact-grid">
           <div className="mk-ccard">
             <div className="mk-lab">Self-serve</div>
@@ -419,7 +429,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
             <Button variant="ink" size="lg" href="/for-institutions/advisory">
-              Get a Quote <ArrowR className="mk-ic" />
+              Get seat pricing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
@@ -446,17 +456,17 @@ export default function ForInstitutionsPage() {
       </Section>
 
       <CtaBand
-        kicker="Institutions & Teams"
-        heading={<>Train the people who already run the bank.</>}
+        kicker="Start with the assessment"
+        heading={<>Your baseline costs nothing. Your rollout plan starts there.</>}
         body={
           <>
-            The institutions that win with AI aren't the ones with the slickest policy doc.
-            They're the ones whose staff can actually use it.
+            Run your team through the free readiness check first — then bring the department
+            breakdown to your Executive Briefing.
           </>
         }
         actions={[
-          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'gold' },
-          { label: 'See pricing', href: '/courses', variant: 'ghost-dark' },
+          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
+          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
         ]}
       />
     </div>

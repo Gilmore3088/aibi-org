@@ -10,7 +10,7 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Assessment', href: '/assessment' },
   { label: 'Course', href: '/courses' },
   { label: 'Resources', href: '/research' },
-  { label: 'Teams', href: '/for-institutions' },
+  { label: 'Institutions', href: '/for-institutions' },
 ];
 
 export interface SiteHeaderProps {
