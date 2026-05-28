@@ -16,21 +16,19 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Institutions', href: '/for-institutions' },
 ];
 
-// Mobile primary nav — 4 buttons + a "More" overflow. Labels shortened
-// ("Assessment" → "Assess") so all five mobile slots fit on a 360px phone
-// without horizontal scroll. Institutions moves to MORE_MOBILE_NAV below.
+// Mobile primary nav — 3 core buttons + a "More" overflow. Labels shortened
+// ("Assessment" → "Assess") so the four mobile cells breathe at narrow
+// widths. Resources + Institutions live in the More panel. About + Security
+// + FAQ live in the footer, not nav (2026-05-28 user direction).
 const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assess', href: '/assessment' },
   { label: 'Course', href: '/courses' },
-  { label: 'Resources', href: '/research' },
 ];
 
-// Mobile More panel — secondary routes. FAQ lives in the footer, not nav.
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
+  { label: 'Resources', href: '/research', helper: 'Research, templates, downloads' },
   { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
-  { label: 'About', href: '/about', helper: 'Why the Institute exists' },
-  { label: 'Security', href: '/security', helper: 'Safe AI use and governance' },
 ];
 
 export interface SiteHeaderProps {
