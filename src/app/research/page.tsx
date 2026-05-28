@@ -16,8 +16,14 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
+import { DownloadGate } from '@/components/research/DownloadGate';
 import { PLAYBOOK_INDEX } from '@/app/playbooks/data';
 import { TEMPLATES } from './templates/data';
+
+/** Derive a short slug from a download href, e.g. "/downloads/foo.pdf" → "foo". */
+function slugFromHref(href: string): string {
+  return href.split('/').pop()?.replace(/\.[^.]+$/, '') ?? href;
+}
 
 export const metadata: Metadata = {
   alternates: { canonical: '/research' },
@@ -130,8 +136,7 @@ export default function ResourcesHubPage() {
             <h1>Practical artifacts for community banks and credit unions.</h1>
             <p className="mk-lede">
               Role playbooks, cheatsheets, reference cards, and starter templates.
-              Every artifact is sourced and adaptable &mdash; bring it to your committee,
-              your auditor, and your examiner before adoption.
+              Every artifact is sourced, named, and adaptable.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#playbooks">
@@ -186,27 +191,24 @@ export default function ResourcesHubPage() {
           heading={<>One-page references your staff can keep on their desk.</>}
           lede={
             <>
-              Free downloads. No email gate. Each one names a section your
-              institution should change before adopting.
+              Free downloads. Enter your work email to receive the file.
+              Each one names a section your institution should adapt before adopting.
             </>
           }
         />
         <div className="mk-resources-grid mk-resources-3up">
           {REFERENCE_CARDS.map((d) => (
-            <a
-              key={d.href}
-              href={d.href}
-              download
-              className="mk-resource-card"
-            >
+            <div key={d.href} className="mk-resource-card">
               <div className="mk-resource-tag">PDF</div>
               <h3>{d.title}</h3>
               <p>{d.desc}</p>
-              <div className="mk-resource-foot">
-                <span>{d.meta}</span>
-                <span>Download &rarr;</span>
-              </div>
-            </a>
+              <DownloadGate
+                title={d.title}
+                downloadHref={d.href}
+                slug={slugFromHref(d.href)}
+                meta={d.meta}
+              />
+            </div>
           ))}
         </div>
       </Section>
@@ -225,20 +227,17 @@ export default function ResourcesHubPage() {
         />
         <div className="mk-resources-grid mk-resources-3up">
           {NEW_ARTIFACTS.map((d) => (
-            <a
-              key={d.href}
-              href={d.href}
-              download
-              className="mk-resource-card"
-            >
+            <div key={d.href} className="mk-resource-card">
               <div className="mk-resource-tag">Markdown</div>
               <h3>{d.title}</h3>
               <p>{d.desc}</p>
-              <div className="mk-resource-foot">
-                <span>{d.meta}</span>
-                <span>Download &rarr;</span>
-              </div>
-            </a>
+              <DownloadGate
+                title={d.title}
+                downloadHref={d.href}
+                slug={slugFromHref(d.href)}
+                meta={d.meta}
+              />
+            </div>
           ))}
         </div>
       </Section>
@@ -282,20 +281,17 @@ export default function ResourcesHubPage() {
         />
         <div className="mk-resources-grid mk-resources-2up">
           {SAMPLES.map((d) => (
-            <a
-              key={d.href}
-              href={d.href}
-              download
-              className="mk-resource-card"
-            >
+            <div key={d.href} className="mk-resource-card">
               <div className="mk-resource-tag">PDF</div>
               <h3>{d.title}</h3>
               <p>{d.desc}</p>
-              <div className="mk-resource-foot">
-                <span>{d.meta}</span>
-                <span>Download &rarr;</span>
-              </div>
-            </a>
+              <DownloadGate
+                title={d.title}
+                downloadHref={d.href}
+                slug={slugFromHref(d.href)}
+                meta={d.meta}
+              />
+            </div>
           ))}
         </div>
       </Section>

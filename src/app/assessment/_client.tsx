@@ -50,7 +50,7 @@ const CheckIcon = (p: IconProps) => (
   </svg>
 );
 
-// Dimension icons (8)
+// Dimension icons (12)
 const ShieldIcon = (p: IconProps) => <svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>;
 const ScreenIcon = (p: IconProps) => <svg {...sw(p)}><rect x="2" y="6" width="20" height="12" rx="2" /></svg>;
 const AlertIcon = (p: IconProps) => (
@@ -89,8 +89,35 @@ const ChatIcon = (p: IconProps) => (
     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
   </svg>
 );
+const ScaleIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <line x1="12" y1="3" x2="12" y2="21" />
+    <path d="M5 3l7 3 7-3" />
+    <path d="M5 21l7-3 7 3" />
+    <path d="M3 9l9 3 9-3" />
+  </svg>
+);
+const EyeIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+const PackageIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <path d="M12 2l10 6.5v7L12 22 2 15.5v-7z" />
+    <line x1="12" y1="22" x2="12" y2="9" />
+    <path d="M7 4.5l5 3 5-3" />
+  </svg>
+);
+const RefreshIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <polyline points="1 4 1 10 7 10" />
+    <path d="M3.51 15a9 9 0 1 0 .49-4" />
+  </svg>
+);
 
-// ---------- Hero report data ----------
+// ---------- Hero report data (In-Depth $99 sample — 8 dims, /100) ----------
 
 const HERO_DIMS = [
   { name: 'Governance', level: 'High', pct: 72 },
@@ -103,76 +130,102 @@ const HERO_DIMS = [
   { name: 'Leadership', level: 'High', pct: 80 },
 ];
 
-// ---------- Mini quiz data ----------
+// ---------- Free v3 sample report widget (12 dims, /48) ----------
+
+// Three representative dimensions shown in the free-tier hero card preview.
+// Labels sourced directly from DIMENSION_LABELS in content/assessments/v3/types.ts.
+const FREE_HERO_DIMS: { name: string; pct: number }[] = [
+  { name: 'Strategic Value',    pct: 50 },
+  { name: 'Data Quality',       pct: 38 },
+  { name: 'Human-in-the-Loop',  pct: 56 },
+];
+
+// ---------- Mini quiz data — real v3 questions (4 of 12) ----------
+// Dimensions sourced from content/assessments/v3/questions.ts.
+// Shortened to ~10 words each for the demo card; full text lives in the real runner.
 
 type Answer = readonly [string, number];
 
 const QUIZ: { dim: string; q: string; answers: readonly Answer[] }[] = [
   {
-    dim: 'Governance',
-    q: 'Does your institution have a written AI use policy?',
+    dim: 'Strategic Value',
+    q: 'Have you tied AI initiatives to specific efficiency or revenue targets?',
     answers: [
-      ['No policy', 1],
-      ['Draft circulating', 2],
-      ['Approved, not adopted', 3],
-      ['Approved + actively followed', 4],
+      ['No use cases identified yet', 1],
+      ['Staff experimenting informally', 2],
+      ['Named high-friction processes scoped', 3],
+      ['Tied to named targets with owners', 4],
     ],
   },
   {
-    dim: 'Tool fluency',
-    q: 'How often do you use an AI tool in your weekly work?',
+    dim: 'Data Quality',
+    q: 'Can you pull clean, current customer data into a single view?',
     answers: [
-      ['Never', 1],
-      ['Once a month or less', 2],
-      ['A few times a week', 3],
-      ['Daily', 4],
+      ['Data lives in disconnected systems', 1],
+      ['Possible with effort; quality is inconsistent', 2],
+      ['Clean for core reporting; gaps elsewhere', 3],
+      ['Unified, verified data layer in place', 4],
     ],
   },
   {
-    dim: 'Risk awareness',
-    q: 'What goes into a model when you use one for work?',
+    dim: 'Human-in-the-Loop',
+    q: 'Have you defined which AI tasks need mandatory human review?',
     answers: [
-      ["Whatever I'm working on", 1],
-      ['I avoid obvious PII', 2],
-      ['I follow our data rule list', 3],
-      ['I check + log every input', 4],
+      ['Not defined — AI use is ad hoc', 1],
+      ['Staff use their own judgment', 2],
+      ['Written guidelines for high-risk tasks', 3],
+      ['Formal policy with oversight levels and logs', 4],
     ],
   },
   {
-    dim: 'Documentation',
-    q: 'Could you show an examiner how an AI-assisted task was done?',
+    dim: 'Vendor Risk',
+    q: 'Do you apply AI-specific criteria when evaluating third-party AI vendors?',
     answers: [
-      ['No', 1],
-      ['Maybe, if I dug', 2],
-      ['Yes — I keep notes', 3],
-      ['Yes — full audit trail', 4],
+      ['Treat AI vendors like any SaaS', 1],
+      ['Informal reviews; no documented process', 2],
+      ['Standard TPRM including data handling', 3],
+      ['AI-specific overlay: explainability, drift, integration', 4],
     ],
   },
 ];
 
+// The four dimensions covered by the demo questions above.
+// Remaining 8 dims show baseline scores so the panel feels populated.
 const ALL_DIMS = [
-  'Governance',
-  'Tool fluency',
-  'Risk awareness',
-  'Workflow fit',
-  'Data judgment',
-  'Documentation',
-  'Role readiness',
-  'Leadership',
+  'Strategic Value',
+  'Infrastructure Readiness',
+  'Data Quality',
+  'Security & Approved Tools',
+  'Runtime Safeguards',
+  'Regulatory Compliance',
+  'Fair Lending Testing',
+  'Human-in-the-Loop',
+  'Talent & Culture',
+  'Data Safety Reflexes',
+  'Continuous Validation',
+  'Vendor Risk',
 ] as const;
 type Dim = (typeof ALL_DIMS)[number];
 
+// Baseline scores for dims not covered by the demo questions.
+// Represent a plausible mid-range institution so the score panel
+// reads credibly from the first question onward.
 const BASELINE: Partial<Record<Dim, number>> = {
-  'Workflow fit': 2,
-  'Data judgment': 2,
-  'Role readiness': 2,
-  Leadership: 3,
+  'Infrastructure Readiness': 2,
+  'Security & Approved Tools': 2,
+  'Runtime Safeguards': 2,
+  'Regulatory Compliance': 2,
+  'Fair Lending Testing': 1,
+  'Talent & Culture': 2,
+  'Data Safety Reflexes': 2,
+  'Continuous Validation': 1,
 };
 
+// v3 tier thresholds (score range 12–48, matching content/assessments/v3/scoring.ts)
 function tierFor(score: number) {
-  if (score >= 80) return { label: 'Ready to Scale', cls: 'mk-t4' };
-  if (score >= 60) return { label: 'Building Momentum', cls: 'mk-t3' };
-  if (score >= 40) return { label: 'Early Stage', cls: 'mk-t2' };
+  if (score >= 41) return { label: 'Ready to Scale', cls: 'mk-t4' };
+  if (score >= 33) return { label: 'Building Momentum', cls: 'mk-t3' };
+  if (score >= 23) return { label: 'Early Stage', cls: 'mk-t2' };
   return { label: 'Starting Point', cls: 'mk-t1' };
 }
 
@@ -219,12 +272,14 @@ export default function AssessmentLandingPage() {
     return () => clearTimeout(t);
   }, [phase, qIdx, paused]);
 
+  // Sum all 12 dimension scores (answered + baseline) to produce the live /48 score.
+  // Each dimension is 1–4 pts; baseline fills in the 8 dims not covered by demo questions.
   function computeScore() {
     const all = ALL_DIMS.map((d) => dimScores[d] ?? BASELINE[d] ?? 0);
     const filled = all.filter((v) => v > 0);
     if (!filled.length) return null;
-    const avg = filled.reduce((a, b) => a + b, 0) / filled.length;
-    return Math.round((avg / 4) * 100);
+    const total = all.reduce((a, b) => a + b, 0);
+    return Math.min(48, Math.max(12, total));
   }
 
   const score = computeScore();
@@ -245,54 +300,92 @@ export default function AssessmentLandingPage() {
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<GaugeIcon className="mk-ic" />}>
-              In-Depth AI Maturity Assessment · $99
+              Free AI Readiness Assessment · 3 min
             </EyebrowChip>
-            <h1>Measure your AI maturity across 8 dimensions.</h1>
+            <h1>Know where your institution stands on AI.</h1>
             <p className="mk-lede">
-              Forty-eight questions, twenty minutes. Score, role-specific action plan, and a
-              reviewer-ready PDF report. Anonymized team rollup included.
+              Twelve questions, three minutes. Score across 12 readiness dimensions with a
+              tier rating and a starter artifact you can act on immediately.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment/in-depth">
-                Start maturity assessment <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="/assessment/take">
+                Start free assessment <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#mini-quiz">
-                See sample report
+                See how it works
               </Button>
             </div>
             <p className="mk-hero-foot">
-              Not ready?{' '}
-              <a href="/assessment/take" className="mk-hero-foot-link">
-                Take the free readiness assessment here
+              Need deeper analysis?{' '}
+              <a href="/assessment/in-depth" className="mk-hero-foot-link">
+                Get the $99 In-Depth Report
+              </a>
+              . Ready to build, not diagnose?{' '}
+              <a href="/courses" className="mk-hero-foot-link">
+                See the $295 AiBI-Foundation course
               </a>
               .
             </p>
           </div>
 
-          <div className="mk-hreport">
-            <div className="mk-hreport-left">
-              <div className="mk-k">Sample report</div>
-              <div className="mk-v">62</div>
-              <div className="mk-u">/ 100 readiness</div>
-              <div className="mk-tier">
-                <ZapIcon size={16} />
-                Building Momentum
+          {/* Hero cards column: free v3 on top, In-Depth $99 below */}
+          <div className="mk-hero-cards">
+            {/* Free v3 sample report card — 32/48, Building Momentum */}
+            <div className="mk-hreport">
+              <div className="mk-hreport-left">
+                <div className="mk-k">Free · Sample report</div>
+                <div className="mk-v">32</div>
+                <div className="mk-u">/ 48 readiness</div>
+                <div className="mk-tier">
+                  <ZapIcon size={16} />
+                  Building Momentum
+                </div>
+              </div>
+              <div className="mk-hreport-right">
+                <div className="mk-k">3 of 12 dimensions</div>
+                <div className="mk-hdims">
+                  {FREE_HERO_DIMS.map((d) => (
+                    <div key={d.name} className="mk-hdim">
+                      <div className="mk-row">
+                        <span className="mk-nm">{d.name}</span>
+                        <span className="mk-lv">{d.pct >= 75 ? 'High' : d.pct >= 50 ? 'Med' : 'Low'}</span>
+                      </div>
+                      <div className="mk-bar">
+                        <div className="mk-fill" style={{ width: `${d.pct}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="mk-hdim-note">+9 more dimensions in your full report</p>
               </div>
             </div>
-            <div className="mk-hreport-right">
-              <div className="mk-k">8 Dimensions</div>
-              <div className="mk-hdims">
-                {HERO_DIMS.map((d) => (
-                  <div key={d.name} className="mk-hdim">
-                    <div className="mk-row">
-                      <span className="mk-nm">{d.name}</span>
-                      <span className="mk-lv">{d.level}</span>
+
+            {/* In-Depth $99 sample report card — unchanged */}
+            <div className="mk-hreport mk-hreport-sm">
+              <div className="mk-hreport-left">
+                <div className="mk-k">$99 In-Depth · Sample</div>
+                <div className="mk-v">62</div>
+                <div className="mk-u">/ 100 readiness</div>
+                <div className="mk-tier">
+                  <ZapIcon size={16} />
+                  Building Momentum
+                </div>
+              </div>
+              <div className="mk-hreport-right">
+                <div className="mk-k">8 Dimensions</div>
+                <div className="mk-hdims">
+                  {HERO_DIMS.map((d) => (
+                    <div key={d.name} className="mk-hdim">
+                      <div className="mk-row">
+                        <span className="mk-nm">{d.name}</span>
+                        <span className="mk-lv">{d.level}</span>
+                      </div>
+                      <div className="mk-bar">
+                        <div className="mk-fill" style={{ width: `${d.pct}%` }} />
+                      </div>
                     </div>
-                    <div className="mk-bar">
-                      <div className="mk-fill" style={{ width: `${d.pct}%` }} />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -366,7 +459,7 @@ export default function AssessmentLandingPage() {
               <div className="mk-k">Live score</div>
               <div className="mk-qs-num">
                 <span className="mk-score">{score ?? '—'}</span>
-                <span className="mk-qs-of">/ 100</span>
+                <span className="mk-qs-of">/ 48</span>
               </div>
               <div className={`mk-qs-tier${tier ? ` ${tier.cls}` : ''}`}>
                 {tier ? tier.label : 'Answer to start'}
@@ -392,7 +485,7 @@ export default function AssessmentLandingPage() {
             </div>
             <div className="mk-qs-foot">
               <p>
-                The full free assessment scores all <strong>8 dimensions</strong> across{' '}
+                The full free assessment scores all <strong>12 dimensions</strong> across{' '}
                 <strong>12 questions</strong> in about three minutes.
               </p>
             </div>
@@ -471,22 +564,26 @@ export default function AssessmentLandingPage() {
         </div>
       </Section>
 
-      {/* 8 DIMENSIONS */}
+      {/* 12 DIMENSIONS */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="What we measure"
-          heading={<>Eight readiness dimensions.</>}
+          heading={<>Twelve readiness dimensions.</>}
         />
         <div className="mk-dims-grid mk-dims-compact">
           {[
-            { icon: ShieldIcon, title: 'Governance', desc: 'Policy and oversight' },
-            { icon: ScreenIcon, title: 'Tool fluency', desc: 'Practical AI use' },
-            { icon: AlertIcon, title: 'Risk awareness', desc: 'What can go wrong' },
-            { icon: CheckSquareIcon, title: 'Workflow fit', desc: 'Where AI belongs' },
-            { icon: DatabaseIcon, title: 'Data judgment', desc: 'What not to enter' },
-            { icon: FileIcon, title: 'Documentation', desc: 'What gets recorded' },
-            { icon: UsersIcon, title: 'Role readiness', desc: 'Job-specific use' },
-            { icon: ChatIcon, title: 'Leadership', desc: 'Sponsorship and budget' },
+            { icon: ShieldIcon,      title: 'Strategic Value',          desc: 'Business case and executive buy-in' },
+            { icon: ScreenIcon,      title: 'Infrastructure Readiness', desc: 'Tools and access in place' },
+            { icon: DatabaseIcon,    title: 'Data Quality',             desc: 'Clean, trusted data to act on' },
+            { icon: CheckSquareIcon, title: 'Security & Approved Tools',desc: 'Sanctioned tools and access controls' },
+            { icon: AlertIcon,       title: 'Runtime Safeguards',       desc: 'Guardrails on live outputs' },
+            { icon: ScaleIcon,       title: 'Regulatory Compliance',    desc: 'SR 11-7, TPRM, and fair lending alignment' },
+            { icon: EyeIcon,         title: 'Fair Lending Testing',     desc: 'Bias detection and Reg B controls' },
+            { icon: UsersIcon,       title: 'Human-in-the-Loop',        desc: 'Human review before consequential outputs' },
+            { icon: ChatIcon,        title: 'Talent & Culture',         desc: 'Skills, training, and adoption' },
+            { icon: FileIcon,        title: 'Data Safety Reflexes',     desc: 'What staff know not to enter' },
+            { icon: RefreshIcon,     title: 'Continuous Validation',    desc: 'Ongoing model monitoring' },
+            { icon: PackageIcon,     title: 'Vendor Risk',              desc: 'Third-party AI due diligence' },
           ].map(({ icon: Icon, title, desc }) => (
             <div key={title} className="mk-dcard">
               <span className="mk-pic">
@@ -501,11 +598,12 @@ export default function AssessmentLandingPage() {
 
       {/* CTA */}
       <CtaBand
-        heading={<>You can't fix what you can't see.</>}
-        body={<>Start with the free baseline. Upgrade only when you need the deeper report.</>}
+        kicker="Already know your baseline?"
+        heading={<>The $99 report tells you what to do next.</>}
+        body={<>The free assessment shows where you stand. The In-Depth Report gives you the role-specific action plan and a reviewer-ready PDF to bring to leadership.</>}
         actions={[
-          { label: 'Start free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'See in-depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
+          { label: 'Get the in-depth report', href: '/assessment/in-depth', variant: 'gold' },
+          { label: 'Start free first', href: '/assessment/take', variant: 'ghost-dark' },
         ]}
       />
     </div>

@@ -8,7 +8,7 @@ export const copilotGuide: ToolGuide = {
   platformId: 'copilot',
   platformLabel: 'Microsoft Copilot',
   platform: 'copilot',
-  colorVar: 'var(--ledger-accent-2)',
+  colorVar: 'var(--ink)',
   tagline:
     'AI embedded in the tools your institution already runs — Outlook, Teams, Word, Excel.',
   url: 'https://copilot.microsoft.com',

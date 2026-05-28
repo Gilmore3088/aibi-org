@@ -58,28 +58,28 @@ const FOUNDATION_SECTIONS = [
     label: 'Awareness',
     description:
       'Identifying AI opportunities and regulatory boundaries in community banking.',
-    colorVar: 'var(--ledger-accent)',
+    colorVar: 'var(--gold)',
   },
   {
     id: 'understanding',
     label: 'Understanding',
     description:
       'Platform mastery and safe-use guardrails — what you already have, how to activate it.',
-    colorVar: 'var(--ledger-accent-2)',
+    colorVar: 'var(--ink)',
   },
   {
     id: 'creation',
     label: 'Creation',
     description:
       'Building skills that make AI output institutional-grade.',
-    colorVar: 'var(--ledger-accent)',
+    colorVar: 'var(--gold)',
   },
   {
     id: 'application',
     label: 'Application',
     description:
       'Real-world automation and the assessed work product.',
-    colorVar: 'var(--ledger-accent-2)',
+    colorVar: 'var(--ink)',
   },
 ] as const;
 
@@ -92,7 +92,7 @@ export const foundationCourseConfig: CourseConfig = {
     name: 'AiBI-Foundation',
     shortCode: 'AiBI-Foundation',
     wordmark: 'AiBI Foundation',
-    accentColorVar: 'var(--ledger-accent)',
+    accentColorVar: 'var(--gold)',
   },
   terminology: {
     itemLabel: 'Module',

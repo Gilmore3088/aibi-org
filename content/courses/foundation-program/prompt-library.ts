@@ -100,12 +100,12 @@ export const PLATFORM_META: Record<
   PromptPlatform,
   { readonly label: string; readonly colorVar: string }
 > = {
-  chatgpt:    { label: 'ChatGPT',      colorVar: 'var(--color-sage)' },
-  claude:     { label: 'Claude',        colorVar: 'var(--color-cobalt)' },
-  copilot:    { label: 'M365 Copilot',  colorVar: 'var(--color-cobalt)' },
-  gemini:     { label: 'Gemini',        colorVar: 'var(--color-sage)' },
-  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--color-terra)' },
-  perplexity: { label: 'Perplexity',    colorVar: 'var(--color-terra)' },
+  chatgpt:    { label: 'ChatGPT',      colorVar: 'var(--slate-600)' },
+  claude:     { label: 'Claude',        colorVar: 'var(--ink)' },
+  copilot:    { label: 'M365 Copilot',  colorVar: 'var(--ink)' },
+  gemini:     { label: 'Gemini',        colorVar: 'var(--slate-600)' },
+  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--gold)' },
+  perplexity: { label: 'Perplexity',    colorVar: 'var(--gold)' },
 } as const;
 
 export const ROLE_LABELS: Record<PromptRole, string> = {

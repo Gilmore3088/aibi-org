@@ -32,25 +32,25 @@ export const OUTPUT_PLATFORM_META: Record<
   PromptPlatform,
   { readonly label: string; readonly colorVar: string }
 > = {
-  chatgpt:    { label: 'ChatGPT',      colorVar: 'var(--color-sage)' },
-  claude:     { label: 'Claude',        colorVar: 'var(--color-cobalt)' },
-  copilot:    { label: 'M365 Copilot',  colorVar: 'var(--color-cobalt)' },
-  gemini:     { label: 'Gemini',        colorVar: 'var(--color-sage)' },
-  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--color-terra)' },
-  perplexity: { label: 'Perplexity',    colorVar: 'var(--color-terra)' },
+  chatgpt:    { label: 'ChatGPT',      colorVar: 'var(--slate-600)' },
+  claude:     { label: 'Claude',        colorVar: 'var(--ink)' },
+  copilot:    { label: 'M365 Copilot',  colorVar: 'var(--ink)' },
+  gemini:     { label: 'Gemini',        colorVar: 'var(--slate-600)' },
+  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--gold)' },
+  perplexity: { label: 'Perplexity',    colorVar: 'var(--gold)' },
 } as const;
 
 export const OUTPUT_ROLE_META: Record<
   PromptRole,
   { readonly label: string; readonly colorVar: string }
 > = {
-  lending:    { label: 'Lending',    colorVar: 'var(--color-cobalt)' },
-  operations: { label: 'Operations', colorVar: 'var(--color-sage)' },
-  compliance: { label: 'Compliance', colorVar: 'var(--color-error)' },
-  finance:    { label: 'Finance',    colorVar: 'var(--color-amber)' },
-  marketing:  { label: 'Marketing',  colorVar: 'var(--color-terra)' },
+  lending:    { label: 'Lending',    colorVar: 'var(--ink)' },
+  operations: { label: 'Operations', colorVar: 'var(--slate-600)' },
+  compliance: { label: 'Compliance', colorVar: 'var(--ink)' },
+  finance:    { label: 'Finance',    colorVar: 'var(--gold)' },
+  marketing:  { label: 'Marketing',  colorVar: 'var(--gold)' },
   it:         { label: 'IT / Executive', colorVar: 'var(--color-ink)' },
-  retail:     { label: 'Retail',     colorVar: 'var(--color-sage)' },
+  retail:     { label: 'Retail',     colorVar: 'var(--slate-600)' },
   executive:  { label: 'Executive',  colorVar: 'var(--color-ink)' },
 } as const;
 
