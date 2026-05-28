@@ -73,11 +73,23 @@ function deriveInitialFormState(answers: OnboardingAnswers | null): FormState {
 
   const subscriptions = answers.personal_ai_subscriptions as string[];
   const knownSubs = subscriptions.filter((s) => KNOWN_SUBSCRIPTIONS.has(s));
+  // Detect the exclusive sentinel encoded in personal_ai_subscriptions
+  // on submit. 'free_tiers' and 'none' are mutually exclusive with any
+  // known-subscription label, so we read the first one we find. Fixes
+  // the issue where re-opening the settings page lost the original
+  // "Free tiers" / "None" selection because exclusive_selection was
+  // never persisted, only the empty knownSubs array was.
+  const exclusive: ExclusiveValue | null =
+    subscriptions.includes('free_tiers')
+      ? 'free_tiers'
+      : subscriptions.includes('none')
+        ? 'none'
+        : null;
 
   return {
     uses_m365: answers.uses_m365,
     personal_ai_subscriptions: knownSubs,
-    exclusive_selection: null,
+    exclusive_selection: exclusive,
     primary_role: answers.primary_role,
   };
 }
@@ -264,9 +276,18 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
     e.preventDefault();
     if (!form.uses_m365 || !form.primary_role) return;
 
+    // Persist the exclusive selection as a sentinel inside
+    // personal_ai_subscriptions. The two modes are mutually exclusive,
+    // so on submit we either store the named subscriptions OR the
+    // single sentinel ('free_tiers' / 'none'). deriveInitialFormState()
+    // round-trips this back to exclusive_selection on next load.
+    const persistedSubscriptions: readonly string[] = form.exclusive_selection
+      ? [form.exclusive_selection]
+      : form.personal_ai_subscriptions;
+
     const answers: OnboardingAnswers = {
       uses_m365: form.uses_m365,
-      personal_ai_subscriptions: form.personal_ai_subscriptions,
+      personal_ai_subscriptions: persistedSubscriptions,
       primary_role: form.primary_role,
     };
 
