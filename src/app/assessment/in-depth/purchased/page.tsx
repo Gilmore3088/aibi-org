@@ -321,8 +321,13 @@ export default async function InDepthPurchasedPage({
             Playground access with the AiBI-Foundation course.
           </p>
           <div className="flex flex-wrap gap-4">
+            {/* Was /dashboard/toolbox/library — auth-walled, so a just-paid
+                unauthenticated buyer hit a login wall when clicking the
+                toolkit framed as "INCLUDED WITH YOUR PURCHASE". Send them
+                to the public /research hub which surfaces the same library
+                artifacts as free downloads. Issue #323. */}
             <Link
-              href="/dashboard/toolbox/library"
+              href="/research"
               className="inline-block uppercase transition-colors"
               style={{
                 background: 'var(--gold)',
@@ -336,8 +341,11 @@ export default async function InDepthPurchasedPage({
             >
               BROWSE THE LIBRARY →
             </Link>
+            {/* Was /courses/foundation/program — auth-walled. Send unauth
+                buyers to the public purchase landing so the upsell actually
+                works. Issue #322. */}
             <Link
-              href="/courses/foundation/program"
+              href="/courses/foundation/program/purchase"
               className="inline-block uppercase transition-colors"
               style={{
                 border: '1px solid var(--ink-a15)',
