@@ -1,0 +1,225 @@
+/* ─────────────────────────────────────────────
+   AiBI · Brand Guide · shared styles
+   Builds on tokens.css; used by Brand Guide.html
+   and every chapter under /guide.
+   ─────────────────────────────────────────── */
+
+:root {
+  --bg: #F7F3EA;
+  --bg-2: #efe9d6;
+  --ink: #07112a;
+  --rule: rgba(7,17,42,.10);
+  --rule-2: rgba(7,17,42,.20);
+  --muted: rgba(7,17,42,.55);
+  --gold: #C8A24A;
+  --gold-deep: #9A7A2F;
+  --gold-soft: #fdf7e7;
+  --navy: #142142;
+  --navy-deep: #07112a;
+}
+
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.6; }
+body { font-feature-settings: "ss01", "kern"; }
+
+.page { max-width: 1320px; margin: 0 auto; padding: 36px 64px 96px; }
+
+/* ─── Eyebrows + labels ─── */
+.eb { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); }
+.eb-ink { color: var(--muted); }
+.eb-cream { color: #E6D39B; }
+
+/* ─── Sticky topbar ─── */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 0 22px;
+  border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bg);
+  backdrop-filter: saturate(140%) blur(8px);
+}
+.topbar .brand {
+  display: inline-flex; align-items: baseline; gap: 16px;
+}
+.topbar .mark-22 {
+  display: inline-flex; align-items: baseline; font-family: var(--font-serif); font-size: 26px; line-height: 1; color: var(--ink); letter-spacing: -.014em;
+}
+.topbar .mark-22 .bk { color: var(--gold); font-weight: 300; padding: 0 .04em; }
+.topbar .mark-22 .ai { font-style: italic; padding: 0 .06em; }
+.topbar .crumb {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--muted);
+  display: inline-flex; gap: 10px; align-items: baseline;
+  white-space: nowrap;
+}
+.topbar .crumb span { white-space: nowrap; }
+.topbar .crumb a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+.topbar .crumb a:hover { color: var(--gold-deep); }
+.topbar .crumb .sep { color: var(--gold-deep); opacity: .5; }
+.topbar .meta {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+}
+
+/* ─── Hero / chapter cover ─── */
+.cover {
+  margin-top: 28px;
+  padding: 64px 0 56px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  align-items: end;
+  border-bottom: 1px solid var(--rule);
+}
+.cover .display {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 72px; line-height: 1.08; letter-spacing: -.02em;
+  color: var(--ink); margin: 0;
+  text-wrap: balance;
+}
+.cover .display .it { font-style: italic; }
+.cover .display .accent { color: var(--gold-deep); }
+.cover .pretitle { font-family: var(--font-mono); font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 16px; }
+.cover .stand { font-family: var(--font-serif); font-size: 26px; line-height: 1.4; color: var(--muted); max-width: 30ch; margin: 0; }
+.cover .stand b { color: var(--ink); font-style: normal; font-weight: 400; }
+.cover .meta-strip {
+  margin-top: 28px; padding-top: 22px; border-top: 1px dashed var(--rule-2);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.cover .meta-strip .k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); }
+.cover .meta-strip .v { margin-top: 6px; font-size: 14px; color: var(--ink); font-weight: 500; }
+
+/* Section header (shared with kit) */
+.section { margin-top: 80px; }
+.section-head {
+  display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: baseline;
+  padding-bottom: 14px; border-bottom: 1px solid var(--rule); margin-bottom: 28px;
+}
+.section-head .num { font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); padding-top: 6px; }
+.section-head h2 { margin: 0 0 20px; font-family: var(--font-serif); font-weight: 400; font-size: 40px; letter-spacing: -.015em; line-height: 1.25; }
+.section-head h2 .it { font-style: italic; }
+.section-head .sub { margin-top: 0; font-size: 16px; color: var(--muted); max-width: 60ch; line-height: 1.6; }
+
+/* ─── Card primitives ─── */
+.card { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 28px 30px; }
+.card.dark { background: var(--navy-deep); color: #F1EFE7; border-color: rgba(255,255,255,.08); }
+.card.cream { background: var(--bg-2); }
+.card.muted { background: var(--bg); border-color: var(--rule); }
+
+/* ─── Cover index (table of contents) ─── */
+.chapters {
+  margin-top: 22px; display: grid; grid-template-columns: 1fr; gap: 10px;
+}
+.chapter-row {
+  display: grid; grid-template-columns: 80px 1fr 160px 30px; gap: 28px;
+  padding: 22px 28px; align-items: center;
+  background: #fff; border: 1px solid var(--rule); border-radius: 12px;
+  text-decoration: none; color: inherit;
+  transition: border-color .15s, transform .15s;
+}
+.chapter-row:hover { border-color: var(--gold); transform: translateX(2px); }
+.chapter-row .num {
+  font-family: var(--font-serif); font-style: italic; font-size: 40px; line-height: 1; color: var(--gold-deep);
+}
+.chapter-row .body h3 { margin: 0 0 4px; font-family: var(--font-serif); font-weight: 400; font-size: 24px; letter-spacing: -.012em; color: var(--ink); line-height: 1.15; }
+.chapter-row .body h3 .it { font-style: italic; }
+.chapter-row .body p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; max-width: 60ch; }
+.chapter-row .meta { font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); text-align: right; line-height: 1.7; }
+.chapter-row .arrow { color: var(--gold); font-family: var(--font-serif); font-size: 28px; line-height: 1; text-align: right; }
+
+/* ─── Pull quotes / standfirsts ─── */
+.pullquote {
+  margin: 32px 0; padding: 24px 32px;
+  border-left: 2px solid var(--gold);
+  font-family: var(--font-serif); font-size: 26px; line-height: 1.4;
+  color: var(--ink); max-width: 60ch;
+}
+.pullquote cite { display: block; font-family: var(--font-mono); font-style: normal; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); margin-top: 14px; }
+
+/* ─── Long-form prose ─── */
+.prose { max-width: 64ch; }
+.prose p { margin: 0 0 14px; font-size: 17px; line-height: 1.7; color: var(--ink); }
+.prose p:last-child { margin-bottom: 0; }
+.prose h3 { margin: 32px 0 10px; font-family: var(--font-serif); font-weight: 400; font-size: 24px; letter-spacing: -.012em; }
+.prose h3 .it { font-style: italic; }
+.prose b { font-weight: 500; }
+.prose em { color: var(--gold-deep); font-style: normal; }
+.prose ul, .prose ol { padding-left: 22px; margin: 0 0 14px; }
+.prose li { margin: 6px 0; font-size: 17px; line-height: 1.7; }
+.prose code { font-family: var(--font-mono); font-size: 13.5px; background: var(--gold-soft); padding: 1px 6px; border-radius: 4px; }
+
+/* ─── Grids ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+/* ─── Principle / value card ─── */
+.principle { display: flex; flex-direction: column; gap: 10px; }
+.principle .meta { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); }
+.principle h4 { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 22px; letter-spacing: -.012em; color: var(--ink); line-height: 1.18; }
+.principle h4 .it { font-style: italic; }
+.principle p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+.principle .lede { font-family: var(--font-serif); font-style: italic; font-size: 18px; line-height: 1.4; color: var(--ink); margin-bottom: 6px; }
+
+/* ─── Footer / next-chapter ─── */
+.chapter-foot {
+  margin-top: 96px; padding-top: 28px; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  align-items: stretch;
+}
+.chapter-foot a {
+  text-decoration: none; color: inherit;
+  padding: 22px 26px;
+  background: #fff; border: 1px solid var(--rule); border-radius: 12px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: border-color .15s, transform .15s;
+}
+.chapter-foot a:hover { border-color: var(--gold); }
+.chapter-foot .nav-l { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); }
+.chapter-foot .nav-t { font-family: var(--font-serif); font-size: 22px; letter-spacing: -.012em; color: var(--ink); }
+.chapter-foot .nav-t .it { font-style: italic; }
+.chapter-foot .prev .nav-l::before { content: "← "; }
+.chapter-foot .next { text-align: right; align-items: flex-end; }
+.chapter-foot .next .nav-l::after { content: " →"; }
+
+footer.page-foot {
+  margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────
+   Italic kill-switch — brand decision, 26 May 2026
+   Drops editorial italics + the italic-A in the mark.
+   The bracketed [Ai] still wraps AI; the lowercase i
+   still distinguishes Ai from BI. The mark becomes
+   upright serif throughout.
+   ─────────────────────────────────────────── */
+.it,
+i,
+em,
+.mark .ai,
+.mark-22 .ai,
+.mark-big .ai,
+.cert-mark .ai,
+.wm-serif .ai,
+.motion-mark .ai-anim,
+.dash-top .mark .ai,
+.h-display .it,
+[style*="italic"] {
+  font-style: normal !important;
+}
+/* Reviewer of record and other former italics — use gold color emphasis instead */
+.ex-table .reviewer { font-style: normal !important; }
+/* Cover standfirst loses italic + picks up serif tone via existing color */
+.cover .stand { font-style: normal !important; }
+/* Pullquote loses italic — kept border + serif */
+.pullquote { font-style: normal !important; }
+/* Pillar / principle ledes lose italic */
+.pillar .lede, .principle .lede { font-style: normal !important; }
+/* Voice example "italic" copy → roman */
+.voice .principle .ex p { font-style: normal !important; }
+/* Audience-card pull quote → roman */
+.aud-card .pull { font-style: normal !important; }
+/* Chart-card descriptions, table italic reviewers, etc */
+.tone td .ex { font-style: normal !important; }
+.naming li b { font-style: normal !important; }
+/* Newsletter signed-line, illustration ledes */
+.newsletter p[style*="italic"], .press .stand { font-style: normal !important; }

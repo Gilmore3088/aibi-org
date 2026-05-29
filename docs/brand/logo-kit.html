@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ai Banking Institute · Logo Kit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F3EA; --bg-2:#EFE7D7; --surface:#FFFFFF;
+    --ink:#071A2F; --ink-2:#0B2745; --muted:rgba(7,17,42,.55); --muted-2:rgba(7,17,42,.38);
+    --rule:rgba(7,17,42,.12); --rule-2:rgba(7,17,42,.20);
+    --gold:#C8A24A; --gold-2:#D8B867; --gold-deep:#9A7A2F; --gold-soft:#E6D39B;
+    --navy:#07112a; --navy-cream:#F1EFE7;
+    --green:#047857; --red:#b91c1c;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    --serif:"Instrument Serif","Times New Roman",Georgia,serif;
+    --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:"kern","ss01";}
+  /* italics retired everywhere except the mark's i */
+  i,em{font-style:normal;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  /* ── topbar ── */
+  .topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 40px;background:rgba(247,243,234,.86);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--rule);}
+  .topbar nav{display:flex;gap:22px;}
+  .topbar nav a{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  .topbar nav a:hover{color:var(--gold-deep);}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 40px 140px;}
+
+  /* ── the marks ── */
+  .mark{font-family:var(--sans);font-weight:600;letter-spacing:-.012em;line-height:1;display:inline-flex;align-items:baseline;white-space:nowrap;color:var(--ink);}
+  .mark .gi{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.14em;margin:0 .005em 0 .012em;color:inherit;line-height:0;}
+  .bk{color:var(--gold);font-weight:500;}
+  .mark.rev{color:var(--navy-cream);}
+  .mark.rev .bk{color:var(--gold);}
+  .mark.mono{color:currentColor;}
+  .mark.mono .bk{color:currentColor;font-weight:500;}
+
+  /* ── hero ── */
+  .hero{padding:80px 0 56px;border-bottom:1px solid var(--rule);}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);}
+  .hero h1{font-weight:800;font-size:clamp(40px,5vw,64px);line-height:1.04;letter-spacing:-.03em;margin:16px 0 18px;}
+  .hero p{font-size:18px;color:var(--muted);max-width:62ch;margin:0;}
+  .hero p b{color:var(--ink);font-weight:600;}
+  .hero .pair{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .hero .pair .show{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:46px 40px;display:flex;flex-direction:column;gap:24px;min-height:200px;justify-content:space-between;}
+  .hero .pair .show .role{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);}
+  .hero .pair .show .role b{color:var(--ink);font-weight:600;display:block;font-family:var(--sans);letter-spacing:0;text-transform:none;font-size:14px;margin-top:5px;}
+  .hero .pair .biground{background:var(--navy);}
+  .hero .pair .biground .role{color:var(--gold-soft);}
+  .hero .pair .biground .role b{color:var(--navy-cream);}
+
+  /* ── section scaffold ── */
+  section.sec{margin-top:88px;scroll-margin-top:80px;}
+  .sec-head{display:grid;grid-template-columns:200px 1fr;gap:30px;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:32px;}
+  .sec-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);padding-top:8px;}
+  .sec-head h2{margin:0 0 10px;font-weight:700;font-size:30px;letter-spacing:-.02em;line-height:1.1;}
+  .sec-head .sub{margin:0;font-size:15.5px;color:var(--muted);max-width:60ch;}
+
+  /* ── generic specimen cards ── */
+  .card{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:34px 36px;}
+  .card.dark{background:var(--navy);border-color:rgba(255,255,255,.08);}
+  .card.cream{background:var(--bg-2);}
+  .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:14px;}
+  .card.dark .cap{color:var(--gold-soft);}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  /* size ladder */
+  .ladder{display:flex;flex-direction:column;gap:30px;}
+  .ladder .rung{display:flex;align-items:flex-end;gap:24px;padding-bottom:22px;border-bottom:1px dashed var(--rule);}
+  .ladder .rung:last-child{border-bottom:0;padding-bottom:0;}
+  .ladder .px{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted-2);margin-left:auto;text-transform:uppercase;white-space:nowrap;}
+
+  /* color variant tiles */
+  .swatchset{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .vtile{border:1px solid var(--rule);border-radius:14px;overflow:hidden;}
+  .vtile .face{height:128px;display:grid;place-items:center;}
+  .vtile .meta{padding:13px 16px;border-top:1px solid var(--rule);}
+  .vtile .meta .t{font-size:13px;font-weight:600;}
+  .vtile .meta .d{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);margin-top:3px;}
+  .f-light{background:var(--bg);}
+  .f-cream{background:var(--bg-2);}
+  .f-navy{background:var(--navy);}
+  .f-white{background:#fff;}
+  .f-black{background:#0c0c0c;}
+  .f-gold{background:var(--gold);}
+
+  /* navy boxes / icons */
+  .iconbox{background:var(--navy);display:grid;place-items:center;border-radius:22%;}
+  .iconbox .mark{color:var(--navy-cream);}
+  .circlebox{background:var(--navy);display:grid;place-items:center;border-radius:50%;}
+  .circlebox .mark{color:var(--navy-cream);}
+
+  /* clear space */
+  .clearspace{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:56px;display:grid;place-items:center;}
+  .cs-frame{position:relative;padding:46px;}
+  .cs-frame::before{content:"";position:absolute;inset:0;border:1px dashed var(--gold);border-radius:4px;}
+  .cs-tick{position:absolute;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--gold-deep);background:var(--surface);padding:0 6px;}
+  .cs-tick.top{top:-7px;left:50%;transform:translateX(-50%);}
+  .cs-tick.left{left:-26px;top:50%;transform:translateY(-50%) rotate(-90deg);}
+
+  /* min size row */
+  .minrow{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap;}
+  .minrow .item{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .minrow .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .minrow .lbl b{color:var(--ink);}
+
+  /* favicon strip */
+  .favstrip{display:flex;align-items:flex-end;gap:32px;flex-wrap:wrap;}
+  .favstrip .fav{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .favstrip .fav .px{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);}
+  .browserbar{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--rule);border-radius:10px 10px 0 0;padding:9px 14px;max-width:360px;box-shadow:0 1px 0 var(--rule);}
+  .browserbar .tabicon{width:16px;height:16px;border-radius:4px;background:var(--navy);display:grid;place-items:center;flex:0 0 auto;}
+  .browserbar .taburl{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .browserbody{height:54px;background:var(--bg-2);border:1px solid var(--rule);border-top:0;border-radius:0 0 10px 10px;max-width:360px;}
+
+  /* don'ts */
+  .donts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .dont{border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--surface);}
+  .dont .face{height:120px;display:grid;place-items:center;position:relative;}
+  .dont .face.onlight{background:var(--bg);}
+  .dont .x{position:absolute;top:11px;right:12px;width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;}
+  .dont .note{padding:12px 16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);line-height:1.45;}
+  .dont .note b{color:var(--ink);font-weight:600;}
+  /* the rejected stem+tittle treatment */
+  .rej{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:42px;line-height:1;display:inline-flex;align-items:baseline;}
+  .rej .stem{position:relative;font-style:normal;}
+  .rej .stem::after{content:"";position:absolute;top:-.06em;left:50%;transform:translateX(-50%);width:.14em;height:.14em;border-radius:50%;background:var(--gold);}
+  .stretch{transform:scaleX(1.5);transform-origin:center;}
+
+  /* asset index table */
+  .assets{border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:var(--surface);}
+  .arow{display:grid;grid-template-columns:54px 1.4fr 2fr 90px;gap:18px;align-items:center;padding:16px 24px;border-top:1px solid var(--rule);}
+  .arow:first-child{border-top:0;}
+  .arow .ic{width:40px;height:40px;border-radius:9px;display:grid;place-items:center;background:var(--navy);}
+  .arow .nm{font-family:var(--mono);font-size:12.5px;color:var(--ink);font-weight:500;}
+  .arow .ds{font-size:13px;color:var(--muted);line-height:1.4;}
+  .arow .fmt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep);text-align:right;}
+  .ahead{background:var(--bg-2);padding:13px 24px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+
+  .foot{margin-top:90px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;}
+  .foot .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+
+  @media(max-width:860px){
+    .sec-head{grid-template-columns:1fr;gap:8px;}
+    .hero .pair,.grid-2,.swatchset,.grid-4,.donts{grid-template-columns:1fr 1fr;}
+    .grid-3{grid-template-columns:1fr;}
+    .arow{grid-template-columns:40px 1fr;gap:12px;}
+    .arow .ds,.arow .fmt{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="mark" style="font-size:19px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span>
+  <nav>
+    <a href="#architecture">Architecture</a>
+    <a href="#wordmark">Wordmark</a>
+    <a href="#aibi">AiBI mark</a>
+    <a href="#color">Color</a>
+    <a href="#space">Clear space</a>
+    <a href="#favicon">Favicons</a>
+    <a href="#donts">Misuse</a>
+    <a href="#assets">Files</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">Ai Banking Institute · Logo Kit v1</div>
+    <h1>Two marks,<br>one system.</h1>
+    <p>The brand runs on a single accent and a single sanctioned italic. Everything below derives from the locked mark: <b>Inter wordmark, gold brackets, the lowercase i in Instrument Serif italic</b> — one ink color, no tittle. The open wordmark leads; the compact <b>[Ai]BI</b> mark covers small and square placements.</p>
+
+    <div class="pair">
+      <div class="show">
+        <div class="role">Primary<b>Open wordmark</b></div>
+        <span class="mark" style="font-size:38px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span>
+        <div class="cap">Leads everywhere it fits · ink on cream</div>
+      </div>
+      <div class="show biground">
+        <div class="role">Secondary<b>[Ai]BI compact mark</b></div>
+        <span class="mark rev" style="font-size:64px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+        <div class="cap">Small / square / busy fields · cream on navy</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 ARCHITECTURE -->
+  <section class="sec" id="architecture">
+    <div class="sec-head">
+      <div class="num">01 / Architecture</div>
+      <div>
+        <h2>How the two marks relate</h2>
+        <p class="sub">Same construction, two lengths. Reach for the full wordmark first; drop to the abbreviation only when space or shape forces it.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <span class="mark" style="font-size:40px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span>
+        <div class="cap">Open wordmark — primary</div>
+        <p style="margin:18px 0 0;font-size:14.5px;color:var(--muted);line-height:1.6;">Marketing, site nav, covers, certificates, documents, email signatures. The default. No container.</p>
+      </div>
+      <div class="card">
+        <span class="mark" style="font-size:40px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+        <div class="cap">[Ai]BI — compact abbreviation mark</div>
+        <p style="margin:18px 0 0;font-size:14.5px;color:var(--muted);line-height:1.6;">App icons, favicons, avatars, badges, partner walls, footer chips — anywhere the full name won't read. Brackets wrap <b style="color:var(--ink);font-weight:600">Ai</b>; <b style="color:var(--ink);font-weight:600">BI</b> trails outside the brackets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 WORDMARK -->
+  <section class="sec" id="wordmark">
+    <div class="sec-head">
+      <div class="num">02 / Primary</div>
+      <div>
+        <h2>The open wordmark</h2>
+        <p class="sub">Inter 600, −0.012em tracking, gold brackets, serif-italic i. Holds from hero to nav.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ladder">
+        <div class="rung"><span class="mark" style="font-size:56px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="px">Hero · 56px+</span></div>
+        <div class="rung"><span class="mark" style="font-size:30px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="px">Section · 30px</span></div>
+        <div class="rung"><span class="mark" style="font-size:20px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="px">Nav · 20px</span></div>
+        <div class="rung"><span class="mark" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="px">Footer · 14px min</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 AIBI MARK -->
+  <section class="sec" id="aibi">
+    <div class="sec-head">
+      <div class="num">03 / Compact</div>
+      <div>
+        <h2>The [Ai]BI mark</h2>
+        <p class="sub">The abbreviation, set in the same construction. Brackets wrap only Ai; BI follows. The single mark used inside square fields and icons.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="ladder">
+          <div class="rung"><span class="mark" style="font-size:72px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span><span class="px">Display · 72px</span></div>
+          <div class="rung"><span class="mark" style="font-size:40px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span><span class="px">Standard · 40px</span></div>
+          <div class="rung"><span class="mark" style="font-size:22px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span><span class="px">Inline · 22px</span></div>
+        </div>
+        <div class="cap" style="margin-top:22px;">On light — ink</div>
+      </div>
+      <div class="card dark" style="display:flex;flex-direction:column;justify-content:center;gap:34px;">
+        <span class="mark rev" style="font-size:72px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+        <span class="mark rev" style="font-size:40px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+        <div class="cap">On navy — cream reversed, brackets stay gold</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 COLOR -->
+  <section class="sec" id="color">
+    <div class="sec-head">
+      <div class="num">04 / Color</div>
+      <div>
+        <h2>Approved color variants</h2>
+        <p class="sub">Five only. Gold lives on the brackets; the mono variants drop the gold entirely for single-ink reproduction (fax, engraving, embroidery, one-color print).</p>
+      </div>
+    </div>
+    <div class="swatchset">
+      <div class="vtile">
+        <div class="face f-light"><span class="mark" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="meta"><div class="t">Ink on cream</div><div class="d">#071A2F · #C8A24A</div></div>
+      </div>
+      <div class="vtile">
+        <div class="face f-navy"><span class="mark rev" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="meta"><div class="t">Reversed on navy</div><div class="d">#F1EFE7 · #C8A24A</div></div>
+      </div>
+      <div class="vtile">
+        <div class="face f-white" style="color:var(--ink);"><span class="mark mono" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="meta"><div class="t">Mono — ink</div><div class="d">Single color #071A2F</div></div>
+      </div>
+      <div class="vtile">
+        <div class="face f-black" style="color:#fff;"><span class="mark mono" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="meta"><div class="t">Mono — white</div><div class="d">Knockout on dark</div></div>
+      </div>
+    </div>
+    <p style="margin:20px 2px 0;font-size:13.5px;color:var(--muted);">Never place the full-color mark on gold, on a photograph without a navy scrim, or on a mid-tone where neither ink nor cream holds contrast. When in doubt, use a mono variant.</p>
+  </section>
+
+  <!-- 05 CLEAR SPACE & MIN SIZE -->
+  <section class="sec" id="space">
+    <div class="sec-head">
+      <div class="num">05 / Spacing</div>
+      <div>
+        <h2>Clear space &amp; minimum size</h2>
+        <p class="sub">Protect the mark with clear space equal to the cap-height of the “A”. Below the minimums, switch to the compact mark or the icon.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="clearspace">
+        <div class="cs-frame">
+          <span class="cs-tick top">cap-height “A”</span>
+          <span class="cs-tick left">cap-height “A”</span>
+          <span class="mark" style="font-size:44px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;justify-content:center;">
+        <div class="minrow">
+          <div class="item">
+            <span class="mark" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>&nbsp;Banking Institute</span>
+            <span class="lbl">Wordmark · min <b>14px / 120px wide</b></span>
+          </div>
+          <div class="item">
+            <span class="mark" style="font-size:16px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span>
+            <span class="lbl">Compact · min <b>16px</b></span>
+          </div>
+          <div class="item">
+            <span class="iconbox" style="width:24px;height:24px;border-radius:6px;"><span class="mark rev" style="font-size:11px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span>
+            <span class="lbl">Icon · min <b>24px</b></span>
+          </div>
+        </div>
+        <p style="margin:30px 0 0;font-size:13.5px;color:var(--muted);line-height:1.6;">Below 24px the brackets close up — drop to the <b style="color:var(--ink);font-weight:600">[Ai]</b> monogram in a navy tile rather than shrinking the full mark.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 FAVICON / APP ICONS -->
+  <section class="sec" id="favicon">
+    <div class="sec-head">
+      <div class="num">06 / Digital</div>
+      <div>
+        <h2>Favicons &amp; app icons</h2>
+        <p class="sub">A navy rounded tile carries the mark in every digital corner. At browser-tab sizes the brackets wrap [Ai]; at app-icon size the full [Ai]BI reads.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- favicon renderings -->
+      <div class="card">
+        <div class="favstrip">
+          <div class="fav"><span class="iconbox" style="width:64px;height:64px;"><span class="mark rev" style="font-size:28px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span><span class="px">64</span></div>
+          <div class="fav"><span class="iconbox" style="width:48px;height:48px;"><span class="mark rev" style="font-size:21px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span><span class="px">48</span></div>
+          <div class="fav"><span class="iconbox" style="width:32px;height:32px;border-radius:8px;"><span class="mark rev" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span><span class="px">32</span></div>
+          <div class="fav"><span class="iconbox" style="width:16px;height:16px;border-radius:4px;"><span class="mark rev" style="font-size:8px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span><span class="px">16</span></div>
+        </div>
+        <div class="cap" style="margin-top:26px;">favicon.svg → 16 / 32 / 48 / 64 px</div>
+      </div>
+
+      <!-- in-context browser tab -->
+      <div class="card cream" style="display:flex;flex-direction:column;justify-content:center;gap:0;">
+        <div class="browserbar">
+          <span class="tabicon"><span class="mark rev" style="font-size:8px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span>
+          <span class="taburl">aibanking.institute</span>
+        </div>
+        <div class="browserbody"></div>
+        <div class="cap" style="margin-top:18px;">In context · browser tab</div>
+      </div>
+    </div>
+
+    <div class="grid-4" style="margin-top:16px;">
+      <div class="card" style="display:grid;place-items:center;padding:26px;">
+        <span class="iconbox" style="width:104px;height:104px;"><span class="mark rev" style="font-size:38px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></span>
+        <div class="cap">App icon · 180px</div>
+      </div>
+      <div class="card" style="display:grid;place-items:center;padding:26px;">
+        <span class="iconbox" style="width:104px;height:104px;"><span class="mark rev" style="font-size:46px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></span>
+        <div class="cap">App icon · monogram</div>
+      </div>
+      <div class="card" style="display:grid;place-items:center;padding:26px;">
+        <span class="circlebox" style="width:104px;height:104px;"><span class="mark rev" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></span>
+        <div class="cap">Social avatar · circle</div>
+      </div>
+      <div class="card" style="display:grid;place-items:center;padding:26px;background:var(--bg-2);">
+        <span class="circlebox" style="width:104px;height:104px;background:var(--bg);border:1px solid var(--rule);"><span class="mark" style="font-size:34px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></span>
+        <div class="cap">Avatar · light</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 DON'TS -->
+  <section class="sec" id="donts">
+    <div class="sec-head">
+      <div class="num">07 / Misuse</div>
+      <div>
+        <h2>What breaks the mark</h2>
+        <p class="sub">One accent, one italic, one construction. These are the failures to watch for.</p>
+      </div>
+    </div>
+    <div class="donts">
+      <div class="dont">
+        <div class="face onlight"><span class="x">✕</span><span class="rej">A<span class="stem">ı</span></span></div>
+        <div class="note"><b>No dotless stem + gold tittle.</b> The i is a real italic serif glyph in one ink color.</div>
+      </div>
+      <div class="dont">
+        <div class="face onlight"><span class="x">✕</span><span class="mark" style="font-size:34px;"><span class="bk">[</span><span style="color:var(--gold)">Ai</span><span class="bk">]</span>BI</span></div>
+        <div class="note"><b>Don't gold the letters.</b> Gold belongs to the brackets only — never the Ai or BI.</div>
+      </div>
+      <div class="dont">
+        <div class="face onlight"><span class="x">✕</span><span class="mark stretch" style="font-size:30px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="note"><b>Don't stretch or condense.</b> Scale uniformly; never distort the proportions.</div>
+      </div>
+      <div class="dont">
+        <div class="face f-gold"><span class="x">✕</span><span class="mark" style="font-size:34px;"><span class="bk" style="color:#fff">[</span>A<span class="gi">i</span><span class="bk" style="color:#fff">]</span>BI</span></div>
+        <div class="note"><b>Don't sit full-color on gold.</b> Use the navy tile or a mono variant on gold fields.</div>
+      </div>
+      <div class="dont">
+        <div class="face onlight"><span class="x">✕</span><span class="mark" style="font-size:34px;font-weight:400;"><span class="bk" style="font-weight:300">[</span>A<span class="gi">i</span><span class="bk" style="font-weight:300">]</span>BI</span></div>
+        <div class="note"><b>Don't change the weight.</b> The wordmark is Inter 600 — not light, not black.</div>
+      </div>
+      <div class="dont">
+        <div class="face onlight"><span class="x">✕</span><span class="mark" style="font-size:34px;"><span class="bk">[</span>A<span style="font-family:var(--sans);font-style:italic;font-size:1em;">i</span><span class="bk">]</span>BI</span></div>
+        <div class="note"><b>Don't fake the italic.</b> The i is Instrument Serif italic — not a slanted Inter i.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ASSET INDEX -->
+  <section class="sec" id="assets">
+    <div class="sec-head">
+      <div class="num">08 / Files</div>
+      <div>
+        <h2>Asset index</h2>
+        <p class="sub">Vector source for both marks plus digital icons, written to <span style="font-family:var(--mono);font-size:.92em;">/brand/</span>. Export production lockups with the text outlined.</p>
+      </div>
+    </div>
+    <div class="assets">
+      <div class="ahead">Wordmark — open</div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></div>
+        <div class="nm">brand/aibi-wordmark.svg</div>
+        <div class="ds">Open wordmark, ink on transparent — primary, for light surfaces.</div>
+        <div class="fmt">SVG</div>
+      </div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></div>
+        <div class="nm">brand/aibi-wordmark-dark.svg</div>
+        <div class="ds">Open wordmark, cream reversed — for navy / dark surfaces.</div>
+        <div class="fmt">SVG</div>
+      </div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:14px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></div>
+        <div class="nm">brand/aibi-wordmark-mono.svg</div>
+        <div class="ds">Single-ink wordmark — no gold, for one-color reproduction.</div>
+        <div class="fmt">SVG</div>
+      </div>
+
+      <div class="ahead">Compact — [Ai]BI</div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:13px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="nm">brand/aibi-mark.svg</div>
+        <div class="ds">[Ai]BI abbreviation mark, ink — for light surfaces.</div>
+        <div class="fmt">SVG</div>
+      </div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:13px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="nm">brand/aibi-mark-dark.svg</div>
+        <div class="ds">[Ai]BI mark, cream reversed — for navy / dark surfaces.</div>
+        <div class="fmt">SVG</div>
+      </div>
+
+      <div class="ahead">Icons &amp; digital</div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:13px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span>BI</span></div>
+        <div class="nm">brand/aibi-app-icon.svg</div>
+        <div class="ds">[Ai]BI in a navy rounded tile — app icon / apple-touch-icon (180px).</div>
+        <div class="fmt">SVG</div>
+      </div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:13px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></div>
+        <div class="nm">brand/favicon.svg</div>
+        <div class="ds">[Ai] monogram in a navy tile — scalable favicon (16–64px).</div>
+        <div class="fmt">SVG</div>
+      </div>
+      <div class="arow">
+        <div class="ic"><span class="mark rev" style="font-size:13px;"><span class="bk">[</span>A<span class="gi">i</span><span class="bk">]</span></span></div>
+        <div class="nm">brand/aibi-monogram.svg</div>
+        <div class="ds">[Ai] monogram, transparent — stamps, watermarks, loaders.</div>
+        <div class="fmt">SVG</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="l">Ai Banking Institute · Logo Kit v1</span>
+    <span class="l">One accent · one italic · one construction</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="[Ai] favicon">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;family=Inter:wght@500;600&amp;display=swap');
+      .wm{font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;font-weight:600;font-size:26px;letter-spacing:-0.5px;fill:#F1EFE7;}
+      .bk{fill:#C8A24A;font-weight:500;}
+      .gi{font-family:'Instrument Serif','Times New Roman',Georgia,serif;font-style:italic;font-weight:400;font-size:30px;fill:#F1EFE7;}
+    </style>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#07112a"/>
+  <text class="wm" x="32" y="41" text-anchor="middle"><tspan class="bk">[</tspan><tspan>A</tspan><tspan class="gi" dx="0.5">i</tspan><tspan class="bk" dx="0.5">]</tspan></text>
+</svg>
