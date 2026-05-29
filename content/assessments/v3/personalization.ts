@@ -234,159 +234,159 @@ export interface GapContent {
 
 export const GAP_CONTENT: Record<Dimension, GapContent> = {
   'strategic-value': {
-    oneLine: 'No named bottlenecks. AI conversations stay theoretical.',
+    oneLine: 'You use AI in general, not on specific work that matters to you.',
     explanation:
-      "AI is on the agenda but not yet tied to a specific workflow, efficiency target, or revenue line. Without a named bottleneck and a named owner, the program lives in slide decks and never reaches anyone's desk.",
+      "AI is on your radar but not tied to a problem you actually own. Until you can name two or three of your own tasks where AI would save time or improve quality, AI stays a curiosity instead of a tool. The shift is from \"I should try AI\" to \"I use AI on these things.\"",
     impacts: [
-      'Budget conversations stall because no concrete outcome is being defended',
-      'Staff time gets spent on experiments that no one can defend to leadership',
+      'Your time gets spent exploring AI generally instead of getting wins on specific work',
+      'You cannot tell anyone — yourself or your manager — what AI is actually doing for your job',
     ],
     whatGoodLooksLike: [
-      'Two or three named high-friction workflows scoped as AI candidates with owners',
-      'AI initiatives mapped to specific efficiency-ratio or revenue lines that leadership tracks',
+      'You can name two or three of your own recurring tasks where AI consistently helps',
+      'You can measure the difference — time saved, fewer revisions, faster turnaround',
     ],
   },
-  'infrastructure-readiness': {
-    oneLine: 'Your core systems block the integrations a program would need.',
+  'approved-tool-path': {
+    oneLine: 'You are not sure which AI tools you are allowed to use at work.',
     explanation:
-      "AI tools deliver value when they can read the data and write back into the systems where work happens. A closed core or fragile integration pattern turns every workflow into a multi-month vendor project, and most workflows never make it past the request stage.",
+      "Most bankers default to whatever AI tool they found first. If you cannot point to an approved list — or worse, no approved list exists yet — you are guessing what is safe. The fastest fix is to ask the question once and use only the green-list tools after that.",
     impacts: [
-      'Useful AI workflows stay stuck behind core-provider integration queues',
-      'Innovation depends on a small number of vendor-selected tools',
+      'You may be using tools your institution would not approve if asked',
+      'The moment compliance or IT asks "what did you use?" you have to reconstruct it from memory',
     ],
     whatGoodLooksLike: [
-      'A stack that supports standard APIs and has completed at least one custom integration this year',
-      'A documented integration path for adding third-party tools without core-provider involvement',
-    ],
-  },
-  'data-quality': {
-    oneLine: 'Your data is too scattered for AI to be useful on it.',
-    explanation:
-      "AI tools are only as good as the data they reference. If pulling a clean view of a customer or a loan requires a manual reconciliation exercise, AI cannot meaningfully assist — and the institutions that move fastest are the ones whose data layer is ready before the tools arrive.",
-    impacts: [
-      "AI tools cannot reliably draw on institutional context — every prompt has to recreate it",
-      'Reporting accuracy degrades faster than anyone realizes when AI is layered on shaky data',
-    ],
-    whatGoodLooksLike: [
-      "A unified, verified data layer that AI tools can reference for accurate institutional context",
-      'A documented data-quality review cadence with named owners for each domain',
-    ],
-  },
-  'security-approved-tools': {
-    oneLine: 'Staff use whatever AI they find. You cannot see, govern, or defend it.',
-    explanation:
-      "Without an approved AI tool list and traffic that routes through institution-controlled channels, staff use whatever public tools they find. The institution loses visibility into what data is going where, and the audit trail your examiner expects cannot be produced.",
-    impacts: [
-      "PII or member data ends up in public AI tools without anyone knowing it happened",
-      "The examiner asks for your AI tool inventory and you cannot produce one",
-    ],
-    whatGoodLooksLike: [
-      "All staff AI use routes through institution-approved channels with logging and access controls",
-      "A documented approved-tool list with named owners and a review cadence as tools change",
-    ],
-  },
-  'runtime-safeguards': {
-    oneLine: 'No input or output controls. Staff judgment is the only line of defense.',
-    explanation:
-      "Runtime safeguards are the checks that catch unsafe data going into AI tools and unsafe content coming back. Without them, every AI-assisted task depends on the carefulness of one person — and the failure mode is the prompt that contained PII the user did not notice.",
-    impacts: [
-      'A single staff prompt with restricted data becomes a reportable incident',
-      'Output errors reach customers or decision processes before anyone reviews them',
-    ],
-    whatGoodLooksLike: [
-      'Input controls (PII masking, restricted-data screening) and output review for any customer- or decision-facing work',
-      'A documented review cadence with named owners and sampled spot-checks even on automated workflows',
-    ],
-  },
-  'regulatory-compliance': {
-    oneLine: 'AI-assisted decisions are not yet mapped to the regulatory regime they touch.',
-    explanation:
-      "AI in credit, marketing, or member service touches ECOA / Reg B, the AIEOG Lexicon, and SR 11-7 — whether or not the institution has thought through how. If an AI tool helped shape an adverse decision, you have to be able to explain the principal reasons. Today that question does not yet have a documented answer.",
-    impacts: [
-      'Adverse-action disclosures cannot be reliably produced for AI-assisted decisions',
-      "An examiner asking 'how does AI fit into your compliance program?' lands in silence",
-    ],
-    whatGoodLooksLike: [
-      'AI-assisted processes generate the required principal-reason disclosures as a standard output',
-      'A compliance review pattern that treats AI-assisted work as in-scope from day one, not retroactively',
-    ],
-  },
-  'fair-lending-testing': {
-    oneLine: 'Disparate-impact risk is not being measured inside AI-assisted processes.',
-    explanation:
-      "Fair lending obligations apply regardless of whether a model was trained on internal data or a vendor brought it in. Without a documented testing protocol that covers AI-assisted decisions, the institution accumulates compliance risk that compounds quietly until something forces it into the open.",
-    impacts: [
-      'A disparate-impact claim against an AI-assisted process arrives with no evidence of testing',
-      'Board reporting on fair lending lags the way decisions are actually being made',
-    ],
-    whatGoodLooksLike: [
-      'A documented fair-lending testing protocol for AI-assisted processes, including disparate-impact analysis',
-      "Board-level reporting that includes AI-assisted decision outcomes as a standard line item",
-    ],
-  },
-  'human-in-the-loop': {
-    oneLine: 'Oversight levels are ad hoc. Some decisions get four reviews; some get none.',
-    explanation:
-      "Human-in-the-loop is the line between automation that helps and automation that harms. Without a written policy mapping each AI use case to a specific oversight level (automated, sampled, mandatory approval), staff use their own judgment — and the institution discovers the gaps only after something has gone wrong.",
-    impacts: [
-      'High-risk decisions get treated like low-risk ones depending on who is doing the work',
-      'An incident exposes that the oversight policy was a conversation, not a document',
-    ],
-    whatGoodLooksLike: [
-      'A formal policy mapping each AI use case to an oversight level with logs and named owners',
-      'A review cadence that adjusts oversight levels as use cases mature, not just at the start',
-    ],
-  },
-  'talent-culture': {
-    oneLine: 'No active preparation for the shift from task execution to AI oversight.',
-    explanation:
-      "AI moves a meaningful share of staff work from doing the task to overseeing the task. Institutions that have not retrained roles, redefined expectations, or built career paths around AI oversight will find their best people leaving for institutions that have.",
-    impacts: [
-      'Capability stays vendor-shaped because no internal pipeline is being built',
-      'Talented operations and compliance staff leave for institutions that have already done the role redesign',
-    ],
-    whatGoodLooksLike: [
-      "Institution-wide training, redefined role expectations, and career paths built around working alongside AI",
-      'A named pipeline of analysts and ops staff who can graduate into AI-builder and oversight roles',
+      'You can name the approved AI tools at your institution and which data you can use in each',
+      'When something new comes up, you know who to ask before trying it',
     ],
   },
   'data-safety-reflexes': {
-    oneLine: 'Staff cannot reliably name what data is restricted from AI tools.',
+    oneLine: 'You do not have a consistent rule for what never goes into AI.',
     explanation:
-      "Data safety in the AI era is a reflex, not a memo. If staff have not been trained on a clear classification system (Green / Yellow / Red, NPI / PII / public, or equivalent), they will make different decisions in different rooms — and the worst decision becomes a reportable incident.",
+      "Pasting customer data, account numbers, or sensitive internal details into a public AI tool is the single most common AI mistake at a community bank. The fix is a reflex — strip identifiers first, paste second — built through practice, not a memo. Until that reflex is in place, every prompt is a risk.",
     impacts: [
-      'NPI or PII ends up inside AI tools because the policy was implicit, not practiced',
-      'Compliance spends review cycles undoing the consequences of routine staff judgment',
+      'A single careless paste can become a reportable incident',
+      'You slow down on every prompt because you are not sure what is safe',
     ],
     whatGoodLooksLike: [
-      'Staff use a clear classification system reflexively; restricted data is masked or kept out of AI tools as a matter of habit',
-      'Onboarding includes the classification system as a hands-on module with worked examples',
+      'You strip identifiers, balances, and customer details before pasting — automatically',
+      'You know when to switch to an approved internal tool because the work needs the real data',
     ],
   },
-  'continuous-validation': {
-    oneLine: 'AI tools are being treated like static models — annual review at most.',
+  'prompting-skill': {
+    oneLine: 'You ask AI vague questions and get vague answers.',
     explanation:
-      "AI models change. Vendors push updates; performance drifts; new edge cases appear. A model risk framework built for the static models of 2010 cannot keep up. Continuous validation — drift monitoring, behavior tracking, performance review on an ongoing basis — is the new bar.",
+      "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is a small kit of patterns — role, format, source, check, edit — that you reuse until they're reflex.",
     impacts: [
-      'Model drift goes unnoticed until an outcome forces a retroactive review',
-      'Vendor updates change behavior between annual reviews and nobody catches it',
+      'You give up on tasks that AI could actually help with',
+      'Each prompt feels like starting from scratch instead of building on what worked last time',
     ],
     whatGoodLooksLike: [
-      'Drift, performance, and behavior monitoring on an ongoing basis with named owners',
-      'A documented framework that treats AI tools as live systems, not annual artifacts',
+      'You reliably get structured, useful answers because your prompts include role, format, source, and a self-check',
+      'You save the prompts that work and reuse them as your personal template library',
     ],
   },
-  'vendor-risk': {
-    oneLine: 'AI vendors are being onboarded like ordinary SaaS — no AI-specific questions.',
+  'role-fit': {
+    oneLine: 'Your AI use is general experimentation, not tied to your actual job.',
     explanation:
-      "Third-party AI risk extends beyond data handling. Model behavior, explainability, drift, and integration risk all sit outside the standard TPRM questionnaire. Without an AI-specific overlay, the institution assumes risk it has not measured — and finds out at incident time.",
+      "General AI experiments do not stick. AI tied to three named tasks you already do every week becomes part of how you work. Until AI is mapped to specific things in your role — not \"productivity\" or \"writing\" but actual deliverables you own — it stays optional.",
     impacts: [
-      'A vendor model change introduces unintended behavior the institution has no contractual recourse against',
-      'Examiner asks for AI-specific TPRM evidence and the answer is the standard SaaS questionnaire',
+      'Your AI skills do not compound because you are not practicing on the same tasks repeatedly',
+      'When asked "how does AI help you?", the answer stays vague',
     ],
     whatGoodLooksLike: [
-      'An AI-specific TPRM overlay covering model behavior, explainability, drift monitoring, and integration risk',
-      "Contractual notification requirements for material model or behavior changes from each AI vendor",
+      'You can describe three role-specific tasks where AI is part of how you do the work',
+      'You can show before/after on at least one — the time saved, the quality difference, the artifact produced',
+    ],
+  },
+  'human-review': {
+    oneLine: 'You use AI output without a deliberate review step.',
+    explanation:
+      "AI writes confidently even when it is wrong. The fix is not a better AI — it is a review step you actually run. Low-stakes drafts can be self-reviewed; medium-stakes work goes to a colleague; high-stakes work (customer-facing, regulated decisions) goes to a named second reviewer.",
+    impacts: [
+      'Errors reach customers or decision processes because they read fine on the page',
+      'When something goes wrong, you cannot point to a review step that should have caught it',
+    ],
+    whatGoodLooksLike: [
+      'You can describe your review process for low/medium/high-stakes AI work — and who reviews each',
+      'High-stakes AI work has a named second reviewer, not just your own re-read',
+    ],
+  },
+  'documentation': {
+    oneLine: 'You cannot show someone exactly what AI did or what you changed.',
+    explanation:
+      "AI work that you cannot reconstruct is AI work that will be questioned — by a colleague, a reviewer, or an examiner. The fix is a three-minute habit: capture the prompt, the unedited output, and the edits you made before using it. The evidence trail matters more than the tool.",
+    impacts: [
+      'You cannot defend AI-assisted work in a review or audit',
+      'You repeat the same prompts because you did not save the ones that worked',
+    ],
+    whatGoodLooksLike: [
+      'You save the prompt, the unedited output, and your edits for any AI-assisted work that leaves your desk',
+      'A reviewer or examiner could reconstruct what AI did and what you decided',
+    ],
+  },
+  'vendor-awareness': {
+    oneLine: 'You do not know which of the tools you already use have AI inside them.',
+    explanation:
+      "Most banking software has quietly added AI features in the last eighteen months — summarization, drafting, classification, \"smart\" assistants. Often turned on by default. If you do not know which of your tools have AI inside, you cannot manage what data those tools see or what the vendor does with it.",
+    impacts: [
+      'AI features may be processing customer or internal data without your knowledge',
+      'You miss easy AI wins because you do not realize a tool already has the feature',
+    ],
+    whatGoodLooksLike: [
+      'You can name the AI features in each vendor tool you use and what data each feature sees',
+      'You know which vendors use your data for training and which do not',
+    ],
+  },
+  'customer-impact-awareness': {
+    oneLine: 'You are not always sure when AI touches a customer or a regulated decision.',
+    explanation:
+      "When AI helps draft a customer email, prepare a loan summary, generate adverse-action language, or sort complaints, it has crossed into regulated territory. ECOA/Reg B, UDAAP, BSA, and fair lending obligations apply whether or not you used AI. Knowing where the line is matters more than avoiding the work.",
+    impacts: [
+      'Customer-facing or regulated AI use happens without the review it actually requires',
+      'When asked which compliance rules apply to your AI use, the answer is approximate',
+    ],
+    whatGoodLooksLike: [
+      'You can list which of your AI uses touch a customer or a regulated decision — and treat those differently',
+      'For each, you can name which compliance rule applies (ECOA, UDAAP, BSA, fair lending)',
+    ],
+  },
+  'workflow-readiness': {
+    oneLine: 'Your AI use is ad hoc — every time is the first time.',
+    explanation:
+      "The difference between an AI chat and an AI workflow is whether anyone else could reproduce it. The format is always the same: input, AI draft, your review, final output. If you can write it down, a colleague can do it. If a colleague can do it, it becomes durable work — not just yours.",
+    impacts: [
+      'You re-invent the same prompt for the same task every time',
+      'If you stepped away, no one else could continue the work',
+    ],
+    whatGoodLooksLike: [
+      'For two or three recurring tasks, you have a written four-step flow: input → AI draft → review → final output',
+      'A colleague could pick up your workflow and run it without asking you questions',
+    ],
+  },
+  'training-culture': {
+    oneLine: 'You are figuring AI out alone, without role-specific guidance.',
+    explanation:
+      "The bankers who go furthest with AI are not the ones with the best employer training — they are the ones who own their learning, pick specific skills to build, and name specific sources to learn from. \"I will figure it out\" is the strategy that does not work.",
+    impacts: [
+      'Your AI growth plateaus because you are repeating what you already know',
+      'You cannot quickly answer "what should I learn next?" because no plan exists',
+    ],
+    whatGoodLooksLike: [
+      'You get role-specific guidance — from training, examples, or coaching — that you can apply directly',
+      'You know who to ask when you are stuck and where to go to level up',
+    ],
+  },
+  'leadership-visibility': {
+    oneLine: 'You do not know what your leadership tracks about AI or how your work fits.',
+    explanation:
+      "You cannot align with what you cannot see. If you do not know what good looks like to leadership — what is measured, what concerns them, what they want more of — your AI work is guesswork. The fix is one fifteen-minute conversation that turns abstract pressure into concrete direction.",
+    impacts: [
+      'Your AI work may be solving for the wrong outcome',
+      "When recognition arrives, it goes to people whose work was visible — not necessarily better",
+    ],
+    whatGoodLooksLike: [
+      'You know what leadership measures about AI use and how your work contributes',
+      'You can name three things you would do differently this month based on that visibility',
     ],
   },
 };
@@ -408,243 +408,243 @@ export interface Recommendation {
 
 export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
   'strategic-value': {
-    title: 'Name two AI candidate workflows this quarter',
+    title: 'Pick two of your own recurring tasks to use AI on this month',
     riskLevel: 'Low',
-    timeSaved: 'Unlocks the budget conversation that comes next',
-    owner: 'COO or AI lead + department heads',
+    timeSaved: 'The shift from general AI experimentation to specific wins you can name',
+    owner: 'You',
     explanation:
-      'Pick two recurring high-friction workflows — loan ops, BSA narratives, member communications, vendor-due-diligence summaries. Scope them as AI candidates with named owners and a measurable target. Specific workflows produce specific budgets; abstract programs produce abstract budgets.',
+      "Stop using AI in general. Pick two recurring tasks you already do — narratives, summaries, drafts, replies — and commit to using AI on them this month. Track what worked, what you rewrote, and how much time it saved. Two specific wins beat ten general experiments.",
     whyRightNow: [
       'Directly addresses your gap in Strategic Value',
-      'Converts an abstract conversation into a budget conversation',
-      "Forces specificity — you cannot scope a workflow you have not named",
+      'Builds a concrete answer to "how is AI helping you?"',
+      'Creates the muscle memory that AI skill compounds on',
     ],
     inPractice:
-      'A one-page brief per candidate: the workflow today, the friction, the AI shape that would help, the owner, and the 90-day measurable outcome. Take the two best to leadership.',
+      'A half-page brief per task: what you do today, the friction, the AI shape, what you still review, the win you will measure (time, quality, turnaround). Run one cycle per task this week.',
     worksBestFor: [
-      'Loan operations',
       'BSA / AML narrative drafting',
-      'Member communications drafts (with review)',
+      'Loan-file summaries',
+      'Member-message drafting (with review)',
     ],
   },
-  'infrastructure-readiness': {
-    title: 'Inventory your core APIs and integration gaps',
+  'approved-tool-path': {
+    title: 'Build a personal approved-tools reference card this week',
     riskLevel: 'Low',
-    timeSaved: 'Removes the silent blocker behind every later AI workflow',
-    owner: 'CIO / IT lead',
+    timeSaved: 'Stops the daily guessing about what is safe to use',
+    owner: 'You (with one email to IT / Compliance)',
     explanation:
-      'Build a one-page map: which core systems expose standard APIs, which are closed, which require a vendor request. Most AI workflow proposals stall on infrastructure questions that were never inventoried. Inventory the answer once and reuse it for every later workflow.',
+      "Send one email to your IT or compliance lead: \"Which AI tools are approved for staff use?\" Use the answer to build a one-page personal reference — Approved (green), Limited use (yellow), Off-limits (red). Then use only the green list for thirty days.",
     whyRightNow: [
-      'Directly addresses your gap in Infrastructure Readiness',
-      'Saves every later workflow from rediscovering the same blockers',
-      'Provides the artifact your AI roadmap needs as a precondition',
+      'Directly addresses your gap in Approved Tool Path',
+      'Removes the unspoken risk of using an unsanctioned tool',
+      'Gives you a credible answer if anyone asks "what did you use?"',
     ],
     inPractice:
-      'A single sheet with one row per system: integration type (open API / vendor marketplace / closed), last custom integration completed, integration-time estimate. Owned by IT, reviewed by the AI lead quarterly.',
+      'One page. Three sections: Approved (with allowed data classes), Limited, Off-limits. Live with it for thirty days; note where it gets in your way so you can advocate for additions.',
     worksBestFor: [
-      'Core platform planning conversations',
-      'Vendor selection',
-      'Annual technology budgeting',
-    ],
-  },
-  'data-quality': {
-    title: 'Stand up one verified data view',
-    riskLevel: 'Low',
-    timeSaved: 'Becomes the substrate every AI workflow draws on',
-    owner: 'Data / BI lead + department owner',
-    explanation:
-      'Pick the one data domain where AI workflows will land first — most likely member / customer 360 or loan operations. Build one verified, deduplicated view that AI tools can reference. The downstream workflows compound on it; the institutions that skip this step rebuild the same view three times.',
-    whyRightNow: [
-      'Directly addresses your gap in Data Quality',
-      'Every later AI workflow benefits from the same view',
-      "Surfaces data-quality issues that were always there but never measured",
-    ],
-    inPractice:
-      'One named domain. One owner. A documented refresh cadence. A data-quality review note attached. AI tools point at this view, not at the raw systems.',
-    worksBestFor: [
-      'Member / customer 360 reporting',
-      'Loan portfolio analysis',
-      'Operational dashboards',
-    ],
-  },
-  'security-approved-tools': {
-    title: 'Publish a one-page approved AI tool list',
-    riskLevel: 'Low',
-    timeSaved: 'Closes the audit risk your examiner is going to ask about',
-    owner: 'Compliance + IT',
-    explanation:
-      'A short list — three to five tools at most — with: tool name, what data is allowed in it, who approved it, the review cadence, and who to ask for additions. Staff stop guessing; compliance stops chasing; the examiner gets the artifact they were going to ask for.',
-    whyRightNow: [
-      'Directly addresses your gap in Security & Approved Tools',
-      'Closes a documented audit risk',
-      'Gives staff a credible answer to "what can I use?"',
-    ],
-    inPractice:
-      'One page. Three columns: tool, allowed data class, owner. A footer for the request-an-addition process. Reviewed quarterly; published in the same place as your acceptable use policy.',
-    worksBestFor: [
-      'Operations teams',
-      'Compliance review',
-      'New-hire onboarding packs',
-    ],
-  },
-  'runtime-safeguards': {
-    title: 'Add an input/output checklist to one workflow',
-    riskLevel: 'Low',
-    timeSaved: '15 minutes per pass, becomes reflex within a month',
-    owner: 'Workflow owner + compliance',
-    explanation:
-      "Pick one AI-assisted workflow staff already use. Add a two-sided checklist: before prompting (what data is in this? is it restricted?) and before using the output (does this need a reviewer? is it customer-facing?). Reflexes are built by repetition, not by training videos.",
-    whyRightNow: [
-      'Directly addresses your gap in Runtime Safeguards',
-      'Builds the reflex you need on every later workflow',
-      "Creates the audit artifact ('here is the checklist we follow')",
-    ],
-    inPractice:
-      'Six lines on a card. Three input checks, three output checks. Lives on the side of the screen, not in a binder. Reviewed monthly and refined as the workflow matures.',
-    worksBestFor: [
-      'Member-facing draft generation',
-      'Internal summary workflows',
-      'Compliance review processes',
-    ],
-  },
-  'regulatory-compliance': {
-    title: 'Map one AI use case to its regulatory regime',
-    riskLevel: 'Low',
-    timeSaved: 'Pre-answers the examiner question and the customer dispute',
-    owner: 'Compliance + workflow owner',
-    explanation:
-      "Pick one AI-assisted process that touches a regulated decision — adverse action, marketing eligibility, fraud screening. Write the one-page map: which regulation applies, what disclosures are required, who reviews the output, how the principal reasons are produced. The other use cases get the same treatment, one at a time.",
-    whyRightNow: [
-      'Directly addresses your gap in Regulatory Compliance',
-      'Becomes the template for every later AI-assisted decision',
-      'Surfaces gaps before an examiner or a customer does',
-    ],
-    inPractice:
-      'A one-page summary: process, regulation, disclosure requirement, review step, retention rule. Living document; updated as the process evolves.',
-    worksBestFor: [
-      'Adverse-action processes',
-      'Marketing eligibility decisions',
-      'Member service tier routing',
-    ],
-  },
-  'fair-lending-testing': {
-    title: 'Run a disparate-impact pass on one AI-assisted process',
-    riskLevel: 'Low',
-    timeSaved: 'Pre-empts the disparate-impact claim that would arrive cold',
-    owner: 'Compliance + analytics',
-    explanation:
-      "Pick the AI-assisted process closest to a credit decision. Run the same disparate-impact analysis your standard fair-lending program applies, with AI-assisted decisions flagged in the data. Report the outcome to the same forum your fair-lending program reports to. Make AI-assisted decisions a standard line item, not an exception.",
-    whyRightNow: [
-      'Directly addresses your gap in Fair Lending Testing',
-      'Establishes the protocol every later AI-assisted decision will follow',
-      'Closes a regulatory exposure that compounds quietly until forced into the open',
-    ],
-    inPractice:
-      'A documented testing pass, completed once. Flag AI-assisted decisions in the data. Compare disparate-impact metrics against the non-AI baseline. Report to the same forum at the same cadence.',
-    worksBestFor: [
-      'Credit decision workflows',
-      'Marketing eligibility decisions',
-      'Member service tier assignment',
-    ],
-  },
-  'human-in-the-loop': {
-    title: 'Write the oversight matrix for your AI use cases',
-    riskLevel: 'Low',
-    timeSaved: 'Turns an implicit policy into a defensible one',
-    owner: 'Compliance + AI lead',
-    explanation:
-      "Take the AI use cases that exist today. Map each one to an oversight level: automated, sampled review, mandatory human approval. Write it on one page. Review it quarterly. Without the matrix, oversight is whatever the most cautious or the most rushed person decides this week.",
-    whyRightNow: [
-      'Directly addresses your gap in Human-in-the-Loop',
-      'Closes the audit question about oversight policy',
-      "Forces a conversation about which use cases deserve which level of review",
-    ],
-    inPractice:
-      'One page. Columns: use case, oversight level, named reviewer, review cadence, log location. Living document. Reviewed quarterly. Updated as use cases mature.',
-    worksBestFor: [
-      'Credit decision support workflows',
-      'Member service draft generation',
-      'Internal summary workflows',
-    ],
-  },
-  'talent-culture': {
-    title: 'Redefine one role around AI oversight',
-    riskLevel: 'Moderate',
-    timeSaved: 'Establishes the career path that retains your best people',
-    owner: 'HR + department head',
-    explanation:
-      "Pick one role — most likely an operations analyst or compliance specialist. Rewrite the job description to include AI oversight and workflow design. Update the performance expectations. Make it the role that gets the institution's next builder onto a defined path, instead of leaving for an institution that has one.",
-    whyRightNow: [
-      'Directly addresses your gap in Talent & Culture',
-      "Signals to staff that the institution is investing in their next move, not waiting for it",
-      'Establishes the template the rest of the role redefinitions follow',
-    ],
-    inPractice:
-      'One redefined role. One updated job description. One performance objective tied to an AI workflow they will own. Reviewed at the next performance cycle.',
-    worksBestFor: [
-      'Operations analysts',
-      'Compliance specialists',
-      'Lending operations leads',
+      'Daily AI drafting work',
+      'Cross-team collaboration on AI tools',
+      'Onboarding into new departments',
     ],
   },
   'data-safety-reflexes': {
-    title: 'Train one team on Green / Yellow / Red',
+    title: 'Build a personal "what never goes in" reference card',
     riskLevel: 'Low',
-    timeSaved: 'Lowers your single-largest unmeasured compliance risk',
-    owner: 'L&D + Compliance',
+    timeSaved: 'Removes the daily second-guessing about what is safe to paste',
+    owner: 'You',
     explanation:
-      "A 30-minute team session walking through a simple classification — Green (public), Yellow (internal), Red (NPI / PII). Worked examples from real banking work, with the fake data plainly marked. Follow up with two-week reinforcement: the manager reviews one AI-assisted output per week with the team and flags the data class.",
+      "Make the rule explicit. Write down the categories of information you handle that should never go into a public AI tool. Practice stripping identifiers from three recent emails. Identify the approved internal tool you would switch to when the work needs the real data.",
     whyRightNow: [
       'Directly addresses your gap in Data Safety Reflexes',
-      "Reduces the most common AI-driven compliance failure (PII into public tools)",
-      'Establishes the reflex that every later workflow depends on',
+      'Closes the single most common AI-driven incident at a community bank',
+      'Builds the muscle memory every other AI signal depends on',
     ],
     inPractice:
-      'A 30-minute training. Worked examples on a one-page card. Two weeks of reinforcement reviews. Repeats with the next team the following month.',
+      'A one-page card. Eight to ten categories. Three or four habits. Tape it to your monitor for a month and the reflex is permanent.',
     worksBestFor: [
-      'Operations teams',
-      'BSA / AML and compliance',
-      'Front-line member service',
+      'Customer-facing message drafting',
+      'BSA and complaint narratives',
+      'Any AI use that touches real customer data',
     ],
   },
-  'continuous-validation': {
-    title: 'Add one drift check to your model risk framework',
+  'prompting-skill': {
+    title: 'Adopt the five-part prompt frame for one week',
     riskLevel: 'Low',
-    timeSaved: 'Closes the gap before the audit finds it',
-    owner: 'Model risk + analytics',
+    timeSaved: 'Turns generic AI answers into useful ones the first time',
+    owner: 'You',
     explanation:
-      "Pick the AI tool with the highest decision weight. Add one quantitative drift check on a monthly cadence — output distribution, error rate, or a holdout sample. Document the threshold that triggers a deeper review. The point is to leave annual review behind for one tool, not all of them at once.",
+      "Every prompt for real work should include five things: the role AI is playing, the format you want back, the source material, an explicit \"check your work\" instruction, and what you will edit. Apply it to one task at a time. After a week you will have five prompts that work.",
     whyRightNow: [
-      'Directly addresses your gap in Continuous Validation',
-      'Establishes the cadence that later validation work will inherit',
-      "Closes a gap your examiner is going to surface eventually",
+      'Directly addresses your gap in Prompting Skill',
+      'Saves the time currently spent rewriting bad answers',
+      'Compounds — each pattern you learn applies to the next task',
     ],
     inPractice:
-      'One tool. One drift metric. One monthly review. One named threshold. A note in the model inventory that this tool is on the continuous cadence; the others are still on annual until brought across.',
+      'A five-line template. Fill in role, format, source, self-check, edit. Reuse for every prompt. Save the ones that work to a personal prompt library.',
     worksBestFor: [
-      'Credit decision support models',
-      'Fraud-screening tools',
-      'Pricing or risk-tier assistants',
+      'Compliance review summaries',
+      'Loan-narrative drafting',
+      'Member-message drafts (with review)',
     ],
   },
-  'vendor-risk': {
-    title: 'Add an AI-specific overlay to your TPRM questionnaire',
+  'role-fit': {
+    title: 'Map AI to three specific tasks in your role',
     riskLevel: 'Low',
-    timeSaved: 'Pre-answers the examiner question on third-party AI risk',
-    owner: 'Vendor management + compliance',
+    timeSaved: 'Stops general experimentation; starts compounding skill on the same work',
+    owner: 'You',
     explanation:
-      "Take your standard TPRM questionnaire. Add a one-page AI overlay: model behavior, explainability, drift monitoring, integration risk, notification requirements for material model changes. Apply it to every AI vendor going forward, and retroactively to the top three already in production.",
+      "List the five tasks that take the most time in your typical week. Pick the three where AI could plausibly draft, summarize, classify, or compare. Run one real-work cycle this week on each. The point is to make AI part of how you actually do your job, not a side experiment.",
     whyRightNow: [
-      'Directly addresses your gap in Vendor Risk',
-      'Becomes the standard every later AI vendor passes through',
-      'Closes a documented audit risk',
+      'Directly addresses your gap in Role Fit',
+      'Turns scattered AI use into compounding role-specific skill',
+      'Builds the concrete answer to "how does AI help you?"',
     ],
     inPractice:
-      'One page added to the TPRM packet. Three retroactive applications to existing vendors this quarter. Standard for every new vendor going forward.',
+      'A short list of three named tasks. One AI-assisted cycle per task this week. Notes on what worked, what you rewrote, what you would do differently.',
     worksBestFor: [
-      'AI feature additions to existing platforms',
-      'New AI vendor selection',
-      'Model-update notification requirements',
+      'Operations roles with recurring write-ups',
+      'Compliance review',
+      'Member-service draft generation',
+    ],
+  },
+  'human-review': {
+    title: 'Write your personal "review before send" checklist',
+    riskLevel: 'Low',
+    timeSaved: 'Catches the errors that read fine on the page',
+    owner: 'You',
+    explanation:
+      "Sort your AI-assisted work into Low (drafts, internal), Medium (goes to a colleague), and High (touches a customer or a regulated decision). Define the review step for each. Write down who the named second reviewer is for High-tier work. Treat close calls as High.",
+    whyRightNow: [
+      'Directly addresses your gap in Human Review',
+      'Catches the AI errors that look right but are not',
+      'Pre-answers the audit question about your review process',
+    ],
+    inPractice:
+      'A one-page checklist. Three tiers, criteria for each, the review step required, and named reviewers for High-tier work. Live with it for a month and refine.',
+    worksBestFor: [
+      'Customer-facing AI drafts',
+      'Lending narrative review',
+      'Compliance and complaint responses',
+    ],
+  },
+  'documentation': {
+    title: 'Start a three-minute "save the prompt" habit this week',
+    riskLevel: 'Low',
+    timeSaved: 'Three minutes per item now saves an hour of reconstruction later',
+    owner: 'You',
+    explanation:
+      "Pick a location — a folder, a OneNote section, a shared drive. For each AI-assisted item, save: the date, the task, the prompt, the unedited output, the edits you made, the final version. A reviewer or examiner could reconstruct what AI did and what you decided.",
+    whyRightNow: [
+      'Directly addresses your gap in Documentation',
+      'Creates the evidence trail your work needs if questioned',
+      'Builds the library of prompts that worked',
+    ],
+    inPractice:
+      'A simple template with six fields. Filled in as you go, not retroactively. Backfill one week of recent work to seed the library.',
+    worksBestFor: [
+      'AI work that touches a customer or a regulator',
+      'Recurring tasks where prompts get reused',
+      'Audit and exam preparation',
+    ],
+  },
+  'vendor-awareness': {
+    title: 'Inventory the AI hiding inside your vendor tools',
+    riskLevel: 'Low',
+    timeSaved: 'Surfaces AI features that may already be processing your data',
+    owner: 'You (with light vendor research)',
+    explanation:
+      "Write down every vendor tool you use in a typical week. For each, mark Yes / No / Unknown for \"has AI features.\" For Unknown, spend two minutes on the vendor's release notes. Note what data each AI feature has access to.",
+    whyRightNow: [
+      'Directly addresses your gap in Vendor Awareness',
+      'Surfaces AI you did not know was processing your data',
+      'Lets you make informed choices about which AI features to use',
+    ],
+    inPractice:
+      'A one-page inventory: vendor, primary use, AI features (yes/no/unknown), what data the AI sees, notes. Done once, updated quarterly.',
+    worksBestFor: [
+      'Core banking and loan-origination platforms',
+      'Document management and ticketing tools',
+      'BSA / AML software stacks',
+    ],
+  },
+  'customer-impact-awareness': {
+    title: 'Map your AI uses to the regulated decisions they touch',
+    riskLevel: 'Low',
+    timeSaved: 'Pre-answers the examiner question about AI in regulated work',
+    owner: 'You',
+    explanation:
+      "List every place AI assists your work that ends up in front of a customer or feeds a decision. For each, note which rule applies — ECOA/Reg B, UDAAP, BSA, fair lending — or mark \"internal only.\" Tighten the review step for each rule-touching item.",
+    whyRightNow: [
+      'Directly addresses your gap in Customer Impact Awareness',
+      "Reframes AI use from \"experimentation\" to \"work I can defend\"",
+      'Creates the answer your compliance partner will eventually ask for',
+    ],
+    inPractice:
+      'A short map: AI use case, who sees the output, which rule applies, the review step. Living document; updated as your AI use changes.',
+    worksBestFor: [
+      'Adverse-action language drafting',
+      'Marketing copy and complaint responses',
+      'BSA narrative review',
+    ],
+  },
+  'workflow-readiness': {
+    title: 'Document one recurring AI workflow end-to-end this month',
+    riskLevel: 'Low',
+    timeSaved: 'Stops re-inventing the same prompt every time',
+    owner: 'You',
+    explanation:
+      "Pick one recurring task where AI already helps. Write the four steps: input (raw material), AI draft (prompt + tool + output shape), review (who checks what), final output (where it goes, what is saved). Hand it to a colleague. If they can run it without asking, you have a workflow.",
+    whyRightNow: [
+      'Directly addresses your gap in Workflow Readiness',
+      'Turns ad-hoc AI use into durable, transferable work',
+      'Creates the template every other workflow will follow',
+    ],
+    inPractice:
+      'A one-page workflow doc. Four steps. Clear enough that a colleague can run it cold. Updated as the workflow matures.',
+    worksBestFor: [
+      'BSA narrative drafting',
+      'Loan-file summary generation',
+      'Recurring member-message templates',
+    ],
+  },
+  'training-culture': {
+    title: 'Build a six-week personal AI learning plan',
+    riskLevel: 'Low',
+    timeSaved: 'Replaces "I will figure it out" with measurable skill growth',
+    owner: 'You',
+    explanation:
+      "Pick three concrete AI skills relevant to your role. Name one source for each — a course, a written guide, a colleague who already does it well. Block thirty minutes a week per skill on your calendar. Six weeks × three skills × thirty minutes = nine hours of real practice.",
+    whyRightNow: [
+      'Directly addresses your gap in Training Culture',
+      'Owns your AI growth instead of waiting for institutional training',
+      'Builds the answer to "what did you learn this quarter?"',
+    ],
+    inPractice:
+      'A personal six-week plan. Three skills. Three sources. Week-by-week practice schedule. Specific "done" criteria for each skill at week six.',
+    worksBestFor: [
+      'Self-directed professional development',
+      'Manager / employee growth conversations',
+      'Preparing for the next role',
+    ],
+  },
+  'leadership-visibility': {
+    title: 'Have a fifteen-minute "what does AI good look like?" conversation',
+    riskLevel: 'Low',
+    timeSaved: 'Replaces guesswork with direction',
+    owner: 'You (plus your manager)',
+    explanation:
+      "Schedule fifteen minutes with your manager. Ask five questions: What does leadership want from AI use this year? What worries leadership about AI? How is AI use measured? What would \"exceeding expectations\" look like? Where can I see this measured? Translate the answers into three things you will do differently this month.",
+    whyRightNow: [
+      'Directly addresses your gap in Leadership Visibility',
+      'Aligns your AI work to what your institution actually values',
+      'Creates the recognition path that makes AI work visible',
+    ],
+    inPractice:
+      'One fifteen-minute conversation. Notes you can act on. Three changes to your work this month. One follow-up with a colleague to share what you learned.',
+    worksBestFor: [
+      'Performance review preparation',
+      'Department or team alignment',
+      'Pursuing leadership-track opportunities',
     ],
   },
 };
@@ -660,156 +660,159 @@ export interface StarterPrompt {
 
 export const STARTER_PROMPTS: Record<Dimension, StarterPrompt> = {
   'strategic-value': {
-    label: 'Candidate workflow brief starter',
-    prompt: `I am scoping a workflow inside my community bank or credit union as an AI candidate. The workflow is [DESCRIBE WORKFLOW IN PLAIN LANGUAGE].
+    label: 'Candidate-task brief starter',
+    prompt: `I work at a community bank and I want to use AI on a specific recurring task instead of experimenting in general. The task is [DESCRIBE THE TASK].
 
-Help me draft a one-page brief covering:
-- The workflow today, in three to five bullets
-- The friction points an AI tool could meaningfully reduce
-- The shape of the AI assistance (summarization, drafting, classification, comparison)
-- The named owner and review step
-- A measurable 90-day outcome
+Help me draft a half-page brief covering:
+- What I do today, in three to five bullets
+- The friction points AI could meaningfully reduce
+- The shape of the AI assistance (drafting, summarizing, classifying, comparing)
+- What I would still review myself
+- The measurable 30-day outcome (time saved, fewer revisions, faster turnaround)
 
-Tone should be specific, conservative, and free of vendor jargon. Audience: an executive committee that has not yet committed budget.`,
+Tone: specific, conservative, no vendor jargon. Length: half a page maximum.`,
   },
-  'infrastructure-readiness': {
-    label: 'Core systems integration map starter',
-    prompt: `I am inventorying the integration readiness of my institution's systems for upcoming AI workflows.
 
-Help me draft a one-page map covering:
-- Each core or operational system in scope
-- The integration type (open API, vendor marketplace only, closed)
-- The last custom integration completed and roughly how long it took
-- Known blockers or dependencies on the core provider
-- A "ready / partial / blocked" rating per system
+  'approved-tool-path': {
+    label: 'Approved-tools reference-card builder',
+    prompt: `Help me draft a one-page personal "approved AI tools" reference card for my own use at a community bank.
 
-Format as a single table I can take to IT and the AI lead.`,
+Format three sections:
+- Approved (green): tools I can use, including what data classes are allowed
+- Limited use (yellow): tools I can use only for certain data
+- Off-limits (red): tools I should not use, including why
+
+I will fill in the tool names. Keep the language plain enough that a colleague could read it in under two minutes. Include a one-line footer on what to do if I want to add a new tool.`,
   },
-  'data-quality': {
-    label: 'Verified data view starter',
-    prompt: `I am scoping a verified, AI-ready data view for one domain at my institution. The domain is [MEMBER 360 / LOAN PORTFOLIO / OPERATIONAL].
 
-Help me draft:
-- The source systems that feed this view
-- The deduplication and reconciliation rules
-- The refresh cadence
-- The named owner
-- The data-quality review notes to attach
-
-Keep it practical for a community-bank-sized data team. No big-data tooling assumed.`,
-  },
-  'security-approved-tools': {
-    label: 'Approved AI tool list starter',
-    prompt: `I am publishing my institution's first one-page approved AI tool list.
-
-For each tool, capture:
-- Tool name and vendor
-- The data class allowed in it (public / internal / restricted)
-- The named owner (who approves new use cases)
-- The review cadence
-- The process for requesting an addition
-
-Format as a one-page document I can publish alongside our acceptable use policy. Tone is matter-of-fact, not promotional.`,
-  },
-  'runtime-safeguards': {
-    label: 'Input/output checklist starter',
-    prompt: `I am creating a runtime safeguards checklist for one AI-assisted workflow. The workflow is [DESCRIBE WORKFLOW].
-
-Draft a six-line checklist:
-- Three "before prompting" checks (what data is going in, is any of it restricted, do I have the right approved tool)
-- Three "before using output" checks (does this need a reviewer, is this customer-facing, has the output been sampled for accuracy)
-
-Keep it short enough to live on the side of a screen. Tone is operational, not theoretical.`,
-  },
-  'regulatory-compliance': {
-    label: 'AI use-case regulatory map starter',
-    prompt: `I am mapping one AI-assisted process at my institution to the regulations that apply to it. The process is [DESCRIBE THE PROCESS].
-
-Draft a one-page map covering:
-- The process today, in three to five bullets
-- The regulations that apply (ECOA / Reg B, SR 11-7, AIEOG Lexicon, others)
-- The disclosures required (adverse-action reasons, model documentation, etc.)
-- The review step and named reviewer
-- The retention rule for any AI-generated artifact
-
-Tone is practical, examiner-aware, and free of consultancy jargon.`,
-  },
-  'fair-lending-testing': {
-    label: 'Disparate-impact pass starter',
-    prompt: `I am running a disparate-impact analysis on one AI-assisted process at my institution. The process is [DESCRIBE].
-
-Help me draft:
-- The data slice I need (decisions, applicant attributes, protected-class indicators where available)
-- The metrics to compute (approval rate gap, score distribution comparison, outcome variance)
-- The non-AI baseline to compare against
-- The reporting forum and cadence
-- The escalation path if a metric crosses an internal threshold
-
-Output should be a one-page plan I can take to compliance and analytics.`,
-  },
-  'human-in-the-loop': {
-    label: 'Oversight matrix starter',
-    prompt: `I am writing my institution's first AI oversight matrix.
-
-For each AI use case in production, capture:
-- The use case (one line)
-- The oversight level (automated / sampled / mandatory approval)
-- The named reviewer
-- The review cadence
-- Where the log lives
-
-Format as a single one-page table. Tone is operational. Audience: compliance, audit, examiners.`,
-  },
-  'talent-culture': {
-    label: 'Role redefinition starter',
-    prompt: `I am redefining one role at my institution around AI oversight. The current role is [TITLE].
-
-Help me draft:
-- A revised one-paragraph role description
-- Three performance objectives tied to AI workflows or oversight outcomes
-- The 90-day onboarding plan for someone stepping into the role
-- The reporting line and the manager review cadence
-
-Tone is straightforward and grounded in community-bank operations. No tech-industry job-description language.`,
-  },
   'data-safety-reflexes': {
-    label: 'Data classification training starter',
-    prompt: `I am running a 30-minute training on data safety for AI use with one team.
+    label: 'Personal "what never goes in" card',
+    prompt: `Help me draft a one-page personal "safe AI use" reference card for a community bank employee.
 
-Help me draft:
-- A one-paragraph framing for staff who have never thought about this
-- The three categories (Green / Yellow / Red) with one-line definitions
-- Five worked examples using clearly synthetic (not real) data, showing the classification call
-- Two short check-for-understanding questions
-- The two-week reinforcement plan the manager runs after the session
+Include:
+- Eight to ten categories of information that should never go into a public AI tool, with one-sentence reasons each
+- Four habits to build: strip identifiers first, use approved tools for sensitive work, check outputs before sending, know who to ask
+- One short paragraph on how to think about close calls
 
-Audience: front-line community-bank or credit-union staff. Tone is practical, not technical.`,
+Tone: matter-of-fact, no scare quotes. Length: fits on a single printed page.`,
   },
-  'continuous-validation': {
-    label: 'Drift check starter',
-    prompt: `I am adding a continuous drift check to one AI tool in our model inventory. The tool is [DESCRIBE TOOL AND DECISION WEIGHT].
 
-Help me draft:
-- The drift metric (output distribution, error rate, or holdout-sample performance)
-- The cadence (monthly is the default)
-- The threshold that triggers a deeper review
-- The named reviewer
-- Where the result is logged and to whom it reports
+  'prompting-skill': {
+    label: 'Five-pattern prompting starter kit',
+    prompt: `Help me draft five reusable prompt templates for my work at a community bank as a [YOUR ROLE].
 
-Output should be a one-page addition to the model risk file for this tool.`,
+Each template should follow this five-part shape:
+- Role (what role AI is playing — analyst, drafter, reviewer, summarizer)
+- Format (what shape I want the answer in)
+- Source material (what I will paste in)
+- Self-check instruction (what AI should verify in its own answer)
+- What I will edit (where my judgment overrides AI)
+
+Pick five high-leverage patterns for a community bank role. Keep each template tight enough to paste and fill in.`,
   },
-  'vendor-risk': {
-    label: 'AI vendor TPRM overlay starter',
-    prompt: `I am adding an AI-specific overlay to my institution's standard TPRM questionnaire.
 
-Draft a one-page overlay covering:
-- Model behavior and known limitations
-- Explainability (can principal-reason disclosures be produced)
-- Drift monitoring (vendor practices and notifications)
-- Integration risk (where the model touches our systems and our data)
-- Notification requirements for material model or behavior changes
+  'role-fit': {
+    label: 'Three role-specific AI use cases',
+    prompt: `Help me identify three tasks in the role of [YOUR ROLE] at a community bank where AI would plausibly save time or improve quality.
 
-Tone is examiner-grade. Audience: vendor management plus compliance.`,
+For each task, describe:
+- What I do today (one short paragraph)
+- The shape of the AI assistance (drafting, summarizing, classifying, comparing)
+- The prompt frame I would use
+- What I would still review myself before the output is used
+- The measurable difference I should expect to see in a week
+
+Avoid generic productivity examples. Be specific to this role.`,
+  },
+
+  'human-review': {
+    label: 'Personal review-before-send checklist',
+    prompt: `Help me draft a personal "AI work review" checklist for my role at a community bank.
+
+The checklist should have three tiers:
+- Low (drafts, internal notes — self-review only)
+- Medium (work that goes to a colleague — colleague reviews)
+- High (work that touches a customer or a regulated decision — named second reviewer)
+
+For each tier, specify: the criteria that put work in this tier, the review step required, who reviews. For the High tier, list three to five specific things the reviewer should check (accuracy of figures, sources for claims, customer-facing language, compliance fit, retention).`,
+  },
+
+  'documentation': {
+    label: 'AI recordkeeping template',
+    prompt: `Help me design a lightweight recordkeeping template for AI-assisted work at a community bank.
+
+The template should capture:
+- Date and task name
+- The prompt I used (verbatim)
+- The unedited AI output
+- The edits I made before use
+- The final version that was used
+
+Keep it tight enough that filling it in takes under three minutes per item. Include a one-line note on retention practice — how long to keep these records and where they should live.`,
+  },
+
+  'vendor-awareness': {
+    label: 'Personal vendor-AI inventory worksheet',
+    prompt: `Help me design a one-page vendor-AI inventory worksheet for an individual community bank employee.
+
+Columns should include:
+- Vendor name
+- Primary use (what I use the tool for)
+- Has AI features (yes / no / unknown)
+- AI features in use
+- Data the AI sees
+- Notes
+
+Include a brief instruction on how to check release notes when the answer is "unknown," and a one-line prompt for what to do when I find an AI feature I did not know about.`,
+  },
+
+  'customer-impact-awareness': {
+    label: 'AI customer-impact map',
+    prompt: `Help me draft a one-page "customer impact map" for my AI-assisted work at a community bank.
+
+For each AI use case I list, the map should show:
+- What the AI produced
+- Who it ends up in front of (customer, internal, regulator)
+- Which rule applies (ECOA / Reg B, UDAAP, BSA, fair lending, internal only)
+- The specific review step required before use
+- The retention practice
+
+Give me the headers and a worked example for one obvious case (a customer email draft, say). I will fill in my own cases from there.`,
+  },
+
+  'workflow-readiness': {
+    label: 'Four-step AI workflow document',
+    prompt: `Help me draft a four-step workflow document for using AI on [DESCRIBE THE RECURRING TASK] at a community bank.
+
+Format:
+- Step 1 — Input: what raw material starts the task
+- Step 2 — AI Draft: the prompt template, the tool, the expected output shape
+- Step 3 — Review: who reviews, what they check, what gets rejected
+- Step 4 — Final Output: where it goes, what is saved, retention
+
+Write it tight enough for a colleague to follow without asking me questions. Include a one-line "common failure mode" note at the end of each step.`,
+  },
+
+  'training-culture': {
+    label: 'Personal six-week AI learning plan',
+    prompt: `Help me draft a personal six-week AI learning plan for a community bank employee in the role of [YOUR ROLE].
+
+Pick three concrete AI skills relevant to that role. For each:
+- Why this skill matters for this role
+- One starter source (a course, a written guide, a community of practice — be specific)
+- A week-by-week practice schedule that fits in thirty minutes per week
+- What "done" looks like at the end of week six
+
+Six weeks total. Three skills running in parallel, thirty minutes per skill per week. Be specific about deliverables, not just topics.`,
+  },
+
+  'leadership-visibility': {
+    label: 'Leadership-visibility conversation kit',
+    prompt: `Help me prepare for a fifteen-minute conversation with my manager about AI use at a community bank.
+
+The conversation goals are: understand what leadership tracks about AI, what good looks like, what worries them, where my work fits.
+
+Draft five primary questions I should ask. For each, include two short follow-up questions to use if the first answer is too general. Tone: professional, curious, not pushy. Also include three things I should be ready to share about my own AI use — wins, questions, where I am stuck — so the conversation is a two-way exchange.`,
   },
 };
 

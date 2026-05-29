@@ -18,6 +18,7 @@ export {
   FINANCIAL_IMPLICATIONS,
   TIER_CLOSING_CTA,
 } from './personalization';
-export { getStarterArtifact, STARTER_ARTIFACTS } from './starter-artifacts';
+export { getStarterArtifact } from './starter-artifacts';
+export type { StarterArtifact } from './starter-artifacts';
 export { detectProfile, PROFILE_META } from './profiles';
 export type { Profile, ProfileMeta } from './profiles';

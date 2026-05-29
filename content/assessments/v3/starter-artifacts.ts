@@ -1,12 +1,17 @@
-// Dimension-keyed starter artifacts for the v3 post-assessment breakdown.
-// Each banker who completes the assessment gets ONE artifact tied to their
-// lowest-scoring dimension — copy/pasteable markdown they can take to a
-// colleague this week.
+// Signal-keyed starter artifacts for the v3 post-assessment breakdown.
 //
-// Voice: banker-direct, specific. Three concrete actions for the week, one
-// starter prompt that works in any chat tool, one clear citation strip.
-// No marketing, no AI buzzwords. Same body ships across all four tiers
-// for a given dimension; tier-specific framing is added at render time.
+// Each banker who completes the free Readiness Snapshot gets ONE artifact
+// tied to their lowest-scoring signal — copy/pasteable markdown they can
+// take to a colleague this week.
+//
+// Voice: second-person, individual, banker-direct. Three concrete actions
+// for the week, one starter prompt that works in any chat tool. No
+// marketing, no AI buzzwords. Same body ships across all four tiers for a
+// given signal; tier-specific framing is added at render time.
+//
+// Source: docs/Plans/_assets/aibi-assessment-architecture-2026-05-28.md
+// Section 9 ("Starter Artifact Recommendation Logic") plus the
+// dimension-level "starter artifacts" lists in Section 4.
 
 import type { Dimension } from './types';
 
@@ -19,523 +24,405 @@ export interface StarterArtifact {
 
 const ARTIFACTS: Record<Dimension, StarterArtifact> = {
   'strategic-value': {
-    title: 'A 30-day "candidate workflow" brief',
-    subtitle: 'Pick two workflows worth scoping for AI — name owners, name outcomes.',
+    title: 'A 30-day "candidate task" brief for your own AI use',
+    subtitle: 'Pick two tasks in your week worth using AI on — name the friction, name the win.',
     filename: 'aibi-strategic-value.md',
-    body: `# A 30-day "candidate workflow" brief
+    body: `# A 30-day candidate-task brief
 
-The institutions that move from AI talk to AI value share one thing: they pick
-specific workflows, name owners, and tie those workflows to numbers leadership
-already tracks. Programs that stay at the "we should look at AI" altitude rarely
-make it through a budget cycle.
+People who get real value out of AI share one trait: they stop using AI in
+general and start using AI on specific tasks they own. The shift takes a
+week to make and a month to prove.
 
 ## Three things you can do this week
 
-1. **List the friction.** Sit with each department head for 20 minutes. Ask one
-   question: "What is the recurring task that takes too long and produces an
-   output that is mostly the same every time?" Write down what you hear.
-2. **Pick two candidates.** From the list, pick two workflows you think AI
-   could meaningfully assist — typical candidates are BSA narrative drafting,
-   loan-file summaries, vendor-due-diligence write-ups, member communications.
-3. **Write the one-page brief.** For each candidate: the workflow today, the
-   friction, the AI shape (summarization, drafting, classification), the named
-   owner, the 90-day measurable outcome. Take both to leadership.
+1. **List your friction.** Sit with your calendar for fifteen minutes. Circle
+   the recurring tasks that take too long and produce roughly the same
+   output every time — narratives, summaries, drafts, write-ups, replies.
+2. **Pick two candidates.** From the list, pick two where AI could plausibly
+   help. Examples: BSA narrative drafting, loan-file summaries, internal
+   meeting notes, vendor follow-up emails, prep for an exam request.
+3. **Write the half-page brief.** For each task: what you do today, the
+   friction, what AI would draft, what you would still review, the win
+   you'd measure (time saved, fewer revisions, faster turnaround).
 
 ## A starter prompt to use
 
-> Help me draft a one-page candidate-workflow brief for an AI initiative at my
-> community bank. The workflow is [DESCRIBE]. Cover: the workflow today in
-> three to five bullets, the friction points, the shape of the AI assistance,
-> the named owner, and a measurable 90-day outcome. Tone: specific,
-> conservative, no vendor jargon.
-
-## Why this is the right first step
-
-Budget conversations stall on abstraction. Two named workflows with named
-owners and named outcomes turn the AI conversation into a project plan, and
-project plans get funded.
-
-## Citations
-
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-- Getting Started in AI, Jack Henry & Associates, 2025
+> Help me write a half-page "candidate task" brief for using AI on
+> [DESCRIBE THE TASK] in my work at a community bank. Cover: what I do
+> today in three to five bullets, the friction points, the shape of the
+> AI assistance, what I would still review myself, and the measurable
+> 30-day outcome. Tone: specific, conservative, no vendor jargon.
 `,
   },
 
-  'infrastructure-readiness': {
-    title: 'A one-page core-integration map',
-    subtitle: 'Inventory the silent blocker behind every later AI workflow.',
-    filename: 'aibi-infrastructure-readiness.md',
-    body: `# A one-page core-integration map
+  'approved-tool-path': {
+    title: 'A two-page "approved tools" personal reference card',
+    subtitle: 'Build the answer to "which AI tools am I allowed to use at work?" — once.',
+    filename: 'aibi-approved-tool-path.md',
+    body: `# Your personal approved-tools reference card
 
-Most AI workflow proposals do not fail on AI. They fail on integration —
-"can the data get in, can the output get back, does the core provider need
-to be involved." Inventory the answer once and reuse it for every later
-proposal.
-
-## Three things you can do this week
-
-1. **List every operational system.** Core, loan origination, deposit
-   platform, CRM, document management, BSA / AML, board portal. One row
-   each.
-2. **Tag the integration type.** Open API, vendor marketplace only, closed.
-   Note the last custom integration completed and roughly how long it took.
-3. **Rate readiness.** "Ready" if we can integrate without core-provider
-   intervention. "Partial" if the provider's marketplace covers it.
-   "Blocked" if any new connection is a multi-month vendor project.
-
-## A starter prompt to use
-
-> Help me draft a one-page core-integration map for AI workflows at my
-> institution. The systems are [LIST]. For each, capture: integration type,
-> last custom integration completed, known blockers, and a "ready / partial /
-> blocked" rating. Format as a single table.
-
-## Why this is the right first step
-
-AI initiatives that look the same on paper diverge wildly based on
-integration readiness. Surface the constraint before you scope the workflow,
-not after.
-
-## Citations
-
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-- Hybrid Multi-Cloud AI Strategy, SS&C Managed IT, 2025
-`,
-  },
-
-  'data-quality': {
-    title: 'A one-domain verified data view',
-    subtitle: 'Build the substrate every later AI workflow will draw on.',
-    filename: 'aibi-data-quality.md',
-    body: `# A one-domain verified data view
-
-AI is only as good as the data it references. Most community banks discover
-this the hard way — three AI experiments in a row produce uneven results
-because the underlying data was uneven. Build one verified view first;
-everything else compounds on it.
+Most bankers default to whatever AI tool they found first. The fix is
+simple: know what your institution has actually approved, and use it. If
+nothing is formally approved, you still need a personal rule.
 
 ## Three things you can do this week
 
-1. **Pick the domain.** Member / customer 360 is the most common first
-   choice. Loan portfolio is the second. Pick the one where the next two
-   AI workflows will land.
-2. **Document the rules.** Source systems that feed the view, deduplication
-   logic, refresh cadence, the named owner. One page.
-3. **Attach the review note.** Known data-quality issues, the cadence of
-   the data-quality review, who signs off. Make the review note part of
-   the view itself, not a separate document nobody reads.
+1. **Ask the question.** Email your IT or compliance lead one sentence:
+   "Which AI tools are approved for staff use, and which are restricted?"
+   Save the answer in a file you can refer to.
+2. **Build the card.** Make a one-pager: Approved tools (green), Limited
+   use (yellow — only for certain data), Off-limits (red). If your
+   institution has not classified tools yet, draft your best guess and
+   ask compliance to confirm.
+3. **Use only the green list.** For thirty days, work only inside approved
+   tools. When you hit a gap, write it down — that becomes your case for
+   getting a new tool approved.
 
 ## A starter prompt to use
 
-> Help me scope a verified, AI-ready data view for the [MEMBER 360 / LOAN
-> PORTFOLIO / OPERATIONAL] domain at my community bank. For each:
-> source systems, deduplication and reconciliation rules, refresh cadence,
-> named owner, data-quality review notes to attach. Keep it practical for a
-> community-bank-sized data team.
-
-## Why this is the right first step
-
-AI tools that draw on the same verified view get better together. AI tools
-that draw on raw systems each carry their own data-quality risk. Build the
-view once and the program compounds; rebuild it three times and it does
-not.
-
-## Citations
-
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-- Hybrid Multi-Cloud AI Strategy, SS&C Managed IT, 2025
-`,
-  },
-
-  'security-approved-tools': {
-    title: 'A one-page approved AI tool list',
-    subtitle: 'Stop guessing which tools are sanctioned. Publish the answer.',
-    filename: 'aibi-security-approved-tools.md',
-    body: `# A one-page approved AI tool list
-
-Staff use what they find. Without a published list of approved tools, they
-make different decisions in different rooms — and the worst decision becomes
-a reportable incident. Publish the list this week. It is the cheapest single
-risk reduction available to you.
-
-## Three things you can do this week
-
-1. **List the tools you already pay for.** Microsoft Copilot, an enterprise
-   ChatGPT instance, your core provider's AI feature, the document tool's AI
-   add-on. Three to five tools is plenty.
-2. **For each, decide the data class.** Green (public), Yellow (internal
-   non-NPI), Red (do not paste customer / member data into this tool). Be
-   explicit.
-3. **Publish it.** Same place as the acceptable use policy. Footer with the
-   "request an addition" process and the named owner.
-
-## A starter prompt to use
-
-> Help me draft a one-page approved AI tool list for my community bank or
-> credit union. For each tool: name, vendor, allowed data class
-> (Green / Yellow / Red), the named owner who approves new use cases, and the
-> review cadence. Include a footer for the addition-request process. Tone is
-> matter-of-fact, not promotional.
-
-## Why this is the right first step
-
-Examiners will ask for this artifact. The AIEOG AI Lexicon (US Treasury,
-Feb 2026) defines an "AI use case inventory" as a baseline expectation;
-your approved-tool list is the first half of that artifact.
-
-## Citations
-
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
-`,
-  },
-
-  'runtime-safeguards': {
-    title: 'An input/output checklist for one workflow',
-    subtitle: 'Build the reflex on one workflow, then replicate it.',
-    filename: 'aibi-runtime-safeguards.md',
-    body: `# An input/output checklist for one workflow
-
-Reflexes are built by repetition. Pick one AI-assisted workflow staff already
-use. Add a six-line checklist. Watch the reflex form within a month.
-
-## Three things you can do this week
-
-1. **Pick the workflow.** The one staff already use confidently — a meeting
-   summary, a draft email, a document summary.
-2. **Write the three input checks.** What data is in this prompt. Is any of
-   it restricted (PII, NPI, loan files). Am I using the approved tool for
-   this data class.
-3. **Write the three output checks.** Does this need a reviewer. Is this
-   customer-facing or internal. Has a sample of recent output been spot-
-   checked for accuracy this month.
-
-## A starter prompt to use
-
-> Draft a six-line input/output checklist for one AI-assisted workflow at
-> my institution. The workflow is [DESCRIBE]. Three "before prompting"
-> checks and three "before using the output" checks. Short enough to live
-> on the side of a screen.
-
-## Why this is the right first step
-
-Runtime safeguards are not a memo; they are a habit. Build the habit on one
-workflow, then replicate the checklist pattern to the next one. Within a
-quarter, every AI-assisted workflow has its own.
-
-## Citations
-
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-- Hybrid Multi-Cloud AI Strategy, SS&C Managed IT, 2025
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-`,
-  },
-
-  'regulatory-compliance': {
-    title: 'One AI use case mapped to its regulatory regime',
-    subtitle: 'Pre-answer the examiner question and the customer dispute.',
-    filename: 'aibi-regulatory-compliance.md',
-    body: `# One AI use case mapped to its regulatory regime
-
-Pick the AI-assisted process closest to a regulated decision. Write the
-one-page map. The other use cases get the same treatment, one at a time —
-but the first one establishes the pattern.
-
-## Three things you can do this week
-
-1. **Pick the use case.** Adverse-action decisions, marketing eligibility,
-   fraud screening, member-service tier routing. Start with the one that
-   touches the most regulation.
-2. **Write the map.** Process today (three to five bullets), regulations
-   that apply, disclosures required, named reviewer, retention rule.
-3. **Bring it to compliance.** Not for approval — for refinement. The map
-   gets sharper after the compliance team reads it and edits it.
-
-## A starter prompt to use
-
-> Help me draft a one-page regulatory map for an AI-assisted process at
-> my community bank or credit union. The process is [DESCRIBE]. Cover:
-> the process today, applicable regulations (ECOA / Reg B, SR 11-7, AIEOG
-> Lexicon, others), disclosures required, the review step and named
-> reviewer, and the retention rule. Tone: examiner-aware, no consultancy
-> jargon.
-
-## Why this is the right first step
-
-The GAO has flagged that no comprehensive AI-specific banking framework
-exists yet — but existing regulations (SR 11-7, ECOA / Reg B, TPRM) already
-apply. Mapping one use case now is the cheapest way to be ready when the
-framework arrives.
-
-## Citations
-
-- GAO-25-107197, US GAO, May 2025
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
-`,
-  },
-
-  'fair-lending-testing': {
-    title: 'A disparate-impact pass on one AI-assisted process',
-    subtitle: 'Pre-empt the claim that would otherwise arrive cold.',
-    filename: 'aibi-fair-lending-testing.md',
-    body: `# A disparate-impact pass on one AI-assisted process
-
-Fair-lending obligations apply whether an AI tool is in the path or not.
-Run the same disparate-impact analysis your standard program applies, with
-AI-assisted decisions flagged in the data. Treat AI-assisted decisions as
-a line item, not an exception.
-
-## Three things you can do this week
-
-1. **Pick the process.** The AI-assisted process closest to a credit
-   decision — pricing tier, automated declines, marketing eligibility.
-2. **Pull the data.** Decisions, applicant attributes, protected-class
-   indicators where available, flagged by whether AI was in the path.
-3. **Run the metrics.** Approval-rate gap, score distribution, outcome
-   variance. Compare AI-assisted decisions to the non-AI baseline. Report
-   to the same forum at the same cadence.
-
-## A starter prompt to use
-
-> Help me design a one-page disparate-impact pass on an AI-assisted process
-> at my institution. The process is [DESCRIBE]. Cover: the data slice
-> needed, the metrics to compute, the non-AI baseline to compare against,
-> the reporting forum and cadence, and the escalation path if a metric
-> crosses an internal threshold.
-
-## Why this is the right first step
-
-ECOA / Reg B does not have an "AI exception." The institutions that run
-the testing pass before being asked are positioned to defend the program;
-the ones that don't are positioned to explain why.
-
-## Citations
-
-- Equal Credit Opportunity Act / Regulation B, CFPB
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- GAO-25-107197, US GAO, May 2025
-`,
-  },
-
-  'human-in-the-loop': {
-    title: 'A one-page AI oversight matrix',
-    subtitle: 'Turn implicit policy into a defensible document.',
-    filename: 'aibi-human-in-the-loop.md',
-    body: `# A one-page AI oversight matrix
-
-Oversight without a written policy is oversight that varies by the day,
-the team, and the person on duty. The matrix is one page; the value is
-that the institution stops re-litigating the question every time a new use
-case arrives.
-
-## Three things you can do this week
-
-1. **List the use cases.** Every AI-assisted task in production today.
-   One line each.
-2. **Tag the oversight level.** Automated (no review), sampled (random
-   spot-check), mandatory (every output reviewed). Be explicit per use
-   case.
-3. **Name the reviewer.** A person, not a role. Add the review cadence
-   and the log location. Living document; reviewed quarterly.
-
-## A starter prompt to use
-
-> Help me draft a one-page AI oversight matrix for my institution. For
-> each AI use case in production, cover: use case (one line), oversight
-> level (automated / sampled / mandatory), the named reviewer, the review
-> cadence, and where the log lives. Format as a single one-page table.
-
-## Why this is the right first step
-
-The AIEOG Lexicon defines "human-in-the-loop" as a baseline expectation.
-The matrix is the artifact that proves you have one — and the document
-that prevents oversight from drifting silently as use cases multiply.
-
-## Citations
-
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-`,
-  },
-
-  'talent-culture': {
-    title: 'Redefine one role around AI oversight',
-    subtitle: 'Establish the career path before your best people look for one.',
-    filename: 'aibi-talent-culture.md',
-    body: `# Redefine one role around AI oversight
-
-AI shifts a meaningful share of staff work from doing the task to
-overseeing it. Institutions that do not redefine roles in light of that
-shift lose their best people to institutions that have. Redefine one role
-this quarter; let it become the template.
-
-## Three things you can do this week
-
-1. **Pick the role.** An operations analyst or compliance specialist is
-   the most common starting point — someone whose work AI will materially
-   change in the next year.
-2. **Rewrite the role description.** Add AI oversight and workflow design
-   responsibilities. Add the performance objectives tied to AI workflows
-   they will own. Update the reporting line if needed.
-3. **Run it past the person in the role.** Their input shapes the
-   definition. Their excitement shapes the retention story.
-
-## A starter prompt to use
-
-> Help me redefine the [ROLE TITLE] position at my community bank or
-> credit union around AI oversight. Draft: a revised one-paragraph role
-> description, three performance objectives tied to AI workflows or
-> oversight outcomes, the 90-day onboarding plan, the reporting line and
-> the manager review cadence. Tone: grounded in community-bank operations.
-
-## Why this is the right first step
-
-Staff watch where the institution invests. A redefined role with named
-performance objectives signals investment more clearly than any all-staff
-email. It also surfaces the next builder before someone else hires them.
-
-## Citations
-
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
-- Getting Started in AI, Jack Henry & Associates, 2025
+> Help me draft a one-page "approved AI tools" reference card for my own
+> use. I'll fill in the tool names and data classes. The card should have
+> three sections — Approved (green), Limited (yellow, with which data
+> classes are allowed), Off-limits (red, with why). Keep the language
+> plain enough that a colleague could read it in two minutes.
 `,
   },
 
   'data-safety-reflexes': {
-    title: 'A 30-minute Green/Yellow/Red training for one team',
-    subtitle: 'Build the reflex that prevents the most common AI compliance failure.',
+    title: 'A one-page "what never goes in" safe-use card',
+    subtitle: 'Build the reflex: know what to strip before you paste anything into AI.',
     filename: 'aibi-data-safety-reflexes.md',
-    body: `# A 30-minute Green/Yellow/Red training for one team
+    body: `# Your "what never goes in" safe-use card
 
-The single most common AI failure at community banks is PII or NPI ending
-up in a public AI tool because no one had a reflex about it. The reflex
-is built in 30 minutes, reinforced over two weeks, and lasts.
+The single most common AI mistake at a community bank is pasting customer
+data, account numbers, or internal credentials into a public chat tool.
+The fix is a reflex: strip first, paste second.
 
 ## Three things you can do this week
 
-1. **Build the one-page card.** Green (public information, fine to paste),
-   Yellow (internal non-NPI, use only approved tools), Red (NPI / PII /
-   loan files, do not paste anywhere). One worked example per category.
-2. **Run the session.** 30 minutes with one team. Five worked examples
-   using clearly synthetic data, showing the call. Two short check-for-
-   understanding questions.
-3. **Run the reinforcement.** For the next two weeks, the manager reviews
-   one AI-assisted output per week with the team and flags the data class.
-   The reflex forms in repetition, not in training.
+1. **Make the list.** Write down the categories of information you handle
+   that should never go into a public AI tool: customer names, account
+   numbers, SSNs, balances, internal credentials, vendor contract terms,
+   examiner correspondence, complaint detail, fraud-investigation notes.
+2. **Practice the strip.** Take three recent emails or notes. Rewrite them
+   with the identifiers and specifics removed but the structure intact.
+   That is what should go into AI — the shape of the question, not the
+   real data.
+3. **Pick a fallback.** Identify the approved internal tool you'd switch to
+   when the work genuinely needs the real data. Know how to get to it.
 
 ## A starter prompt to use
 
-> Help me run a 30-minute data-safety training on AI use for one team at
-> my community bank. Cover: a one-paragraph framing for staff who have not
-> thought about this, the three categories (Green / Yellow / Red) with
-> one-line definitions, five worked examples using clearly synthetic data,
-> two short check-for-understanding questions, and the two-week
-> reinforcement plan the manager runs after the session.
-
-## Why this is the right first step
-
-Compliance training that lives in a binder produces compliance theater.
-Reflexes that live in weekly reviews produce compliance reality. The
-30-minute session plus two weeks of reinforcement is the difference.
-
-## Citations
-
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- Hybrid Multi-Cloud AI Strategy, SS&C Managed IT, 2025
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
+> Help me draft a one-page personal "safe AI use" reference card for a
+> community bank employee. List eight to ten categories of information
+> that should never go into a public AI tool, with one-sentence reasons.
+> Then list four habits to build — strip first, use approved tools for
+> sensitive work, check outputs before sending, know who to ask.
 `,
   },
 
-  'continuous-validation': {
-    title: 'A monthly drift check on one AI tool',
-    subtitle: 'Move one tool off annual review. The others follow.',
-    filename: 'aibi-continuous-validation.md',
-    body: `# A monthly drift check on one AI tool
+  'prompting-skill': {
+    title: 'A "useful answer the first time" prompting starter kit',
+    subtitle: 'Five prompt patterns that turn AI from a search bar into a working colleague.',
+    filename: 'aibi-prompting-skill.md',
+    body: `# Five prompt patterns that pay rent
 
-Static model risk frameworks cannot handle AI tools that change. Pick
-the tool with the highest decision weight. Add one quantitative drift
-check at a monthly cadence. Establish the pattern; expand from there.
+If you are getting generic answers from AI, the problem is almost always
+the prompt. These five patterns — role, format, source, check, edit —
+move AI from a glorified search bar to something closer to a working
+draftsman.
 
 ## Three things you can do this week
 
-1. **Pick the tool.** The AI tool whose output influences the most
-   decisions — most often a credit-decision support model, a fraud-
-   screening tool, or a pricing assistant.
-2. **Pick the drift metric.** Output distribution, error rate against a
-   holdout sample, or approval-rate change. One metric is enough to start.
-3. **Document the threshold.** What number triggers a deeper review.
-   Where does the result get logged. Who is the named reviewer.
+1. **Use the five-part frame.** Every prompt for real work should include:
+   the role AI is playing, the format you want back, the source material,
+   the explicit "check your work" instruction, and what you will edit
+   after. Try it on one task and see the difference.
+2. **Save what works.** Each time a prompt gets you a useful answer, save
+   it. After two weeks you'll have five to ten prompts that consistently
+   work for your role — the start of your personal prompt library.
+3. **Rewrite the bad ones.** Each time you get a generic answer, rewrite
+   the prompt before giving up. Most "AI is useless" experiences are one
+   prompt rewrite away from working.
 
 ## A starter prompt to use
 
-> Help me add a continuous drift check to one AI tool in my institution's
-> model inventory. The tool is [DESCRIBE]. Cover: the drift metric (output
-> distribution, error rate, or holdout-sample performance), the cadence,
-> the threshold that triggers a deeper review, the named reviewer, and
-> where the result is logged. Format as a one-page addition to the model
-> risk file.
-
-## Why this is the right first step
-
-SR 11-7 was written for static models. The institutions that extend its
-spirit to live AI systems — drift monitoring, ongoing validation, named
-reviewers — are the ones whose model risk programs hold up under
-examination. Start with one tool; expand to the inventory.
-
-## Citations
-
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- GAO-25-107197, US GAO, May 2025
+> Help me draft five reusable prompt templates for my work at a community
+> bank as a [YOUR ROLE]. Each template should follow this shape: role,
+> format, source material, "check your work" instruction, what I will
+> edit. Keep each template tight enough to paste and fill in.
 `,
   },
 
-  'vendor-risk': {
-    title: 'An AI-specific TPRM overlay',
-    subtitle: 'Add one page to the standard questionnaire. Apply it to every AI vendor.',
-    filename: 'aibi-vendor-risk.md',
-    body: `# An AI-specific TPRM overlay
+  'role-fit': {
+    title: 'A "this is what AI does in my job" one-pager',
+    subtitle: 'Stop experimenting in general. Connect AI to three named tasks in your actual role.',
+    filename: 'aibi-role-fit.md',
+    body: `# A one-pager: AI in your actual job
 
-Standard TPRM was built for SaaS. AI vendors carry risk that a generic
-questionnaire does not surface — model behavior, explainability, drift,
-integration risk, model-change notifications. Add the overlay once and
-reuse it.
+General AI experiments do not stick. AI tied to three named tasks you
+already do every week becomes part of how you work. This is the
+difference between "I'm exploring AI" and "I use AI."
 
 ## Three things you can do this week
 
-1. **Draft the overlay.** One page covering: model behavior and known
-   limitations, explainability (can principal-reason disclosures be
-   produced), drift monitoring and vendor practices, integration risk,
-   notification requirements for material model or behavior changes.
-2. **Apply it retroactively.** The three AI vendors with the highest
-   decision weight in production. Score them on the overlay this quarter.
-3. **Apply it going forward.** Every new AI vendor passes through the
-   overlay during onboarding. The standard packet now includes it.
+1. **Map your week.** Write down the five tasks that take the most time in
+   a typical week. Be specific — "respond to member messages" beats
+   "communications."
+2. **Pick three for AI.** From the five, pick the three where AI could
+   plausibly draft, summarize, classify, or compare. Leave the other two
+   alone — not every task benefits from AI.
+3. **Run one cycle per task.** For each of the three, do one real-work
+   cycle with AI this week. Note what worked, what you had to rewrite,
+   what you would do differently next time.
 
 ## A starter prompt to use
 
-> Help me draft a one-page AI-specific overlay for my institution's
-> standard TPRM questionnaire. Cover: model behavior and known
-> limitations, explainability and adverse-action disclosure support,
-> drift monitoring and vendor practices, integration risk, and
-> notification requirements for material model or behavior changes.
-> Tone: examiner-grade. Audience: vendor management plus compliance.
+> Help me identify three tasks in the role of [YOUR ROLE] at a community
+> bank where AI would plausibly save time or improve quality. For each
+> task, describe: what I do today, the shape of the AI assistance
+> (drafting, summarizing, classifying, comparing), and what I would
+> still review myself before the output is used.
+`,
+  },
 
-## Why this is the right first step
+  'human-review': {
+    title: 'A personal "review before send" checklist',
+    subtitle: 'Define which AI work needs a second pair of eyes — and exactly which eyes.',
+    filename: 'aibi-human-review.md',
+    body: `# Your review-before-send checklist
 
-The Interagency TPRM Guidance applies to AI vendors but does not yet
-spell out AI-specific questions. Adding the overlay puts the institution
-ahead of the examiner expectation and creates a contractual basis for
-notification when a model changes underneath you.
+AI output reads confidently even when it is wrong. The fix is not better
+AI — it is a deliberate review step. Define what you check, when, and
+who else needs to look before the work leaves your desk.
 
-## Citations
+## Three things you can do this week
 
-- Interagency Guidance on Third-Party Risk Management, Federal Reserve / OCC / FDIC
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- AI Playbook for Banks and Credit Unions, Cornerstone Advisors, 2025
+1. **Tier the work.** Sort your AI-assisted work into three buckets: Low
+   (internal notes, drafts no one else sees), Medium (work that goes to a
+   colleague), High (work that touches a customer, a regulator, or a
+   decision). The review intensity should match the tier.
+2. **Write the High-tier rule.** Anything that touches a customer or a
+   regulated decision goes to a named second reviewer. Write down who
+   that is for each kind of work — the actual name, not a role.
+3. **Slow down on the close calls.** When you are not sure if something is
+   Medium or High, treat it as High. Examiners do not give partial credit
+   for "I thought it was a draft."
+
+## A starter prompt to use
+
+> Help me draft a personal "AI work review" checklist for my role at a
+> community bank. The checklist should have three tiers — Low, Medium,
+> High — with the criteria that put work in each tier and the review
+> step required for each. Include three to five items for the High tier
+> that a reviewer would actually check (accuracy of figures, sources for
+> claims, customer-facing language, compliance fit, retention).
+`,
+  },
+
+  'documentation': {
+    title: 'A "could a reviewer reconstruct this?" recordkeeping habit',
+    subtitle: 'Save the prompt, save the output, save the edits — every time. Three minutes.',
+    filename: 'aibi-documentation.md',
+    body: `# Save the prompt, save the output, save the edits
+
+AI work that you cannot show to a reviewer or examiner is AI work that
+will be questioned. The fix is a three-minute habit: capture the prompt,
+the unedited AI output, and what you changed before using it. That is
+the evidence trail.
+
+## Three things you can do this week
+
+1. **Pick a location.** Decide where you will save AI work artifacts —
+   could be a folder in your work email, a OneNote section, a shared
+   drive folder. The format does not matter. Consistency does.
+2. **Build the template.** For each AI-assisted item, capture: the date,
+   the task, the prompt you used, the unedited output, the edits you
+   made, the final version that was used. A short header row is enough.
+3. **Backfill one week.** Take last week's AI-assisted work and document
+   it now while you can still remember. After that, do it as you go.
+
+## A starter prompt to use
+
+> Help me design a lightweight recordkeeping template for AI-assisted
+> work at a community bank. The template should capture the prompt, the
+> unedited AI output, the edits I made before use, and the final
+> version. Keep it tight enough that filling it in takes under three
+> minutes per item. Include a one-line note on retention practice.
+`,
+  },
+
+  'vendor-awareness': {
+    title: 'A "where is AI hiding in my tool stack" inventory worksheet',
+    subtitle: 'List every vendor tool you use and flag the AI features — including the quiet ones.',
+    filename: 'aibi-vendor-awareness.md',
+    body: `# Where is AI hiding in your tool stack?
+
+Most banking software has quietly added AI features in the last eighteen
+months. Summarization, drafting, classification, "smart" assistants —
+often turned on by default. If you do not know which tools have AI
+inside, you cannot manage what data those tools see.
+
+## Three things you can do this week
+
+1. **List your tools.** Write down every vendor tool you use in a typical
+   week — core banking, loan origination, ticketing, email, document
+   management, BSA software, anything with a login. Aim for fifteen to
+   twenty entries.
+2. **Flag the AI features.** For each tool, mark Yes / No / Unknown for
+   "has AI features." For Unknown, spend two minutes on the vendor's
+   product page or release notes. You will be surprised how many have AI.
+3. **Note what data each tool sees.** For each AI-flagged tool, write one
+   line on what data the AI feature has access to (customer data,
+   transaction data, internal records, etc.). That is the conversation
+   starter for vendor risk.
+
+## A starter prompt to use
+
+> Help me design a one-page vendor-AI inventory worksheet for an
+> individual community bank employee. Columns should include: vendor
+> name, primary use, has AI features (yes/no/unknown), AI features in
+> use, data the AI sees, notes. Include a brief instruction on how to
+> check release notes if "unknown."
+`,
+  },
+
+  'customer-impact-awareness': {
+    title: 'A "where AI touches a customer or regulated decision" map',
+    subtitle: 'Map your AI uses against the four obvious regulatory tripwires.',
+    filename: 'aibi-customer-impact-awareness.md',
+    body: `# Where does AI touch a customer or regulated decision?
+
+When AI helps draft a customer email, prepare a loan summary, generate
+adverse-action language, or sort complaints, it has crossed into
+regulated territory. The fix is not to stop — it is to know the line.
+
+## Three things you can do this week
+
+1. **List your AI touches.** Write down every place AI assists in your
+   work that ends up in front of a customer or feeds a decision.
+   Examples: response drafts, marketing copy, complaint summaries,
+   account-action explanations, lending narratives.
+2. **Match each to a rule.** For each item, note which rule applies —
+   ECOA / Reg B (adverse action), UDAAP (fair, accurate, no deception),
+   BSA / AML (sensitivity), fair lending (disparate impact). If none
+   applies, mark "internal only."
+3. **Tighten the review.** For each customer-touching or rule-touching
+   item, add the review step you would defend to an examiner — who
+   reviewed, what they checked, when, and where it is saved.
+
+## A starter prompt to use
+
+> Help me draft a one-page "customer impact map" for my AI-assisted work
+> at a community bank. For each AI use case I list, the map should show:
+> what the AI produced, who it ends up in front of (customer, internal,
+> regulator), which rule applies (ECOA, UDAAP, BSA, fair lending,
+> internal only), and the specific review step before use.
+`,
+  },
+
+  'workflow-readiness': {
+    title: 'A four-step workflow map for one of your recurring tasks',
+    subtitle: 'Turn ad-hoc AI use into a written input → AI draft → review → final-output flow.',
+    filename: 'aibi-workflow-readiness.md',
+    body: `# A four-step workflow map
+
+The difference between an AI chat and an AI workflow is whether anyone
+else could reproduce it. The format is the same every time: input, AI
+draft, review, final output. If you can write it down, a colleague can
+do it. If a colleague can do it, it becomes the institution's work.
+
+## Three things you can do this week
+
+1. **Pick one recurring task.** Choose a task you do regularly where AI
+   already helps. BSA narratives, member responses, loan summaries —
+   pick the one with the most repetition.
+2. **Write the four steps.** Input (what raw material starts the task) →
+   AI draft (the prompt, the tool, the output shape) → Review (who
+   checks what) → Final output (where it goes, what gets saved).
+3. **Hand it to a colleague.** Give the workflow to someone who has not
+   done it before. If they can run it without asking you questions, you
+   have a workflow. If they cannot, you have a draft.
+
+## A starter prompt to use
+
+> Help me draft a four-step workflow document for using AI on
+> [DESCRIBE THE RECURRING TASK] at a community bank. Format: Step 1
+> Input (what raw material starts the task), Step 2 AI Draft (the
+> prompt template, the tool, the expected output shape), Step 3 Review
+> (who reviews, what they check, what they reject), Step 4 Final Output
+> (where it goes, what is saved, retention). Tight enough for a
+> colleague to follow without asking.
+`,
+  },
+
+  'training-culture': {
+    title: 'A personal AI learning plan — the next six weeks',
+    subtitle: 'Stop figuring it out alone. Pick three skills, name three teachers.',
+    filename: 'aibi-training-culture.md',
+    body: `# Your personal six-week AI learning plan
+
+The bankers who go furthest with AI are not the ones with the best
+employer training — they are the ones who own their learning. Pick
+three skills, name three sources, and put it on the calendar.
+
+## Three things you can do this week
+
+1. **Pick three skills.** From the gaps you already know about, pick
+   three concrete AI skills to build in the next six weeks. Examples:
+   prompting for compliance review, building reusable templates, AI
+   summarization of long documents.
+2. **Name three sources.** For each skill, name one source — could be a
+   course, a written guide, a colleague who already does it well, a
+   community of practice. "I will figure it out" is not a source.
+3. **Calendar it.** Block thirty minutes a week per skill. Six weeks ×
+   three skills × thirty minutes = nine hours. That is the difference
+   between "I tried" and "I learned."
+
+## A starter prompt to use
+
+> Help me draft a personal six-week AI learning plan for a community bank
+> employee in the role of [YOUR ROLE]. Pick three concrete AI skills
+> relevant to that role, recommend one starter source for each, and lay
+> out a week-by-week practice schedule that fits in thirty minutes per
+> skill per week. Be specific about what "done" looks like for each
+> skill at the end of week six.
+`,
+  },
+
+  'leadership-visibility': {
+    title: 'A "what does leadership track about AI?" conversation kit',
+    subtitle: 'Five questions to ask your manager so you actually know what counts.',
+    filename: 'aibi-leadership-visibility.md',
+    body: `# A leadership-visibility conversation kit
+
+You cannot align with what you cannot see. If you do not know what your
+leadership tracks about AI — what good looks like, what concerns them,
+what they want more of — your AI work is guesswork. The fix is one
+fifteen-minute conversation.
+
+## Three things you can do this week
+
+1. **Ask the five questions.** Schedule fifteen minutes with your
+   manager. Ask: What does leadership want to see from AI use this year?
+   What worries leadership about AI? How is AI use being measured? What
+   would "exceeding expectations" look like? Where can I see this
+   measured?
+2. **Take notes you can act on.** Translate the answers into three things
+   you will do differently in your AI work this month. If there are no
+   action items, the conversation was too abstract — ask again.
+3. **Share what you find.** Tell one colleague what you learned. Most
+   bankers do not have this conversation; one person sharing it with
+   three colleagues quietly raises the floor for the whole team.
+
+## A starter prompt to use
+
+> Help me prepare for a fifteen-minute conversation with my manager about
+> AI use at a community bank. The conversation goals are: understand
+> what leadership tracks about AI, what good looks like, what worries
+> them, and where my work fits. Draft five questions I should ask, plus
+> two short follow-up questions for each in case the first answer is
+> too general. Tone: professional, curious, not pushy.
 `,
   },
 };
@@ -543,5 +430,3 @@ notification when a model changes underneath you.
 export function getStarterArtifact(dimension: Dimension): StarterArtifact {
   return ARTIFACTS[dimension];
 }
-
-export const STARTER_ARTIFACTS = ARTIFACTS;
