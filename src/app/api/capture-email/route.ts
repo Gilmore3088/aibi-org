@@ -25,6 +25,46 @@ import {
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
+import type { Role } from '@content/assessments/v2/role';
+
+// Free-funnel role taxonomy used by EmailGate.tsx. Intentionally a superset
+// of the v2 Role union (kept short for the free form). Mapped down to v2
+// Role before the user_profiles write so the DB schema stays stable; the
+// raw free-id is forwarded to MailerLite for segmentation.
+const FREE_ROLES = [
+  'executive',
+  'compliance-risk',
+  'operations',
+  'lending',
+  'retail-branch',
+  'marketing',
+  'it-infosec',
+  'training-hr',
+  'other',
+] as const;
+type FreeRole = (typeof FREE_ROLES)[number];
+
+function parseFreeRole(input: unknown): FreeRole | null {
+  if (typeof input !== 'string') return null;
+  const lowered = input.trim().toLowerCase();
+  return (FREE_ROLES as readonly string[]).includes(lowered)
+    ? (lowered as FreeRole)
+    : null;
+}
+
+// Free-funnel id → v2 Role id. retail-branch and operations both collapse
+// to "operator" (frontline ops). it-infosec → it. The rest map 1:1.
+const FREE_ROLE_TO_V2: Record<FreeRole, Role> = {
+  executive: 'executive',
+  'compliance-risk': 'compliance-risk',
+  operations: 'operator',
+  lending: 'lending',
+  'retail-branch': 'operator',
+  marketing: 'marketing',
+  'it-infosec': 'it',
+  'training-hr': 'training-hr',
+  other: 'other',
+};
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person
@@ -54,6 +94,7 @@ interface CapturePayload {
   dimensionBreakdown?: unknown;
   firstName?: unknown;
   institutionName?: unknown;
+  role?: unknown;
   marketingOptIn?: unknown;
   // Research-library gate additions (optional on all calls, required on none).
   lead_source?: unknown;
@@ -99,6 +140,7 @@ type AssessmentPayload = {
   dimensionBreakdown?: DimensionBreakdown;
   firstName?: string;
   institutionName?: string;
+  role?: FreeRole;
   marketingOptIn?: boolean;
   lead_source?: string;
   requested_artifact?: string;
@@ -155,6 +197,10 @@ function parsePayload(p: CapturePayload): ValidatedPayload | null {
   if (p.firstName !== undefined && (typeof p.firstName !== 'string' || p.firstName.length > NAME_MAX_LEN)) return null;
   if (p.institutionName !== undefined && (typeof p.institutionName !== 'string' || p.institutionName.length > INSTITUTION_MAX_LEN)) return null;
   if (p.marketingOptIn !== undefined && typeof p.marketingOptIn !== 'boolean') return null;
+  // Role is optional; reject when present but not in the free-funnel taxonomy
+  // so silently-bad clients show up as 400s rather than dropping the value.
+  const parsedRole = p.role === undefined ? undefined : parseFreeRole(p.role);
+  if (p.role !== undefined && parsedRole === null) return null;
 
   return {
     kind: 'assessment',
@@ -168,6 +214,7 @@ function parsePayload(p: CapturePayload): ValidatedPayload | null {
     ...(p.dimensionBreakdown !== undefined ? { dimensionBreakdown: p.dimensionBreakdown as DimensionBreakdown } : {}),
     ...(typeof p.firstName === 'string' ? { firstName: p.firstName } : {}),
     ...(typeof p.institutionName === 'string' ? { institutionName: p.institutionName } : {}),
+    ...(parsedRole ? { role: parsedRole } : {}),
     ...(typeof p.marketingOptIn === 'boolean' ? { marketingOptIn: p.marketingOptIn } : {}),
     ...(typeof p.lead_source === 'string' ? { lead_source: p.lead_source } : {}),
     ...(typeof p.requested_artifact === 'string' ? { requested_artifact: p.requested_artifact } : {}),
@@ -237,11 +284,15 @@ export async function POST(request: Request) {
     maxScore,
     dimensionBreakdown,
     firstName,
+    institutionName,
+    role,
     marketingOptIn,
   } = parsed;
 
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
+  const trimmedInstitution = institutionName?.trim() || undefined;
+  const v2Role: Role | undefined = role ? FREE_ROLE_TO_V2[role] : undefined;
 
   // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
@@ -249,7 +300,11 @@ export async function POST(request: Request) {
   if (marketingOptIn === true) {
     await subscribeToAssessmentForm({
       email,
-      fields: { tier },
+      fields: {
+        tier,
+        ...(role ? { role } : {}),
+        ...(trimmedInstitution ? { institution: trimmedInstitution } : {}),
+      },
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
     }).catch((err) => console.warn('[capture-email] mailerlite skip', err));
   }
@@ -282,16 +337,20 @@ export async function POST(request: Request) {
 
   let profileId: string | null = null;
   if (isSupabaseConfigured()) {
-    const result = await upsertReadinessResult(email, {
-      score,
-      tierId: tier,
-      tierLabel,
-      answers,
-      completedAt,
-      ...(version ? { version } : {}),
-      ...(maxScore !== undefined ? { maxScore } : {}),
-      ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
-    }).catch((err) => {
+    const result = await upsertReadinessResult(
+      email,
+      {
+        score,
+        tierId: tier,
+        tierLabel,
+        answers,
+        completedAt,
+        ...(version ? { version } : {}),
+        ...(maxScore !== undefined ? { maxScore } : {}),
+        ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
+      },
+      v2Role ? { role: v2Role } : {},
+    ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
       return { id: null as string | null };
     });
