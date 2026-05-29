@@ -1,27 +1,28 @@
-// /assessment/in-depth/results/[id] — rich In-Depth Briefing surface.
+// /assessment/in-depth/results/[id] — In-Depth Diagnostic results surface.
 //
 // Bearer-token URL pattern matching /results/[id]: the UUID itself is the
 // access credential. We do NOT require auth here — the recipient proves
 // access by holding the URL. (Same shape as the free-flow results page.)
 //
-// Loads the same user_profiles row that the free results page reads, but
-// renders the paid In-Depth Briefing surface instead of ResultsViewV2.
-// Both views are valid renderings of the same data; the In-Depth route is
-// where the 48-question submission lands.
+// Version routing:
+//   v4 → PaidReport (the 14-section diagnostic per spec Section 7)
+//   v2/v1 → InDepthBriefingView (legacy briefing — kept for historical takes)
+//   v3 → notFound() (free-funnel rows do not belong on this route)
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { InDepthBriefingView } from './_components/InDepthBriefingView';
+import { PaidReport } from './_components/PaidReport';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export const metadata: Metadata = {
-  title: 'In-Depth AI Readiness Briefing | The AI Banking Institute',
+  title: 'In-Depth AI Readiness Diagnostic | The AI Banking Institute',
   description:
-    'Your personalized In-Depth Briefing — composite score, dimension deep dives, regulatory frame, and a sequenced ninety-day action register.',
+    'Your personalized In-Depth Diagnostic — overall score, eight-dimension scorecard, strongest and weakest dimensions, role-specific action plan, and a sequenced 30/60/90 day roadmap.',
   robots: { index: false, follow: false },
 };
 
@@ -35,10 +36,24 @@ export default async function InDepthResultsPage({ params }: PageProps) {
 
   const response = await loadAssessmentResponse(id);
   if (!response) notFound();
-  // In-Depth always persists as v2 (maxScore=192). v3 rows would be free
-  // funnel and shouldn't reach this route, but narrow defensively.
+  // Free-funnel rows do not belong on the paid surface.
   if (response.version === 'v3') notFound();
 
+  if (response.version === 'v4') {
+    return (
+      <PaidReport
+        profileId={response.profileId}
+        email={response.email}
+        score={response.score}
+        band={response.band}
+        role={response.role}
+        dimensionBreakdown={response.dimensionBreakdown}
+        readinessAt={response.readinessAt}
+      />
+    );
+  }
+
+  // v2 / v1 — legacy In-Depth Briefing.
   return (
     <InDepthBriefingView
       profileId={response.profileId}
