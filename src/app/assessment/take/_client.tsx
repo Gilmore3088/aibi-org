@@ -25,7 +25,7 @@ export default function AssessmentPage() {
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const scoreHeadingRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -173,103 +173,21 @@ export default function AssessmentPage() {
 
           {state.phase === 'score' && state.tier && (() => {
             const breakdown = state.getDimensionBreakdown();
-            const breakdownEntries = Object.entries(breakdown);
-            const topGapEntry = breakdownEntries.length > 0
-              ? breakdownEntries.reduce((a, b) =>
-                  a[1].score / a[1].maxScore < b[1].score / b[1].maxScore ? a : b
-                )
-              : null;
-            const topGapLabel = topGapEntry?.[1].label ?? 'Documentation';
             return (
-              <div className="mk-take-score">
-                {/* SCORE REVEAL — dark navy, no email yet */}
-                <section
-                  ref={scoreHeadingRef as React.RefObject<HTMLElement>}
-                  tabIndex={-1}
-                  className="mk-take-snap"
-                  aria-label="Readiness snapshot"
-                >
-                  <div className="mk-take-snap-copy">
-                    <p className="mk-take-snap-k">Diagnostic complete</p>
-                    <h2>Your top gap: {topGapLabel}.</h2>
-                    <p className="mk-take-snap-lede">
-                      Enter your work email below for the full breakdown and a starter artifact you can use this week.
-                    </p>
-                  </div>
-                  <div className="mk-take-snap-card">
-                    <div className="mk-take-snap-score">
-                      <p className="mk-k">Readiness score</p>
-                      <div className="mk-take-snap-num">
-                        <span className="mk-v">{state.totalScore}</span>
-                        <span className="mk-u">/ 48</span>
-                      </div>
-                      <div className="mk-take-snap-tier">
-                        <p className="mk-k">Tier</p>
-                        <p className="mk-take-snap-tier-v">{state.tier.label}</p>
-                      </div>
-                    </div>
-                    <div className="mk-take-snap-meta">
-                      <ResultMeta
-                        label="Dimensions scored"
-                        value={String(Object.keys(state.getDimensionBreakdown()).length)}
-                      />
-                      <ResultMeta label="Top gap" value={topGapLabel} />
-                      <ResultMeta
-                        label="Questions"
-                        value={`${QUESTIONS_PER_SESSION} of ${QUESTIONS_PER_SESSION}`}
-                      />
-                    </div>
-                  </div>
-                </section>
-
-                {/* INSIGHT CARD — 3-column on cream */}
-                <section className="mk-take-insight" aria-label="Your first move">
-                  <div className="mk-take-insight-col">
-                    <p className="mk-k">Your first move</p>
-                    <h3>Write the review path.</h3>
-                    <p>
-                      Your top gap is <strong>{topGapLabel}</strong>. Start by defining who
-                      reviews AI-supported work, what they check, and where the reviewed output
-                      is saved.
-                    </p>
-                  </div>
-                  <div className="mk-take-insight-col">
-                    <p className="mk-k">Starter outline</p>
-                    <h3>AI Workflow SOP</h3>
-                    <ul className="mk-take-insight-list">
-                      <li>Tool used</li>
-                      <li>Allowed input</li>
-                      <li>Human reviewer</li>
-                      <li>Retention rule</li>
-                    </ul>
-                  </div>
-                  <div className="mk-take-insight-col">
-                    <p className="mk-k">Useful next reads</p>
-                    <a href="/playbooks/compliance" className="mk-take-insight-link">
-                      <strong>Compliance Playbook</strong>
-                      <span>Use-case intake, review evidence, approval workflow.</span>
-                    </a>
-                    <a
-                      href="/research/templates/ai-workflow-sop"
-                      className="mk-take-insight-link"
-                    >
-                      <strong>AI Workflow SOP Template</strong>
-                      <span>The fields examiners actually look at.</span>
-                    </a>
-                  </div>
-                </section>
-
-                {/* EMAIL CAPTURE — the real EmailGate */}
-                <section className="mk-take-send" aria-label="Send the full report">
-                  <header>
-                    <p className="mk-k">Ready for the full breakdown?</p>
-                    <h2>Send the report and keep the starter artifact.</h2>
-                    <p>
-                      Get the 8-dimension breakdown, copy-ready Markdown artifact, and
-                      recommended next step sent to your work email.
-                    </p>
-                  </header>
-                  <div className="mk-take-send-form">
+              <div
+                className="mk-take-score"
+                ref={scoreHeadingRef as React.RefObject<HTMLDivElement>}
+                tabIndex={-1}
+              >
+                {/* The EmailGate is the entire post-Q12 surface.
+                    The previous "score-reveal + insight + send" three-stack
+                    surrounded the gate with content that already lived
+                    inside the gate (score, tier, top gap, first move) —
+                    violating "preview value first, then ask" by showing
+                    everything before the form. The redesigned EmailGate
+                    owns its own preview. */}
+                <section aria-label="Send the full report">
+                  <div>
                     <EmailGate
                       score={state.totalScore}
                       tierId={state.tier.id}
@@ -333,15 +251,6 @@ export default function AssessmentPage() {
           )}
         </div>
       </main>
-    </div>
-  );
-}
-
-function ResultMeta({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="mk-take-snap-meta-card">
-      <p className="mk-k">{label}</p>
-      <p className="mk-take-snap-meta-v">{value}</p>
     </div>
   );
 }
