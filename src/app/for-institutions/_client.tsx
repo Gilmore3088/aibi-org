@@ -486,8 +486,8 @@ export default function ForInstitutionsPage() {
                     <div className="mk-ct">{ct}</div>
                   </div>
                 </div>
-                <div className="mk-score">{score}</div>
                 <span className={`mk-pill ${pill}`}>{label}</span>
+                <div className="mk-score">{score}</div>
               </div>
             ))}
           </div>
