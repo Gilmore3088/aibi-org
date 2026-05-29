@@ -1,8 +1,26 @@
 'use client';
 
+// EmailGate — post-Q12 surface before the full report renders.
+//
+// Operator framing (2026-05-29): this is NOT a paywall and not a trap.
+// It is the receipt for completed work. The user just answered 12
+// questions; respect that. Show enough value to prove the assessment
+// worked, then ask for email so they can keep the result.
+//
+// Order of operations:
+//   1. Preview value — score, tier, top gap, first move
+//   2. Ask for email — single field, "Send my report" CTA
+//   3. Light privacy microcopy
+//   4. Progressive disclosure — optional first name + institution
+//   5. "What your full result includes" — three short rows
+//
+// Source layout: /Users/jgmbp/Downloads/aibi-email-capture-result-gate.html
+
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
 import { trackEmailCaptured } from '@/lib/analytics/events';
+import { DIMENSION_LABELS, type Dimension } from '@content/assessments/v3/types';
+import { GAP_CONTENT, RECOMMENDATIONS } from '@content/assessments/v3/personalization';
 
 interface EmailGateProps {
   readonly score: number;
@@ -18,13 +36,7 @@ interface EmailGateProps {
       readonly firstName?: string;
       readonly institutionName?: string;
       readonly profileId?: string | null;
-      /** True when the captured email is from a known free-mail provider.
-          Lets the post-capture surface show a soft nudge to re-submit with
-          a work email. See #189 + 2026-05-18 product call. */
       readonly usedFreeEmail?: boolean;
-      /** One-click magic-link URL into /dashboard. Null when Supabase isn't
-          configured locally or when link generation failed — the report
-          still renders, just without the dashboard CTA. #303. */
       readonly magicLinkUrl?: string | null;
     },
   ) => void;
@@ -34,11 +46,10 @@ type Status = 'idle' | 'submitting' | 'error';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Free-mail providers. When an email matches one of these AND institution
-// is empty, the gate blocks submit with an inline message asking for the
-// institution. When institution IS provided, the submit proceeds and the
-// post-capture surface shows a soft nudge. See #189 + 2026-05-18 product
-// call (DECISIONS.md).
+// Free-mail providers — if one of these is used without an institution
+// name, the gate softly asks the user to add the institution. With an
+// institution provided, the submit proceeds and the post-capture surface
+// shows a soft nudge. See #189 + 2026-05-18 product call.
 const FREE_EMAIL_DOMAINS = new Set<string>([
   'gmail.com', 'googlemail.com',
   'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'ymail.com', 'rocketmail.com',
@@ -59,6 +70,26 @@ function isFreeEmailDomain(email: string): boolean {
   return domain ? FREE_EMAIL_DOMAINS.has(domain) : false;
 }
 
+interface FocusGap {
+  readonly id: Dimension;
+  readonly label: string;
+}
+
+function findFocusGap(
+  breakdown: Record<string, DimensionScoreSerialized> | undefined,
+): FocusGap | null {
+  if (!breakdown) return null;
+  const entries = Object.entries(breakdown) as readonly [Dimension, DimensionScoreSerialized][];
+  if (entries.length === 0) return null;
+  const sorted = [...entries].sort((a, b) => {
+    const aPct = a[1].maxScore > 0 ? a[1].score / a[1].maxScore : 1;
+    const bPct = b[1].maxScore > 0 ? b[1].score / b[1].maxScore : 1;
+    return aPct - bPct;
+  });
+  const [id] = sorted[0];
+  return { id, label: DIMENSION_LABELS[id] ?? id };
+}
+
 export function EmailGate({
   score,
   tierId,
@@ -75,12 +106,16 @@ export function EmailGate({
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
-  // Auto-skip the gate if the visitor is already signed in. We re-use their
-  // auth-session email instead of asking them for it again — the most common
-  // UX complaint from logged-in users completing the assessment.
-  //
-  // Hits the server endpoint instead of importing the Supabase browser SDK,
-  // which would balloon the assessment route's First Load JS by ~64 KB.
+  const focusGap = findFocusGap(dimensionBreakdown);
+  const firstMove = focusGap ? RECOMMENDATIONS[focusGap.id]?.title : null;
+  const gapOneLine = focusGap ? GAP_CONTENT[focusGap.id]?.oneLine : null;
+  const displayMax = maxScore ?? 48;
+
+  // Auto-skip the gate if the visitor is already signed in. We re-use
+  // their auth-session email instead of asking them for it again — the
+  // most common UX complaint from logged-in users completing the
+  // assessment. Hits the server endpoint instead of importing the
+  // Supabase browser SDK (~64 KB savings).
   const autoSubmittedRef = useRef(false);
   useEffect(() => {
     if (autoSubmittedRef.current) return;
@@ -97,8 +132,7 @@ export function EmailGate({
         setEmail(sessionEmail);
         void submit(sessionEmail);
       } catch {
-        // Service down or offline — fall through to the manual form. The
-        // gate still works; the user just has to type their email.
+        // Service down — fall through to the manual form.
       }
     })();
     return () => {
@@ -125,8 +159,7 @@ export function EmailGate({
           dimensionBreakdown,
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
-          // Every completer gets tier-routed follow-ups about their result —
-          // there is no separate newsletter to opt into.
+          // Every completer gets tier-routed follow-ups about their result.
           marketingOptIn: true,
         }),
       });
@@ -167,16 +200,13 @@ export function EmailGate({
     const trimmedEmail = email.trim();
     if (!EMAIL_RE.test(trimmedEmail)) {
       setStatus('error');
-      setMessage('Please enter a valid work email.');
+      setMessage('Please enter a valid email.');
       return;
     }
-    // Soft-gate on free-email providers: accept the personal email, but
-    // only after the user provides an institution name. Without that
-    // context, the report can't be tailored.
     if (isFreeEmailDomain(trimmedEmail) && !institutionName.trim()) {
       setStatus('error');
       setMessage(
-        'Add your institution name so we can tailor your report. A work email also works — but if you prefer a personal address, we just need to know where you work.',
+        'Add your institution name so we can tailor your report — open the optional section below.',
       );
       return;
     }
@@ -185,24 +215,90 @@ export function EmailGate({
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-[1fr_1fr] gap-0 border border-[color:var(--ink)]/10 rounded-[3px] overflow-hidden">
-        <DeliverablePanel />
-
-        <div className="bg-[color:#FFFFFF] p-8 md:p-10 lg:p-12">
-          <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-            See your full results
+      <section
+        className="rounded-[28px] overflow-hidden grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr]"
+        style={{ boxShadow: 'var(--shadow-hero)' }}
+      >
+        {/* LEFT — pitch / receipt framing */}
+        <div className="bg-[color:var(--ink)] text-white p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+          <span className="inline-flex w-max items-center gap-2 px-3.5 py-2 rounded-full border border-[color:var(--gold)]/45 bg-[color:var(--gold)]/8 text-[color:var(--gold-soft)] text-[12px] font-semibold">
+            12 of 12 complete
+          </span>
+          <h1 className="mt-5 text-[36px] md:text-[52px] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
+            Your AI readiness snapshot is ready.
+          </h1>
+          <p className="mt-5 text-[16px] md:text-[17px] leading-[1.6] text-white/70">
+            We found your score, maturity tier, top gap, and first
+            recommended move. Send the full result to yourself so you can
+            keep the artifact and the action plan.
           </p>
-          <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
-            Where should we send your breakdown?
-          </h3>
+        </div>
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
-            <FormField
-              id="gate-email"
-              label="Work email"
-              required
-              error={status === 'error' ? message : null}
-            >
+        {/* RIGHT — score preview + form */}
+        <div className="bg-white p-6 md:p-7 lg:p-7 flex flex-col gap-7">
+          {/* SCORE + SUMMARY */}
+          <div className="rounded-[22px] overflow-hidden border border-[color:var(--ink-a10)] grid grid-cols-1 sm:grid-cols-[200px_1fr]">
+            <div className="bg-[color:var(--ink)] text-white p-6">
+              <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
+                Preview score
+              </p>
+              <p className="mt-3 text-[64px] font-bold leading-[0.88] tracking-[-0.04em] text-[color:var(--gold-soft)] tabular-nums">
+                {score}
+                <span className="text-[16px] text-white/55 font-normal tracking-normal ml-1">
+                  / {displayMax}
+                </span>
+              </p>
+              <div className="mt-5 px-3.5 py-3 rounded-[14px] bg-white/8 border border-white/12">
+                <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
+                  Tier
+                </p>
+                <p className="mt-1 text-[16px] font-semibold text-white">{tierLabel}</p>
+              </div>
+            </div>
+            <div className="bg-[color:var(--cream)] p-6 space-y-3">
+              {firstMove && (
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                    Your first move
+                  </p>
+                  <h3 className="mt-1.5 text-[20px] font-semibold leading-[1.15] tracking-[-0.02em] text-[color:var(--ink)]">
+                    {firstMove}
+                  </h3>
+                </div>
+              )}
+              {focusGap && (
+                <div className="bg-white border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
+                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                    Top gap
+                  </p>
+                  <p className="mt-1 text-[15px] font-semibold text-[color:var(--ink)]">
+                    {focusGap.label}
+                  </p>
+                  {gapOneLine && (
+                    <p className="mt-1.5 text-[12px] text-[color:var(--slate-600)] leading-[1.5]">
+                      {gapOneLine}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* FORM */}
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                Send the full result
+              </p>
+              <h2 className="mt-1.5 text-[26px] md:text-[32px] font-semibold leading-[1] tracking-[-0.03em] text-[color:var(--ink)]">
+                Where should we send your report?
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3">
+              <label htmlFor="gate-email" className="sr-only">
+                Email
+              </label>
               <input
                 id="gate-email"
                 type="email"
@@ -212,6 +308,7 @@ export function EmailGate({
                 placeholder="name@yourbank.com"
                 value={email}
                 aria-invalid={status === 'error' || undefined}
+                aria-describedby={status === 'error' ? 'gate-email-error' : undefined}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   if (status === 'error') {
@@ -219,195 +316,106 @@ export function EmailGate({
                     setMessage(null);
                   }
                 }}
-                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+                className="w-full px-4 py-3.5 border border-[color:var(--ink-a15)] rounded-[16px] bg-white text-[color:var(--ink)] text-[15px] font-semibold focus:outline-none focus:border-[color:var(--gold)]"
               />
-            </FormField>
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[16px] bg-[color:var(--gold)] text-[color:var(--ink)] text-[14px] font-bold hover:bg-[color:var(--gold-2)] transition-colors disabled:opacity-60"
+              >
+                {status === 'submitting' ? 'Sending…' : 'Send my report →'}
+              </button>
+            </div>
 
-            <FormField
-              id="gate-firstname"
-              label="First name"
-              hint="Optional — so we can address you correctly"
-            >
-              <input
-                id="gate-firstname"
-                type="text"
-                autoComplete="given-name"
-                maxLength={80}
-                placeholder="Sarah"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+            {status === 'error' && message && (
+              <p
+                id="gate-email-error"
+                role="alert"
+                className="text-[13px] text-[#B42318] leading-[1.5]"
+              >
+                {message}
+              </p>
+            )}
+
+            <p className="text-[13px] text-[color:var(--slate-600)] leading-[1.55]">
+              No credit card. Work email recommended if you want the result
+              tied to your institution.
+            </p>
+
+            <details className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[16px] p-4 group">
+              <summary className="cursor-pointer text-[14px] font-semibold text-[color:var(--ink)] flex items-center justify-between">
+                <span>Optional: personalize the report</span>
+                <span aria-hidden className="text-[color:var(--gold-deep)] text-[12px] group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                <div>
+                  <label htmlFor="gate-firstname" className="sr-only">
+                    First name
+                  </label>
+                  <input
+                    id="gate-firstname"
+                    type="text"
+                    autoComplete="given-name"
+                    maxLength={80}
+                    placeholder="First name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="gate-institution" className="sr-only">
+                    Institution
+                  </label>
+                  <input
+                    id="gate-institution"
+                    type="text"
+                    autoComplete="organization"
+                    maxLength={120}
+                    placeholder="Institution name"
+                    value={institutionName}
+                    onChange={(e) => setInstitutionName(e.target.value)}
+                    className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                  />
+                </div>
+              </div>
+            </details>
+
+            {/* WHAT UNLOCKS */}
+            <ul className="space-y-2.5 pt-2">
+              <UnlockRow
+                title="Top gap explanation"
+                body="Plain-English diagnosis of your weakest signal."
               />
-            </FormField>
-
-            <FormField
-              id="gate-institution"
-              label="Institution name"
-              hint="Optional — helps us tailor recommendations"
-            >
-              <input
-                id="gate-institution"
-                type="text"
-                autoComplete="organization"
-                maxLength={120}
-                placeholder="First Federal Credit Union"
-                value={institutionName}
-                onChange={(e) => setInstitutionName(e.target.value)}
-                className="w-full px-4 py-3 border border-[color:var(--ink)]/20 rounded-[2px] bg-[color:var(--cream)] text-[color:var(--ink)] font-sans text-base focus:outline-none focus:border-[color:var(--gold)]"
+              <UnlockRow
+                title="Three practical takeaways"
+                body="One prompt, one helper tool, one working artifact."
               />
-            </FormField>
-
-            <button
-              type="submit"
-              disabled={status === 'submitting'}
-              className="w-full px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all disabled:opacity-60"
-            >
-              {status === 'submitting' ? 'Sending…' : 'Show my full results'}
-            </button>
+              <UnlockRow
+                title="30-day action path"
+                body="A first-week and first-month plan you can actually use."
+              />
+            </ul>
           </form>
         </div>
-      </div>
-
-      <TrustStrip />
+      </section>
     </div>
   );
 }
 
-// Left column — visual proof of what they're getting.
-function DeliverablePanel() {
+function UnlockRow({ title, body }: { readonly title: string; readonly body: string }) {
   return (
-    <div className="bg-[color:var(--cream)] p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-[color:var(--ink)]/10">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-        What you get
-      </p>
-      <h3 className="font-serif text-3xl leading-tight text-[color:var(--ink)]">
-        A working diagnostic, not a teaser.
-      </h3>
-
-      <div
-        className="mt-6 border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-4 rounded-[2px]"
-        aria-hidden="true"
+    <li className="flex items-start gap-3 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[14px] px-3.5 py-3">
+      <span
+        aria-hidden
+        className="grid place-items-center w-6 h-6 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[12px] font-bold shrink-0"
       >
-        <div className="flex items-baseline justify-between mb-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--slate-600)]">
-            Readiness breakdown
-          </p>
-          <p className="font-mono text-[10px] tabular-nums text-[color:var(--slate-600)]">
-            12 dimensions
-          </p>
-        </div>
-        {/* 12 v3 dimension labels with illustrative sample bars */}
-        <div className="space-y-2">
-          {([
-            ['Strategic Value',          0.50],
-            ['Infrastructure Readiness', 0.42],
-            ['Data Quality',             0.38],
-            ['Security & Approved Tools',0.55],
-            ['Runtime Safeguards',       0.35],
-            ['Regulatory Compliance',    0.48],
-            ['Fair Lending Testing',     0.30],
-            ['Human-in-the-Loop',        0.56],
-            ['Talent & Culture',         0.44],
-            ['Data Safety Reflexes',     0.40],
-            ['Continuous Validation',    0.28],
-            ['Vendor Risk',              0.62],
-          ] as const).map(([label, value]) => (
-            <div key={label} className="flex items-center gap-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] w-28 shrink-0 truncate">
-                {label}
-              </span>
-              <div className="flex-1 h-1.5 bg-[color:var(--ink)]/10 rounded-sm overflow-hidden">
-                <div
-                  className="h-full bg-[color:var(--gold)]"
-                  style={{ width: `${value * 100}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="mt-3 font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">
-          Sample only — yours will reflect your actual answers
-        </p>
+        ✓
+      </span>
+      <div className="min-w-0">
+        <p className="text-[14px] font-semibold text-[color:var(--ink)] leading-tight">{title}</p>
+        <p className="mt-0.5 text-[12px] text-[color:var(--slate-600)] leading-[1.5]">{body}</p>
       </div>
-
-      <ul className="mt-6 space-y-3">
-        {[
-          ['Score across 12 dimensions', 'Where you stand on strategic value, compliance, data safety, vendor risk, and eight more.'],
-          ['Tailored starter artifact', 'A copy-paste-ready Markdown deliverable for your weakest dimension.'],
-          ['Email copy of both', 'Yours to share with your team, your board, or your examiners.'],
-        ].map(([title, body]) => (
-          <li key={title} className="flex gap-3">
-            <span className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
-            <div>
-              <p className="font-serif text-base text-[color:var(--ink)]">{title}</p>
-              <p className="text-sm text-[color:var(--slate-600)] leading-relaxed">{body}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function TrustStrip() {
-  return (
-    <div className="mt-6 grid sm:grid-cols-3 gap-x-6 gap-y-3 px-2">
-      {[
-        ['Where this goes', 'Our records, plus tier-routed follow-ups about your result. Never sold.'],
-        ['What we store', 'Your email, answers, and score. Removable on request — email hello@aibankinginstitute.com.'],
-        ['No surprise sales calls', 'Briefings happen by request only. We will not cold-call your line.'],
-      ].map(([title, body]) => (
-        <div key={title} className="border-l-2 border-[color:var(--gold)]/40 pl-3">
-          <p className="font-serif-sc text-[10px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
-            {title}
-          </p>
-          <p className="mt-1 text-xs text-[color:var(--slate-600)] leading-relaxed">{body}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function FormField({
-  id,
-  label,
-  required,
-  hint,
-  error,
-  children,
-}: {
-  readonly id: string;
-  readonly label: string;
-  readonly required?: boolean;
-  readonly hint?: string;
-  readonly error?: string | null;
-  readonly children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <div className="flex items-baseline justify-between gap-3">
-        <label
-          htmlFor={id}
-          className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]"
-        >
-          {label}
-          {required && <span className="ml-1 text-[color:var(--gold)]">*</span>}
-        </label>
-        {hint && !error && (
-          <span className="text-xs text-[color:var(--slate-600)]/80">{hint}</span>
-        )}
-      </div>
-      <div className="mt-1.5">{children}</div>
-      {error && (
-        <p
-          id={`${id}-error`}
-          className="mt-1.5 text-xs text-[color:#9b2226] flex items-start gap-1.5"
-          role="alert"
-        >
-          <span aria-hidden="true" className="font-mono leading-tight">!</span>
-          <span>{error}</span>
-        </p>
-      )}
-    </div>
+    </li>
   );
 }
