@@ -10,10 +10,13 @@
 // in-depth checkout route returns 503 for mode='institution' and nudges
 // buyers to email hello@aibankinginstitute.com.
 //
-// In-Depth remains on assessment v2 (48 questions, 8 dimensions) per
-// CLAUDE.md. The free funnel moved to v3 (12 questions, 12 dimensions);
-// the In-Depth keeps 8 dimensions, so any "eight dimensions" copy on this
-// page is correct.
+// In-Depth runs on assessment v4 — 48 questions across 8 strategic
+// dimensions, normalized 0-100 score, 5 maturity bands (Unstructured,
+// Emerging, Building Momentum, Controlled Scale, Advanced). 10-role
+// taxonomy with role-keyed report output. See:
+//   - docs/Plans/assessment-architecture-rebuild.md (Phase 2 + 3)
+//   - content/assessments/v4/ (canonical content)
+// The free funnel uses v3 (12 questions, 12 individual-voice signals).
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
