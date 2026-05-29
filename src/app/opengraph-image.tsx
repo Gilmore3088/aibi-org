@@ -8,16 +8,11 @@ import { ImageResponse } from 'next/og';
 //   --cream   #F7F3EA  (page surface)
 //   --gold    #C8A24A  (single accent)
 //
-// Rules:
-//   - Two-line wordmark + thin gold rule.
-//   - Inter via system fallback at edge runtime (no custom font load to
-//     keep cold-start cheap). Satori falls back to system-ui where Inter
-//     isn't preloaded.
-//   - Drop the retired "A-B-C of AI Banking" tagline.
-//   - Tagline "Turning Bankers into Builders" stays.
-//   - No italics (italics retired site-wide).
-//   - Dark navy background, cream + gold accents — matches the mockup
-//     hero card aesthetic.
+// Brand v1 (2026-05-28): top-left lockup is the bracketed [Ai] Banking
+// Institute mark. The italic "i" is rendered with a serif fallback
+// (Georgia → Times New Roman) at edge runtime since Instrument Serif
+// isn't registered in Satori; the silhouette of an italic serif "i"
+// reads correctly on social previews even without the precise face.
 
 export const runtime = 'edge';
 export const alt = 'The AI Banking Institute — Turning Bankers into Builders';
@@ -32,6 +27,11 @@ const ON_DARK_70 = 'rgba(255, 255, 255, 0.70)';
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+// Brand v1 — fallback chain for the mark's italic "i". Instrument Serif
+// is not registered with Satori (would require a binary font fetch on
+// every edge invocation); Georgia italic carries the same optical role.
+const MARK_SERIF_STACK =
+  '"Instrument Serif", Newsreader, "Times New Roman", Georgia, serif';
 
 export default async function OpengraphImage() {
   return new ImageResponse(
@@ -49,61 +49,34 @@ export default async function OpengraphImage() {
           fontFamily: INTER_STACK,
         }}
       >
-        {/* Top: two-line wordmark with gold seal accent */}
+        {/* Top: brand v1 bracketed [Ai] Banking Institute mark. */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            gap: 16,
+            alignItems: 'baseline',
+            fontFamily: INTER_STACK,
+            fontSize: 36,
+            fontWeight: 600,
+            letterSpacing: '-0.012em',
+            lineHeight: 1,
+            color: CREAM,
           }}
         >
-          <div
+          <span style={{ color: GOLD, fontWeight: 500 }}>[</span>
+          <span>A</span>
+          <span
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 12,
-              background: GOLD,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: INK,
-              fontWeight: 800,
-              fontSize: 22,
-              letterSpacing: 0,
+              fontFamily: MARK_SERIF_STACK,
+              fontStyle: 'italic',
+              fontWeight: 400,
+              fontSize: 41,
+              margin: '0 1px',
             }}
           >
-            Ai
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: INTER_STACK,
-                fontWeight: 600,
-                fontSize: 22,
-                letterSpacing: 0,
-                lineHeight: 1.1,
-                color: CREAM,
-              }}
-            >
-              The AI Banking Institute
-            </div>
-            <div
-              style={{
-                fontFamily: INTER_STACK,
-                fontWeight: 400,
-                fontSize: 16,
-                lineHeight: 1.2,
-                color: ON_DARK_70,
-              }}
-            >
-              Regulated Intelligence
-            </div>
-          </div>
+            i
+          </span>
+          <span style={{ color: GOLD, fontWeight: 500 }}>]</span>
+          <span style={{ marginLeft: 14 }}>Banking Institute</span>
         </div>
 
         {/* Middle: editorial statement, gold accent on payoff word */}

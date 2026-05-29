@@ -1,7 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-  <rect width="180" height="180" fill="#ECE9DF"/>
-  <circle cx="90" cy="90" r="72" fill="none" stroke="#7C5814" stroke-width="4"/>
-  <circle cx="90" cy="90" r="60" fill="none" stroke="#7C5814" stroke-width="1"/>
-  <text x="90" y="105" font-family="Georgia, serif" font-size="48" font-weight="600" fill="#0E1B2D" text-anchor="middle">AiBI</text>
-  <text x="90" y="140" font-family="Georgia, serif" font-size="9" letter-spacing="2" fill="#7C5814" text-anchor="middle">THE AI BANKING INSTITUTE</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="[Ai]BI app icon">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;family=Inter:wght@500;600&amp;display=swap');
+      .wm{font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;font-weight:600;font-size:58px;letter-spacing:-1px;fill:#F1EFE7;}
+      .bk{fill:#C8A24A;font-weight:500;}
+      .gi{font-family:'Instrument Serif','Times New Roman',Georgia,serif;font-style:italic;font-weight:400;font-size:66px;fill:#F1EFE7;}
+    </style>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="#07112a"/>
+  <text class="wm" x="90" y="110" text-anchor="middle"><tspan class="bk">[</tspan><tspan>A</tspan><tspan class="gi" dx="1">i</tspan><tspan class="bk" dx="1">]</tspan><tspan dx="3">BI</tspan></text>
 </svg>

@@ -2,21 +2,24 @@
 // Rendered server-side via @react-pdf/renderer renderToBuffer().
 // Must NOT be imported in Client Components — PDF renderer is server-only.
 //
-// Ported to mockup design system 2026-05-27. Visual alignment with the
-// on-screen certificate (src/app/courses/foundation/program/certificate/page.tsx):
+// Ported to mockup design system 2026-05-27. Brand v1 (2026-05-28).
+// Visual alignment with the on-screen certificate
+// (src/app/courses/foundation/program/certificate/page.tsx):
 //   - Cream page background (#F7F3EA), navy ink (#071A2F)
-//   - Navy seal (rounded square) with gold (#C8A24A) landmark glyph
+//   - Navy rounded-square containing the bracketed [Ai] mark (brand v1)
 //   - "AiBI-Foundation · The AI Banking Institute" credential format
 //   - Gold hairline accent under the recipient name
 //   - Cormorant retained for the recipient name + "Certificate of Completion"
-//     header (institutional gravitas on the printed page); DM Mono for
-//     labels, metadata, and footer. Inter is not embedded for PDF use, so
-//     DM Mono stands in for it on small-cap labels — visually consistent
-//     with the on-screen mockup's letter-spaced uppercase treatment.
+//     header (institutional gravitas on the printed page) AND for the
+//     italic "i" glyph in the brand mark (Cormorant Italic is already
+//     registered; Instrument Serif is not embedded for PDF to keep
+//     server-side rendering cheap — Cormorant Italic carries the same
+//     optical role).
+//   - DM Mono for labels, metadata, and footer.
 
 import React from 'react';
 import path from 'node:path';
-import { Document, Page, Text, View, Svg, Path, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
 Font.register({
   family: 'Cormorant',
@@ -276,17 +279,31 @@ const styles = StyleSheet.create({
   },
 });
 
-// Landmark glyph — matches the on-screen wordmark seal (columned facade).
-function LandmarkSvg({ size }: { size: number }) {
+// Brand v1 (2026-05-28) — the bracketed [Ai] mark inside a navy rounded
+// square. Replaces the retired columned-landmark glyph. Cormorant Italic
+// stands in for Instrument Serif on the "i" (font is already registered
+// for the recipient name; same optical role).
+function BracketMark({ size }: { size: number }) {
+  // The mark sits centered inside the seal container. Heights are tuned
+  // so the brackets, "A", and "i" share an optical baseline.
   return (
-    <Svg viewBox="0 0 24 24" width={size} height={size}>
-      <Path d="M3 10 L12 4 L21 10" stroke={GOLD} strokeWidth={1.6} fill="none" />
-      <Path d="M5 10 L5 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
-      <Path d="M9 10 L9 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
-      <Path d="M15 10 L15 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
-      <Path d="M19 10 L19 19" stroke={GOLD} strokeWidth={1.6} fill="none" />
-      <Path d="M3 20 L21 20" stroke={GOLD} strokeWidth={1.6} fill="none" />
-    </Svg>
+    <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+      <Text style={{ fontFamily: 'Cormorant', fontSize: size, color: GOLD }}>[</Text>
+      <Text style={{ fontFamily: 'Cormorant', fontWeight: 'bold', fontSize: size, color: CREAM }}>
+        A
+      </Text>
+      <Text
+        style={{
+          fontFamily: 'Cormorant',
+          fontStyle: 'italic',
+          fontSize: size * 1.12,
+          color: CREAM,
+        }}
+      >
+        i
+      </Text>
+      <Text style={{ fontFamily: 'Cormorant', fontSize: size, color: GOLD }}>]</Text>
+    </View>
   );
 }
 
@@ -311,7 +328,7 @@ export function CertificateDocument({
           {/* Header: seal + kicker + title + gold divider */}
           <View style={styles.header}>
             <View style={styles.sealOuter}>
-              <LandmarkSvg size={36} />
+              <BracketMark size={22} />
             </View>
             <Text style={styles.kicker}>The AI Banking Institute</Text>
             <Text style={styles.certificateTitle}>Certificate of Completion</Text>
@@ -344,7 +361,7 @@ export function CertificateDocument({
 
             <View style={styles.sealColumn}>
               <View style={styles.sealColumnSquare}>
-                <LandmarkSvg size={22} />
+                <BracketMark size={14} />
               </View>
             </View>
 
