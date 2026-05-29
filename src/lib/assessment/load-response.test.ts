@@ -119,10 +119,10 @@ describe('loadAssessmentResponse', () => {
     expect(result?.email).toBe('banker@example.com');
     expect(result?.score).toBe(34);
     expect(result?.maxScore).toBe(48);
-    expect(result?.tierId).toBe('building-momentum');
-    expect(result?.tier.id).toBe('building-momentum');
     // v2 dimension keys (test fixture is a v2 row)
     if (result?.version === 'v2' || result?.version === 'v1') {
+      expect(result.tierId).toBe('building-momentum');
+      expect(result.tier.id).toBe('building-momentum');
       expect(result.dimensionBreakdown['current-ai-usage'].score).toBe(6);
     } else {
       throw new Error('Expected v2-shaped response');
@@ -138,8 +138,12 @@ describe('loadAssessmentResponse', () => {
       error: null,
     });
     const result = await loadAssessmentResponse(VALID_UUID);
-    expect(result?.tier.id).toBe('building-momentum');
-    expect(result?.tier.label).toBe('Building Momentum');
+    if (result?.version === 'v2' || result?.version === 'v1') {
+      expect(result.tier.id).toBe('building-momentum');
+      expect(result.tier.label).toBe('Building Momentum');
+    } else {
+      throw new Error('Expected v2-shaped response');
+    }
   });
 
   it('falls back to default maxScore when row has null', async () => {

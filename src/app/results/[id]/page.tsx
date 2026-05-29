@@ -14,7 +14,7 @@
 // version='v3' render against ResultsViewV3 (12-dimension content);
 // v2 / v1 / null continue to render ResultsViewV2.
 
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ResultsViewV2 } from '@/app/assessment/_components/ResultsViewV2';
@@ -32,6 +32,13 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
 
   const response = await loadAssessmentResponse(params.id);
   if (!response) notFound();
+
+  // v4 (paid In-Depth Diagnostic) renders on its own dedicated 14-section
+  // surface — redirect there to avoid two competing layouts of the same
+  // data. v2/v3 keep their existing routing.
+  if (response.version === 'v4') {
+    redirect(`/assessment/in-depth/results/${params.id}`);
+  }
 
   return (
     <main className="min-h-screen bg-[color:var(--cream)] py-12 px-4">

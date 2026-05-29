@@ -15,13 +15,16 @@
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import { getTierV3 } from '@content/assessments/v3/scoring';
+import { getMaturityBand } from '@content/assessments/v4/scoring';
 import type { Tier as TierV2, DimensionScore as DimensionScoreV2 } from '@content/assessments/v2/scoring';
 import type { Tier as TierV3, DimensionScore as DimensionScoreV3 } from '@content/assessments/v3/scoring';
 import type { Dimension as DimensionV2 } from '@content/assessments/v2/types';
 import type { Dimension as DimensionV3 } from '@content/assessments/v3/types';
+import type { Dimension as DimensionV4, MaturityBand } from '@content/assessments/v4/types';
 import { parseRole, type Role } from '@content/assessments/v2/role';
+import { parseRoleV4, type RoleV4 } from '@content/assessments/v4/roles';
 
-export type AssessmentResponseVersion = 'v1' | 'v2' | 'v3';
+export type AssessmentResponseVersion = 'v1' | 'v2' | 'v3' | 'v4';
 
 interface AssessmentResponseBase {
   readonly profileId: string;
@@ -46,7 +49,33 @@ export interface AssessmentResponseLoadedV3 extends AssessmentResponseBase {
   readonly dimensionBreakdown: Record<DimensionV3, DimensionScoreV3>;
 }
 
-export type AssessmentResponseLoaded = AssessmentResponseLoadedV2 | AssessmentResponseLoadedV3;
+// v4 paid In-Depth: normalized 0-100 score, 5-band maturity, 8 strategic
+// dimensions. dimensionBreakdown uses the canonical serialized shape
+// {score, maxScore, label} with score = the normalized 0-100 per
+// dimension and maxScore = 100. The role taxonomy is v4 (10 ids).
+export interface DimensionScoreSerializedV4 {
+  readonly score: number;
+  readonly maxScore: number;
+  readonly label: string;
+}
+
+export interface AssessmentResponseLoadedV4 {
+  readonly profileId: string;
+  readonly email: string;
+  readonly score: number;
+  readonly maxScore: 100;
+  readonly readinessAt: string;
+  readonly role: RoleV4 | null;
+  readonly version: 'v4';
+  readonly band: MaturityBand;
+  readonly bandId: MaturityBand['id'];
+  readonly dimensionBreakdown: Record<DimensionV4, DimensionScoreSerializedV4>;
+}
+
+export type AssessmentResponseLoaded =
+  | AssessmentResponseLoadedV2
+  | AssessmentResponseLoadedV3
+  | AssessmentResponseLoadedV4;
 
 export async function loadAssessmentResponse(
   id: string,
@@ -81,6 +110,26 @@ export async function loadAssessmentResponse(
     readinessAt: (data.readiness_at as string) ?? new Date().toISOString(),
     role: parseRole((data as { role?: unknown }).role),
   };
+
+  // v4 paid In-Depth: normalized 0-100 score, 5-band maturity, v4 dim keys.
+  if (storedVersion === 'v4') {
+    const band = getMaturityBand(score);
+    return {
+      profileId: data.id as string,
+      email: data.email as string,
+      score,
+      maxScore: 100,
+      readinessAt: (data.readiness_at as string) ?? new Date().toISOString(),
+      role: parseRoleV4((data as { role?: unknown }).role),
+      version: 'v4',
+      band,
+      bandId: band.id,
+      dimensionBreakdown: data.readiness_dimension_breakdown as Record<
+        DimensionV4,
+        DimensionScoreSerializedV4
+      >,
+    };
+  }
 
   // v3 free funnel: stores 12-48 raw scores with v3 dimension keys.
   if (storedVersion === 'v3' && storedMax === 48) {
