@@ -4055,6 +4055,27 @@ section.mk-std { padding: 56px 0; }
    Assessment page rework (2026-05-26)
    ============================================================ */
 
+/* Course-hero metadata strip — sits between H1 and lede, surfaces
+   "12 modules · self-paced · ~7 hours · $295" so the buyer can size
+   the offer without scrolling. */
+.mk-hero-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 12px;
+  margin: 14px 0 18px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--gold-soft);
+}
+.mk-hero-meta span[aria-hidden="true"] { color: rgba(255,255,255,0.32); }
+
+/* Trust strip under hero CTAs — refund + access + credential.
+   Reassures the buyer before the small "not sure where to start" line. */
+.mk-hero-trust {
+  margin-top: 14px;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.78);
+}
+
 /* Small footer line under hero CTAs */
 .mk-hero-foot {
   margin-top: 16px;

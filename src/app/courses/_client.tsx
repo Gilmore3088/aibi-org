@@ -86,9 +86,18 @@ export default function CoursesIndexPage() {
         <div className="mk-container mk-hero-inner">
           <div>
             <h1>Learn AI by building reviewed banking workflows.</h1>
+            <p className="mk-hero-meta" aria-label="Course at a glance">
+              <span>12 modules</span>
+              <span aria-hidden="true">·</span>
+              <span>self-paced</span>
+              <span aria-hidden="true">·</span>
+              <span>~7 hours total</span>
+              <span aria-hidden="true">·</span>
+              <span>$295</span>
+            </p>
             <p className="mk-lede">
-              A hands-on course for bankers who need safe practice, reusable artifacts, and a
-              completion credential.
+              For lenders, ops, compliance, and member-service staff at community banks and credit
+              unions. Safe practice, reusable artifacts, a completion credential.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
@@ -98,6 +107,9 @@ export default function CoursesIndexPage() {
                 Enroll · $295
               </Button>
             </div>
+            <p className="mk-hero-trust">
+              14-day refund · Lifetime access · Completion certificate
+            </p>
             <p className="mk-hero-foot">
               Not sure where to start?{' '}
               <a href="/assessment" className="mk-hero-foot-link">

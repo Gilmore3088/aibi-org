@@ -77,9 +77,9 @@ export function GuideRequestForm() {
       setMessage('Please enter a valid work email.');
       return;
     }
-    if (name.trim().length === 0 || institution.trim().length === 0) {
+    if (name.trim().length === 0) {
       setStatus('error');
-      setMessage('Name and institution are required.');
+      setMessage('Name is required.');
       return;
     }
     setStatus('submitting');
@@ -201,10 +201,9 @@ export function GuideRequestForm() {
         </label>
       </div>
       <label style={{ display: 'block' }}>
-        <span style={labelStyle}>Institution</span>
+        <span style={labelStyle}>Institution · optional</span>
         <input
           type="text"
-          required
           value={institution}
           onChange={(e) => setInstitution(e.target.value)}
           style={inputStyle}

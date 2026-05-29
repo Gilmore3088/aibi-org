@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import type { Metadata } from 'next';
 import {
   SiteHeader,
   Section,
@@ -7,6 +8,12 @@ import {
   CtaBand,
 } from '@/components/mockup';
 import { PLAYBOOK_INDEX } from './data';
+
+export const metadata: Metadata = {
+  title: 'Role Playbooks — The AI Banking Institute',
+  description:
+    'Six role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, and IT/InfoSec. Reviewed prompts and reusable templates.',
+};
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({

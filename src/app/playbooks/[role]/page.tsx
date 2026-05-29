@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
   SiteHeader,
@@ -15,6 +16,20 @@ import { getAssetsForPlaybook, type PlaybookSlug } from '@content/playbook-asset
 
 export function generateStaticParams() {
   return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ role: string }> },
+): Promise<Metadata> {
+  const { role } = await params;
+  const playbook = (PLAYBOOKS as Record<string, { eyebrow?: string; lede?: string } | undefined>)[role];
+  if (!playbook) {
+    return { title: 'Role Playbook — The AI Banking Institute' };
+  }
+  return {
+    title: `${playbook.eyebrow ?? 'Role Playbook'} — The AI Banking Institute`,
+    ...(playbook.lede ? { description: playbook.lede } : {}),
+  };
 }
 
 // Best-effort slug derivation when the playbook data.ts asset name doesn't
