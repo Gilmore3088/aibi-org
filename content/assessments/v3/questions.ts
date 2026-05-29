@@ -1,8 +1,14 @@
-// AiBI Readiness Assessment — v3 Question Pool
-// 12 questions, one per topic. Total score range: 12-48 (12 questions x 1-4 points).
-// Topics drawn from the AI readiness framework for community banks and credit
-// unions; voice deliberately plain-language to keep the free funnel accessible
-// to non-technical executives.
+// AiBI Readiness Snapshot — v3 Question Pool (INDIVIDUAL VOICE)
+//
+// 12 questions, one per signal. Total score range 12–48 (1–4 per question).
+// Source: docs/Plans/_assets/aibi-assessment-architecture-2026-05-28.md
+// Section 3 — "Free Assessment: 12 Readiness Signals" + Section 1's note
+// that the free assessment is a screening tool, not a deep diagnostic.
+//
+// Voice is second-person and individual. The respondent answers about
+// THEIR OWN day-to-day AI work, not their institution's policies. If a
+// question reads like "does your bank have X?", rewrite it to "do you
+// know/do X?" before merging.
 
 import type { AssessmentQuestion } from './types';
 
@@ -10,133 +16,133 @@ export const questions: readonly AssessmentQuestion[] = [
   {
     id: 'sv-01',
     dimension: 'strategic-value',
-    prompt: 'Have you identified specific bottlenecks where AI could measurably improve efficiency or revenue, or are you running isolated experiments?',
+    prompt: 'When you reach for AI in your work, is it tied to a specific problem you are trying to solve?',
     options: [
-      { label: 'We have no specific use cases identified — AI is a general "we should look at this" topic.', points: 1 },
-      { label: 'A few staff are experimenting on their own, but it is not tied to any institutional priority.', points: 2 },
-      { label: 'We have named two or three high-friction processes (loan ops, BSA narratives, member communications) as candidates and are scoping them.', points: 3 },
-      { label: 'AI initiatives are tied to specific efficiency-ratio or revenue targets with named owners and measured outcomes.', points: 4 },
+      { label: 'I have not found a specific problem AI helps me with yet.', points: 1 },
+      { label: 'I try AI sometimes, but it is not tied to any real task.', points: 2 },
+      { label: 'I use AI on two or three specific tasks where it saves me time.', points: 3 },
+      { label: 'I use AI on named tasks where I can measure the time or quality difference.', points: 4 },
     ],
   },
   {
-    id: 'ir-01',
-    dimension: 'infrastructure-readiness',
-    prompt: 'How easily can your core systems connect to new tools and services?',
+    id: 'atp-01',
+    dimension: 'approved-tool-path',
+    prompt: 'Do you know which AI tools you are allowed to use for work?',
     options: [
-      { label: 'Our core is largely closed — any new integration is a multi-month vendor project.', points: 1 },
-      { label: 'We can integrate through our core provider’s marketplace, but custom connections are difficult.', points: 2 },
-      { label: 'Our stack supports standard APIs and we have completed at least one custom integration in the past year.', points: 3 },
-      { label: 'Our systems are modular with documented APIs; we routinely add third-party tools without core-provider involvement.', points: 4 },
-    ],
-  },
-  {
-    id: 'dq-01',
-    dimension: 'data-quality',
-    prompt: 'Can your institution reliably pull clean, current customer and operational data into a single view?',
-    options: [
-      { label: 'Our data lives in disconnected systems and reconciling it is a manual exercise each time.', points: 1 },
-      { label: 'We can pull data with effort, but quality is inconsistent and duplicates are common.', points: 2 },
-      { label: 'We maintain a reasonably clean data set for core reporting, though gaps exist outside that.', points: 3 },
-      { label: 'We have a unified, verified data layer that AI tools could reference for accurate institutional context.', points: 4 },
-    ],
-  },
-  {
-    id: 'sat-01',
-    dimension: 'security-approved-tools',
-    prompt: 'Does your institution control which AI tools staff are allowed to use and route traffic through approved channels?',
-    options: [
-      { label: 'We have no controls — staff use whatever public AI tools they find.', points: 1 },
-      { label: 'We have written guidance but no technical enforcement.', points: 2 },
-      { label: 'We maintain an approved AI tool list and most staff use only those tools.', points: 3 },
-      { label: 'All staff AI use routes through institution-approved channels with access controls, logging, and visibility into who used what.', points: 4 },
-    ],
-  },
-  {
-    id: 'rs-01',
-    dimension: 'runtime-safeguards',
-    prompt: 'Do you have safeguards in place to catch unsafe inputs going into AI tools and unsafe outputs coming back?',
-    options: [
-      { label: 'None — staff send and receive AI content with no checks.', points: 1 },
-      { label: 'We rely on staff judgment alone to catch problems.', points: 2 },
-      { label: 'We have written rules for what to send and a review step for high-stakes outputs.', points: 3 },
-      { label: 'We use both input controls (PII masking, restricted-data screening) and output review for any AI-assisted work that touches customers or decisions.', points: 4 },
-    ],
-  },
-  {
-    id: 'rc-01',
-    dimension: 'regulatory-compliance',
-    prompt: 'If an AI tool helped shape a credit decision, could you explain the principal reasons behind that decision to a regulator or to the customer?',
-    options: [
-      { label: 'We have not considered this — AI is not part of our credit decision process and we have not thought through the requirement.', points: 1 },
-      { label: 'We are aware ECOA / Reg B applies but have not mapped AI-assisted decisions to its requirements.', points: 2 },
-      { label: 'We can produce adverse-action reasoning for AI-assisted decisions but the process is manual.', points: 3 },
-      { label: 'Our AI-assisted credit processes generate the required principal-reason disclosures as a standard output, reviewed by compliance.', points: 4 },
-    ],
-  },
-  {
-    id: 'flt-01',
-    dimension: 'fair-lending-testing',
-    prompt: 'Are you testing AI-assisted processes for disparate impact on protected classes?',
-    options: [
-      { label: 'We have not considered fair lending risk in the context of AI.', points: 1 },
-      { label: 'We are aware of the risk but have not built it into our AI oversight.', points: 2 },
-      { label: 'Our compliance team reviews AI-assisted processes for ECOA/Reg B alignment as part of our standard fair lending program.', points: 3 },
-      { label: 'We have a documented fair lending testing protocol for AI-assisted processes, including disparate-impact analysis, with board reporting.', points: 4 },
-    ],
-  },
-  {
-    id: 'hitl-01',
-    dimension: 'human-in-the-loop',
-    prompt: 'Has your institution clearly defined which AI-assisted tasks need mandatory human review and which can run unattended?',
-    options: [
-      { label: 'We have not defined this — AI use is ad hoc.', points: 1 },
-      { label: 'Staff use their own judgment about when to double-check AI output.', points: 2 },
-      { label: 'We have written guidelines identifying high-risk tasks that require human review.', points: 3 },
-      { label: 'We have a formal policy mapping each AI use case to a specific oversight level (automated, sampled review, mandatory human approval) with logs.', points: 4 },
-    ],
-  },
-  {
-    id: 'tc-01',
-    dimension: 'talent-culture',
-    prompt: 'Are you actively preparing your workforce to move from manual task execution to AI oversight and workflow design?',
-    options: [
-      { label: 'No — staff are not being prepared for any change in how they work.', points: 1 },
-      { label: 'Leadership talks about it but no concrete training or role changes are underway.', points: 2 },
-      { label: 'A specific team or role has been retrained or restructured around AI oversight.', points: 3 },
-      { label: 'We have institution-wide training, redefined role expectations, and career paths built around working alongside AI.', points: 4 },
+      { label: 'I am not sure what is approved — I use whatever I find online.', points: 1 },
+      { label: 'I have a rough sense, but I have never seen an official list.', points: 2 },
+      { label: 'I know the main approved tools and I stick to them most of the time.', points: 3 },
+      { label: 'I work entirely inside approved tools and know who to ask before trying anything new.', points: 4 },
     ],
   },
   {
     id: 'dsr-01',
     dimension: 'data-safety-reflexes',
-    prompt: 'Have you trained staff on a clear data classification system (e.g., Green/Yellow/Red) so they know what data can and cannot be put into AI tools?',
+    prompt: 'Do you know what kinds of information you should never paste into an AI tool?',
     options: [
-      { label: 'No — staff have not been trained on AI-specific data handling.', points: 1 },
-      { label: 'Staff have heard warnings but cannot reliably name what is restricted.', points: 2 },
-      { label: 'Staff understand the categories (PII, NPI, loan files) but apply them inconsistently.', points: 3 },
-      { label: 'Staff use a clear classification system reflexively; restricted data is masked or kept out of AI tools as a matter of habit.', points: 4 },
+      { label: 'I have not thought about it — I paste whatever I need help with.', points: 1 },
+      { label: 'I avoid the obvious things like full account numbers, but I am not sure beyond that.', points: 2 },
+      { label: 'I strip identifiers, balances, and customer details before I paste anything.', points: 3 },
+      { label: 'I follow a clear data-handling rule and know when to switch to an approved internal tool.', points: 4 },
     ],
   },
   {
-    id: 'cv-01',
-    dimension: 'continuous-validation',
-    prompt: 'How does your model risk management approach handle AI tools that change over time?',
+    id: 'ps-01',
+    dimension: 'prompting-skill',
+    prompt: 'When you ask AI for something, do you get a useful, structured answer the first time?',
     options: [
-      { label: 'We have not addressed AI in our model risk framework.', points: 1 },
-      { label: 'We treat AI tools the same as static models — annual review at most.', points: 2 },
-      { label: 'We have updated our framework to acknowledge AI but monitoring is still periodic.', points: 3 },
-      { label: 'We have continuous validation in place — drift, performance, and behavior are monitored on an ongoing basis, not just annually.', points: 4 },
+      { label: 'Usually no — the answers are generic and I give up.', points: 1 },
+      { label: 'Sometimes — it depends on how I word it.', points: 2 },
+      { label: 'Most of the time — I have learned a few patterns that work.', points: 3 },
+      { label: 'Reliably — I can ask AI to follow a format, cite sources, and check its own work.', points: 4 },
     ],
   },
   {
-    id: 'vr-01',
-    dimension: 'vendor-risk',
-    prompt: 'When you evaluate a third-party AI vendor, do you understand their model behavior, data handling, and how they would integrate with your systems?',
+    id: 'rf-01',
+    dimension: 'role-fit',
+    prompt: 'Have you connected AI to specific tasks in your role, not just general curiosity?',
     options: [
-      { label: 'We treat AI vendors like any other SaaS — we do not ask AI-specific questions.', points: 1 },
-      { label: 'We do informal reviews but lack a documented AI-vendor process.', points: 2 },
-      { label: 'AI vendors go through our standard TPRM process including data handling and security.', points: 3 },
-      { label: 'We apply an AI-specific TPRM overlay covering model behavior, explainability, drift monitoring, and integration risk beyond standard vendor review.', points: 4 },
+      { label: 'No — I am mostly experimenting with AI in general.', points: 1 },
+      { label: 'A little — I have used AI on one or two role-specific tasks.', points: 2 },
+      { label: 'Yes — I have three or four named role-specific tasks where AI helps.', points: 3 },
+      { label: 'Yes — AI is part of how I do my actual job, and I can describe exactly where.', points: 4 },
     ],
   },
-] as const;
+  {
+    id: 'hr-01',
+    dimension: 'human-review',
+    prompt: 'When you use AI to draft something for work, do you have a review step before it gets used?',
+    options: [
+      { label: 'No — if it looks right, I use it.', points: 1 },
+      { label: 'I reread it, but no one else checks it.', points: 2 },
+      { label: 'I review it carefully, and high-stakes items get a second pair of eyes.', points: 3 },
+      { label: 'I follow a named review path — I know which items need a second reviewer and who that is.', points: 4 },
+    ],
+  },
+  {
+    id: 'doc-01',
+    dimension: 'documentation',
+    prompt: 'Could you show someone exactly what you asked AI and what it gave back?',
+    options: [
+      { label: 'No — once I am done, the conversation is gone.', points: 1 },
+      { label: 'For some items, if I happened to save the chat.', points: 2 },
+      { label: 'For most important items — I save the prompt and the output.', points: 3 },
+      { label: 'Yes — I keep prompts, outputs, and edits in a place a reviewer or examiner could see.', points: 4 },
+    ],
+  },
+  {
+    id: 'va-01',
+    dimension: 'vendor-awareness',
+    prompt: 'Do you know which of the vendor tools you already use have AI features inside them?',
+    options: [
+      { label: 'No — I had not really thought about it.', points: 1 },
+      { label: 'I know one or two, but I am sure there are more.', points: 2 },
+      { label: 'I know most of them and what data each one sees.', points: 3 },
+      { label: 'Yes — I can name the AI features in each tool and what the vendor does with our data.', points: 4 },
+    ],
+  },
+  {
+    id: 'cia-01',
+    dimension: 'customer-impact-awareness',
+    prompt: 'Do you know when AI touches a customer or a regulated decision in your work?',
+    options: [
+      { label: 'No — I have not mapped that out.', points: 1 },
+      { label: 'I have a rough idea, but I am not always sure where the line is.', points: 2 },
+      { label: 'Yes — I know which of my AI uses touch a customer or regulated decision and I treat those differently.', points: 3 },
+      { label: 'Yes — and I know which compliance rules (ECOA, UDAAP, BSA, fair lending) apply to those uses.', points: 4 },
+    ],
+  },
+  {
+    id: 'wr-01',
+    dimension: 'workflow-readiness',
+    prompt: 'For your repeated work, can you describe the steps from input, to AI draft, to your review, to the final output?',
+    options: [
+      { label: 'No — every time I use AI it is ad hoc.', points: 1 },
+      { label: 'I have a rough mental model, but nothing written down.', points: 2 },
+      { label: 'Yes — for two or three recurring tasks, I have a clear step-by-step.', points: 3 },
+      { label: 'Yes — I can hand my workflow to a colleague and they could pick it up.', points: 4 },
+    ],
+  },
+  {
+    id: 'tc-01',
+    dimension: 'training-culture',
+    prompt: 'Are you being taught safe, practical AI use at work — or are you figuring it out alone?',
+    options: [
+      { label: 'I am completely on my own.', points: 1 },
+      { label: 'There is some general training, but nothing tied to my role.', points: 2 },
+      { label: 'I get role-specific guidance and examples I can apply directly.', points: 3 },
+      { label: 'I get role-specific training, examples, and coaching, and I know who to ask when I am stuck.', points: 4 },
+    ],
+  },
+  {
+    id: 'lv-01',
+    dimension: 'leadership-visibility',
+    prompt: 'Do you know what your leadership tracks about AI use, and how your work fits in?',
+    options: [
+      { label: 'I have no idea what leadership sees or wants.', points: 1 },
+      { label: 'I know they care about it, but not what they actually measure.', points: 2 },
+      { label: 'I know the high-level goals and roughly how my AI use connects.', points: 3 },
+      { label: 'I know exactly what is measured, how my work contributes, and where the gaps still are.', points: 4 },
+    ],
+  },
+];

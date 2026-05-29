@@ -129,46 +129,46 @@ function isLow(
 export function detectProfile(
   scores: Record<Dimension, DimensionScore>,
 ): Profile | null {
-  // A — Energy without guardrails: strategic momentum, weak safety.
+  // A — Energy without guardrails: strategic use, weak safety reflexes.
   if (
     isHigh(scores, 'strategic-value') &&
-    (isLow(scores, 'security-approved-tools') ||
-      isLow(scores, 'runtime-safeguards') ||
-      isLow(scores, 'data-safety-reflexes'))
+    (isLow(scores, 'approved-tool-path') ||
+      isLow(scores, 'data-safety-reflexes') ||
+      isLow(scores, 'human-review'))
   ) {
     return 'governance-priority';
   }
 
-  // B — Posture without practice: compliance written down, culture not yet caught up.
+  // B — Posture without practice: review-aware, culture not yet caught up.
   if (
-    (isHigh(scores, 'regulatory-compliance') ||
-      isHigh(scores, 'human-in-the-loop')) &&
-    (isLow(scores, 'talent-culture') || isLow(scores, 'data-safety-reflexes'))
+    (isHigh(scores, 'customer-impact-awareness') ||
+      isHigh(scores, 'human-review')) &&
+    (isLow(scores, 'training-culture') || isLow(scores, 'data-safety-reflexes'))
   ) {
     return 'capability-priority';
   }
 
-  // C — Readiness without direction: people ready, no workflows picked.
+  // C — Readiness without direction: skills present, no specific use cases.
   if (
-    isHigh(scores, 'talent-culture') &&
+    isHigh(scores, 'training-culture') &&
     isLow(scores, 'strategic-value')
   ) {
     return 'adoption-priority';
   }
 
-  // D — Experimentation without visibility: shadow IT pattern.
+  // D — Experimentation without visibility: shadow-tool pattern.
   if (
-    isLow(scores, 'security-approved-tools') &&
-    (isHigh(scores, 'strategic-value') || isHigh(scores, 'talent-culture'))
+    isLow(scores, 'approved-tool-path') &&
+    (isHigh(scores, 'strategic-value') || isHigh(scores, 'training-culture'))
   ) {
     return 'visibility-priority';
   }
 
-  // E — Posture without use cases: governance ready, no workflows named.
+  // E — Posture without use cases: discipline ready, no workflows named.
   if (
-    (isHigh(scores, 'security-approved-tools') ||
-      isHigh(scores, 'runtime-safeguards') ||
-      isHigh(scores, 'human-in-the-loop')) &&
+    (isHigh(scores, 'approved-tool-path') ||
+      isHigh(scores, 'data-safety-reflexes') ||
+      isHigh(scores, 'human-review')) &&
     isLow(scores, 'strategic-value')
   ) {
     return 'use-case-priority';
