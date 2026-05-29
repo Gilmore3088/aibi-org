@@ -21,6 +21,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { AuthButton } from "@/components/AuthButton";
 import { MobileNav } from "@/components/MobileNav";
+import { Wordmark } from "@/components/brand";
 import { cn } from "@/lib/utils/cn";
 
 export interface NavLink {
@@ -46,26 +47,14 @@ export async function SiteNav() {
   return (
     <header className="sticky top-0 z-sticky border-b border-hairline bg-linen">
       <div className="max-w-wide mx-auto px-s7 py-s5 flex items-center justify-between gap-s6">
-        {/* Ledger lockup — two-line Geist 700 uppercase. Per the Design System
-            spec: sans-serif, no italics, no symbol, no monogram. */}
+        {/* Brand v1 (2026-05-28) — bracketed [Ai] mark. Replaces the retired
+            two-line Geist 700 Ledger lockup. See docs/brand/brand-guide-v1.html. */}
         <Link
           href="/"
           aria-label="The AI Banking Institute — Home"
-          className="flex flex-col leading-none group"
-          style={{ lineHeight: 0.95 }}
+          className="inline-flex items-center"
         >
-          <span
-            className="font-sans uppercase text-ink group-hover:text-gold transition-colors duration-fast"
-            style={{ fontWeight: 700, fontSize: 14, letterSpacing: '-0.005em', lineHeight: 1 }}
-          >
-            The AI Banking
-          </span>
-          <span
-            className="font-sans uppercase text-dust"
-            style={{ fontWeight: 700, fontSize: 14, letterSpacing: '-0.005em', lineHeight: 1, marginTop: 1 }}
-          >
-            Institute
-          </span>
+          <Wordmark variant="full" tone="dark" size={22} />
         </Link>
 
         <nav aria-label="Primary" className="flex items-center gap-s4 lg:gap-s6">

@@ -1,0 +1,644 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ai Banking Institute · Brand Guide v1 (Production)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=Newsreader:ital,opsz,wght@0,16..40,400;1,16..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Inter is the brand's single primary typeface — display, body, UI. */
+    --font-sans:"Inter","Geist",-apple-system,"Helvetica Neue",system-ui,sans-serif;
+    /* JetBrains Mono — metadata strips and tabular figures. */
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    /* Newsreader — narrow surfaces only (print-results PDF, serif sample). */
+    --font-serif:"Newsreader","Times New Roman",Georgia,serif;
+    /* Instrument Serif italic — the mark's stylized "i" only. Nothing else. */
+    --font-mark-serif:"Instrument Serif","Newsreader",Georgia,serif;
+
+    --bg:#F7F3EA; --bg-2:#EFE7D7;
+    --ink:#071A2F; --ink-soft:#0B2745;
+    --rule:rgba(7,26,47,.10); --rule-2:rgba(7,26,47,.20);
+    --muted:rgba(7,26,47,.55);
+    --gold:#C8A24A; --gold-2:#D8B867; --gold-deep:#9A7A2F; --gold-soft:#fdf7e7; --gold-light:#E6D39B;
+    --navy:#0B2745; --navy-deep:#071A2F; --navy-cream:#F1EFE7;
+    --green-600:#0d9488; --amber-600:#b45309; --red-600:#991b1b; --red-500:#b91c1c;
+    --green-50:#ecfdf5; --amber-50:#fffbeb; --red-50:#fef2f2;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--font-sans);
+    font-size:16px; line-height:1.6; font-feature-settings:"cv05","kern";
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  /* italics retired site-wide — emphasis is weight (600/700) + color, never slant.
+     Sole exception: the mark's stylized i (.si) — a single Instrument Serif
+     italic glyph, one color, no tittle, optically sized to the cap height. */
+  i,em{font-style:normal;}
+  .si{font-family:var(--font-mark-serif);font-style:italic;font-weight:400;font-size:1.14em;line-height:0;margin:0 .005em 0 .012em;color:inherit;}
+  .tnum{font-variant-numeric:tabular-nums;}
+  .mono{font-family:var(--font-mono);}
+
+  .page{max-width:1280px;margin:0 auto;padding:0 64px 110px;}
+
+  /* ── topbar ── */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0 22px;border-bottom:1px solid var(--rule);
+    position:sticky;top:0;z-index:20;background:rgba(247,243,234,.86);
+    backdrop-filter:saturate(140%) blur(8px);
+  }
+  .topbar .brand{display:inline-flex;align-items:baseline;gap:16px;}
+  .mark{display:inline-flex;align-items:baseline;font-family:var(--font-sans);font-weight:600;line-height:1;color:var(--ink);letter-spacing:-.02em;}
+  .mark .bk{color:var(--gold);font-weight:500;padding:0 .03em;}
+  .mark .ai{padding:0 .02em;}
+  .topbar .mark{font-size:26px;}
+  .topbar .wordmark{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  .topbar .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+
+  /* ── eyebrow ── */
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);}
+  .eb-ink{color:var(--muted);}
+  .eb-cream{color:var(--gold-light);}
+
+  /* ── cover ── */
+  .cover{margin-top:30px;padding:60px 0 52px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:end;border-bottom:1px solid var(--rule);}
+  .cover .pretitle{font-family:var(--font-mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:18px;}
+  .cover h1{font-family:var(--font-sans);font-weight:700;font-size:clamp(46px,5.4vw,68px);line-height:1.04;letter-spacing:-.03em;color:var(--ink);margin:0;text-wrap:balance;}
+  .cover h1 .accent{color:var(--gold-deep);}
+  .cover .stand{font-family:var(--font-sans);font-weight:400;font-size:20px;line-height:1.5;color:var(--muted);max-width:38ch;margin:0;}
+  .cover .stand b{color:var(--ink);font-weight:600;}
+  .cover .meta-strip{margin-top:30px;padding-top:22px;border-top:1px dashed var(--rule-2);display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .cover .meta-strip .k{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);}
+  .cover .meta-strip .v{margin-top:6px;font-size:14px;color:var(--ink);font-weight:500;line-height:1.4;}
+
+  /* ── at a glance ── */
+  .glance{margin-top:30px;display:grid;grid-template-columns:1.05fr 1.25fr;border:1px solid var(--rule);border-radius:18px;overflow:hidden;}
+  .glance .markpane{background:var(--navy-deep);position:relative;display:grid;place-items:center;padding:56px 40px;overflow:hidden;}
+  .glance .markpane::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 30% 28%,rgba(200,162,74,.18),transparent 60%),radial-gradient(60% 50% at 80% 84%,rgba(200,162,74,.08),transparent 60%);pointer-events:none;}
+  .mark-big{font-size:clamp(30px,3.6vw,44px);color:var(--navy-cream);position:relative;z-index:1;text-align:center;letter-spacing:-.02em;}
+  .glance .summary{padding:42px 46px;display:flex;flex-direction:column;gap:6px;background:#fff;}
+  .summary .promise{font-family:var(--font-sans);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1.3;color:var(--ink);margin:0 0 8px;}
+  .summary .row{display:grid;grid-template-columns:108px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--rule);}
+  .summary .row .k{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);padding-top:3px;}
+  .summary .row .v{font-size:14.5px;color:var(--ink);line-height:1.55;}
+  .summary .row .v b{font-weight:600;}
+
+  /* ── section scaffold ── */
+  section.sec{margin-top:84px;scroll-margin-top:90px;}
+  .sec-head{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:30px;}
+  .sec-head .num{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);padding-top:8px;}
+  .sec-head h2{margin:0 0 12px;font-family:var(--font-sans);font-weight:700;font-size:36px;letter-spacing:-.025em;line-height:1.14;}
+  .sec-head .sub{margin:0;font-size:16px;color:var(--muted);max-width:62ch;line-height:1.6;}
+
+  /* ── cards / grids ── */
+  .card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:26px 28px;}
+  .card.cream{background:var(--bg-2);}
+  .card.dark{background:var(--navy-deep);color:var(--navy-cream);border-color:rgba(255,255,255,.08);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+  /* ── prose ── */
+  .prose{max-width:66ch;}
+  .prose p{margin:0 0 14px;font-size:16.5px;line-height:1.72;}
+  .prose p:last-child{margin-bottom:0;}
+  .prose b{font-weight:600;}
+  .prose .gold{color:var(--gold-deep);font-weight:600;}
+
+  /* ── name hierarchy table ── */
+  .namelist{display:grid;gap:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:#fff;}
+  .nrow{display:grid;grid-template-columns:230px 1fr;gap:28px;padding:20px 28px;border-top:1px solid var(--rule);align-items:baseline;}
+  .nrow:first-child{border-top:0;}
+  .nrow .role{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);}
+  .nrow .val{font-size:17px;color:var(--ink);}
+  .nrow .val b{font-weight:600;}
+  .nrow .val .note{display:block;margin-top:5px;font-size:13.5px;color:var(--muted);line-height:1.5;}
+  .nrow .val .markinline{font-family:var(--font-sans);font-weight:600;letter-spacing:-.02em;font-size:21px;}
+  .nrow .val .markinline .bk{color:var(--gold);font-weight:500;}
+
+  /* ── voice / say-not ── */
+  .saynot{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;}
+  .saynot .col{padding:24px 26px;}
+  .saynot .say{background:#fff;}
+  .saynot .not{background:var(--bg-2);border-left:1px solid var(--rule);}
+  .saynot h4{margin:0 0 16px;display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;}
+  .saynot .say h4{color:var(--green-600);}
+  .saynot .not h4{color:var(--red-600);}
+  .saynot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .saynot li{font-size:14.5px;line-height:1.5;padding-left:22px;position:relative;color:var(--ink);}
+  .saynot .say li::before{content:"✓";position:absolute;left:0;color:var(--green-600);font-weight:600;}
+  .saynot .not li{color:var(--muted);}
+  .saynot .not li::before{content:"✕";position:absolute;left:0;color:var(--red-500);font-weight:600;}
+
+  /* ── voice traits ── */
+  .traits{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .trait .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;}
+  .trait h4{margin:0 0 6px;font-family:var(--font-sans);font-weight:600;font-size:20px;letter-spacing:-.02em;}
+  .trait p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5;}
+
+  /* ── offers ── */
+  .offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .offer{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;}
+  .offer .tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);}
+  .offer .price{font-family:var(--font-sans);font-weight:700;font-size:40px;letter-spacing:-.03em;line-height:1;margin:14px 0 4px;color:var(--ink);}
+  .offer .price .cur{font-size:22px;font-weight:600;vertical-align:super;color:var(--muted);}
+  .offer h3{margin:6px 0 4px;font-family:var(--font-sans);font-weight:600;font-size:21px;letter-spacing:-.02em;}
+  .offer .lede{margin:0 0 16px;font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .offer .specs{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:8px;}
+  .offer .specs li{display:flex;justify-content:space-between;gap:12px;font-size:13px;}
+  .offer .specs li .sk{color:var(--muted);}
+  .offer .specs li .sv{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;}
+
+  /* ── tokens / swatches ── */
+  .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .sw{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:#fff;}
+  .sw .chip{height:72px;}
+  .sw .lab{padding:9px 11px;}
+  .sw .lab .n{font-size:12px;font-weight:500;color:var(--ink);}
+  .sw .lab .h{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .typespec{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px;}
+  .typespec .t{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:22px 24px;}
+  .typespec .t .role{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);}
+  .typespec .t .spec{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:4px;}
+  .typespec .t .demo{margin-top:16px;line-height:1.1;color:var(--ink);}
+  .typespec .t.sans .demo{font-family:var(--font-sans);font-size:30px;font-weight:700;letter-spacing:-.025em;}
+  .typespec .t.serif .demo{font-family:var(--font-serif);font-size:34px;}
+  .typespec .t.mono .demo{font-family:var(--font-mono);font-size:18px;letter-spacing:.02em;}
+
+  /* ── logo do/dont ── */
+  .logo-board{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:stretch;}
+  /* primary lockup lives on light — open wordmark, no container */
+  .logo-hero{background:#fff;border:1px solid var(--rule);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:50px 40px;position:relative;overflow:hidden;}
+  .logo-hero .mark{font-size:clamp(34px,4vw,52px);color:var(--ink);position:relative;z-index:1;text-align:center;}
+  .logo-hero .cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);}
+  /* secondary boxed lockup — small formats only */
+  .box-lockup{background:var(--navy-deep);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;}
+  .box-lockup .mark{color:var(--navy-cream);}
+  .box-lockup.icon{width:64px;height:64px;border-radius:16px;padding:0;}
+  .logo-rules{display:flex;flex-direction:column;gap:12px;}
+  .lr{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:14px;line-height:1.5;}
+  .lr .ic{font-family:var(--font-mono);font-weight:600;font-size:13px;width:20px;text-align:center;}
+  .lr.do .ic{color:var(--green-600);} .lr.dont .ic{color:var(--red-500);}
+  .lr b{font-weight:600;}
+  .markrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px;}
+  .markrow .mchip{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;}
+  .markrow .mchip .lbl{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+
+  /* ── UI rules split ── */
+  .uisplit{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .uisplit .ucard h4{margin:0 0 4px;font-family:var(--font-sans);font-weight:600;font-size:21px;letter-spacing:-.02em;}
+  .uisplit .ucard .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);}
+  .uisplit ul{margin:14px 0 0;padding-left:18px;}
+  .uisplit li{font-size:14px;line-height:1.55;margin:7px 0;color:var(--ink);}
+
+  /* ── data formatting table ── */
+  .ftable{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--rule);border-radius:14px;overflow:hidden;}
+  .ftable th,.ftable td{text-align:left;padding:13px 18px;border-top:1px solid var(--rule);font-size:14px;vertical-align:top;}
+  .ftable thead th{border-top:0;font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);background:var(--bg-2);}
+  .ftable td.good{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink);}
+  .ftable td.bad{font-family:var(--font-mono);color:var(--muted);text-decoration:line-through;}
+  .ftable td .why{display:block;font-family:var(--font-sans);font-size:12.5px;color:var(--muted);text-decoration:none;margin-top:3px;}
+
+  /* ── principle banner ── */
+  .principle-banner{background:var(--navy-deep);color:var(--navy-cream);border-radius:16px;padding:46px 48px;text-align:center;position:relative;overflow:hidden;}
+  .principle-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 0%,rgba(200,162,74,.14),transparent 65%);}
+  .principle-banner .eb-cream{position:relative;z-index:1;}
+  .principle-banner p{position:relative;z-index:1;font-family:var(--font-sans);font-weight:700;font-size:clamp(28px,3.4vw,40px);line-height:1.2;margin:14px auto 0;max-width:22ch;letter-spacing:-.03em;}
+  .principle-banner p .gold{color:var(--gold-light);}
+
+  /* ── forbidden list ── */
+  .forbidden{background:var(--navy-deep);color:var(--navy-cream);border-radius:16px;padding:36px 40px;}
+  .forbidden h3{margin:0 0 6px;font-family:var(--font-sans);font-weight:700;font-size:23px;letter-spacing:-.02em;color:#fff;}
+  .forbidden .sub{margin:0 0 22px;font-size:14px;color:rgba(241,239,231,.62);max-width:64ch;line-height:1.55;}
+  .forbidden-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px 28px;}
+  .forbidden-grid div{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.01em;padding:8px 0 8px 24px;position:relative;border-top:1px solid rgba(255,255,255,.08);color:rgba(241,239,231,.9);}
+  .forbidden-grid div::before{content:"✕";position:absolute;left:0;color:var(--gold-light);font-weight:600;}
+
+  /* ── two columns current/future ── */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .stdcol{border:1px solid var(--rule);border-radius:14px;overflow:hidden;}
+  .stdcol .head{padding:20px 26px;border-bottom:1px solid var(--rule);}
+  .stdcol.current .head{background:#fff;}
+  .stdcol.future .head{background:var(--bg-2);}
+  .stdcol .head .tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;}
+  .stdcol.current .head .tag{color:var(--green-600);}
+  .stdcol.future .head .tag{color:var(--gold-deep);}
+  .stdcol .head h3{margin:8px 0 4px;font-family:var(--font-sans);font-weight:600;font-size:21px;letter-spacing:-.02em;}
+  .stdcol .head p{margin:0;font-size:13px;color:var(--muted);line-height:1.5;}
+  .stdcol ul{list-style:none;margin:0;padding:8px 26px 22px;}
+  .stdcol li{padding:11px 0 11px 24px;position:relative;border-top:1px solid var(--rule);font-size:14px;line-height:1.5;}
+  .stdcol li:first-child{border-top:0;}
+  .stdcol.current li::before{content:"●";position:absolute;left:0;font-size:9px;top:14px;color:var(--green-600);}
+  .stdcol.future li::before{content:"○";position:absolute;left:0;font-size:11px;top:11px;color:var(--gold-deep);}
+  .stdcol.future li{color:var(--muted);}
+
+  /* ── footer ── */
+  footer.page-foot{margin-top:96px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+
+  .lead-note{font-size:13px;color:var(--muted);margin:14px 0 0;line-height:1.55;max-width:70ch;}
+  .lead-note b{color:var(--ink);font-weight:600;}
+
+  /* ── responsive ── */
+  @media (max-width:900px){
+    .page{padding:0 28px 80px;}
+    .cover{grid-template-columns:1fr;gap:32px;}
+    .glance{grid-template-columns:1fr;}
+    .glance .markpane{padding:44px;} .mark-big{font-size:30px;}
+    .sec-head{grid-template-columns:1fr;gap:6px;}
+    .traits,.offers,.swatches,.typespec,.grid-3{grid-template-columns:1fr 1fr;}
+    .saynot,.uisplit,.twocol,.logo-board,.forbidden-grid{grid-template-columns:1fr;}
+    .nrow{grid-template-columns:1fr;gap:8px;}
+  }
+  @media (max-width:560px){
+    .traits,.offers,.swatches,.typespec,.grid-3{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span>
+      <span class="wordmark">Brand Guide</span>
+    </div>
+    <div class="meta">v1.0 · Production standard</div>
+  </div>
+
+  <!-- COVER -->
+  <section class="cover">
+    <div>
+      <div class="pretitle">Brand Guide · Production v1</div>
+      <h1>An <span class="accent">institute</span>, not a platform.</h1>
+    </div>
+    <div>
+      <p class="stand"><b>What this guide is.</b> The honest, shippable-today standard for how Ai Banking Institute sounds, looks, and what it is allowed to claim. Everything here is true of the product as it exists now.</p>
+      <div class="meta-strip">
+        <div><div class="k">Scope</div><div class="v">Current product only</div></div>
+        <div><div class="k">Sections</div><div class="v">Ten, end to end</div></div>
+        <div><div class="k">Owner</div><div class="v">Ai Banking Institute</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 00 AT A GLANCE -->
+  <section class="glance" id="glance">
+    <div class="markpane">
+      <span class="mark mark-big"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span>
+    </div>
+    <div class="summary">
+      <p class="promise">A practical training and assessment institute for bankers — built on reviewed work, not generic Ai theory.</p>
+      <div class="row"><div class="k">Mission</div><div class="v">Turn bankers into Ai-capable operators through reviewed work, not generic Ai theory.</div></div>
+      <div class="row"><div class="k">Serves</div><div class="v">Community banks, regional banks, and credit unions.</div></div>
+      <div class="row"><div class="k">Voice</div><div class="v">Precise. Accountable. Restrained. Specific to banking.</div></div>
+      <div class="row"><div class="k">Principle</div><div class="v"><b>Ai drafts. Humans review. The institution owns the decision.</b></div></div>
+      <div class="row"><div class="k">Visual</div><div class="v"><span class="mark" style="font-size:16px;"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span> open wordmark · Inter · Ink + Gold + Cream</div></div>
+    </div>
+  </section>
+
+  <!-- 01 NAME HIERARCHY -->
+  <section class="sec" id="naming">
+    <div class="sec-head">
+      <div class="num">01 · Naming</div>
+      <div>
+        <h2>One name people can read. One mark we can grow into.</h2>
+        <p class="sub">The public-facing name is always the full Institute name. AiBI is shorthand for credentials and products; the bracketed mark is a visual device, not a name to decode. Don't make a new visitor solve a puzzle before they understand the offer.</p>
+      </div>
+    </div>
+    <div class="namelist">
+      <div class="nrow"><div class="role">Master brand</div><div class="val"><b>Ai Banking Institute</b><span class="note">Use in full on first reference, in nav, in legal copy, and anywhere a new reader needs clarity.</span></div></div>
+      <div class="nrow"><div class="role">Short reference</div><div class="val"><b>the Institute</b><span class="note">For second and later references inside the same piece of copy.</span></div></div>
+      <div class="nrow"><div class="role">Credential / product shorthand</div><div class="val"><b>AiBI</b> — AiBI-Foundation, AiBI-S, AiBI-L<span class="note">Acceptable in product UI, credential codes, and internal use. Not a replacement for the master brand in body prose.</span></div></div>
+      <div class="nrow"><div class="role">Visual mark</div><div class="val"><span class="markinline"><span class="bk">[</span>A<span class="si">i</span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="note">The primary lockup is the open wordmark — no box. Gold brackets wrap the "Ai"; the lowercase "i" is a single Instrument Serif italic glyph, one color, no tittle — the only stylized detail. The compact <span class="markinline" style="font-size:15px;"><span class="bk">[</span>A<span class="si">i</span><span class="bk">]</span></span> monogram is reserved for app icons, favicons, and tight footers. The mark is decoration, never spoken or set in running text.</span></div></div>
+    </div>
+    <p class="lead-note"><b>Pronunciation:</b> say it as "Ai Banking Institute." The mark is never read aloud letter-by-letter in customer-facing settings.</p>
+  </section>
+
+  <!-- 02 VOICE -->
+  <section class="sec" id="voice">
+    <div class="sec-head">
+      <div class="num">02 · Voice</div>
+      <div>
+        <h2>Specifics beat adjectives.</h2>
+        <p class="sub">We sound like a credible banking institution that happens to teach Ai — not an Ai company that happens to sell to banks. Plain, accountable, and specific. No hype, no exclamation points, no emoji, no "Ai-powered."</p>
+      </div>
+    </div>
+    <div class="traits" style="margin-bottom:22px;">
+      <div class="card trait"><div class="meta">Trait 01</div><h4>Precise</h4><p>Name the role, the task, the artifact. A concrete noun beats a superlative every time.</p></div>
+      <div class="card trait"><div class="meta">Trait 02</div><h4>Accountable</h4><p>Say what we do and don't do. Claims are scoped to what the product can stand behind today.</p></div>
+      <div class="card trait"><div class="meta">Trait 03</div><h4>Restrained</h4><p>No urgency theater, no growth-hacking tone. Confidence is shown by what we leave out.</p></div>
+      <div class="card trait"><div class="meta">Trait 04</div><h4>Banking-specific</h4><p>Examples come from compliance, lending, BSA/AML, branch, and risk — not generic "knowledge work."</p></div>
+    </div>
+    <div class="saynot">
+      <div class="col say">
+        <h4>Say this</h4>
+        <ul>
+          <li>Ai-assisted, Ai-supported, review-ready, examiner-readable</li>
+          <li>Role-based, governance-aware, banking-specific, practical</li>
+          <li>"The free assessment screens 12 readiness signals and returns a score, tier, top gap, and starter artifact."</li>
+          <li>"Designed to be reviewable by compliance, risk, audit, or leadership."</li>
+        </ul>
+      </div>
+      <div class="col not">
+        <h4>Not this</h4>
+        <ul>
+          <li>Ai-powered, revolutionary, next-generation, game-changing</li>
+          <li>Regulator-approved, examiner-approved, guaranteed compliant</li>
+          <li>"Deeply scores 12 dimensions" (one question per signal is a screen, not a diagnostic)</li>
+          <li>"Ready for examiner submission" or "will satisfy examiners"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 POSITIONING + OFFERS -->
+  <section class="sec" id="positioning">
+    <div class="sec-head">
+      <div class="num">03 · Positioning</div>
+      <div>
+        <h2>What we actually offer today.</h2>
+        <p class="sub">Three things a person can buy right now, plus an institutional path. Copy must match these facts — the prices, counts, and outputs below are the only ones approved for production use.</p>
+      </div>
+    </div>
+    <div class="card cream prose" style="margin-bottom:26px;max-width:none;">
+      <p style="font-family:var(--font-sans);font-weight:600;font-size:22px;line-height:1.45;letter-spacing:-.02em;color:var(--ink);margin:0;">Ai Banking Institute helps banks and credit unions build practical Ai capability through readiness assessments, role-based training, playbooks, templates, and reviewed work artifacts. <span class="gold">The goal is not generic Ai theory.</span> The goal is safer, more useful Ai work that bankers can document, review, and reuse.</p>
+    </div>
+    <div class="offers">
+      <div class="offer">
+        <span class="tag">Screening · Free</span>
+        <div class="price">Free</div>
+        <h3>Ai Readiness Assessment</h3>
+        <p class="lede">A readiness snapshot. Screens 12 readiness signals and returns a score, maturity tier, top gap, and a starter artifact recommendation.</p>
+        <ul class="specs">
+          <li><span class="sk">Questions</span><span class="sv">12</span></li>
+          <li><span class="sk">Time</span><span class="sv">~3 min</span></li>
+          <li><span class="sk">Score</span><span class="sv">out of 48</span></li>
+          <li><span class="sk">Returns</span><span class="sv">Tier · gap · artifact</span></li>
+        </ul>
+      </div>
+      <div class="offer">
+        <span class="tag">Diagnostic · Paid</span>
+        <div class="price"><span class="cur">$</span>99</div>
+        <h3>In-Depth Report</h3>
+        <p class="lede">A fuller diagnostic across 8 scored dimensions, with a role-specific action plan and a reviewer-ready PDF report.</p>
+        <ul class="specs">
+          <li><span class="sk">Questions</span><span class="sv">48</span></li>
+          <li><span class="sk">Time</span><span class="sv">~20 min</span></li>
+          <li><span class="sk">Score</span><span class="sv">out of 100</span></li>
+          <li><span class="sk">Dimensions</span><span class="sv">8 scored</span></li>
+        </ul>
+      </div>
+      <div class="offer">
+        <span class="tag">Course · Self-paced</span>
+        <div class="price"><span class="cur">$</span>295</div>
+        <h3>AiBI-Foundation</h3>
+        <p class="lede">A practical course for bankers learning to use Ai safely and productively through role-based practice and reusable work artifacts.</p>
+        <ul class="specs">
+          <li><span class="sk">Format</span><span class="sv">Self-paced</span></li>
+          <li><span class="sk">Practice</span><span class="sv">Sandbox</span></li>
+          <li><span class="sk">Includes</span><span class="sv">Toolbox assets</span></li>
+          <li><span class="sk">On finish</span><span class="sv">Completion credential</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead-note">Individuals start with the free assessment, purchase the $99 In-Depth Report, or enroll in AiBI-Foundation at $295. <b>Institutions can request team pricing or an executive briefing.</b> Built for the thousands of community banks and credit unions that need practical Ai capability without enterprise-sized teams. Use a precise institution count only with a visible source and year on the same page.</p>
+  </section>
+
+  <!-- 04 VISUAL TOKENS -->
+  <section class="sec" id="tokens">
+    <div class="sec-head">
+      <div class="num">04 · Visual</div>
+      <div>
+        <h2>Ink, gold, and cream. Nothing neon.</h2>
+        <p class="sub">A restrained institutional palette and one primary typeface — Inter — with a serif and a mono in narrow supporting roles. The look should read closer to a research institute or a credentialing body than a SaaS landing page.</p>
+      </div>
+    </div>
+    <div class="swatches" style="margin-bottom:8px;">
+      <div class="sw"><div class="chip" style="background:#071A2F"></div><div class="lab"><div class="n">Ink</div><div class="h">#071A2F</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0B2745"></div><div class="lab"><div class="n">Navy</div><div class="h">#0B2745</div></div></div>
+      <div class="sw"><div class="chip" style="background:#C8A24A"></div><div class="lab"><div class="n">Gold</div><div class="h">#C8A24A</div></div></div>
+      <div class="sw"><div class="chip" style="background:#9A7A2F"></div><div class="lab"><div class="n">Gold deep</div><div class="h">#9A7A2F</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F7F3EA"></div><div class="lab"><div class="n">Cream</div><div class="h">#F7F3EA</div></div></div>
+      <div class="sw"><div class="chip" style="background:#ffffff;box-shadow:inset 0 0 0 1px rgba(7,26,47,.08)"></div><div class="lab"><div class="n">Surface</div><div class="h">#FFFFFF</div></div></div>
+    </div>
+    <p class="lead-note" style="margin-bottom:18px;">Status colors are used sparingly and only for state: <span style="color:var(--green-600);font-weight:600;">teal #0D9488</span> for go/positive, <span style="color:var(--amber-600);font-weight:600;">amber #B45309</span> for caution, <span style="color:var(--red-600);font-weight:600;">red #991B1B</span> for stop. Gold is the brand accent — used at most twice per screen, never as a full-page wash.</p>
+    <div class="typespec">
+      <div class="t sans"><div class="role">Display · Body · UI</div><div class="spec">Inter · 400–800</div><div class="demo">Reviewed work</div></div>
+      <div class="t serif"><div class="role">Narrow serif</div><div class="spec">Newsreader · print-results PDF</div><div class="demo">Practical Ai for bankers</div></div>
+      <div class="t mono"><div class="role">Labels / numerics</div><div class="spec">JetBrains Mono · tabular</div><div class="demo">AiBI-FOUNDATION · $295</div></div>
+    </div>
+    <p class="lead-note">Inter carries everything; emphasis comes from weight (600/700/800) and color, never italics. The single italic in the system is the mark's lowercase "i" — one Instrument Serif italic glyph. Newsreader appears only in narrow surfaces such as the print-results PDF. JetBrains Mono is for metadata strips, kickers, and tabular figures.</p>
+  </section>
+
+  <!-- 05 LOGO USAGE -->
+  <section class="sec" id="logo">
+    <div class="sec-head">
+      <div class="num">05 · Logo</div>
+      <div>
+        <h2>Open wordmark first. The box is for small spaces.</h2>
+        <p class="sub">The primary lockup is the open wordmark, set in Inter with no container. Gold brackets wrap the "Ai"; the lowercase "i" is a single Instrument Serif italic glyph — one color, no tittle, the only stylized detail. The compact <b style="color:var(--ink);font-weight:600">[Ai]BI</b> mark is the same construction abbreviated — brackets wrap "Ai", "BI" trails outside — for small and square placements. The navy box is a secondary, small-format lockup for app icons, favicons, and tight footers — never the default. <a href="aibi-logo-kit.html" style="color:var(--gold-deep);text-decoration:none;border-bottom:1px solid var(--gold-soft);">See the full logo kit →</a></p>
+      </div>
+    </div>
+    <div class="logo-board">
+      <div class="logo-hero">
+        <span class="mark"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span>
+        <span class="cap">Primary lockup · open wordmark, no box</span>
+      </div>
+      <div class="logo-rules">
+        <div class="lr do"><span class="ic">✓</span><div><b>Lead with the open wordmark</b> — ink on cream or white, gold brackets, the italic "i" — everywhere it fits.</div></div>
+        <div class="lr do"><span class="ic">✓</span><div><b>Use the navy box only when small</b> — app icons, favicons, tight footers, partner walls.</div></div>
+        <div class="lr do"><span class="ic">✓</span><div><b>Drop to the [Ai]BI mark</b> when the full name won't read — favicons, avatars, badges, partner walls.</div></div>
+        <div class="lr do"><span class="ic">✓</span><div><b>The compact [Ai] monogram</b> is the icon-only form for square tiles where even [Ai]BI won't fit.</div></div>
+        <div class="lr dont"><span class="ic">✕</span><div><b>Don't box the primary lockup</b> — the open wordmark is the default; the box never replaces it at large sizes.</div></div>
+        <div class="lr dont"><span class="ic">✕</span><div><b>Only the lowercase "i" is italic</b> — don't slant other letters, recolor the i, add a tittle, glow, gradient, or shadow.</div></div>
+        <div class="lr dont"><span class="ic">✕</span><div><b>Don't set the bracketed mark in running body copy</b> — it's a device, not a name to read.</div></div>
+      </div>
+    </div>
+    <div class="markrow">
+      <div class="mchip" style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:16px 20px;"><span class="mark" style="font-size:24px;"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span><span class="lbl" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);">Primary · open wordmark</span></div>
+      <div class="mchip" style="background:transparent;border:0;padding:0;gap:8px;align-items:flex-start;"><span class="box-lockup"><span class="mark" style="font-size:18px;"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>&nbsp;Banking Institute</span></span><span class="lbl" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);">Secondary · navy box, small</span></div>
+      <div class="mchip" style="background:#fff;border:1px solid var(--rule);border-radius:10px;padding:16px 20px;"><span class="mark" style="font-size:30px;"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span>BI</span><span class="lbl" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);">Compact · [Ai]BI mark</span></div>
+      <div class="mchip" style="background:transparent;border:0;padding:0;gap:8px;align-items:flex-start;"><span class="box-lockup icon"><span class="mark" style="font-size:24px;"><span class="bk">[</span><span class="ai">A<span class="si">i</span></span><span class="bk">]</span></span></span><span class="lbl" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);">App icon · [Ai] monogram</span></div>
+    </div>
+  </section>
+
+  <!-- 06 WEB / PRODUCT UI -->
+  <section class="sec" id="ui">
+    <div class="sec-head">
+      <div class="num">06 · Product UI</div>
+      <div>
+        <h2>Editorial for moments. Plain for the work.</h2>
+        <p class="sub">Large type and gold earn attention on covers and credentials. The places where busy bankers do work need clarity before poetry — a working product, not a magazine.</p>
+      </div>
+    </div>
+    <div class="uisplit">
+      <div class="card ucard">
+        <div class="meta">Editorial register</div>
+        <h4>Where weight &amp; gold lead</h4>
+        <ul>
+          <li>Marketing and hero sections</li>
+          <li>Certificates and completion credentials</li>
+          <li>Report covers and research pieces</li>
+          <li>Brand moments and section dividers</li>
+        </ul>
+      </div>
+      <div class="card ucard">
+        <div class="meta">Product register</div>
+        <h4>Where the UI gets out of the way</h4>
+        <ul>
+          <li>Assessment flow and question screens</li>
+          <li>Toolbox, resource library, and downloads</li>
+          <li>Course lessons and the practice sandbox</li>
+          <li>Checkout, dashboards, and mobile cards</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead-note">Rule of thumb: in editorial moments, larger Inter weights and gold accents are welcome. When a banker is <b>doing</b> — answering, filtering, downloading, paying — drop to plain Inter, generous hit targets, and clear state. Navigation inside the product is real product navigation, never a brand puzzle.</p>
+  </section>
+
+  <!-- 07 REPORTS / TEMPLATES -->
+  <section class="sec" id="reports">
+    <div class="sec-head">
+      <div class="num">07 · Reports &amp; templates</div>
+      <div>
+        <h2>Tables over charts. Sources on the page.</h2>
+        <p class="sub">Banking readers trust numbers they can audit. Prefer clean tables; use restrained charts only when a trend genuinely needs a shape; footnote every figure. And use US number formatting everywhere — no exceptions.</p>
+      </div>
+    </div>
+    <table class="ftable" style="margin-bottom:18px;">
+      <thead><tr><th>Format</th><th>Use this</th><th>Not this</th></tr></thead>
+      <tbody>
+        <tr><td>Currency</td><td class="good">$41,233,902</td><td class="bad">$ 41 233 902<span class="why">Thin-space grouping reads as an error to US banking buyers.</span></td></tr>
+        <tr><td>Percent</td><td class="good">4.7%</td><td class="bad">4,7 %</td></tr>
+        <tr><td>Signed change</td><td class="good">+0.32 / −1.41</td><td class="bad">+0,32 / -1,41</td></tr>
+        <tr><td>Large count</td><td class="good">8,400 institutions <span class="why">Only with a visible source + year, e.g. FDIC + NCUA, 2025.</span></td><td class="bad">8 400 institutions</td></tr>
+      </tbody>
+    </table>
+    <p class="lead-note">Toolbox artifacts — Safe Ai Use Checklist, Red/Yellow/Green Use Card, Prompt Strategy Cheat Sheet, Ai Use-Case Inventory, Ai Workflow SOP Template, Ai Use Policy Starter, Board Briefing Checklist, Fair-Lending Ai Review Checklist, Data Handling Reference Card, and role playbooks (Compliance, Retail/Branch, Marketing, Lending, BSA/AML, IT/InfoSec) — are <b>starter artifacts and templates that institutions should adapt before adoption.</b> Describe them as <b>designed to be reviewable by compliance, risk, audit, or leadership</b> — never as examiner-approved or guaranteed compliant.</p>
+  </section>
+
+  <!-- 08 CLAIMS POLICY -->
+  <section class="sec" id="claims">
+    <div class="sec-head">
+      <div class="num">08 · Claims policy</div>
+      <div>
+        <h2>What we can stand behind.</h2>
+        <p class="sub">This is the spine of the brand's credibility with a banking audience. The operating principle below is one of our strongest, safest lines — use it often.</p>
+      </div>
+    </div>
+    <div class="principle-banner" style="margin-bottom:24px;">
+      <div class="eb eb-cream">The operating principle</div>
+      <p>Ai drafts. Humans review. <span class="gold">The institution owns the decision.</span></p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="eb" style="margin-bottom:14px;">Claims about Ai &amp; agents</div>
+        <div class="prose">
+          <p><b>Safe:</b> Ai can draft, summarize, structure, compare, brainstorm, classify, and prepare work for review. The course introduces agent concepts and bounded autonomy — an agent may draft work, flag uncertainty, and pause for human review.</p>
+          <p><b>Hold the line:</b> Ai should not make final credit, compliance, legal, BSA/AML, fraud, authentication, or regulatory decisions without qualified human review. The course does not replace compliance, legal, InfoSec, or model-risk review.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eb" style="margin-bottom:14px;">Governance alignment</div>
+        <div class="prose">
+          <p>The curriculum is <b>designed around banking obligations</b> such as model risk, third-party risk, fair lending, privacy, and human review — aligned with themes from SR 11-7, Interagency Third-Party Risk guidance, ECOA / Regulation B, and BSA/AML data sensitivity.</p>
+          <p><b>Aligned with</b> and <b>designed around</b> are the verbs. Never "approved," "certified," "recognized," or "meets all requirements."</p>
+        </div>
+      </div>
+    </div>
+    <p class="lead-note"><b>Maturity tense matters.</b> If a feature works end-to-end today, write "the site includes…". If it is still being built, write "the platform is designed to include…". Don't claim full LMS maturity, working institutional dashboards, or aggregate rollups until they actually function.</p>
+  </section>
+
+  <!-- 09 FORBIDDEN CLAIMS -->
+  <section class="sec" id="forbidden">
+    <div class="sec-head">
+      <div class="num">09 · Forbidden claims</div>
+      <div>
+        <h2>Lines we do not cross — and no fiction.</h2>
+        <p class="sub">None of the following may appear in production copy, documentation, or screenshots unless and until it is independently, verifiably true. This includes any fictional people, reviewer rosters, phone numbers, addresses, domains, regulators, partner banks, cohort counts, or trademark status carried over from prototypes.</p>
+      </div>
+    </div>
+    <div class="forbidden">
+      <h3>Do not say</h3>
+      <p class="sub">If a compliance officer could ask "which regulator?" or "which bank?" and we have no documented answer, the claim is forbidden.</p>
+      <div class="forbidden-grid">
+        <div>Regulator-recognized / -approved</div>
+        <div>Examiner-approved</div>
+        <div>Certified by banking regulators</div>
+        <div>FFIEC-approved</div>
+        <div>Audited credential (without a real audit)</div>
+        <div>Accredited (unless actually accredited)</div>
+        <div>Guaranteed compliant / meets all requirements</div>
+        <div>Official certification for banking Ai</div>
+        <div>Mandatory compliance standard</div>
+        <div>Eight-week credential (not the current product)</div>
+        <div>Named reviewer credential (not yet operational)</div>
+        <div>Published reviewer roster (not yet live)</div>
+        <div>No-flag cohort</div>
+        <div>Partner bank (unless real)</div>
+        <div>Trusted / used by X banks (unless true)</div>
+        <div>A regulator can stake their reputation on us</div>
+      </div>
+    </div>
+    <p class="lead-note"><b>No-fiction rule.</b> Placeholder names, rosters, addresses, phone numbers, credential domains, cohort counts, and trademark filings from the north-star prototype are prototype-only. They must be removed or replaced with verified facts before anything ships.</p>
+  </section>
+
+  <!-- 10 CURRENT VS FUTURE -->
+  <section class="sec" id="future">
+    <div class="sec-head">
+      <div class="num">10 · Current vs. future</div>
+      <div>
+        <h2>Two standards, never blended.</h2>
+        <p class="sub">The left column is what we can honestly claim today. The right column is the credential standard the Institute grows into once the operating infrastructure exists. Marketing draws only from the left until each right-column item is real.</p>
+      </div>
+    </div>
+    <div class="twocol">
+      <div class="stdcol current">
+        <div class="head">
+          <div class="tag">● Current v1 standard</div>
+          <h3>What the site &amp; course claim today</h3>
+          <p>Honest, shippable, and defensible right now.</p>
+        </div>
+        <ul>
+          <li>Free Ai Readiness Assessment — screening snapshot</li>
+          <li>$99 In-Depth Report — 8-dimension diagnostic, reviewer-ready PDF</li>
+          <li>$295 AiBI-Foundation — self-paced course</li>
+          <li>Downloadable playbooks and templates</li>
+          <li>Sandbox / practice and toolbox assets</li>
+          <li>Review-ready artifacts and a completion credential</li>
+          <li>Institutional / team pricing and executive briefings by request</li>
+        </ul>
+      </div>
+      <div class="stdcol future">
+        <div class="head">
+          <div class="tag">○ Future credential standard</div>
+          <h3>What AiBI becomes when operational</h3>
+          <p>North-star. Requires real infrastructure before any claim.</p>
+        </div>
+        <ul>
+          <li>Reviewer-of-record credentialing</li>
+          <li>Published reviewer roster</li>
+          <li>Certificate verification and certificate IDs</li>
+          <li>Institutional cohorts and department dashboards</li>
+          <li>Audited evidence trail and appeal process</li>
+          <li>Specialist (AiBI-S) and leadership (AiBI-L) credentials</li>
+          <li>Formal certification governance and revocation policy</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead-note">The reviewer model is the most differentiated future idea — but it carries real operating burden (qualifications, training, conflict policy, rubric, evidence trail, appeals, verification, revocation). Keep it as the future standard; for v1, say <b>"Foundation learners complete reviewed work"</b> and <b>"every paid artifact follows a review-ready structure,"</b> not "every credential names a reviewer."</p>
+  </section>
+
+  <footer class="page-foot">
+    <span>Ai Banking Institute · Brand Guide v1</span>
+    <span>Production standard · Current product only</span>
+  </footer>
+
+</div>
+</body>
+</html>

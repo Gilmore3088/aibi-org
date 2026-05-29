@@ -443,7 +443,7 @@ export function InDepthBriefingView({
                   fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
                   fontSize={10}
                   letterSpacing={1.4}
-                  fill="#071A2F"
+                  fill="var(--ink)"
                   fontWeight={700}
                 >
                   {radarLabels(rows)}

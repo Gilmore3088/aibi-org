@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 116" width="260" height="116" role="img" aria-label="[Ai]BI">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&amp;family=Inter:wght@500;600&amp;display=swap');
+      .wm{font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;font-weight:600;font-size:80px;letter-spacing:-1px;fill:#071A2F;}
+      .bk{fill:#C8A24A;font-weight:500;}
+      .gi{font-family:'Instrument Serif','Times New Roman',Georgia,serif;font-style:italic;font-weight:400;font-size:91px;fill:#071A2F;}
+    </style>
+  </defs>
+  <text class="wm" x="12" y="84"><tspan class="bk">[</tspan><tspan>A</tspan><tspan class="gi" dx="1">i</tspan><tspan class="bk" dx="1">]</tspan><tspan dx="4">BI</tspan></text>
+</svg>

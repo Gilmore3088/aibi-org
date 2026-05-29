@@ -64,6 +64,32 @@
   --ink-a10:    rgba(7, 26, 47, 0.10);
   --ink-a15:    rgba(7, 26, 47, 0.15);
 
+  /* ── Brand v1 ramps (2026-05-28) — codified in docs/brand/brand-guide-v1.html.
+     Extend the mockup palette; previous --ink / --gold / --cream / --gold-soft
+     / --gold-deep tokens remain canonical. Ramps are for product UI surfaces
+     (data viz, hover states, dense dashboard chrome) where the single-accent
+     rule needs a controlled gradient. */
+  --navy-50:   #F1EFE7;
+  --navy-100:  #D8D2C0;
+  --navy-200:  #B3C1DD;
+  --navy-300:  #7D8FB6;
+  --navy-400:  #4A5E8B;
+  --navy-500:  #2C3E66;
+  --navy-600:  #1E2D52;
+  --navy-700:  #142142;
+  --navy-800:  #0D1936;
+  --navy-900:  #071A2F;   /* = --ink */
+  --navy-950:  #040A1C;
+
+  --gold-50:   #FDF7E7;
+  --gold-100:  #FAEDC4;
+  --gold-200:  #F5DC8C;
+  --gold-300:  #E6D39B;   /* = --gold-soft (on-dark accent) */
+  --gold-400:  #D9AA2E;
+  --gold-500:  #C8A24A;   /* = --gold (primary accent) */
+  --gold-600:  #9A7A2F;   /* = --gold-deep (on-light kicker) */
+  --gold-700:  #745816;
+
   /* Radii — mockup system uses generous radii (12–32px) */
   --r-pill:     999px;
   --r-sm:       8px;
@@ -104,6 +130,9 @@
   --font-serif:    var(--font-newsreader-hero), var(--font-newsreader-heavy), "Newsreader Fallback", "Iowan Old Style", Georgia, serif;
   --font-sans:     var(--font-inter), var(--font-geist-sans), -apple-system, "Helvetica Neue", system-ui, sans-serif;
   --font-mono:     var(--font-jetbrains-mono), "SF Mono", Menlo, Consolas, ui-monospace, monospace;
+  /* Brand v1 (2026-05-28) — sole italic glyph in the bracketed [Ai] mark.
+     Reserved for the .si class. Never used elsewhere. */
+  --font-mark-serif: var(--font-instrument-serif), "Newsreader", "Times New Roman", Georgia, serif;
 
   /* Typography · Size */
   --text-display-xl: 4rem;        /* 64 */

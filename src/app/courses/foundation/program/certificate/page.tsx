@@ -11,6 +11,7 @@ import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
+import { Monogram } from '@/components/brand';
 import type { Certificate } from '@/types/course';
 
 const MONTHS = [
@@ -177,7 +178,8 @@ export default async function CertificatePage() {
                 }}
               />
 
-              {/* Seal — the navy square + gold landmark icon lockup */}
+              {/* Brand v1 (2026-05-28) — bracketed [Ai] mark inside a
+                  navy rounded-square. Replaces the retired landmark seal. */}
               <div
                 style={{
                   position: 'relative',
@@ -187,7 +189,7 @@ export default async function CertificatePage() {
                   zIndex: 1,
                 }}
               >
-                <Seal />
+                <CertificateSeal />
               </div>
 
               <div style={{ position: 'relative', textAlign: 'center', zIndex: 1 }}>
@@ -676,45 +678,29 @@ export default async function CertificatePage() {
 }
 
 /**
- * Seal — navy square with gold landmark glyph. Matches the CLAUDE.md
- * wordmark spec (40×40, 12px radius, gold landmark on ink). Used here
- * standalone (centered on the credential) rather than paired with the
- * two-line wordmark text; the credential body already names the
- * Institute, so a symbol-only seal reads cleanly without duplication.
+ * Brand v1 (2026-05-28) — navy rounded-square containing the bracketed
+ * `[Ai]` mark. Mirrors `public/brand/aibi-app-icon.svg` at React component
+ * sizing. Stands in for the retired landmark-seal lockup; the credential
+ * body still names the Institute in full so the symbol carries the brand
+ * without duplication.
  */
-function Seal() {
+function CertificateSeal() {
   return (
     <div
       aria-hidden
       style={{
-        width: 56,
-        height: 56,
+        width: 64,
+        height: 64,
         background: 'var(--ink)',
         borderRadius: 14,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: 'var(--shadow-soft)',
+        color: 'var(--cream)',
       }}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="var(--gold)"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{ width: 28, height: 28 }}
-      >
-        {/* Stylized landmark — columned facade */}
-        <path d="M3 10 L12 4 L21 10" />
-        <path d="M5 10 V19" />
-        <path d="M9 10 V19" />
-        <path d="M15 10 V19" />
-        <path d="M19 10 V19" />
-        <path d="M3 20 H21" />
-      </svg>
+      <Monogram tone="light" size={26} />
     </div>
   );
 }
