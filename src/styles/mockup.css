@@ -408,24 +408,35 @@ section.mk-std { padding: 56px 0; }
   background: var(--gold-a10);
   filter: blur(64px);
 }
+/* Hero block padding — tighter than the original 64px so the primary
+   CTA lands above the fold on 1366×768 (most common laptop) and on
+   375×667 (iPhone SE). Wide screens get a bit more breathing room. */
 .mk-hero-inner {
-  position: relative; display: grid; gap: 48px;
-  padding: 64px 0; grid-template-columns: 1fr;
+  position: relative; display: grid; gap: 40px;
+  padding: 44px 0 56px; grid-template-columns: 1fr;
 }
 @media (min-width: 1024px) {
-  .mk-hero-inner { grid-template-columns: 0.9fr 1.1fr; align-items: center; gap: 48px; }
+  .mk-hero-inner {
+    grid-template-columns: 0.9fr 1.1fr; align-items: center;
+    gap: 48px; padding: 56px 0 64px;
+  }
+}
+@media (min-width: 1440px) {
+  .mk-hero-inner { padding: 72px 0; }
 }
 .mk-hero h1 {
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 600; line-height: 1.04;
+  /* Cap clamp at 60px (was 72px) and tighten line-height — saves ~24px
+     of vertical space without losing presence. */
+  font-size: clamp(36px, 5.4vw, 60px);
+  font-weight: 600; line-height: 1.02;
   letter-spacing: -0.02em; margin: 0; max-width: 18ch;
 }
 .mk-hero .mk-lede {
-  font-size: 18px; line-height: 1.7;
+  font-size: 17px; line-height: 1.6;
   color: var(--on-dark-70);
-  margin-top: 20px; max-width: 36ch;
+  margin-top: 16px; max-width: 36ch;
 }
-.mk-hero .mk-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.mk-hero .mk-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 
 /* Hero report card — split dark/light */
 .mk-hreport {
