@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Wordmark } from '@/components/brand';
 
 const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] = [
   {
@@ -45,25 +46,9 @@ export function SiteFooter() {
         <div className="mk-footer-top">
           <div className="mk-footer-brand">
             <Link href="/" className="mk-brand" aria-label="The AI Banking Institute home">
-              <span className="mk-seal" aria-hidden>
-                <svg
-                  className="mk-ic-lg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="3" y1="22" x2="21" y2="22" />
-                  <line x1="6" y1="18" x2="6" y2="11" />
-                  <line x1="10" y1="18" x2="10" y2="11" />
-                  <line x1="14" y1="18" x2="14" y2="11" />
-                  <line x1="18" y1="18" x2="18" y2="11" />
-                  <polygon points="12 2 20 7 4 7" />
-                </svg>
-              </span>
-              <span className="mk-wm-1">The AI Banking Institute</span>
+              {/* Brand v1 (2026-05-28) — bracketed [Ai] mark replaces the
+                  retired landmark-seal lockup. */}
+              <Wordmark variant="full" tone="dark" size={22} />
             </Link>
             <p className="mk-footer-tag">
               AI proficiency for community banks and credit unions. Sourced research, banker-vetted

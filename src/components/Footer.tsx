@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Wordmark } from '@/components/brand';
 
 interface FooterGroup {
   readonly label: string;
@@ -39,10 +40,10 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="max-w-md">
-            <p className="font-serif text-xl text-[color:var(--ink)]">
-              The AI Banking Institute
-            </p>
-            <p className="font-serif-sc text-base text-[color:var(--gold)] tracking-wide mt-1 mb-4">
+            {/* Brand v1 (2026-05-28) — bracketed [Ai] mark replaces the
+                Newsreader serif wordmark. */}
+            <Wordmark variant="full" tone="dark" size={22} />
+            <p className="font-serif-sc text-base text-[color:var(--gold)] tracking-wide mt-2 mb-4">
               Turning Bankers into Builders
             </p>
             <p className="text-sm text-[color:var(--ink)]/70 leading-relaxed">
