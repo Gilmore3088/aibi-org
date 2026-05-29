@@ -23,7 +23,10 @@
   font-weight: 400;
   font-size: 1.14em;
   line-height: 0;
-  margin: 0 0.005em 0 0.012em;
+  /* Negative left margin compensates for Instrument Serif italic's natural
+     left side-bearing on the "i" glyph — without it the "i" reads visibly
+     offset right of the "A". */
+  margin: 0 0.005em 0 -0.04em;
   color: inherit;
 }
 
@@ -46,7 +49,7 @@
   padding: 0 0.03em;
 }
 .aibi-mark .ai {
-  padding: 0 0.02em;
+  padding: 0 0 0 0.02em;
 }
 
 /* Dark-surface variant. */
