@@ -292,7 +292,7 @@ export default function SecurityPage() {
         ),
         actions: [
           { label: 'See how we work', href: '/for-institutions', variant: 'gold' },
-          { label: 'Book a briefing', href: '/for-institutions', variant: 'ghost-dark' },
+          { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
         ],
       }}
     />

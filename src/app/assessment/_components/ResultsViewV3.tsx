@@ -185,8 +185,8 @@ export function ResultsViewV3({
           <p className="mt-4 text-[15px] leading-[1.6] text-[color:var(--slate-600)] max-w-prose">
             The free snapshot screens twelve plain-language signals — what you
             do today, what you avoid, how you review. It is intentionally
-            shallow; the eight-dimension diagnostic is locked behind the
-            In-Depth report.
+            shallow. The In-Depth Diagnostic is a separate eight-dimension
+            instrument, not an upgrade of this one.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -435,24 +435,25 @@ export function ResultsViewV3({
         <div className="grid md:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
           <div>
             <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-              Full diagnostic locked
+              A separate diagnostic
             </p>
             <h2 className="mt-2 text-[28px] md:text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-white">
-              Unlock the full 8-dimension diagnostic.
+              The 8-dimension In-Depth Diagnostic.
             </h2>
             <p className="mt-4 text-[15px] md:text-[16px] leading-[1.6] text-white/70 max-w-prose">
-              Your free snapshot identified the first move. The In-Depth
-              Diagnostic unlocks the full eight-dimension scorecard, a
-              role-specific action plan, a 30/60/90 roadmap, sample prompts,
-              an evidence checklist your reviewer can read, and a reviewer-
-              ready report you can forward.
+              The free snapshot you just took is twelve plain-language signals.
+              The In-Depth is a separate diagnostic — forty-eight questions
+              across eight readiness dimensions, peer-band comparison, a
+              role-specific 30/60/90 playbook, sample prompts, an evidence
+              checklist your reviewer can read, and a reviewer-ready report
+              you can forward.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a
                 href="/assessment/in-depth"
                 className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[13px] font-bold uppercase tracking-[0.1em] hover:bg-[color:var(--gold-2)] transition-colors"
               >
-                Unlock In-Depth · $99
+                Take the In-Depth · $99
               </a>
               <a
                 href={cta.tertiary.href}
@@ -605,8 +606,8 @@ function PartialLockedPhase({
         ))}
       </ul>
       <div className="mt-4 bg-[color:var(--ink)] text-white rounded-[14px] p-4 text-center">
-        <p className="text-[13px] font-semibold">Locked in In-Depth</p>
-        <p className="mt-1 text-[12px] text-white/65">Unlock the full phase plan.</p>
+        <p className="text-[13px] font-semibold">Detailed in the In-Depth</p>
+        <p className="mt-1 text-[12px] text-white/65">The 8-dimension diagnostic carries this through with deployment specifics.</p>
       </div>
     </div>
   );

@@ -97,7 +97,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions' }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Contact us', href: '/for-institutions' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -156,7 +156,7 @@ export default function ForInstitutionsPage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/for-institutions">
-                Book a briefing <ArrowR className="mk-ic" />
+                Contact us <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#engagement">
                 See enrollment options
@@ -510,7 +510,7 @@ export default function ForInstitutionsPage() {
               a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
             </p>
             <Button variant="gold" size="lg" href="/for-institutions">
-              Book a briefing <ArrowR className="mk-ic" />
+              Contact us <ArrowR className="mk-ic" />
             </Button>
           </div>
           <ul>
@@ -574,7 +574,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Direct line to founder</li>
             </ul>
             <Button variant="gold" size="lg" href="/for-institutions">
-              Book a briefing <ArrowR className="mk-ic" />
+              Contact us <ArrowR className="mk-ic" />
             </Button>
           </div>
         </div>
@@ -594,12 +594,12 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Book a briefing', href: '/for-institutions', variant: 'ghost-dark' },
+          { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
-        label="Book a briefing"
+        label="Contact us"
         href="/for-institutions"
         source="institutions-sticky"
       />

@@ -88,11 +88,11 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
       return [
         {
           label: 'Recommended',
-          title: 'Book an executive briefing',
+          title: 'Contact us',
           description:
             'Bring your leadership. The Institute walks your team through what governance, examiner-readiness, and institution-wide rollout actually look like — with the regulatory references named.',
           href: '/for-institutions',
-          cta: 'Book a briefing',
+          cta: 'Contact us',
           accent: 'var(--ink-2)',
           primary: true,
         },
