@@ -24,7 +24,6 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
     label: 'Institute',
     links: [
-      { href: '/', label: 'About' },
       { href: '/security', label: 'Security & Governance' },
       { href: '/resources', label: 'Resources' },
       { href: '/privacy', label: 'Privacy' },
