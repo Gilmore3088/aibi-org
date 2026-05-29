@@ -929,7 +929,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     },
     tertiary: {
       label: 'Request an Executive Briefing',
-      href: '/for-institutions/advisory',
+      href: '/for-institutions',
       source: 'free-results-tertiary',
     },
   },
@@ -950,7 +950,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     },
     tertiary: {
       label: 'Request an Executive Briefing',
-      href: '/for-institutions/advisory',
+      href: '/for-institutions',
       source: 'free-results-tertiary',
     },
   },
@@ -971,7 +971,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     },
     tertiary: {
       label: 'Request an Executive Briefing',
-      href: '/for-institutions/advisory',
+      href: '/for-institutions',
       source: 'free-results-tertiary',
     },
   },
@@ -982,7 +982,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
       "Your institution has built real AI capability. The opportunity now is leadership judgment — what to prioritize next, how to measure outcomes, how to defend the program at the board level. Leadership Advisory is fractional Chief AI Officer work for institutions with internal momentum. AiBI-Foundation stays available as the onboarding path for every new hire.",
     primary: {
       label: 'Request a conversation',
-      href: '/for-institutions/advisory',
+      href: '/for-institutions',
       source: 'free-results-primary',
     },
     secondary: {

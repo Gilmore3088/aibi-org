@@ -10,7 +10,7 @@
  * forms; they don't decorate.
  *
  *   <Cta href="/assessment/start">Begin the readiness assessment</Cta>
- *   <Cta variant="secondary" href="/about">Read the methodology</Cta>
+ *   <Cta variant="secondary" href="/">Read the methodology</Cta>
  */
 
 import Link from "next/link";

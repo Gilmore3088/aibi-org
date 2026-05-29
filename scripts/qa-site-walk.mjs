@@ -50,7 +50,7 @@ const AUTH_SEEDS = INCLUDE_AUTH
 // "only follow links you've seen" rule. The crawler will discover the rest.
 const SEEDS = [
   '/',
-  '/about',
+  '/',
   '/assessment',
   '/assessment/take',
   '/assessment/in-depth',
@@ -59,7 +59,7 @@ const SEEDS = [
   '/resources',
   '/playbooks',
   '/for-institutions',
-  '/for-institutions/advisory',
+  '/for-institutions',
   '/courses/foundation',
   '/services',
   '/faq',

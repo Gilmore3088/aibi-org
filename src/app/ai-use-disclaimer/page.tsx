@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function AiUseDisclaimerPage() {
   return (
     <MockupShell
-      activePath="/about"
+      activePath="/"
       eyebrow="AI Use · Our standards"
       title={<>How we use AI. How you should.</>}
       lede="We use AI to draft, edit, and structure parts of the course material. Every output ships only after a human review. We expect the same standard from our learners — and we teach it."

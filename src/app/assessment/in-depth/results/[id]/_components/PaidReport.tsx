@@ -613,7 +613,7 @@ export function PaidReport({
                     Enroll in AiBI-Foundation · $295
                   </a>
                   <a
-                    href="/for-institutions/advisory"
+                    href="/for-institutions"
                     className="inline-flex items-center justify-center px-7 py-3 rounded-full border border-white/30 text-white text-[14px] font-semibold uppercase tracking-[0.12em] hover:bg-white/5"
                   >
                     Or request a briefing
@@ -622,7 +622,7 @@ export function PaidReport({
               ) : (
                 <>
                   <a
-                    href="/for-institutions/advisory"
+                    href="/for-institutions"
                     className="inline-flex items-center justify-center px-7 py-3 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[14px] font-semibold uppercase tracking-[0.12em] hover:bg-[color:var(--gold-2)] transition-colors"
                   >
                     Request a Leadership Advisory conversation
