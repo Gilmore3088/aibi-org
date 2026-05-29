@@ -46,9 +46,10 @@ export function SiteFooter() {
         <div className="mk-footer-top">
           <div className="mk-footer-brand">
             <Link href="/" className="mk-brand" aria-label="The AI Banking Institute home">
-              {/* Brand v1 (2026-05-28) — bracketed [Ai] mark replaces the
-                  retired landmark-seal lockup. */}
-              <Wordmark variant="full" tone="dark" size={22} />
+              {/* Brand v1 (2026-05-28) — bracketed [Ai] mark on dark navy
+                  footer (.mk-footer background = var(--ink)). tone="light"
+                  renders cream text + gold brackets. */}
+              <Wordmark variant="full" tone="light" size={22} />
             </Link>
             <p className="mk-footer-tag">
               AI proficiency for community banks and credit unions. Sourced research, banker-vetted
