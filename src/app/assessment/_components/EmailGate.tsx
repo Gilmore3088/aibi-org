@@ -20,7 +20,36 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-data';
 import { trackEmailCaptured } from '@/lib/analytics/events';
 import { DIMENSION_LABELS, type Dimension } from '@content/assessments/v3/types';
-import { GAP_CONTENT, RECOMMENDATIONS } from '@content/assessments/v3/personalization';
+import { GAP_CONTENT } from '@content/assessments/v3/personalization';
+
+// Light role taxonomy for the free funnel — collected here so MailerLite
+// can route follow-ups and the post-capture report can adjust framing.
+// Distinct from the paid In-Depth v4 role list (which has 10 deeper
+// ids); this free set is intentionally short to keep the form light.
+const FREE_ROLES = [
+  'executive',
+  'compliance-risk',
+  'operations',
+  'lending',
+  'retail-branch',
+  'marketing',
+  'it-infosec',
+  'training-hr',
+  'other',
+] as const;
+type FreeRole = (typeof FREE_ROLES)[number];
+
+const ROLE_LABEL: Record<FreeRole, string> = {
+  executive: 'Executive / Leadership',
+  'compliance-risk': 'Compliance / Risk',
+  operations: 'Operations',
+  lending: 'Lending / Credit',
+  'retail-branch': 'Retail / Branch',
+  marketing: 'Marketing / Product',
+  'it-infosec': 'IT / InfoSec',
+  'training-hr': 'Training / HR',
+  other: 'Other',
+};
 
 interface EmailGateProps {
   readonly score: number;
@@ -87,7 +116,8 @@ function findFocusGap(
     return aPct - bPct;
   });
   const [id] = sorted[0];
-  return { id, label: DIMENSION_LABELS[id] ?? id };
+  const label = DIMENSION_LABELS[id as Dimension] ?? id;
+  return { id: id as Dimension, label };
 }
 
 export function EmailGate({
@@ -103,12 +133,12 @@ export function EmailGate({
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [institutionName, setInstitutionName] = useState('');
+  const [role, setRole] = useState<FreeRole | ''>('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
   const focusGap = findFocusGap(dimensionBreakdown);
-  const firstMove = focusGap ? RECOMMENDATIONS[focusGap.id]?.title : null;
-  const gapOneLine = focusGap ? GAP_CONTENT[focusGap.id]?.oneLine : null;
+  const gapContent = focusGap ? GAP_CONTENT[focusGap.id] : null;
   const displayMax = maxScore ?? 48;
 
   // Auto-skip the gate if the visitor is already signed in. We re-use
@@ -159,6 +189,7 @@ export function EmailGate({
           dimensionBreakdown,
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
+          role: role || undefined,
           // Every completer gets tier-routed follow-ups about their result.
           marketingOptIn: true,
         }),
@@ -203,13 +234,10 @@ export function EmailGate({
       setMessage('Please enter a valid email.');
       return;
     }
-    if (isFreeEmailDomain(trimmedEmail) && !institutionName.trim()) {
-      setStatus('error');
-      setMessage(
-        'Add your institution name so we can tailor your report — open the optional section below.',
-      );
-      return;
-    }
+    // Free-email soft-gate removed (was blocking gmail.com submissions
+    // when institution field was collapsed). Institution and role are
+    // now visible fields, so the user can fill them in directly. The
+    // backend still records isFreeEmailDomain for the post-capture nudge.
     await submit(trimmedEmail);
   }
 
@@ -227,24 +255,30 @@ export function EmailGate({
           <h1 className="mt-5 text-[36px] md:text-[52px] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
             Your AI readiness snapshot is ready.
           </h1>
+          {/* Promise only what is actually delivered after email — the
+              score, tier, and starting direction are visible to the right,
+              so they're a receipt of completed work, not bait. */}
           <p className="mt-5 text-[16px] md:text-[17px] leading-[1.6] text-white/70">
-            We found your score, maturity tier, top gap, and first
-            recommended move. Send the full result to yourself so you can
-            keep the artifact and the action plan.
+            Your score and starting direction are to the right. Send the
+            full result for the plain-English diagnosis, your copy-ready
+            starter prompt, the AI working brief you can paste into any
+            tool, and a 30-day action path.
           </p>
         </div>
 
         {/* RIGHT — score preview + form */}
         <div className="bg-white p-6 md:p-7 lg:p-7 flex flex-col gap-7">
-          {/* SCORE + SUMMARY */}
-          <div className="rounded-[22px] overflow-hidden border border-[color:var(--ink-a10)] grid grid-cols-1 sm:grid-cols-[200px_1fr]">
+          {/* SCORE + TOP GAP (no "first move" cell — that copy lives
+              in the post-email report; here we show diagnosis + a real
+              next-step sentence pulled from gapContent.nextStep). */}
+          <div className="rounded-[22px] overflow-hidden border border-[color:var(--ink-a10)] grid grid-cols-1 sm:grid-cols-[180px_1fr]">
             <div className="bg-[color:var(--ink)] text-white p-6">
               <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
                 Preview score
               </p>
-              <p className="mt-3 text-[64px] font-bold leading-[0.88] tracking-[-0.04em] text-[color:var(--gold-soft)] tabular-nums">
+              <p className="mt-3 text-[60px] font-bold leading-[0.88] tracking-[-0.04em] text-[color:var(--gold-soft)] tabular-nums">
                 {score}
-                <span className="text-[16px] text-white/55 font-normal tracking-normal ml-1">
+                <span className="text-[15px] text-white/55 font-normal tracking-normal ml-1">
                   / {displayMax}
                 </span>
               </p>
@@ -255,33 +289,29 @@ export function EmailGate({
                 <p className="mt-1 text-[16px] font-semibold text-white">{tierLabel}</p>
               </div>
             </div>
-            <div className="bg-[color:var(--cream)] p-6 space-y-3">
-              {firstMove && (
+            {focusGap && gapContent && (
+              <div className="bg-[color:var(--cream)] p-6 flex flex-col gap-3">
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-                    Your first move
-                  </p>
-                  <h3 className="mt-1.5 text-[20px] font-semibold leading-[1.15] tracking-[-0.02em] text-[color:var(--ink)]">
-                    {firstMove}
-                  </h3>
-                </div>
-              )}
-              {focusGap && (
-                <div className="bg-white border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
                   <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                     Top gap
                   </p>
-                  <p className="mt-1 text-[15px] font-semibold text-[color:var(--ink)]">
+                  <h3 className="mt-1.5 text-[20px] font-semibold leading-[1.15] tracking-[-0.02em] text-[color:var(--ink)]">
                     {focusGap.label}
-                  </p>
-                  {gapOneLine && (
-                    <p className="mt-1.5 text-[12px] text-[color:var(--slate-600)] leading-[1.5]">
-                      {gapOneLine}
-                    </p>
-                  )}
+                  </h3>
                 </div>
-              )}
-            </div>
+                <p className="text-[14px] leading-[1.55] text-[color:var(--slate-700)]">
+                  {gapContent.oneLine}
+                </p>
+                <div className="bg-white border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
+                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                    Where to start
+                  </p>
+                  <p className="mt-1.5 text-[14px] leading-[1.55] text-[color:var(--ink)]">
+                    {gapContent.nextStep}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* FORM */}
@@ -327,6 +357,71 @@ export function EmailGate({
               </button>
             </div>
 
+            {/* Personalize — first name, institution, role. All optional
+                but visible (not collapsed) so users can fill them
+                without finding the disclosure. Free-email soft gate is
+                gone; institution is recommended, not required. */}
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-3">
+              <div>
+                <label
+                  htmlFor="gate-firstname"
+                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  First name <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+                </label>
+                <input
+                  id="gate-firstname"
+                  type="text"
+                  autoComplete="given-name"
+                  maxLength={80}
+                  placeholder="Sarah"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="gate-institution"
+                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  Institution <span className="font-normal text-[color:var(--slate-500)]">· recommended</span>
+                </label>
+                <input
+                  id="gate-institution"
+                  type="text"
+                  autoComplete="organization"
+                  maxLength={120}
+                  placeholder="First Federal Credit Union"
+                  value={institutionName}
+                  onChange={(e) => setInstitutionName(e.target.value)}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="gate-role"
+                className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+              >
+                Your role <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+              </label>
+              <select
+                id="gate-role"
+                value={role}
+                onChange={(e) => setRole(e.target.value as FreeRole | '')}
+                className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+              >
+                <option value="">Select your role</option>
+                {FREE_ROLES.map((r) => (
+                  <option key={r} value={r}>
+                    {ROLE_LABEL[r]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {status === 'error' && message && (
               <p
                 id="gate-email-error"
@@ -342,54 +437,16 @@ export function EmailGate({
               tied to your institution.
             </p>
 
-            <details className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[16px] p-4 group">
-              <summary className="cursor-pointer text-[14px] font-semibold text-[color:var(--ink)] flex items-center justify-between">
-                <span>Optional: personalize the report</span>
-                <span aria-hidden className="text-[color:var(--gold-deep)] text-[12px] group-open:rotate-180 transition-transform">▾</span>
-              </summary>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                <div>
-                  <label htmlFor="gate-firstname" className="sr-only">
-                    First name
-                  </label>
-                  <input
-                    id="gate-firstname"
-                    type="text"
-                    autoComplete="given-name"
-                    maxLength={80}
-                    placeholder="First name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="gate-institution" className="sr-only">
-                    Institution
-                  </label>
-                  <input
-                    id="gate-institution"
-                    type="text"
-                    autoComplete="organization"
-                    maxLength={120}
-                    placeholder="Institution name"
-                    value={institutionName}
-                    onChange={(e) => setInstitutionName(e.target.value)}
-                    className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
-                  />
-                </div>
-              </div>
-            </details>
-
-            {/* WHAT UNLOCKS */}
+            {/* WHAT UNLOCKS — three rows the email genuinely delivers
+                AND that aren't already shown above. */}
             <ul className="space-y-2.5 pt-2">
               <UnlockRow
-                title="Top gap explanation"
-                body="Plain-English diagnosis of your weakest signal."
+                title="Full top-gap explanation"
+                body="What it leads to · what good looks like · the deeper context."
               />
               <UnlockRow
                 title="Three practical takeaways"
-                body="One prompt, one helper tool, one working artifact."
+                body="Copy-ready prompt · helper tool · working artifact."
               />
               <UnlockRow
                 title="30-day action path"

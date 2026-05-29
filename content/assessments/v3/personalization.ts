@@ -227,6 +227,11 @@ export const PRACTICE_PICTURE: Record<Tier['id'], ReadonlyArray<PracticePictureR
 
 export interface GapContent {
   readonly oneLine: string;
+  /** One concrete next-step direction shown alongside the oneLine in
+      preview surfaces (the EmailGate top-gap card). Distinct from
+      RECOMMENDATIONS[id].title (the full first-move recommendation) so
+      preview can give substance without exposing the full first move. */
+  readonly nextStep: string;
   readonly explanation: string;
   readonly impacts: readonly [string, string];
   readonly whatGoodLooksLike: readonly [string, string];
@@ -235,6 +240,7 @@ export interface GapContent {
 export const GAP_CONTENT: Record<Dimension, GapContent> = {
   'strategic-value': {
     oneLine: 'You use AI in general, not on specific work that matters to you.',
+    nextStep: 'Start by listing three tasks in your week where AI could save real time — be specific enough that you could try one tomorrow.',
     explanation:
       "AI is on your radar but not tied to a problem you actually own. Until you can name two or three of your own tasks where AI would save time or improve quality, AI stays a curiosity instead of a tool. The shift is from \"I should try AI\" to \"I use AI on these things.\"",
     impacts: [
@@ -248,6 +254,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'approved-tool-path': {
     oneLine: 'You are not sure which AI tools you are allowed to use at work.',
+    nextStep: 'Start by emailing IT or compliance one sentence: "Which AI tools are approved for staff use, and for what data?"',
     explanation:
       "Most bankers default to whatever AI tool they found first. If you cannot point to an approved list — or worse, no approved list exists yet — you are guessing what is safe. The fastest fix is to ask the question once and use only the green-list tools after that.",
     impacts: [
@@ -261,6 +268,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'data-safety-reflexes': {
     oneLine: 'You do not have a consistent rule for what never goes into AI.',
+    nextStep: 'Start by writing down the categories of information you handle that should never go into a public AI tool.',
     explanation:
       "Pasting customer data, account numbers, or sensitive internal details into a public AI tool is the single most common AI mistake at a community bank. The fix is a reflex — strip identifiers first, paste second — built through practice, not a memo. Until that reflex is in place, every prompt is a risk.",
     impacts: [
@@ -274,6 +282,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'prompting-skill': {
     oneLine: 'You ask AI vague questions and get vague answers.',
+    nextStep: 'Start by adding role, format, source, and a self-check instruction to your next prompt — and save it if it works.',
     explanation:
       "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is a small kit of patterns — role, format, source, check, edit — that you reuse until they're reflex.",
     impacts: [
@@ -287,6 +296,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'role-fit': {
     oneLine: 'Your AI use is general experimentation, not tied to your actual job.',
+    nextStep: 'Start by writing the five tasks that take the most time in your typical week — the ones AI could plausibly help on.',
     explanation:
       "General AI experiments do not stick. AI tied to three named tasks you already do every week becomes part of how you work. Until AI is mapped to specific things in your role — not \"productivity\" or \"writing\" but actual deliverables you own — it stays optional.",
     impacts: [
@@ -300,6 +310,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'human-review': {
     oneLine: 'You use AI output without a deliberate review step.',
+    nextStep: 'Start by sorting your AI work into Low / Medium / High stakes — and write down who reviews the High items.',
     explanation:
       "AI writes confidently even when it is wrong. The fix is not a better AI — it is a review step you actually run. Low-stakes drafts can be self-reviewed; medium-stakes work goes to a colleague; high-stakes work (customer-facing, regulated decisions) goes to a named second reviewer.",
     impacts: [
@@ -313,6 +324,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'documentation': {
     oneLine: 'You cannot show someone exactly what AI did or what you changed.',
+    nextStep: 'Start by picking one place to save AI work — folder, OneNote section, shared drive — and use it today.',
     explanation:
       "AI work that you cannot reconstruct is AI work that will be questioned — by a colleague, a reviewer, or an examiner. The fix is a three-minute habit: capture the prompt, the unedited output, and the edits you made before using it. The evidence trail matters more than the tool.",
     impacts: [
@@ -326,6 +338,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'vendor-awareness': {
     oneLine: 'You do not know which of the tools you already use have AI inside them.',
+    nextStep: 'Start by writing down every vendor tool you use in a week and marking yes / no / unknown for AI features.',
     explanation:
       "Most banking software has quietly added AI features in the last eighteen months — summarization, drafting, classification, \"smart\" assistants. Often turned on by default. If you do not know which of your tools have AI inside, you cannot manage what data those tools see or what the vendor does with it.",
     impacts: [
@@ -339,6 +352,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'customer-impact-awareness': {
     oneLine: 'You are not always sure when AI touches a customer or a regulated decision.',
+    nextStep: 'Start by listing every AI use in your work that ends up in front of a customer or feeds a decision.',
     explanation:
       "When AI helps draft a customer email, prepare a loan summary, generate adverse-action language, or sort complaints, it has crossed into regulated territory. ECOA/Reg B, UDAAP, BSA, and fair lending obligations apply whether or not you used AI. Knowing where the line is matters more than avoiding the work.",
     impacts: [
@@ -352,6 +366,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'workflow-readiness': {
     oneLine: 'Your AI use is ad hoc — every time is the first time.',
+    nextStep: 'Start by writing four steps for one recurring task: input, AI draft, review, final output. A colleague should be able to follow it.',
     explanation:
       "The difference between an AI chat and an AI workflow is whether anyone else could reproduce it. The format is always the same: input, AI draft, your review, final output. If you can write it down, a colleague can do it. If a colleague can do it, it becomes durable work — not just yours.",
     impacts: [
@@ -365,6 +380,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'training-culture': {
     oneLine: 'You are figuring AI out alone, without role-specific guidance.',
+    nextStep: 'Start by picking three AI skills to build in the next six weeks — and one source for each.',
     explanation:
       "The bankers who go furthest with AI are not the ones with the best employer training — they are the ones who own their learning, pick specific skills to build, and name specific sources to learn from. \"I will figure it out\" is the strategy that does not work.",
     impacts: [
@@ -378,6 +394,7 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'leadership-visibility': {
     oneLine: 'You do not know what your leadership tracks about AI or how your work fits.',
+    nextStep: 'Start by scheduling fifteen minutes with your manager — ask what they actually measure about AI use.',
     explanation:
       "You cannot align with what you cannot see. If you do not know what good looks like to leadership — what is measured, what concerns them, what they want more of — your AI work is guesswork. The fix is one fifteen-minute conversation that turns abstract pressure into concrete direction.",
     impacts: [
