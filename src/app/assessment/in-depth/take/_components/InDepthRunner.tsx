@@ -8,11 +8,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAssessmentInDepth } from '../../_lib/useAssessmentInDepth';
+import { useAssessmentV4 } from '../../_lib/useAssessmentV4';
 import { QuestionCard } from '@/app/assessment/_components/QuestionCard';
 import { ProgressBar } from '@/app/assessment/_components/ProgressBar';
 import { ScoreRing } from '@/app/assessment/_components/ScoreRing';
-import { ROLES, ROLE_META, parseRole, type Role } from '@content/assessments/v2/role';
+import { ROLES_V4, ROLE_V4_META, parseRoleV4, type RoleV4 } from '@content/assessments/v4/roles';
 
 const ROLE_STORAGE_KEY = 'aibi-indepth-role';
 
@@ -22,11 +22,11 @@ type SubmitState =
   | { kind: 'error'; message: string };
 
 export function InDepthRunner(): React.ReactElement {
-  const state = useAssessmentInDepth();
+  const state = useAssessmentV4();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [submit, setSubmit] = useState<SubmitState>({ kind: 'idle' });
-  const [role, setRole] = useState<Role | null>(null);
+  const [role, setRole] = useState<RoleV4 | null>(null);
   const [rolePicked, setRolePicked] = useState(false);
   const scoreHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const submittedRef = useRef(false);
@@ -38,7 +38,7 @@ export function InDepthRunner(): React.ReactElement {
     try {
       const saved = sessionStorage.getItem(ROLE_STORAGE_KEY);
       if (saved !== null) {
-        setRole(parseRole(saved));
+        setRole(parseRoleV4(saved));
         setRolePicked(true);
       }
     } catch {
@@ -46,7 +46,7 @@ export function InDepthRunner(): React.ReactElement {
     }
   }, []);
 
-  function commitRolePick(picked: Role | null): void {
+  function commitRolePick(picked: RoleV4 | null): void {
     setRole(picked);
     setRolePicked(true);
     try {
@@ -61,10 +61,10 @@ export function InDepthRunner(): React.ReactElement {
   // maxScore, tier, and dimensionBreakdown — the client only sends what
   // the user picked (answers) and in what order (questionIds). This keeps
   // the trust boundary at the server.
-  const { isComplete, tier, answers, selectedQuestions } = state;
+  const { isComplete, band, answers, selectedQuestions } = state;
 
   useEffect(() => {
-    if (!isComplete || !tier || submittedRef.current) return;
+    if (!isComplete || !band || submittedRef.current) return;
     submittedRef.current = true;
     setSubmit({ kind: 'submitting' });
 
@@ -103,7 +103,7 @@ export function InDepthRunner(): React.ReactElement {
         submittedRef.current = false;
       }
     })();
-  }, [isComplete, tier, answers, selectedQuestions, role, router]);
+  }, [isComplete, band, answers, selectedQuestions, role, router]);
 
   useEffect(() => {
     if (state.phase === 'score') {
@@ -156,8 +156,8 @@ export function InDepthRunner(): React.ReactElement {
           <fieldset className="mt-10">
             <legend className="sr-only">Your role</legend>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ROLES.map((id) => {
-                const meta = ROLE_META[id];
+              {ROLES_V4.map((id) => {
+                const meta = ROLE_V4_META[id];
                 const selected = role === id;
                 return (
                   <label
@@ -243,28 +243,28 @@ export function InDepthRunner(): React.ReactElement {
           />
         )}
 
-        {state.phase === 'score' && state.tier && (
+        {state.phase === 'score' && state.band && (
           <div className="max-w-3xl mx-auto space-y-10">
             <div className="flex flex-col items-center text-center">
               <p className="text-xs uppercase tracking-widest text-[color:var(--ink)]/70 mb-6">
-                Your In-Depth Readiness Score
+                Your In-Depth Diagnostic Score
               </p>
               <ScoreRing
-                score={state.totalScore}
-                minScore={state.questionCount}
-                maxScore={state.maxScore}
-                colorVar={state.tier.colorVar}
-                label={state.tier.label}
+                score={state.normalizedScore}
+                minScore={0}
+                maxScore={100}
+                colorVar="var(--gold)"
+                label={state.band.label}
               />
               <h2
                 ref={scoreHeadingRef}
                 tabIndex={-1}
                 className="text-3xl md:text-4xl mt-8 max-w-xl text-[color:var(--ink)] focus:outline-none"
               >
-                {state.tier.headline}
+                {state.band.label} &middot; {state.normalizedScore} / 100
               </h2>
               <p className="text-lg text-[color:var(--ink)]/75 mt-4 max-w-2xl leading-relaxed">
-                {state.tier.summary}
+                {state.band.meaning}
               </p>
             </div>
 
@@ -301,71 +301,99 @@ export function InDepthRunner(): React.ReactElement {
   );
 }
 
-function RoleIcon({ id }: { readonly id: Role }) {
-  // Minimal line icons in the Ledger style — same stroke weight, same gold accent.
+function RoleIcon({ id }: { readonly id: RoleV4 }) {
+  // Minimal line icons keyed to the v4 role taxonomy. Each is a single
+  // editorial mark — the icon disambiguates the card; the label carries
+  // the meaning. Unknown ids fall back to a neutral marker.
   const stroke = 'currentColor';
   const sw = 1.6;
+  const wrap = (children: React.ReactNode) => (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={stroke}
+      strokeWidth={sw}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-5 h-5"
+    >
+      {children}
+    </svg>
+  );
   switch (id) {
-    case 'operator':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2 L12 5 M12 19 L12 22 M2 12 L5 12 M19 12 L22 12 M4.93 4.93 L7.05 7.05 M16.95 16.95 L19.07 19.07 M4.93 19.07 L7.05 16.95 M16.95 7.05 L19.07 4.93" />
-        </svg>
-      );
+    case 'executive':
+      return wrap(<path d="M3 20 L21 20 M5 20 L5 10 L9 7 L9 20 M15 20 L15 4 L19 7 L19 20" />);
     case 'compliance-risk':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      return wrap(
+        <>
           <path d="M12 2 L20 6 L20 12 C 20 17 16 21 12 22 C 8 21 4 17 4 12 L4 6 Z" />
           <path d="M9 12 L11 14 L15 10" />
-        </svg>
+        </>,
       );
-    case 'training-hr':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M2 9 L12 4 L22 9 L12 14 Z" />
-          <path d="M6 11 L6 16 C 6 17 8.5 18 12 18 C 15.5 18 18 17 18 16 L18 11" />
-          <line x1="22" y1="9" x2="22" y2="14" />
-        </svg>
-      );
-    case 'executive':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M3 20 L21 20 M5 20 L5 10 L9 7 L9 20 M15 20 L15 4 L19 7 L19 20" />
-        </svg>
-      );
-    case 'lending':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M9 8 L9 16 M9 8 L13 8 C 14.5 8 15.5 9 15.5 10.5 C 15.5 12 14.5 13 13 13 L9 13" />
-        </svg>
-      );
-    case 'marketing':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-          <path d="M3 11 L3 13 L7 13 L13 18 L13 6 L7 11 Z" />
-          <path d="M16 8 C 18 9 18 15 16 16" />
-          <path d="M19 5 C 23 8 23 16 19 19" />
-        </svg>
-      );
-    case 'it':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    case 'it-infosec':
+      return wrap(
+        <>
           <rect x="3" y="4" width="18" height="13" rx="1" />
           <line x1="8" y1="21" x2="16" y2="21" />
           <line x1="12" y1="17" x2="12" y2="21" />
-          <path d="M8 9 L10 11 L8 13 M13 13 L16 13" />
-        </svg>
+          <path d="M11 8 L13 10 L11 12" />
+          <circle cx="15" cy="10" r="0.8" fill={stroke} />
+        </>,
+      );
+    case 'retail-branch':
+      return wrap(
+        <>
+          <path d="M3 9 L21 9 L20 20 L4 20 Z" />
+          <path d="M3 9 L5 5 L19 5 L21 9" />
+          <line x1="10" y1="13" x2="14" y2="13" />
+        </>,
+      );
+    case 'lending-credit':
+      return wrap(
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9 8 L9 16 M9 8 L13 8 C 14.5 8 15.5 9 15.5 10.5 C 15.5 12 14.5 13 13 13 L9 13" />
+        </>,
+      );
+    case 'bsa-aml':
+      return wrap(
+        <>
+          <circle cx="11" cy="11" r="6" />
+          <line x1="15.5" y1="15.5" x2="20" y2="20" />
+          <path d="M9 11 L11 13 L14 9" />
+        </>,
+      );
+    case 'marketing-product':
+      return wrap(
+        <>
+          <path d="M3 11 L3 13 L7 13 L13 18 L13 6 L7 11 Z" />
+          <path d="M16 8 C 18 9 18 15 16 16" />
+          <path d="M19 5 C 23 8 23 16 19 19" />
+        </>,
+      );
+    case 'operations':
+      return wrap(
+        <>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 2 L12 5 M12 19 L12 22 M2 12 L5 12 M19 12 L22 12 M4.93 4.93 L7.05 7.05 M16.95 16.95 L19.07 19.07 M4.93 19.07 L7.05 16.95 M16.95 7.05 L19.07 4.93" />
+        </>,
+      );
+    case 'training-hr':
+      return wrap(
+        <>
+          <path d="M2 9 L12 4 L22 9 L12 14 Z" />
+          <path d="M6 11 L6 16 C 6 17 8.5 18 12 18 C 15.5 18 18 17 18 16 L18 11" />
+          <line x1="22" y1="9" x2="22" y2="14" />
+        </>,
       );
     case 'other':
     default:
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      return wrap(
+        <>
           <circle cx="12" cy="12" r="9" />
           <circle cx="12" cy="9" r="1.5" fill={stroke} />
           <path d="M10 13 L12 13 L12 17 M10 17 L14 17" />
-        </svg>
+        </>,
       );
   }
 }

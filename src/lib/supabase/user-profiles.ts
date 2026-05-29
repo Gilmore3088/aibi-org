@@ -12,6 +12,11 @@
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ReadinessResult, ProficiencyResult } from '@/lib/user-data';
 import type { Role } from '@content/assessments/v2/role';
+import type { RoleV4 } from '@content/assessments/v4/roles';
+
+// Either-or: the legacy v2 role taxonomy (8 ids) or the v4 taxonomy (10
+// ids). The DB CHECK constraint accepts the union — see migration 00040.
+export type AnyRole = Role | RoleV4;
 
 // ── Dev bypass ──────────────────────────────────────────────────────────────
 // Set SKIP_SUPABASE_PROFILES=true in .env.local to disable all Supabase writes
@@ -37,7 +42,7 @@ export interface UserProfileRow {
 export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
-  options: { role?: Role | null } = {},
+  options: { role?: AnyRole | null } = {},
 ): Promise<{ id: string | null }> {
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
@@ -159,8 +164,9 @@ export async function getProfileByEmail(email: string): Promise<UserProfileRow |
           ...(typeof row.readiness_version === 'string' &&
           (row.readiness_version === 'v1' ||
             row.readiness_version === 'v2' ||
-            row.readiness_version === 'v3')
-            ? { version: row.readiness_version as 'v1' | 'v2' | 'v3' }
+            row.readiness_version === 'v3' ||
+            row.readiness_version === 'v4')
+            ? { version: row.readiness_version as 'v1' | 'v2' | 'v3' | 'v4' }
             : {}),
           ...(typeof row.readiness_max_score === 'number'
             ? { maxScore: row.readiness_max_score }

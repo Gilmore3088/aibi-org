@@ -17,8 +17,8 @@ export interface ReadinessResult {
   readonly tierLabel: string;
   readonly answers: readonly number[];
   readonly completedAt: string;
-  // v2 / v3 additions (optional for backward compat with v1-shaped persisted data)
-  readonly version?: 'v1' | 'v2' | 'v3';
+  // v2 / v3 / v4 additions (optional for backward compat with v1-shaped persisted data)
+  readonly version?: 'v1' | 'v2' | 'v3' | 'v4';
   readonly maxScore?: number;
   readonly dimensionBreakdown?: Record<string, DimensionScoreSerialized>;
 }

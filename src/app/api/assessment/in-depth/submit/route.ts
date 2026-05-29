@@ -20,14 +20,15 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertReadinessResult } from '@/lib/supabase/user-profiles';
-import { questions as canonicalPool } from '@content/assessments/v2/questions';
+import { questions as canonicalPool } from '@content/assessments/v4/questions';
 import {
   getDimensionScores,
-  getTierInDepth,
+  normalize,
+  getMaturityBand,
   type DimensionScore,
-} from '@content/assessments/v2/scoring';
+} from '@content/assessments/v4/scoring';
 import { emailVariants } from '@/lib/email/canonicalize';
-import { parseRole } from '@content/assessments/v2/role';
+import { parseRoleV4 } from '@content/assessments/v4/roles';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 export const runtime = 'nodejs';
@@ -61,7 +62,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // Role is optional — null falls back to un-roled Briefing framing.
   // Unknown strings parse to null rather than erroring; the assessment
   // never blocks on this field.
-  const role = parseRole(rawRole);
+  const role = parseRoleV4(rawRole);
 
   if (!Array.isArray(answers) || answers.length !== EXPECTED_QUESTION_COUNT) {
     return NextResponse.json(
@@ -172,13 +173,25 @@ export async function POST(request: Request): Promise<NextResponse> {
   // No client-supplied scoring fields are read.
   const typedQuestions = orderedQuestions.map((q) => q!);
   const typedAnswers = answers as number[];
-  const score = typedAnswers.reduce((sum, n) => sum + n, 0);
-  const maxScore = EXPECTED_QUESTION_COUNT * 4;
-  const tier = getTierInDepth(score, maxScore);
-  const dimensionBreakdown: Record<string, DimensionScore> = getDimensionScores(
-    typedAnswers,
-    typedQuestions,
-  );
+  const rawScore = typedAnswers.reduce((sum, n) => sum + n, 0);
+  // v4: raw 48-192 → normalized 0-100 → 5-band maturity (Unstructured /
+  // Emerging / Building Momentum / Controlled Scale / Advanced).
+  const normalizedScore = normalize(rawScore);
+  const band = getMaturityBand(normalizedScore);
+  const v4Breakdown = getDimensionScores(typedAnswers, typedQuestions);
+  // Serialize to the canonical {score, maxScore, label} shape so existing
+  // dashboards (which read user_profiles.readiness_dimension_breakdown as
+  // generic dimension scores) continue to work. We store the v4 normalized
+  // 0-100 view per dimension; downstream consumers that want the v4-native
+  // band can recover it via getMaturityBand(score) since maxScore is 100.
+  const dimensionBreakdown: Record<string, { score: number; maxScore: number; label: string }> = {};
+  for (const [key, dim] of Object.entries(v4Breakdown) as [string, DimensionScore][]) {
+    dimensionBreakdown[key] = {
+      score: dim.normalized,
+      maxScore: 100,
+      label: dim.label,
+    };
+  }
 
   // ── Persist the result ───────────────────────────────────────────────────
   const completedAt = new Date().toISOString();
@@ -188,13 +201,17 @@ export async function POST(request: Request): Promise<NextResponse> {
     const result = await upsertReadinessResult(
       user.email,
       {
-        score,
-        tierId: tier.id,
-        tierLabel: tier.label,
+        // Persist the normalized 0-100 score as readiness_score so the
+        // existing dashboard and certificate surfaces continue to read a
+        // single number; raw is preserved inside answers and is
+        // reconstructable from the breakdown.
+        score: normalizedScore,
+        tierId: band.id,
+        tierLabel: band.label,
         answers: typedAnswers,
         completedAt,
-        version: 'v2',
-        maxScore,
+        version: 'v4',
+        maxScore: 100,
         dimensionBreakdown,
       },
       { role },
