@@ -20,7 +20,11 @@ html, body {
    font-style. Emphasis is now carried by color + weight. Supersedes the
    old "italics signal voice" rule in CLAUDE.md Design Context. (Server-
    rendered images — the Satori OG card, the hero SVG — are fixed at their
-   source since CSS does not reach them.) */
+   source since CSS does not reach them.)
+   2026-05-28 — brand v1 carves out a single exception: the `.si` class
+   used inside the bracketed [Ai] mark renders the lone italic glyph on
+   the site (Instrument Serif italic 400). It re-asserts italic with its
+   own !important in src/styles/brand.css and wins on specificity. */
 *, *::before, *::after {
   font-style: normal !important;
 }

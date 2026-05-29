@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import {
   Cormorant_SC,
   Inter,
+  Instrument_Serif,
   Newsreader,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -136,6 +137,20 @@ const inter = Inter({
   display: 'swap',
 });
 
+// Brand v1 (2026-05-28) — Instrument Serif italic 400 is the sole italic
+// glyph on the site. Reserved for the bracketed [Ai] mark's stylized "i"
+// via the `.si` class (see src/styles/brand.css). Italic-only, weight 400
+// only — nothing else loads. Display 'swap' is safe: the mark falls back
+// to Newsreader italic from --font-mark-serif before Instrument Serif
+// arrives, and Newsreader is already on the critical font budget.
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['italic'],
+  variable: '--font-instrument-serif',
+  display: 'swap',
+});
+
 // Apex `aibankinginstitute.com` 301s to `www.aibankinginstitute.com` at the
 // edge (Vercel + DNS), so the www subdomain is the canonical host. Default
 // to it explicitly here — the BRAND.domains.primary value is the apex used
@@ -236,7 +251,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
 
       <body
-        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} flex flex-col min-h-screen`}
+        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} ${instrumentSerif.variable} flex flex-col min-h-screen`}
       >
         {!chromeless && (
           <a href="#main-content" className="skip-link">

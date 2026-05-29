@@ -1,0 +1,64 @@
+/* AiBI brand v1 — the bracketed [Ai] mark.
+ *
+ * Source: docs/brand/brand-guide-v1.html (imported 2026-05-28).
+ * The mark is a typographic lockup, not an SVG icon:
+ *   [  A  i  ]  Banking Institute
+ *   gold uppercase
+ *      Inter 600 navy
+ *         Instrument Serif italic 400 navy   ← sole italic on the site
+ *           gold
+ *
+ * The single italic exception. Every other italic on the site is killed
+ * in base.css via `*{font-style:normal!important}`. The `.si` class beats
+ * that rule on specificity (0,0,1,0 > 0,0,0,0) + its own !important.
+ *
+ * See DECISIONS.md 2026-05-28 entry.
+ */
+
+/* The mark's italic "i" glyph. Used only inside <Wordmark>, <Monogram>,
+   and the compact <Mark> brand components. Never used elsewhere. */
+.si {
+  font-family: var(--font-mark-serif);
+  font-style: italic !important;
+  font-weight: 400;
+  font-size: 1.14em;
+  line-height: 0;
+  margin: 0 0.005em 0 0.012em;
+  color: inherit;
+}
+
+/* Wordmark composition primitives — kept here so the React components in
+   src/components/brand/ stay lean. Consumers set color and size on the
+   parent; everything else inherits. */
+.aibi-mark {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.aibi-mark .bk {
+  color: var(--gold);
+  font-weight: 500;
+  padding: 0 0.03em;
+}
+.aibi-mark .ai {
+  padding: 0 0.02em;
+}
+
+/* Dark-surface variant. */
+.aibi-mark--dark {
+  color: var(--cream);
+}
+.aibi-mark--dark .bk {
+  color: var(--gold);
+}
+
+/* Mono variant — single-color (for print, embossed surfaces, certificates). */
+.aibi-mark--mono .bk,
+.aibi-mark--mono .si {
+  color: inherit;
+}
