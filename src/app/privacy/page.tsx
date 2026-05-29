@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <MockupShell
-      activePath="/about"
+      activePath="/"
       eyebrow="Legal · Privacy"
       title={<>What we collect. What we do not.</>}
       lede="We collect the minimum needed to run the assessment, deliver the course, and send your results. We never sell data. Member or customer data from your institution never enters any model."

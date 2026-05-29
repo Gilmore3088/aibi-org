@@ -32,8 +32,8 @@ export interface NavLink {
 const NAV_LINKS: readonly NavLink[] = [
   { href: "/courses", label: "Course" },
   { href: "/for-institutions", label: "For Institutions" },
-  { href: "/research", label: "Research" },
-  { href: "/about", label: "About" },
+  { href: "/resources", label: "Resources" },
+  { href: "/", label: "About" },
 ] as const;
 
 function isActive(linkHref: string, currentPath: string): boolean {

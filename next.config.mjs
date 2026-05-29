@@ -83,6 +83,13 @@ const nextConfig = {
       { source: '/services', destination: '/for-institutions', permanent: true },
       { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
+      // 2026-05-29 product simplification: no separate /about page (the
+      // institute speaks through its product surfaces, not a bio page) and
+      // no advisory offering (the institute sells education + the In-Depth
+      // Assessment, not consulting). /research consolidates into /resources.
+      { source: '/about', destination: '/', permanent: true },
+      { source: '/for-institutions/advisory', destination: '/for-institutions', permanent: true },
+      { source: '/research', destination: '/resources', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // 2026-05-28: /assessment/in-depth/dashboard renamed to /access.

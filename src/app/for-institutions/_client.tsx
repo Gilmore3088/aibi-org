@@ -83,7 +83,7 @@ const TIERS = [
       'Institutional readiness baseline + post-engagement diagnostic',
       'Aggregate dashboard for your champion',
     ],
-    ctaHref: '/for-institutions/advisory',
+    ctaHref: '/for-institutions',
     ctaLabel: 'Request a pilot',
     ctaVariant: 'gold' as const,
   },
@@ -97,7 +97,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions/advisory' }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Book a briefing', href: '/for-institutions' }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -155,7 +155,7 @@ export default function ForInstitutionsPage() {
               No software seats. No vendor lock-in.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/for-institutions/advisory">
+              <Button variant="gold" size="lg" href="/for-institutions">
                 Book a briefing <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#engagement">
@@ -493,7 +493,7 @@ export default function ForInstitutionsPage() {
           </div>
           {/* Mobile-only: link to the live dashboard demo since the grid above
               gets visually compressed to ~80px-tall cards on a phone. */}
-          <a className="mk-dept-mobile-link" href="/for-institutions/advisory">
+          <a className="mk-dept-mobile-link" href="/for-institutions">
             See the full department dashboard →
           </a>
         </div>
@@ -509,7 +509,7 @@ export default function ForInstitutionsPage() {
               Bring your leadership team. We walk through the assessment, the dashboard, and what
               a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
             </p>
-            <Button variant="gold" size="lg" href="/for-institutions/advisory">
+            <Button variant="gold" size="lg" href="/for-institutions">
               Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -553,7 +553,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
-            <Button variant="ink" size="lg" href="/for-institutions/advisory">
+            <Button variant="ink" size="lg" href="/for-institutions">
               Get seat pricing <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -573,7 +573,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
               <li><CheckIcon className="mk-ic" />Direct line to founder</li>
             </ul>
-            <Button variant="gold" size="lg" href="/for-institutions/advisory">
+            <Button variant="gold" size="lg" href="/for-institutions">
               Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -594,13 +594,13 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Book a briefing', href: '/for-institutions/advisory', variant: 'ghost-dark' },
+          { label: 'Book a briefing', href: '/for-institutions', variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
         label="Book a briefing"
-        href="/for-institutions/advisory"
+        href="/for-institutions"
         source="institutions-sticky"
       />
     </div>

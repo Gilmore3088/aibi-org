@@ -13,7 +13,7 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assessment', href: '/assessment' },
   { label: 'Learn', href: '/courses' },
-  { label: 'Resources', href: '/research' },
+  { label: 'Resources', href: '/resources' },
   { label: 'Institutions', href: '/for-institutions' },
 ];
 
@@ -28,7 +28,7 @@ const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
 ];
 
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
-  { label: 'Resources', href: '/research', helper: 'Research, templates, downloads' },
+  { label: 'Resources', href: '/resources', helper: 'Research, templates, downloads' },
   { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
 ];
 

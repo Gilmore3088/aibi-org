@@ -17,7 +17,6 @@ const ROUTES = [
   { path: '/assessment/in-depth', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/education', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/for-institutions/advisory', priority: 0.75, changeFrequency: 'monthly' as const },
   {
     path: '/for-institutions/samples/efficiency-ratio-workbook',
     priority: 0.7,
@@ -33,7 +32,6 @@ const ROUTES = [
   },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
-  { path: '/about', priority: 0.75, changeFrequency: 'monthly' as const },
 
   // Research hub + every published essay. Legacy /resources/<slug> paths
   // (sub-paths only — the bare /resources path is now the Artifact Library)

@@ -561,7 +561,7 @@ export default async function InDepthAssessmentPage({
                 title="Know where your departments differ."
                 body="Anonymized cohort dashboard. Per-dimension medians and p25/p75 bands across your roster. Pair with a coached rollout for institutions running real change."
                 ctaLabel="Book Executive Briefing →"
-                ctaHref="/for-institutions/advisory"
+                ctaHref="/for-institutions"
               />
             </div>
 

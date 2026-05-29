@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <MockupShell
-      activePath="/about"
+      activePath="/"
       eyebrow="Legal · Terms of Service"
       title={<>The shortest possible terms.</>}
       lede="You buy a seat, you get the course and toolbox. Refund window is 30 days. We do not use your data to train models. You do not redistribute course content. That is most of it."
