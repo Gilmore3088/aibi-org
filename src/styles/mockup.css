@@ -3091,7 +3091,11 @@ section.mk-std { padding: 56px 0; }
 .mk-dept-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .mk-dept-grid { grid-template-columns: 1fr 1fr; } }
 .mk-dpt {
-  display: grid; grid-template-columns: 1fr auto auto; gap: 16px;
+  /* Columns: dept-label (flex) · status pill (uniform 144px) · score (uniform 48px, right-aligned).
+     Pill is anchored before the number so the number column locks
+     visually across rows — score values vary in digit count but with
+     tabular-nums + a fixed column they line up. */
+  display: grid; grid-template-columns: 1fr 144px 48px; gap: 16px;
   align-items: center; padding: 16px 20px;
   background: var(--cream); border-radius: var(--r-lg);
 }
@@ -3106,11 +3110,19 @@ section.mk-std { padding: 56px 0; }
   font-size: 11px; color: var(--slate-500); font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px;
 }
-.mk-dpt .mk-score { font-size: 22px; font-weight: 700; }
+.mk-dpt .mk-score {
+  font-size: 22px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
 .mk-dpt .mk-pill {
   padding: 6px 12px; border-radius: var(--r-pill);
   font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-align: center;
+  /* Pill cell is fixed-width (144px) so all pills are the same shape
+     regardless of label length. Text wraps if needed but the cell stays. */
+  justify-self: stretch;
 }
 .mk-dpt .mk-pill.is-hi { background: rgba(4, 120, 87, 0.15); color: var(--emerald-700); }
 .mk-dpt .mk-pill.is-me { background: var(--gold-a20); color: var(--gold-deep); }

@@ -177,11 +177,30 @@ export default function SecurityPage() {
                 color: '#fff',
                 textDecoration: 'none',
                 padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.10)',
                 fontSize: 14,
                 fontWeight: 500,
               }}
             >
               Red / Yellow / Green Use Card (PDF) →
+            </a>
+            {/* Direct static link — the file lives in /public/downloads
+                until the Supabase resources seed migrates it. Other items
+                above point at the resources API; once the seed runs the
+                three links can be unified on /api/resources/<slug>/download. */}
+            <a
+              href="/downloads/compliance-playbook.pdf"
+              download
+              style={{
+                display: 'block',
+                color: '#fff',
+                textDecoration: 'none',
+                padding: '10px 0',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
+              Compliance Officer Playbook (PDF) →
             </a>
           </div>
         </aside>
