@@ -104,6 +104,7 @@ export async function POST(request: Request) {
       // saved_payment_method_options needs a customer in scope.
       customer_creation: 'always',
       saved_payment_method_options: { payment_method_save: 'disabled' },
+      allow_promotion_codes: true,
       line_items: [{ price: STRIPE_INDEPTH_PRICE_ID, quantity: 1 }],
       success_url: `${origin}/assessment/in-depth/purchased?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/assessment/in-depth`,
