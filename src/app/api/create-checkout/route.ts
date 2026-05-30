@@ -183,6 +183,9 @@ export async function POST(request: Request) {
         // enroll the customer in Link, and the Pay button stays inert
         // until that field is filled. Card-only buyers should not be
         // routed through Link enrollment without opting in.
+        // customer_creation:'always' satisfies Stripe's requirement that
+        // saved_payment_method_options needs a customer in scope.
+        customer_creation: 'always',
         saved_payment_method_options: { payment_method_save: 'disabled' },
         line_items: [{ price: priceId, quantity: 1 }],
         success_url: `${origin}/courses/foundation/program/purchased?session_id={CHECKOUT_SESSION_ID}`,

@@ -100,6 +100,9 @@ export async function POST(request: Request) {
       payment_method_types: ['card'],
       // #314 — kill the Stripe Link 'Save my information' toggle so
       // the Pay button isn't silently blocked by an unfilled phone field.
+      // customer_creation:'always' satisfies Stripe's requirement that
+      // saved_payment_method_options needs a customer in scope.
+      customer_creation: 'always',
       saved_payment_method_options: { payment_method_save: 'disabled' },
       line_items: [{ price: STRIPE_INDEPTH_PRICE_ID, quantity: 1 }],
       success_url: `${origin}/assessment/in-depth/purchased?session_id={CHECKOUT_SESSION_ID}`,
