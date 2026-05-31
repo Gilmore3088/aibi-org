@@ -613,7 +613,7 @@ export function PaidReport({
                     Enroll in AiBI-Foundation · $295
                   </a>
                   <a
-                    href="/for-institutions"
+                    href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20In-Depth%20result%20follow-up"
                     className="inline-flex items-center justify-center px-7 py-3 rounded-full border border-white/30 text-white text-[14px] font-semibold uppercase tracking-[0.12em] hover:bg-white/5"
                   >
                     Or request a briefing

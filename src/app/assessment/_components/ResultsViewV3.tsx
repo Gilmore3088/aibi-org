@@ -517,7 +517,7 @@ export function ResultsViewV3({
             tag="Best match"
             title="Retail / Branch"
             body="First-draft replies, job aids, and coaching scenarios."
-            href="/playbooks/retail-branch"
+            href="/playbooks/retail"
             highlight
           />
           <PlaybookCard
@@ -527,10 +527,10 @@ export function ResultsViewV3({
             href="/playbooks/compliance"
           />
           <PlaybookCard
-            tag="Workflow"
-            title="Operations"
-            body="Procedure translation and repeatable SOPs."
-            href="/playbooks/operations"
+            tag="Credit"
+            title="Lending"
+            body="Underwriting helpers, loan summaries, and review checklists."
+            href="/playbooks/lending"
           />
           <PlaybookCard
             tag="Tool safety"
