@@ -49,8 +49,7 @@ function formatNumber(n: number): string {
 }
 
 const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ??
-  'https://calendly.com/aibi/executive-briefing';
+  'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20ROI%20Calculator%20follow-up';
 
 interface ROICalculatorBodyProps {
   readonly ctaLabel?: string;

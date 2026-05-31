@@ -509,8 +509,12 @@ export default function ForInstitutionsPage() {
               Bring your leadership team. We walk through the assessment, the dashboard, and what
               a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
             </p>
-            <Button variant="gold" size="lg" href="/for-institutions">
-              Contact us <ArrowR className="mk-ic" />
+            <Button
+              variant="gold"
+              size="lg"
+              href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions"
+            >
+              Request a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <ul>
@@ -573,8 +577,12 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
               <li><CheckIcon className="mk-ic" />Direct line to founder</li>
             </ul>
-            <Button variant="gold" size="lg" href="/for-institutions">
-              Contact us <ArrowR className="mk-ic" />
+            <Button
+              variant="gold"
+              size="lg"
+              href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions"
+            >
+              Request a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
         </div>

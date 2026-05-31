@@ -256,12 +256,12 @@ export default function EfficiencyRatioArticle() {
             >
               Run the ROI Calculator
             </Link>
-            <Link
-              href="/for-institutions"
+            <a
+              href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20article%20follow-up"
               className="inline-block px-8 py-4 border border-[color:var(--ink)]/20 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
             >
-              Book an Executive Briefing
-            </Link>
+              Request an Executive Briefing
+            </a>
           </div>
         </aside>
 

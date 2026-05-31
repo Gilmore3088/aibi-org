@@ -130,10 +130,7 @@ export default function EfficiencyRatioWorkbookPage() {
           </h2>
           <ROICalculatorBody
             ctaLabel="Discuss your number"
-            ctaHref={
-              process.env.NEXT_PUBLIC_CALENDLY_URL ??
-              'https://calendly.com/aibi/executive-briefing'
-            }
+            ctaHref="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up"
             briefingSource="services"
           />
         </div>
@@ -206,10 +203,7 @@ export default function EfficiencyRatioWorkbookPage() {
             point. No pitch.
           </p>
           <BriefingButton
-            href={
-              process.env.NEXT_PUBLIC_CALENDLY_URL ??
-              'https://calendly.com/aibi/executive-briefing'
-            }
+            href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up"
             source="services"
             className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >

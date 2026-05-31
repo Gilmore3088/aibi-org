@@ -2,7 +2,7 @@
 
 // CompletionCTA — shown after a learner marks a module complete.
 // M1-4: brief encouragement message only.
-// M5: prominent Executive Briefing CTA via Calendly (Understanding pillar complete).
+// M5: prominent Executive Briefing CTA via mailto (Understanding pillar complete).
 // M6-8: brief encouragement for Creation/Application pillar progress.
 // M9 / isLastModule: work product submission CTA (Application pillar complete).
 // FUNL-01/02: funnel touchpoint for learners who have completed the Understanding pillar.
@@ -78,9 +78,8 @@ function ArrowIcon() {
 }
 
 export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps) {
-  const calendlyUrl =
-    process.env.NEXT_PUBLIC_CALENDLY_URL ??
-    'https://calendly.com/aibankinginstitute/executive-briefing';
+  const briefingMailto =
+    'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Foundation%20learner%20follow-up';
 
   // M9 or final module — Application pillar complete: work product submission CTA
   // and post-course assessment CTA.
@@ -232,7 +231,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             institution&rsquo;s specific workflows, vendors, and risk profile.
           </p>
           <a
-            href={calendlyUrl}
+            href={briefingMailto}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackBriefingBooked({ source: 'cta' })}
