@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
