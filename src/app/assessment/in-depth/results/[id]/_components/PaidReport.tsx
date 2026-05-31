@@ -15,7 +15,7 @@
 //     4. Reviewer Packet        (5 docs + visual stack + 4 playbook cards)
 //     5. Score Appendix         (compact eight-dimension scorecard, demoted)
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import {
@@ -72,6 +72,10 @@ export function PaidReport({
     `I ran the AI-assisted workflow below and would like your review.\n\nWorkflow: ${packet.primaryArtifact.name}\nUse before: ${packet.primaryArtifact.useBefore}\n\nRule:\n${packet.primaryArtifact.copyRule}\n\nPrompt used:\n${packet.primaryArtifact.copyPrompt}\n\n— Sent from my AiBI In-Depth report (${email})`,
   )}`;
 
+  // Anchor highlighting — observe each section, mark its sidebar nav link
+  // as active when the section is in view.
+  const activeSection = useActiveSection(['summary', 'artifact', 'timeline', 'packet', 'score']);
+
   return (
     <div
       style={{
@@ -90,6 +94,7 @@ export function PaidReport({
             roleLabel={roleMeta?.label ?? 'Your role'}
             topGap={topGap}
             primaryArtifact={packet.primaryArtifact.name}
+            activeSection={activeSection}
           />
           <main style={{ minWidth: 0 }}>
             <Section1Summary packet={packet} briefingMailto={briefingMailto} />
@@ -99,6 +104,7 @@ export function PaidReport({
               use={use}
               build={build}
               reviewerMailto={reviewerMailto}
+              roleLabel={roleMeta?.label ?? 'role'}
             />
             <Section3Timeline packet={packet} />
             <Section4Packet packet={packet} reviewerMailto={reviewerMailto} />
@@ -112,8 +118,44 @@ export function PaidReport({
         </div>
       </div>
       <ResponsiveCSS />
+      <PrintCSS />
     </div>
   );
+}
+
+// Active-section tracker — IntersectionObserver-backed. Returns the id of
+// whichever observed section is currently most-visible in the viewport.
+function useActiveSection(ids: readonly string[]): string {
+  const [active, setActive] = useState<string>(ids[0] ?? '');
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const nodes = ids
+      .map((id) => document.getElementById(id))
+      .filter((n): n is HTMLElement => n !== null);
+    if (nodes.length === 0) return;
+    const visibility = new Map<string, number>();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          visibility.set(e.target.id, e.intersectionRatio);
+        }
+        let topId = ids[0];
+        let topRatio = 0;
+        for (const id of ids) {
+          const r = visibility.get(id) ?? 0;
+          if (r > topRatio) {
+            topRatio = r;
+            topId = id;
+          }
+        }
+        if (topId) setActive(topId);
+      },
+      { rootMargin: '-30% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    for (const n of nodes) obs.observe(n);
+    return () => obs.disconnect();
+  }, [ids]);
+  return active;
 }
 
 // ── Sidebar (sticky on desktop) ─────────────────────────────────────────────
@@ -124,12 +166,14 @@ function Sidebar({
   roleLabel,
   topGap,
   primaryArtifact,
+  activeSection,
 }: {
   readonly score: number;
   readonly band: MaturityBand;
   readonly roleLabel: string;
   readonly topGap: { score: number; label: string } | undefined;
   readonly primaryArtifact: string;
+  readonly activeSection: string;
 }): JSX.Element {
   return (
     <aside
@@ -180,11 +224,11 @@ function Sidebar({
       )}
       <SidebarBlock label="Primary artifact" value={primaryArtifact} />
       <nav style={{ padding: 18 }}>
-        <SidebarNav href="#summary" label="Action Packet" num="01" />
-        <SidebarNav href="#artifact" label="Artifact" num="02" />
-        <SidebarNav href="#timeline" label="Timeline" num="03" />
-        <SidebarNav href="#packet" label="Reviewer Packet" num="04" />
-        <SidebarNav href="#score" label="Score Appendix" num="05" />
+        <SidebarNav href="#summary" label="Action Packet" num="01" active={activeSection === 'summary'} />
+        <SidebarNav href="#artifact" label="Artifact" num="02" active={activeSection === 'artifact'} />
+        <SidebarNav href="#timeline" label="Timeline" num="03" active={activeSection === 'timeline'} />
+        <SidebarNav href="#packet" label="Reviewer Packet" num="04" active={activeSection === 'packet'} />
+        <SidebarNav href="#score" label="Score Appendix" num="05" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -205,10 +249,12 @@ function SidebarNav({
   href,
   label,
   num,
+  active,
 }: {
   href: string;
   label: string;
   num: string;
+  active: boolean;
 }): JSX.Element {
   return (
     <a
@@ -218,16 +264,22 @@ function SidebarNav({
         justifyContent: 'space-between',
         padding: '12px 13px',
         borderRadius: 14,
-        color: 'rgba(255,255,255,.78)',
+        color: active ? 'white' : 'rgba(255,255,255,.78)',
+        background: active ? 'rgba(255,255,255,.09)' : 'transparent',
         textDecoration: 'none',
         fontWeight: 800,
         fontSize: 14,
+        transition: 'background 120ms ease, color 120ms ease',
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,.09)')}
-      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+      onMouseEnter={(e) => {
+        if (!active) e.currentTarget.style.background = 'rgba(255,255,255,.06)';
+      }}
+      onMouseLeave={(e) => {
+        if (!active) e.currentTarget.style.background = 'transparent';
+      }}
     >
       <span>{label}</span>
-      <span style={{ color: 'rgba(255,255,255,.45)' }}>{num}</span>
+      <span style={{ color: active ? 'rgba(255,255,255,.7)' : 'rgba(255,255,255,.45)' }}>{num}</span>
     </a>
   );
 }
@@ -271,6 +323,7 @@ function Section1Summary({
           <a href="#timeline" style={btnOutline}>
             Start 30-day plan
           </a>
+          <PrintButton />
         </div>
       </div>
       <div className="mk-pr-actionStrip">
@@ -316,12 +369,14 @@ function Section2Artifact({
   use,
   build,
   reviewerMailto,
+  roleLabel,
 }: {
   packet: ActionPacket;
   protect: ReadonlyArray<{ score: number; label: string }>;
   use: ReadonlyArray<{ score: number; label: string }>;
   build: ReadonlyArray<{ score: number; label: string }>;
   reviewerMailto: string;
+  roleLabel: string;
 }): JSX.Element {
   const a = packet.primaryArtifact;
   return (
@@ -387,6 +442,12 @@ function Section2Artifact({
             <PromptBlock text={a.copyPrompt} />
             <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
               <CopyButton text={a.copyPrompt} label="Copy prompt" />
+              <SaveToToolboxButton
+                artifactName={a.name}
+                roleLabel={roleLabel}
+                prompt={a.copyPrompt}
+                rule={a.copyRule}
+              />
               <a href={`/playbooks/${packet.playbookPath.best.slug}`} style={btnOutline}>
                 Open playbook
               </a>
@@ -1039,6 +1100,115 @@ const btnOutline: React.CSSProperties = {
   border: `1px solid ${LINE}`,
   color: INK,
 };
+
+function PrintButton(): JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (typeof window !== 'undefined') window.print();
+      }}
+      style={{ ...btnOutline, border: `1px solid ${LINE}`, cursor: 'pointer' }}
+    >
+      Download PDF
+    </button>
+  );
+}
+
+function SaveToToolboxButton({
+  artifactName,
+  roleLabel,
+  prompt,
+  rule,
+}: {
+  artifactName: string;
+  roleLabel: string;
+  prompt: string;
+  rule: string;
+}): JSX.Element {
+  const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'auth' | 'error'>('idle');
+  const label =
+    status === 'saving'
+      ? 'Saving…'
+      : status === 'saved'
+        ? 'Saved to toolbox ✓'
+        : status === 'auth'
+          ? 'Sign in to save'
+          : status === 'error'
+            ? 'Try again'
+            : 'Save to toolbox';
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        setStatus('saving');
+        try {
+          const res = await fetch('/api/toolbox/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              origin: 'in-depth',
+              payload: { artifactName, roleLabel, prompt, rule },
+            }),
+          });
+          if (res.status === 401) {
+            setStatus('auth');
+            // Send the user to log in, then come back.
+            setTimeout(() => {
+              window.location.href =
+                '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+            }, 800);
+            return;
+          }
+          if (!res.ok) {
+            setStatus('error');
+            return;
+          }
+          setStatus('saved');
+          setTimeout(() => setStatus('idle'), 2400);
+        } catch {
+          setStatus('error');
+        }
+      }}
+      style={{ ...btnOutline, border: `1px solid ${LINE}`, cursor: 'pointer' }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function PrintCSS(): JSX.Element {
+  // Browser-native print path. The user clicks "Download PDF" → window.print()
+  // → standard OS print dialog with "Save as PDF" option. No Puppeteer round-
+  // trip needed for v1. Hides the sticky sidebar, removes shadows, forces
+  // black-on-white text, and lets each section break on its own page.
+  return (
+    <style>{`
+      @media print {
+        body { background: white !important; }
+        .mk-pr-sidebar { display: none !important; }
+        .mk-pr-shell { grid-template-columns: 1fr !important; }
+        .mk-pr-wrap { padding: 0 !important; max-width: 100% !important; }
+        [style*="position: sticky"] { position: static !important; }
+        section[id="summary"],
+        section[id="artifact"],
+        section[id="timeline"],
+        section[id="packet"],
+        section[id="score"] {
+          page-break-inside: avoid;
+          page-break-after: always;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          border: 0 !important;
+          margin-bottom: 0 !important;
+        }
+        a { color: inherit !important; text-decoration: none !important; }
+        button { display: none !important; }
+        .mk-pr-stack { display: none !important; }
+      }
+    `}</style>
+  );
+}
 
 function CopyButton({ text, label }: { text: string; label: string }): JSX.Element {
   const [copied, setCopied] = useState(false);

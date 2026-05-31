@@ -26,7 +26,11 @@ interface LibraryPayload {
   origin: 'library';
   payload: { librarySkillId: string; versionId: string; recipeSourceRef?: string };
 }
-type SaveBody = CoursePayload | PlaygroundPayload | LibraryPayload;
+interface InDepthPayload {
+  origin: 'in-depth';
+  payload: { artifactName: string; roleLabel: string; prompt: string; rule: string };
+}
+type SaveBody = CoursePayload | PlaygroundPayload | LibraryPayload | InDepthPayload;
 
 interface LibraryRow {
   readonly id: string;
@@ -45,7 +49,41 @@ interface LibraryRow {
 function isSaveBody(v: unknown): v is SaveBody {
   if (!v || typeof v !== 'object') return false;
   const o = v as { origin?: unknown };
-  return o.origin === 'course' || o.origin === 'playground' || o.origin === 'library';
+  return (
+    o.origin === 'course' ||
+    o.origin === 'playground' ||
+    o.origin === 'library' ||
+    o.origin === 'in-depth'
+  );
+}
+
+function inDepthArtifactToToolboxSkill(
+  payload: InDepthPayload['payload'],
+  userId: string,
+): ToolboxSkill {
+  const slug = payload.artifactName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cmd = `/in-depth-${slug}-${Date.now().toString(36)}`;
+  return {
+    kind: 'template',
+    id: '', // assigned by Postgres on insert
+    cmd,
+    name: payload.artifactName,
+    dept: payload.roleLabel,
+    deptFull: payload.roleLabel,
+    difficulty: 'intermediate',
+    timeSaved: '15 min',
+    cadence: 'As needed',
+    desc: `Saved from your In-Depth diagnostic. Rule: ${payload.rule}`,
+    owner: userId,
+    maturity: 'draft',
+    version: '1.0',
+    systemPrompt: '',
+    userPromptTemplate: payload.prompt,
+    variables: [],
+    example: { input: {}, output: '' },
+    source: 'user',
+    sourceRef: undefined,
+  };
 }
 
 function libraryRowToEntry(row: LibraryRow): Parameters<typeof libraryEntryToToolboxSkill>[0] {
@@ -113,6 +151,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       userId: access.userId,
     });
     sourceRef = undefined;
+  } else if (body.origin === 'in-depth') {
+    skill = inDepthArtifactToToolboxSkill(body.payload, access.userId);
+    sourceRef = `in-depth:${body.payload.artifactName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   } else {
     const lookupClient = createServiceRoleClient();
     const { data: entry, error: lookupError } = await lookupClient
