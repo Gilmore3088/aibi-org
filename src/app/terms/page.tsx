@@ -13,7 +13,7 @@ export default function TermsPage() {
       activePath="/"
       eyebrow="Legal · Terms of Service"
       title={<>The shortest possible terms.</>}
-      lede="You buy a seat, you get the course and toolbox. Refund window is 30 days. We do not use your data to train models. You do not redistribute course content. That is most of it."
+      lede="You buy a seat, you get the course and toolbox. Refund terms are being finalized ahead of public launch — email hello@aibankinginstitute.com for current terms before purchase. We do not use your data to train models. You do not redistribute course content. That is most of it."
       sections={[
         {
           kicker: 'What you get',

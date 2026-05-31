@@ -59,6 +59,25 @@ export interface DimensionScoreSerializedV4 {
   readonly label: string;
 }
 
+export interface InstitutionContext {
+  readonly first_name?: string;
+  readonly last_name?: string;
+  readonly institution_name?: string;
+  /** FDIC-style asset band: 'sub-300M' | '300M-1B' | '1B-10B' | '10B-plus' */
+  readonly asset_band?: string;
+  readonly asset_size_usd_millions?: number;
+  /** 2-letter state code */
+  readonly state?: string;
+  /** Primary federal regulator: 'OCC' | 'FDIC' | 'FRB' | 'NCUA' | 'state' */
+  readonly regulator?: string;
+  /** FTE count in the respondent's department */
+  readonly dept_fte?: number;
+  readonly primary_core?: string;
+  readonly primary_los?: string;
+  readonly primary_marketing?: string;
+  readonly primary_fraud?: string;
+}
+
 export interface AssessmentResponseLoadedV4 {
   readonly profileId: string;
   readonly email: string;
@@ -70,6 +89,7 @@ export interface AssessmentResponseLoadedV4 {
   readonly band: MaturityBand;
   readonly bandId: MaturityBand['id'];
   readonly dimensionBreakdown: Record<DimensionV4, DimensionScoreSerializedV4>;
+  readonly institutionContext: InstitutionContext | null;
 }
 
 export type AssessmentResponseLoaded =
@@ -88,7 +108,7 @@ export async function loadAssessmentResponse(
   const { data, error } = await client
     .from('user_profiles')
     .select(
-      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role',
+      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context',
     )
     .eq('id', id)
     .maybeSingle();
@@ -128,6 +148,8 @@ export async function loadAssessmentResponse(
         DimensionV4,
         DimensionScoreSerializedV4
       >,
+      institutionContext:
+        (data as { institution_context?: InstitutionContext | null }).institution_context ?? null,
     };
   }
 

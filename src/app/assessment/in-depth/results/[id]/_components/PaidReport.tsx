@@ -23,7 +23,19 @@ import {
   classifyDimensions,
   type ActionPacket,
 } from '@content/assessments/v4/action-packet';
-import type { DimensionScoreSerializedV4 } from '@/lib/assessment/load-response';
+import {
+  getPeerBenchmark,
+  getBusinessCase,
+  getVendorIntel,
+  getMraThemes,
+  REVIEWER_ATTRIBUTION,
+  type VendorIntel,
+  type MraTheme,
+} from '@content/assessments/v4/enhancement-data';
+import type {
+  DimensionScoreSerializedV4,
+  InstitutionContext,
+} from '@/lib/assessment/load-response';
 
 export interface PaidReportProps {
   readonly profileId: string;
@@ -33,6 +45,15 @@ export interface PaidReportProps {
   readonly role: RoleV4 | null;
   readonly dimensionBreakdown: Record<Dimension, DimensionScoreSerializedV4>;
   readonly readinessAt: string;
+  readonly institutionContext: InstitutionContext | null;
+}
+
+interface PersonalizationPayload {
+  readonly execSummary: string;
+  readonly thirtyDayPlan: readonly string[];
+  readonly examinerNarrative: string;
+  readonly model: string;
+  readonly generatedAt: string;
 }
 
 const INK = '#071A2F';
@@ -52,11 +73,25 @@ export function PaidReport({
   band,
   role,
   dimensionBreakdown,
+  institutionContext,
 }: PaidReportProps): JSX.Element {
   const packet = getActionPacket(role);
   const roleMeta = role ? ROLE_V4_META[role] : null;
   const { protect, use, build } = classifyDimensions(dimensionBreakdown);
   const topGap = protect[0];
+  const ctx = institutionContext ?? {};
+  const peer = getPeerBenchmark(score, ctx.asset_band);
+  const business = getBusinessCase(ctx.asset_band, ctx.dept_fte);
+  const vendorIntel: VendorIntel[] = [
+    ctx.primary_core,
+    ctx.primary_los,
+    ctx.primary_marketing,
+    ctx.primary_fraud,
+  ]
+    .map(getVendorIntel)
+    .filter((v): v is VendorIntel => v !== null);
+  const mraThemes = getMraThemes(ctx.regulator);
+  const personalization = usePersonalization(profileId, !!ctx.first_name);
 
   // Inline mailto: prefilled with score + role + a placeholder note line.
   const briefingMailto = `mailto:hello@aibankinginstitute.com?subject=${encodeURIComponent(
@@ -97,7 +132,19 @@ export function PaidReport({
             activeSection={activeSection}
           />
           <main style={{ minWidth: 0 }}>
-            <Section1Summary packet={packet} briefingMailto={briefingMailto} />
+            {ctx.first_name && (
+              <PersonalizationStripe
+                ctx={ctx}
+                roleLabel={roleMeta?.label ?? 'your role'}
+              />
+            )}
+            <Section1Summary
+              packet={packet}
+              briefingMailto={briefingMailto}
+              personalization={personalization}
+              peer={peer}
+              business={business}
+            />
             <Section2Artifact
               packet={packet}
               protect={protect}
@@ -106,7 +153,15 @@ export function PaidReport({
               reviewerMailto={reviewerMailto}
               roleLabel={roleMeta?.label ?? 'role'}
             />
-            <Section3Timeline packet={packet} />
+            {vendorIntel.length > 0 && <Section2bVendorIntel intel={vendorIntel} />}
+            <Section3Timeline packet={packet} personalization={personalization} />
+            {mraThemes.length > 0 && (
+              <Section3bExaminerReadable
+                regulator={ctx.regulator ?? 'your regulator'}
+                themes={mraThemes}
+                personalization={personalization}
+              />
+            )}
             <Section4Packet packet={packet} reviewerMailto={reviewerMailto} />
             <Section5ScoreAppendix
               score={score}
@@ -289,9 +344,15 @@ function SidebarNav({
 function Section1Summary({
   packet,
   briefingMailto,
+  personalization,
+  peer,
+  business,
 }: {
   packet: ActionPacket;
   briefingMailto: string;
+  personalization: PersonalizationState;
+  peer: ReturnType<typeof getPeerBenchmark>;
+  business: ReturnType<typeof getBusinessCase>;
 }): JSX.Element {
   return (
     <section id="summary" style={pageStyle}>
@@ -311,6 +372,20 @@ function Section1Summary({
         <p style={{ maxWidth: 850, fontSize: 18, color: SLATE, lineHeight: 1.58 }}>
           {packet.thesisBody}
         </p>
+        <AIExecSummary state={personalization} />
+        {(peer || business) && (
+          <div
+            style={{
+              marginTop: 20,
+              display: 'grid',
+              gridTemplateColumns: peer && business ? '1fr 1fr' : '1fr',
+              gap: 14,
+            }}
+          >
+            {peer && <PeerBenchmarkCard peer={peer} />}
+            {business && <BusinessCaseCard business={business} />}
+          </div>
+        )}
         <div
           style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}
         >
@@ -656,7 +731,20 @@ function DiagRow({
 
 // ── Section 3: Timeline ─────────────────────────────────────────────────────
 
-function Section3Timeline({ packet }: { packet: ActionPacket }): JSX.Element {
+function Section3Timeline({
+  packet,
+  personalization,
+}: {
+  packet: ActionPacket;
+  personalization: PersonalizationState;
+}): JSX.Element {
+  // If AI personalization produced a calibrated 30-day plan, use it
+  // instead of the templated first-phase checks. Phases 2 and 3 stay
+  // templated — those are role-shape patterns, not org-shape.
+  const aiFirstPhaseChecks =
+    personalization.status === 'ready' && personalization.data.thirtyDayPlan.length >= 3
+      ? personalization.data.thirtyDayPlan
+      : null;
   return (
     <section id="timeline" style={pageStyle}>
       <div style={sectionPad}>
@@ -672,9 +760,25 @@ function Section3Timeline({ packet }: { packet: ActionPacket }): JSX.Element {
         >
           30 / 60 / 90 checklist
         </h2>
+        {aiFirstPhaseChecks && (
+          <p
+            style={{
+              fontSize: 12,
+              color: GOLD_DEEP,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.16em',
+              margin: '10px 0 0',
+            }}
+          >
+            ⚡ First 30 days calibrated for your team size and asset band
+          </p>
+        )}
       </div>
       <div>
-        {packet.timeline.map((p) => (
+        {packet.timeline.map((p, i) => {
+          const checks = i === 0 && aiFirstPhaseChecks ? aiFirstPhaseChecks : p.checks;
+          return (
           <div
             key={p.phase}
             className="mk-pr-phase"
@@ -699,7 +803,7 @@ function Section3Timeline({ packet }: { packet: ActionPacket }): JSX.Element {
                 {p.heading}
               </h3>
               <div style={{ display: 'grid', gap: 10, marginTop: 12 }}>
-                {p.checks.map((c) => (
+                {checks.map((c) => (
                   <label
                     key={c}
                     style={{
@@ -728,7 +832,8 @@ function Section3Timeline({ packet }: { packet: ActionPacket }): JSX.Element {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -1174,6 +1279,508 @@ function SaveToToolboxButton({
     >
       {label}
     </button>
+  );
+}
+
+// ── Enhancement components (v2 — institution-specific value-adds) ─────────
+
+type PersonalizationState =
+  | { status: 'loading' }
+  | { status: 'ready'; data: PersonalizationPayload }
+  | { status: 'error'; message: string }
+  | { status: 'disabled' };
+
+function usePersonalization(profileId: string, enabled: boolean): PersonalizationState {
+  const [state, setState] = useState<PersonalizationState>(
+    enabled ? { status: 'loading' } : { status: 'disabled' },
+  );
+  useEffect(() => {
+    if (!enabled) return;
+    const cacheKey = `aibi:personalize:${profileId}`;
+    // Check cache first so reloads don't re-spend tokens.
+    try {
+      const cached = window.sessionStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached) as PersonalizationPayload;
+        if (parsed.execSummary) {
+          setState({ status: 'ready', data: parsed });
+          return;
+        }
+      }
+    } catch {
+      // ignore cache errors
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/assessment/in-depth/personalize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profileId }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          if (cancelled) return;
+          setState({
+            status: 'error',
+            message: (body as { error?: string }).error ?? `Request failed (${res.status}).`,
+          });
+          return;
+        }
+        const data = (await res.json()) as PersonalizationPayload;
+        if (cancelled) return;
+        try {
+          window.sessionStorage.setItem(cacheKey, JSON.stringify(data));
+        } catch {
+          // quota exceeded; non-fatal
+        }
+        setState({ status: 'ready', data });
+      } catch (err) {
+        if (cancelled) return;
+        const msg = err instanceof Error ? err.message : 'unknown error';
+        setState({ status: 'error', message: msg });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [profileId, enabled]);
+  return state;
+}
+
+function PersonalizationStripe({
+  ctx,
+  roleLabel,
+}: {
+  ctx: InstitutionContext;
+  roleLabel: string;
+}): JSX.Element {
+  const parts: string[] = [];
+  if (ctx.institution_name) parts.push(ctx.institution_name);
+  if (ctx.asset_size_usd_millions)
+    parts.push(`~$${ctx.asset_size_usd_millions}M assets`);
+  else if (ctx.asset_band) parts.push(`${ctx.asset_band} band`);
+  if (ctx.state) parts.push(ctx.state);
+  if (ctx.regulator) parts.push(`${ctx.regulator}-supervised`);
+  if (ctx.dept_fte) parts.push(`${roleLabel} team of ${ctx.dept_fte}`);
+  return (
+    <div
+      style={{
+        background: INK,
+        color: 'white',
+        borderRadius: 30,
+        padding: '20px 30px',
+        marginBottom: 22,
+        boxShadow: '0 12px 36px rgba(7,26,47,.10)',
+      }}
+    >
+      <div
+        style={{
+          color: GOLD_SOFT,
+          textTransform: 'uppercase',
+          letterSpacing: '0.18em',
+          fontSize: 10,
+          fontWeight: 900,
+        }}
+      >
+        Built for
+      </div>
+      <div
+        style={{
+          fontSize: 22,
+          fontWeight: 800,
+          letterSpacing: '-0.01em',
+          marginTop: 4,
+        }}
+      >
+        {[ctx.first_name, ctx.last_name].filter(Boolean).join(' ')}
+        {parts.length > 0 ? ' · ' : ''}
+        <span style={{ color: 'rgba(255,255,255,.75)', fontWeight: 600 }}>
+          {parts.join(' · ')}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function PeerBenchmarkCard({ peer }: { peer: NonNullable<ReturnType<typeof getPeerBenchmark>> }): JSX.Element {
+  const quartileTone =
+    peer.quartile === 'top'
+      ? '#05603A'
+      : peer.quartile === 'upper-mid'
+        ? '#9A7A2F'
+        : peer.quartile === 'lower-mid'
+          ? '#93370D'
+          : '#912018';
+  return (
+    <div
+      style={{
+        background: 'white',
+        border: `1px solid ${LINE}`,
+        borderRadius: 18,
+        padding: 18,
+      }}
+    >
+      <div
+        style={{
+          color: GOLD_DEEP,
+          textTransform: 'uppercase',
+          letterSpacing: '0.16em',
+          fontSize: 10,
+          fontWeight: 900,
+        }}
+      >
+        Peer benchmark
+      </div>
+      <div
+        style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          fontSize: 36,
+          fontWeight: 800,
+          color: quartileTone,
+          marginTop: 6,
+          lineHeight: 1,
+        }}
+      >
+        {peer.percentile}
+        <span style={{ fontSize: 14, color: SLATE, fontWeight: 500 }}>th percentile</span>
+      </div>
+      <p style={{ fontSize: 13, color: SLATE, lineHeight: 1.5, margin: '8px 0 0' }}>
+        {peer.framing} <span style={{ color: SLATE_500 }}>(n={peer.band.institutionCount.toLocaleString()})</span>
+      </p>
+    </div>
+  );
+}
+
+function BusinessCaseCard({ business }: { business: NonNullable<ReturnType<typeof getBusinessCase>> }): JSX.Element {
+  return (
+    <div
+      style={{
+        background: 'white',
+        border: `1px solid ${LINE}`,
+        borderRadius: 18,
+        padding: 18,
+      }}
+    >
+      <div
+        style={{
+          color: GOLD_DEEP,
+          textTransform: 'uppercase',
+          letterSpacing: '0.16em',
+          fontSize: 10,
+          fontWeight: 900,
+        }}
+      >
+        Annual recovered (est.)
+      </div>
+      <div
+        style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          fontSize: 36,
+          fontWeight: 800,
+          color: INK,
+          marginTop: 6,
+          lineHeight: 1,
+        }}
+      >
+        {business.display}
+        <span style={{ fontSize: 14, color: SLATE, fontWeight: 500 }}> /year</span>
+      </div>
+      <p style={{ fontSize: 13, color: SLATE, lineHeight: 1.5, margin: '8px 0 0' }}>
+        {business.assumptionLine}
+      </p>
+    </div>
+  );
+}
+
+function AIExecSummary({ state }: { state: PersonalizationState }): JSX.Element | null {
+  if (state.status === 'disabled') return null;
+  if (state.status === 'loading') {
+    return (
+      <div
+        style={{
+          marginTop: 18,
+          background: 'rgba(200,162,74,.08)',
+          border: `1px dashed ${GOLD}`,
+          borderRadius: 16,
+          padding: 18,
+        }}
+      >
+        <div
+          style={{
+            color: GOLD_DEEP,
+            textTransform: 'uppercase',
+            letterSpacing: '0.16em',
+            fontSize: 10,
+            fontWeight: 900,
+          }}
+        >
+          Personalizing for your institution…
+        </div>
+        <div
+          style={{
+            marginTop: 10,
+            display: 'grid',
+            gap: 8,
+          }}
+        >
+          {[80, 95, 70].map((w) => (
+            <div
+              key={w}
+              style={{
+                height: 12,
+                width: `${w}%`,
+                background: 'rgba(200,162,74,.18)',
+                borderRadius: 6,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (state.status === 'error') {
+    return (
+      <p
+        style={{
+          marginTop: 16,
+          fontSize: 13,
+          color: SLATE_500,
+          fontStyle: 'normal',
+        }}
+      >
+        (Personalization unavailable — showing the templated summary above.)
+      </p>
+    );
+  }
+  return (
+    <div
+      style={{
+        marginTop: 18,
+        background: 'rgba(200,162,74,.06)',
+        border: `1px solid rgba(200,162,74,.25)`,
+        borderRadius: 16,
+        padding: 18,
+      }}
+    >
+      <div
+        style={{
+          color: GOLD_DEEP,
+          textTransform: 'uppercase',
+          letterSpacing: '0.16em',
+          fontSize: 10,
+          fontWeight: 900,
+        }}
+      >
+        Personalized executive summary
+      </div>
+      <div
+        style={{
+          fontSize: 15,
+          color: INK,
+          lineHeight: 1.65,
+          marginTop: 8,
+          whiteSpace: 'pre-line',
+        }}
+      >
+        {state.data.execSummary}
+      </div>
+    </div>
+  );
+}
+
+function Section2bVendorIntel({ intel }: { intel: readonly VendorIntel[] }): JSX.Element {
+  return (
+    <section style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Your vendor stack — institute verdicts</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(28px, 2.6vw, 38px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.04em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What you can enable, what to gate, what to defer.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, marginBottom: 14 }}>
+          Each verdict is dated and reviewer-attributed. Reviewed by{' '}
+          <b>{REVIEWER_ATTRIBUTION.reviewedBy}</b> as of{' '}
+          <b>{REVIEWER_ATTRIBUTION.reviewedAt}</b>.
+        </p>
+        <div style={{ display: 'grid', gap: 12 }}>
+          {intel.map((v) => (
+            <div
+              key={v.name}
+              style={{
+                background: 'white',
+                border: `1px solid ${LINE}`,
+                borderRadius: 18,
+                padding: 18,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 12,
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 200 }}>
+                  <div
+                    style={{
+                      color: GOLD_DEEP,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.14em',
+                      fontSize: 10,
+                      fontWeight: 900,
+                    }}
+                  >
+                    {v.category}
+                  </div>
+                  <h3 style={{ fontSize: 18, margin: '4px 0 4px', fontWeight: 800 }}>{v.name}</h3>
+                  <p style={{ fontSize: 13, color: SLATE_500, margin: 0 }}>{v.aiFeature}</p>
+                </div>
+                <VerdictPill verdict={v.verdict} />
+              </div>
+              <p
+                style={{
+                  marginTop: 12,
+                  color: INK,
+                  fontSize: 14,
+                  lineHeight: 1.55,
+                }}
+              >
+                <b>Action:</b> {v.action}
+              </p>
+              <p style={{ marginTop: 8, color: SLATE, fontSize: 13, lineHeight: 1.5 }}>
+                <b>Evidence:</b> {v.evidence}
+              </p>
+              <p style={{ marginTop: 6, color: SLATE_500, fontSize: 11 }}>Reviewed {v.reviewedAt}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function VerdictPill({ verdict }: { verdict: VendorIntel['verdict'] }): JSX.Element {
+  const map = {
+    allow: { bg: '#D1FADF', fg: '#05603A', label: 'Allow' },
+    gate: { bg: '#FEF0C7', fg: '#93370D', label: 'Gate' },
+    decline: { bg: '#FEE4E2', fg: '#912018', label: 'Decline' },
+  } as const;
+  const m = map[verdict];
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        background: m.bg,
+        color: m.fg,
+        borderRadius: 999,
+        padding: '8px 14px',
+        fontSize: 13,
+        fontWeight: 900,
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+      }}
+    >
+      {m.label}
+    </span>
+  );
+}
+
+function Section3bExaminerReadable({
+  regulator,
+  themes,
+  personalization,
+}: {
+  regulator: string;
+  themes: readonly MraTheme[];
+  personalization: PersonalizationState;
+}): JSX.Element {
+  return (
+    <section style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Examiner-readable narrative</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(28px, 2.6vw, 38px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.04em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What this packet pre-empts for {regulator}.
+        </h2>
+        {personalization.status === 'ready' && (
+          <div
+            style={{
+              background: 'rgba(200,162,74,.06)',
+              border: `1px solid rgba(200,162,74,.25)`,
+              borderRadius: 16,
+              padding: 18,
+              marginBottom: 18,
+            }}
+          >
+            <div
+              style={{
+                color: GOLD_DEEP,
+                textTransform: 'uppercase',
+                letterSpacing: '0.16em',
+                fontSize: 10,
+                fontWeight: 900,
+              }}
+            >
+              Personalized
+            </div>
+            <p style={{ fontSize: 15, color: INK, lineHeight: 1.65, margin: '8px 0 0' }}>
+              {personalization.data.examinerNarrative}
+            </p>
+          </div>
+        )}
+        <div style={{ display: 'grid', gap: 12 }}>
+          {themes.map((t, i) => (
+            <div
+              key={i}
+              style={{
+                background: 'white',
+                border: `1px solid ${LINE}`,
+                borderRadius: 16,
+                padding: 16,
+              }}
+            >
+              <div
+                style={{
+                  color: GOLD_DEEP,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.14em',
+                  fontSize: 10,
+                  fontWeight: 900,
+                }}
+              >
+                MRA theme {i + 1}
+              </div>
+              <p style={{ marginTop: 6, color: INK, fontSize: 14, lineHeight: 1.55 }}>{t.theme}</p>
+              <p style={{ marginTop: 8, color: SLATE, fontSize: 13, lineHeight: 1.55 }}>
+                <b style={{ color: GOLD_DEEP }}>How this packet pre-empts it:</b>{' '}
+                {t.howThisPacketPreempts}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p style={{ marginTop: 14, color: SLATE_500, fontSize: 12 }}>
+          Reviewer attribution: {REVIEWER_ATTRIBUTION.reviewedBy} · last reviewed{' '}
+          {REVIEWER_ATTRIBUTION.reviewedAt} · next review {REVIEWER_ATTRIBUTION.nextReviewAt}
+        </p>
+      </div>
+    </section>
   );
 }
 

@@ -36,7 +36,7 @@ const QUESTIONS: readonly FAQ[] = [
   },
   {
     q: 'Is there a refund?',
-    a: 'Yes. Finish Module 01 and its first exercise. Within fourteen days of enrollment, ask for a full refund. No exit interview.',
+    a: 'Refund terms are being finalized ahead of public launch. Email hello@aibankinginstitute.com before purchase for the current policy.',
   },
 ] as const;
 

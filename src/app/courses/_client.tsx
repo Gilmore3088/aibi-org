@@ -108,7 +108,7 @@ export default function CoursesIndexPage() {
               </Button>
             </div>
             <p className="mk-hero-trust">
-              14-day refund · Lifetime access · Completion certificate
+              Lifetime access · Completion certificate
             </p>
             <p className="mk-hero-foot">
               Not sure where to start?{' '}

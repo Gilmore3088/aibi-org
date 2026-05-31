@@ -101,11 +101,9 @@ const GROUPS: readonly FaqGroup[] = [
         q: 'Do you offer refunds, and what is the policy?',
         a: (
           <>
-            [VERIFY: refund policy needs explicit user decision before
-            publish.] A reasonable default for an education product is
-            14-day money-back if fewer than three modules are completed.
-            Confirm the exact terms with the project owner before relying
-            on this answer.
+            Refund terms are being finalized ahead of public launch.
+            Email <a href="mailto:hello@aibankinginstitute.com" style={{ color: 'var(--gold-deep)', textDecoration: 'underline' }}>hello@aibankinginstitute.com</a> before
+            purchase for the current policy.
           </>
         ),
       },
