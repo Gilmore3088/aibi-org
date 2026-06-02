@@ -14,6 +14,13 @@ import type { LearnerRole } from '@/types/course';
 import { ActivitySection } from './ActivitySection';
 import { CompletionCTA } from './CompletionCTA';
 import { ModuleNavigation } from './ModuleNavigation';
+import { KnowledgeCheck } from './KnowledgeCheck';
+import { ModulePractice } from './ModulePractice';
+import { ActivityCritique } from './ActivityCritique';
+import {
+  getKnowledgeCheck,
+  getModulePracticeConfig,
+} from '@content/courses/foundation-program/interactive';
 
 export interface ModuleContentClientProps {
   readonly activities: readonly Activity[];
@@ -66,9 +73,28 @@ export function ModuleContentClient({
   }, [enrollmentId, moduleNumber]);
 
   const hasNoActivities = activities.length === 0;
+  const knowledgeCheck = getKnowledgeCheck(moduleNumber);
+  const practiceConfig = getModulePracticeConfig(moduleNumber);
+  // Critique panel is gated by the learner's textarea content. We let the
+  // learner copy their submission into the critique area themselves so the
+  // ActivitySection stays self-contained.
+  const [critiqueDraft, setCritiqueDraft] = useState('');
 
   return (
     <>
+      {knowledgeCheck && (
+        <KnowledgeCheck prompt={knowledgeCheck.prompt} options={knowledgeCheck.options} />
+      )}
+
+      {practiceConfig && (
+        <ModulePractice
+          moduleNumber={moduleNumber}
+          moduleTitle={`Module ${moduleNumber} practice`}
+          systemPrompt={practiceConfig.systemPrompt}
+          scenarios={practiceConfig.scenarios}
+        />
+      )}
+
       {activities.length > 0 && (
         <ActivitySection
           activities={activities}
@@ -80,6 +106,41 @@ export function ModuleContentClient({
           tables={tables}
           learnerRole={learnerRole}
         />
+      )}
+
+      {activities.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 700,
+              color: '#9A7A2F',
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              marginBottom: 8,
+            }}
+          >
+            Paste your response below to get AI critique
+          </label>
+          <textarea
+            value={critiqueDraft}
+            onChange={(e) => setCritiqueDraft(e.target.value)}
+            placeholder="Paste your activity response here for a structured AI critique. The Apply submit above saves your work; this is optional feedback that doesn't affect completion."
+            rows={4}
+            style={{
+              width: '100%',
+              padding: 12,
+              fontSize: 14,
+              fontFamily: 'inherit',
+              border: '1px solid rgba(7,26,47,.12)',
+              borderRadius: 12,
+              resize: 'vertical',
+              lineHeight: 1.5,
+            }}
+          />
+          <ActivityCritique moduleNumber={moduleNumber} responseValue={critiqueDraft} />
+        </div>
       )}
 
       {/* Activity-less module completion (e.g. M9) */}
