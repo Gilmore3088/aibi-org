@@ -79,12 +79,6 @@ export function PaidReport({
     `Hi, my In-Depth diagnostic returned a score of ${score}/100 in the ${band.label} band. My role: ${roleMeta?.label ?? 'unspecified'}. My top gap: ${topGap?.label ?? 'see report'}. I'd like to discuss the next move.\n\nThanks,\n`,
   )}`;
 
-  // "Send to reviewer" — pre-populated with the artifact name and prompt.
-  const reviewerMailto = `mailto:?subject=${encodeURIComponent(
-    `AI work review — ${packet.primaryArtifact.name}`,
-  )}&body=${encodeURIComponent(
-    `I ran the AI-assisted workflow below and would like your review.\n\nWorkflow: ${packet.primaryArtifact.name}\nUse before: ${packet.primaryArtifact.useBefore}\n\nRule:\n${packet.primaryArtifact.copyRule}\n\nPrompt used:\n${packet.primaryArtifact.copyPrompt}\n\n— Sent from my AiBI In-Depth report (${email})`,
-  )}`;
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
@@ -132,7 +126,7 @@ export function PaidReport({
               roleLabel={roleMeta?.label ?? 'role'}
             />
             <Section3Timeline packet={packet} personalization={personalization} />
-            <Section4Packet packet={packet} reviewerMailto={reviewerMailto} />
+            <Section4Packet packet={packet} />
             <Section5ScoreAppendix
               score={score}
               band={band}
@@ -791,13 +785,7 @@ function Section3Timeline({
 
 // ── Section 4: Reviewer Packet ──────────────────────────────────────────────
 
-function Section4Packet({
-  packet,
-  reviewerMailto,
-}: {
-  packet: ActionPacket;
-  reviewerMailto: string;
-}): JSX.Element {
+function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
   return (
     <section id="packet" style={pageStyle}>
       <div className="mk-pr-packet" style={sectionPad}>
@@ -853,11 +841,6 @@ function Section4Packet({
                 </div>
               </div>
             ))}
-          </div>
-          <div style={{ marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <a href={reviewerMailto} style={btnPrimary}>
-              Send reviewer packet
-            </a>
           </div>
         </div>
         <DocStack items={packet.reviewerPacket} />
