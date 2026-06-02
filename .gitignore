@@ -85,6 +85,11 @@ docs/reviews/lighthouse-*/
 # Top-level planning
 /tasks/
 
+# GSD planning state — internal, kept local (2026-06-01). Held the stale
+# $79/Executive-Briefing funnel + legacy AiBI-P naming; untracked so the
+# public repo carries only canonical pricing/terms. Files remain on disk.
+/.planning/
+
 # docs/ subdirectories — planning, handoffs, reviews, archives, brainstorms
 /docs/Plans/
 /docs/handoffs/
