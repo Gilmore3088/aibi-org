@@ -19,12 +19,11 @@ import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ROLE_V4_META } from '@content/assessments/v4/roles';
 import { DIMENSION_LABELS } from '@content/assessments/v4/types';
 import { getActionPacket } from '@content/assessments/v4/action-packet';
-import {
-  getPeerBenchmark,
-  getBusinessCase,
-  getVendorIntel,
-  getMraThemes,
-} from '@content/assessments/v4/enhancement-data';
+// NOTE: peer benchmarking, business-case math, vendor intelligence, and
+// MRA-theme overlays were removed from the prompt context on 2026-06-01
+// because the source data was unverified. The personalization is now
+// grounded only in the taker's own answers and the role's templated
+// guidance — no unsourced third-party claims may appear in output.
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,7 +35,6 @@ interface RequestBody {
 interface PersonalizationResult {
   readonly execSummary: string;
   readonly thirtyDayPlan: readonly string[];
-  readonly examinerNarrative: string;
   readonly model: string;
   readonly generatedAt: string;
 }
@@ -70,12 +68,6 @@ export async function POST(request: Request): Promise<NextResponse> {
   const ctx = response.institutionContext ?? {};
   const roleMeta = response.role ? ROLE_V4_META[response.role] : null;
   const packet = getActionPacket(response.role);
-  const peer = getPeerBenchmark(response.score, ctx.asset_band);
-  const business = getBusinessCase(ctx.asset_band, ctx.dept_fte);
-  const vendorIntel = [ctx.primary_core, ctx.primary_los, ctx.primary_marketing, ctx.primary_fraud]
-    .map(getVendorIntel)
-    .filter((v): v is NonNullable<ReturnType<typeof getVendorIntel>> => v !== null);
-  const mraThemes = getMraThemes(ctx.regulator);
 
   const dimensionLines = (
     Object.entries(response.dimensionBreakdown) as Array<
@@ -96,15 +88,21 @@ export async function POST(request: Request): Promise<NextResponse> {
   const client = new Anthropic({ apiKey });
 
   // System prompt — frozen-ish (high cache-hit rate across reports).
-  const system = `You are a senior reviewer at The AI Banking Institute writing a brief, brutal, useful 3-section personalization for a paid In-Depth AI Readiness Diagnostic.
+  const system = `You are writing a brief 2-section personalization for a paid In-Depth AI Readiness Diagnostic published by The AI Banking Institute.
 
 Voice:
 - Editorial. Second-person ("you", "your"). Banker-direct.
-- Specific over clever. Use the reader's exact role, institution name, asset band, and regulator when given.
-- Banned: "leverage", "unlock", "supercharge", "revolutionize", "synergy", exclamation points, em-dashes used decoratively, emoji.
-- Cite real regulatory references when they apply (SR 11-7, ECOA Reg B, GLBA Safeguards, FFIEC IT Handbook, TPRM 2023).
+- Specific over clever. Use the reader's exact role and institution name when given.
+- Banned: "leverage", "unlock", "supercharge", "revolutionize", "synergy", exclamation points, decorative em-dashes, emoji.
 
-Output format: a single JSON object with exactly three keys — execSummary (string, 90-130 words, 3 short paragraphs joined with two newlines), thirtyDayPlan (array of exactly 5 strings, each one a concrete first-30-day action calibrated to the team's FTE and asset band), examinerNarrative (string, 70-100 words, one paragraph that explains how this packet's artifacts pre-empt the most-flagged examiner themes for this regulator). No prose outside the JSON. No markdown code fences.`;
+Honesty constraints — HARD RULES:
+- Do not claim peer benchmarking, percentile, or "X% of community banks" unless an explicit Peer benchmark is given below. None is given here.
+- Do not claim dollar amounts, time savings, or ROI estimates unless an explicit Business case is given below. None is given here.
+- Do not claim what any specific regulator has flagged, examined, or accepted. Do not attribute the work to any reviewer, examiner, or institute reviewer.
+- Do not name any vendor product feature with a verdict (allow/gate/decline). You may reference the user's own named vendors only as factual stack context.
+- You may cite real public federal regulations (SR 11-7, ECOA Reg B, GLBA Safeguards, FFIEC IT Handbook, Interagency TPRM 2023) by name — but only as applicable regulations, never as endorsements.
+
+Output format: a single JSON object with exactly two keys — execSummary (string, 90-130 words, 3 short paragraphs joined with two newlines), thirtyDayPlan (array of exactly 5 strings, each a concrete first-30-day action). No prose outside the JSON. No markdown code fences.`;
 
   const userBlock = `Personalize for this paid In-Depth taker.
 
@@ -113,31 +111,15 @@ Reader:
 - Institution: ${ctx.institution_name ?? 'their institution'}
 - Role: ${roleMeta?.label ?? 'unspecified role'}
 - State: ${ctx.state ?? 'unspecified'}
-- Primary regulator: ${ctx.regulator ?? 'unspecified'}
-- Asset band: ${ctx.asset_band ?? 'unspecified'}${ctx.asset_size_usd_millions ? ` (~$${ctx.asset_size_usd_millions}M assets)` : ''}
 - Department FTE: ${ctx.dept_fte ?? 'unspecified'}
-- Primary vendor stack: core=${ctx.primary_core ?? '?'}, LOS=${ctx.primary_los ?? '?'}, marketing=${ctx.primary_marketing ?? '?'}, fraud=${ctx.primary_fraud ?? '?'}
 
-Diagnostic:
+Diagnostic (the only sourced data — ground everything in this):
 - Overall: ${response.score}/100 (${response.band.label})
 - Dimensions: ${dimensionLines}
-- Top gap: ${packet.primaryArtifact.name === 'Principal Reason Traceability Table' ? 'Approved AI Access' : 'see lowest dimension above'}
 - Primary artifact for this role: ${packet.primaryArtifact.name}
 - Thesis (the report's own framing): "${packet.thesisHeadline}"
 
-Peer benchmark:
-${peer ? `- Score ${response.score} → ${peer.percentile}th percentile of ${peer.band.label.toLowerCase()} (n=${peer.band.institutionCount}). Framing: ${peer.framing}` : '- Asset band unspecified — skip peer benchmarking line in execSummary.'}
-
-Quantified business case:
-${business ? `- Pilot recovers ~${business.display}/year. ${business.assumptionLine}` : '- FTE or asset band unspecified — skip business case line in execSummary.'}
-
-Vendor intelligence for this stack:
-${vendorIntel.length > 0 ? vendorIntel.map((v) => `- ${v.name} (${v.category}): verdict=${v.verdict}. ${v.action}`).join('\n') : '- No vendor intelligence in scope. Skip vendor mention.'}
-
-Examiner themes for ${ctx.regulator ?? 'unspecified'}:
-${mraThemes.length > 0 ? mraThemes.map((t, i) => `${i + 1}. ${t.theme}`).join('\n') : 'No themes available — speak generally about exam-readability in the examinerNarrative.'}
-
-Return the JSON object now. Be specific. Reference the institution by name. No preamble.`;
+Return the JSON object now. Reference the institution by name. No preamble.`;
 
   try {
     const result = await client.messages.create({
@@ -160,19 +142,13 @@ Return the JSON object now. Be specific. Reference the institution by name. No p
       const j = JSON.parse(jsonText) as {
         execSummary?: string;
         thirtyDayPlan?: string[];
-        examinerNarrative?: string;
       };
-      if (
-        typeof j.execSummary !== 'string' ||
-        !Array.isArray(j.thirtyDayPlan) ||
-        typeof j.examinerNarrative !== 'string'
-      ) {
+      if (typeof j.execSummary !== 'string' || !Array.isArray(j.thirtyDayPlan)) {
         throw new Error('shape mismatch');
       }
       parsed = {
         execSummary: j.execSummary,
         thirtyDayPlan: j.thirtyDayPlan.slice(0, 5),
-        examinerNarrative: j.examinerNarrative,
         model: 'claude-opus-4-7',
         generatedAt: new Date().toISOString(),
       };
