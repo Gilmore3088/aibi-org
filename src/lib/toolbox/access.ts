@@ -125,5 +125,8 @@ export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
  * tier.
  */
 export function canBuildOrRun(access: PaidAccess | null): boolean {
-  return access?.tier === 'full';
+  // 2026-06-02: Toolbox build/save unlocked for BOTH Foundation and
+  // In-Depth Assessment buyers. The starter/full tier model is retained
+  // in the data layer in case a free read-only tier is re-introduced.
+  return access !== null;
 }

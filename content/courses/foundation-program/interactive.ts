@@ -135,3 +135,17 @@ export function getModulePracticeConfig(
 ): ModulePracticeConfig | null {
   return PRACTICE_CONFIGS[moduleNumber] ?? null;
 }
+
+// AI critique is reserved for the modules where written practice matters
+// most — not every module benefits from a critique loop. Per operator
+// product decision (2026-06-02): critique is "for customization and
+// personalization", not a default expectation on every Apply submission.
+//
+// Authored modules: M1 (email rewrite), M3 (RTCFC prompt structure),
+// M7 (tool-category selection), M11 (saved prompt library), M12 (final
+// workflow SOP). Everything else: no critique panel.
+const MODULES_WITH_CRITIQUE: ReadonlySet<number> = new Set([1, 3, 7, 11, 12]);
+
+export function moduleHasCritique(moduleNumber: number): boolean {
+  return MODULES_WITH_CRITIQUE.has(moduleNumber);
+}

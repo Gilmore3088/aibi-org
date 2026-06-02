@@ -20,6 +20,7 @@ import { ActivityCritique } from './ActivityCritique';
 import {
   getKnowledgeCheck,
   getModulePracticeConfig,
+  moduleHasCritique,
 } from '@content/courses/foundation-program/interactive';
 
 export interface ModuleContentClientProps {
@@ -108,7 +109,7 @@ export function ModuleContentClient({
         />
       )}
 
-      {activities.length > 0 && (
+      {activities.length > 0 && moduleHasCritique(moduleNumber) && (
         <div style={{ marginTop: 24 }}>
           <label
             style={{
