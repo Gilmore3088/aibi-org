@@ -1,6 +1,6 @@
 // Stripe client singleton — server-only.
 // Never import this from Client Components or expose to the browser.
-// Uses Stripe SDK v22. API version: 2026-04-22.dahlia.
+// Uses Stripe SDK v22. API version: 2026-05-27.dahlia.
 
 import Stripe from 'stripe';
 import { assertProductionStripeKey } from '@/lib/stripe/assert-live-key';
@@ -18,7 +18,7 @@ if (!STRIPE_SECRET_KEY) {
 assertProductionStripeKey(STRIPE_SECRET_KEY);
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2026-04-22.dahlia',
+  apiVersion: '2026-05-27.dahlia',
   appInfo: {
     name: 'The AI Banking Institute',
     url: 'https://aibankinginstitute.com',
