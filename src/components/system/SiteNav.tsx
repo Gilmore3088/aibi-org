@@ -77,7 +77,7 @@ export async function SiteNav() {
             );
           })}
           <Link
-            href="/assessment/start"
+            href="/assessment/take"
             className="hidden md:inline-block font-sans text-mono-sm font-medium uppercase tracking-wider rounded-sharp bg-gold text-linen px-s5 py-s2 hover:bg-gold-2 transition-colors duration-fast"
           >
             Take Assessment

@@ -140,7 +140,11 @@ const nextConfig = {
       { source: '/courses/aibi-s/:path*', destination: '/courses', permanent: true },
       { source: '/courses/aibi-l', destination: '/courses', permanent: true },
       { source: '/courses/aibi-l/:path*', destination: '/courses', permanent: true },
-      { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
+      // 2026-06-01 flow audit: collapse the /consulting double-hop. This used
+      // to land on /for-institutions/advisory, which itself redirects to
+      // /for-institutions — two HTTP round-trips. Point straight at the final
+      // destination so legacy /consulting links resolve in a single hop.
+      { source: '/consulting', destination: '/for-institutions', permanent: true },
       // 2026-05-26: /results used to render a full sample report
       // (score, tier, dimensions) on a public URL with no email gate
       // — direct violation of the email-gate UX contract. The demo

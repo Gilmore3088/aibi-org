@@ -27,7 +27,7 @@ export function PlaybookDownloadButton({
         <PlaybookDownloadModal
           role={role}
           roleTitle={roleTitle}
-          pdfHref={`/downloads/${role}-playbook.pdf`}
+          pdfHref={`/api/resources/${role}-playbook/download`}
           pdfFilename={`AiBI-${roleTitle.replace(/[^A-Za-z0-9]+/g, '-')}-Playbook.pdf`}
           onClose={() => setOpen(false)}
         />

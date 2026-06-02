@@ -186,7 +186,7 @@ export default function DashboardPage() {
       ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with peer-band comparison and a ninety-day playbook.`
       : 'Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.';
   } else {
-    heroPrimary = { href: '/assessment/start', label: 'Take the free assessment' };
+    heroPrimary = { href: '/assessment/take', label: 'Take the free assessment' };
     heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
     heroLede =
       "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
@@ -286,7 +286,7 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepAssessment ? 'Done' : '3 min'}
-                    href="/assessment/start"
+                    href="/assessment/take"
                   />
                   <ActivationStep
                     n={3}
@@ -377,7 +377,7 @@ export default function DashboardPage() {
                 // In-Depth entitled but not taken → take it.
                 // Free done → sell the In-Depth.
                 // Nothing → take the free scan.
-                let assessHref = '/assessment/start';
+                let assessHref = '/assessment/take';
                 let assessCta = 'Take the free assessment';
                 let assessCopy = 'Twelve dimensions. Three minutes. A scored snapshot.';
                 if (stepInDepth && assessments?.inDepth?.profileId) {

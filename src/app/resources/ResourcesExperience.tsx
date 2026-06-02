@@ -384,7 +384,7 @@ function ChooserPanel({ activeTab }: { activeTab: ChooserTab }) {
       { label: 'Checklist', href: '#desk-cards' },
       { label: 'Template', href: '#templates' },
       { label: 'Prompt card', href: '/prompt-cards' },
-      { label: 'Report sample', href: '/downloads/sample-readiness-report.pdf' },
+      { label: 'Report sample', href: '/api/resources/sample-readiness-report/download' },
       { label: 'Markdown', href: '#templates' },
     ];
     return (

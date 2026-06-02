@@ -147,7 +147,7 @@ export default async function DashboardAssessmentsPage() {
           <p style={{ color: 'var(--slate-600)', fontSize: 14 }}>
             You have not completed the free readiness check yet.{' '}
             <Link
-              href="/assessment/start"
+              href="/assessment/take"
               style={{ color: 'var(--gold-deep)', fontWeight: 600 }}
             >
               Take it now →

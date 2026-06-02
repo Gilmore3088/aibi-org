@@ -180,7 +180,7 @@ export default function WideningGapArticle() {
             compounds fastest over the next ninety days.
           </p>
           <Link
-            href="/assessment/start"
+            href="/assessment/take"
             className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment

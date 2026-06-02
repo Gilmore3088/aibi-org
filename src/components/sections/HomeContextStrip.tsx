@@ -121,7 +121,7 @@ export async function HomeContextStrip() {
         Take the readiness assessment to see your starting point.
       </p>
       <Link
-        href="/assessment/start"
+        href="/assessment/take"
         className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)] hover:text-[color:var(--ink)]"
       >
         Take the assessment →

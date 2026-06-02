@@ -18,13 +18,13 @@ export function Paywall() {
       </p>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">
         <Link
-          href="/education"
+          href="/courses"
           className="inline-flex items-center justify-center rounded-[12px] bg-[color:var(--ink)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)]"
         >
           BROWSE COURSES
         </Link>
         <Link
-          href="/assessment/start"
+          href="/assessment/take"
           className="inline-flex items-center justify-center rounded-[12px] border border-[color:var(--ink-a15)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
           START WITH THE FREE ASSESSMENT
