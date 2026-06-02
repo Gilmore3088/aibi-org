@@ -118,7 +118,7 @@ test.describe('production auth — public marketing routes do not require auth',
     '/for-institutions',
     '/courses/foundation/program',
     '/courses/foundation/program/purchase',
-    '/research',
+    '/resources',
     '/security',
   ]) {
     test(`${path} is reachable logged-out`, async ({ page }) => {

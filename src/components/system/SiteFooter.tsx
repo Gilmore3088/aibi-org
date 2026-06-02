@@ -19,7 +19,7 @@ const LINK_GROUPS: readonly LinkGroup[] = [
   {
     label: "Start here",
     links: [
-      { href: "/assessment/start", label: "Take the assessment" },
+      { href: "/assessment/take", label: "Take the assessment" },
       { href: "/courses", label: "Course" },
       { href: "/for-institutions", label: "For institutions" },
       { href: "/resources", label: "Resources" },

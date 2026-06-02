@@ -89,7 +89,12 @@ const nextConfig = {
       // Assessment, not consulting). /research consolidates into /resources.
       { source: '/about', destination: '/', permanent: true },
       { source: '/for-institutions/advisory', destination: '/for-institutions', permanent: true },
+      // 2026-06-01: /research fully consolidated into /resources. The bare
+      // /research hub and every /research/<slug> article + /research/templates/*
+      // page now live under /resources. Both 308s so old bookmarks, sitemaps,
+      // and indexed article URLs resolve to the canonical /resources location.
       { source: '/research', destination: '/resources', permanent: true },
+      { source: '/research/:path*', destination: '/resources/:path*', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // 2026-05-28: /assessment/in-depth/dashboard renamed to /access.
@@ -101,18 +106,10 @@ const nextConfig = {
         destination: '/assessment/in-depth/access',
         permanent: true,
       },
-      // 2026-05-28: /resources is now the canonical Artifact Library
-      // (playbooks, checklists, templates, prompt cards). The exact-match
-      // redirect to /research was removed so the new src/app/resources/
-      // page renders. The sub-path redirect must NOT be a catch-all
-      // (would shadow /resources/templates/*); constrain it to the six
-      // legacy article slugs that were moved into /research/<slug>.
-      {
-        source:
-          '/resources/:slug(the-widening-ai-gap|members-will-switch|six-ways-ai-fails-in-banking|ai-governance-without-the-jargon|the-skill-not-the-prompt|what-your-efficiency-ratio-is-hiding)',
-        destination: '/research/:slug',
-        permanent: true,
-      },
+      // 2026-06-01: the old /resources/<slug> → /research/<slug> rule was
+      // removed. Those six article slugs now render directly at
+      // /resources/<slug> (the consolidation target); the inverse
+      // /research/:path* → /resources/:path* rule above covers legacy links.
       // Foundation rename (2026-05-10) — every legacy /courses/aibi-p path
       // redirects to /courses/foundation/program. permanent: true emits HTTP
       // 308 (method-preserving, cacheable, search-engine-friendly). Keep
@@ -140,7 +137,11 @@ const nextConfig = {
       { source: '/courses/aibi-s/:path*', destination: '/courses', permanent: true },
       { source: '/courses/aibi-l', destination: '/courses', permanent: true },
       { source: '/courses/aibi-l/:path*', destination: '/courses', permanent: true },
-      { source: '/consulting', destination: '/for-institutions/advisory', permanent: true },
+      // 2026-06-01 flow audit: collapse the /consulting double-hop. This used
+      // to land on /for-institutions/advisory, which itself redirects to
+      // /for-institutions — two HTTP round-trips. Point straight at the final
+      // destination so legacy /consulting links resolve in a single hop.
+      { source: '/consulting', destination: '/for-institutions', permanent: true },
       // 2026-05-26: /results used to render a full sample report
       // (score, tier, dimensions) on a public URL with no email gate
       // — direct violation of the email-gate UX contract. The demo

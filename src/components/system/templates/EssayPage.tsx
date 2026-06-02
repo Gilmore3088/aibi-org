@@ -1,7 +1,7 @@
 /**
  * <EssayPage> — long-form research essay archetype.
  *
- * Used for every /research/[slug] page. Designed to render MDX content with a
+ * Used for every /resources/[slug] page. Designed to render MDX content with a
  * narrow reading column, sourced citations, and a "back to archive" link.
  *
  * MDX bodies should use H2 (##), H3 (###), `<EditorialQuote>`, `<KPIRibbon>`,
@@ -46,7 +46,7 @@ export function EssayPage({
     <main>
       <Section variant="linen" divider="hairline" padding="hero" container="narrow">
         <Link
-          href="/research"
+          href="/resources"
           className="font-serif-sc text-label-md uppercase tracking-widest text-slate hover:text-gold transition-colors duration-fast"
         >
           ← Research

@@ -345,10 +345,10 @@ export default async function InDepthPurchasedPage({
             {/* Was /dashboard/toolbox/library — auth-walled, so a just-paid
                 unauthenticated buyer hit a login wall when clicking the
                 toolkit framed as "INCLUDED WITH YOUR PURCHASE". Send them
-                to the public /research hub which surfaces the same library
+                to the public /resources hub which surfaces the same library
                 artifacts as free downloads. Issue #323. */}
             <Link
-              href="/research"
+              href="/resources"
               className="inline-block uppercase transition-colors"
               style={{
                 background: 'var(--gold)',

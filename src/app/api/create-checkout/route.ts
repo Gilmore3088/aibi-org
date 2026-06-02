@@ -12,8 +12,7 @@
 // Errors: 400 for validation, 503 for missing config, 500 for Stripe errors.
 
 import { NextResponse } from 'next/server';
-import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { dbReadValues } from '@/lib/products/normalize';
+import { hasLockedInstitutionDiscount } from '@/lib/stripe/institution-discount';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 // Lazy-import the stripe singleton so the module-level throw only fires
@@ -40,36 +39,6 @@ function getOrigin(request: Request): string {
   return `${proto}://${host}`;
 }
 
-/**
- * Check whether the given email belongs to an institution with discount_locked=true.
- * Returns true if a persistent discount applies.
- */
-async function hasLockedInstitutionDiscount(email: string): Promise<boolean> {
-  if (!isSupabaseConfigured()) return false;
-
-  try {
-    const supabase = createServiceRoleClient();
-
-    const { data, error } = await supabase
-      .from('course_enrollments')
-      .select('institution_enrollment_id, institution_enrollments!inner(discount_locked)')
-      .eq('email', email)
-      .in('product', dbReadValues('foundation'))
-      .limit(1);
-
-    if (error || !data || data.length === 0) return false;
-
-    const row = data[0] as unknown as {
-      institution_enrollment_id: string | null;
-      institution_enrollments: { discount_locked: boolean } | null;
-    };
-
-    return row.institution_enrollments?.discount_locked === true;
-  } catch {
-    // Non-fatal — fall through to individual pricing
-    return false;
-  }
-}
 
 export async function POST(request: Request) {
   const limited = await rateLimitOrFail({
@@ -133,21 +102,26 @@ export async function POST(request: Request) {
   // currently set in Vercel. The plural form was a one-letter typo when the
   // env var was created; cheaper to read both names than to ask the operator
   // to rename in the Vercel dashboard.
-  const STRIPE_AIBIP_PRICE_ID =
+  // SHIM #4 — do NOT remove the process.env.STRIPE_AIBIP_* fallback tail.
+  // Prod Vercel currently holds the plural STRIPE_FOUNDATIONS_* name, and
+  // some setups may still carry the original STRIPE_AIBIP_*; both are read
+  // as fallbacks so live checkout never 503s on an env-name mismatch. The
+  // local consts use the canonical "foundation" name.
+  const foundationPriceId =
     process.env.STRIPE_FOUNDATION_PRICE_ID ??
     process.env.STRIPE_FOUNDATIONS_PRICE_ID ??
     process.env.STRIPE_AIBIP_PRICE_ID;
-  const STRIPE_AIBIP_INSTITUTION_PRICE_ID =
+  const foundationInstitutionPriceId =
     process.env.STRIPE_FOUNDATION_INSTITUTION_PRICE_ID ??
     process.env.STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID ??
     process.env.STRIPE_AIBIP_INSTITUTION_PRICE_ID;
 
-  if (!STRIPE_AIBIP_PRICE_ID) {
+  if (!foundationPriceId) {
     console.error('[create-checkout] STRIPE_FOUNDATION_PRICE_ID (or legacy STRIPE_AIBIP_PRICE_ID / STRIPE_FOUNDATIONS_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
-  if (mode === 'institution' && !STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
+  if (mode === 'institution' && !foundationInstitutionPriceId) {
     console.error('[create-checkout] STRIPE_FOUNDATION_INSTITUTION_PRICE_ID (or legacy STRIPE_AIBIP_INSTITUTION_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
@@ -161,13 +135,13 @@ export async function POST(request: Request) {
     if (mode === 'individual') {
       // PAY-03: persistent discount check — if this user is associated with a
       // discount-locked institution, apply institution pricing automatically.
-      let priceId = STRIPE_AIBIP_PRICE_ID;
+      let priceId = foundationPriceId;
       let discountApplied: string | undefined;
 
-      if (userEmail && STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
+      if (userEmail && foundationInstitutionPriceId) {
         const locked = await hasLockedInstitutionDiscount(userEmail);
         if (locked) {
-          priceId = STRIPE_AIBIP_INSTITUTION_PRICE_ID;
+          priceId = foundationInstitutionPriceId;
           discountApplied = 'institution_persistent';
         }
       }
@@ -210,14 +184,14 @@ export async function POST(request: Request) {
     const quantity = body.quantity as number;
     const institutionName = (body.institution_name as string).trim();
 
-    if (!STRIPE_AIBIP_INSTITUTION_PRICE_ID) {
+    if (!foundationInstitutionPriceId) {
       return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],  // #319 — card-only for institutional too
-      line_items: [{ price: STRIPE_AIBIP_INSTITUTION_PRICE_ID, quantity }],
+      line_items: [{ price: foundationInstitutionPriceId, quantity }],
       success_url: `${origin}/courses/foundation/program?enrolled=true`,
       cancel_url: `${origin}/courses/foundation/program/purchase`,
       metadata: {

@@ -10,9 +10,16 @@ const INTER_STACK =
 
 interface PricingProofProps {
   enrollButton: ReactNode;
+  /** When true, the buyer's institution has a locked team rate that
+   *  create-checkout applies automatically (PAY-03). Surfaced as a note so
+   *  the lower price at checkout doesn't read as inconsistent. */
+  institutionRateApplies?: boolean;
 }
 
-export function PricingProof({ enrollButton }: PricingProofProps) {
+export function PricingProof({
+  enrollButton,
+  institutionRateApplies = false,
+}: PricingProofProps) {
   return (
     <section
       id="enroll"
@@ -75,6 +82,27 @@ export function PricingProof({ enrollButton }: PricingProofProps) {
             $199 per seat at 10+
           </span>
         </div>
+
+        {institutionRateApplies && (
+          <p
+            role="status"
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'var(--gold-deep)',
+              background: 'var(--cream-2)',
+              border: '1px solid var(--ink-a10, rgba(7,26,47,0.1))',
+              borderRadius: 12,
+              padding: '10px 14px',
+              margin: 0,
+              lineHeight: 1.45,
+            }}
+          >
+            Your institution&rsquo;s team rate is applied &mdash; checkout will
+            charge $199, not $295.
+          </p>
+        )}
 
         <p
           style={{

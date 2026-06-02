@@ -328,6 +328,20 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
             <div className="mk-next-card">
               <InboxIcon className="mk-ic-xl" size={24} />
               <h3>Take Foundation Course</h3>
+              <span
+                style={{
+                  display: 'inline-block',
+                  fontFamily: 'var(--font-mono, ui-monospace, monospace)',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                  margin: '2px 0 6px',
+                }}
+              >
+                Self-serve &middot; enroll now
+              </span>
               <p>Learn the prompt, skill, workflow, and review model.</p>
               <a className="mk-link" href="/courses/foundation">
                 Start course <ArrowR className="mk-ic" />
@@ -409,6 +423,20 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
             <div className="mk-team-card">
               <div className="mk-k">Team Signal</div>
               <h3>Could this become a department opportunity?</h3>
+              <span
+                style={{
+                  display: 'inline-block',
+                  fontFamily: 'var(--font-mono, ui-monospace, monospace)',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--slate-500)',
+                  margin: '0 0 10px',
+                }}
+              >
+                Sales-led &middot; by request
+              </span>
               {[
                 'Multiple learners with low documentation scores',
                 'Departments using AI without common review steps',

@@ -2,7 +2,7 @@
  * from Supabase Storage via /api/resources/[slug]/download (302 → signed URL,
  * 5-min TTL). The download API verifies entitlement (free vs gated tier)
  * and logs each download into resource_downloads. A few links point at
- * in-app HTML routes (/resources/templates/*, /research/templates/*)
+ * in-app HTML routes (/resources/templates/*, /resources/templates/*)
  * which remain as ordinary Next.js pages. The Playwright suite asserts
  * HTTP 200 on every link returned by allDownloadHrefs(). */
 
@@ -80,7 +80,7 @@ export const starterKits: StarterKit[] = [
       { label: 'Marketing Playbook', href: '/api/resources/marketing-playbook/download' },
       { label: 'Prompt Strategy Cheat Sheet', href: '/api/resources/prompt-strategy-cheat-sheet/download' },
       { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
-      { label: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter' },
+      { label: 'AI Use Policy Starter', href: '/resources/templates/ai-use-policy-starter' },
     ],
     zip: '/api/resources/marketing-review-kit/download',
     zipSize: '563 KB',
@@ -171,11 +171,11 @@ export interface ProblemPath {
 }
 
 export const problemPaths: ProblemPath[] = [
-  { title: 'Set AI rules', artifact: 'AI Use Policy Starter', href: '/research/templates/ai-use-policy-starter', icon: ShieldCheck },
+  { title: 'Set AI rules', artifact: 'AI Use Policy Starter', href: '/resources/templates/ai-use-policy-starter', icon: ShieldCheck },
   { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download', icon: ClipboardCheck },
   { title: 'Train staff', artifact: 'Safe AI Use + R/Y/G cards', href: '/api/resources/safe-ai-use-checklist/download', icon: BookOpen },
   { title: 'Build a workflow SOP', artifact: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop', icon: Workflow },
-  { title: 'Brief leadership', artifact: 'Board Briefing Checklist', href: '/research/templates/board-briefing-checklist', icon: BarChart3 },
+  { title: 'Brief leadership', artifact: 'Board Briefing Checklist', href: '/resources/templates/board-briefing-checklist', icon: BarChart3 },
   { title: 'Preview paid output', artifact: 'Sample Readiness Report', href: '/api/resources/sample-readiness-report/download', icon: Eye },
 ];
 
@@ -214,7 +214,7 @@ export const templates: Template[] = [
     format: 'Template · 5 min',
     desc: 'What to show before, during, and after an AI rollout conversation.',
     preview: ['Policy', 'Inventory', 'Risk', 'Next'],
-    href: '/research/templates/board-briefing-checklist',
+    href: '/resources/templates/board-briefing-checklist',
     pdf: '/api/resources/template-board-briefing-checklist/download',
     icon: BarChart3,
   },
@@ -223,7 +223,7 @@ export const templates: Template[] = [
     format: 'Template · 8 min',
     desc: 'A practical starter policy defining tools, data, review, incidents, and ownership.',
     preview: ['Allowed', 'Blocked', 'Review', 'Escalate'],
-    href: '/research/templates/ai-use-policy-starter',
+    href: '/resources/templates/ai-use-policy-starter',
     pdf: '/api/resources/template-ai-use-policy-starter/download',
     icon: FileText,
   },

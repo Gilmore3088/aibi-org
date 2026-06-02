@@ -16,7 +16,7 @@ export default function CertificationsPage() {
       lede="AiBI-Foundation is earned by completing reviewed work products — not by clicking through a video. Your Workbench Pack is reviewed by the Institute, and the certificate ships with a public verification URL."
       heroActions={[
         { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-        { label: 'See the curriculum', href: '/education', variant: 'ghost-dark' },
+        { label: 'See the curriculum', href: '/courses', variant: 'ghost-dark' },
       ]}
       sections={[
         {
@@ -37,7 +37,7 @@ export default function CertificationsPage() {
         body: <>No bottomless training catalog — earn the credential by doing the work. Aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.</>,
         actions: [
           { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
-          { label: 'View the curriculum', href: '/education', variant: 'ghost-dark' },
+          { label: 'View the curriculum', href: '/courses', variant: 'ghost-dark' },
         ],
       }}
     />

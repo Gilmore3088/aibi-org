@@ -2,7 +2,7 @@
  * <EssayArchive> — newspaper-archive list of essays.
  *
  * Each row: mono date | topic chiplet · serif headline · sub-line · mono read-time · arrow.
- * Replaces card grids in /research with a denser editorial list pattern.
+ * Replaces card grids in /resources with a denser editorial list pattern.
  *
  * Categorization is content-driven — the consuming page filters which essays
  * to pass in. The archive itself doesn't filter.
@@ -19,7 +19,7 @@ export interface EssayArchiveItem {
   readonly date: string;
   readonly category?: string;
   readonly readMinutes?: number;
-  /** Per-item href. Overrides basePath. Used by legacy essays at /research/<slug>. */
+  /** Per-item href. Overrides basePath. Used by legacy essays at /resources/<slug>. */
   readonly href?: string;
 }
 
@@ -30,7 +30,7 @@ export interface EssayArchiveProps {
   readonly className?: string;
 }
 
-export function EssayArchive({ items, basePath = "/research", className }: EssayArchiveProps) {
+export function EssayArchive({ items, basePath = "/resources", className }: EssayArchiveProps) {
   return (
     <ul className={cn("border-t border-hairline", className)}>
       {items.map((item) => (

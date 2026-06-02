@@ -10,8 +10,8 @@ const FOOTER_GROUPS: readonly FooterGroup[] = [
   {
     label: 'Start here',
     links: [
-      { href: '/assessment/start', label: 'Free Assessment' },
-      { href: '/education', label: 'Education' },
+      { href: '/assessment/take', label: 'Free Assessment' },
+      { href: '/courses', label: 'Course' },
       { href: '/for-institutions', label: 'For Institutions' },
     ],
   },

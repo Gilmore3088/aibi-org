@@ -41,7 +41,7 @@ export default function NotFound() {
         </p>
         <div className="pt-4">
           <Link
-            href="/assessment/start"
+            href="/assessment/take"
             className="inline-block px-8 py-4 text-[11px] uppercase transition-all active:scale-[0.98]"
             style={{
               background: 'var(--ink)',

@@ -9,7 +9,7 @@
  * NEVER use <button> styling for navigational links. CTAs route or submit
  * forms; they don't decorate.
  *
- *   <Cta href="/assessment/start">Begin the readiness assessment</Cta>
+ *   <Cta href="/assessment/take">Begin the readiness assessment</Cta>
  *   <Cta variant="secondary" href="/">Read the methodology</Cta>
  */
 

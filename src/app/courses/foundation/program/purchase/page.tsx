@@ -25,6 +25,7 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { EnrollButton } from './EnrollButton';
+import { hasLockedInstitutionDiscount } from '@/lib/stripe/institution-discount';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
 import { CourseShell, LMSTopBar, toLMSModules, type LMSModule } from '@/components/lms';
 import { PurchaseFAQ } from './_components/PurchaseFAQ';
@@ -109,6 +110,12 @@ export default async function PurchasePage({
   const roleBanner = role ? ROLE_BANNER[role] ?? null : null;
   const enrollment = await getEnrollment();
   const userEmail = await getUserEmail();
+  // PAY-03 transparency: if this buyer's email is tied to a discount-locked
+  // institution, create-checkout silently applies the team rate. Surface a
+  // note here so the lower price at checkout doesn't read as inconsistent.
+  const institutionRateApplies = userEmail
+    ? await hasLockedInstitutionDiscount(userEmail)
+    : false;
   const lmsModules: readonly LMSModule[] = toLMSModules(
     foundationCourseConfig.modules,
   );
@@ -401,6 +408,7 @@ export default async function PurchasePage({
         {/* 4. PRICING + PROOF — quote + stat + EnrollButton */}
         <PricingProof
           enrollButton={<EnrollButton userEmail={userEmail ?? undefined} />}
+          institutionRateApplies={institutionRateApplies}
         />
 
         {/* 5. CURRICULUM — flat ordered list keyed by artifact */}

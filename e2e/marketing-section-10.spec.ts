@@ -16,7 +16,7 @@ import { test, expect } from '@playwright/test';
 const MARKETING_ROUTES: ReadonlyArray<{
   name: string;
   path: string;
-  // Some marketing routes redirect (e.g. /resources → /research). When set,
+  // Some marketing routes redirect (e.g. /research → /resources). When set,
   // the test follows the redirect and asserts the destination URL pattern.
   redirectsTo?: RegExp;
 }> = [
@@ -26,14 +26,14 @@ const MARKETING_ROUTES: ReadonlyArray<{
   { name: 'for-institutions/advisory', path: '/for-institutions/advisory' },
   { name: 'about', path: '/about' },
   { name: 'security', path: '/security' },
-  { name: 'research', path: '/research' },
+  { name: 'resources', path: '/resources' },
   { name: 'faq', path: '/faq' },
   { name: 'ai-use-disclaimer', path: '/ai-use-disclaimer' },
   { name: 'terms', path: '/terms' },
   { name: 'privacy', path: '/privacy' },
   // Legacy redirects (preserved per next.config.mjs)
   { name: 'certifications (→ education)', path: '/certifications', redirectsTo: /\/education/ },
-  { name: 'resources (→ research)', path: '/resources', redirectsTo: /\/research/ },
+  { name: 'research (→ resources)', path: '/research', redirectsTo: /\/resources/ },
 ];
 
 // Routes that should render their own marketing content (not redirects).

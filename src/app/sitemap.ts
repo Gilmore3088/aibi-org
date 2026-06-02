@@ -12,10 +12,10 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginsti
 const ROUTES = [
   // Marquee marketing pages
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
-  { path: '/assessment/start', priority: 0.95, changeFrequency: 'monthly' as const },
+  { path: '/assessment/take', priority: 0.95, changeFrequency: 'monthly' as const },
   { path: '/assessment', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/assessment/in-depth', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/education', priority: 0.9, changeFrequency: 'monthly' as const },
+  { path: '/courses', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },
   {
     path: '/for-institutions/samples/efficiency-ratio-workbook',
@@ -33,30 +33,28 @@ const ROUTES = [
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
 
-  // Research hub + every published essay. Legacy /resources/<slug> paths
-  // (sub-paths only — the bare /resources path is now the Artifact Library)
-  // permanently redirect to /research/<slug> via next.config; only the
-  // canonical /research/* URLs ship in the sitemap.
-  { path: '/research', priority: 0.7, changeFrequency: 'weekly' as const },
-  { path: '/research/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/research/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },
+  // Artifact Library + every published essay (consolidated from /research,
+  // 2026-06-01). Legacy /research and /research/* URLs permanently redirect
+  // to /resources/* via next.config; only canonical /resources/* ship here.
+  { path: '/resources/the-widening-ai-gap', priority: 0.8, changeFrequency: 'monthly' as const },
+  { path: '/resources/members-will-switch', priority: 0.8, changeFrequency: 'monthly' as const },
   {
-    path: '/research/six-ways-ai-fails-in-banking',
+    path: '/resources/six-ways-ai-fails-in-banking',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/research/ai-governance-without-the-jargon',
+    path: '/resources/ai-governance-without-the-jargon',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/research/the-skill-not-the-prompt',
+    path: '/resources/the-skill-not-the-prompt',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
   {
-    path: '/research/what-your-efficiency-ratio-is-hiding',
+    path: '/resources/what-your-efficiency-ratio-is-hiding',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },

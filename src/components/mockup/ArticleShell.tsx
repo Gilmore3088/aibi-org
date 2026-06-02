@@ -1,6 +1,6 @@
-/* Lightweight chrome wrapper for /research/<slug> long-form articles.
+/* Lightweight chrome wrapper for /resources/<slug> long-form articles.
  *
- * The archive at /research uses MockupShell. Article bodies are
+ * The archive at /resources uses MockupShell. Article bodies are
  * bespoke long-form layouts that don't fit a section-based shell,
  * so they wrap themselves in this component to inherit the
  * site-wide mockup SiteHeader + a "back to Research" crumb at the top.
@@ -39,9 +39,9 @@ export function ArticleShell({
   const hasChips = readMinutes != null || lastUpdated != null || byline != null;
   return (
     <div className="mockup-scope" style={{ background: 'var(--cream)' }}>
-      <SiteHeader activePath="/research" />
+      <SiteHeader activePath="/resources" />
       <div className="mk-article-head">
-        <Link href="/research" className="mk-article-back">
+        <Link href="/resources" className="mk-article-back">
           ← Research
         </Link>
         {hasChips && (

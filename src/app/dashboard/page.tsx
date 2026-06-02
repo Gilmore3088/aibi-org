@@ -186,7 +186,7 @@ export default function DashboardPage() {
       ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with peer-band comparison and a ninety-day playbook.`
       : 'Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.';
   } else {
-    heroPrimary = { href: '/assessment/start', label: 'Take the free assessment' };
+    heroPrimary = { href: '/assessment/take', label: 'Take the free assessment' };
     heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
     heroLede =
       "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
@@ -194,7 +194,7 @@ export default function DashboardPage() {
 
   const tabs: ReadonlyArray<{ label: string; href: string; active?: boolean; lock?: string }> = [
     { label: 'Dashboard', href: '/dashboard', active: true },
-    { label: 'The Brief', href: '/research' },
+    { label: 'The Brief', href: '/resources' },
     {
       label: 'Curriculum',
       href: stepEnrolled ? '/courses/foundation/program' : '/courses/foundation',
@@ -286,7 +286,7 @@ export default function DashboardPage() {
                       </>
                     }
                     meta={stepAssessment ? 'Done' : '3 min'}
-                    href="/assessment/start"
+                    href="/assessment/take"
                   />
                   <ActivationStep
                     n={3}
@@ -377,7 +377,7 @@ export default function DashboardPage() {
                 // In-Depth entitled but not taken → take it.
                 // Free done → sell the In-Depth.
                 // Nothing → take the free scan.
-                let assessHref = '/assessment/start';
+                let assessHref = '/assessment/take';
                 let assessCta = 'Take the free assessment';
                 let assessCopy = 'Twelve dimensions. Three minutes. A scored snapshot.';
                 if (stepInDepth && assessments?.inDepth?.profileId) {
@@ -674,14 +674,14 @@ export default function DashboardPage() {
               <h2>
                 Free <strong>resources.</strong>
               </h2>
-              <Link href="/research" className="more">
+              <Link href="/resources" className="more">
                 All research →
               </Link>
             </header>
 
             <div className="res-grid">
               <ResourceCard
-                href="/research/the-skill-not-the-prompt"
+                href="/resources/the-skill-not-the-prompt"
                 tag="Briefing"
                 title={<>The <strong>skill</strong>, not the prompt.</>}
                 meta="Briefing · 8 min read"
@@ -695,7 +695,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research/six-ways-ai-fails-in-banking"
+                href="/resources/six-ways-ai-fails-in-banking"
                 tag="Briefing"
                 title={<>Six ways AI <strong>fails</strong> in banking.</>}
                 meta="Briefing · 10 min read"
@@ -712,7 +712,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research/ai-governance-without-the-jargon"
+                href="/resources/ai-governance-without-the-jargon"
                 tag="Briefing"
                 title={<>AI governance, <strong>without</strong> the jargon.</>}
                 meta="Briefing · 12 min read"
@@ -727,7 +727,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research"
+                href="/resources"
                 tag="All research"
                 title={<>The AI Banking <strong>Brief.</strong></>}
                 meta="Six briefings + more"
@@ -767,7 +767,7 @@ export default function DashboardPage() {
                 ))}
               </div>
               <div className="cta-col">
-                <Link href="/research/the-skill-not-the-prompt" className="btn btn-primary">
+                <Link href="/resources/the-skill-not-the-prompt" className="btn btn-primary">
                   Read the briefing <span className="arrow">→</span>
                 </Link>
                 <span className="meta">The skill, not the prompt</span>
