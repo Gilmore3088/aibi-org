@@ -117,6 +117,7 @@ export function PaidReport({
               packet={packet}
               briefingMailto={briefingMailto}
               personalization={personalization}
+              topGap={topGap}
             />
             <Section2Artifact
               packet={packet}
@@ -239,7 +240,7 @@ function Sidebar({
       </div>
       <SidebarBlock label="Role" value={roleLabel} />
       {topGap && (
-        <SidebarBlock label="Top gap" value={`${topGap.label} · ${topGap.score}`} />
+        <SidebarBlock label="Top gap" value={`${topGap.label} · ${topGap.score}/100`} />
       )}
       <SidebarBlock label="Primary artifact" value={primaryArtifact} />
       <nav style={{ padding: 18 }}>
@@ -305,15 +306,38 @@ function SidebarNav({
 
 // ── Section 1: Action Packet Summary ────────────────────────────────────────
 
+// Choose the headline shown in Section 1.
+//
+// The role-templated headline is keyed to the role's *typical* top gap.
+// When a specific taker's actual lowest-scoring dimension matches that
+// framing, the templated headline is honest — use it. When it doesn't,
+// the templated headline would diagnose a gap the data doesn't show, so
+// fall back to a data-derived headline grounded in their actual scores.
+function deriveHeadline(packet: ActionPacket, topGap: { label: string } | undefined): string {
+  if (!topGap) return packet.thesisHeadline;
+  const lower = packet.thesisHeadline.toLowerCase();
+  // Heuristic match: any word from the top-gap label longer than 4 chars
+  // appearing in the templated headline means the headline is honest for
+  // this taker. Catches "approved access" / "access", "compliance",
+  // "vendor", "workflow", etc.
+  const words = topGap.label.toLowerCase().split(/\s+/).filter((w) => w.length > 4);
+  const matches = words.some((w) => lower.includes(w));
+  if (matches) return packet.thesisHeadline;
+  return `Your top gap is ${topGap.label}. Start there.`;
+}
+
 function Section1Summary({
   packet,
   briefingMailto,
   personalization,
+  topGap,
 }: {
   packet: ActionPacket;
   briefingMailto: string;
   personalization: PersonalizationState;
+  topGap: { label: string } | undefined;
 }): JSX.Element {
+  const headline = deriveHeadline(packet, topGap);
   return (
     <section id="summary" style={pageStyle}>
       <div style={sectionPad}>
@@ -327,7 +351,7 @@ function Section1Summary({
             fontWeight: 800,
           }}
         >
-          {packet.thesisHeadline}
+          {headline}
         </h1>
         <p style={{ maxWidth: 850, fontSize: 18, color: SLATE, lineHeight: 1.58 }}>
           {packet.thesisBody}
@@ -429,7 +453,7 @@ function Section2Artifact({
             padding: 16,
           }}
         >
-          <Label tone="badge">Use before</Label>
+          <Label tone="badge">When to use</Label>
           <h3 style={{ fontSize: 18, letterSpacing: '-0.02em', margin: '4px 0 0', fontWeight: 800 }}>
             {a.useBefore}
           </h3>
@@ -437,7 +461,29 @@ function Section2Artifact({
       </div>
 
       <div style={sectionPad}>
-        {a.table && <ArtifactTable cols={a.table.columns} rows={a.table.rows} />}
+        {a.table && (
+          <>
+            <div
+              style={{
+                marginBottom: 8,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: '#EFE7D7',
+                color: GOLD_DEEP,
+                borderRadius: 999,
+                padding: '6px 12px',
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Sample · replace with your own redacted cases
+            </div>
+            <ArtifactTable cols={a.table.columns} rows={a.table.rows} />
+          </>
+        )}
 
         <div
           style={{
@@ -788,62 +834,59 @@ function Section3Timeline({
 function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
   return (
     <section id="packet" style={pageStyle}>
-      <div className="mk-pr-packet" style={sectionPad}>
-        <div>
-          <Label>Reviewer packet</Label>
-          <h2
-            style={{
-              fontSize: 'clamp(30px, 3vw, 46px)',
-              lineHeight: 1,
-              letterSpacing: '-0.045em',
-              margin: '6px 0 14px',
-              fontWeight: 800,
-            }}
-          >
-            What you should be able to show.
-          </h2>
-          <p style={{ color: SLATE, lineHeight: 1.58 }}>
-            This is the evidence stack for your first workflow. It should feel
-            printable, sendable, and review-ready.
-          </p>
-          <div style={{ display: 'grid', gap: 12, marginTop: 18 }}>
-            {packet.reviewerPacket.map((item) => (
-              <div
-                key={item.name}
+      <div style={sectionPad}>
+        <Label>Reviewer packet</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What you should be able to show.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58 }}>
+          This is the evidence stack for your first workflow. It should feel
+          printable, sendable, and review-ready.
+        </p>
+        <div style={{ display: 'grid', gap: 12, marginTop: 18 }}>
+          {packet.reviewerPacket.map((item) => (
+            <div
+              key={item.name}
+              style={{
+                background: 'white',
+                border: `1px solid ${LINE}`,
+                borderRadius: 18,
+                padding: 15,
+                display: 'flex',
+                gap: 12,
+                alignItems: 'flex-start',
+              }}
+            >
+              <span
                 style={{
-                  background: 'white',
-                  border: `1px solid ${LINE}`,
-                  borderRadius: 18,
-                  padding: 15,
-                  display: 'flex',
-                  gap: 12,
-                  alignItems: 'flex-start',
+                  width: 25,
+                  height: 25,
+                  borderRadius: '50%',
+                  background: GOLD,
+                  display: 'grid',
+                  placeItems: 'center',
+                  fontWeight: 900,
+                  flex: 'none',
+                  color: INK,
                 }}
               >
-                <span
-                  style={{
-                    width: 25,
-                    height: 25,
-                    borderRadius: '50%',
-                    background: GOLD,
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontWeight: 900,
-                    flex: 'none',
-                    color: INK,
-                  }}
-                >
-                  ✓
-                </span>
-                <div>
-                  <b style={{ display: 'block' }}>{item.name}</b>
-                  <p style={{ margin: '4px 0 0', color: SLATE, fontSize: 14 }}>{item.desc}</p>
-                </div>
+                ✓
+              </span>
+              <div>
+                <b style={{ display: 'block' }}>{item.name}</b>
+                <p style={{ margin: '4px 0 0', color: SLATE, fontSize: 14 }}>{item.desc}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-        <DocStack items={packet.reviewerPacket} />
       </div>
       <div style={{ padding: 30, borderTop: `1px solid ${LINE}` }}>
         <Label>Recommended playbooks</Label>
@@ -878,65 +921,6 @@ function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
   );
 }
 
-function DocStack({ items }: { items: ReadonlyArray<{ name: string }> }): JSX.Element {
-  // Decorative — visualizes the stack of reviewer-packet docs. Hidden on
-  // narrow viewports via mk-pr-stack class in ResponsiveCSS.
-  const positions: ReadonlyArray<{ left: number; top: number; rotate: number }> = [
-    { left: 55, top: 38, rotate: -5 },
-    { left: 130, top: 80, rotate: 4 },
-    { left: 75, top: 150, rotate: -2 },
-    { left: 160, top: 210, rotate: 5 },
-  ];
-  return (
-    <div
-      className="mk-pr-stack"
-      aria-hidden="true"
-      style={{
-        height: 360,
-        border: `1px solid ${LINE}`,
-        borderRadius: 26,
-        background: 'linear-gradient(135deg, #fff, #f7f3ea)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {items.slice(0, 4).map((item, i) => {
-        const p = positions[i] ?? positions[0];
-        return (
-          <div
-            key={item.name}
-            style={{
-              position: 'absolute',
-              width: 250,
-              height: 140,
-              background: 'white',
-              border: `1px solid ${LINE}`,
-              borderRadius: 18,
-              boxShadow: '0 18px 40px rgba(7,26,47,.11)',
-              padding: 18,
-              left: p.left,
-              top: p.top,
-              transform: `rotate(${p.rotate}deg)`,
-            }}
-          >
-            <b style={{ fontSize: 14 }}>{item.name}</b>
-            <div style={{ height: 8, background: GOLD, borderRadius: 999, marginTop: 12 }} />
-            <div style={{ height: 8, background: '#d7cfbd', borderRadius: 999, marginTop: 10 }} />
-            <div
-              style={{
-                height: 8,
-                background: '#d7cfbd',
-                borderRadius: 999,
-                marginTop: 10,
-                width: '62%',
-              }}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 function PlaybookCardEl({
   tone,
@@ -1164,19 +1148,46 @@ function SaveToToolboxButton({
   prompt: string;
   rule: string;
 }): JSX.Element {
-  const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'auth' | 'error'>('idle');
+  type SaveStatus =
+    | 'idle'
+    | 'saving'
+    | 'saved'
+    | 'auth-required'
+    | 'foundation-required'
+    | 'error';
+  const [status, setStatus] = useState<SaveStatus>('idle');
   const label =
     status === 'saving'
       ? 'Saving…'
       : status === 'saved'
         ? 'Saved'
-        : status === 'auth'
+        : status === 'auth-required'
           ? 'Sign in to save'
-          : status === 'error'
-            ? 'Try again'
-            : 'Save to toolbox';
-  const icon =
-    status === 'saved' ? <CheckIcon /> : <BookmarkIcon />;
+          : status === 'foundation-required'
+            ? 'Upgrade to save'
+            : status === 'error'
+              ? 'Try again'
+              : 'Save to toolbox';
+  const icon = status === 'saved' ? <CheckIcon /> : <BookmarkIcon />;
+  // foundation-required: turn the button into a link to the Foundation
+  // purchase page — In-Depth-only buyers cannot save until they upgrade.
+  if (status === 'foundation-required') {
+    return (
+      <a
+        href="/courses/foundation/program/purchase"
+        style={{
+          ...btnOutline,
+          border: `1px solid ${LINE}`,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+        }}
+      >
+        {icon}
+        <span>{label}</span>
+      </a>
+    );
+  }
   return (
     <button
       type="button"
@@ -1192,12 +1203,16 @@ function SaveToToolboxButton({
             }),
           });
           if (res.status === 401) {
-            setStatus('auth');
-            // Send the user to log in, then come back.
+            setStatus('auth-required');
             setTimeout(() => {
               window.location.href =
                 '/auth/login?next=' + encodeURIComponent(window.location.pathname);
             }, 800);
+            return;
+          }
+          if (res.status === 403) {
+            // Signed in but lacks Foundation tier — surface as upgrade path.
+            setStatus('foundation-required');
             return;
           }
           if (!res.ok) {
@@ -1348,46 +1363,10 @@ function PersonalizationStripe({
 
 
 function AIExecSummary({ state }: { state: PersonalizationState }): JSX.Element | null {
-  if (state.status === 'disabled') return null;
-  if (state.status === 'loading') {
-    return (
-      <div
-        style={{
-          marginTop: 18,
-          background: 'rgba(200,162,74,.08)',
-          border: `1px dashed ${GOLD}`,
-          borderRadius: 16,
-          padding: 18,
-        }}
-      >
-        <div
-          style={{
-            color: GOLD_DEEP,
-            textTransform: 'uppercase',
-            letterSpacing: '0.16em',
-            fontSize: 10,
-            fontWeight: 900,
-          }}
-        >
-          Personalizing for your institution…
-        </div>
-        <div style={{ marginTop: 10, display: 'grid', gap: 8 }}>
-          {[80, 95, 70].map((w) => (
-            <div
-              key={w}
-              style={{
-                height: 12,
-                width: `${w}%`,
-                background: 'rgba(200,162,74,.18)',
-                borderRadius: 6,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-  if (state.status === 'error') return null;
+  // Render nothing until personalization succeeds. We deliberately do not
+  // show a loading skeleton — a "Personalizing…" tease that may never
+  // resolve is worse than no tease at all.
+  if (state.status !== 'ready') return null;
   return (
     <div
       style={{
