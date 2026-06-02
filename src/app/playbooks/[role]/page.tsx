@@ -288,7 +288,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
           { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
           // /my-toolbox is now auth-gated (#318). Unauth playbook readers
           // would hit a login wall. Send them to the public artifacts hub.
-          { label: 'Browse downloads', href: '/research', variant: 'ghost-dark' },
+          { label: 'Browse downloads', href: '/resources', variant: 'ghost-dark' },
         ]}
       />
     </div>

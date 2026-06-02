@@ -1,8 +1,8 @@
-// /research/archive — full Brief archive
+// /resources/archive — full Brief archive
 //
-// The /research landing surfaces featured + latest only; this page
+// The /resources landing surfaces featured + latest only; this page
 // lists every published essay, newest first. Linked from the
-// "View all briefs" button on /research.
+// "View all briefs" button on /resources.
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import {
 import { listAllEssays } from '@content/essays/_lib/registry';
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/research/archive' },
+  alternates: { canonical: '/resources/archive' },
   title: 'Essay archive — The AI Banking Institute',
   description: 'Every published essay, newest first.',
 };
@@ -30,7 +30,7 @@ export default async function ResearchArchiveFullPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/research" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
+      <SiteHeader activePath="/resources" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
       <section className="mk-hero mk-hero-compact">
         <div className="mk-container mk-hero-inner">

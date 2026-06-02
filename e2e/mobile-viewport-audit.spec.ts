@@ -30,7 +30,6 @@ const PUBLIC_ROUTES: readonly RouteCase[] = [
   { path: '/for-institutions', label: 'for-institutions' },
   { path: '/for-institutions/advisory', label: 'for-institutions-advisory' },
   { path: '/education', label: 'education' },
-  { path: '/research', label: 'research' },
   { path: '/about', label: 'about' },
   { path: '/security', label: 'security' },
   { path: '/resources', label: 'resources' },

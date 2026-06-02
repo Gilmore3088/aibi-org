@@ -194,7 +194,7 @@ export default function DashboardPage() {
 
   const tabs: ReadonlyArray<{ label: string; href: string; active?: boolean; lock?: string }> = [
     { label: 'Dashboard', href: '/dashboard', active: true },
-    { label: 'The Brief', href: '/research' },
+    { label: 'The Brief', href: '/resources' },
     {
       label: 'Curriculum',
       href: stepEnrolled ? '/courses/foundation/program' : '/courses/foundation',
@@ -674,14 +674,14 @@ export default function DashboardPage() {
               <h2>
                 Free <strong>resources.</strong>
               </h2>
-              <Link href="/research" className="more">
+              <Link href="/resources" className="more">
                 All research →
               </Link>
             </header>
 
             <div className="res-grid">
               <ResourceCard
-                href="/research/the-skill-not-the-prompt"
+                href="/resources/the-skill-not-the-prompt"
                 tag="Briefing"
                 title={<>The <strong>skill</strong>, not the prompt.</>}
                 meta="Briefing · 8 min read"
@@ -695,7 +695,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research/six-ways-ai-fails-in-banking"
+                href="/resources/six-ways-ai-fails-in-banking"
                 tag="Briefing"
                 title={<>Six ways AI <strong>fails</strong> in banking.</>}
                 meta="Briefing · 10 min read"
@@ -712,7 +712,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research/ai-governance-without-the-jargon"
+                href="/resources/ai-governance-without-the-jargon"
                 tag="Briefing"
                 title={<>AI governance, <strong>without</strong> the jargon.</>}
                 meta="Briefing · 12 min read"
@@ -727,7 +727,7 @@ export default function DashboardPage() {
                 }
               />
               <ResourceCard
-                href="/research"
+                href="/resources"
                 tag="All research"
                 title={<>The AI Banking <strong>Brief.</strong></>}
                 meta="Six briefings + more"
@@ -767,7 +767,7 @@ export default function DashboardPage() {
                 ))}
               </div>
               <div className="cta-col">
-                <Link href="/research/the-skill-not-the-prompt" className="btn btn-primary">
+                <Link href="/resources/the-skill-not-the-prompt" className="btn btn-primary">
                   Read the briefing <span className="arrow">→</span>
                 </Link>
                 <span className="meta">The skill, not the prompt</span>

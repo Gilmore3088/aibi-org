@@ -1,4 +1,4 @@
-// Templates registry for /research/templates/[slug].
+// Templates registry for /resources/templates/[slug].
 //
 // Each template is a structured, usable document a banker can read and
 // copy. Content is intentionally short and concrete — these are starters,

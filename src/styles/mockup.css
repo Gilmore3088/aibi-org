@@ -4117,7 +4117,7 @@ section.mk-std { padding: 56px 0; }
 }
 
 /* ============================================================
-   Research (/research) rework (2026-05-26)
+   Research (/resources) rework (2026-05-26)
    ============================================================ */
 
 /* Featured Brief — hero-side card */
@@ -4248,7 +4248,7 @@ section.mk-std { padding: 56px 0; }
 .mk-resources-grid.mk-resources-2up { grid-template-columns: 1fr; }
 @media (min-width: 720px) { .mk-resources-grid.mk-resources-2up { grid-template-columns: repeat(2, 1fr); } }
 /* Mobile: convert to horizontal-scroll rail to compress vertical stacks
-   on /research and /resources catalogs. Per 2026-05-28 audit. */
+   on /resources and /resources catalogs. Per 2026-05-28 audit. */
 @media (max-width: 639px) {
   .mk-resources-grid {
     display: flex;
@@ -4309,7 +4309,7 @@ section.mk-std { padding: 56px 0; }
   border-bottom: 2px solid var(--gold); padding-bottom: 2px;
 }
 
-/* DownloadGate — inline email gate for /research artifact downloads */
+/* DownloadGate — inline email gate for /resources artifact downloads */
 .mk-download-gate-trigger {
   background: none; border: none; padding: 0; cursor: pointer;
   color: var(--ink); font-weight: 600; font-size: 12px;
@@ -4358,7 +4358,7 @@ section.mk-std { padding: 56px 0; }
   color: var(--emerald-700); font-weight: 600;
 }
 
-/* Template document (/research/templates/[slug]) */
+/* Template document (/resources/templates/[slug]) */
 .mk-tpl-meta {
   margin-top: 18px;
   display: flex; gap: 16px; flex-wrap: wrap;

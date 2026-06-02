@@ -14,7 +14,7 @@ import { test, expect, type Page } from '@playwright/test';
  *   /assessment             — primary CTA reaches /assessment/take
  *   /courses                — enroll CTA reaches /courses/foundation/program/purchase
  *   /for-institutions       — "Book a briefing" CTA opens Calendly URL
- *   /research               — download click opens an inline email gate
+ *   /resources               — download click opens an inline email gate
  *
  * Filed under the 2026-05-28 funnel-audit goal: each parent page must
  * have a working forward path. Tests intentionally do NOT submit forms
@@ -132,8 +132,8 @@ test.describe('parent flows — desktop', () => {
     expect(href).toMatch(/^#\w/);
   });
 
-  test('/research — DownloadGate replaces direct PDF anchors (#351)', async ({ page }) => {
-    await gotoStable(page, '/research');
+  test('/resources — DownloadGate replaces direct PDF anchors (#351)', async ({ page }) => {
+    await gotoStable(page, '/resources');
     // Post-#351 each artifact card has a "Get the PDF" button that, on click,
     // swaps to an inline email form. The form must include an email input
     // and a submit button. We don't actually submit (would create real
@@ -186,8 +186,8 @@ test.describe('parent flows — mobile', () => {
     await expect(briefing).toBeVisible();
   });
 
-  test('/research — Get-PDF button visible on mobile', async ({ page }) => {
-    await gotoStable(page, '/research');
+  test('/resources — Get-PDF button visible on mobile', async ({ page }) => {
+    await gotoStable(page, '/resources');
     const getBtn = page.getByRole('button', { name: /get the pdf|get pdf/i }).first();
     await expect(getBtn).toBeVisible();
   });

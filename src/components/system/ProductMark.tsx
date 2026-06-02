@@ -1,5 +1,5 @@
 // Line-art product marks for the product ladder. Matches the editorial
-// style introduced on /research (1.6 stroke, ink primary, gold accent fill
+// style introduced on /resources (1.6 stroke, ink primary, gold accent fill
 // on key shapes, square viewBox). Used on marketing tiles where a tile is
 // the visual unit and a small mark differentiates it without illustration.
 //

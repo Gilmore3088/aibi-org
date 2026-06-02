@@ -2,9 +2,9 @@
  * Essay registry — single source of truth for every published essay.
  *
  * Two arrays:
- *   ESSAYS         essays migrated to MDX (live at /research/<slug>)
+ *   ESSAYS         essays migrated to MDX (live at /resources/<slug>)
  *   LEGACY_ESSAYS  metadata-only stubs for essays still rendered as
- *                  bespoke pages at /research/<slug> (moved from
+ *                  bespoke pages at /resources/<slug> (moved from
  *                  /resources/<slug> on 2026-05-26 — old paths kept
  *                  permanently redirecting via next.config). The archive
  *                  links to the new URLs until MDX migration completes.
@@ -35,9 +35,9 @@ export interface EssayEntry {
 export const ESSAYS: readonly EssayEntry[] = [] as const;
 
 /**
- * Essays still living as bespoke React pages at /research/<slug>
+ * Essays still living as bespoke React pages at /resources/<slug>
  * (moved from /resources/<slug> on 2026-05-26).
- * Listed in the archive with /research/<slug> hrefs.
+ * Listed in the archive with /resources/<slug> hrefs.
  * Migration moves each entry into ESSAYS with an MDX importer.
  */
 export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string })[] = [
@@ -49,7 +49,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Governance",
     readMinutes: 14,
     author: "James Gilmore",
-    legacyHref: "/research/ai-governance-without-the-jargon",
+    legacyHref: "/resources/ai-governance-without-the-jargon",
   },
   {
     slug: "six-ways-ai-fails-in-banking",
@@ -59,7 +59,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Risk & controls",
     readMinutes: 16,
     author: "James Gilmore",
-    legacyHref: "/research/six-ways-ai-fails-in-banking",
+    legacyHref: "/resources/six-ways-ai-fails-in-banking",
   },
   {
     slug: "the-skill-not-the-prompt",
@@ -69,7 +69,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Foundations work",
     readMinutes: 13,
     author: "James Gilmore",
-    legacyHref: "/research/the-skill-not-the-prompt",
+    legacyHref: "/resources/the-skill-not-the-prompt",
   },
   {
     slug: "what-your-efficiency-ratio-is-hiding",
@@ -79,7 +79,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Member impact",
     readMinutes: 11,
     author: "James Gilmore",
-    legacyHref: "/research/what-your-efficiency-ratio-is-hiding",
+    legacyHref: "/resources/what-your-efficiency-ratio-is-hiding",
   },
   {
     slug: "members-will-switch",
@@ -89,7 +89,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Member impact",
     readMinutes: 9,
     author: "James Gilmore",
-    legacyHref: "/research/members-will-switch",
+    legacyHref: "/resources/members-will-switch",
   },
   {
     slug: "the-widening-ai-gap",
@@ -99,7 +99,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
     category: "Examiner trends",
     readMinutes: 8,
     author: "James Gilmore",
-    legacyHref: "/research/the-widening-ai-gap",
+    legacyHref: "/resources/the-widening-ai-gap",
   },
 ] as const;
 
@@ -119,7 +119,7 @@ export async function listAllEssays(): Promise<
   const mdxMeta = await Promise.all(
     ESSAYS.map(async (e) => {
       const m = await e.importer();
-      return { ...m.meta, href: `/research/${m.meta.slug}` };
+      return { ...m.meta, href: `/resources/${m.meta.slug}` };
     }),
   );
   const legacy = LEGACY_ESSAYS.map((m) => ({ ...m, href: m.legacyHref }));
