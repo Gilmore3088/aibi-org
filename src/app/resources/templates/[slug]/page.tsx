@@ -12,10 +12,32 @@ import {
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
-import { TEMPLATES, getTemplate } from '../data';
+import { TEMPLATES, getTemplate, type Template } from '../data';
+import { TemplateActions } from './TemplateActions';
 
 interface PageProps {
   params: { slug: string };
+}
+
+// Serialize a template to plain Markdown so a banker can copy/download and
+// adapt it (qa-site-walk U18). Server-side; the string is handed to the
+// client TemplateActions component.
+function templateToMarkdown(t: Template): string {
+  const lines: string[] = [`# ${t.title}`, '', t.dek, ''];
+  for (const s of t.sections) {
+    lines.push(`## ${s.heading}`, '');
+    if (s.intro) lines.push(s.intro, '');
+    if (s.items) for (const item of s.items) lines.push(`- ${item}`);
+    if (s.steps) s.steps.forEach((step, i) => lines.push(`${i + 1}. ${step}`));
+    if (s.items || s.steps) lines.push('');
+  }
+  if (t.sourcedFrom.length) {
+    lines.push('## Sourced from', '');
+    for (const src of t.sourcedFrom) lines.push(`- ${src}`);
+    lines.push('');
+  }
+  lines.push('---', '', 'Starter template from The AI Banking Institute — adapt before adoption.');
+  return lines.join('\n');
 }
 
 export function generateStaticParams() {
@@ -53,6 +75,8 @@ export default function TemplatePage({ params }: PageProps) {
   const t = getTemplate(params.slug);
   if (!t) notFound();
 
+  const markdown = templateToMarkdown(t);
+
   return (
     <div className="mockup-scope">
       <SiteHeader
@@ -69,6 +93,9 @@ export default function TemplatePage({ params }: PageProps) {
             <div className="mk-tpl-meta">
               <span>For: {t.audience}</span>
               <span>{t.readMinutes} min</span>
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <TemplateActions markdown={markdown} slug={t.slug} />
             </div>
           </div>
         </div>
@@ -106,12 +133,10 @@ export default function TemplatePage({ params }: PageProps) {
             </ul>
           </aside>
 
-          <div className="mk-tpl-actions">
+          <div className="mk-tpl-actions" style={{ flexWrap: 'wrap', gap: 12 }}>
+            <TemplateActions markdown={markdown} slug={t.slug} />
             <Button variant="ink" href="/resources#templates">
               ← All templates
-            </Button>
-            <Button variant="ghost-light" href="/resources#subscribe">
-              Get new templates when they ship
             </Button>
           </div>
         </article>

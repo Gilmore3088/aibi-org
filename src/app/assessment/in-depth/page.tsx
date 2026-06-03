@@ -98,15 +98,17 @@ export default async function InDepthAssessmentPage({
     <div className="mockup-scope">
       <SiteHeader activePath="/assessment/in-depth" />
       <main style={{ background: 'var(--cream)', fontFamily: INTER_STACK }}>
-        {/* HERO — dark navy marquee */}
-        <section style={{ padding: '64px 0 80px' }}>
+        {/* HERO — dark navy marquee. Vertical padding is responsive (clamp)
+            so the Purchase CTA clears the fold on small phones (iPhone SE
+            class, qa-site-walk U7) while desktop keeps its airier spacing. */}
+        <section style={{ padding: 'clamp(24px, 6vw, 64px) 0 clamp(48px, 6vw, 80px)' }}>
           <div className="mk-container">
             <div
               style={{
                 background: 'var(--ink)',
                 color: '#fff',
                 borderRadius: 32,
-                padding: 'clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px)',
+                padding: 'clamp(28px, 5vw, 56px) clamp(28px, 4vw, 48px)',
                 boxShadow: 'var(--shadow-hero)',
               }}
             >
