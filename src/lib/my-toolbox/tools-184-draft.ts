@@ -37,7 +37,7 @@ const lender: Record<string, DraftToolData> = {
     role: 'lender',
     pendingReview: true,
     proposedReviewer: 'pending — community-bank commercial lender',
-    themes: ['borrower-context summarization', 'examiner-ready narrative'],
+    themes: ['borrower-context summarization', 'review-ready narrative'],
     type: 'p',
     name: 'Borrower-context <em>summary.</em>',
     cat: 'Credit · borrower context',
@@ -319,7 +319,7 @@ code fences.
     role: 'lender',
     pendingReview: true,
     proposedReviewer: 'pending — community-bank credit officer',
-    themes: ['multi-pass credit memo', 'examiner-ready citation'],
+    themes: ['multi-pass credit memo', 'review-ready citation'],
     type: 'a',
     name: 'Credit memo <em>4-pass.</em>',
     cat: 'Credit · 4-pass agent',
@@ -842,7 +842,7 @@ classification implications.
 </task>
 
 <style>
-- Examiner-ready. Past tense for events, present tense for controls.
+- Review-ready. Past tense for events, present tense for controls.
 - Specific to this vendor's service. No boilerplate.
 - Cite controls by name ("SOC 2 Type II report dated 2025-12-01")
   not by category.
@@ -882,7 +882,7 @@ Three (or four) labelled paragraphs. No preamble. No conclusion.
     role: 'compl',
     pendingReview: true,
     proposedReviewer: 'pending — community-bank compliance officer',
-    themes: ['exception letter format', 'examiner-ready'],
+    themes: ['exception letter format', 'review-ready'],
     type: 'p',
     name: 'Exception letter <em>(issued).</em>',
     cat: 'Compliance · exception letter',
@@ -958,7 +958,7 @@ Markdown with the six labelled sections.
     proposedReviewer: 'pending — community-bank compliance officer',
     themes: ['executive summary', 'regulator-friendly'],
     type: 'p',
-    name: 'Examiner-ready <em>executive summary.</em>',
+    name: 'Review-ready <em>executive summary.</em>',
     cat: 'Compliance · executive summary',
     ver: 1,
     edited: 'draft · today',

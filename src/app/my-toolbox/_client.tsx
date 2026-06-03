@@ -239,7 +239,7 @@ export default function ToolboxPage() {
             <div className="mk-field"><div className="mk-k">Use case</div><div className="mk-v">Turn a dense KYC procedure into a one-page frontline guide</div></div>
             <div className="mk-field"><div className="mk-k">Inputs</div><div className="mk-v">Source procedure text · target audience</div></div>
             <div className="mk-field"><div className="mk-k">Outputs</div><div className="mk-v">Frontline guide · escalation triggers · review tags</div></div>
-            <div className="mk-field"><div className="mk-k">Review checklist</div><div className="mk-v">3 items · examiner-readable</div></div>
+            <div className="mk-field"><div className="mk-k">Review checklist</div><div className="mk-v">3 items · review-ready</div></div>
           </div>
           <div className="mk-prompt-pane">
             <div className="mk-top">

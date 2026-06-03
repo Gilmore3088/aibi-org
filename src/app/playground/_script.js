@@ -200,7 +200,7 @@
 
   // ============ RECIPES ============
   const recipes = [
-    { tag:'Compare', title:'Which model writes the cleanest <em>SAR narrative?</em>', desc:'Same transaction log into Opus, Sonnet, GPT-5. Pick the one an examiner could read.', mode:'compare', prompt:'Write a SAR narrative for the attached transaction log. Past-tense, factual, examiner-readable. Maximum 200 words. No speculation.', sys:'bsa', ctx:['tx'] },
+    { tag:'Compare', title:'Which model writes the cleanest <em>SAR narrative?</em>', desc:'Same transaction log into Opus, Sonnet, GPT-5. Pick the one an examiner could read.', mode:'compare', prompt:'Write a SAR narrative for the attached transaction log. Past-tense, factual, review-ready. Maximum 200 words. No speculation.', sys:'bsa', ctx:['tx'] },
     { tag:'Compare', title:'Which voice <em>members trust</em> more?', desc:'Same denial letter against two tones — plain vs warm. Read both out loud.', mode:'compare', prompt:'Rewrite the attached letter for the member. Two versions: one plain and direct, one warm and explanatory. Same factual content.', sys:'member' },
     { tag:'Single', title:'Stress-test a <em>credit memo.</em>', desc:'Three critiques an examiner would make. Cite the line.', mode:'single', prompt:'Take the attached credit memo and write three honest critiques a senior underwriter would make. Be specific. Cite the line.', sys:'under', ctx:['memo'] },
     { tag:'Conversation', title:'Iterate a <em>committee summary.</em>', desc:'Multi-turn. Start with a draft, ask for tightening, then for the dissent.', mode:'conv', prompt:'Draft a 90-word committee summary of the attached memo. Lead with the recommendation. After I see it, I\'ll ask you to tighten and then to write the dissent.', sys:'board', ctx:['memo'] },

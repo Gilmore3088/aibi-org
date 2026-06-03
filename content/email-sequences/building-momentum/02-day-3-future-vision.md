@@ -16,7 +16,7 @@ A program survives leadership transitions, staff turnover, and the next regulato
 
 1. **Daily AI use across multiple departments.** You probably have this.
 2. **Reusable prompt patterns that survive without their original author.** This is the one most institutions miss. When the person who wrote the prompt leaves, can someone else still run it? Documented or undocumented, that question gets answered the hard way during turnover.
-3. **A named review step in every customer-facing or decisioning workflow.** Examiner-ready language, not "we always check."
+3. **A named review step in every customer-facing or decisioning workflow.** Review-ready language, not "we always check."
 4. **Sensitive data is never exposed.** A documented policy your audit team has signed off on.
 5. **At least 1–3 workflows produce measurable time savings, reported monthly.** Not estimates. Actual numbers, owned by named people.
 

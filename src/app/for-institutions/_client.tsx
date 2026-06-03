@@ -107,7 +107,19 @@ export default function ForInstitutionsPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>Capability — not a platform.</h1>
+            <p
+              style={{
+                margin: '0 0 14px',
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-soft)',
+              }}
+            >
+              Capability, not a platform
+            </p>
+            <h1>Get your staff ready to use AI safely, by role.</h1>
             <p className="mk-lede">
               An education engagement for banks and credit unions that need staff
               readiness, role-based training, and leadership visibility.
@@ -443,7 +455,7 @@ export default function ForInstitutionsPage() {
           {[
             { icon: TargetIcon, num: '01 · Assess', h: 'Baseline your readiness', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
             { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
-            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-readable from day one.' },
+            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — review-ready from day one.' },
             { icon: LockIcon, num: '04 · Govern', h: 'Establish approval and data rules', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
             { icon: NetworkIcon, num: '05 · Consult', h: 'Engage ongoing advisory', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
           ].map(({ icon: Icon, num, h, p }) => (
@@ -570,7 +582,7 @@ export default function ForInstitutionsPage() {
             </div>
             <p>
               Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly
-              cohort reviews, examiner-readable documentation throughout.
+              cohort reviews, review-ready documentation throughout.
             </p>
             <ul>
               <li><CheckIcon className="mk-ic" />Includes all course + toolbox access</li>

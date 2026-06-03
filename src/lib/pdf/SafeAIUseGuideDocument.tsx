@@ -1289,7 +1289,7 @@ function Chapter6Page2() {
 
         <View style={s.divider} />
 
-        <Text style={s.label}>EXAMINER-READY DOCUMENT CHECKLIST</Text>
+        <Text style={s.label}>REVIEW-READY DOCUMENT CHECKLIST</Text>
         <Text style={[s.bodyTextSmall, { marginBottom: 10 }]}>
           Have these available on the day of examination. For each item, maintain both a current
           version and a dated history showing the governance program has been operating, not just

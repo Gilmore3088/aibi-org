@@ -51,7 +51,7 @@ export function SiteFooter() {
             </Link>
             <p className="mk-footer-tag">
               AI proficiency for community banks and credit unions. Sourced research, banker-vetted
-              artifacts, examiner-readable workflows.
+              artifacts, review-ready workflows.
             </p>
           </div>
 

@@ -2,7 +2,7 @@
 //
 // Generates the three live, institution-specific blocks that make the
 // In-Depth report feel hand-written: executive summary, 30-day plan tuned
-// to FTE + asset band, and an examiner-readable narrative tuned to the
+// to FTE + asset band, and an review-ready narrative tuned to the
 // user's primary regulator.
 //
 // Called by the Action Packet client component on mount (with skeletons

@@ -81,7 +81,7 @@ const STARTER_KITS: readonly KitCard[] = [
   {
     key: 'compl',
     role: 'Compliance',
-    headline: 'Examiner-ready writing.',
+    headline: 'Review-ready writing.',
     description: 'Vendor risk language, exception letters, regulator-friendly summaries.',
     toolCount: 5,
     active: false,

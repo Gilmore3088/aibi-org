@@ -80,7 +80,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     snapPath: 'Maturity Assessment → Foundation Course → Workflow SOP → Sandbox Review',
     usesHeading: 'Where compliance can use AiBI immediately.',
     uses: [
-      { title: 'Document an AI-assisted workflow', desc: 'Turns informal AI use into a reviewable operating procedure.', artifact: 'Examiner-ready workflow SOP', risk: 'med' },
+      { title: 'Document an AI-assisted workflow', desc: 'Turns informal AI use into a reviewable operating procedure.', artifact: 'Review-ready workflow SOP', risk: 'med' },
       { title: 'Review a proposed AI use case', desc: 'Creates a consistent screen before teams adopt AI for real work.', artifact: 'AI use-case risk checklist', risk: 'high' },
       { title: 'Summarize regulatory guidance', desc: 'Helps staff understand guidance faster while preserving human review.', artifact: 'Plain-English guidance brief', risk: 'med' },
       { title: 'Create a human review checklist', desc: 'Makes accuracy, data handling, and approval expectations explicit.', artifact: 'Output review checklist', risk: 'low' },

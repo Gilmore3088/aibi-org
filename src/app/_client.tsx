@@ -87,6 +87,18 @@ export default function HomePage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
+            <p
+              style={{
+                margin: '0 0 14px',
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-soft)',
+              }}
+            >
+              For community banks &amp; credit unions
+            </p>
             <h1>AI training that becomes real banking work.</h1>
             <p className="mk-lede">
               Score your readiness. Train by role. Build workflows your team reuses.
