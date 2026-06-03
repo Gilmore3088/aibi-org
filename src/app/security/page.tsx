@@ -184,12 +184,11 @@ export default function SecurityPage() {
             >
               Red / Yellow / Green Use Card (PDF) →
             </a>
-            {/* Direct static link — the file lives in /public/downloads
-                until the Supabase resources seed migrates it. Other items
-                above point at the resources API; once the seed runs the
-                three links can be unified on /api/resources/<slug>/download. */}
+            {/* All three resolve through the resources API (entitlement +
+                download logging); the Supabase resources seed has run, so the
+                free-tier desk cards and playbook return the signed file. */}
             <a
-              href="/downloads/compliance-playbook.pdf"
+              href="/api/resources/compliance-playbook/download"
               download
               style={{
                 display: 'block',
