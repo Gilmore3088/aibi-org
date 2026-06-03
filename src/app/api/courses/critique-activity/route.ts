@@ -36,6 +36,23 @@ interface CritiqueOutput {
   readonly model: string;
 }
 
+// Defensive cleanup for string values the model may have leaked JSON
+// scaffolding into (the foundation-cx audit caught raw braces in the
+// module-3 rewrite). Targets curly braces and leaked "key": tokens only —
+// square brackets are left intact since rewrites legitimately use
+// [placeholder] markers.
+function cleanProse(value: string): string {
+  let s = value.trim();
+  // Drop a leaked leading JSON key token, e.g. {"rewrite": or "rewrite":
+  s = s.replace(/^\{?\s*"?(?:strong|revise|rewrite)"?\s*:\s*/i, '');
+  // Remove stray JSON object braces that leaked into the value.
+  s = s.replace(/[{}]/g, '');
+  // Strip a single pair of wrapping double-quotes.
+  s = s.replace(/^"([\s\S]*)"$/, '$1');
+  // Collapse whitespace introduced by the removals.
+  return s.replace(/\s{2,}/g, ' ').trim();
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   const limited = await rateLimitOrFail({
     key: 'critique-activity',
@@ -114,7 +131,7 @@ Output format: a single JSON object with three keys:
 - revise: array of 2-4 strings, each a specific thing to revise with the reason
 - rewrite: one paragraph (60-110 words) showing how a strong response to the same prompt would read
 
-No prose outside the JSON. No markdown code fences.`;
+Every string value must be plain prose only — no braces, brackets, backticks, or JSON syntax inside any value. No prose outside the JSON. No markdown code fences.`;
 
   const userBlock = `Module ${expanded.number}.
 Goal of the module: ${expanded.goal}
@@ -140,10 +157,12 @@ Return the JSON critique now. Be specific to their text. Reference details they 
     });
     const textBlock = result.content.find((b) => b.type === 'text');
     const raw = textBlock && textBlock.type === 'text' ? textBlock.text : '';
-    const jsonText = raw
-      .replace(/^```(?:json)?\s*/i, '')
-      .replace(/\s*```\s*$/i, '')
-      .trim();
+    // Extract the outermost JSON object: the first '{' to the last '}'.
+    // This tolerates code fences, preamble, and trailing prose without a
+    // brittle fence-only strip.
+    const objStart = raw.indexOf('{');
+    const objEnd = raw.lastIndexOf('}');
+    const jsonText = objStart !== -1 && objEnd > objStart ? raw.slice(objStart, objEnd + 1) : raw.trim();
     let parsed: CritiqueOutput;
     try {
       const j = JSON.parse(jsonText) as {
@@ -159,9 +178,17 @@ Return the JSON critique now. Be specific to their text. Reference details they 
         throw new Error('shape mismatch');
       }
       parsed = {
-        strong: (j.strong as unknown[]).filter((s): s is string => typeof s === 'string').slice(0, 4),
-        revise: (j.revise as unknown[]).filter((s): s is string => typeof s === 'string').slice(0, 4),
-        rewrite: j.rewrite,
+        strong: (j.strong as unknown[])
+          .filter((s): s is string => typeof s === 'string')
+          .map(cleanProse)
+          .filter((s) => s.length > 0)
+          .slice(0, 4),
+        revise: (j.revise as unknown[])
+          .filter((s): s is string => typeof s === 'string')
+          .map(cleanProse)
+          .filter((s) => s.length > 0)
+          .slice(0, 4),
+        rewrite: cleanProse(j.rewrite),
         model: 'claude-opus-4-7',
       };
     } catch (parseErr) {

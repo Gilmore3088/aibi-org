@@ -247,7 +247,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   margin: '0 0 14px',
                 }}
               >
-                You finished the course. Answer the same 12 questions again.
+                See how far you&rsquo;ve come.
               </h1>
               <p
                 style={{
@@ -257,8 +257,9 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   margin: '0 0 24px',
                 }}
               >
-                Answer honestly — the same way you did before the course. The point
-                is the comparison, not the score.
+                You finished all 12 modules. Answer the same 12 questions you
+                started with &mdash; honestly, the way you did on day one &mdash; and
+                we&rsquo;ll show you exactly what changed, dimension by dimension.
               </p>
 
               <GrowthPreview

@@ -24,6 +24,79 @@ function formatDate(isoString: string): string {
   return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
+const TOTAL_MODULES = 12;
+
+interface PendingState {
+  readonly title: string;
+  readonly body: string;
+  readonly ctaHref: string;
+  readonly ctaLabel: string;
+  readonly progress: { readonly done: number; readonly total: number } | null;
+}
+
+// Honest copy for the "no certificate yet" state. The old page told every
+// learner without a certificate that their "submission has been reviewed and
+// approved" — false for anyone still working through the course (foundation-cx
+// F3). Branch on real progress + Final Foundation Lab review state instead.
+function derivePendingState(args: {
+  readonly allModulesComplete: boolean;
+  readonly completedCount: number;
+  readonly submissionStatus: string | null;
+}): PendingState {
+  const { allModulesComplete, completedCount, submissionStatus } = args;
+  const continueHref = '/courses/foundation/program';
+  const submitHref = '/courses/foundation/program/submit';
+
+  if (!allModulesComplete) {
+    return {
+      title: 'Finish the course to earn your credential',
+      body: `Your AiBI-Foundation credential is issued once you complete all ${TOTAL_MODULES} modules and submit your Final Foundation Lab. Pick up where you left off — each module ends with a saved artifact you can use at work.`,
+      ctaHref: continueHref,
+      ctaLabel: 'Continue the course',
+      progress: { done: completedCount, total: TOTAL_MODULES },
+    };
+  }
+
+  if (submissionStatus === 'approved') {
+    return {
+      title: 'Your credential is being generated',
+      body: 'Your Final Foundation Lab has been reviewed and approved. The credential will appear here shortly — refresh this page in a moment.',
+      ctaHref: '/courses/foundation/program/certificate',
+      ctaLabel: 'Refresh page',
+      progress: null,
+    };
+  }
+
+  if (submissionStatus === 'pending' || submissionStatus === 'resubmitted') {
+    return {
+      title: 'Your Final Foundation Lab is under review',
+      body: "You've completed all 12 modules and submitted your Final Foundation Lab. We review submissions within a few business days; your credential appears here as soon as it's approved.",
+      ctaHref: '/courses/foundation/program',
+      ctaLabel: 'Back to the course',
+      progress: { done: TOTAL_MODULES, total: TOTAL_MODULES },
+    };
+  }
+
+  if (submissionStatus === 'failed') {
+    return {
+      title: 'Your Final Foundation Lab needs another pass',
+      body: 'Your submission came back with reviewer feedback. Revise it against the notes and resubmit — the credential issues once the revised lab is approved.',
+      ctaHref: submitHref,
+      ctaLabel: 'Review feedback and resubmit',
+      progress: { done: TOTAL_MODULES, total: TOTAL_MODULES },
+    };
+  }
+
+  // All modules complete, but no lab submitted yet.
+  return {
+    title: 'One step left: submit your Final Foundation Lab',
+    body: "You've completed all 12 modules. Submit your Final Foundation Lab — the capstone that pulls your saved artifacts together — to earn your AiBI-Foundation credential.",
+    ctaHref: submitHref,
+    ctaLabel: 'Submit Final Lab',
+    progress: { done: TOTAL_MODULES, total: TOTAL_MODULES },
+  };
+}
+
 export const metadata = {
   title: 'Your Certificate — AiBI-Foundation | The AI Banking Institute',
   description: 'Download your AiBI-Foundation certificate.',
@@ -108,6 +181,35 @@ export default async function CertificatePage() {
   const verificationUrl = certificate
     ? `https://aibankinginstitute.com/verify/${certificate.certificate_id}`
     : null;
+
+  // Build an honest "not issued yet" state from real progress + Final
+  // Foundation Lab review status (foundation-cx F3).
+  let pendingState: PendingState | null = null;
+  if (!certificate) {
+    const completedModules = enrollment.completed_modules ?? [];
+    const allModulesComplete = Array.from({ length: TOTAL_MODULES }, (_, i) => i + 1).every((n) =>
+      completedModules.includes(n),
+    );
+
+    let submissionStatus: string | null = null;
+    const { data: sub } = await serviceClient
+      .from('work_submissions')
+      .select('review_status, status, created_at')
+      .eq('enrollment_id', enrollment.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (sub) {
+      const row = sub as { review_status?: string | null; status?: string | null };
+      submissionStatus = row.review_status ?? row.status ?? null;
+    }
+
+    pendingState = derivePendingState({
+      allModulesComplete,
+      completedCount: completedModules.length,
+      submissionStatus,
+    });
+  }
 
   return (
     <CourseShellWrapper
@@ -637,7 +739,7 @@ export default async function CertificatePage() {
                 margin: '0 0 12px',
               }}
             >
-              Your credential is being generated
+              {pendingState?.title}
             </h2>
             <p
               style={{
@@ -646,14 +748,52 @@ export default async function CertificatePage() {
                 lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 maxWidth: 460,
-                margin: '0 auto 28px',
+                margin: '0 auto 24px',
               }}
             >
-              Your submission has been reviewed and approved. The credential
-              will appear here shortly. Refresh this page in a moment.
+              {pendingState?.body}
             </p>
+            {pendingState?.progress && (
+              <div style={{ maxWidth: 320, margin: '0 auto 28px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    ...META_LABEL,
+                    marginBottom: 6,
+                  }}
+                >
+                  <span>Course progress</span>
+                  <span>
+                    {pendingState.progress.done} / {pendingState.progress.total} modules
+                  </span>
+                </div>
+                <div
+                  role="progressbar"
+                  aria-valuenow={pendingState.progress.done}
+                  aria-valuemin={0}
+                  aria-valuemax={pendingState.progress.total}
+                  aria-label="Modules completed"
+                  style={{
+                    height: 8,
+                    background: 'var(--ink-a10)',
+                    borderRadius: 999,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${Math.round((pendingState.progress.done / pendingState.progress.total) * 100)}%`,
+                      background: 'var(--gold)',
+                      borderRadius: 999,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             <a
-              href="/courses/foundation/program/certificate"
+              href={pendingState?.ctaHref ?? '/courses/foundation/program'}
               style={{
                 display: 'inline-block',
                 background: 'var(--ink)',
@@ -668,7 +808,7 @@ export default async function CertificatePage() {
                 textDecoration: 'none',
               }}
             >
-              Refresh Page
+              {pendingState?.ctaLabel ?? 'Back to the course'}
             </a>
           </div>
         )}
