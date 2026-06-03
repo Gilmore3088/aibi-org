@@ -443,7 +443,7 @@ export default function ForInstitutionsPage() {
           {[
             { icon: TargetIcon, num: '01 · Assess', h: 'Baseline your readiness', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
             { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
-            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-ready out of the box.' },
+            { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — examiner-readable from day one.' },
             { icon: LockIcon, num: '04 · Govern', h: 'Establish approval and data rules', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
             { icon: NetworkIcon, num: '05 · Consult', h: 'Engage ongoing advisory', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
           ].map(({ icon: Icon, num, h, p }) => (
@@ -570,7 +570,7 @@ export default function ForInstitutionsPage() {
             </div>
             <p>
               Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly
-              cohort reviews, examiner-ready documentation throughout.
+              cohort reviews, examiner-readable documentation throughout.
             </p>
             <ul>
               <li><CheckIcon className="mk-ic" />Includes all course + toolbox access</li>

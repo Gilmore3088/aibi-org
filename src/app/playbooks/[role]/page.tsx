@@ -137,6 +137,18 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
                 </div>
               ))}
             </div>
+            <p
+              style={{
+                fontSize: 11,
+                lineHeight: 1.5,
+                color: 'var(--slate-500)',
+                margin: '10px 0 0',
+              }}
+            >
+              Illustrative starting picture for a typical community-bank team — not a
+              measurement. Your readiness assessment replaces these with your
+              institution&rsquo;s real scores.
+            </p>
             <div className="mk-path">
               <div className="mk-l">Recommended path</div>
               <div className="mk-v">{data.snapPath}</div>
