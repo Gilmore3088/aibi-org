@@ -10,8 +10,11 @@
     "src/middleware.ts"
   ],
   "scripts": {
+    "predev": "node scripts/sync-sandbox-data.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/sync-sandbox-data.mjs",
     "build": "next build",
+    "sync:sandbox-data": "node scripts/sync-sandbox-data.mjs",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
