@@ -7,7 +7,7 @@ import {
   Button,
   CtaBand,
 } from '@/components/mockup';
-import { PLAYBOOK_INDEX } from './data';
+import { PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 
 export const metadata: Metadata = {
   title: 'Role Playbooks — The AI Banking Institute',
@@ -81,6 +81,9 @@ export default function PlaybooksIndexPage() {
         <div className="mk-playbooks" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
           {PLAYBOOK_INDEX.map(({ slug, title, desc }) => {
             const Icon = ICONS[slug] ?? ShieldIcon;
+            const pb = PLAYBOOKS[slug];
+            const useCount = pb?.uses.length ?? 0;
+            const stepCount = pb?.ops.length ?? 0;
             return (
               <a key={slug} className="mk-pb" href={`/playbooks/${slug}`}>
                 <span className="mk-pic">
@@ -88,7 +91,9 @@ export default function PlaybooksIndexPage() {
                 </span>
                 <h3>{title}</h3>
                 <p>{desc}</p>
-                <div className="mk-count">Open playbook →</div>
+                <div className="mk-count">
+                  {useCount} use cases · {stepCount}-step workflow →
+                </div>
               </a>
             );
           })}

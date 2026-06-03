@@ -455,9 +455,12 @@ function StarterKitCard({
         <h3 className="rx-kit-title">{kit.title}</h3>
         <p className="rx-kit-desc">{kit.desc}</p>
         <p className="rx-kit-audience">{kit.audience}</p>
+        <p className="rx-kit-audience" style={{ fontWeight: 600, color: 'var(--ink)' }}>
+          {kit.items.length} {kit.items.length === 1 ? 'file' : 'files'} · click to preview contents
+        </p>
       </button>
       <a className="rx-kit-card-zip" href={kit.zip}>
-        Download kit ZIP · {kit.zipSize} <Download size={14} />
+        Download kit ZIP · {kit.items.length} files · {kit.zipSize} <Download size={14} />
       </a>
     </article>
   );
