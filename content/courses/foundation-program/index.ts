@@ -17,6 +17,7 @@ export { module11 } from './module-11';
 export { module12 } from './module-12';
 export * from './course-config';
 export * from './v4-expanded-modules';
+export * from './artifact-first';
 export * from './prompt-library';
 export * from './output-examples';
 export * from './role-paths';
