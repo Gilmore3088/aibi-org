@@ -1,5 +1,12 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomBytes } from 'node:crypto';
+import {
+  TRUSTED_DEVICE_COOKIE,
+  TRUSTED_DEVICE_TTL_DAYS,
+  generateOpaqueToken,
+  hashToken,
+} from '../../src/lib/auth/trusted-device';
+import type { OnboardingAnswers } from '../../src/types/course';
 
 // There is no staging Supabase project. By design — for a pre-launch
 // site with no real traffic, a parallel project adds operational cost
@@ -98,6 +105,91 @@ export async function grantFoundationEnrollment(userId: string, email: string): 
   if (error) {
     throw new Error(`grantFoundationEnrollment failed: ${error.message}`);
   }
+}
+
+/**
+ * Set onboarding answers on a seeded enrollment. The layout's ONBD-02 gate
+ * redirects to /onboarding when onboarding_answers IS NULL, so call this
+ * after grantFoundationEnrollment for any test that needs to land inside
+ * the course shell without an onboarding detour.
+ */
+export async function setOnboardingAnswers(
+  userId: string,
+  answers: OnboardingAnswers,
+): Promise<void> {
+  const supabase = getServiceRoleClient();
+  const { error } = await supabase
+    .from('course_enrollments')
+    .update({ onboarding_answers: answers })
+    .eq('user_id', userId);
+  if (error) {
+    throw new Error(`setOnboardingAnswers failed: ${error.message}`);
+  }
+}
+
+/**
+ * Issue a trusted-device row directly and return the plaintext cookie token
+ * the caller should set on the Playwright browser context. Mirrors
+ * `src/lib/auth/trusted-device.ts#issueTrustedDevice` without going through
+ * the email-confirmation round-trip.
+ */
+export async function grantTrustedDevice(
+  userId: string,
+): Promise<{ cookieName: string; cookieToken: string; expiresAtIso: string }> {
+  const supabase = getServiceRoleClient();
+  const token = generateOpaqueToken();
+  const cookieTokenHash = hashToken(token);
+  const expiresAt = new Date(Date.now() + TRUSTED_DEVICE_TTL_DAYS * 24 * 60 * 60 * 1000);
+  const { error } = await supabase.from('trusted_devices').insert({
+    user_id: userId,
+    cookie_token_hash: cookieTokenHash,
+    expires_at: expiresAt.toISOString(),
+    ip_hash_first: null,
+    user_agent: 'playwright-cx-audit',
+    label: 'e2e cx-audit',
+  });
+  if (error) {
+    throw new Error(`grantTrustedDevice failed: ${error.message}`);
+  }
+  return {
+    cookieName: TRUSTED_DEVICE_COOKIE,
+    cookieToken: token,
+    expiresAtIso: expiresAt.toISOString(),
+  };
+}
+
+/**
+ * Mark a learner's foundation enrollment as fully complete (modules 1-12
+ * in completed_modules). Used by the CX audit so the harness can visit
+ * every module without being blocked by canAccessModule().
+ */
+export async function markAllModulesComplete(userId: string): Promise<void> {
+  const supabase = getServiceRoleClient();
+  const allModules = Array.from({ length: 12 }, (_, i) => i + 1);
+  const { error } = await supabase
+    .from('course_enrollments')
+    .update({ completed_modules: allModules, current_module: 12 })
+    .eq('user_id', userId);
+  if (error) {
+    throw new Error(`markAllModulesComplete failed: ${error.message}`);
+  }
+}
+
+/**
+ * One-shot: seed a confirmed user, enroll in foundation, set onboarding,
+ * mark all modules complete (so every module is accessible for audit),
+ * issue a trusted-device row, and return everything Playwright needs to
+ * land inside the course shell on first navigation.
+ */
+export async function seedFoundationLearner(
+  answers: OnboardingAnswers,
+): Promise<SeededUser & { trustedDevice: { cookieName: string; cookieToken: string; expiresAtIso: string } }> {
+  const user = await seedConfirmedUser();
+  await grantFoundationEnrollment(user.id, user.email);
+  await setOnboardingAnswers(user.id, answers);
+  await markAllModulesComplete(user.id);
+  const trustedDevice = await grantTrustedDevice(user.id);
+  return { ...user, trustedDevice };
 }
 
 /**
