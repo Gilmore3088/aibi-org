@@ -14,6 +14,10 @@
 import { NextResponse } from 'next/server';
 import { hasLockedInstitutionDiscount } from '@/lib/stripe/institution-discount';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import {
+  checkoutIdempotencyKey,
+  dynamicPaymentMethodDefaults,
+} from '@/lib/stripe/checkout-defaults';
 
 // Lazy-import the stripe singleton so the module-level throw only fires
 // when the route is actually invoked, not at build time.
@@ -148,10 +152,13 @@ export async function POST(request: Request) {
 
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
-        // Restrict to card only. BNPL (Klarna/Affirm) and consumer-fintech
-        // rails (Cash App Pay, US bank with promo badge) are off-brand for
-        // a $295 community-bank-staff product. Issue #319.
-        payment_method_types: ['card'],
+        // Issue #319 — BNPL + consumer-fintech rails off-brand for a
+        // $295 community-bank-staff product. Implemented as
+        // excluded_payment_method_types (Stripe-recommended) instead of
+        // payment_method_types: ['card'] so dynamic payment methods stays
+        // on and the Dashboard can flip on, e.g., ACH later without a
+        // code change. See src/lib/stripe/checkout-defaults.ts.
+        ...dynamicPaymentMethodDefaults(),
         // #314 — disable the Stripe Link 'Save my information' toggle.
         // Default-on, the toggle silently requires a phone number to
         // enroll the customer in Link, and the Pay button stays inert
@@ -175,6 +182,14 @@ export async function POST(request: Request) {
           ...(discountApplied ? { discount_applied: discountApplied } : {}),
         },
         ...(userEmail ? { customer_email: userEmail } : {}),
+      }, {
+        // Dedupe near-simultaneous duplicate sessions (double-clicked
+        // CTA, client network retry). Same buyer + product + minute
+        // returns the same session URL.
+        idempotencyKey: checkoutIdempotencyKey({
+          product: 'foundation-individual',
+          email: userEmail,
+        }),
       });
 
       return NextResponse.json({ url: session.url });
@@ -190,7 +205,8 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card'],  // #319 — card-only for institutional too
+      // #319 — same DPM-with-exclusions strategy as individual mode.
+      ...dynamicPaymentMethodDefaults(),
       line_items: [{ price: foundationInstitutionPriceId, quantity }],
       success_url: `${origin}/courses/foundation/program?enrolled=true`,
       cancel_url: `${origin}/courses/foundation/program/purchase`,
@@ -204,6 +220,12 @@ export async function POST(request: Request) {
         ...(userEmail ? { user_email: userEmail } : {}),
       },
       ...(userEmail ? { customer_email: userEmail } : {}),
+    }, {
+      idempotencyKey: checkoutIdempotencyKey({
+        product: 'foundation-institution',
+        email: userEmail,
+        quantity,
+      }),
     });
 
     return NextResponse.json({ url: session.url });

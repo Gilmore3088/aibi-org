@@ -12,6 +12,10 @@
 
 import { NextResponse } from 'next/server';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import {
+  checkoutIdempotencyKey,
+  dynamicPaymentMethodDefaults,
+} from '@/lib/stripe/checkout-defaults';
 
 async function getStripe() {
   const { stripe } = await import('@/lib/stripe');
@@ -95,9 +99,9 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      // Card only — see #319. BNPL/Cash App/etc. off-brand for a $99
-      // community-bank-staff diagnostic.
-      payment_method_types: ['card'],
+      // #319 — DPM-with-exclusions instead of payment_method_types:['card']
+      // so dynamic payment methods stays on. See checkout-defaults.ts.
+      ...dynamicPaymentMethodDefaults(),
       // #314 — kill the Stripe Link 'Save my information' toggle so
       // the Pay button isn't silently blocked by an unfilled phone field.
       // customer_creation:'always' satisfies Stripe's requirement that
@@ -115,6 +119,11 @@ export async function POST(request: Request) {
         ...(userEmail ? { user_email: userEmail } : {}),
       },
       ...(userEmail ? { customer_email: userEmail } : {}),
+    }, {
+      idempotencyKey: checkoutIdempotencyKey({
+        product: 'in-depth-assessment',
+        email: userEmail,
+      }),
     });
 
     return NextResponse.json({ url: session.url });
