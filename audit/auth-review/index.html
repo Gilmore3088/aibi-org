@@ -1,0 +1,1841 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Auth & lead-capture review — 2026-06-07</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { --ink: #0E1116; --slate: #485061; --muted: #7c8597; --cream: #FAF7F1; --gold: #C19A4B; --line: #e6e1d6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  header.top { background: var(--ink); color: #fff; padding: 28px 32px; }
+  header.top h1 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.01em; }
+  header.top p { margin: 0; color: rgba(255,255,255,0.7); font-size: 13px; }
+  nav.toc { background: #fff; border-bottom: 1px solid var(--line); padding: 14px 32px; position: sticky; top: 0; z-index: 10; }
+  nav.toc a { color: var(--ink); text-decoration: none; margin-right: 18px; font-weight: 600; font-size: 13px; }
+  nav.toc a:hover { color: var(--gold); }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 32px 80px; }
+  section.findings { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+  section.findings h2 { margin: 0 0 12px; font-size: 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--cream); font-weight: 600; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .badge.info { background: #e8eef6; color: #2a4d7a; }
+  .badge.soft { background: #f3efe2; color: #6b5b2a; }
+  .badge.warn, .badge.warning { background: #fcecd6; color: #8a4a0d; }
+  .badge.fail { background: #fbdada; color: #8a1f1f; }
+  section.group { margin: 36px 0; }
+  section.group h2 { margin: 0 0 14px; font-size: 20px; border-bottom: 2px solid var(--gold); padding-bottom: 8px; }
+  article.step { background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 18px; overflow: hidden; }
+  article.step header { background: #fbf7ee; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  article.step header h3 { margin: 0; font-size: 15px; font-weight: 700; }
+  article.step .err { color: #8a1f1f; font-size: 12px; margin-top: 6px; }
+  article.step .cols { display: grid; grid-template-columns: 360px 1fr; gap: 0; }
+  @media (max-width: 900px) { article.step .cols { grid-template-columns: 1fr; } }
+  article.step .info { padding: 16px 18px; border-right: 1px solid var(--line); font-size: 13px; color: var(--slate); }
+  article.step .info p { margin: 0 0 8px; }
+  article.step .info code { font-size: 12px; background: #f4f1e9; padding: 1px 5px; border-radius: 4px; }
+  article.step details { margin-top: 8px; }
+  article.step summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 12px; }
+  article.step pre { background: #f6f2e6; padding: 6px 8px; border-radius: 6px; font-size: 11px; overflow-x: auto; max-height: 200px; }
+  article.step ol.reqs { padding-left: 20px; margin: 4px 0; }
+  article.step .shots { padding: 12px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); align-items: start; }
+  article.step .shots img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; display: block; }
+  footer { margin-top: 60px; padding: 24px 32px; color: var(--muted); font-size: 12px; text-align: center; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Auth & lead-capture review</h1>
+  <p>Generated 2026-06-07T00:00:33.958Z · base URL: <code>http://localhost:3000</code> · 55 steps captured · 21 findings</p>
+</header>
+<nav class="toc">
+  <a href="#findings">Findings</a>
+  <a href="#group-A">A. Email capture</a>
+  <a href="#group-B">B. Auth surfaces</a>
+  <a href="#group-C">C. Payment</a>
+  <a href="#group-D">D. Protected redirects</a>
+</nav>
+<main>
+  <p class="muted">
+    The dev server was booted without real Supabase / Stripe / Resend / MailerLite credentials.
+    UI surfaces still render; backend probes that depend on those services return their
+    documented degraded responses (503, "Auth not configured", etc.). Every observation
+    below is recorded for what it actually is — not what it "should" be in a fully
+    configured environment. Cross-reference the code paths cited in each row before
+    treating a finding as a real defect.
+  </p>
+  <div id="findings"></div>
+  
+    <section class="findings">
+      <h2>Findings summary</h2>
+      <p class="muted">Severity: <span class="badge fail">fail</span> blocks the flow; <span class="badge warn">warning</span> dead-path or fail-open; <span class="badge soft">soft</span> harness anomaly; <span class="badge info">info</span> code-trace fact for the reviewer.</p>
+      <table>
+        <thead><tr><th>Severity</th><th>Area</th><th>Finding</th><th>Evidence</th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td><span class="badge warning">warning</span></td>
+              <td>B</td>
+              <td>/auth/confirm-device GET hardcodes &quot;https://aibankinginstitute.com&quot; as the redirect base for every error path (src/app/auth/confirm-device/route.ts:30). This means errors in local dev redirect to the production host. Should use request.url origin instead so the user stays on the same deployment.</td>
+              <td><code>src/app/auth/confirm-device/route.ts:27-33</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge warning">warning</span></td>
+              <td>env</td>
+              <td>Local audit ran WITHOUT Supabase credentials, so isPreviewAuthBypassEnabled() returns true and ALL /dashboard/* layout gates auto-pass (src/lib/auth/previewBypass.ts:28-31). That is the documented behavior, but it means the D-row &quot;protected route&quot; screenshots show the page rendering — not the redirect they would do in production. The expected behavior is documented in expected-vs-observed; verify by re-running with real Supabase env vars.</td>
+              <td><code>src/lib/auth/previewBypass.ts:16-32</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A</td>
+              <td>A6-capture-email-api-direct: POST /api/capture-email returned 200 as expected.</td>
+              <td><code>{&quot;ok&quot;:true,&quot;profileId&quot;:null,&quot;mailerliteTagAdded&quot;:false,&quot;magicLinkUrl&quot;:null}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A</td>
+              <td>A6b-inquiry-api-direct: POST /api/inquiry returned 200 as expected.</td>
+              <td><code>{&quot;ok&quot;:true}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A</td>
+              <td>A6c-inquiry-bad-type: POST /api/inquiry returned 400 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Invalid payload.&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>C2-create-checkout-individual: POST /api/create-checkout returned 503 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Payment system not configured.&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>C2b-create-checkout-low-qty: POST /api/create-checkout returned 400 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Team purchases require quantity &gt;= 10 (integer).&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>C3b-checkout-indepth: POST /api/checkout/in-depth returned 503 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Payment system not configured.&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>C3c-checkout-indepth-institution: POST /api/checkout/in-depth returned 503 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Institution pricing for the In-Depth Assessment is coming soon. Email hello@aibankinginstitute.com for bulk orders of 10+ seats.&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>C6-webhook-unsigned: POST /api/webhooks/stripe returned 503 as expected.</td>
+              <td><code>{&quot;error&quot;:&quot;Webhook not configured.&quot;}</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>B</td>
+              <td>DevSkipButton renders only when process.env.NODE_ENV !== &quot;production&quot; (src/app/auth/login/page.tsx:130-147). Confirmed gated.</td>
+              <td><code>src/app/auth/login/page.tsx:130</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>B</td>
+              <td>Magic-link sign-in retired 2026-05-28 (#187). signInWithMagicLink removed from src/lib/supabase/auth.ts. Post-assessment &quot;set your password&quot; flow uses resetPasswordForEmail (sendPasswordSetupAction).</td>
+              <td><code>src/lib/supabase/auth.ts:84-89, src/app/auth/actions.ts:23-45</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>B</td>
+              <td>sanitizeNext() is the canonical open-redirect guard; called from /auth/login, /auth/signup, /api/auth/check-device, /api/capture-email (auth-admin magic link), and /auth/actions.ts. /auth/callback POST does its own startsWith(&quot;/&quot;) check at route.ts:92 — equivalent guarantee but not centralized.</td>
+              <td><code>src/lib/supabase/auth.ts:11-21, src/app/auth/callback/route.ts:92</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge warning">warning</span></td>
+              <td>B</td>
+              <td>Trusted-device check is enforced at /dashboard/layout.tsx:79-82 but verify whether the same gate exists on /courses/foundation/program/layout.tsx, /my-toolbox, and /assessment/in-depth/access. If absent, a stolen Supabase cookie could reach those surfaces without the device-trust handshake. /api/auth/check-device fail-open path (login page line 199-209) makes this gap higher-impact.</td>
+              <td><code>src/app/dashboard/layout.tsx:79-82, src/app/auth/login/page.tsx:199-209</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>C</td>
+              <td>Stripe webhook only handles checkout.session.completed (src/app/api/webhooks/stripe/route.ts:77-79). All other events 200-OK silently — refunds, disputes, payment_intent.payment_failed, customer.subscription.* never trigger any action. Acceptable for one-time-charge model but flag if subscription billing is added.</td>
+              <td><code>src/app/api/webhooks/stripe/route.ts:77</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A/C</td>
+              <td>ensureAuthUser is called from /api/capture-email, /api/inquiry, /api/webhooks/stripe. Each is wrapped in try/catch with .warn-and-continue. Confirm idempotency (multiple calls for same email do not create duplicate auth.users rows).</td>
+              <td><code>src/app/api/capture-email/route.ts:320, src/app/api/inquiry/route.ts:100, src/app/api/webhooks/stripe/route.ts:116</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A</td>
+              <td>/api/capture-email research path requires lead_source. Verify every DownloadGate caller passes a non-empty lead_source string; otherwise the gate 400s silently from the user POV.</td>
+              <td><code>src/app/api/capture-email/route.ts:168-178</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge warning">warning</span></td>
+              <td>B</td>
+              <td>/auth/login PasswordForm catches /api/auth/check-device errors and pushes to redirectTo anyway (page.tsx:199-209). Comment says trust is enforced at the layout — make sure every protected layout actually does so, otherwise a transient check-device 500 lets users in untrusted.</td>
+              <td><code>src/app/auth/login/page.tsx:199-209</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>B</td>
+              <td>/auth/forgot-password shows generic &quot;if that address is in our system&quot; regardless of whether the email exists — correct anti-enumeration behavior.</td>
+              <td><code>src/app/auth/forgot-password/page.tsx:148-165</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>B</td>
+              <td>/auth/callback GET never consumes a token — it redirects to /auth/confirm which renders a click-through button. Only the POST consumes. This is the documented email-scanner pre-fetch defense.</td>
+              <td><code>src/app/auth/callback/route.ts:14-31, 79-85</code></td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge info">info</span></td>
+              <td>A</td>
+              <td>EmailGate auto-submits when the user is already authed (calls /api/auth/me, fills email, posts to /api/capture-email). Reduces friction for logged-in completers.</td>
+              <td><code>src/app/assessment/_components/EmailGate.tsx:148-172</code></td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </section>
+  
+  
+      <section class="group" id="group-A">
+        <h2>A. Email capture (no password)</h2>
+        
+          <article class="step" id="A1-assessment-take-render">
+            <header>
+              <h3>A1-assessment-take-render — Assessment take page renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Assessment quiz shell</p>
+                <p><strong>Start:</strong> <code>chrome-error://chromewebdata/</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/take</code></p>
+                <p><strong>Code:</strong> <code>src/app/assessment/take/_client.tsx</code></p>
+                
+                  <details><summary>2 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>2 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A1-assessment-take-render-initial.png" target="_blank"><img src="screenshots/A1-assessment-take-render-initial.png" loading="lazy" alt="A1-assessment-take-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A1b-assessment-email-gate">
+            <header>
+              <h3>A1b-assessment-email-gate — Drive assessment to EmailGate (best-effort)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Reach 12-question completion → EmailGate renders preview score + email form</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/take</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/take</code></p>
+                <p><strong>Code:</strong> <code>src/app/assessment/_components/EmailGate.tsx</code></p>
+                
+                  <details><summary>2 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>2 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A1b-assessment-email-gate-after-walk.png" target="_blank"><img src="screenshots/A1b-assessment-email-gate-after-walk.png" loading="lazy" alt="A1b-assessment-email-gate" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A2-research-render">
+            <header>
+              <h3>A2-research-render — Research library page renders with DownloadGate buttons</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Each artifact card exposes &quot;Get the PDF&quot; button</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/take</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/resources</code></p>
+                <p><strong>Code:</strong> <code>src/components/research/DownloadGate.tsx</code> · <code>src/app/resources/page.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A2-research-render-initial.png" target="_blank"><img src="screenshots/A2-research-render-initial.png" loading="lazy" alt="A2-research-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A3-playbooks-index">
+            <header>
+              <h3>A3-playbooks-index — Playbooks index renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Six role tiles linking to /playbooks/[role]</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/resources</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/playbooks</code></p>
+                <p><strong>Code:</strong> <code>src/app/playbooks/page.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A3-playbooks-index-initial.png" target="_blank"><img src="screenshots/A3-playbooks-index-initial.png" loading="lazy" alt="A3-playbooks-index" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A3b-playbook-role-modal">
+            <header>
+              <h3>A3b-playbook-role-modal — Playbook role page opens PlaybookDownloadModal</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Modal asks for name/email/institution; submits to /api/inquiry</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/playbooks</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/playbooks/compliance</code></p>
+                <p><strong>Code:</strong> <code>src/app/playbooks/_components/PlaybookDownloadModal.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A3b-playbook-role-modal-role-page.png" target="_blank"><img src="screenshots/A3b-playbook-role-modal-role-page.png" loading="lazy" alt="A3b-playbook-role-modal" /></a><a href="screenshots/A3b-playbook-role-modal-modal-open.png" target="_blank"><img src="screenshots/A3b-playbook-role-modal-modal-open.png" loading="lazy" alt="A3b-playbook-role-modal" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A3c-playbook-submit">
+            <header>
+              <h3>A3c-playbook-submit — Submit playbook download form → /api/inquiry POST</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 200 OK; ensureAuthUser + subscribeToPlaybookForm fire</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/playbooks/compliance</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/playbooks/compliance</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/inquiry/route.ts</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A3c-playbook-submit-filled.png" target="_blank"><img src="screenshots/A3c-playbook-submit-filled.png" loading="lazy" alt="A3c-playbook-submit" /></a><a href="screenshots/A3c-playbook-submit-after-submit.png" target="_blank"><img src="screenshots/A3c-playbook-submit-after-submit.png" loading="lazy" alt="A3c-playbook-submit" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A4-safe-ai-guide-render">
+            <header>
+              <h3>A4-safe-ai-guide-render — /security renders Safe-AI-Use guide request form</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Form with name/email/institution</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/playbooks/compliance</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/security</code></p>
+                <p><strong>Code:</strong> <code>src/app/security/_components/GuideRequestForm.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A4-safe-ai-guide-render-initial.png" target="_blank"><img src="screenshots/A4-safe-ai-guide-render-initial.png" loading="lazy" alt="A4-safe-ai-guide-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A4b-safe-ai-submit">
+            <header>
+              <h3>A4b-safe-ai-submit — Submit Safe-AI guide request → /api/inquiry (type=guide-request)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 200 OK; PDF download trigger</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/security</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/security</code></p>
+                <p><strong>Code:</strong> <code>src/app/security/_components/GuideRequestForm.tsx</code> · <code>src/app/api/inquiry/route.ts</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A4b-safe-ai-submit-filled.png" target="_blank"><img src="screenshots/A4b-safe-ai-submit-filled.png" loading="lazy" alt="A4b-safe-ai-submit" /></a><a href="screenshots/A4b-safe-ai-submit-after-submit.png" target="_blank"><img src="screenshots/A4b-safe-ai-submit-after-submit.png" loading="lazy" alt="A4b-safe-ai-submit" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A5-cert-inquiry-render">
+            <header>
+              <h3>A5-cert-inquiry-render — /certifications renders inquiry form</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Form with name/email/institution/track</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/security</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>Code:</strong> <code>src/app/certifications/_components/InquiryForm.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/A5-cert-inquiry-render-initial.png" target="_blank"><img src="screenshots/A5-cert-inquiry-render-initial.png" loading="lazy" alt="A5-cert-inquiry-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A6-capture-email-api-direct">
+            <header>
+              <h3>A6-capture-email-api-direct — POST /api/capture-email (assessment shape) — direct API probe</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 200 OK; profileId may be null without Supabase</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/capture-email/route.ts</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/capture-email → <strong>200</strong></code>
+                          <pre>req: {&quot;email&quot;:&quot;audit-api@aibankinginstitute.test&quot;,&quot;score&quot;:30,&quot;tier&quot;:&quot;building-momentum&quot;,&quot;tierLabel&quot;:&quot;Building Momentum&quot;,&quot;answers&quot;:[3,2,3,2,3,2,3,2,3,2,3,2],&quot;version&quot;:&quot;v2&quot;,&quot;maxScore&quot;:48,&quot;marketingOptIn&quot;:false}</pre>
+                          <pre>res: {&quot;ok&quot;:true,&quot;profileId&quot;:null,&quot;mailerliteTagAdded&quot;:false,&quot;magicLinkUrl&quot;:null}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/A6-capture-email-api-direct-response.png" target="_blank"><img src="screenshots/A6-capture-email-api-direct-response.png" loading="lazy" alt="A6-capture-email-api-direct" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A6b-inquiry-api-direct">
+            <header>
+              <h3>A6b-inquiry-api-direct — POST /api/inquiry (guide-request) — direct API probe</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 200 OK</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/inquiry/route.ts</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/inquiry → <strong>200</strong></code>
+                          <pre>req: {&quot;name&quot;:&quot;Audit Bot&quot;,&quot;email&quot;:&quot;audit-inq@aibankinginstitute.test&quot;,&quot;institution&quot;:&quot;Audit Bank&quot;,&quot;track&quot;:&quot;safe-ai-use&quot;,&quot;notes&quot;:&quot;&quot;,&quot;type&quot;:&quot;guide-request&quot;}</pre>
+                          <pre>res: {&quot;ok&quot;:true}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/A6b-inquiry-api-direct-response.png" target="_blank"><img src="screenshots/A6b-inquiry-api-direct-response.png" loading="lazy" alt="A6b-inquiry-api-direct" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="A6c-inquiry-bad-type">
+            <header>
+              <h3>A6c-inquiry-bad-type — POST /api/inquiry with disallowed type — should 400</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 400 Invalid payload</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/inquiry/route.ts:26-31</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/inquiry → <strong>400</strong></code>
+                          <pre>req: {&quot;name&quot;:&quot;Audit Bot&quot;,&quot;email&quot;:&quot;audit-inq2@aibankinginstitute.test&quot;,&quot;institution&quot;:&quot;Audit Bank&quot;,&quot;track&quot;:&quot;x&quot;,&quot;notes&quot;:&quot;&quot;,&quot;type&quot;:&quot;arbitrary-type-from-attacker&quot;}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Invalid payload.&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/A6c-inquiry-bad-type-response.png" target="_blank"><img src="screenshots/A6c-inquiry-bad-type-response.png" loading="lazy" alt="A6c-inquiry-bad-type" /></a>
+              </div>
+            </div>
+          </article>
+        
+      </section>
+    
+      <section class="group" id="group-B">
+        <h2>B. User account / auth</h2>
+        
+          <article class="step" id="B1-signup-render">
+            <header>
+              <h3>B1-signup-render — Signup form renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Page renders with fullName, email, password, confirm, institution, terms checkbox</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/signup/page.tsx</code></p>
+                
+                  <details><summary>32 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>32 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1-signup-render-initial.png" target="_blank"><img src="screenshots/B1-signup-render-initial.png" loading="lazy" alt="B1-signup-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B1b-signup-invalid-email">
+            <header>
+              <h3>B1b-signup-invalid-email — Signup rejects invalid email (HTML5 validation)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Browser blocks submit on type=&quot;email&quot; validation</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/signup/page.tsx:138-184</code></p>
+                
+                  <details><summary>31 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>31 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1b-signup-invalid-email-filled.png" target="_blank"><img src="screenshots/B1b-signup-invalid-email-filled.png" loading="lazy" alt="B1b-signup-invalid-email" /></a><a href="screenshots/B1b-signup-invalid-email-after-submit.png" target="_blank"><img src="screenshots/B1b-signup-invalid-email-after-submit.png" loading="lazy" alt="B1b-signup-invalid-email" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B1c-signup-short-password">
+            <header>
+              <h3>B1c-signup-short-password — Signup rejects short password</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> validatePassword() rejects sub-minimum-length</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/signup/page.tsx:154</code> · <code>src/lib/auth/password-policy.ts</code></p>
+                
+                  <details><summary>30 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>30 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1c-signup-short-password-after-submit.png" target="_blank"><img src="screenshots/B1c-signup-short-password-after-submit.png" loading="lazy" alt="B1c-signup-short-password" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B1d-signup-terms-unchecked">
+            <header>
+              <h3>B1d-signup-terms-unchecked — Signup rejects when terms unchecked</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> &quot;You must accept the terms&quot; alert</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/signup/page.tsx:150-153</code></p>
+                
+                  <details><summary>28 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>28 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1d-signup-terms-unchecked-after-submit.png" target="_blank"><img src="screenshots/B1d-signup-terms-unchecked-after-submit.png" loading="lazy" alt="B1d-signup-terms-unchecked" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B1e-signup-password-mismatch">
+            <header>
+              <h3>B1e-signup-password-mismatch — Signup rejects mismatched passwords</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> &quot;Passwords do not match&quot; alert</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/signup/page.tsx:159-162</code></p>
+                
+                  <details><summary>26 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>26 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1e-signup-password-mismatch-after-submit.png" target="_blank"><img src="screenshots/B1e-signup-password-mismatch-after-submit.png" loading="lazy" alt="B1e-signup-password-mismatch" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B1f-signup-supabase-down">
+            <header>
+              <h3>B1f-signup-supabase-down — Signup with Supabase not configured surfaces error</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> &quot;Auth is not configured&quot; error (signUp() guard)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></p>
+                <p><strong>Code:</strong> <code>src/lib/supabase/auth.ts:47-71</code></p>
+                
+                  <details><summary>24 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>24 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B1f-signup-supabase-down-after-submit.png" target="_blank"><img src="screenshots/B1f-signup-supabase-down-after-submit.png" loading="lazy" alt="B1f-signup-supabase-down" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2-login-render">
+            <header>
+              <h3>B2-login-render — Login form renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Email + password, forgot-password link, dev-skip button (NODE_ENV=development)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/login/page.tsx</code></p>
+                
+                  <details><summary>22 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>22 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2-login-render-initial.png" target="_blank"><img src="screenshots/B2-login-render-initial.png" loading="lazy" alt="B2-login-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2b-login-email-prefill">
+            <header>
+              <h3>B2b-login-email-prefill — Login pre-fills ?email= from URL (post-Stripe deep link)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Email field shows prefilled value</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?email=buyer%40bank.test</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/login/page.tsx:262-264</code></p>
+                
+                  <details><summary>21 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>21 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2b-login-email-prefill-initial.png" target="_blank"><img src="screenshots/B2b-login-email-prefill-initial.png" loading="lazy" alt="B2b-login-email-prefill" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2c-login-bad-email-prefill">
+            <header>
+              <h3>B2c-login-bad-email-prefill — Login rejects malformed ?email= and shows blank</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> EMAIL_RE_LOGIN regex rejects junk → field empty</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?email=buyer%40bank.test</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?email=javascript:alert(1)</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/login/page.tsx:252</code> · <code>src/app/auth/login/page.tsx:264</code></p>
+                
+                  <details><summary>20 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>20 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2c-login-bad-email-prefill-initial.png" target="_blank"><img src="screenshots/B2c-login-bad-email-prefill-initial.png" loading="lazy" alt="B2c-login-bad-email-prefill" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2d-login-next-open-redirect">
+            <header>
+              <h3>B2d-login-next-open-redirect — Login sanitizes ?next= against open-redirect (//evil.com)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> sanitizeNext() rejects protocol-relative URL, falls back to /dashboard</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?email=javascript:alert(1)</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?next=//evil.example.com/x</code></p>
+                <p><strong>Code:</strong> <code>src/lib/supabase/auth.ts:11-21</code></p>
+                
+                  <details><summary>19 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>19 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2d-login-next-open-redirect-initial.png" target="_blank"><img src="screenshots/B2d-login-next-open-redirect-initial.png" loading="lazy" alt="B2d-login-next-open-redirect" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2e-login-error-banner">
+            <header>
+              <h3>B2e-login-error-banner — Login renders ?error= banner</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Error banner present at top of card</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?next=//evil.example.com/x</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?error=missing_code</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/login/page.tsx:274-282</code></p>
+                
+                  <details><summary>18 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>18 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2e-login-error-banner-initial.png" target="_blank"><img src="screenshots/B2e-login-error-banner-initial.png" loading="lazy" alt="B2e-login-error-banner" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B2f-login-supabase-down">
+            <header>
+              <h3>B2f-login-supabase-down — Login submit with Supabase not configured</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> &quot;Auth is not configured&quot; error from signIn() guard</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?error=missing_code</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></p>
+                <p><strong>Code:</strong> <code>src/lib/supabase/auth.ts:76-82</code></p>
+                
+                  <details><summary>17 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>17 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B2f-login-supabase-down-after-submit.png" target="_blank"><img src="screenshots/B2f-login-supabase-down-after-submit.png" loading="lazy" alt="B2f-login-supabase-down" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B3-forgot-render">
+            <header>
+              <h3>B3-forgot-render — Forgot password form renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Single email input</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/forgot-password</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/forgot-password/page.tsx</code></p>
+                
+                  <details><summary>15 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>15 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B3-forgot-render-initial.png" target="_blank"><img src="screenshots/B3-forgot-render-initial.png" loading="lazy" alt="B3-forgot-render" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B3b-forgot-submit">
+            <header>
+              <h3>B3b-forgot-submit — Forgot password submit (Supabase down)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Either &quot;Auth not configured&quot; error OR generic success (&quot;if that address is in our system…&quot;)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/forgot-password</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/forgot-password?email=forgot%40aibankinginstitute.test</code></p>
+                <p><strong>Code:</strong> <code>src/lib/supabase/auth.ts:113-123</code></p>
+                
+                  <details><summary>14 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>14 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B3b-forgot-submit-after-submit.png" target="_blank"><img src="screenshots/B3b-forgot-submit-after-submit.png" loading="lazy" alt="B3b-forgot-submit" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B4-reset-no-session">
+            <header>
+              <h3>B4-reset-no-session — Reset password page reached without a recovery session</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Page renders; submit would fail since updateUser requires recovery session</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/forgot-password?email=forgot%40aibankinginstitute.test</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/reset-password</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/reset-password/page.tsx</code></p>
+                
+                  <details><summary>12 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>12 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B4-reset-no-session-initial.png" target="_blank"><img src="screenshots/B4-reset-no-session-initial.png" loading="lazy" alt="B4-reset-no-session" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B5-confirm-no-params">
+            <header>
+              <h3>B5-confirm-no-params — Confirm interstitial (no params) — dead-letter path</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders fallback &quot;this link is missing required information&quot; + return-to-login</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/reset-password</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/confirm/page.tsx:50-194</code></p>
+                
+                  <details><summary>11 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>11 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B5-confirm-no-params-initial.png" target="_blank"><img src="screenshots/B5-confirm-no-params-initial.png" loading="lazy" alt="B5-confirm-no-params" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B5b-confirm-signup-token">
+            <header>
+              <h3>B5b-confirm-signup-token — Confirm interstitial with fake signup token</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders &quot;Confirm your email&quot; button; user must click to consume token</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/confirm/page.tsx</code></p>
+                
+                  <details><summary>10 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>10 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B5b-confirm-signup-token-initial.png" target="_blank"><img src="screenshots/B5b-confirm-signup-token-initial.png" loading="lazy" alt="B5b-confirm-signup-token" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B5c-confirm-recovery">
+            <header>
+              <h3>B5c-confirm-recovery — Confirm interstitial for recovery flow</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Headline = &quot;Confirm to set a new password&quot;</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm?token_hash=fake&amp;type=recovery</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/confirm/page.tsx:60-72</code></p>
+                
+                  <details><summary>9 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>9 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B5c-confirm-recovery-initial.png" target="_blank"><img src="screenshots/B5c-confirm-recovery-initial.png" loading="lazy" alt="B5c-confirm-recovery" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B6-callback-no-params">
+            <header>
+              <h3>B6-callback-no-params — GET /auth/callback with no params redirects to /auth/confirm</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> No 500; lands on /auth/confirm (which then shows dead-letter UI)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm?token_hash=fake&amp;type=recovery</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/callback/route.ts:79-85</code></p>
+                
+                  <details><summary>8 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>8 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B6-callback-no-params-after-redirect.png" target="_blank"><img src="screenshots/B6-callback-no-params-after-redirect.png" loading="lazy" alt="B6-callback-no-params" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B6b-callback-token-redirect">
+            <header>
+              <h3>B6b-callback-token-redirect — GET /auth/callback?token=fake redirects to /auth/confirm preserving querystring</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Lands on /auth/confirm with token_hash + type forwarded</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/callback/route.ts:79-85</code></p>
+                
+                  <details><summary>6 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>6 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B6b-callback-token-redirect-after-redirect.png" target="_blank"><img src="screenshots/B6b-callback-token-redirect-after-redirect.png" loading="lazy" alt="B6b-callback-token-redirect" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B7-confirm-device-pending">
+            <header>
+              <h3>B7-confirm-device-pending — Confirm-device-pending render</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Holding page for new-device sign-in (sends one-time email)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/confirm-device-pending/page.tsx</code></p>
+                
+                  <details><summary>4 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>4 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B7-confirm-device-pending-initial.png" target="_blank"><img src="screenshots/B7-confirm-device-pending-initial.png" loading="lazy" alt="B7-confirm-device-pending" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="B8-confirm-device-fake">
+            <header>
+              <h3>B8-confirm-device-fake — GET /auth/confirm-device?token=fake — invalid token path</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Bounces to login with error param</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></p>
+                <p><strong>End:</strong> <code>chrome-error://chromewebdata/</code></p>
+                <p><strong>Code:</strong> <code>src/app/auth/confirm-device/route.ts</code></p>
+                
+                  <details><summary>3 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>3 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/B8-confirm-device-fake-initial.png" target="_blank"><img src="screenshots/B8-confirm-device-fake-initial.png" loading="lazy" alt="B8-confirm-device-fake" /></a>
+              </div>
+            </div>
+          </article>
+        
+      </section>
+    
+      <section class="group" id="group-C">
+        <h2>C. Payment capture</h2>
+        
+          <article class="step" id="C1-foundation-purchase">
+            <header>
+              <h3>C1-foundation-purchase — /courses/foundation/program/purchase renders</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> EnrollButton present (logged-out path)</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/certifications</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>Code:</strong> <code>src/app/courses/foundation/program/purchase/page.tsx</code> · <code>src/app/api/create-checkout/route.ts</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/C1-foundation-purchase-initial.png" target="_blank"><img src="screenshots/C1-foundation-purchase-initial.png" loading="lazy" alt="C1-foundation-purchase" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C2-create-checkout-individual">
+            <header>
+              <h3>C2-create-checkout-individual — POST /api/create-checkout (individual) — direct probe</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Without STRIPE_FOUNDATION_PRICE_ID → 503 &quot;Payment system not configured.&quot;</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/create-checkout/route.ts:119-122</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/create-checkout → <strong>503</strong></code>
+                          <pre>req: {&quot;mode&quot;:&quot;individual&quot;,&quot;user_email&quot;:&quot;audit@aibankinginstitute.test&quot;}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Payment system not configured.&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/C2-create-checkout-individual-response.png" target="_blank"><img src="screenshots/C2-create-checkout-individual-response.png" loading="lazy" alt="C2-create-checkout-individual" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C2b-create-checkout-low-qty">
+            <header>
+              <h3>C2b-create-checkout-low-qty — POST /api/create-checkout (institution, qty=5) — should 400</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 400 &quot;Team purchases require quantity &gt;= 10&quot;</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/create-checkout/route.ts:73-79</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/create-checkout → <strong>400</strong></code>
+                          <pre>req: {&quot;mode&quot;:&quot;institution&quot;,&quot;quantity&quot;:5,&quot;institution_name&quot;:&quot;Audit Bank&quot;}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Team purchases require quantity &gt;= 10 (integer).&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/C2b-create-checkout-low-qty-response.png" target="_blank"><img src="screenshots/C2b-create-checkout-low-qty-response.png" loading="lazy" alt="C2b-create-checkout-low-qty" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C3-indepth-page">
+            <header>
+              <h3>C3-indepth-page — /assessment/in-depth renders (purchase entry)</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> PurchaseButton visible</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>Code:</strong> <code>src/app/assessment/in-depth/_components/PurchaseButton.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/C3-indepth-page-initial.png" target="_blank"><img src="screenshots/C3-indepth-page-initial.png" loading="lazy" alt="C3-indepth-page" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C3b-checkout-indepth">
+            <header>
+              <h3>C3b-checkout-indepth — POST /api/checkout/in-depth (individual) — direct probe</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Without STRIPE_INDEPTH_PRICE_ID → 503</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/checkout/in-depth/route.ts:80-87</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/checkout/in-depth → <strong>503</strong></code>
+                          <pre>req: {&quot;mode&quot;:&quot;individual&quot;,&quot;user_email&quot;:&quot;audit@aibankinginstitute.test&quot;}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Payment system not configured.&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/C3b-checkout-indepth-response.png" target="_blank"><img src="screenshots/C3b-checkout-indepth-response.png" loading="lazy" alt="C3b-checkout-indepth" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C3c-checkout-indepth-institution">
+            <header>
+              <h3>C3c-checkout-indepth-institution — POST /api/checkout/in-depth (institution) — should 503 &quot;coming soon&quot;</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 503 with &quot;coming soon&quot; message</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/checkout/in-depth/route.ts:62-70</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/checkout/in-depth → <strong>503</strong></code>
+                          <pre>req: {&quot;mode&quot;:&quot;institution&quot;}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Institution pricing for the In-Depth Assessment is coming soon. Email hello@aibankinginstitute.com for bulk orders of 10+ seats.&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/C3c-checkout-indepth-institution-response.png" target="_blank"><img src="screenshots/C3c-checkout-indepth-institution-response.png" loading="lazy" alt="C3c-checkout-indepth-institution" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C4-foundation-purchased-no-session">
+            <header>
+              <h3>C4-foundation-purchased-no-session — /courses/foundation/program/purchased without session_id</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> getValidatedPaidSession returns null; if STRIPE_SECRET_KEY set, redirects back to purchase. Without secret, renders page (preview mode).</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchased</code></p>
+                <p><strong>Code:</strong> <code>src/app/courses/foundation/program/purchased/page.tsx:71-77</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/C4-foundation-purchased-no-session-landed.png" target="_blank"><img src="screenshots/C4-foundation-purchased-no-session-landed.png" loading="lazy" alt="C4-foundation-purchased-no-session" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C4b-foundation-purchased-fake-session">
+            <header>
+              <h3>C4b-foundation-purchased-fake-session — /courses/foundation/program/purchased?session_id=fake</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Same as C4 — no Stripe call possible without secret key</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchased</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchased?session_id=cs_test_fake</code></p>
+                <p><strong>Code:</strong> <code>src/app/courses/foundation/program/purchased/page.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/C4b-foundation-purchased-fake-session-landed.png" target="_blank"><img src="screenshots/C4b-foundation-purchased-fake-session-landed.png" loading="lazy" alt="C4b-foundation-purchased-fake-session" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C5-indepth-purchased-no-session">
+            <header>
+              <h3>C5-indepth-purchased-no-session — /assessment/in-depth/purchased without session_id</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Page renders OR redirects</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchased?session_id=cs_test_fake</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth/purchased</code></p>
+                <p><strong>Code:</strong> <code>src/app/assessment/in-depth/purchased/page.tsx</code></p>
+                
+                
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/C5-indepth-purchased-no-session-landed.png" target="_blank"><img src="screenshots/C5-indepth-purchased-no-session-landed.png" loading="lazy" alt="C5-indepth-purchased-no-session" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="C6-webhook-unsigned">
+            <header>
+              <h3>C6-webhook-unsigned — POST /api/webhooks/stripe with no signature — should reject</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> 400 &quot;Missing stripe-signature header&quot; OR 503 &quot;Webhook not configured&quot; if STRIPE_WEBHOOK_SECRET unset</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment/in-depth/purchased</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth/purchased</code></p>
+                <p><strong>Code:</strong> <code>src/app/api/webhooks/stripe/route.ts:46-60</code></p>
+                
+                
+                
+                  <details open><summary>1 direct API probe(s)</summary>
+                    <ol class="reqs">
+                      
+                        <li>
+                          <code>POST /api/webhooks/stripe → <strong>503</strong></code>
+                          <pre>req: {&quot;fake&quot;:true}</pre>
+                          <pre>res: {&quot;error&quot;:&quot;Webhook not configured.&quot;}</pre>
+                        </li>
+                    </ol>
+                  </details>
+              </div>
+              <div class="shots">
+                <a href="screenshots/C6-webhook-unsigned-response.png" target="_blank"><img src="screenshots/C6-webhook-unsigned-response.png" loading="lazy" alt="C6-webhook-unsigned" /></a>
+              </div>
+            </div>
+          </article>
+        
+      </section>
+    
+      <section class="group" id="group-D">
+        <h2>D. Protected-route redirect matrix</h2>
+        
+          <article class="step" id="D1-dashboard">
+            <header>
+              <h3>D1-dashboard — Visit /dashboard</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>about:blank</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/dashboard</code></p>
+                
+                
+                  <details><summary>38 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /api/dashboard/learner</code></li><li><code>GET /api/dashboard/assessments</code></li><li><code>GET /api/dashboard/learner</code></li><li><code>GET /api/dashboard/assessments</code></li><li><code>GET /auth/login?next=/dashboard/assessments</code></li><li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>38 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>503 /api/dashboard/learner</code></li><li><code>503 /api/dashboard/learner</code></li><li><code>503 /api/dashboard/assessments</code></li><li><code>503 /api/dashboard/assessments</code></li><li><code>200 /auth/login?next=/dashboard/assessments</code></li><li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D1-dashboard-landed.png" target="_blank"><img src="screenshots/D1-dashboard-landed.png" loading="lazy" alt="D1-dashboard" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D2-dashboard-toolbox">
+            <header>
+              <h3>D2-dashboard-toolbox — Visit /dashboard/toolbox</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/dashboard</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/dashboard/toolbox</code></p>
+                
+                
+                  <details><summary>34 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/dashboard/assessments</code></li><li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>38 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>503 /api/dashboard/learner</code></li><li><code>503 /api/dashboard/learner</code></li><li><code>503 /api/dashboard/assessments</code></li><li><code>503 /api/dashboard/assessments</code></li><li><code>200 /auth/login?next=/dashboard/assessments</code></li><li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D2-dashboard-toolbox-landed.png" target="_blank"><img src="screenshots/D2-dashboard-toolbox-landed.png" loading="lazy" alt="D2-dashboard-toolbox" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D3-dashboard-assessments">
+            <header>
+              <h3>D3-dashboard-assessments — Visit /dashboard/assessments</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/dashboard/toolbox</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?next=/dashboard/assessments</code></p>
+                
+                
+                  <details><summary>34 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/dashboard/assessments</code></li><li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>34 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/dashboard/assessments</code></li><li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D3-dashboard-assessments-landed.png" target="_blank"><img src="screenshots/D3-dashboard-assessments-landed.png" loading="lazy" alt="D3-dashboard-assessments" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D4-foundation-program">
+            <header>
+              <h3>D4-foundation-program — Visit /courses/foundation/program</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?next=/dashboard/assessments</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program</code></p>
+                
+                
+                  <details><summary>33 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>33 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D4-foundation-program-landed.png" target="_blank"><img src="screenshots/D4-foundation-program-landed.png" loading="lazy" alt="D4-foundation-program" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D5-foundation-module">
+            <header>
+              <h3>D5-foundation-module — Visit /courses/foundation/program/3</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/3</code></p>
+                
+                
+                  <details><summary>33 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>33 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D5-foundation-module-landed.png" target="_blank"><img src="screenshots/D5-foundation-module-landed.png" loading="lazy" alt="D5-foundation-module" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D6-foundation-purchase">
+            <header>
+              <h3>D6-foundation-purchase — Visit /courses/foundation/program/purchase</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders without auth gate</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/3</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                
+                
+                  <details><summary>33 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>33 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D6-foundation-purchase-landed.png" target="_blank"><img src="screenshots/D6-foundation-purchase-landed.png" loading="lazy" alt="D6-foundation-purchase" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D7-foundation-gallery">
+            <header>
+              <h3>D7-foundation-gallery — Visit /courses/foundation/program/gallery</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                
+                
+                  <details><summary>33 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>33 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D7-foundation-gallery-landed.png" target="_blank"><img src="screenshots/D7-foundation-gallery-landed.png" loading="lazy" alt="D7-foundation-gallery" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D8-indepth-access">
+            <header>
+              <h3>D8-indepth-access — Visit /assessment/in-depth/access</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Redirects to /auth/login?next=… with original path preserved</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/courses/foundation/program/purchase</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/auth/login?next=/assessment/in-depth/access</code></p>
+                
+                
+                  <details><summary>33 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/login?next=/assessment/in-depth/access</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>33 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/login?next=/assessment/in-depth/access</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D8-indepth-access-landed.png" target="_blank"><img src="screenshots/D8-indepth-access-landed.png" loading="lazy" alt="D8-indepth-access" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D9-my-toolbox">
+            <header>
+              <h3>D9-my-toolbox — Visit /my-toolbox</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders without auth gate</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/auth/login?next=/assessment/in-depth/access</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/my-toolbox</code></p>
+                
+                
+                  <details><summary>32 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>32 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D9-my-toolbox-landed.png" target="_blank"><img src="screenshots/D9-my-toolbox-landed.png" loading="lazy" alt="D9-my-toolbox" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D10-assessment-page">
+            <header>
+              <h3>D10-assessment-page — Visit /assessment</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders without auth gate</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/my-toolbox</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment</code></p>
+                
+                
+                  <details><summary>32 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>32 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D10-assessment-page-landed.png" target="_blank"><img src="screenshots/D10-assessment-page-landed.png" loading="lazy" alt="D10-assessment-page" /></a>
+              </div>
+            </div>
+          </article>
+        
+          <article class="step" id="D11-indepth-page">
+            <header>
+              <h3>D11-indepth-page — Visit /assessment/in-depth</h3>
+              
+            </header>
+            <div class="cols">
+              <div class="info">
+                <p><strong>Expected:</strong> Renders without auth gate</p>
+                <p><strong>Start:</strong> <code>http://localhost:3000/assessment</code></p>
+                <p><strong>End:</strong> <code>http://localhost:3000/assessment/in-depth</code></p>
+                
+                
+                  <details><summary>32 relevant request(s)</summary>
+                    <ol class="reqs">
+                      <li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>GET /auth/signup</code></li><li><code>GET /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=buyer%40bank.test</code></li><li><code>GET /auth/login?email=javascript:alert(1)</code></li><li><code>GET /auth/login?next=//evil.example.com/x</code></li><li><code>GET /auth/login?error=missing_code</code></li><li><code>GET /auth/login</code></li><li><code>GET /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password</code></li><li><code>GET /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>GET /auth/reset-password</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>GET /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>GET /auth/callback</code></li><li><code>GET /auth/confirm</code></li><li><code>GET /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>GET /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>GET /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>GET /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>GET /api/auth/me</code></li><li><code>GET /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+                  <details><summary>32 relevant response(s)</summary>
+                    <ol class="reqs">
+                      <li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=short%40aibankinginstitute.test&amp;institutionName=&amp;password=abc&amp;confirmPassword=abc&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=terms%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=mismatch%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword2&amp;terms=on</code></li><li><code>200 /auth/signup</code></li><li><code>200 /auth/signup?fullName=Audit+Bot&amp;email=ok%40aibankinginstitute.test&amp;institutionName=&amp;password=goodpassword1&amp;confirmPassword=goodpassword1&amp;terms=on</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=buyer%40bank.test</code></li><li><code>200 /auth/login?email=javascript:alert(1)</code></li><li><code>200 /auth/login?next=//evil.example.com/x</code></li><li><code>200 /auth/login?error=missing_code</code></li><li><code>200 /auth/login</code></li><li><code>200 /auth/login?email=nobody%40aibankinginstitute.test&amp;password=whatever</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password</code></li><li><code>200 /auth/forgot-password?email=forgot%40aibankinginstitute.test</code></li><li><code>200 /auth/reset-password</code></li><li><code>200 /auth/confirm</code></li><li><code>200 /auth/confirm?token_hash=fake_token_hash&amp;type=signup</code></li><li><code>200 /auth/confirm?token_hash=fake&amp;type=recovery</code></li><li><code>307 /auth/callback</code></li><li><code>200 /auth/confirm</code></li><li><code>307 /auth/callback?token_hash=abc&amp;type=signup&amp;next=/dashboard</code></li><li><code>200 /auth/confirm?token_hash=abc&amp;type=signup&amp;next=%2Fdashboard</code></li><li><code>200 /auth/confirm-device-pending?email=audit%40aibankinginstitute.test</code></li><li><code>307 /auth/confirm-device?token=ZZZZ-not-a-real-token</code></li><li><code>200 /api/auth/me</code></li><li><code>200 /api/auth/me</code></li>
+                    </ol>
+                  </details>
+                
+              </div>
+              <div class="shots">
+                <a href="screenshots/D11-indepth-page-landed.png" target="_blank"><img src="screenshots/D11-indepth-page-landed.png" loading="lazy" alt="D11-indepth-page" /></a>
+              </div>
+            </div>
+          </article>
+        
+      </section>
+    
+</main>
+<footer>
+  Re-run with <code>node scripts/auth-review.mjs</code> · raw observation logs in <code>audit/auth-review/raw/</code>
+</footer>
+</body>
+</html>

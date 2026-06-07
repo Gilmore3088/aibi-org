@@ -51,6 +51,10 @@ next-env.d.ts
 # Local-only audit viewers (generated alongside their .md source)
 docs/superpowers/design-system/ui-review.html
 
+# scripts/auth-review.mjs output — re-generated on demand from the
+# harness; raw JSON per-step logs are noisy and not useful to track.
+/audit/auth-review/raw/
+
 # Playwright
 /playwright-report/
 /test-results/
