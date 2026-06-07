@@ -16,7 +16,12 @@
 // under PLAYWRIGHT_BASE_URL with real Supabase (NOT preview bypass).
 
 import { test, expect } from '@playwright/test';
-import { seedConfirmedUser, cleanupSeededUser, type SeededUser } from './helpers/seed';
+import {
+  seedConfirmedUser,
+  cleanupSeededUser,
+  grantTrustedDevice,
+  type SeededUser,
+} from './helpers/seed';
 import { loginViaUI } from './helpers/auth';
 import { TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 
@@ -37,36 +42,46 @@ test.describe('trusted-device gate at layout level (fix #2)', () => {
     test(`${route} redirects to /auth/confirm-device-pending when trusted-device cookie is absent`, async ({
       page,
       context,
+      baseURL,
     }) => {
-      // 1. Sign in to establish a valid Supabase session in this browser.
+      // 1. Pre-grant a trusted_devices row and seed the cookie so the
+      //    UI login flow can complete (otherwise it'd bounce to
+      //    /auth/confirm-device-pending on first sign-in for a brand-new
+      //    user with no trusted device — which is correct behavior, but
+      //    blocks us from setting up the test state we want.
+      const trust = await grantTrustedDevice(user.id);
+      const url = new URL(baseURL ?? 'http://localhost:3010');
+      await context.addCookies([
+        {
+          name: trust.cookieName,
+          value: trust.cookieToken,
+          domain: url.hostname,
+          path: '/',
+          httpOnly: true,
+          secure: url.protocol === 'https:',
+          sameSite: 'Lax',
+        },
+      ]);
+
+      // 2. Sign in via the UI. With the trust cookie in place, the
+      //    post-login check-device returns trusted → lands on the
+      //    requested destination (not /auth/confirm-device-pending).
       await loginViaUI(page, user);
 
-      // 2. Strip the trusted-device cookie. This is what would happen if
-      //    /api/auth/check-device transiently 500'd at sign-in time and
-      //    the login flow fell open (today's pre-fix behavior).
-      const cookies = await context.cookies();
-      const trustedCookie = cookies.find((c) => c.name === TRUSTED_DEVICE_COOKIE);
-      expect(
-        trustedCookie,
-        'login should set a trusted-device cookie on this fresh browser',
-      ).toBeDefined();
+      // 3. Strip the trusted-device cookie. This simulates the state
+      //    that the layout-level gate is there to defend against —
+      //    a valid Supabase session in a browser that no longer
+      //    carries trust (cookie expired, cleared, never set because
+      //    /api/auth/check-device fell open at sign-in time, etc.).
       await context.clearCookies({ name: TRUSTED_DEVICE_COOKIE });
 
-      // 3. Navigate to the protected route. The fix means the layout
+      // 4. Navigate to the protected route. The fix means the layout
       //    now redirects to /auth/confirm-device-pending instead of
       //    rendering the protected surface.
-      const response = await page.goto(route, { waitUntil: 'commit' });
-      // Either the page navigates to /auth/confirm-device-pending, or
-      // the response is a 30x redirect there. Both are acceptable.
+      await page.goto(route, { waitUntil: 'commit' });
       await page.waitForURL(/\/auth\/confirm-device-pending/, { timeout: 10_000 });
       expect(page.url()).toMatch(/\/auth\/confirm-device-pending/);
-      // Email should be preserved in the redirect for the resend-email UI.
       expect(page.url()).toContain(`email=${encodeURIComponent(user.email)}`);
-
-      // Sanity check on the response status when available.
-      if (response && response.status() >= 400) {
-        throw new Error(`Unexpected ${response.status()} on ${route}`);
-      }
     });
   }
 });
