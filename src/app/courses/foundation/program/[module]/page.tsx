@@ -22,10 +22,12 @@ import {
   foundationCourseConfig,
   getModuleByNumber,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
+  getArtifactFirst,
 } from '@content/courses/foundation-program';
 import type { Activity, ExpandedModule } from '@content/courses/foundation-program';
 import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
+import { ModuleArtifactHeader } from '../_components/ModuleArtifactHeader';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { SubTaskProgressStrip, type SubTaskItem } from './_local/SubTaskProgressStrip';
 import { CollapsibleBoundary } from './_local/CollapsibleBoundary';
@@ -118,6 +120,7 @@ export default async function ModulePage({ params }: ModulePageParams) {
 
   const isLastModule = mod.number === modules.length;
   const isAlreadyCompleted = enrollment.completed_modules.includes(moduleNum);
+  const artifactFirst = getArtifactFirst(moduleNum);
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNum);
   const moduleSpec = getModuleActivitySpec(moduleNum);
   const moduleActivities = moduleSpec
@@ -374,6 +377,9 @@ export default async function ModulePage({ params }: ModulePageParams) {
           </header>
         </div>
 
+        {/* Artifact-first contract — same four-line promise on every module. */}
+        {artifactFirst && <ModuleArtifactHeader meta={artifactFirst} />}
+
         {/* Sticky sub-task progress strip — primary in-page nav (audit §3 structural). */}
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 36px' }}>
           <SubTaskProgressStrip items={subTaskItems} />
@@ -511,17 +517,55 @@ export default async function ModulePage({ params }: ModulePageParams) {
                 margin: '0 0 12px',
               }}
             >
-              Saved artifact
+              Saved to your Foundation Packet
             </h2>
             <div
               style={{
                 padding: '20px 22px',
                 background: 'white',
                 border: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
+                borderLeft: `4px solid ${isAlreadyCompleted ? 'var(--emerald-700)' : 'var(--gold)'}`,
                 borderRadius: 16,
                 boxShadow: 'var(--shadow-soft)',
               }}
             >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  flexWrap: 'wrap',
+                  margin: '0 0 8px',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: MOCKUP_FONT,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: 'var(--slate-500)',
+                  }}
+                >
+                  Packet item {moduleNum} of {modules.length}
+                </span>
+                <span
+                  style={{
+                    fontFamily: MOCKUP_FONT,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    color: isAlreadyCompleted ? 'var(--emerald-700)' : 'var(--gold-deep)',
+                    background: isAlreadyCompleted ? 'rgba(4,120,87,0.10)' : 'var(--gold-a20)',
+                    borderRadius: 999,
+                    padding: '3px 10px',
+                  }}
+                >
+                  {isAlreadyCompleted ? 'Saved' : 'Not yet saved'}
+                </span>
+              </div>
               <p
                 style={{
                   fontFamily: MOCKUP_FONT,
@@ -532,21 +576,34 @@ export default async function ModulePage({ params }: ModulePageParams) {
                   lineHeight: 1.5,
                 }}
               >
-                {mod.keyOutput}
+                {artifactFirst?.saved ?? mod.keyOutput}
               </p>
               <p
                 style={{
                   fontFamily: MOCKUP_FONT,
                   fontSize: 14,
                   color: 'var(--slate-600)',
-                  margin: 0,
+                  margin: '0 0 14px',
                   lineHeight: 1.55,
                 }}
               >
                 {isAlreadyCompleted
-                  ? 'Saved to your library. Open the Submit step above to review or revise your response.'
-                  : 'Once you complete the Submit step above, your response is saved here as a reusable artifact in your library.'}
+                  ? 'Saved to your Foundation Packet. Open the Submit step above to review or revise it.'
+                  : 'Complete the Submit step above and this artifact lands in your Foundation Packet — one of the twelve work products you finish the course with.'}
               </p>
+              <Link
+                href="/courses/foundation/program"
+                style={{
+                  fontFamily: MOCKUP_FONT,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  color: 'var(--ink)',
+                  textDecoration: 'none',
+                }}
+              >
+                View your Foundation Packet →
+              </Link>
             </div>
           </section>
         </article>

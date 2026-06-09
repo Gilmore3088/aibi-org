@@ -130,7 +130,7 @@ export default async function CourseOverviewPage() {
           totalModules={totalModules}
         />
 
-        <YourWorkStrip completedModules={completedModules} />
+        <YourWorkStrip completedModules={completedModules} currentModule={currentModule} />
 
         <ThisWeeksModule
           currentModule={currentMod}
