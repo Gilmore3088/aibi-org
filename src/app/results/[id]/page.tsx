@@ -52,6 +52,7 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
           firstName={null}
           institutionName={null}
           profileId={response.profileId}
+          role={response.role}
         />
       ) : (
         <ResultsViewV2

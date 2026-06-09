@@ -27,44 +27,14 @@ import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
 import type { Role } from '@content/assessments/v2/role';
 
-// Free-funnel role taxonomy used by EmailGate.tsx. Intentionally a superset
-// of the v2 Role union (kept short for the free form). Mapped down to v2
-// Role before the user_profiles write so the DB schema stays stable; the
-// raw free-id is forwarded to MailerLite for segmentation.
-const FREE_ROLES = [
-  'executive',
-  'compliance-risk',
-  'operations',
-  'lending',
-  'retail-branch',
-  'marketing',
-  'it-infosec',
-  'training-hr',
-  'other',
-] as const;
-type FreeRole = (typeof FREE_ROLES)[number];
-
-function parseFreeRole(input: unknown): FreeRole | null {
-  if (typeof input !== 'string') return null;
-  const lowered = input.trim().toLowerCase();
-  return (FREE_ROLES as readonly string[]).includes(lowered)
-    ? (lowered as FreeRole)
-    : null;
-}
-
-// Free-funnel id → v2 Role id. retail-branch and operations both collapse
-// to "operator" (frontline ops). it-infosec → it. The rest map 1:1.
-const FREE_ROLE_TO_V2: Record<FreeRole, Role> = {
-  executive: 'executive',
-  'compliance-risk': 'compliance-risk',
-  operations: 'operator',
-  lending: 'lending',
-  'retail-branch': 'operator',
-  marketing: 'marketing',
-  'it-infosec': 'it',
-  'training-hr': 'training-hr',
-  other: 'other',
-};
+// Free-funnel role taxonomy (FREE_ROLES / parseFreeRole / FREE_ROLE_TO_V2)
+// lives in @content/assessments/v3/roles so EmailGate.tsx and this route
+// share one source of truth.
+import {
+  type FreeRole,
+  parseFreeRole,
+  FREE_ROLE_TO_V2,
+} from '@content/assessments/v3/roles';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person

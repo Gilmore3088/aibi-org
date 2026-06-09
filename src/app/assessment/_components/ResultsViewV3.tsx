@@ -16,6 +16,7 @@
 import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
+import type { Role } from '@content/assessments/v2/role';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
@@ -37,6 +38,9 @@ interface ResultsViewV3Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
+  /** v2 Role the respondent selected at email capture. Drives which role
+   *  playbook is flagged as "Best match". Null when the role was skipped. */
+  readonly role?: Role | null;
 }
 
 interface RankedSignal {
@@ -77,6 +81,74 @@ function pillClasses(band: SignalBand): string {
   return 'bg-[#FEF0C7] text-[#93370D]';
 }
 
+function barClasses(band: SignalBand): string {
+  if (band === 'high') return 'bg-[#0E7A55]';
+  if (band === 'low') return 'bg-[#B42318]';
+  return 'bg-[#B7791F]';
+}
+
+// Role playbooks. The free funnel collapses to four published playbooks, so
+// several roles share one (marketing → retail, executive/training/other fall
+// back to the broadest frontline read). The matched playbook is flagged
+// "Best match"; the others keep their descriptive tag.
+type PlaybookKey = 'retail' | 'compliance' | 'lending' | 'infosec';
+
+interface Playbook {
+  readonly key: PlaybookKey;
+  readonly tag: string;
+  readonly title: string;
+  readonly body: string;
+  readonly href: string;
+}
+
+const PLAYBOOKS: readonly Playbook[] = [
+  {
+    key: 'retail',
+    tag: 'Frontline',
+    title: 'Retail / Branch',
+    body: 'First-draft replies, job aids, and coaching scenarios.',
+    href: '/playbooks/retail',
+  },
+  {
+    key: 'compliance',
+    tag: 'Risk lens',
+    title: 'Compliance',
+    body: 'Use-case review, evidence packets, and review checklists.',
+    href: '/playbooks/compliance',
+  },
+  {
+    key: 'lending',
+    tag: 'Credit',
+    title: 'Lending',
+    body: 'Underwriting helpers, loan summaries, and review checklists.',
+    href: '/playbooks/lending',
+  },
+  {
+    key: 'infosec',
+    tag: 'Tool safety',
+    title: 'InfoSec',
+    body: 'Data handling, approved tools, and guardrails.',
+    href: '/playbooks/infosec',
+  },
+];
+
+// v2 Role → best-match playbook. Roles without a dedicated playbook map to
+// 'retail', the broadest frontline read, so there is always a sensible match.
+const ROLE_TO_PLAYBOOK: Record<Role, PlaybookKey> = {
+  operator: 'retail',
+  'compliance-risk': 'compliance',
+  lending: 'lending',
+  it: 'infosec',
+  marketing: 'retail',
+  executive: 'retail',
+  'training-hr': 'retail',
+  other: 'retail',
+};
+
+function bestMatchPlaybook(role: Role | null | undefined): PlaybookKey {
+  return role ? ROLE_TO_PLAYBOOK[role] : 'retail';
+}
+
 export function ResultsViewV3({
   score,
   tier,
@@ -85,6 +157,7 @@ export function ResultsViewV3({
   email,
   firstName,
   profileId,
+  role,
 }: ResultsViewV3Props) {
   // 12 signals, ordered by score ascending so the weakest are easy to find.
   const signals: RankedSignal[] = (
@@ -106,6 +179,8 @@ export function ResultsViewV3({
   const starterPrompt = focusGap ? STARTER_PROMPTS[focusGap.id] : null;
   const artifact = focusGap ? getStarterArtifact(focusGap.id) : null;
   const cta = TIER_CLOSING_CTA[tierId];
+
+  const matchedPlaybook = bestMatchPlaybook(role);
 
   const greeting = firstName?.trim() ? `${firstName.trim()}, here's your snapshot.` : 'Your AI readiness snapshot.';
 
@@ -192,17 +267,43 @@ export function ResultsViewV3({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {signals.map((s) => {
             const band = bandForSignal(s);
+            const pct = s.maxScore > 0 ? Math.round((s.score / s.maxScore) * 100) : 0;
             return (
               <div
                 key={s.id}
-                className={`rounded-[16px] border p-3.5 min-h-[108px] flex flex-col justify-between ${bandClasses(band)}`}
+                className={`rounded-[16px] border p-3.5 min-h-[124px] flex flex-col justify-between gap-2 ${bandClasses(band)}`}
               >
-                <p className="text-[13px] font-semibold leading-tight text-[color:var(--ink)]">
-                  {s.label}
-                </p>
-                <p className="text-[20px] font-bold tabular-nums tracking-[-0.03em] text-[color:var(--ink)] mt-2">
-                  {s.score}/{s.maxScore}
-                </p>
+                <div>
+                  <p className="text-[13px] font-semibold leading-tight text-[color:var(--ink)]">
+                    {s.label}
+                  </p>
+                  <span
+                    className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.03em] ${pillClasses(band)}`}
+                  >
+                    {pillFor(band)}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-[20px] font-bold tabular-nums tracking-[-0.03em] text-[color:var(--ink)]">
+                    {s.score}
+                    <span className="text-[12px] font-semibold text-[color:var(--slate-500)]">
+                      /{s.maxScore}
+                    </span>
+                  </p>
+                  <div
+                    className="mt-1.5 h-1.5 rounded-full bg-[color:var(--ink-a10)] overflow-hidden"
+                    role="progressbar"
+                    aria-valuenow={s.score}
+                    aria-valuemin={0}
+                    aria-valuemax={s.maxScore}
+                    aria-label={`${s.label}: ${s.score} of ${s.maxScore}`}
+                  >
+                    <div
+                      className={`h-full rounded-full ${barClasses(band)}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -291,12 +392,8 @@ export function ResultsViewV3({
                 <p className="mt-2 text-[14px] text-[color:var(--slate-600)] leading-[1.55]">
                   {starterPrompt.label}
                 </p>
-                <pre className="mt-3 bg-[color:var(--ink)] text-[color:var(--gold-soft)] rounded-[14px] p-4 text-[12px] leading-[1.5] font-mono max-h-[170px] overflow-hidden whitespace-pre-wrap relative">
+                <pre className="mt-3 bg-[color:var(--ink)] text-[color:var(--gold-soft)] rounded-[14px] p-4 text-[12px] leading-[1.5] font-mono whitespace-pre-wrap break-words">
                   {starterPrompt.prompt}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[color:var(--ink)] to-transparent"
-                  />
                 </pre>
               </article>
             )}
@@ -513,31 +610,26 @@ export function ResultsViewV3({
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <PlaybookCard
-            tag="Best match"
-            title="Retail / Branch"
-            body="First-draft replies, job aids, and coaching scenarios."
-            href="/playbooks/retail"
-            highlight
-          />
-          <PlaybookCard
-            tag="Risk lens"
-            title="Compliance"
-            body="Use-case review, evidence packets, and review checklists."
-            href="/playbooks/compliance"
-          />
-          <PlaybookCard
-            tag="Credit"
-            title="Lending"
-            body="Underwriting helpers, loan summaries, and review checklists."
-            href="/playbooks/lending"
-          />
-          <PlaybookCard
-            tag="Tool safety"
-            title="InfoSec"
-            body="Data handling, approved tools, and guardrails."
-            href="/playbooks/infosec"
-          />
+          {[...PLAYBOOKS]
+            .sort((a, b) => {
+              // Surface the best-match playbook first so it reads as the lead.
+              if (a.key === matchedPlaybook) return -1;
+              if (b.key === matchedPlaybook) return 1;
+              return 0;
+            })
+            .map((p) => {
+              const isMatch = p.key === matchedPlaybook;
+              return (
+                <PlaybookCard
+                  key={p.key}
+                  tag={isMatch ? 'Best match' : p.tag}
+                  title={p.title}
+                  body={p.body}
+                  href={p.href}
+                  highlight={isMatch}
+                />
+              );
+            })}
         </div>
       </section>
     </div>
@@ -593,7 +685,7 @@ function PartialLockedPhase({
       </h3>
       <div className="mt-4 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
         <p className="text-[14px] font-semibold text-[color:var(--ink)] leading-[1.4]">
-          Visible: {visibleItem}
+          {visibleItem}
         </p>
       </div>
       <ul

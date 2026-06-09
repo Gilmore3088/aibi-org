@@ -21,35 +21,17 @@ import { saveReadinessResult, type DimensionScoreSerialized } from '@/lib/user-d
 import { trackEmailCaptured } from '@/lib/analytics/events';
 import { DIMENSION_LABELS, type Dimension } from '@content/assessments/v3/types';
 import { GAP_CONTENT } from '@content/assessments/v3/personalization';
+import {
+  FREE_ROLES,
+  FREE_ROLE_LABEL,
+  FREE_ROLE_TO_V2,
+  type FreeRole,
+} from '@content/assessments/v3/roles';
+import type { Role } from '@content/assessments/v2/role';
 
-// Light role taxonomy for the free funnel — collected here so MailerLite
-// can route follow-ups and the post-capture report can adjust framing.
-// Distinct from the paid In-Depth v4 role list (which has 10 deeper
-// ids); this free set is intentionally short to keep the form light.
-const FREE_ROLES = [
-  'executive',
-  'compliance-risk',
-  'operations',
-  'lending',
-  'retail-branch',
-  'marketing',
-  'it-infosec',
-  'training-hr',
-  'other',
-] as const;
-type FreeRole = (typeof FREE_ROLES)[number];
-
-const ROLE_LABEL: Record<FreeRole, string> = {
-  executive: 'Executive / Leadership',
-  'compliance-risk': 'Compliance / Risk',
-  operations: 'Operations',
-  lending: 'Lending / Credit',
-  'retail-branch': 'Retail / Branch',
-  marketing: 'Marketing / Product',
-  'it-infosec': 'IT / InfoSec',
-  'training-hr': 'Training / HR',
-  other: 'Other',
-};
+// Free-funnel role taxonomy (FREE_ROLES / FREE_ROLE_LABEL / FREE_ROLE_TO_V2)
+// lives in @content/assessments/v3/roles, shared with /api/capture-email so
+// the form, the DB write, and the results view stay in lockstep.
 
 interface EmailGateProps {
   readonly score: number;
@@ -67,6 +49,7 @@ interface EmailGateProps {
       readonly profileId?: string | null;
       readonly usedFreeEmail?: boolean;
       readonly magicLinkUrl?: string | null;
+      readonly role?: Role;
     },
   ) => void;
 }
@@ -219,6 +202,9 @@ export function EmailGate({
         profileId: data.profileId ?? null,
         usedFreeEmail: isFreeEmailDomain(emailToUse),
         magicLinkUrl: data.magicLinkUrl ?? null,
+        // Map the free-funnel id down to a v2 Role so the results view's
+        // "Best match" playbook lines up with the role the DB stored.
+        role: role ? FREE_ROLE_TO_V2[role] : undefined,
       });
     } catch (err) {
       setStatus('error');
@@ -416,7 +402,7 @@ export function EmailGate({
                 <option value="">Select your role</option>
                 {FREE_ROLES.map((r) => (
                   <option key={r} value={r}>
-                    {ROLE_LABEL[r]}
+                    {FREE_ROLE_LABEL[r]}
                   </option>
                 ))}
               </select>
