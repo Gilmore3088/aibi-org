@@ -1,5 +1,5 @@
 /* AiBI mockup-system brand shell — print + screen */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap');
 
 :root {
   --ink: #071A2F;
@@ -145,11 +145,22 @@ table { box-shadow: none !important; }
 .cover .seal {
   display: flex; align-items: center; gap: 12pt; margin-bottom: 0;
 }
+/* Brand v1 bracketed [Ai] mark (2026-05-28). Replaces the retired
+   gold-square seal lockup. HTML structure must be:
+   <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div> */
 .cover .seal-mark {
-  width: 44pt; height: 44pt; border-radius: 8pt;
-  background: var(--gold); color: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 17pt; letter-spacing: -1px;
+  display: inline-flex; align-items: baseline; line-height: 1;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 600; font-size: 20pt;
+  letter-spacing: -.012em; color: var(--cream);
+  background: transparent; padding: 0; border-radius: 0; width: auto; height: auto;
+}
+.cover .seal-mark .bk { color: var(--gold); font-weight: 500; padding: 0 .03em; }
+.cover .seal-mark .ai { padding: 0 0 0 .02em; }
+.cover .seal-mark .si {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.14em;
+  line-height: 0; margin: 0 .005em 0 -.04em; color: inherit;
 }
 .cover .seal-text { line-height: 1.2; }
 .cover .seal-name { font-size: 12pt; font-weight: 700; }
