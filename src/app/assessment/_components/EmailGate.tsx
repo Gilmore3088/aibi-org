@@ -24,10 +24,8 @@ import { GAP_CONTENT } from '@content/assessments/v3/personalization';
 import {
   FREE_ROLES,
   FREE_ROLE_LABEL,
-  FREE_ROLE_TO_V2,
   type FreeRole,
 } from '@content/assessments/v3/roles';
-import type { Role } from '@content/assessments/v2/role';
 
 // Free-funnel role taxonomy (FREE_ROLES / FREE_ROLE_LABEL / FREE_ROLE_TO_V2)
 // lives in @content/assessments/v3/roles, shared with /api/capture-email so
@@ -49,7 +47,7 @@ interface EmailGateProps {
       readonly profileId?: string | null;
       readonly usedFreeEmail?: boolean;
       readonly magicLinkUrl?: string | null;
-      readonly role?: Role;
+      readonly role?: FreeRole;
     },
   ) => void;
 }
@@ -202,9 +200,9 @@ export function EmailGate({
         profileId: data.profileId ?? null,
         usedFreeEmail: isFreeEmailDomain(emailToUse),
         magicLinkUrl: data.magicLinkUrl ?? null,
-        // Map the free-funnel id down to a v2 Role so the results view's
-        // "Best match" playbook lines up with the role the DB stored.
-        role: role ? FREE_ROLE_TO_V2[role] : undefined,
+        // Pass the un-collapsed free role so the inline results view resolves
+        // the exact role → playbook (matches what the DB now stores).
+        role: role || undefined,
       });
     } catch (err) {
       setStatus('error');

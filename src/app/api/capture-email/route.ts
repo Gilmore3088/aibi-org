@@ -25,15 +25,13 @@ import {
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
-import type { Role } from '@content/assessments/v2/role';
 
-// Free-funnel role taxonomy (FREE_ROLES / parseFreeRole / FREE_ROLE_TO_V2)
-// lives in @content/assessments/v3/roles so EmailGate.tsx and this route
-// share one source of truth.
+// Free-funnel role taxonomy (FREE_ROLES / parseFreeRole) lives in
+// @content/assessments/v3/roles so EmailGate.tsx and this route share one
+// source of truth.
 import {
   type FreeRole,
   parseFreeRole,
-  FREE_ROLE_TO_V2,
 } from '@content/assessments/v3/roles';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
@@ -262,7 +260,6 @@ export async function POST(request: Request) {
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
   const trimmedInstitution = institutionName?.trim() || undefined;
-  const v2Role: Role | undefined = role ? FREE_ROLE_TO_V2[role] : undefined;
 
   // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
@@ -319,7 +316,10 @@ export async function POST(request: Request) {
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       },
-      v2Role ? { role: v2Role } : {},
+      // Persist the un-collapsed free role directly (migration 00040 widened
+      // the role CHECK to accept the full union), so the results view can
+      // resolve the exact role → playbook without a lossy v2 collapse.
+      role ? { role } : {},
     ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
       return { id: null as string | null };

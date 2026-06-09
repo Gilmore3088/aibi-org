@@ -75,7 +75,7 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
   }
 }
 
-export function useAssessmentV2(): AssessmentState & AssessmentActions {
+export function useAssessmentV3(): AssessmentState & AssessmentActions {
   const [selectedQuestions, setSelectedQuestions] = useState<AssessmentQuestion[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);

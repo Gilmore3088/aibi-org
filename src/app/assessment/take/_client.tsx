@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { SiteHeader } from '@/components/mockup';
-import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2';
+import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3';
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
-import type { Role } from '@content/assessments/v2/role';
+import type { FreeRole } from '@content/assessments/v3/roles';
 
 // ResultsViewV3 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
@@ -19,12 +19,12 @@ const ResultsViewV3 = dynamic(
 );
 
 export default function AssessmentPage() {
-  const state = useAssessmentV2();
+  const state = useAssessmentV3();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
-  const [capturedRole, setCapturedRole] = useState<Role | null>(null);
+  const [capturedRole, setCapturedRole] = useState<FreeRole | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLDivElement | null>(null);

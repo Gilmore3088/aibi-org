@@ -16,7 +16,9 @@
 import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
-import type { Role } from '@content/assessments/v2/role';
+import type { FreeRole } from '@content/assessments/v3/roles';
+import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
+import { PLAYBOOK_INDEX, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
@@ -38,9 +40,9 @@ interface ResultsViewV3Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
-  /** v2 Role the respondent selected at email capture. Drives which role
-   *  playbook is flagged as "Best match". Null when the role was skipped. */
-  readonly role?: Role | null;
+  /** Free-funnel role the respondent selected at email capture. Drives which
+   *  role playbook is flagged as "Best match". Null when the role was skipped. */
+  readonly role?: FreeRole | null;
 }
 
 interface RankedSignal {
@@ -87,66 +89,27 @@ function barClasses(band: SignalBand): string {
   return 'bg-[#B7791F]';
 }
 
-// Role playbooks. The free funnel collapses to four published playbooks, so
-// several roles share one (marketing → retail, executive/training/other fall
-// back to the broadest frontline read). The matched playbook is flagged
-// "Best match"; the others keep their descriptive tag.
-type PlaybookKey = 'retail' | 'compliance' | 'lending' | 'infosec';
-
-interface Playbook {
-  readonly key: PlaybookKey;
-  readonly tag: string;
-  readonly title: string;
-  readonly body: string;
-  readonly href: string;
-}
-
-const PLAYBOOKS: readonly Playbook[] = [
-  {
-    key: 'retail',
-    tag: 'Frontline',
-    title: 'Retail / Branch',
-    body: 'First-draft replies, job aids, and coaching scenarios.',
-    href: '/playbooks/retail',
-  },
-  {
-    key: 'compliance',
-    tag: 'Risk lens',
-    title: 'Compliance',
-    body: 'Use-case review, evidence packets, and review checklists.',
-    href: '/playbooks/compliance',
-  },
-  {
-    key: 'lending',
-    tag: 'Credit',
-    title: 'Lending',
-    body: 'Underwriting helpers, loan summaries, and review checklists.',
-    href: '/playbooks/lending',
-  },
-  {
-    key: 'infosec',
-    tag: 'Tool safety',
-    title: 'InfoSec',
-    body: 'Data handling, approved tools, and guardrails.',
-    href: '/playbooks/infosec',
-  },
-];
-
-// v2 Role → best-match playbook. Roles without a dedicated playbook map to
-// 'retail', the broadest frontline read, so there is always a sensible match.
-const ROLE_TO_PLAYBOOK: Record<Role, PlaybookKey> = {
-  operator: 'retail',
-  'compliance-risk': 'compliance',
-  lending: 'lending',
-  it: 'infosec',
-  marketing: 'retail',
-  executive: 'retail',
-  'training-hr': 'retail',
-  other: 'retail',
+// Role playbooks are sourced from the single index in app/playbooks/data.ts
+// (no more hard-coded card list here). Every free role now resolves to a
+// dedicated playbook via FREE_ROLE_TO_PLAYBOOK; 'retail' is the fallback when
+// no role was captured. The presentation-only eyebrow tag lives here.
+const PLAYBOOK_TAG: Record<RoleSlug, string> = {
+  compliance: 'Risk lens',
+  retail: 'Frontline',
+  marketing: 'Brand safety',
+  lending: 'Credit',
+  'bsa-aml': 'Surveillance',
+  infosec: 'Tool safety',
+  executive: 'Direction',
+  operations: 'Workflow',
+  'training-hr': 'Enablement',
 };
 
-function bestMatchPlaybook(role: Role | null | undefined): PlaybookKey {
-  return role ? ROLE_TO_PLAYBOOK[role] : 'retail';
+// How many playbook cards to surface (best match + the next most useful).
+const PLAYBOOK_CARD_LIMIT = 6;
+
+function bestMatchPlaybook(role: FreeRole | null | undefined): RoleSlug {
+  return role ? FREE_ROLE_TO_PLAYBOOK[role] : 'retail';
 }
 
 export function ResultsViewV3({
@@ -566,16 +529,7 @@ export function ResultsViewV3({
               8-dimension diagnostic
             </p>
             <ul className="mt-4 space-y-2.5">
-              {[
-                'AI Access Architecture',
-                'Model Oversight',
-                'Compliance Clarity',
-                'Data Safety',
-                'Workflow Fit',
-                'Human Control',
-                'Vendor Control',
-                'People & Governance',
-              ].map((d) => (
+              {Object.values(V4_DIMENSION_LABELS).map((d) => (
                 <li
                   key={d}
                   className="flex items-center gap-3 text-[14px] text-white/85"
@@ -610,22 +564,24 @@ export function ResultsViewV3({
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[...PLAYBOOKS]
+          {[...PLAYBOOK_INDEX]
+            // Surface the best-match playbook first, then the rest in index
+            // order, capped so the section stays a teaser, not a directory.
             .sort((a, b) => {
-              // Surface the best-match playbook first so it reads as the lead.
-              if (a.key === matchedPlaybook) return -1;
-              if (b.key === matchedPlaybook) return 1;
+              if (a.slug === matchedPlaybook) return -1;
+              if (b.slug === matchedPlaybook) return 1;
               return 0;
             })
+            .slice(0, PLAYBOOK_CARD_LIMIT)
             .map((p) => {
-              const isMatch = p.key === matchedPlaybook;
+              const isMatch = p.slug === matchedPlaybook;
               return (
                 <PlaybookCard
-                  key={p.key}
-                  tag={isMatch ? 'Best match' : p.tag}
+                  key={p.slug}
+                  tag={isMatch ? 'Best match' : PLAYBOOK_TAG[p.slug]}
                   title={p.title}
-                  body={p.body}
-                  href={p.href}
+                  body={p.desc}
+                  href={`/playbooks/${p.slug}`}
                   highlight={isMatch}
                 />
               );

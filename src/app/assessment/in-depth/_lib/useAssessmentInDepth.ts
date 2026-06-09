@@ -2,7 +2,7 @@
 
 // Hook for the paid 48-question In-Depth Assessment.
 //
-// Mirrors useAssessmentV2 but uses the full question pool instead of a
+// Mirrors useAssessmentV3 but uses the full question pool instead of a
 // rotation, persists to its own sessionStorage key (so the free 12-question
 // session can coexist), and uses the same scoring + tier logic since
 // scoring is normalized.

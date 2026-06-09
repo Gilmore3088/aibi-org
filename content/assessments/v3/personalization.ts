@@ -68,8 +68,8 @@ export const BIG_INSIGHT: Record<Tier['id'], string> = {
 // SIGNATURE INSIGHT — the memorable line that travels with the report.
 // ---------------------------------------------------------------------------
 
-export const SIGNATURE_INSIGHT =
-  "Most institutions do not fail because employees refuse to use AI. They struggle because experimentation spreads faster than operational standards.";
+// Shared with v2 — single source in content/assessments/shared/free-readiness.
+export { SIGNATURE_INSIGHT } from '@content/assessments/shared/free-readiness';
 
 // ---------------------------------------------------------------------------
 // MATURITY LADDER — six named rungs.
@@ -837,15 +837,8 @@ Draft five primary questions I should ask. For each, include two short follow-up
 // SEVEN-DAY ACTIVATION PLAN — generic, applies to all tiers.
 // ---------------------------------------------------------------------------
 
-export const SEVEN_DAY_PLAN: ReadonlyArray<{ readonly day: number; readonly action: string }> = [
-  { day: 1, action: 'Choose one internal workflow to test (start with your recommended use case).' },
-  { day: 2, action: 'Run the workflow manually using AI.' },
-  { day: 3, action: 'Review the output for clarity, accuracy, and tone.' },
-  { day: 4, action: 'Refine your prompt and test again.' },
-  { day: 5, action: 'Measure time saved versus your current process.' },
-  { day: 6, action: 'Share results with one colleague or manager.' },
-  { day: 7, action: 'Decide whether to expand or formalize the workflow.' },
-];
+// Shared with v2 — single source in content/assessments/shared/free-readiness.
+export { SEVEN_DAY_PLAN } from '@content/assessments/shared/free-readiness';
 
 // ---------------------------------------------------------------------------
 // FINANCIAL IMPLICATIONS — tier-keyed exec-translation.
