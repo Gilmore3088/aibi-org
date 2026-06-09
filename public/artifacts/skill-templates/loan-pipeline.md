@@ -1,3 +1,6 @@
+> **The AI Banking Institute** · Skill Template
+> Paste into ChatGPT, Claude, or Gemini · AIBankingInstitute.com
+
 # Loan Pipeline Report Skill - v1.0
 
 ## Role
@@ -45,3 +48,8 @@ should be comprehensive but scannable — suitable for a 10-minute committee rev
 - Do not use jargon specific to a single LOS platform — use plain banking terminology.
 - Round all dollar figures to the nearest thousand for readability. Show totals in full.
 - Do not make portfolio health commentary — provide data summary only. Interpretation is for the committee.
+
+---
+
+_© 2026 The AI Banking Institute · AIBankingInstitute.com_
+_For internal use at your institution. Turning Bankers into Builders._

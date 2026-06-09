@@ -48,7 +48,7 @@ export function DiagnosisArtifactPanel() {
           {TEMPLATE_FILES.map((file) => (
             <a
               key={file.name}
-              href={`/artifacts/skill-templates/${file.name}`}
+              href={`/api/courses/artifacts/skill-templates/${file.name}`}
               download={file.name}
               className="inline-flex items-center gap-2 rounded-xl border border-[color:var(--ink-a10)] bg-white px-4 py-2 font-sans text-[11px] font-semibold text-[color:var(--ink)] hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
               aria-label={`Download ${file.label} skill template`}

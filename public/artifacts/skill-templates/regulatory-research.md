@@ -1,3 +1,6 @@
+> **The AI Banking Institute** · Skill Template
+> Paste into ChatGPT, Claude, or Gemini · AIBankingInstitute.com
+
 # Regulatory Research Skill - v1.0
 
 ## Role
@@ -42,3 +45,8 @@ is required. Total response under 500 words unless the source material is highly
 - Flag any finding involving third-party vendor risk with [TPRM REVIEW REQUIRED].
 - If the source material is ambiguous on a key point, note the ambiguity explicitly rather than resolving it.
 - Do not make examination outcome predictions ("the examiner will find...") — describe risk only.
+
+---
+
+_© 2026 The AI Banking Institute · AIBankingInstitute.com_
+_For internal use at your institution. Turning Bankers into Builders._
