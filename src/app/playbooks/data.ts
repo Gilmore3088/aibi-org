@@ -443,10 +443,10 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
       'A decision to scale or stop is made on evidence, not vibes',
     ],
     assets: [
-      { name: 'AI Adoption Thesis Template', type: 'Template', status: 'Draft' },
-      { name: 'AI Use Guardrails One-Pager', type: 'Template', status: 'Draft' },
-      { name: 'Board AI Briefing Template', type: 'Template', status: 'Draft' },
-      { name: 'Pilot Scorecard', type: 'Worksheet', status: 'Draft' },
+      { name: 'AI Adoption Thesis Template', type: 'Template', status: 'Ready' },
+      { name: 'AI Use Guardrails One-Pager', type: 'Template', status: 'Ready' },
+      { name: 'Board AI Briefing Template', type: 'Template', status: 'Ready' },
+      { name: 'Pilot Scorecard', type: 'Worksheet', status: 'Ready' },
       { name: 'Vendor Evaluation Reference Card', type: 'Reference', status: 'Draft' },
     ],
     cta: {
@@ -496,10 +496,10 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
       'Time saved and correction rate are tracked',
     ],
     assets: [
-      { name: 'Workflow SOP Template', type: 'Template', status: 'Draft' },
-      { name: 'Reusable AI Working Brief', type: 'Template', status: 'Draft' },
-      { name: 'Review Checkpoint Worksheet', type: 'Worksheet', status: 'Draft' },
-      { name: 'Time-Saved Tracking Sheet', type: 'Worksheet', status: 'Draft' },
+      { name: 'Workflow SOP Template', type: 'Template', status: 'Ready' },
+      { name: 'Reusable AI Working Brief', type: 'Template', status: 'Ready' },
+      { name: 'Review Checkpoint Worksheet', type: 'Worksheet', status: 'Ready' },
+      { name: 'Time-Saved Tracking Sheet', type: 'Worksheet', status: 'Ready' },
       { name: 'Handoff Readiness Card', type: 'Reference', status: 'Draft' },
     ],
     cta: {
@@ -549,10 +549,10 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
       'There is a named person to ask when staff get stuck',
     ],
     assets: [
-      { name: 'Role Training Path Template', type: 'Template', status: 'Draft' },
-      { name: 'Safe-Use One-Pager', type: 'Template', status: 'Draft' },
-      { name: 'Practice Scenario Pack', type: 'Template', status: 'Draft' },
-      { name: 'Capability Tracker', type: 'Worksheet', status: 'Draft' },
+      { name: 'Role Training Path Template', type: 'Template', status: 'Ready' },
+      { name: 'Safe-Use One-Pager', type: 'Template', status: 'Ready' },
+      { name: 'Practice Scenario Pack', type: 'Template', status: 'Ready' },
+      { name: 'Capability Tracker', type: 'Worksheet', status: 'Ready' },
       { name: 'Data Rules Reference Card', type: 'Reference', status: 'Draft' },
     ],
     cta: {

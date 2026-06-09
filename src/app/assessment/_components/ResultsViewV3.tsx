@@ -43,6 +43,9 @@ interface ResultsViewV3Props {
   /** Free-funnel role the respondent selected at email capture. Drives which
    *  role playbook is flagged as "Best match". Null when the role was skipped. */
   readonly role?: FreeRole | null;
+  /** Show the "you used a personal email" note above the report. Set on the
+   *  immediate post-capture hand-off when a free-mail domain was used. */
+  readonly showPersonalEmailNote?: boolean;
 }
 
 interface RankedSignal {
@@ -121,6 +124,7 @@ export function ResultsViewV3({
   firstName,
   profileId,
   role,
+  showPersonalEmailNote,
 }: ResultsViewV3Props) {
   // 12 signals, ordered by score ascending so the weakest are easy to find.
   const signals: RankedSignal[] = (
@@ -149,6 +153,23 @@ export function ResultsViewV3({
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-14 md:space-y-20">
+      {showPersonalEmailNote && (
+        <aside
+          aria-label="Personal email notice"
+          className="rounded-[18px] border border-[color:var(--gold)] bg-[color:var(--cream)] p-4 md:p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Note
+          </p>
+          <p className="mt-1.5 text-[14px] leading-[1.6] text-[color:var(--slate-700)]">
+            You submitted a personal email. The report below is tailored using the
+            institution you provided. If you&rsquo;d prefer follow-up emails to land at
+            your work address, just retake the assessment with your work email and
+            we&rsquo;ll merge the records.
+          </p>
+        </aside>
+      )}
+
       {/* HERO */}
       <section
         className="rounded-[28px] bg-[color:var(--ink)] text-white p-6 md:p-9 grid grid-cols-1 md:grid-cols-[200px_1fr_300px] gap-7 md:gap-7 items-center"

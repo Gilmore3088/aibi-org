@@ -4,24 +4,34 @@ _Map + audit of the AI Readiness Assessment as of 2026-06-09. Covers the free
 funnel (v3), the paid In-Depth (v4), and the legacy v1/v2 paths still readable
 from stored rows._
 
-> **Status (2026-06-09):** the following items from this audit were actioned in
-> the same change set:
+> **Status (2026-06-09):** the following items from this audit were actioned:
 > - Playbooks authored for **executive, operations, training-hr** → every free
->   role now has a dedicated best-match playbook.
+>   role now has a dedicated best-match playbook. Each ships 4 ready downloadable
+>   assets registered in `content/playbook-assets/data.ts`.
 > - Lossy role collapse removed — the free role is now persisted directly
 >   (migration 00040 already permits it) and read back un-collapsed, so
 >   `marketing`, `operations`, `retail-branch`, `it-infosec` resolve to their
 >   own playbooks. (redundancy #5)
+> - **Two v3 render paths collapsed to one:** after capture the take flow now
+>   redirects to the canonical server-rendered `/results/[id]` (first name +
+>   personal-email note carried as transient query params); the inline render
+>   remains only as a no-profile-id offline fallback.
 > - v4 dimension labels in the upsell now import from `v4/types.ts`. (#1)
 > - The results-view playbook list now derives from `playbooks/data.ts`. (#2)
-> - v2/v3 tiers + `SEVEN_DAY_PLAN`/`SIGNATURE_INSIGHT` extracted to
->   `content/assessments/shared/free-readiness.ts`. (#3, #4-partial)
+> - v2/v3 tiers, `SEVEN_DAY_PLAN`, `SIGNATURE_INSIGHT`, and `TIER_CLOSING_CTA`
+>   extracted to `content/assessments/shared/free-readiness.ts`. (#3, #4)
 > - `useAssessmentV2` → `useAssessmentV3`.
 >
-> Deferred: redirecting the post-capture inline render to `/results/[id]`
-> (two-render-paths cleanup), the larger v2/v3 personalization-narrative
-> extraction (PERSONAS/TIER_CLOSING_CTA/PRACTICE_PICTURE — legacy-coupling
-> risk), and any cross-version dimension/role bridge.
+> **Content note — v2/v3 personalization has _diverged_, not duplicated.** The
+> earlier audit assumed PERSONAS / BIG_INSIGHT / MATURITY_LADDER / TIER_TO_RUNG /
+> PRACTICE_PICTURE / FINANCIAL_IMPLICATIONS were identical between v2 and v3.
+> A byte comparison shows they are not — e.g. v3's FINANCIAL_IMPLICATIONS
+> references the AIEOG Lexicon and softens "pasting into public AI tools" while
+> v2 does not. Because `v2/personalization` still feeds live legacy result
+> rendering and the print/PDF path, these were **not** merged: picking a
+> canonical copy is a content decision, not a mechanical dedup. Only the
+> genuinely-identical blocks were shared. Recommendation: reconcile to the v3
+> copy (newer regulatory references) in a dedicated content pass with sign-off.
 
 ## 1. User flow
 

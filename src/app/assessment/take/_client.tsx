@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { SiteHeader } from '@/components/mockup';
 import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3';
 import { ProgressBar } from '../_components/ProgressBar';
@@ -19,6 +20,7 @@ const ResultsViewV3 = dynamic(
 );
 
 export default function AssessmentPage() {
+  const router = useRouter();
   const state = useAssessmentV3();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
@@ -199,19 +201,26 @@ export default function AssessmentPage() {
                       maxScore={48}
                       dimensionBreakdown={breakdown}
                       onCaptured={(email, extras) => {
+                        // Single render path: when the profile persisted, hand
+                        // off to the canonical server-rendered /results/[id].
+                        // The first name + personal-email note are not stored
+                        // server-side, so carry them as transient query params
+                        // (the bearer-token id is already in the URL).
+                        if (extras.profileId) {
+                          const params = new URLSearchParams({ from: 'assessment' });
+                          if (extras.firstName) params.set('name', extras.firstName);
+                          if (extras.usedFreeEmail) params.set('personal', '1');
+                          router.replace(`/results/${extras.profileId}?${params.toString()}`);
+                          return;
+                        }
+                        // Fallback (Supabase down / no row): render inline from
+                        // client state since there is no server row to visit.
                         setCapturedEmail(email);
                         setCapturedFirstName(extras.firstName ?? null);
                         setCapturedInstitution(extras.institutionName ?? null);
-                        setCapturedProfileId(extras.profileId ?? null);
+                        setCapturedProfileId(null);
                         setCapturedRole(extras.role ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
-                        if (extras.profileId) {
-                          try {
-                            window.history.replaceState({}, '', `/results/${extras.profileId}`);
-                          } catch {
-                            // ignore
-                          }
-                        }
                         state.advanceToResults();
                       }}
                     />
@@ -229,17 +238,6 @@ export default function AssessmentPage() {
 
           {state.phase === 'results' && state.tier && capturedEmail && (
             <>
-              {usedFreeEmail && (
-                <aside className="mk-take-note" aria-label="Personal email notice">
-                  <p className="mk-k">Note</p>
-                  <p>
-                    You submitted a personal email. The report below is tailored using the
-                    institution you provided. If you&rsquo;d prefer follow-up emails to land at
-                    your work address, just retake the assessment with your work email and
-                    we&rsquo;ll merge the records.
-                  </p>
-                </aside>
-              )}
               <ResultsViewV3
                 score={state.totalScore}
                 tier={state.tier}
@@ -250,6 +248,7 @@ export default function AssessmentPage() {
                 institutionName={capturedInstitution}
                 profileId={capturedProfileId}
                 role={capturedRole}
+                showPersonalEmailNote={usedFreeEmail}
               />
             </>
           )}
