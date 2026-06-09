@@ -359,7 +359,7 @@ export function ResultsViewV2({
                   <span aria-hidden className="text-[12px] transition-transform group-open:rotate-180">▾</span>
                 </summary>
                 <div className="p-5">
-                  <StarterArtifactCard artifact={starterArtifact} tierLabel={tier.label} topGapLabel={focusGap.label} />
+                  <StarterArtifactCard artifact={starterArtifact} dimension={focusGap.id} tierLabel={tier.label} topGapLabel={focusGap.label} />
                 </div>
               </details>
             )}
