@@ -10,13 +10,18 @@
  * top-level role-specific framing.
  */
 
+import type { FreeRole } from '@content/assessments/v3/roles';
+
 export type RoleSlug =
   | 'compliance'
   | 'retail'
   | 'marketing'
   | 'lending'
   | 'bsa-aml'
-  | 'infosec';
+  | 'infosec'
+  | 'executive'
+  | 'operations'
+  | 'training-hr';
 
 export interface PlaybookData {
   slug: RoleSlug;
@@ -50,6 +55,22 @@ export interface PlaybookData {
   cta: { heading: string; body: string };
 }
 
+// Free-funnel role → best-match playbook. Every free role now resolves to a
+// dedicated playbook (no more collapsing marketing/operations/etc. into
+// retail). 'other' falls back to retail as the broadest frontline read.
+// Used by the v3 results view to flag the "Best match" card.
+export const FREE_ROLE_TO_PLAYBOOK: Record<FreeRole, RoleSlug> = {
+  executive: 'executive',
+  'compliance-risk': 'compliance',
+  operations: 'operations',
+  lending: 'lending',
+  'retail-branch': 'retail',
+  marketing: 'marketing',
+  'it-infosec': 'infosec',
+  'training-hr': 'training-hr',
+  other: 'retail',
+};
+
 export const PLAYBOOK_INDEX: { slug: RoleSlug; title: string; desc: string }[] = [
   { slug: 'compliance', title: 'Compliance', desc: 'Procedure cleanup, audit prep, exam-ready summaries.' },
   { slug: 'retail', title: 'Branch / Retail', desc: 'Coaching scripts, service recovery, frontline reference cards.' },
@@ -57,6 +78,9 @@ export const PLAYBOOK_INDEX: { slug: RoleSlug; title: string; desc: string }[] =
   { slug: 'lending', title: 'Lending', desc: 'Adverse-action tuner, denial summaries, fair-lending checks.' },
   { slug: 'bsa-aml', title: 'BSA / AML', desc: 'SAR decision tree, structuring patterns, CDD baseline drift.' },
   { slug: 'infosec', title: 'IT / InfoSec', desc: 'Data classification matrix, allowed-tools verdicts, NPI rules.' },
+  { slug: 'executive', title: 'Executive / Leadership', desc: 'Adoption thesis, governance guardrails, ROI you can report to the board.' },
+  { slug: 'operations', title: 'Operations', desc: 'Turn ad hoc AI use into documented, repeatable workflows.' },
+  { slug: 'training-hr', title: 'Training / HR', desc: 'Role-specific enablement, safe-use curriculum, capability tracking.' },
 ];
 
 export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
@@ -375,6 +399,165 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     cta: {
       heading: 'Be the team the business asks first — not the team they bypass.',
       body: 'Clear verdicts, publishable advisories, and a catalog that actually answers the question. That is the difference between InfoSec as gatekeeper and InfoSec as enabler.',
+    },
+  },
+
+  executive: {
+    slug: 'executive',
+    eyebrow: 'Executive / Leadership Playbook',
+    title: 'Set the direction. Govern the adoption. Report the return.',
+    lede: 'A playbook for the people who own the outcome: frame where AI earns its keep, put guardrails in place before staff improvise them, and turn scattered experiments into a number you can take to the board.',
+    snapTitle: 'Executive AI Direction Map',
+    snapQuick: [
+      { label: 'Primary Goal', value: 'Governed ROI' },
+      { label: 'Core Artifact', value: 'Adoption thesis' },
+      { label: 'Risk Focus', value: 'Strategy + oversight' },
+    ],
+    snapMaturity: [
+      { name: 'Strategic clarity', pct: 66 },
+      { name: 'Governance posture', pct: 54 },
+      { name: 'Measurement discipline', pct: 44 },
+      { name: 'Leadership visibility', pct: 72 },
+    ],
+    snapPath: 'Maturity Assessment → Adoption Thesis → Governance Guardrails → Quarterly Review',
+    usesHeading: 'Where leadership can use AiBI immediately.',
+    uses: [
+      { title: 'Write a one-page adoption thesis', desc: 'State where AI earns its keep this year, who owns it, and what "good" looks like.', artifact: 'AI adoption thesis', risk: 'low' },
+      { title: 'Set the guardrails', desc: 'Approve the data-safety, review, and approved-tool rules before staff improvise their own.', artifact: 'AI use guardrails', risk: 'high' },
+      { title: 'Brief the board', desc: 'Turn pilot results into a plain-English board update with risk posture and next decisions.', artifact: 'Board AI briefing', risk: 'med' },
+      { title: 'Pressure-test a vendor pitch', desc: 'Score an AI vendor claim against your data, controls, and exit risk before signing.', artifact: 'Vendor evaluation notes', risk: 'med' },
+    ],
+    opHeading: 'From scattered pilots to a governed program.',
+    ops: [
+      { step: '01', title: 'Frame', desc: 'Name the one or two outcomes AI should move this year and the single accountable owner.', artifact: 'Adoption thesis' },
+      { step: '02', title: 'Guardrail', desc: 'Approve the data-safety tiers, the human-review rule, and the approved-tool list as policy.', artifact: 'Signed guardrails' },
+      { step: '03', title: 'Measure', desc: 'Pick two metrics — time saved and correction rate — and require them on every pilot.', artifact: 'Pilot scorecard' },
+      { step: '04', title: 'Review', desc: 'Run a quarterly review: what scaled, what stopped, where the risk now sits.', artifact: 'Quarterly AI review' },
+    ],
+    checklist: [
+      'One accountable owner named for AI adoption',
+      'Data-safety and human-review rules approved as policy',
+      'Approved-tool list published to all staff',
+      'Every pilot reports time saved and correction rate',
+      'Board has seen the current risk posture',
+      'A decision to scale or stop is made on evidence, not vibes',
+    ],
+    assets: [
+      { name: 'AI Adoption Thesis Template', type: 'Template', status: 'Ready' },
+      { name: 'AI Use Guardrails One-Pager', type: 'Template', status: 'Ready' },
+      { name: 'Board AI Briefing Template', type: 'Template', status: 'Ready' },
+      { name: 'Pilot Scorecard', type: 'Worksheet', status: 'Ready' },
+      { name: 'Vendor Evaluation Reference Card', type: 'Reference', status: 'Draft' },
+    ],
+    cta: {
+      heading: 'Lead the adoption instead of cleaning up after it.',
+      body: 'The institutions that win with AI are not the ones that move fastest — they are the ones whose leadership set the direction and the guardrails before the staff did it for them.',
+    },
+  },
+
+  operations: {
+    slug: 'operations',
+    eyebrow: 'Operations Playbook',
+    title: 'Turn ad hoc AI use into workflows a colleague could run.',
+    lede: 'A playbook for the people who own how the work gets done: take the AI shortcuts your team already uses, document them into repeatable workflows, and hand them off without losing the review step.',
+    snapTitle: 'Operations Enablement Map',
+    snapQuick: [
+      { label: 'Primary Goal', value: 'Repeatable workflows' },
+      { label: 'Core Artifact', value: 'Workflow SOP' },
+      { label: 'Risk Focus', value: 'Consistency + review' },
+    ],
+    snapMaturity: [
+      { name: 'Workflow documentation', pct: 50 },
+      { name: 'Handoff readiness', pct: 46 },
+      { name: 'Review discipline', pct: 62 },
+      { name: 'Measurement habit', pct: 48 },
+    ],
+    snapPath: 'Free Assessment → Foundation Course → Workflow SOP → Sandbox Practice',
+    usesHeading: 'Where operations can use AiBI immediately.',
+    uses: [
+      { title: 'Document a recurring task', desc: 'Capture the input → AI draft → review → output steps for a task your team repeats weekly.', artifact: 'Workflow SOP', risk: 'med' },
+      { title: 'Build a reusable working brief', desc: 'Turn a one-off prompt into a fill-in-the-blank template the whole team can run.', artifact: 'Reusable AI brief', risk: 'low' },
+      { title: 'Define the review step', desc: 'Make explicit who checks the AI output, against what, before it is used.', artifact: 'Review checkpoint', risk: 'med' },
+      { title: 'Measure the time saved', desc: 'Baseline the manual version, then track draft time and correction rate on the AI version.', artifact: 'Time-saved log', risk: 'low' },
+    ],
+    opHeading: 'A rhythm that survives turnover.',
+    ops: [
+      { step: '01', title: 'Map', desc: 'Pick one recurring, low-risk task and write down how it actually gets done today.', artifact: 'Current-state map' },
+      { step: '02', title: 'Draft', desc: 'Build the AI step in the sandbox with a reusable brief and a named review checkpoint.', artifact: 'Workflow SOP draft' },
+      { step: '03', title: 'Test', desc: 'Run it on real work for a week. Track draft time, correction rate, and where it breaks.', artifact: 'Test log' },
+      { step: '04', title: 'Hand off', desc: 'Give the SOP to a colleague cold. If they can run it unaided, it is done. Save it to the Toolbox.', artifact: 'Handoff-ready SOP' },
+    ],
+    checklist: [
+      'The task is internal and low-risk to start',
+      'No real customer data in the AI step',
+      'A named human review checkpoint exists',
+      'The SOP names inputs, the AI step, the review, and the output',
+      'A colleague could run it without you in the room',
+      'Time saved and correction rate are tracked',
+    ],
+    assets: [
+      { name: 'Workflow SOP Template', type: 'Template', status: 'Ready' },
+      { name: 'Reusable AI Working Brief', type: 'Template', status: 'Ready' },
+      { name: 'Review Checkpoint Worksheet', type: 'Worksheet', status: 'Ready' },
+      { name: 'Time-Saved Tracking Sheet', type: 'Worksheet', status: 'Ready' },
+      { name: 'Handoff Readiness Card', type: 'Reference', status: 'Draft' },
+    ],
+    cta: {
+      heading: 'Make the shortcut a standard.',
+      body: 'The AI tricks your best people use in their heads are worth nothing until they are written down. This playbook turns them into workflows the whole team can run.',
+    },
+  },
+
+  'training-hr': {
+    slug: 'training-hr',
+    eyebrow: 'Training / HR Playbook',
+    title: 'Build the capability adoption actually depends on.',
+    lede: 'A playbook for the people who build staff capability: replace generic AI awareness with role-specific safe-use training, give people examples they can apply the same day, and track who is actually ready.',
+    snapTitle: 'Training / HR Enablement Map',
+    snapQuick: [
+      { label: 'Primary Goal', value: 'Staff readiness' },
+      { label: 'Core Artifact', value: 'Role training path' },
+      { label: 'Risk Focus', value: 'Safe-use literacy' },
+    ],
+    snapMaturity: [
+      { name: 'Role-specific guidance', pct: 44 },
+      { name: 'Safe-use literacy', pct: 58 },
+      { name: 'Practical examples', pct: 52 },
+      { name: 'Capability tracking', pct: 40 },
+    ],
+    snapPath: 'Maturity Assessment → Foundation Course → Role Training Path → Capability Tracker',
+    usesHeading: 'Where training and HR can use AiBI immediately.',
+    uses: [
+      { title: 'Build a role-specific training path', desc: 'Turn generic AI awareness into the three things a given role needs to do safely.', artifact: 'Role training path', risk: 'low' },
+      { title: 'Write a safe-use one-pager', desc: 'Give every new hire the green/yellow/red data rules and the approved-tool list on one sheet.', artifact: 'Safe-use reference', risk: 'med' },
+      { title: 'Create practice scenarios', desc: 'Draft realistic, fictional scenarios staff can rehearse in the sandbox — never real customer stories.', artifact: 'Scenario pack', risk: 'low' },
+      { title: 'Track who is ready', desc: 'Define what "trained" means per role and record who has cleared the bar.', artifact: 'Capability tracker', risk: 'low' },
+    ],
+    opHeading: 'From one-time training to sustained capability.',
+    ops: [
+      { step: '01', title: 'Scope', desc: 'For one role, name the two or three AI tasks they should be able to do safely.', artifact: 'Role capability spec' },
+      { step: '02', title: 'Build', desc: 'Assemble the path: the rules, the examples, and a sandbox exercise tied to real role work.', artifact: 'Role training path' },
+      { step: '03', title: 'Run', desc: 'Deliver it to one cohort. Capture where people get stuck and what questions recur.', artifact: 'Cohort feedback log' },
+      { step: '04', title: 'Track', desc: 'Record who has cleared the bar, refresh on a cadence, and feed gaps back into the path.', artifact: 'Capability tracker' },
+    ],
+    checklist: [
+      'Training is tied to specific role tasks, not general awareness',
+      'Green/yellow/red data rules are covered explicitly',
+      'Approved-tool list is part of every path',
+      'Practice uses fictional scenarios, never real customer data',
+      '"Trained" is defined and measurable per role',
+      'There is a named person to ask when staff get stuck',
+    ],
+    assets: [
+      { name: 'Role Training Path Template', type: 'Template', status: 'Ready' },
+      { name: 'Safe-Use One-Pager', type: 'Template', status: 'Ready' },
+      { name: 'Practice Scenario Pack', type: 'Template', status: 'Ready' },
+      { name: 'Capability Tracker', type: 'Worksheet', status: 'Ready' },
+      { name: 'Data Rules Reference Card', type: 'Reference', status: 'Draft' },
+    ],
+    cta: {
+      heading: 'Make readiness something you can see, not assume.',
+      body: 'Adoption does not fail on tools — it fails on people who were never shown how to use them safely. This playbook turns AI training into role-specific capability you can actually track.',
     },
   },
 };

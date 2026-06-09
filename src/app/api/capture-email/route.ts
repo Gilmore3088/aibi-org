@@ -25,46 +25,14 @@ import {
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
-import type { Role } from '@content/assessments/v2/role';
 
-// Free-funnel role taxonomy used by EmailGate.tsx. Intentionally a superset
-// of the v2 Role union (kept short for the free form). Mapped down to v2
-// Role before the user_profiles write so the DB schema stays stable; the
-// raw free-id is forwarded to MailerLite for segmentation.
-const FREE_ROLES = [
-  'executive',
-  'compliance-risk',
-  'operations',
-  'lending',
-  'retail-branch',
-  'marketing',
-  'it-infosec',
-  'training-hr',
-  'other',
-] as const;
-type FreeRole = (typeof FREE_ROLES)[number];
-
-function parseFreeRole(input: unknown): FreeRole | null {
-  if (typeof input !== 'string') return null;
-  const lowered = input.trim().toLowerCase();
-  return (FREE_ROLES as readonly string[]).includes(lowered)
-    ? (lowered as FreeRole)
-    : null;
-}
-
-// Free-funnel id → v2 Role id. retail-branch and operations both collapse
-// to "operator" (frontline ops). it-infosec → it. The rest map 1:1.
-const FREE_ROLE_TO_V2: Record<FreeRole, Role> = {
-  executive: 'executive',
-  'compliance-risk': 'compliance-risk',
-  operations: 'operator',
-  lending: 'lending',
-  'retail-branch': 'operator',
-  marketing: 'marketing',
-  'it-infosec': 'it',
-  'training-hr': 'training-hr',
-  other: 'other',
-};
+// Free-funnel role taxonomy (FREE_ROLES / parseFreeRole) lives in
+// @content/assessments/v3/roles so EmailGate.tsx and this route share one
+// source of truth.
+import {
+  type FreeRole,
+  parseFreeRole,
+} from '@content/assessments/v3/roles';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person
@@ -292,7 +260,6 @@ export async function POST(request: Request) {
   const completedAt = new Date().toISOString();
   const trimmedFirstName = firstName?.trim() || undefined;
   const trimmedInstitution = institutionName?.trim() || undefined;
-  const v2Role: Role | undefined = role ? FREE_ROLE_TO_V2[role] : undefined;
 
   // MailerLite fires only when the user explicitly opted in to marketing.
   // Without consent the email is treated as transactional only — assessment
@@ -349,7 +316,10 @@ export async function POST(request: Request) {
         ...(maxScore !== undefined ? { maxScore } : {}),
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       },
-      v2Role ? { role: v2Role } : {},
+      // Persist the un-collapsed free role directly (migration 00040 widened
+      // the role CHECK to accept the full union), so the results view can
+      // resolve the exact role → playbook without a lossy v2 collapse.
+      role ? { role } : {},
     ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
       return { id: null as string | null };

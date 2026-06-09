@@ -6,59 +6,15 @@
 
 import type { Dimension, AssessmentQuestion } from './types';
 import { DIMENSION_LABELS } from './types';
+import { tiers } from '@content/assessments/shared/free-readiness';
+import type { Tier } from '@content/assessments/shared/free-readiness';
 
-export interface Tier {
-  readonly id: 'starting-point' | 'early-stage' | 'building-momentum' | 'ready-to-scale';
-  readonly label: string;
-  readonly min: number;
-  readonly max: number;
-  readonly colorVar: string;
-  readonly headline: string;
-  readonly summary: string;
-}
-
-export const tiers: readonly Tier[] = [
-  {
-    id: 'starting-point',
-    label: 'Starting Point',
-    min: 12,
-    max: 22,
-    colorVar: 'var(--ink)',
-    headline: 'You are at the beginning of your AI journey.',
-    summary:
-      'Your institution has meaningful ground to cover before AI adoption produces operational value. The first priority is building foundational staff literacy and identifying one to two repetitive workflows where a quick win is achievable without significant infrastructure investment.',
-  },
-  {
-    id: 'early-stage',
-    label: 'Early Stage',
-    min: 23,
-    max: 32,
-    colorVar: 'var(--gold)',
-    headline: 'You are experimenting but not yet coordinated.',
-    summary:
-      'Early signals exist inside your institution, but adoption is uneven and governance is informal. The opportunity is to convert isolated experiments into a coordinated program with a written use policy, a prioritized automation backlog, and a clear owner for AI strategy.',
-  },
-  {
-    id: 'building-momentum',
-    label: 'Building Momentum',
-    min: 33,
-    max: 40,
-    colorVar: 'var(--gold)',
-    headline: 'You have real traction. The next step is scale.',
-    summary:
-      'Multiple teams are using AI tools with leadership awareness and a working governance posture. The next move is disciplined scaling: documented use cases, measured outcomes, and a training function that can sustain the program through turnover and expansion.',
-  },
-  {
-    id: 'ready-to-scale',
-    label: 'Ready to Scale',
-    min: 41,
-    max: 48,
-    colorVar: 'var(--ink)',
-    headline: 'You are positioned to lead your peer group.',
-    summary:
-      'Your institution has the culture, governance, and leadership commitment to operate AI as a strategic capability. The opportunity is compounding — codify what works, train the next wave of builders, and convert capability into measurable efficiency gains that compound over time.',
-  },
-] as const;
+// Tier bands are shared with v2 (same four ids) so any downstream consumer
+// that has already keyed on the tier id (sequences, dashboards) continues to
+// work without branching on assessment version. Re-exported here so existing
+// `import { tiers, type Tier } from '.../v3/scoring'` consumers keep working.
+export { tiers };
+export type { Tier };
 
 export function getTierV3(totalScore: number): Tier {
   const match = tiers.find((t) => totalScore >= t.min && totalScore <= t.max);

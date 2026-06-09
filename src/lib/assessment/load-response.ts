@@ -23,6 +23,7 @@ import type { Dimension as DimensionV3 } from '@content/assessments/v3/types';
 import type { Dimension as DimensionV4, MaturityBand } from '@content/assessments/v4/types';
 import { parseRole, type Role } from '@content/assessments/v2/role';
 import { parseRoleV4, type RoleV4 } from '@content/assessments/v4/roles';
+import { normalizeStoredRoleToFreeRole, type FreeRole } from '@content/assessments/v3/roles';
 
 export type AssessmentResponseVersion = 'v1' | 'v2' | 'v3' | 'v4';
 
@@ -42,8 +43,11 @@ export interface AssessmentResponseLoadedV2 extends AssessmentResponseBase {
   readonly dimensionBreakdown: Record<DimensionV2, DimensionScoreV2>;
 }
 
-export interface AssessmentResponseLoadedV3 extends AssessmentResponseBase {
+export interface AssessmentResponseLoadedV3 extends Omit<AssessmentResponseBase, 'role'> {
   readonly version: 'v3';
+  // v3 persists the un-collapsed free role (operations, retail-branch,
+  // it-infosec are distinct here, unlike the v2 Role union).
+  readonly role: FreeRole | null;
   readonly tier: TierV3;
   readonly tierId: TierV3['id'];
   readonly dimensionBreakdown: Record<DimensionV3, DimensionScoreV3>;
@@ -158,6 +162,9 @@ export async function loadAssessmentResponse(
     const tier = getTierV3(score);
     return {
       ...base,
+      // Override base.role (v2-parsed) with the free-role normalization so
+      // operations/retail-branch/it-infosec survive as distinct roles.
+      role: normalizeStoredRoleToFreeRole((data as { role?: unknown }).role),
       version: 'v3',
       tier,
       tierId: tier.id,

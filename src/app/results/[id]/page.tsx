@@ -25,9 +25,10 @@ export const runtime = 'nodejs';
 
 interface ResultsPageProps {
   readonly params: { readonly id: string };
+  readonly searchParams?: { readonly [key: string]: string | string[] | undefined };
 }
 
-export default async function ResultsPage({ params }: ResultsPageProps) {
+export default async function ResultsPage({ params, searchParams }: ResultsPageProps) {
   if (!isSupabaseConfigured()) notFound();
 
   const response = await loadAssessmentResponse(params.id);
@@ -40,6 +41,11 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
     redirect(`/assessment/in-depth/results/${params.id}`);
   }
 
+  // Transient hand-off params from the take flow (the free funnel does not
+  // persist first name server-side). Rendered as escaped text only.
+  const nameParam = typeof searchParams?.name === 'string' ? searchParams.name.slice(0, 80) : null;
+  const showPersonalEmailNote = searchParams?.personal === '1';
+
   return (
     <main className="min-h-screen bg-[color:var(--cream)] py-12 px-4">
       {response.version === 'v3' ? (
@@ -49,9 +55,11 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
           tierId={response.tierId}
           dimensionBreakdown={response.dimensionBreakdown}
           email={response.email}
-          firstName={null}
+          firstName={nameParam}
           institutionName={null}
           profileId={response.profileId}
+          role={response.role}
+          showPersonalEmailNote={showPersonalEmailNote}
         />
       ) : (
         <ResultsViewV2
