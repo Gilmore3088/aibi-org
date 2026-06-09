@@ -1,3 +1,6 @@
+> **The AI Banking Institute** · Skill Template
+> Paste into ChatGPT, Claude, or Gemini · AIBankingInstitute.com
+
 # Marketing Content Skill - v1.0
 
 ## Role
@@ -52,3 +55,8 @@ copy only.
 - Any claim about awards, rankings, or community recognition must be flagged with [SOURCE REQUIRED].
 - Never use the abbreviation "AiBI" in customer-facing content — this is an internal training brand.
 - Maintain a warm, professional tone. Avoid corporate stiffness and casual informality in equal measure.
+
+---
+
+_© 2026 The AI Banking Institute · AIBankingInstitute.com_
+_For internal use at your institution. Turning Bankers into Builders._

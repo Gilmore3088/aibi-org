@@ -3,24 +3,27 @@
 import { useState } from 'react';
 import { MarkdownRenderer } from '@/components/lms/MarkdownRenderer';
 import type { StarterArtifact } from '@content/assessments/v2/starter-artifacts';
+import type { Dimension } from '@content/assessments/v2/types';
 
 interface StarterArtifactCardProps {
   readonly artifact: StarterArtifact;
+  readonly dimension: Dimension;
   readonly tierLabel: string;
   readonly topGapLabel: string;
 }
 
 // Banker-facing post-assessment artifact. Renders the markdown body inline
-// and offers two actions: copy to clipboard, download as .md. No analytics
-// gating, no email gate beyond the one already passed — this content is
-// the legitimate value the banker earned by handing over their email.
+// and offers two actions: copy the markdown to clipboard, or download a
+// branded PDF. The PDF is rendered + logged server-side at
+// /api/assessment/starter-artifact/<dimension>; the clipboard copy keeps the
+// raw markdown handy for pasting into the banker's own tools.
 export function StarterArtifactCard({
   artifact,
+  dimension,
   tierLabel,
   topGapLabel,
 }: StarterArtifactCardProps) {
   const [copied, setCopied] = useState(false);
-  const [downloaded, setDownloaded] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
 
   async function handleCopy() {
@@ -40,19 +43,7 @@ export function StarterArtifactCard({
     }
   }
 
-  function handleDownload() {
-    const blob = new Blob([artifact.body], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = artifact.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    setDownloaded(true);
-    setTimeout(() => setDownloaded(false), 2000);
-  }
+  const pdfFilename = artifact.filename.replace(/\.md$/, '.pdf');
 
   return (
     <section className="border border-[color:var(--gold)]/30 bg-[color:#FFFFFF] rounded-2xl p-8 md:p-10 print-avoid-break">
@@ -78,15 +69,15 @@ export function StarterArtifactCard({
         >
           {copied ? 'Copied' : 'Copy to clipboard'}
         </button>
-        <button
-          type="button"
-          onClick={handleDownload}
+        <a
+          href={`/api/assessment/starter-artifact/${dimension}`}
+          download={pdfFilename}
           className="inline-block px-5 py-2.5 border border-[color:var(--ink)]/25 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
         >
-          {downloaded ? 'Downloaded' : `Download .md`}
-        </button>
+          Download PDF
+        </a>
         <span className="text-[10px] text-[color:var(--slate-600)]">
-          {artifact.filename}
+          {pdfFilename}
         </span>
         {copyFailed && (
           <span

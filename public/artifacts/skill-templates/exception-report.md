@@ -1,3 +1,6 @@
+> **The AI Banking Institute** · Skill Template
+> Paste into ChatGPT, Claude, or Gemini · AIBankingInstitute.com
+
 # Exception Report Skill - v1.0
 
 ## Role
@@ -44,3 +47,8 @@ Summary. Use numbered lists for Priority Items and Standard Items. Keep individu
 - Do not use informal language or status abbreviations not defined in this skill.
 - If the exception report data is empty (no exceptions today), produce a one-line summary: "No exceptions
   identified in today's processing cycle as of [time/date]."
+
+---
+
+_© 2026 The AI Banking Institute · AIBankingInstitute.com_
+_For internal use at your institution. Turning Bankers into Builders._

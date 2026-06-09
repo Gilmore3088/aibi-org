@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -127,8 +127,6 @@ export default function ResultsPage() {
   const [animated, setAnimated] = useState(false);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
-  const [downloaded, setDownloaded] = useState(false);
-  const dlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Animate bars on mount.
   useEffect(() => {
@@ -141,38 +139,6 @@ export default function ResultsPage() {
     if (!email.trim()) return;
     setSent(true);
     setTimeout(() => setSent(false), 4500);
-  }
-
-  function downloadSummary() {
-    const md = `# AI Readiness Snapshot — SAMPLE
-
-> This is an illustrative sample of the report you receive after
-> taking the free 12-question AI Readiness Assessment. The numbers
-> below are not real; take the assessment to receive your own.
-> https://aibankinginstitute.com/assessment
-
-**Score:** 62 / 100 *(sample)*
-**Maturity:** Structured Beginner *(sample)*
-**Role:** Compliance *(sample)*
-**Top gap:** Workflow documentation *(sample)*
-**Artifact:** AI use-case review packet *(sample)*
-
-## Path
-Foundation Course → Workflow SOP → AI Use-Case Checklist
-
-## Dimensions *(sample)*
-${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('\n')}
-`;
-    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'aibi-readiness-sample-report.md';
-    a.click();
-    URL.revokeObjectURL(url);
-    setDownloaded(true);
-    if (dlTimerRef.current) clearTimeout(dlTimerRef.current);
-    dlTimerRef.current = setTimeout(() => setDownloaded(false), 1800);
   }
 
   return (
@@ -228,9 +194,13 @@ ${DIMENSIONS.map((d) => `- **${d.label}** — ${d.score}/100. ${d.note}`).join('
               <Button variant="ghost-dark" size="lg" href="/assessment">
                 Take the free assessment first
               </Button>
-              <Button variant="ghost-dark" size="lg" onClick={downloadSummary}>
+              <Button
+                variant="ghost-dark"
+                size="lg"
+                href="/api/resources/sample-readiness-report/download"
+              >
                 <DownloadIcon className="mk-ic" />
-                {downloaded ? 'Downloaded' : 'Download sample (.md)'}
+                Download sample (PDF)
               </Button>
             </div>
           </div>
