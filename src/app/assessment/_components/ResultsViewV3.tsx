@@ -16,6 +16,9 @@
 import type { Tier, DimensionScore } from '@content/assessments/v3/scoring';
 import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
+import type { FreeRole } from '@content/assessments/v3/roles';
+import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
+import { PLAYBOOK_INDEX, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
@@ -37,6 +40,12 @@ interface ResultsViewV3Props {
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
+  /** Free-funnel role the respondent selected at email capture. Drives which
+   *  role playbook is flagged as "Best match". Null when the role was skipped. */
+  readonly role?: FreeRole | null;
+  /** Show the "you used a personal email" note above the report. Set on the
+   *  immediate post-capture hand-off when a free-mail domain was used. */
+  readonly showPersonalEmailNote?: boolean;
 }
 
 interface RankedSignal {
@@ -77,6 +86,35 @@ function pillClasses(band: SignalBand): string {
   return 'bg-[#FEF0C7] text-[#93370D]';
 }
 
+function barClasses(band: SignalBand): string {
+  if (band === 'high') return 'bg-[#0E7A55]';
+  if (band === 'low') return 'bg-[#B42318]';
+  return 'bg-[#B7791F]';
+}
+
+// Role playbooks are sourced from the single index in app/playbooks/data.ts
+// (no more hard-coded card list here). Every free role now resolves to a
+// dedicated playbook via FREE_ROLE_TO_PLAYBOOK; 'retail' is the fallback when
+// no role was captured. The presentation-only eyebrow tag lives here.
+const PLAYBOOK_TAG: Record<RoleSlug, string> = {
+  compliance: 'Risk lens',
+  retail: 'Frontline',
+  marketing: 'Brand safety',
+  lending: 'Credit',
+  'bsa-aml': 'Surveillance',
+  infosec: 'Tool safety',
+  executive: 'Direction',
+  operations: 'Workflow',
+  'training-hr': 'Enablement',
+};
+
+// How many playbook cards to surface (best match + the next most useful).
+const PLAYBOOK_CARD_LIMIT = 6;
+
+function bestMatchPlaybook(role: FreeRole | null | undefined): RoleSlug {
+  return role ? FREE_ROLE_TO_PLAYBOOK[role] : 'retail';
+}
+
 export function ResultsViewV3({
   score,
   tier,
@@ -85,6 +123,8 @@ export function ResultsViewV3({
   email,
   firstName,
   profileId,
+  role,
+  showPersonalEmailNote,
 }: ResultsViewV3Props) {
   // 12 signals, ordered by score ascending so the weakest are easy to find.
   const signals: RankedSignal[] = (
@@ -107,10 +147,29 @@ export function ResultsViewV3({
   const artifact = focusGap ? getStarterArtifact(focusGap.id) : null;
   const cta = TIER_CLOSING_CTA[tierId];
 
+  const matchedPlaybook = bestMatchPlaybook(role);
+
   const greeting = firstName?.trim() ? `${firstName.trim()}, here's your snapshot.` : 'Your AI readiness snapshot.';
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-14 md:space-y-20">
+      {showPersonalEmailNote && (
+        <aside
+          aria-label="Personal email notice"
+          className="rounded-[18px] border border-[color:var(--gold)] bg-[color:var(--cream)] p-4 md:p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Note
+          </p>
+          <p className="mt-1.5 text-[14px] leading-[1.6] text-[color:var(--slate-700)]">
+            You submitted a personal email. The report below is tailored using the
+            institution you provided. If you&rsquo;d prefer follow-up emails to land at
+            your work address, just retake the assessment with your work email and
+            we&rsquo;ll merge the records.
+          </p>
+        </aside>
+      )}
+
       {/* HERO */}
       <section
         className="rounded-[28px] bg-[color:var(--ink)] text-white p-6 md:p-9 grid grid-cols-1 md:grid-cols-[200px_1fr_300px] gap-7 md:gap-7 items-center"
@@ -192,17 +251,43 @@ export function ResultsViewV3({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {signals.map((s) => {
             const band = bandForSignal(s);
+            const pct = s.maxScore > 0 ? Math.round((s.score / s.maxScore) * 100) : 0;
             return (
               <div
                 key={s.id}
-                className={`rounded-[16px] border p-3.5 min-h-[108px] flex flex-col justify-between ${bandClasses(band)}`}
+                className={`rounded-[16px] border p-3.5 min-h-[124px] flex flex-col justify-between gap-2 ${bandClasses(band)}`}
               >
-                <p className="text-[13px] font-semibold leading-tight text-[color:var(--ink)]">
-                  {s.label}
-                </p>
-                <p className="text-[20px] font-bold tabular-nums tracking-[-0.03em] text-[color:var(--ink)] mt-2">
-                  {s.score}/{s.maxScore}
-                </p>
+                <div>
+                  <p className="text-[13px] font-semibold leading-tight text-[color:var(--ink)]">
+                    {s.label}
+                  </p>
+                  <span
+                    className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.03em] ${pillClasses(band)}`}
+                  >
+                    {pillFor(band)}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-[20px] font-bold tabular-nums tracking-[-0.03em] text-[color:var(--ink)]">
+                    {s.score}
+                    <span className="text-[12px] font-semibold text-[color:var(--slate-500)]">
+                      /{s.maxScore}
+                    </span>
+                  </p>
+                  <div
+                    className="mt-1.5 h-1.5 rounded-full bg-[color:var(--ink-a10)] overflow-hidden"
+                    role="progressbar"
+                    aria-valuenow={s.score}
+                    aria-valuemin={0}
+                    aria-valuemax={s.maxScore}
+                    aria-label={`${s.label}: ${s.score} of ${s.maxScore}`}
+                  >
+                    <div
+                      className={`h-full rounded-full ${barClasses(band)}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -291,12 +376,8 @@ export function ResultsViewV3({
                 <p className="mt-2 text-[14px] text-[color:var(--slate-600)] leading-[1.55]">
                   {starterPrompt.label}
                 </p>
-                <pre className="mt-3 bg-[color:var(--ink)] text-[color:var(--gold-soft)] rounded-[14px] p-4 text-[12px] leading-[1.5] font-mono max-h-[170px] overflow-hidden whitespace-pre-wrap relative">
+                <pre className="mt-3 bg-[color:var(--ink)] text-[color:var(--gold-soft)] rounded-[14px] p-4 text-[12px] leading-[1.5] font-mono whitespace-pre-wrap break-words">
                   {starterPrompt.prompt}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[color:var(--ink)] to-transparent"
-                  />
                 </pre>
               </article>
             )}
@@ -469,16 +550,7 @@ export function ResultsViewV3({
               8-dimension diagnostic
             </p>
             <ul className="mt-4 space-y-2.5">
-              {[
-                'AI Access Architecture',
-                'Model Oversight',
-                'Compliance Clarity',
-                'Data Safety',
-                'Workflow Fit',
-                'Human Control',
-                'Vendor Control',
-                'People & Governance',
-              ].map((d) => (
+              {Object.values(V4_DIMENSION_LABELS).map((d) => (
                 <li
                   key={d}
                   className="flex items-center gap-3 text-[14px] text-white/85"
@@ -513,31 +585,28 @@ export function ResultsViewV3({
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <PlaybookCard
-            tag="Best match"
-            title="Retail / Branch"
-            body="First-draft replies, job aids, and coaching scenarios."
-            href="/playbooks/retail"
-            highlight
-          />
-          <PlaybookCard
-            tag="Risk lens"
-            title="Compliance"
-            body="Use-case review, evidence packets, and review checklists."
-            href="/playbooks/compliance"
-          />
-          <PlaybookCard
-            tag="Credit"
-            title="Lending"
-            body="Underwriting helpers, loan summaries, and review checklists."
-            href="/playbooks/lending"
-          />
-          <PlaybookCard
-            tag="Tool safety"
-            title="InfoSec"
-            body="Data handling, approved tools, and guardrails."
-            href="/playbooks/infosec"
-          />
+          {[...PLAYBOOK_INDEX]
+            // Surface the best-match playbook first, then the rest in index
+            // order, capped so the section stays a teaser, not a directory.
+            .sort((a, b) => {
+              if (a.slug === matchedPlaybook) return -1;
+              if (b.slug === matchedPlaybook) return 1;
+              return 0;
+            })
+            .slice(0, PLAYBOOK_CARD_LIMIT)
+            .map((p) => {
+              const isMatch = p.slug === matchedPlaybook;
+              return (
+                <PlaybookCard
+                  key={p.slug}
+                  tag={isMatch ? 'Best match' : PLAYBOOK_TAG[p.slug]}
+                  title={p.title}
+                  body={p.desc}
+                  href={`/playbooks/${p.slug}`}
+                  highlight={isMatch}
+                />
+              );
+            })}
         </div>
       </section>
     </div>
@@ -593,7 +662,7 @@ function PartialLockedPhase({
       </h3>
       <div className="mt-4 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
         <p className="text-[14px] font-semibold text-[color:var(--ink)] leading-[1.4]">
-          Visible: {visibleItem}
+          {visibleItem}
         </p>
       </div>
       <ul

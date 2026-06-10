@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
-import { useAssessmentV2, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV2';
+import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3';
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
+import type { FreeRole } from '@content/assessments/v3/roles';
 
 // ResultsViewV3 is a ~25 KB source component (drags in PdfDownloadButton +
 // SignupModal + result-rendering helpers). It only renders after the user
@@ -18,11 +21,13 @@ const ResultsViewV3 = dynamic(
 );
 
 export default function AssessmentPage() {
-  const state = useAssessmentV2();
+  const router = useRouter();
+  const state = useAssessmentV3();
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [capturedFirstName, setCapturedFirstName] = useState<string | null>(null);
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
+  const [capturedRole, setCapturedRole] = useState<FreeRole | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const scoreHeadingRef = useRef<HTMLDivElement | null>(null);
@@ -49,89 +54,33 @@ export default function AssessmentPage() {
     return <AssessmentSkeleton />;
   }
 
+  const inQuestionsPhase = state.phase === 'questions';
+
   return (
     <div className="mockup-scope">
-      <SiteHeader
-        activePath="/assessment"
-        cta={{ label: 'Restart', href: '#restart' }}
-      />
+      {inQuestionsPhase ? (
+        <AssessmentFlowHeader
+          progress={state.progress}
+          questionNumber={state.currentQuestion + 1}
+          totalQuestions={QUESTIONS_PER_SESSION}
+        />
+      ) : (
+        <SiteHeader
+          activePath="/assessment"
+          cta={{ label: 'Restart', href: '#restart' }}
+        />
+      )}
       <main className="mk-take">
         <h1 className="sr-only">AI Readiness Assessment</h1>
-        <ProgressBar progress={state.phase === 'questions' ? state.progress : 1} />
+        {!inQuestionsPhase && (
+          <ProgressBar progress={1} />
+        )}
 
-        {state.phase === 'questions' && state.selectedQuestions.length > 0 && (() => {
+        {inQuestionsPhase && state.selectedQuestions.length > 0 && (() => {
           const q = state.selectedQuestions[state.currentQuestion];
           const selected = state.answers[state.currentQuestion];
-          // Live running score on the canonical raw scale (12–48) so the
-          // number we show during taking matches what the results page
-          // shows. The previous percentage-of-answered projection was
-          // mathematically confusing — a single 2/4 answer on Q1 read as
-          // "50/100" which looks like a wild swing instead of "2 so far,
-          // 11 more to go".
-          const answered = state.answers.filter((a) => a > 0).length;
-          const runningScore = state.answers.reduce((sum, a) => sum + (a > 0 ? a : 0), 0);
-          const completePct = Math.round((state.currentQuestion / QUESTIONS_PER_SESSION) * 100);
           return (
-            <div className="mk-take-inner">
-              {/* Persistent dark navy hero — live score panel.
-                  Copy is intentionally minimal here. The user clicked
-                  a "Take the assessment" CTA to land on this page, so
-                  selling the assessment again is redundant — the next
-                  question should be the focus. */}
-              <section className="mk-take-q-hero">
-                <div className="mk-take-q-hero-copy">
-                  <div className="mk-take-q-hero-chip">
-                    <span className="mk-dot" /> Question {state.currentQuestion + 1} of {QUESTIONS_PER_SESSION}
-                  </div>
-                  <h2>Answer the question below.</h2>
-                  <p>
-                    Pick the option that&rsquo;s closest to true for your
-                    institution today. There&rsquo;s no right answer — only
-                    your honest read.
-                  </p>
-                </div>
-                <div className="mk-take-q-card">
-                  <div className="mk-take-q-card-score">
-                    <p className="mk-k">Running score</p>
-                    <div className="mk-take-q-card-num">
-                      <span className="mk-v">{runningScore}</span>
-                      <span className="mk-u">/ 48</span>
-                    </div>
-                    <div className="mk-take-q-card-tier">
-                      <p className="mk-k">Tier</p>
-                      <p className="mk-take-q-card-tier-v">Revealed at the end</p>
-                    </div>
-                  </div>
-                  <div className="mk-take-q-card-progress">
-                    <p className="mk-k">Assessment Progress</p>
-                    <h3>
-                      Question {state.currentQuestion + 1} of {QUESTIONS_PER_SESSION}
-                    </h3>
-                    <div className="mk-take-q-card-track">
-                      <div
-                        className="mk-take-q-card-fill"
-                        style={{ width: `${state.progress * 100}%` }}
-                      />
-                    </div>
-                    <div className="mk-take-q-card-meta">
-                      <div className="mk-take-snap-meta-card">
-                        <p className="mk-k">Answered</p>
-                        <p className="mk-take-snap-meta-v">{answered}</p>
-                      </div>
-                      <div className="mk-take-snap-meta-card">
-                        <p className="mk-k">Remaining</p>
-                        <p className="mk-take-snap-meta-v">{QUESTIONS_PER_SESSION - answered}</p>
-                      </div>
-                      <div className="mk-take-snap-meta-card">
-                        <p className="mk-k">Complete</p>
-                        <p className="mk-take-snap-meta-v">{completePct}%</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Side-by-side question panel */}
+            <>
               <section className="mk-take-q-panel" aria-label="Question">
                 <div className="mk-take-q-prompt">
                   <p className="mk-k">{q.dimension}</p>
@@ -165,7 +114,7 @@ export default function AssessmentPage() {
                   })}
                 </div>
               </section>
-            </div>
+            </>
           );
         })()}
 
@@ -197,18 +146,26 @@ export default function AssessmentPage() {
                       maxScore={48}
                       dimensionBreakdown={breakdown}
                       onCaptured={(email, extras) => {
+                        // Single render path: when the profile persisted, hand
+                        // off to the canonical server-rendered /results/[id].
+                        // The first name + personal-email note are not stored
+                        // server-side, so carry them as transient query params
+                        // (the bearer-token id is already in the URL).
+                        if (extras.profileId) {
+                          const params = new URLSearchParams({ from: 'assessment' });
+                          if (extras.firstName) params.set('name', extras.firstName);
+                          if (extras.usedFreeEmail) params.set('personal', '1');
+                          router.replace(`/results/${extras.profileId}?${params.toString()}`);
+                          return;
+                        }
+                        // Fallback (Supabase down / no row): render inline from
+                        // client state since there is no server row to visit.
                         setCapturedEmail(email);
                         setCapturedFirstName(extras.firstName ?? null);
                         setCapturedInstitution(extras.institutionName ?? null);
-                        setCapturedProfileId(extras.profileId ?? null);
+                        setCapturedProfileId(null);
+                        setCapturedRole(extras.role ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
-                        if (extras.profileId) {
-                          try {
-                            window.history.replaceState({}, '', `/results/${extras.profileId}`);
-                          } catch {
-                            // ignore
-                          }
-                        }
                         state.advanceToResults();
                       }}
                     />
@@ -226,17 +183,6 @@ export default function AssessmentPage() {
 
           {state.phase === 'results' && state.tier && capturedEmail && (
             <>
-              {usedFreeEmail && (
-                <aside className="mk-take-note" aria-label="Personal email notice">
-                  <p className="mk-k">Note</p>
-                  <p>
-                    You submitted a personal email. The report below is tailored using the
-                    institution you provided. If you&rsquo;d prefer follow-up emails to land at
-                    your work address, just retake the assessment with your work email and
-                    we&rsquo;ll merge the records.
-                  </p>
-                </aside>
-              )}
               <ResultsViewV3
                 score={state.totalScore}
                 tier={state.tier}
@@ -246,12 +192,50 @@ export default function AssessmentPage() {
                 firstName={capturedFirstName}
                 institutionName={capturedInstitution}
                 profileId={capturedProfileId}
+                role={capturedRole}
+                showPersonalEmailNote={usedFreeEmail}
               />
             </>
           )}
         </div>
       </main>
     </div>
+  );
+}
+
+// Compact in-flow header for the questions phase. The full marketing
+// SiteHeader (Home · Assess · Learn · Resources · Institutions) is wrong
+// chrome mid-task — the user is answering, not browsing. This minimal
+// header keeps the wordmark for trust, gives a Save & exit, and shows
+// the live position. The thin progress bar lives inside the same band so
+// the question prompt is the first content the user reads.
+function AssessmentFlowHeader({
+  progress,
+  questionNumber,
+  totalQuestions,
+}: {
+  progress: number;
+  questionNumber: number;
+  totalQuestions: number;
+}) {
+  return (
+    <header className="mk-take-flow-header" role="banner">
+      <div className="mk-take-flow-header-row">
+        <Link href="/" className="mk-take-flow-brand" aria-label="The AI Banking Institute home">
+          <span className="mk-take-flow-brand-name">The AI Banking Institute</span>
+          <span className="mk-take-flow-brand-sub">AI Readiness Assessment</span>
+        </Link>
+        <div className="mk-take-flow-meta">
+          <span className="mk-take-flow-q">
+            Question {questionNumber} of {totalQuestions}
+          </span>
+          <Link href="/assessment" className="mk-take-flow-exit">
+            Save &amp; exit
+          </Link>
+        </div>
+      </div>
+      <ProgressBar progress={progress} />
+    </header>
   );
 }
 

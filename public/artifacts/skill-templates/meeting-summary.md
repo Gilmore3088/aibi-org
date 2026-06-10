@@ -1,3 +1,6 @@
+> **The AI Banking Institute** · Skill Template
+> Paste into ChatGPT, Claude, or Gemini · AIBankingInstitute.com
+
 # Meeting Summary Skill - v1.0
 
 ## Role
@@ -41,3 +44,8 @@ this is a reference document, not a story. Keep the total summary under 600 word
 - Flag any action item assigned to a person whose role was not identified with [VERIFY OWNER].
 - If the meeting notes are incomplete or unclear, include a note at the top: "Note: Source material incomplete
   — summary reflects available information only."
+
+---
+
+_© 2026 The AI Banking Institute · AIBankingInstitute.com_
+_For internal use at your institution. Turning Bankers into Builders._

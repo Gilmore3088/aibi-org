@@ -21,7 +21,10 @@ export type PlaybookSlug =
   | 'infosec'
   | 'lending'
   | 'marketing'
-  | 'retail';
+  | 'retail'
+  | 'executive'
+  | 'operations'
+  | 'training-hr';
 
 export type AssetKind =
   | 'Template'
@@ -664,6 +667,327 @@ const RETAIL: readonly PlaybookAsset[] = [
   },
 ];
 
+// Executive / Leadership — 4 Ready
+const EXECUTIVE: readonly PlaybookAsset[] = [
+  {
+    slug: 'ai-adoption-thesis-template',
+    playbook: 'executive',
+    title: 'AI Adoption Thesis Template',
+    kind: 'Template',
+    dek: 'A one-page thesis that states where AI earns its keep this year, who owns it, and what "good" looks like — the document every other AI decision hangs off.',
+    audience: 'CEOs, COOs, and executive sponsors of AI adoption',
+    readMinutes: 7,
+    sourcedFrom: ['SR 11-7 (Model Risk Management)', 'AIEOG AI Lexicon (Feb 2026)'],
+    sections: [
+      {
+        heading: 'What this thesis commits to',
+        intro: STUB_NOTICE,
+        items: [
+          'The one or two outcomes AI should move this year, stated as measurable results — not "explore AI."',
+          'The single accountable owner for adoption, named.',
+          'The risk posture: what the institution will and will not let AI touch in year one.',
+          'The definition of success the board will be shown against.',
+        ],
+      },
+      {
+        heading: 'When to use it',
+        items: [
+          'Before any AI budget is approved or any pilot is greenlit.',
+          'At the start of each planning cycle, to re-baseline the thesis against results.',
+        ],
+      },
+      {
+        heading: 'Why a written thesis matters',
+        principle:
+          'Scattered pilots are a strategy by accident. A one-page thesis is a strategy on purpose — and the only thing that lets you say no to the pilots that do not serve it.',
+      },
+    ],
+  },
+  {
+    slug: 'ai-use-guardrails-one-pager',
+    playbook: 'executive',
+    title: 'AI Use Guardrails One-Pager',
+    kind: 'Template',
+    dek: 'The institution-wide guardrails leadership approves as policy — data-safety tiers, the human-review rule, and the approved-tool boundary — on a single page every employee can read.',
+    audience: 'Executives and AI governance committees',
+    readMinutes: 5,
+    sourcedFrom: ['Interagency TPRM Guidance', 'AIEOG AI Lexicon (Feb 2026)', 'ECOA / Reg B'],
+    sections: [
+      {
+        heading: 'What this one-pager sets',
+        intro: STUB_NOTICE,
+        items: [
+          'The green / yellow / red data classification rule — what may, may with care, and may never go into an AI tool.',
+          'The human-review rule: which AI-assisted outputs require a named reviewer before use.',
+          'The approved-tool boundary and how staff request an addition.',
+          'The escalation path when a use case does not fit the guardrails.',
+        ],
+      },
+      {
+        heading: 'Why leadership signs it',
+        principle:
+          'If leadership does not set the guardrails, staff will improvise their own — inconsistently, and usually after the first incident. Approved guardrails turn judgment calls into policy.',
+      },
+    ],
+  },
+  {
+    slug: 'board-ai-briefing-template',
+    playbook: 'executive',
+    title: 'Board AI Briefing Template',
+    kind: 'Template',
+    dek: 'A plain-English board update that turns pilot activity into the three things directors actually need: what we did, what it returned, and what risk now sits where.',
+    audience: 'Executives reporting AI activity to the board or a board committee',
+    readMinutes: 6,
+    sourcedFrom: ['SR 11-7', 'Interagency TPRM Guidance'],
+    sections: [
+      {
+        heading: 'What this briefing covers',
+        intro: STUB_NOTICE,
+        items: [
+          'Where AI is in use today, by function, in one table.',
+          'Measured results — time saved and quality / correction rate — not anecdotes.',
+          'The current risk posture and the controls in place against it.',
+          'The decisions in front of the board: scale, hold, or stop.',
+        ],
+      },
+      {
+        heading: 'When to use it',
+        items: [
+          'Ahead of each board or risk-committee meeting where AI is on the agenda.',
+          'When requesting approval to scale an AI workflow beyond a pilot.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'pilot-scorecard',
+    playbook: 'executive',
+    title: 'Pilot Scorecard',
+    kind: 'Worksheet',
+    dek: 'A two-metric scorecard every AI pilot reports against — time saved and correction rate — so the decision to scale or stop is made on evidence, not enthusiasm.',
+    audience: 'Executive sponsors and pilot owners',
+    readMinutes: 4,
+    sourcedFrom: [],
+    sections: [
+      {
+        heading: 'What this scorecard tracks',
+        intro: STUB_NOTICE,
+        items: [
+          'Baseline: how long the task took, and how often it needed rework, before AI.',
+          'Time saved per run, measured against that baseline.',
+          'Correction rate: how often the human reviewer had to materially change the AI output.',
+          'A scale / hold / stop recommendation tied to those two numbers.',
+        ],
+      },
+      {
+        heading: 'Why two metrics, not ten',
+        principle:
+          'A pilot that cannot show time saved and a falling correction rate is not ready to scale. Everything else is a vanity metric.',
+      },
+    ],
+  },
+];
+
+// Operations — 4 Ready
+const OPERATIONS: readonly PlaybookAsset[] = [
+  {
+    slug: 'operations-workflow-sop',
+    playbook: 'operations',
+    title: 'Workflow SOP Template',
+    kind: 'Template',
+    dek: 'A standard operating procedure shell for an AI-assisted task — input, AI step, review checkpoint, output — written so a colleague could run it cold.',
+    audience: 'Operations leads and process owners',
+    readMinutes: 6,
+    sourcedFrom: ['SR 11-7'],
+    sections: [
+      {
+        heading: 'What this SOP names',
+        intro: STUB_NOTICE,
+        steps: [
+          'The trigger and inputs — what starts the task and what the AI step is allowed to see.',
+          'The AI step — the reusable brief the staff member runs, with its boundaries.',
+          'The review checkpoint — who checks the output, against what, before it is used.',
+          'The output and where it is filed, plus how the run is logged.',
+        ],
+      },
+      {
+        heading: 'The handoff test',
+        principle:
+          'An SOP is done when a colleague can run it without you in the room. If it still lives in someone’s head, it is a habit, not a workflow.',
+      },
+    ],
+  },
+  {
+    slug: 'reusable-ai-working-brief',
+    playbook: 'operations',
+    title: 'Reusable AI Working Brief',
+    kind: 'Template',
+    dek: 'A fill-in-the-blank brief that turns a one-off prompt into a template the whole team can run the same way every time.',
+    audience: 'Anyone standardizing an AI task for a team',
+    readMinutes: 5,
+    sourcedFrom: [],
+    sections: [
+      {
+        heading: 'What the brief fixes in place',
+        intro: STUB_NOTICE,
+        items: [
+          'Role — what the AI is acting as (drafter, summarizer, reviewer).',
+          'Format — the exact shape the answer must take.',
+          'Source material — what gets pasted in, and what must never be.',
+          'Self-check — what the AI is told to verify in its own output before returning it.',
+          'Human edit — the judgment call the staff member always makes themselves.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'review-checkpoint-worksheet',
+    playbook: 'operations',
+    title: 'Review Checkpoint Worksheet',
+    kind: 'Worksheet',
+    dek: 'A worksheet that makes the human review step explicit for any AI-assisted workflow — who reviews, against what criteria, and what they sign.',
+    audience: 'Process owners defining a review step',
+    readMinutes: 4,
+    sourcedFrom: ['SR 11-7'],
+    sections: [
+      {
+        heading: 'What this worksheet pins down',
+        intro: STUB_NOTICE,
+        items: [
+          'The named reviewer role — a seat, not a person, so it survives turnover.',
+          'The check criteria: accuracy, data exposure, tone, and policy fit.',
+          'The threshold for a second reviewer on higher-stakes outputs.',
+          'What gets recorded in the log, and where.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'time-saved-tracking-sheet',
+    playbook: 'operations',
+    title: 'Time-Saved Tracking Sheet',
+    kind: 'Worksheet',
+    dek: 'A simple sheet to baseline the manual version of a task and track draft time and correction rate on the AI version — the evidence a workflow is worth keeping.',
+    audience: 'Operations leads measuring an AI pilot',
+    readMinutes: 4,
+    sourcedFrom: [],
+    sections: [
+      {
+        heading: 'What this sheet captures',
+        intro: STUB_NOTICE,
+        items: [
+          'Manual baseline: minutes per task and rework frequency before AI.',
+          'AI draft time per run, logged over a representative week.',
+          'Correction rate: how often the reviewer materially changed the output.',
+          'A weekly net: hours saved, adjusted for review time.',
+        ],
+      },
+    ],
+  },
+];
+
+// Training / HR — 4 Ready
+const TRAINING_HR: readonly PlaybookAsset[] = [
+  {
+    slug: 'role-training-path-template',
+    playbook: 'training-hr',
+    title: 'Role Training Path Template',
+    kind: 'Template',
+    dek: 'A template that turns generic AI awareness into the two or three things a specific role must be able to do safely — the rules, the examples, and the practice.',
+    audience: 'Training leads and HR business partners',
+    readMinutes: 6,
+    sourcedFrom: ['AIEOG AI Lexicon (Feb 2026)'],
+    sections: [
+      {
+        heading: 'What this path defines',
+        intro: STUB_NOTICE,
+        items: [
+          'The two or three AI tasks this role should be able to do safely.',
+          'The data rules and approved-tool list specific to the role.',
+          'A worked example for each task, drawn from real role work.',
+          'A sandbox exercise that proves the person can do it, not just describe it.',
+        ],
+      },
+      {
+        heading: 'Why role-specific beats general',
+        principle:
+          'Generic AI training teaches awareness; role-specific training builds capability. Adoption depends on the second one.',
+      },
+    ],
+  },
+  {
+    slug: 'safe-use-one-pager',
+    playbook: 'training-hr',
+    title: 'Safe-Use One-Pager',
+    kind: 'Template',
+    dek: 'The single sheet every new hire gets — the green / yellow / red data rules, the approved-tool list, and who to ask when in doubt.',
+    audience: 'All staff; owned by Training / HR',
+    readMinutes: 3,
+    sourcedFrom: ['AIEOG AI Lexicon (Feb 2026)', 'Interagency TPRM Guidance'],
+    sections: [
+      {
+        heading: 'What the one-pager states',
+        intro: STUB_NOTICE,
+        items: [
+          'Green / yellow / red: what data may, may with care, and may never enter an AI tool.',
+          'The approved-tool list and how to request an addition.',
+          'The one rule that overrides all others: never paste customer or regulated data into a general-purpose tool.',
+          'The named person or channel to ask when uncertain.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'practice-scenario-pack',
+    playbook: 'training-hr',
+    title: 'Practice Scenario Pack',
+    kind: 'Template',
+    dek: 'A set of realistic, fictional scenarios staff can rehearse in the sandbox — so the first time they use AI on a hard case is not on a real member.',
+    audience: 'Training leads building hands-on enablement',
+    readMinutes: 5,
+    sourcedFrom: [],
+    sections: [
+      {
+        heading: 'What the pack provides',
+        intro: STUB_NOTICE,
+        items: [
+          'Scenarios written with fictional names, amounts, and details — never a real member story.',
+          'A range of difficulty, including the judgment calls AI gets wrong.',
+          'The "right answer" notes a facilitator can coach against.',
+          'A reminder, on every scenario, that real customer data never enters the exercise.',
+        ],
+      },
+      {
+        heading: 'The data discipline',
+        principle:
+          'Practice scenarios are fictional by design. The moment a real customer detail enters a training prompt, the training has taught the wrong lesson.',
+      },
+    ],
+  },
+  {
+    slug: 'capability-tracker',
+    playbook: 'training-hr',
+    title: 'Capability Tracker',
+    kind: 'Worksheet',
+    dek: 'A tracker that defines what "trained" means per role and records who has cleared the bar — so readiness is something you can see, not assume.',
+    audience: 'Training / HR leads and people managers',
+    readMinutes: 4,
+    sourcedFrom: [],
+    sections: [
+      {
+        heading: 'What this tracker records',
+        intro: STUB_NOTICE,
+        items: [
+          'The bar: what a person must demonstrate, per role, to count as trained.',
+          'Who has cleared it, and when.',
+          'The refresh cadence and when each person is next due.',
+          'Recurring gaps — questions that keep coming up — fed back into the training path.',
+        ],
+      },
+    ],
+  },
+];
+
 // ---------------------------------------------------------------------------
 // Public registry
 // ---------------------------------------------------------------------------
@@ -675,6 +999,9 @@ export const PLAYBOOK_ASSETS: readonly PlaybookAsset[] = [
   ...LENDING,
   ...MARKETING,
   ...RETAIL,
+  ...EXECUTIVE,
+  ...OPERATIONS,
+  ...TRAINING_HR,
 ];
 
 export function getPlaybookAsset(slug: string): PlaybookAsset | undefined {

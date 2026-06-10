@@ -3,7 +3,7 @@
 // ActivitySection — client wrapper that manages activity submission state and gates
 // the "Next Module" / "Complete Module" action behind all activity completions.
 // Routes each activity to its correct specialized component:
-//   - Module 2, activity '2.1'  → SubscriptionInventory
+//   - Module 2, activity '2.1'  → ClaimReviewLab (spot the AI hallucination)
 //   - Module 6, activity '6.1'  → SkillDiagnosis
 //   - Module 7, activity '7.1'  → SkillBuilder (with learnerRole prop)
 //   - type === 'iteration'       → IterationTracker (M8 Activity 8.1)
@@ -23,8 +23,8 @@ import { CompletionCTA } from './CompletionCTA';
 // importing all six made the [module] route's First Load JS pay for all of
 // them on every module page. next/dynamic splits each into its own chunk;
 // SSR stays on so initial paint still includes the active widget.
-const SubscriptionInventory = dynamic(
-  () => import('./SubscriptionInventory').then((m) => ({ default: m.SubscriptionInventory })),
+const ClaimReviewLab = dynamic(
+  () => import('./ClaimReviewLab').then((m) => ({ default: m.ClaimReviewLab })),
 );
 const ClassificationDrill = dynamic(
   () => import('./ClassificationDrill').then((m) => ({ default: m.ClassificationDrill })),
@@ -168,10 +168,10 @@ export function ActivitySection({
           );
         }
 
-        // M2 Activity 2.1 — Subscription Inventory
+        // M2 Activity 2.1 — Claim Review Lab (spot the AI hallucination)
         if (moduleNumber === 2 && activity.id === '2.1') {
           return (
-            <SubscriptionInventory
+            <ClaimReviewLab
               key={activity.id}
               activity={activity}
               enrollmentId={enrollmentId}

@@ -72,19 +72,22 @@ Font.register({
 });
 
 // ---------------------------------------------------------------------------
-// Brand constants
+// Brand constants — brand v1 palette (2026-05-28).
+// Names retained from the prior Ledger-era palette for diff minimalism;
+// values swapped to the mockup tokens in src/styles/tokens-mockup.css.
+// TODO: font swap to Inter requires Inter .ttf files in assets/pdf-fonts/.
 // ---------------------------------------------------------------------------
-const TERRA = '#b5512e';
-const TERRA_PALE = '#f0c4ab';
-const PARCH = '#f5f0e6';
-const PARCH_MID = '#ebe4d4';
-const INK = '#1e1a14';
-const SAGE = '#4a6741';
-const COBALT = '#2d4a7a';
-const ERROR_RED = '#9b2226';
+const TERRA = '#C8A24A';      // gold (brand v1 single accent)
+const TERRA_PALE = '#E6D39B';  // gold-soft
+const PARCH = '#F7F3EA';       // cream
+const PARCH_MID = '#EFE7D7';   // cream-2
+const INK = '#071A2F';         // navy ink
+const SAGE = '#047857';        // emerald (success only)
+const COBALT = '#0B2745';      // ink-2 (deeper navy, was a third accent)
+const ERROR_RED = '#B42318';   // align with mockup error tone
 const WHITE = '#ffffff';
-const BORDER = '#d9cfc0';
-const INK_MID = '#56423d';
+const BORDER = '#E2E8F0';      // slate-200
+const INK_MID = '#475569';     // slate-600
 
 // Typography — brand fonts (Cormorant for headings, DMSans for body, DMMono for numbers)
 const FONT_HEADING = 'Cormorant';

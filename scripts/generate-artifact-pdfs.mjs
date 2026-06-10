@@ -47,6 +47,22 @@ body {
   font-size: 8.5pt; letter-spacing: .22em; text-transform: uppercase;
   color: #E6D39B; font-weight: 600;
 }
+/* Brand v1 [Ai] mark — typographic lockup. Inline since the script does
+   not have access to the React <Wordmark> component. Matches src/styles/brand.css. */
+.aibi-mark {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 600; font-size: 12pt;
+  letter-spacing: -.012em; color: #F7F3EA;
+  display: inline-flex; align-items: baseline; line-height: 1;
+}
+.aibi-mark .bk { color: var(--gold); font-weight: 500; padding: 0 .03em; }
+.aibi-mark .ai { padding: 0 0 0 .02em; }
+.aibi-mark .si {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.14em;
+  line-height: 0; margin: 0 .005em 0 -.04em; color: inherit;
+}
+.aibi-mark .full { margin-left: .32em; }
 .cover h1 {
   margin: 8pt 0 0; font-size: 22pt; line-height: 1.15;
   font-weight: 700; letter-spacing: -.01em;
@@ -103,12 +119,15 @@ function pageHtml({ title, contentHtml }) {
 <head>
 <meta charset="utf-8">
 <title>${title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>${STYLES}</style>
 </head>
 <body>
   <div class="wrap">
     <header class="cover">
-      <div class="kicker">The AI Banking Institute</div>
+      <span class="aibi-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span><span class="full">Banking Institute</span></span>
       <h1>${title}</h1>
       <div class="meta">Reference card · For community banks and credit unions</div>
     </header>
