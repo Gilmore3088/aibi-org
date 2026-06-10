@@ -21,6 +21,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { track as trackServer } from '@vercel/analytics/server';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
+import { isFullyRefunded } from '@/lib/stripe/refund';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import {
@@ -109,10 +110,26 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // we look up the checkout session via that and match by stripe_session_id.
   if (event.type === 'charge.refunded') {
     const charge = event.data.object as Stripe.Charge;
+
+    // F3 — only revoke on a FULL refund. charge.refunded fires for partial
+    // refunds too; a partial credit must not pull a paid buyer's access.
+    if (!isFullyRefunded(charge)) {
+      console.info('[webhook] charge.refunded partial — access retained', {
+        id: charge.id,
+        amount: charge.amount,
+        amountRefunded: charge.amount_refunded ?? 0,
+      });
+      return NextResponse.json({ received: true });
+    }
+
     const paymentIntentId =
       typeof charge.payment_intent === 'string' ? charge.payment_intent : charge.payment_intent?.id;
     if (!paymentIntentId) {
-      console.warn('[webhook] charge.refunded missing payment_intent', { id: charge.id });
+      // F6 — a refunded charge we cannot map back to access. Surfaced at error
+      // level so it leaves an alertable trail instead of a silent ack.
+      console.error('[webhook] charge.refunded missing payment_intent — access NOT revoked', {
+        id: charge.id,
+      });
       return NextResponse.json({ received: true });
     }
     try {
@@ -122,10 +139,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       });
       const sessionId = sessions.data[0]?.id;
       if (!sessionId) {
-        console.warn('[webhook] charge.refunded no session for PI', { paymentIntentId });
+        // F6 — paid charge fully refunded but no Checkout Session maps to it
+        // (e.g. a payment created outside Checkout). Access was NOT revoked;
+        // log at error level for operator follow-up.
+        console.error('[webhook] charge.refunded: no Checkout Session for PI — access NOT revoked', {
+          paymentIntentId,
+          chargeId: charge.id,
+        });
         return NextResponse.json({ received: true });
       }
       const supabase = createServiceRoleClient();
+
+      // Individual purchase: delete the course_enrollments row; the entitlements
+      // trigger flips entitlements.active=false.
       const { error: delErr, count } = await supabase
         .from('course_enrollments')
         .delete({ count: 'exact' })
@@ -134,9 +160,26 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.error('[webhook] charge.refunded revoke failed', delErr);
         return NextResponse.json({ error: 'Revoke failed.' }, { status: 500 });
       }
-      console.info('[webhook] charge.refunded revoked enrollments', {
+
+      // F4 — institution master purchase: there is no course_enrollments row for
+      // its session, so the delete above matches nothing. Release the persistent
+      // discount lock so future per-seat purchases stop inheriting team pricing.
+      // UPDATE (not DELETE): learner course_enrollments reference this row via a
+      // RESTRICT foreign key, and revoking seated-staff access is a separate
+      // product decision.
+      const { error: instErr, count: instCount } = await supabase
+        .from('institution_enrollments')
+        .update({ discount_locked: false }, { count: 'exact' })
+        .eq('stripe_session_id', sessionId)
+        .eq('discount_locked', true);
+      if (instErr) {
+        console.error('[webhook] charge.refunded institution unlock failed', instErr);
+      }
+
+      console.info('[webhook] charge.refunded processed', {
         sessionId,
-        revoked: count ?? 0,
+        enrollmentsRevoked: count ?? 0,
+        institutionDiscountsReleased: instCount ?? 0,
       });
       void trackServer('purchase_refunded', {
         stripeSessionId: sessionId,

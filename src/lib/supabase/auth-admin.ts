@@ -13,6 +13,7 @@
 //
 // Server-only. Uses the service role key.
 
+import type { User } from '@supabase/supabase-js';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { canonicalEmail } from '@/lib/email/canonicalize';
 
@@ -20,6 +21,25 @@ export interface EnsureAuthUserResult {
   readonly userId: string | null;
   readonly created: boolean;
   readonly skipped?: string;
+}
+
+// F5 — page through ALL auth users, not just the first 1000. The GoTrue admin
+// API has no email filter, so we paginate. Bounded at 50 pages (50k users) so a
+// misbehaving API can't loop forever; revisit with a direct email-lookup RPC
+// before the base approaches that ceiling.
+async function listAllAuthUsers(
+  client: ReturnType<typeof createServiceRoleClient>,
+): Promise<{ users: User[]; error: string | null }> {
+  const all: User[] = [];
+  const perPage = 1000;
+  for (let page = 1; page <= 50; page++) {
+    const { data, error } = await client.auth.admin.listUsers({ page, perPage });
+    if (error) return { users: all, error: error.message };
+    const batch = data?.users ?? [];
+    all.push(...batch);
+    if (batch.length < perPage) break; // last page reached
+  }
+  return { users: all, error: null };
 }
 
 /**
@@ -52,17 +72,14 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
   // to listUsers on conflict" pattern, which silently created +alias
   // duplicates whenever the alias didn't exactly match an existing row.
   try {
-    const { data: list, error: listError } = await supabase.auth.admin.listUsers({
-      page: 1,
-      perPage: 1000,
-    });
+    const { users, error: listError } = await listAllAuthUsers(supabase);
     if (listError) {
-      console.warn('[auth-admin] listUsers failed:', listError.message);
-    } else if (list?.users) {
-      const exact = list.users.find((u) => u.email?.toLowerCase() === lowered);
+      console.warn('[auth-admin] listUsers failed:', listError);
+    } else {
+      const exact = users.find((u) => u.email?.toLowerCase() === lowered);
       if (exact) return { userId: exact.id, created: false };
 
-      const canonicalMatches = list.users.filter(
+      const canonicalMatches = users.filter(
         (u) => u.email && canonicalEmail(u.email) === canonical,
       );
       if (canonicalMatches.length > 0) {
@@ -94,11 +111,8 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
   // Race condition fallback: another concurrent webhook may have created the
   // row between our check and our create. Re-list and look for canonical.
   try {
-    const { data: list } = await supabase.auth.admin.listUsers({
-      page: 1,
-      perPage: 1000,
-    });
-    const racey = list?.users?.find(
+    const { users } = await listAllAuthUsers(supabase);
+    const racey = users.find(
       (u) => u.email && canonicalEmail(u.email) === canonical,
     );
     if (racey) return { userId: racey.id, created: false };

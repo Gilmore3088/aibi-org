@@ -32,6 +32,13 @@ interface CheckoutBody {
 type CheckoutMode = 'individual' | 'institution';
 
 function getOrigin(request: Request): string {
+  // F7 — in production, build redirect targets (success_url / cancel_url) from
+  // the configured canonical origin rather than the client-controllable Host
+  // header, so a spoofed Host can't steer a post-payment redirect. Preview and
+  // local still use Host so each deployment redirects back to itself for QA.
+  if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/+$/, '');
+  }
   const host = request.headers.get('host') ?? 'aibankinginstitute.com';
   const proto = request.headers.get('x-forwarded-proto') ?? 'https';
   return `${proto}://${host}`;
