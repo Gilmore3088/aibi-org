@@ -95,6 +95,24 @@ export const module3: Module = {
   activities: [
     {
       id: '3.1',
+      title: 'Match the task to the strategy',
+      description:
+        'Quick-fire reps on the strategy shelf: a banking task appears, you pick the right prompt strategy, and you get instant feedback with a one-line reason. Eight tasks, untimed, no penalty — learn which kind of prompt to reach for before you build one.',
+      type: 'drill',
+      completionTrigger: 'save-response',
+      fields: [
+        {
+          id: 'strategy_drill_result',
+          label: 'Strategy drill result',
+          type: 'textarea',
+          minLength: 10,
+          required: true,
+          placeholder: 'The drill records how many tasks you matched to the right strategy.',
+        },
+      ],
+    },
+    {
+      id: '3.2',
       title: 'Build a prompt that gets to the CORE',
       description:
         'Write a freeform prompt for a real banking task in the Prompt Wizard. Each run scores your prompt on the four CORE elements and shows how the AI answer changes — invented numbers when you skip the source, buried answers when you skip the format. You get six tries per scenario across a warm-up (fee waiver) and a graded task (CD early-withdrawal penalty). Save the prompt you land on.',
@@ -121,7 +139,7 @@ export const module3: Module = {
       description:
         'The CORE anatomy plus the strategy shelf — how to build any prompt and which style to reach for.',
       format: 'pdf+md',
-      triggeredBy: '3.1',
+      triggeredBy: '3.2',
       dynamic: false,
     },
   ],

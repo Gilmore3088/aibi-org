@@ -41,6 +41,9 @@ const SkillBuilder = dynamic(
 const IterationTracker = dynamic(
   () => import('./IterationTracker').then((m) => ({ default: m.IterationTracker })),
 );
+const StrategyDrill = dynamic(
+  () => import('./StrategyDrill').then((m) => ({ default: m.StrategyDrill })),
+);
 const PromptWizard = dynamic(
   () => import('./PromptWizard').then((m) => ({ default: m.PromptWizard })),
 );
@@ -188,8 +191,22 @@ export function ActivitySection({
           );
         }
 
-        // M3 Activity 3.1 — Prompt Wizard (build a prompt that gets to the CORE)
+        // M3 Activity 3.1 — Strategy Drill (match the task to the strategy)
         if (moduleNumber === 3 && activity.id === '3.1') {
+          return (
+            <StrategyDrill
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M3 Activity 3.2 — Prompt Wizard (build a prompt that gets to the CORE)
+        if (moduleNumber === 3 && activity.id === '3.2') {
           return (
             <PromptWizard
               key={activity.id}
