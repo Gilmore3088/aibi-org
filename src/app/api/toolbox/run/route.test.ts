@@ -4,6 +4,7 @@ import { POST } from './route';
 // Mocks
 vi.mock('@/lib/toolbox/access', () => ({
   getPaidToolboxAccess: vi.fn(async () => ({ userId: 'user-test' })),
+  canBuildOrRun: vi.fn((access: unknown) => access !== null),
 }));
 vi.mock('@/lib/sandbox/pii-scanner', () => ({
   scanForPII: vi.fn(() => ({ safe: true })),

@@ -22,6 +22,7 @@ vi.mock('@/lib/supabase/client', () => ({
 }));
 vi.mock('@/lib/toolbox/access', () => ({
   getPaidToolboxAccess: vi.fn(async () => ({ userId: 'u1' })),
+  canBuildOrRun: vi.fn((access: unknown) => access !== null),
 }));
 vi.mock('@content/courses/foundation-program/prompt-library', async () => ({
   getPromptById: (id: string) =>

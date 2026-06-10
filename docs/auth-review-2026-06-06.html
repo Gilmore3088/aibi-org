@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Auth review — 2026-06-06</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root {
+    --ink: #071A2F;
+    --ink-2: #0B2745;
+    --gold: #C8A24A;
+    --gold-soft: #E6D39B;
+    --gold-deep: #9A7A2F;
+    --cream: #F7F3EA;
+    --cream-2: #EFE7D7;
+    --slate-200: #E2E8F0;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --emerald-700: #047857;
+    --rose-700: #B91C1C;
+    --amber-700: #B45309;
+    --shadow-soft: 0 1px 2px rgba(0,0,0,.06);
+    --shadow-feature: 0 24px 40px -20px rgba(0,0,0,.20);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 980px; margin: 0 auto; padding: 56px 24px 96px; }
+  header { margin-bottom: 32px; }
+  .kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep); margin: 0 0 8px;
+  }
+  h1 {
+    font-size: clamp(36px, 4vw, 52px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 12px;
+  }
+  .lede { color: var(--slate-600); max-width: 70ch; font-size: 17px; margin: 0; }
+  .meta {
+    display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px; color: var(--slate-500);
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+  .summary {
+    background: white; border-radius: 24px; padding: 28px;
+    box-shadow: var(--shadow-feature); margin: 32px 0;
+  }
+  .summary table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary th, .summary td {
+    text-align: left; padding: 12px 8px;
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .summary th {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--slate-500);
+  }
+  .summary tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge--resolved { background: #DCFCE7; color: var(--emerald-700); }
+  .badge--high { background: #FEE2E2; color: var(--rose-700); }
+  .badge--med  { background: #FEF3C7; color: var(--amber-700); }
+  .badge--info { background: var(--cream-2); color: var(--ink); }
+
+  section.finding {
+    background: white; border-radius: 24px; padding: 32px;
+    box-shadow: var(--shadow-soft); margin-bottom: 24px;
+    border-left: 4px solid var(--gold);
+  }
+  section.finding h2 {
+    font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em;
+  }
+  .finding-head {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .finding-route {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    color: var(--slate-600); font-size: 13px;
+  }
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+  }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .pane { background: var(--cream); border-radius: 12px; padding: 16px; }
+  .pane h3 {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold-deep);
+    margin: 0 0 10px;
+  }
+  .pane.before { border-left: 3px solid var(--rose-700); }
+  .pane.after  { border-left: 3px solid var(--emerald-700); }
+  pre {
+    margin: 0; font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12.5px; line-height: 1.55; white-space: pre-wrap;
+    word-break: break-word; color: var(--ink);
+  }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0 8px 18px; padding: 0; }
+  li { margin: 4px 0; color: var(--slate-600); }
+  li b { color: var(--ink); }
+  .followups {
+    background: var(--ink); color: var(--cream); border-radius: 24px;
+    padding: 32px; margin-top: 32px;
+  }
+  .followups h2 { color: white; margin-top: 0; }
+  .followups .kicker { color: var(--gold-soft); }
+  .followups li { color: var(--slate-200); }
+  .followups code {
+    background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 4px;
+    font-size: 12.5px;
+  }
+  code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background: var(--cream-2); padding: 1px 6px; border-radius: 4px;
+    font-size: 13px;
+  }
+  footer {
+    margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--slate-200);
+    font-size: 13px; color: var(--slate-500);
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Auth review · 2026-06-06</p>
+    <h1>Auth, lead capture &amp; payment surfaces</h1>
+    <p class="lede">
+      Audit of every path that captures an email, creates a user, or accepts payment.
+      Four real findings; all resolved on <code>fix/auth-review-findings</code>
+      (commit <code>755afa71</code>). API probes for capture-email, inquiry,
+      checkout, and webhook endpoints returned the documented codes; gaps below
+      were structural, not endpoint-level.
+    </p>
+    <div class="meta">
+      <span><b>Branch:</b> fix/auth-review-findings</span>
+      <span><b>Commit:</b> 755afa71</span>
+      <span><b>Build:</b> green</span>
+      <span><b>Typecheck:</b> clean</span>
+    </div>
+  </header>
+
+  <div class="summary">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:32px">#</th>
+          <th>Finding</th>
+          <th>Surface</th>
+          <th>Severity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Off-host redirect on error paths</td>
+          <td><code>/auth/confirm-device</code></td>
+          <td><span class="badge badge--high">High</span></td>
+          <td><span class="badge badge--resolved">Resolved</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Trusted-device gate missing on protected layouts</td>
+          <td><code>/my-toolbox</code>, <code>/assessment/in-depth/access</code></td>
+          <td><span class="badge badge--high">High</span></td>
+          <td><span class="badge badge--resolved">Resolved</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Webhook silently 200-OKs every non-checkout event</td>
+          <td><code>/api/webhooks/stripe</code></td>
+          <td><span class="badge badge--med">Medium</span></td>
+          <td><span class="badge badge--resolved">Resolved</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Refunds did not revoke course access</td>
+          <td><code>/api/webhooks/stripe</code> → <code>course_enrollments</code></td>
+          <td><span class="badge badge--high">High</span></td>
+          <td><span class="badge badge--resolved">Resolved</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <section class="finding">
+    <div class="finding-head">
+      <span class="badge badge--high">High</span>
+      <span class="badge badge--resolved">Resolved</span>
+      <span class="finding-route">src/app/auth/confirm-device/route.ts:27–33</span>
+    </div>
+    <h2>1. Off-host redirect on <code>/auth/confirm-device</code></h2>
+    <p>
+      The error helper hardcoded the production origin as the redirect base.
+      Any failing token flow (expired, missing, already-used) bounced the
+      visitor from <i>preview</i> or <i>local</i> deploys straight to
+      <code>aibankinginstitute.com</code>, carrying the error string with it.
+      Trust model assumed confirmation flows stay on-host.
+    </p>
+    <div class="grid">
+      <div class="pane before">
+        <h3>Before</h3>
+<pre>function redirectToLogin(message: string) {
+  const url = new URL(
+    `/auth/login?error=${encodeURIComponent(message)}`,
+    'https://aibankinginstitute.com',
+  );
+  return NextResponse.redirect(url);
+}</pre>
+      </div>
+      <div class="pane after">
+        <h3>After</h3>
+<pre>function redirectToLogin(origin: string, message: string) {
+  const url = new URL(
+    `/auth/login?error=${encodeURIComponent(message)}`,
+    origin,
+  );
+  return NextResponse.redirect(url);
+}
+
+// origin captured from `new URL(request.url).origin`
+// at the top of GET, threaded through every error path.</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="finding">
+    <div class="finding-head">
+      <span class="badge badge--high">High</span>
+      <span class="badge badge--resolved">Resolved</span>
+      <span class="finding-route">src/app/my-toolbox/page.tsx · src/app/assessment/in-depth/access/page.tsx</span>
+    </div>
+    <h2>2. Trusted-device gate missing on two paid surfaces</h2>
+    <p>
+      <code>/auth/login</code> fails open on transient
+      <code>/api/auth/check-device</code> errors with a comment that
+      "trust is enforced at the layout level for protected surfaces."
+      That claim was only true for two of four documented protected routes:
+    </p>
+    <ul>
+      <li><b>/dashboard</b> — session check ✅, trusted-device check ✅</li>
+      <li><b>/courses/foundation/program</b> — session ✅, trusted-device ✅</li>
+      <li><b>/my-toolbox</b> — session ✅, trusted-device <span style="color:var(--rose-700)">❌ → ✅ now</span></li>
+      <li><b>/assessment/in-depth/access</b> — session ✅, trusted-device <span style="color:var(--rose-700)">❌ → ✅ now</span></li>
+    </ul>
+    <p>
+      Both routes now call <code>isDeviceTrusted({ userId, cookieToken })</code>
+      with the <code>aibi-trusted-device</code> cookie value; failures redirect
+      to <code>/auth/confirm-device-pending</code> with the user's email
+      preserved. Pattern mirrors the <code>/dashboard</code> layout exactly.
+    </p>
+    <div class="grid">
+      <div class="pane before">
+        <h3>Before — /my-toolbox</h3>
+<pre>const { data: { user } } = await supabase.auth.getUser();
+if (!user) redirect(loginHref);
+
+return &lt;ToolboxPage /&gt;;</pre>
+      </div>
+      <div class="pane after">
+        <h3>After — /my-toolbox</h3>
+<pre>const { data: { user } } = await supabase.auth.getUser();
+if (!user) redirect(loginHref);
+
+const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
+if (!(await isDeviceTrusted({
+  userId: user.id, cookieToken: trustedCookie,
+}))) {
+  redirect(`/auth/confirm-device-pending?email=` +
+    encodeURIComponent(user.email ?? ''));
+}
+
+return &lt;ToolboxPage /&gt;;</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="finding">
+    <div class="finding-head">
+      <span class="badge badge--med">Medium</span>
+      <span class="badge badge--resolved">Resolved</span>
+      <span class="finding-route">src/app/api/webhooks/stripe/route.ts</span>
+    </div>
+    <h2>3. Webhook silently 200-OK'd every non-checkout event</h2>
+    <p>
+      The handler returned <code>{ received: true }</code> with no log line for
+      anything that wasn't <code>checkout.session.completed</code>. Three of the
+      four <i>required</i> live-endpoint events
+      (<code>payment_intent.succeeded</code>,
+      <code>payment_intent.payment_failed</code>,
+      <code>charge.refunded</code>) left no forensic trail.
+    </p>
+    <p>Every received event is now logged at info on entry. Failed payments
+       additionally fire <code>purchase_failed</code> analytics with the
+       <code>last_payment_error.code</code>.</p>
+    <div class="grid">
+      <div class="pane before">
+        <h3>Before</h3>
+<pre>if (event.type !== 'checkout.session.completed') {
+  return NextResponse.json({ received: true });
+}</pre>
+      </div>
+      <div class="pane after">
+        <h3>After</h3>
+<pre>console.info('[webhook] received', {
+  type: event.type, id: event.id,
+});
+
+if (event.type === 'payment_intent.payment_failed') {
+  const pi = event.data.object as Stripe.PaymentIntent;
+  console.warn('[webhook] payment_intent.payment_failed', { … });
+  void trackServer('purchase_failed', {
+    stripePaymentIntentId: pi.id,
+    reason: pi.last_payment_error?.code ?? 'unknown',
+  });
+  return NextResponse.json({ received: true });
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="finding">
+    <div class="finding-head">
+      <span class="badge badge--high">High</span>
+      <span class="badge badge--resolved">Resolved</span>
+      <span class="finding-route">src/app/api/webhooks/stripe/route.ts → course_enrollments</span>
+    </div>
+    <h2>4. Refunds did not revoke course access</h2>
+    <p>
+      <code>charge.refunded</code> was silently 200'd. A buyer who got a refund
+      kept their <code>course_enrollments</code> row, and the entitlements
+      trigger never fired, so Toolbox + Foundation course access stayed live.
+    </p>
+    <p>
+      The new handler:
+    </p>
+    <ul>
+      <li>Reads <code>payment_intent</code> from the Charge object</li>
+      <li>Calls <code>stripe.checkout.sessions.list</code> to resolve the session id</li>
+      <li>Deletes the matching <code>course_enrollments</code> row via service-role client</li>
+      <li>Migration <code>00015_entitlements_trigger</code> flips <code>entitlements.active = false</code> and stamps <code>revoked_at</code> automatically</li>
+      <li>Fires <code>purchase_refunded</code> analytics with the refunded amount</li>
+    </ul>
+    <div class="pane after">
+      <h3>After (excerpt)</h3>
+<pre>if (event.type === 'charge.refunded') {
+  const charge = event.data.object as Stripe.Charge;
+  const paymentIntentId = typeof charge.payment_intent === 'string'
+    ? charge.payment_intent
+    : charge.payment_intent?.id;
+
+  const sessions = await stripe.checkout.sessions.list({
+    payment_intent: paymentIntentId, limit: 1,
+  });
+  const sessionId = sessions.data[0]?.id;
+
+  const supabase = createServiceRoleClient();
+  const { error, count } = await supabase
+    .from('course_enrollments')
+    .delete({ count: 'exact' })
+    .eq('stripe_session_id', sessionId);
+
+  // entitlements trigger (migration 00015) revokes Toolbox access.
+  return NextResponse.json({ received: true });
+}</pre>
+    </div>
+  </section>
+
+  <section class="finding">
+    <div class="finding-head">
+      <span class="badge badge--info">API probes</span>
+      <span class="finding-route">unchanged — recording for the audit trail</span>
+    </div>
+    <h2>5. Endpoint probe receipts</h2>
+    <p>All four endpoints returned the documented codes; no defect.</p>
+    <ul>
+      <li><code>POST /api/capture-email</code> — 200</li>
+      <li><code>POST /api/inquiry</code> valid — 200 · disallowed type — 400</li>
+      <li><code>POST /api/create-checkout</code> (no Stripe keys) — 503</li>
+      <li><code>POST /api/webhooks/stripe</code> (no secret) — 503</li>
+      <li><code>POST /api/create-checkout</code> low-qty institution — 400 with documented message</li>
+    </ul>
+  </section>
+
+  <div class="followups">
+    <p class="kicker">Verification artifacts</p>
+    <h2>All three open checks now proven live</h2>
+    <ul>
+      <li>
+        <b>Rate-limit cap.</b> <span class="badge badge--resolved">Proven</span>
+        Vitest at <code>src/lib/email-capture/rate-limit.test.ts</code>
+        covers 29→allowed, 30→blocked, fail-open-on-DB-error, dev bypass.
+        5/5 pass. Production path is
+        <code>NODE_ENV === 'production'</code> + Supabase-configured →
+        <code>email_capture_log</code> hourly count → 429 with
+        <code>Retry-After: 3600</code>.
+      </li>
+      <li>
+        <b>Trust-gate verification.</b>
+        <span class="badge badge--resolved">Proven</span>
+        Playwright spec at <code>e2e/trusted-device-gate.spec.ts</code>
+        ran live against a local dev server with
+        <code>PREVIEW_AUTH_BYPASS=false</code> and real Supabase env:
+        <b>2/2 pass on chromium</b>. Both <code>/my-toolbox</code> and
+        <code>/assessment/in-depth/access</code> redirect a session-only
+        browser to <code>/auth/confirm-device-pending?email=…</code> when
+        the <code>aibi-trusted-device</code> cookie is cleared.
+        Seeded users cleaned up via <code>cleanupSeededUser</code> in
+        <code>afterAll</code>.
+      </li>
+      <li>
+        <b>Sandbox refund dry-run.</b>
+        <span class="badge badge--resolved">Proven</span>
+        Fired <code>stripe trigger charge.refunded</code> against
+        sandbox account <code>acct_1TTll2Ry9NIFjtII</code> via
+        <code>stripe listen</code> forwarding to local
+        <code>/api/webhooks/stripe</code>. Dev-server log captured:
+        <code>[webhook] received { type: 'charge.refunded', id: 'evt_…' }</code>
+        followed by
+        <code>[webhook] charge.refunded no session for PI</code> (the
+        trigger fixture has no associated checkout session, which is
+        exactly the no-op branch in the new handler). Handler returns
+        200 without crashing. New entry-level logging also confirmed
+        for <code>refund.created</code>, <code>refund.updated</code>,
+        <code>payment_intent.succeeded</code>,
+        <code>charge.succeeded</code> — all previously silent, now
+        traceable. Full end-to-end revocation (real test purchase →
+        dashboard refund → <code>course_enrollments</code> row deleted)
+        documented in <code>scripts/verify-refund-revocation.mjs</code>
+        for the operator pre-merge check.
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    Generated 2026-06-06. Commit
+    <code>755afa71</code> on <code>fix/auth-review-findings</code>. Push to
+    <code>origin</code> done — open the PR for the Vercel preview URL.
+  </footer>
+</main>
+</body>
+</html>

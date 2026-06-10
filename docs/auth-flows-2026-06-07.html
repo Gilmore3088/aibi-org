@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>User flow maps — 2026-06-07</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root {
+    --ink: #071A2F;
+    --ink-2: #0B2745;
+    --gold: #C8A24A;
+    --gold-soft: #E6D39B;
+    --gold-deep: #9A7A2F;
+    --cream: #F7F3EA;
+    --cream-2: #EFE7D7;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --emerald-700: #047857;
+    --rose-700: #B91C1C;
+    --amber-700: #B45309;
+    --shadow-soft: 0 1px 2px rgba(0,0,0,.06);
+    --shadow-feature: 0 24px 40px -20px rgba(0,0,0,.20);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 32px; }
+  .kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-deep); margin: 0 0 8px;
+  }
+  h1 {
+    font-size: clamp(36px, 4vw, 52px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 12px;
+  }
+  .lede { color: var(--slate-600); max-width: 70ch; font-size: 17px; margin: 0; }
+
+  /* Flow section */
+  section.flow {
+    background: white; border-radius: 24px; padding: 32px;
+    box-shadow: var(--shadow-feature); margin: 28px 0;
+    border-left: 4px solid var(--gold);
+  }
+  section.flow h2 {
+    font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em;
+  }
+  section.flow .flow-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px; color: var(--slate-500); margin-bottom: 16px;
+  }
+  section.flow .why {
+    color: var(--slate-600); max-width: 70ch; margin: 0 0 24px;
+  }
+
+  /* Step grid — horizontal scroll on narrow screens */
+  .steps {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 1fr);
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 4px 24px;
+  }
+  .step {
+    background: var(--cream); border-radius: 16px; padding: 12px;
+    position: relative; min-width: 220px;
+    border: 1px solid var(--slate-200);
+  }
+  .step .step-num {
+    display: inline-block; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--ink); color: white; font-size: 11px; font-weight: 700;
+    text-align: center; line-height: 22px; margin-right: 6px;
+  }
+  .step .step-title {
+    font-weight: 700; font-size: 13px; display: inline-block;
+    vertical-align: middle;
+  }
+  .step .step-path {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--slate-500); margin: 4px 0 8px;
+    word-break: break-all;
+  }
+  .step .step-shot {
+    width: 100%; height: 140px; object-fit: cover; object-position: top;
+    border-radius: 8px; border: 1px solid var(--slate-200);
+    background: white; cursor: zoom-in;
+  }
+  .step .step-shot:hover {
+    box-shadow: var(--shadow-feature);
+  }
+  .step .step-note {
+    font-size: 12px; color: var(--slate-600); margin-top: 8px;
+  }
+  .step .step-note b { color: var(--ink); }
+
+  /* Decision/branch styling */
+  .step--decision { border-left: 3px solid var(--gold); }
+  .step--gate { border-left: 3px solid var(--rose-700); background: #FEF2F2; }
+  .step--success { border-left: 3px solid var(--emerald-700); background: #F0FDF4; }
+  .step--api { border-left: 3px solid var(--ink); background: white; }
+
+  /* Arrows between steps */
+  .steps::-webkit-scrollbar { height: 8px; }
+  .steps::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 4px; }
+
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0;
+    font-size: 12px; color: var(--slate-600);
+  }
+  .legend-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .legend-chip span {
+    width: 10px; height: 10px; border-radius: 2px; display: inline-block;
+  }
+
+  /* Modal for full-size shots */
+  .modal {
+    position: fixed; inset: 0; background: rgba(7,26,47,.92);
+    display: none; align-items: center; justify-content: center;
+    padding: 24px; cursor: zoom-out; z-index: 1000;
+  }
+  .modal.open { display: flex; }
+  .modal img {
+    max-width: 100%; max-height: 100%; border-radius: 12px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.45);
+  }
+
+  .branch-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-top: 12px;
+  }
+  @media (max-width: 720px) {
+    .branch-row { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid var(--slate-200);
+    font-size: 13px; color: var(--slate-500);
+  }
+  code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background: var(--cream-2); padding: 1px 6px; border-radius: 4px;
+    font-size: 12.5px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div style="background:#FEF3C7;border-left:4px solid var(--amber-700);padding:14px 18px;border-radius:12px;margin-bottom:24px;color:var(--ink);font-size:14px;line-height:1.45;">
+      <b style="color:var(--amber-700);text-transform:uppercase;font-size:11px;letter-spacing:.12em;">Pending merge — not yet on main</b><br />
+      This document describes the state on
+      <code>fix/auth-review-findings</code> (commit <code>755afa71</code>+).
+      Four of the seven "✓ done" markers below
+      (off-host redirect fix, trust gates on <code>/my-toolbox</code> and
+      <code>/assessment/in-depth/access</code>, refund-revocation handler)
+      live on the branch only. On the current default checkout of
+      <code>main</code> the pre-fix behavior is what's deployed.
+    </div>
+    <p class="kicker">User flow maps · 2026-06-07</p>
+    <h1>Every path to email, account, and payment</h1>
+    <p class="lede">
+      Six flows. Every surface that captures an email, creates a user,
+      or accepts payment. Screenshots are live captures from
+      <code>http://localhost:3000</code>. Click any thumbnail for the
+      full image.
+    </p>
+    <div class="legend">
+      <span class="legend-chip"><span style="background:var(--gold)"></span>Decision / branch</span>
+      <span class="legend-chip"><span style="background:var(--rose-700)"></span>Gate (blocks until passed)</span>
+      <span class="legend-chip"><span style="background:var(--emerald-700)"></span>Success / entitled surface</span>
+      <span class="legend-chip"><span style="background:var(--ink)"></span>API / server-only step</span>
+    </div>
+  </header>
+
+  <!-- FLOW A: Lead capture via assessment -->
+  <section class="flow">
+    <h2>A · Lead capture via the readiness assessment</h2>
+    <div class="flow-meta">primary funnel — drives email capture + MailerLite + Resend breakdown</div>
+    <p class="why">
+      12 questions answered (sessionStorage-persisted) → email gate at
+      step 13 → score, tier, dimension breakdown render inline. The
+      <b>full readiness report is gated</b>; nothing past Q12 is visible
+      until a work email is submitted.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-title">Home</span>
+        <div class="step-path">/</div>
+        <img class="step-shot" src="auth-review-shots/01-home.png" alt="Home page" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Hero CTA → Assessment.</p>
+      </div>
+      <div class="step step--decision">
+        <span class="step-num">2</span>
+        <span class="step-title">Assessment (Q1–Q12)</span>
+        <div class="step-path">/assessment/take</div>
+        <img class="step-shot" src="auth-review-shots/02b-assessment-email-gate.png" alt="Assessment in progress" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">12 questions, 1 per mobile view. Answers persist to <code>sessionStorage</code>.</p>
+      </div>
+      <div class="step step--gate">
+        <span class="step-num">3</span>
+        <span class="step-title">Email gate</span>
+        <div class="step-path">POST /api/capture-email</div>
+        <p class="step-note">
+          <b>Rate limit:</b> 30/IP/hr in prod (vitest 5/5). <b>Side effects:</b> MailerLite group assignment + Resend breakdown email + Supabase <code>user_profiles</code> upsert via <code>upsertReadinessResult</code>.
+        </p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">4</span>
+        <span class="step-title">Inline results</span>
+        <div class="step-path">/results/sample (preview)</div>
+        <img class="step-shot" src="auth-review-shots/03-assessment-results-sample.png" alt="Sample results" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Score ring + tier + dimension breakdown + starter artifact, rendered inline after email submit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW B: Lead capture via artifact library -->
+  <section class="flow">
+    <h2>B · Lead capture via Artifact Library</h2>
+    <div class="flow-meta">secondary funnel — email-only capture for template / playbook downloads</div>
+    <p class="why">
+      <code>/resources</code> hosts starter kits, role playbooks, templates,
+      and desk cards. Some surface a download gate that captures email
+      via the same <code>/api/capture-email</code> endpoint with
+      <code>kind: 'research'</code> — assessment group routing, no
+      transactional breakdown email.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-title">Resources hub</span>
+        <div class="step-path">/resources</div>
+        <img class="step-shot" src="auth-review-shots/04-resources-hub.png" alt="Resources hub" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Starter kits · role playbooks · templates · desk cards · paid previews.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <span class="step-title">Template detail</span>
+        <div class="step-path">/resources/templates/ai-workflow-sop</div>
+        <img class="step-shot" src="auth-review-shots/05-resources-templates-sop.png" alt="Template detail" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">HTML view + PDF download CTA. Authored from <code>src/app/resources/templates/data.ts</code>.</p>
+      </div>
+      <div class="step step--gate">
+        <span class="step-num">3</span>
+        <span class="step-title">Email-only capture</span>
+        <div class="step-path">POST /api/capture-email (server infers research kind — no <code>score</code>)</div>
+        <p class="step-note">
+          Client sends <code>lead_source</code> + <code>requested_artifact</code>; the route branches into research-mode because the payload has no score. <b>Same limiter</b> (30/IP/hr). MailerLite assessment group + <code>requested_artifact</code> field. No Resend, no Supabase upsert.
+        </p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">4</span>
+        <span class="step-title">Download</span>
+        <div class="step-path">/downloads/template-&lt;slug&gt;.pdf</div>
+        <p class="step-note">PDFs regenerated from <code>scripts/generate-template-pdfs.mjs</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW C: Authentication + trusted-device -->
+  <section class="flow">
+    <h2>C · Authentication + new-device trust</h2>
+    <div class="flow-meta">Supabase Auth + #187 trusted-device defense</div>
+    <p class="why">
+      Two entries (signup / login). Trusted-device gate runs at both
+      <i>login time</i> (via <code>/api/auth/check-device</code>) and at
+      <i>layout level</i> on every paid surface (defense in depth, fixed
+      this branch).
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1a</span>
+        <span class="step-title">Signup</span>
+        <div class="step-path">/auth/signup</div>
+        <img class="step-shot" src="auth-review-shots/06-auth-signup.png" alt="Signup" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">New account → Supabase confirmation email (Resend).</p>
+      </div>
+      <div class="step">
+        <span class="step-num">1b</span>
+        <span class="step-title">Login</span>
+        <div class="step-path">/auth/login</div>
+        <img class="step-shot" src="auth-review-shots/07-auth-login.png" alt="Login" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Email + password. Magic-link path also writes to same <code>auth.users</code>.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">2</span>
+        <span class="step-title">Device trust check</span>
+        <div class="step-path">POST /api/auth/check-device</div>
+        <p class="step-note">
+          Reads <code>aibi-trusted-device</code> cookie + queries <code>trusted_devices</code>. Untrusted → response routes to <i>pending</i> page + fires a confirmation email.
+        </p>
+      </div>
+      <div class="branch-row" style="grid-column: span 2;">
+        <div class="step step--gate">
+          <span class="step-num">3a</span>
+          <span class="step-title">Untrusted device</span>
+          <div class="step-path">/auth/confirm-device-pending</div>
+          <img class="step-shot" src="auth-review-shots/08-auth-confirm-device-pending.png" alt="Pending" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+          <p class="step-note">
+            User clicks email link → <code>/auth/confirm-device</code> consumes token, issues row in <code>trusted_devices</code>, sets cookie, redirects to destination. <b>Fix #1 this branch:</b> error redirects now use request origin (was hardcoded prod).
+          </p>
+        </div>
+        <div class="step step--success">
+          <span class="step-num">3b</span>
+          <span class="step-title">Trusted → destination</span>
+          <div class="step-path">/dashboard (default) or next= path</div>
+          <img class="step-shot" src="auth-review-shots/14-dashboard-noauth.png" alt="Dashboard" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+          <p class="step-note">Trust cookie present + DB-confirmed → layout passes through.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW D: Foundation purchase -->
+  <section class="flow">
+    <h2>D · Foundation course purchase ($295)</h2>
+    <div class="flow-meta">primary paid SKU — Stripe Checkout → webhook → entitlement</div>
+    <p class="why">
+      Two checkout shapes: individual seat ($295) and institution seat-tier
+      pricing. Webhook handler creates <code>course_enrollments</code> row;
+      DB trigger (migration 00015) syncs <code>entitlements</code>.
+      <b>Fixes #3 + #4 this branch</b> add full event logging and refund
+      revocation.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-title">Course landing</span>
+        <div class="step-path">/courses (canonical) — <code>/courses/foundation</code> redirects here</div>
+        <img class="step-shot" src="auth-review-shots/09-courses-foundation.png" alt="Foundation course landing" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Curriculum, sample artifacts, $295 CTA. <code>/courses/foundation/page.tsx</code> is a <code>redirect('/courses')</code> per the 2026-05-27 decision.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">2</span>
+        <span class="step-title">Stripe Checkout</span>
+        <div class="step-path">POST /api/create-checkout</div>
+        <p class="step-note">Server-side redirect. Uses <code>STRIPE_FOUNDATION_PRICE_ID</code> (individual) or <code>STRIPE_FOUNDATION_INSTITUTION_PRICE_ID</code>.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">3</span>
+        <span class="step-title">Webhook</span>
+        <div class="step-path">POST /api/webhooks/stripe</div>
+        <p class="step-note">
+          <code>checkout.session.completed</code> → <code>provisionEnrollment</code> → INSERT <code>course_enrollments</code> → <code>trg_course_enrollments_sync_entitlement</code> (00015, extended in 00035 to cover <code>foundation</code> + <code>in-depth-assessment</code> product slugs) → Resend welcome + magic link.
+        </p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">4</span>
+        <span class="step-title">Program shell</span>
+        <div class="step-path">/courses/foundation/program</div>
+        <img class="step-shot" src="auth-review-shots/10-foundation-program-paywall.png" alt="Program" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Layout enforces session + <b>trusted-device gate</b> (verified live 2/2 on chromium).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW E: In-Depth purchase -->
+  <section class="flow">
+    <h2>E · In-Depth Assessment purchase ($99)</h2>
+    <div class="flow-meta">secondary paid SKU — gates cohort dashboard</div>
+    <p class="why">
+      $99 unlocks the institution-leader cohort dashboard. Same Stripe
+      pipeline; product metadata <code>in-depth-assessment</code>.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-title">In-Depth landing</span>
+        <div class="step-path">/assessment/in-depth</div>
+        <img class="step-shot" src="auth-review-shots/11-assessment-in-depth.png" alt="In-Depth" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">$99 CTA → Stripe checkout.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">2</span>
+        <span class="step-title">Stripe Checkout</span>
+        <div class="step-path">POST /api/checkout/in-depth</div>
+        <p class="step-note">Separate endpoint from Foundation's <code>/api/create-checkout</code>. Uses <code>STRIPE_INDEPTH_PRICE_ID</code> (env var is <code>INDEPTH</code>, not <code>IN_DEPTH</code>). The webhook in step 3 is shared.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">3</span>
+        <span class="step-title">Webhook</span>
+        <div class="step-path">POST /api/webhooks/stripe</div>
+        <p class="step-note">Same handler; <code>nextPathForProduct('in-depth-assessment')</code> → <code>/assessment/in-depth/take</code>. Resend In-Depth purchase email.</p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">4</span>
+        <span class="step-title">Cohort dashboard</span>
+        <div class="step-path">/assessment/in-depth/access</div>
+        <img class="step-shot" src="auth-review-shots/12-assessment-in-depth-access-noauth.png" alt="Access" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note"><b>Fix #2 this branch</b> added trusted-device gate to this layout. Verified live.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW F: Refund -->
+  <section class="flow">
+    <h2>F · Refund flow (revokes course access)</h2>
+    <div class="flow-meta">fix #4 — verified live against Stripe sandbox 2026-06-07</div>
+    <p class="why">
+      Pre-fix: <code>charge.refunded</code> was silently 200'd. Buyer kept
+      access. Now: handler resolves the session via PaymentIntent, deletes
+      the matching <code>course_enrollments</code> row, and the
+      <code>trg_course_enrollments_sync_entitlement</code> trigger
+      (originated in 00015; extended in 00035 to cover the
+      <code>foundation</code> + <code>in-depth-assessment</code> slugs the
+      handler writes today) flips <code>entitlements.active = false</code>.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-title">Refund initiated</span>
+        <div class="step-path">Stripe Dashboard or API</div>
+        <p class="step-note">Operator-initiated or buyer-initiated via support.</p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">2</span>
+        <span class="step-title">Webhook delivered</span>
+        <div class="step-path">POST /api/webhooks/stripe</div>
+        <p class="step-note">
+          <code>[webhook] received { type: 'charge.refunded' }</code> — verified live.
+        </p>
+      </div>
+      <div class="step step--api">
+        <span class="step-num">3</span>
+        <span class="step-title">Session lookup</span>
+        <div class="step-path">stripe.checkout.sessions.list</div>
+        <p class="step-note">Charge → PaymentIntent → Session → match by <code>stripe_session_id</code>.</p>
+      </div>
+      <div class="step step--gate">
+        <span class="step-num">4</span>
+        <span class="step-title">Enrollment delete</span>
+        <div class="step-path">course_enrollments WHERE stripe_session_id = …</div>
+        <p class="step-note">Service-role client. Trigger <code>trg_course_enrollments_sync_entitlement</code> fires (00015 + 00035).</p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">5</span>
+        <span class="step-title">Entitlement revoked</span>
+        <div class="step-path">entitlements.active = false, revoked_at = now()</div>
+        <p class="step-note">Toolbox + Foundation surfaces re-redirect on next layout pass.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Defense-in-depth gates -->
+  <section class="flow">
+    <h2>G · Defense-in-depth gates (all paid surfaces)</h2>
+    <div class="flow-meta">layout-level enforcement audited 2026-06-06; gaps fixed this branch</div>
+    <div class="branch-row">
+      <div class="step step--success">
+        <span class="step-num">✓</span>
+        <span class="step-title">/dashboard</span>
+        <div class="step-path">src/app/dashboard/layout.tsx</div>
+        <img class="step-shot" src="auth-review-shots/14-dashboard-noauth.png" alt="Dashboard" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Session ✓ Trust ✓ (pre-existing).</p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">✓</span>
+        <span class="step-title">/courses/foundation/program</span>
+        <div class="step-path">src/app/courses/foundation/program/layout.tsx</div>
+        <img class="step-shot" src="auth-review-shots/10-foundation-program-paywall.png" alt="Program" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Session ✓ Trust ✓ (pre-existing).</p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">✓</span>
+        <span class="step-title">/my-toolbox</span>
+        <div class="step-path">src/app/my-toolbox/page.tsx</div>
+        <img class="step-shot" src="auth-review-shots/13-my-toolbox-noauth.png" alt="Toolbox" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Session ✓ <b>Trust ✓ (added this branch)</b>. Playwright pass.</p>
+      </div>
+      <div class="step step--success">
+        <span class="step-num">✓</span>
+        <span class="step-title">/assessment/in-depth/access</span>
+        <div class="step-path">src/app/assessment/in-depth/access/page.tsx</div>
+        <img class="step-shot" src="auth-review-shots/12-assessment-in-depth-access-noauth.png" alt="Access" tabindex="0" role="button" onclick="openShot(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openShot(this);}" />
+        <p class="step-note">Session ✓ <b>Trust ✓ (added this branch)</b>. Playwright pass.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Generated 2026-06-07. Screenshots captured by
+    <code>scripts/auth-flow-shots.mjs</code> against
+    <code>http://localhost:3000</code>. Branch:
+    <code>fix/auth-review-findings</code>. Companion review:
+    <code>docs/auth-review-2026-06-06.html</code>.
+  </footer>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Full-size screenshot" onclick="closeShot()">
+  <img id="modal-img" alt="" />
+</div>
+
+<script>
+  function openShot(img) {
+    const m = document.getElementById('modal');
+    const target = document.getElementById('modal-img');
+    target.src = img.src;
+    // Carry the thumbnail's alt into the modal so screen readers
+    // announce what's now full-size, not a generic empty alt.
+    target.alt = img.alt || 'Screenshot';
+    m.classList.add('open');
+  }
+  function closeShot() {
+    document.getElementById('modal').classList.remove('open');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeShot();
+  });
+</script>
+</body>
+</html>

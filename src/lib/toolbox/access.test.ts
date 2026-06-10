@@ -125,7 +125,12 @@ describe('getPaidToolboxAccess (reads from entitlements)', () => {
   });
 });
 
-describe('canBuildOrRun (#219 Starter-tier gate)', () => {
+describe('canBuildOrRun (build/run unlocked for all paid tiers — 2026-06-02)', () => {
+  // Per the 2026-06-02 operator decision (commit 02aa158a), Build/Run is
+  // unlocked for ALL paid buyers — Foundation AND In-Depth Assessment. The
+  // only thing that gates is having a paid entitlement at all (non-null
+  // access). The starter/full split is retained in the data layer but no
+  // longer affects canBuildOrRun.
   function mk(tier: ToolboxTier, products: readonly string[]): PaidAccess {
     return { userId: 'u-1', products, tier };
   }
@@ -138,23 +143,21 @@ describe('canBuildOrRun (#219 Starter-tier gate)', () => {
     expect(canBuildOrRun(mk('full', ['aibi-p']))).toBe(true);
   });
 
-  it('rejects starter tier (In-Depth Assessment buyers)', () => {
-    expect(canBuildOrRun(mk('starter', ['in-depth-assessment']))).toBe(false);
+  it('allows starter tier (In-Depth Assessment buyers — unlocked 2026-06-02)', () => {
+    expect(canBuildOrRun(mk('starter', ['in-depth-assessment']))).toBe(true);
   });
 
-  it('rejects null access (no entitlement at all)', () => {
+  it('rejects null access (no paid entitlement at all)', () => {
     expect(canBuildOrRun(null)).toBe(false);
   });
 
-  it('fails closed when tier is an unknown string', () => {
-    // Forward-compatibility: if a new tier is introduced in the schema
-    // before the application code is updated, mutating endpoints MUST
-    // continue to reject — never silently allow writes.
+  it('allows any non-null paid access regardless of tier value', () => {
+    // tier no longer gates build/run; a paid-access record always passes.
     const unknown = {
       userId: 'u-1',
       products: ['toolbox-only'],
       tier: 'enterprise' as unknown as ToolboxTier,
     } as PaidAccess;
-    expect(canBuildOrRun(unknown)).toBe(false);
+    expect(canBuildOrRun(unknown)).toBe(true);
   });
 });

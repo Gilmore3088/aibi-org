@@ -4,8 +4,8 @@
 
 import type Stripe from 'stripe';
 import { createServiceRoleClient } from '@/lib/supabase/client';
+import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import type { CheckoutMetadata } from '@/lib/stripe';
-import { canonicalEmail } from '@/lib/email/canonicalize';
 
 export interface ProvisionResult {
   action: 'created' | 'skipped';
@@ -17,57 +17,26 @@ export interface ProvisionError {
   code: 'missing_metadata' | 'db_error' | 'lookup_error';
 }
 
-/**
- * Resolves a user_id from an email address using the Supabase service role
- * auth admin API.
- *
- * Match priority:
- *   1. Exact email match (case-insensitive) — the "real" account.
- *   2. Canonical match (Gmail +alias / dots stripped) AS A FALLBACK only.
- *      If multiple users share a canonical email, prefer the one with the
- *      most recent last_sign_in_at, since that's almost certainly the
- *      account the buyer is actively using.
- *
- * This ordering matters: an earlier version did canonical-first and bound
- * an in-depth purchase to a never-signed-in ghost +alias account that
- * Stripe checkout had auto-created, while the real account sat with no
- * entitlement. See 2026-05-11 incident.
- *
- * Returns null if no user exists yet — enrollments are created with
- * user_id=null in that case; the value can be back-filled once the user
- * creates their account.
- */
-async function resolveUserId(
-  email: string,
-  supabase: ReturnType<typeof createServiceRoleClient>
-): Promise<string | null> {
-  const targetLower = email.trim().toLowerCase();
-  const targetCanonical = canonicalEmail(email);
-  try {
-    const { data: userList } = await supabase.auth.admin.listUsers({
-      page: 1,
-      perPage: 1000,
-    });
-    const users = userList?.users ?? [];
-
-    const exact = users.find((u) => u.email?.toLowerCase() === targetLower);
-    if (exact) return exact.id;
-
-    const canonicalMatches = users.filter(
-      (u) => u.email && canonicalEmail(u.email) === targetCanonical,
-    );
-    if (canonicalMatches.length === 0) return null;
-
-    // Pick the most recently active account.
-    canonicalMatches.sort((a, b) => {
-      const at = a.last_sign_in_at ? Date.parse(a.last_sign_in_at) : 0;
-      const bt = b.last_sign_in_at ? Date.parse(b.last_sign_in_at) : 0;
-      return bt - at;
-    });
-    return canonicalMatches[0].id;
-  } catch {
-    return null;
+// F2 — a refunded Checkout Session must never be re-provisioned. Stripe can
+// re-deliver checkout.session.completed (it retries non-2xx for ~3 days and can
+// send occasional duplicates); the refund handler hard-deletes the enrollment,
+// so without this guard a replay would silently re-create it and restore a
+// refunded buyer's access. Fail-open: if the guard table is missing (migration
+// 00041 not yet applied) or the read errors, do not block a legitimate provision.
+async function isRefundedSession(
+  supabase: ReturnType<typeof createServiceRoleClient>,
+  sessionId: string,
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('refunded_checkout_sessions')
+    .select('stripe_session_id')
+    .eq('stripe_session_id', sessionId)
+    .limit(1);
+  if (error) {
+    console.warn('[webhook] refunded-session check skipped:', error.message);
+    return false;
   }
+  return !!data && data.length > 0;
 }
 
 /**
@@ -108,12 +77,35 @@ export async function provisionEnrollment(
       return { action: 'skipped', type: 'individual' };
     }
 
+    // F2 — replay guard: a refunded session must not be re-provisioned.
+    if (await isRefundedSession(supabase, sessionId)) {
+      return { action: 'skipped', type: 'individual' };
+    }
+
     if (!email) {
       return { error: 'No email available for individual enrollment', code: 'missing_metadata' };
     }
 
-    // Resolve user_id — nullable; user may not have an account yet
-    const userId = await resolveUserId(email, supabase);
+    // Ensure a Supabase auth account exists for the buyer BEFORE inserting the
+    // enrollment. The entitlements sync trigger (00015/00035) fires on this
+    // INSERT and writes entitlements.user_id = course_enrollments.user_id —
+    // but entitlements.user_id is NOT NULL. An enrollment inserted with a null
+    // user_id therefore makes that AFTER-INSERT trigger throw, which rolls back
+    // the whole enrollment: the buyer is charged but never provisioned, and no
+    // welcome email is sent. This bit the anonymous In-Depth purchase path,
+    // where the buyer has no prior account. ensureAuthUser is idempotent —
+    // it returns the existing id (exact, then Gmail-canonical match) or creates
+    // a new account — so it both fixes the crash and dedupes +alias purchases.
+    const { userId } = await ensureAuthUser(email);
+    if (!userId) {
+      // Could not resolve or create the account (transient admin-API failure,
+      // or Supabase not configured). Return db_error so the webhook responds
+      // 500 and Stripe retries — far safer than inserting a null-user_id row
+      // that the entitlements trigger would reject with a cryptic constraint
+      // error after partially running.
+      console.error('[webhook] could not ensure auth user for enrollment', { product });
+      return { error: 'Could not resolve buyer account', code: 'db_error' };
+    }
 
     // Resolve institution_enrollment_id for persistent-discount individual purchases
     let institutionEnrollmentId: string | null = null;
@@ -143,7 +135,7 @@ export async function provisionEnrollment(
     const productSlug = product === 'in-depth-assessment' ? 'in-depth-assessment' : 'foundation';
 
     const { error: insertErr } = await supabase.from('course_enrollments').insert({
-      ...(userId ? { user_id: userId } : {}),
+      user_id: userId,
       email,
       product: productSlug,
       stripe_session_id: sessionId,
@@ -176,6 +168,11 @@ export async function provisionEnrollment(
     }
 
     if (existing && existing.length > 0) {
+      return { action: 'skipped', type: 'institution' };
+    }
+
+    // F2 — replay guard: a refunded session must not be re-provisioned.
+    if (await isRefundedSession(supabase, sessionId)) {
       return { action: 'skipped', type: 'institution' };
     }
 

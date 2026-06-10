@@ -6,7 +6,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 import { getInDepthEnrollment } from '../_lib/getInDepthEnrollment';
 
 export const metadata: Metadata = {
@@ -24,8 +28,37 @@ const PAGE_STYLE = {
 } as const;
 
 export default async function InDepthDashboardPage() {
-  if (!isSupabaseConfigured()) {
-    redirect('/auth/login?next=/assessment/in-depth/access');
+  // Preview/local bypass — parity with /dashboard and /my-toolbox.
+  if (!isPreviewAuthBypassEnabled()) {
+    if (!isSupabaseConfigured()) {
+      redirect('/auth/login?next=/assessment/in-depth/access');
+    }
+
+    // #187 PR 2 — trusted-device defense-in-depth. The /api/auth/check-device
+    // path at sign-in time fails open on transient errors; this layer-level
+    // check covers that gap and any session cookie that arrived by another
+    // route. Mirrors the /dashboard layout pattern.
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const cookieStore = await cookies();
+    const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {},
+      },
+    });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/auth/login?next=/assessment/in-depth/access');
+    }
+    const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
+    if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
+      redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
+    }
   }
 
   const enrollment = await getInDepthEnrollment();

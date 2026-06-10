@@ -24,23 +24,22 @@ import {
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-function redirectToLogin(message: string): NextResponse {
-  const url = new URL(
-    `/auth/login?error=${encodeURIComponent(message)}`,
-    'https://aibankinginstitute.com',
-  );
+function redirectToLogin(origin: string, message: string): NextResponse {
+  const url = new URL(`/auth/login?error=${encodeURIComponent(message)}`, origin);
   return NextResponse.redirect(url);
 }
 
 export async function GET(request: Request): Promise<NextResponse> {
+  const url = new URL(request.url);
+  const origin = url.origin;
+
   if (!isSupabaseConfigured()) {
-    return redirectToLogin('not_configured');
+    return redirectToLogin(origin, 'not_configured');
   }
 
-  const url = new URL(request.url);
   const token = url.searchParams.get('token');
   if (!token) {
-    return redirectToLogin('missing_code');
+    return redirectToLogin(origin, 'missing_code');
   }
 
   const consumed = await consumeDeviceConfirmation(token);
@@ -51,7 +50,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         : consumed.error === 'already_used'
           ? 'This confirmation link has already been used.'
           : 'The confirmation link is invalid. Please sign in again.';
-    return redirectToLogin(msg);
+    return redirectToLogin(origin, msg);
   }
 
   // The link binds a user_id to a device, but the browser holding the link
@@ -96,7 +95,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   });
 
   if ('error' in issued) {
-    return redirectToLogin('Could not register this device. Please try again.');
+    return redirectToLogin(origin, 'Could not register this device. Please try again.');
   }
 
   const response = NextResponse.redirect(dest);

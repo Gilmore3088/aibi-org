@@ -3,6 +3,7 @@ import { POST } from './route';
 
 vi.mock('@/lib/toolbox/access', () => ({
   getPaidToolboxAccess: vi.fn(async () => ({ userId: 'u1' })),
+  canBuildOrRun: vi.fn((access: unknown) => access !== null),
 }));
 vi.mock('@/lib/sandbox/pii-scanner', () => ({ scanForPII: vi.fn(() => ({ safe: true })) }));
 vi.mock('@/lib/sandbox/injection-filter', () => ({ scanForInjection: vi.fn(() => ({ safe: true })) }));
