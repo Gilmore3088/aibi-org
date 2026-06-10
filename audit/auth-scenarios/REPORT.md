@@ -318,6 +318,48 @@ converts all seven to `<Link>` — verified with a clean `next build` against
 the merged tree, plus a control build of bare `origin/main` reproducing the
 failure.
 
+### F14 (NEW, HIGH — found during live production walk 2026-06-10, fixed)
+
+The free-assessment **Download PDF handed out a signed storage URL that
+404s**. Three stacked causes: (1) Supabase `createSignedUrl` mints URLs for
+objects that don't exist; (2) `getSignedDownloadUrl` signed the
+`{profileId}.pdf` convention blindly, ignoring `pdf_storage_path`; (3)
+`backFillProfile` stamped the new PDF path BEFORE the storage move and the
+move was best-effort — a failed move left the DB pointing at a phantom
+object. Fixed: existence-verified signing across candidate paths
+(`pdf_storage_path` → `{profileId}.pdf` → `{previous_id}.pdf`), and
+move-before-stamp with the true path recorded. When no object exists the
+endpoint now returns `pdf-not-ready`, which the download button already
+answers by regenerating and retrying — the symptom self-heals.
+
+### F15 (NEW, HIGH — regression introduced by the F7 fix, caught in prod walk, fixed)
+
+F7's alias-insensitive profile matching meant a free assessment taken with
+`jlgilmore2+qa-…@gmail.com` resolved onto the REAL `jlgilmore2@gmail.com`
+profile row — and a free (v3) submit would **overwrite a paid In-Depth (v4)
+report**, whose results link then 404s (the paid surface rejects v3 rows).
+Two fixes: (1) match priority is now exact-email first, Gmail-canonical only
+as fallback (same ordering as `resolveUserId` after the 2026-05-11
+incident); (2) a version-downgrade guard — a v3 submit landing on a v4 row
+archives the fresh v3 to `readiness_v3_archive` and preserves the paid
+report untouched.
+
+**QA implication (by design, not a bug):** Gmail `+aliases` share one
+identity platform-wide (`ensureAuthUser`, enrollment lookup, and now
+profiles all canonicalize). The §6 runbook's "fresh alias = isolated test
+user" assumption was wrong — use genuinely different mailboxes for isolated
+test identities, or expect alias runs to land on the primary account.
+
+### F16 (NEW, MED — found by parallel session, fixed here)
+
+`cd25c6d7` unblocked main's build by turning
+`@next/next/no-html-link-for-pages` **off** instead of fixing the remaining
+violations, so the F13 class of bug could silently return. Seven more
+internal `<a href>` links across `assessment/_client.tsx`,
+`courses/_client.tsx`, `for-institutions/_client.tsx`, and
+`results/sample/_client.tsx` are now converted to `<Link>` and the rule is
+re-enabled (build verified green with it enforced).
+
 ### New observations from the re-run (not regressions)
 
 - Unauthenticated `/assessment/in-depth/access` locally lands on

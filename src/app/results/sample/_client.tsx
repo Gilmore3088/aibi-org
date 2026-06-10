@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
   SiteHeader,
@@ -313,25 +314,25 @@ export default function ResultsPage() {
                 Self-serve &middot; enroll now
               </span>
               <p>Learn the prompt, skill, workflow, and review model.</p>
-              <a className="mk-link" href="/courses/foundation">
+              <Link className="mk-link" href="/courses/foundation">
                 Start course <ArrowR className="mk-ic" />
-              </a>
+              </Link>
             </div>
             <div className="mk-next-card">
               <FileIcon className="mk-ic-xl" size={24} />
               <h3>Build Workflow SOP</h3>
               <p>Document tool, data, output, review owner, and retention rule.</p>
-              <a className="mk-link" href="/my-toolbox/skill-builder">
+              <Link className="mk-link" href="/my-toolbox/skill-builder">
                 Preview SOP <ArrowR className="mk-ic" />
-              </a>
+              </Link>
             </div>
             <div className="mk-next-card">
               <StarIcon className="mk-ic-xl" size={24} />
               <h3>Practice in Sandbox</h3>
               <p>Use a safe compliance scenario before applying AI to real work.</p>
-              <a className="mk-link" href="/playground">
+              <Link className="mk-link" href="/playground">
                 Open sandbox <ArrowR className="mk-ic" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

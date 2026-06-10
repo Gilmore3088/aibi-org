@@ -11,6 +11,7 @@
 // Free assessment vocabulary: 12 "readiness signals" (one question each).
 // In-depth assessment vocabulary: 8 "scored dimensions". Don't conflate.
 
+import Link from 'next/link';
 import { useState } from 'react';
 import {
   SiteHeader,
@@ -313,12 +314,12 @@ export default function AssessmentLandingPage() {
             mockup.css under .mk-tier-chips. */}
         <div className="mk-tier-chips">
 
-          <a href="/assessment/in-depth" className="mk-tier-chip">
+          <Link href="/assessment/in-depth" className="mk-tier-chip">
             or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
-          </a>
-          <a href="/for-institutions" className="mk-tier-chip">
+          </Link>
+          <Link href="/for-institutions" className="mk-tier-chip">
             for institutions: team view <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </Section>
 

@@ -42,16 +42,62 @@ export async function uploadAssessmentPdf(
   return { path, bytes: buffer.length };
 }
 
-export async function getSignedDownloadUrl(profileId: string): Promise<string | null> {
-  const client = createServiceRoleClient();
-  const path = `${profileId}.pdf`;
-
+// Supabase signs object paths without verifying the object exists — the
+// minted URL then 404s at fetch time (2026-06-10 prod incident: download
+// button handed the user a dead storage link). Verify existence first.
+async function pdfObjectExists(
+  client: ReturnType<typeof createServiceRoleClient>,
+  path: string,
+): Promise<boolean> {
   const { data, error } = await client.storage
     .from(BUCKET)
-    .createSignedUrl(path, 60 * 60 * 24);
+    .list('', { limit: 1, search: path });
+  if (error) return false;
+  return (data ?? []).some((obj) => obj.name === path);
+}
 
-  if (error || !data?.signedUrl) return null;
-  return data.signedUrl;
+export async function getSignedDownloadUrl(profileId: string): Promise<string | null> {
+  const client = createServiceRoleClient();
+
+  // Candidate paths, most-authoritative first:
+  //   1. user_profiles.pdf_storage_path — what upload / back-fill recorded
+  //   2. `${profileId}.pdf` — the upload convention
+  //   3. `${previous_id}.pdf` — back-fill re-keys the row id on account
+  //      creation; if its storage move failed the object still lives at the
+  //      pre-conversion path.
+  const candidates: string[] = [];
+  const primary = await client
+    .from('user_profiles')
+    .select('pdf_storage_path, previous_id')
+    .eq('id', profileId)
+    .maybeSingle();
+  let row = primary.data;
+  if (primary.error) {
+    // previous_id column missing (migration 00042 not applied) — retry
+    // with the always-present column only.
+    ({ data: row } = await client
+      .from('user_profiles')
+      .select('pdf_storage_path')
+      .eq('id', profileId)
+      .maybeSingle());
+  }
+  const storedPath = (row as { pdf_storage_path?: string | null } | null)?.pdf_storage_path;
+  const previousId = (row as { previous_id?: string | null } | null)?.previous_id;
+  if (storedPath) candidates.push(storedPath);
+  candidates.push(`${profileId}.pdf`);
+  if (previousId) candidates.push(`${previousId}.pdf`);
+
+  for (const path of [...new Set(candidates)]) {
+    if (!(await pdfObjectExists(client, path))) continue;
+    const { data, error } = await client.storage
+      .from(BUCKET)
+      .createSignedUrl(path, 60 * 60 * 24);
+    if (!error && data?.signedUrl) return data.signedUrl;
+  }
+
+  // No object found at any candidate path → caller returns pdf-not-ready and
+  // the download button re-warms (regenerates) and retries automatically.
+  return null;
 }
 
 export async function deleteOldPdfs(olderThanDays: number): Promise<{ deleted: number }> {

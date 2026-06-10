@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import Link from 'next/link';
 import {
   SiteHeader,
   Section,
@@ -112,9 +113,9 @@ export default function CoursesIndexPage() {
             </p>
             <p className="mk-hero-foot">
               Not sure where to start?{' '}
-              <a href="/assessment" className="mk-hero-foot-link">
+              <Link href="/assessment" className="mk-hero-foot-link">
                 Take the free readiness check first
-              </a>
+              </Link>
               .
             </p>
           </div>

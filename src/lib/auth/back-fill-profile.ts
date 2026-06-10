@@ -52,6 +52,25 @@ export async function backFillProfile(
   const oldId = existing.id;
   const oldPath = existing.pdf_storage_path;
 
+  // Move the PDF object BEFORE stamping the new path. The previous order
+  // stamped `${authUserId}.pdf` first and moved best-effort after — a failed
+  // move left the DB pointing at an object that doesn't exist, and the
+  // download endpoint then handed out signed URLs that 404 (2026-06-10 prod
+  // incident). Stamp whichever path is actually true.
+  let newPdfPath: string | null = null;
+  if (oldPath) {
+    const target = `${authUserId}.pdf`;
+    const { error: moveError } = await client.storage
+      .from('assessment-pdfs')
+      .move(oldPath, target);
+    if (!moveError) {
+      newPdfPath = target;
+    } else {
+      console.warn('[back-fill-profile] storage move failed, keeping old path:', moveError.message);
+      newPdfPath = oldPath;
+    }
+  }
+
   // Record the old id so emailed /results/{oldId} bearer links keep working
   // after the re-key (journey audit 2026-06-10, F5). Fail-open: if migration
   // 00042 hasn't been applied, retry the update without previous_id.
@@ -60,7 +79,7 @@ export async function backFillProfile(
     .update({
       id: authUserId,
       previous_id: oldId,
-      pdf_storage_path: oldPath ? `${authUserId}.pdf` : null,
+      pdf_storage_path: newPdfPath,
     })
     .eq('id', oldId);
 
@@ -73,22 +92,13 @@ export async function backFillProfile(
       .from('user_profiles')
       .update({
         id: authUserId,
-        pdf_storage_path: oldPath ? `${authUserId}.pdf` : null,
+        pdf_storage_path: newPdfPath,
       })
       .eq('id', oldId));
   }
 
   if (updateError) {
     throw new Error(`[back-fill-profile] update failed: ${updateError.message}`);
-  }
-
-  if (oldPath) {
-    const { error: moveError } = await client.storage
-      .from('assessment-pdfs')
-      .move(oldPath, `${authUserId}.pdf`);
-    if (moveError) {
-      console.warn('[back-fill-profile] storage move failed:', moveError.message);
-    }
   }
 
   return { linked: true, newProfileId: authUserId };
