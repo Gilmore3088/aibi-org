@@ -41,6 +41,9 @@ const SkillBuilder = dynamic(
 const IterationTracker = dynamic(
   () => import('./IterationTracker').then((m) => ({ default: m.IterationTracker })),
 );
+const PromptWizard = dynamic(
+  () => import('./PromptWizard').then((m) => ({ default: m.PromptWizard })),
+);
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
@@ -172,6 +175,20 @@ export function ActivitySection({
         if (moduleNumber === 2 && activity.id === '2.1') {
           return (
             <ClaimReviewLab
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M3 Activity 3.1 — Prompt Wizard (build a prompt that gets to the CORE)
+        if (moduleNumber === 3 && activity.id === '3.1') {
+          return (
+            <PromptWizard
               key={activity.id}
               activity={activity}
               enrollmentId={enrollmentId}
