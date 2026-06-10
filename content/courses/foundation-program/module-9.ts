@@ -48,20 +48,20 @@ export const module9: Module = {
   activities: [
     {
       id: '9.1',
-      title: 'Classify AI Use Cases',
+      title: 'Repair four dangerous prompts',
       description:
-        'Classify proposed AI uses as red, yellow, or green and identify the required safeguard.',
-      type: 'form',
+        'In the Safety Lab you are handed four prompts that already work — good output, task done — and have to find what makes each one dangerous and repair it. Spot the danger, pick the fix, watch the re-run come back safe: a confident wrong answer (no source), a needless data leak, a red-zone decision the AI should never make, and a hidden instruction buried in a document. Each maps to a Green/Yellow/Red zone and completes the two safety moves Module 3 left dark — Check and Escalate.',
+      type: 'builder',
       completionTrigger: 'save-response',
       artifactId: 'safe-ai-use-checklist',
       fields: [
         {
-          id: 'useCaseClassification',
-          label: 'Use case classifications',
+          id: 'safeguards_practiced',
+          label: 'Safeguards practiced',
           type: 'textarea',
           placeholder:
-            'Use case 1: ... Level: ... Safeguard: ... Escalation needed: ...',
-          minLength: 180,
+            'The lab records the four safeguards you practiced — Check, Protect data, Escalate.',
+          minLength: 40,
           required: true,
         },
       ],

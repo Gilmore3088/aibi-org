@@ -44,6 +44,9 @@ const IterationTracker = dynamic(
 const PromptWizard = dynamic(
   () => import('./PromptWizard').then((m) => ({ default: m.PromptWizard })),
 );
+const SafetyLab = dynamic(
+  () => import('./SafetyLab').then((m) => ({ default: m.SafetyLab })),
+);
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
@@ -189,6 +192,20 @@ export function ActivitySection({
         if (moduleNumber === 3 && activity.id === '3.1') {
           return (
             <PromptWizard
+              key={activity.id}
+              activity={activity}
+              enrollmentId={enrollmentId}
+              moduleNumber={moduleNumber}
+              existingResponse={existing}
+              onSubmitSuccess={handleActivitySubmitted}
+            />
+          );
+        }
+
+        // M9 Activity 9.1 — Safety Lab (spot → repair → re-run; completes the 5-move card)
+        if (moduleNumber === 9 && activity.id === '9.1') {
+          return (
+            <SafetyLab
               key={activity.id}
               activity={activity}
               enrollmentId={enrollmentId}
