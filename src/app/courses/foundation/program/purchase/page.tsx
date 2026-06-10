@@ -49,7 +49,7 @@ async function getUserEmail(): Promise<string | null> {
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
@@ -101,11 +101,12 @@ const ROLE_BANNER: Record<
   },
 };
 
-export default async function PurchasePage({
-  searchParams,
-}: {
-  searchParams?: { role?: string };
-}) {
+export default async function PurchasePage(
+  props: {
+    searchParams?: Promise<{ role?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const role = searchParams?.role;
   const roleBanner = role ? ROLE_BANNER[role] ?? null : null;
   const enrollment = await getEnrollment();

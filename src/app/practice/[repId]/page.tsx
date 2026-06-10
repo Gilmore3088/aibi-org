@@ -5,7 +5,7 @@ import { PracticeRepClient } from './PracticeRepClient';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 
 interface PracticeRepPageProps {
-  readonly params: { repId: string };
+  readonly params: Promise<{ repId: string }>;
 }
 
 export const dynamic = 'force-dynamic';
@@ -14,14 +14,16 @@ export function generateStaticParams() {
   return FOUNDATION_PRACTICE_REPS.map((rep) => ({ repId: rep.id }));
 }
 
-export function generateMetadata({ params }: PracticeRepPageProps): Metadata {
+export async function generateMetadata(props: PracticeRepPageProps): Promise<Metadata> {
+  const params = await props.params;
   const rep = getPracticeRepById(params.repId);
   return {
     title: rep ? `${rep.title} | Practice Rep` : 'Practice Rep',
   };
 }
 
-export default async function PracticeRepPage({ params }: PracticeRepPageProps) {
+export default async function PracticeRepPage(props: PracticeRepPageProps) {
+  const params = await props.params;
   const rep = getPracticeRepById(params.repId);
   if (!rep) notFound();
 

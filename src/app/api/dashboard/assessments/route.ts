@@ -44,7 +44,7 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
 
-  const supabase = createServerClientWithCookies(cookies());
+  const supabase = createServerClientWithCookies(await cookies());
   const {
     data: { user },
     error: authError,

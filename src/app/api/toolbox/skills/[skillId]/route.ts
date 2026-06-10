@@ -5,14 +5,15 @@ import type { ToolboxSkill } from '@/lib/toolbox/types';
 import { validateSkill } from '../validateSkill';
 
 interface RouteParams {
-  readonly params: { readonly skillId: string };
+  readonly params: Promise<{ readonly skillId: string }>;
 }
 
 function validId(value: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 }
 
-export async function PATCH(request: Request, { params }: RouteParams): Promise<NextResponse> {
+export async function PATCH(request: Request, props: RouteParams): Promise<NextResponse> {
+  const params = await props.params;
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
   // Starter-tier guard (#219): updating a skill requires the Foundation tier.
@@ -81,7 +82,8 @@ export async function PATCH(request: Request, { params }: RouteParams): Promise<
   });
 }
 
-export async function DELETE(_request: Request, { params }: RouteParams): Promise<NextResponse> {
+export async function DELETE(_request: Request, props: RouteParams): Promise<NextResponse> {
+  const params = await props.params;
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
   // Starter-tier guard (#219): deleting a skill requires the Foundation tier.

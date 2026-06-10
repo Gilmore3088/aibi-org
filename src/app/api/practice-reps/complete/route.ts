@@ -29,7 +29,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'repId is required.' }, { status: 400 });
   }
 
-  const supabase = createServerClientWithCookies(cookies());
+  const supabase = createServerClientWithCookies(await cookies());
   const {
     data: { user },
     error: authError,

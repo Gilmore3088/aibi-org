@@ -16,7 +16,7 @@ import { TEMPLATES, getTemplate, type Template } from '../data';
 import { TemplateActions } from './TemplateActions';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Serialize a template to plain Markdown so a banker can copy/download and
@@ -51,7 +51,8 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const t = getTemplate(params.slug);
   if (!t) return { title: 'Template not found' };
   return {
@@ -71,7 +72,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function TemplatePage({ params }: PageProps) {
+export default async function TemplatePage(props: PageProps) {
+  const params = await props.params;
   const t = getTemplate(params.slug);
   if (!t) notFound();
 
