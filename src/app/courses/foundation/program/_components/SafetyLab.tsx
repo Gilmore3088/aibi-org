@@ -178,10 +178,16 @@ export function SafetyLab({
       <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '0 0 8px' }}>{s.title}</p>
       <p style={{ color: SLATE, fontSize: 13, margin: '0 0 10px' }}>{s.task}</p>
 
-      <Labeled label="The prompt (it works)">{s.unsafePrompt}</Labeled>
-      <Labeled label="What the AI returned — and it looks fine" tone="warn">
-        {s.dangerousOutput}
-      </Labeled>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <div style={{ flex: '1 1 300px', minWidth: 260 }}>
+          <Labeled label="The prompt (it works)">{s.unsafePrompt}</Labeled>
+        </div>
+        <div style={{ flex: '1 1 300px', minWidth: 260 }}>
+          <Labeled label="What the AI returned — and it looks fine" tone="warn">
+            {s.dangerousOutput}
+          </Labeled>
+        </div>
+      </div>
 
       {/* SPOT */}
       {phase === 'spot' && (

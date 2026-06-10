@@ -184,12 +184,12 @@ export function PromptWizard({
         </p>
       </details>
 
-      {/* The v0–v5 attempt grid */}
-      <AttemptGrid scenario={scenario} history={history} />
-
-      {/* Input */}
-      {!done && (
-        <div style={{ marginTop: 14 }}>
+      {/* Two-pane: editor on the left, results + attempt grid on the right.
+          flex-wrap stacks them on narrow screens. */}
+      <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 14 }}>
+        {/* Editor pane */}
+        {!done && (
+        <div style={{ flex: '1 1 320px', minWidth: 280 }}>
           <label htmlFor="pw-input" style={{ display: 'block', fontFamily: INTER, fontSize: 12, fontWeight: 700, color: INK, marginBottom: 6 }}>
             Write your prompt to the AI (attempt {history.length + 1} of {MAX_TRIES})
           </label>
@@ -233,15 +233,19 @@ export function PromptWizard({
             Run the prompt
           </button>
         </div>
-      )}
+        )}
 
-      {/* Result of the most recent run */}
-      {last && (
-        <div aria-live="polite" style={{ marginTop: 18 }}>
-          <Scorecard scenario={scenario} attempt={last} showHints={!isGraded && !solved} />
-          <AnswerPreview scenario={scenario} attempt={last} />
+        {/* Results pane */}
+        <div style={{ flex: '1 1 420px', minWidth: 300 }}>
+          <AttemptGrid scenario={scenario} history={history} />
+          {last && (
+            <div aria-live="polite" style={{ marginTop: 16 }}>
+              <Scorecard scenario={scenario} attempt={last} showHints={!isGraded && !solved} />
+              <AnswerPreview scenario={scenario} attempt={last} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Advance / submit */}
       {done && (

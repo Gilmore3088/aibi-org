@@ -53,9 +53,9 @@ function Section({ n, title, children }: { n: string; title: string; children: R
 
 export default function PromptLabPreviewPage() {
   return (
-    <main style={{ maxWidth: 760, margin: '0 auto', padding: '40px 20px' }}>
+    <main style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px' }}>
       <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A7A2F' }}>
-        Internal preview · PR #450 · remove before merge
+        Internal preview · PR #450 · remove before merge · canvas width matches the live module page (1180px article)
       </p>
       <h1 style={{ fontFamily: 'Inter, sans-serif', fontSize: 28, fontWeight: 800, color: '#071A2F', margin: '6px 0 28px' }}>
         Modules 3 &amp; 9 — prompting interactions
