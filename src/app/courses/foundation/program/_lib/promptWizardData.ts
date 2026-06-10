@@ -2,11 +2,12 @@
 //
 // The teaching mechanic: the learner writes a freeform prompt for a banking
 // task, and the AI's answer is a *deterministic function of which CORE
-// elements the prompt contains*. Miss the grounding element and the answer
-// invents a number; miss the format element and it buries the answer in a
-// paragraph. That visible cause→effect is the lesson — so the output is
-// assembled from authored fragments keyed to each element, never piped to a
-// model that would quietly rescue a lazy prompt.
+// elements the prompt contains*. The good/bad strings below are the actual
+// reply text, one sentence per element, written so they concatenate into a
+// coherent answer — and so each "bad" version is the visible failure that
+// missing element produces (an invented number, a vague non-answer, a missing
+// approval flag). The wizard renders them as one flowing reply with the
+// broken parts flagged, so a lazy prompt is never rescued by a smart model.
 //
 // CORE = Context · Objective · Resources · Expectations.
 
@@ -19,9 +20,9 @@ export interface CoreElement {
   readonly missingHint: string; // nudge shown when absent
   /** Heuristic: is this element present in the learner's prompt? */
   readonly detect: (prompt: string) => boolean;
-  /** Output fragment when the element IS present (the good answer chunk). */
+  /** Reply sentence when the element IS present (the good answer chunk). */
   readonly good: string;
-  /** Output fragment when the element is MISSING (the visible failure). */
+  /** Reply sentence when the element is MISSING (the visible failure). */
   readonly bad: string;
 }
 
@@ -60,8 +61,8 @@ const feeWaiver: WizardScenario = {
       missingHint: 'Add a role — e.g. "You are a branch banking assistant helping a teller."',
       detect: (p) =>
         has(p, ['you are', 'act as', 'as a ', 'assistant', 'teller', 'banker', 'branch']),
-      good: 'Sets a helpful branch-banker tone aimed at the teller, not internal jargon.',
-      bad: 'No role set — the answer drifts into policy-manual voice the teller has to translate for the member.',
+      good: 'Hi — happy to help with the $12 Basic Checking service fee.',
+      bad: 'NOTICE: The Basic Checking monthly service charge is assessed pursuant to the institution’s fee schedule.',
     },
     {
       key: 'objective',
@@ -70,8 +71,8 @@ const feeWaiver: WizardScenario = {
       missingHint: 'Say what to produce — e.g. "tell me whether the fee can be waived and the two conditions."',
       detect: (p) =>
         has(p, ['waive', 'waiver', 'eligible', 'qualif', 'whether', 'can the fee', 'conditions', 'how']),
-      good: 'Directly answers the waiver question with the two automatic conditions and the courtesy option.',
-      bad: 'Gives a vague overview of checking fees instead of answering the actual waiver question.',
+      good: 'Yes — that fee can be waived.',
+      bad: 'There are a few general things worth knowing about how monthly checking fees work.',
     },
     {
       key: 'resources',
@@ -80,8 +81,8 @@ const feeWaiver: WizardScenario = {
       missingHint: 'Add: "Use only the fee-waiver policy below. If it is not covered, say so."',
       detect: (p) =>
         has(p, ['policy', 'below', 'provided', 'only use', 'use only', 'based on', 'source', 'excerpt', 'do not guess', 'do not assume', 'do not make up']),
-      good: 'Cites the real thresholds: $1,500 minimum daily balance or a $500+ recurring direct deposit; plus one courtesy waiver per 12 months with banker approval.',
-      bad: '⚠ Ungrounded — the AI invents a "$25 balance requirement" and a waiver rule that is not in your policy.',
+      good: 'It waives automatically with a $1,500 minimum daily balance or a recurring direct deposit of $500+ a month; if neither applies, a banker can grant one courtesy waiver per 12 months.',
+      bad: 'It usually waives as long as you keep around $25 in the account or have any direct deposit set up.',
     },
     {
       key: 'expectations',
@@ -90,8 +91,8 @@ const feeWaiver: WizardScenario = {
       missingHint: 'Add a format — e.g. "answer in 2–3 sentences, and note that the courtesy waiver needs banker approval."',
       detect: (p) =>
         has(p, ['sentence', 'bullet', 'short', 'under ', 'plain english', 'concise', 'note that', 'flag', 'approval', 'steps', 'format']),
-      good: 'Closes with a clean, member-ready summary and flags that the courtesy waiver needs banker approval.',
-      bad: 'Runs long and never flags that the courtesy waiver needs banker sign-off, so the teller might promise something they can’t.',
+      good: 'One note: the courtesy waiver needs banker approval, so confirm with your banker before promising it.',
+      bad: 'We also have several other account types and seasonal promotions you might like, rates change from time to time, and there is always more we can look at together down the road.',
     },
   ],
   winLine:
@@ -116,8 +117,8 @@ const cdPenalty: WizardScenario = {
       missingHint: 'Add a role — e.g. "You are a branch assistant preparing a member-ready answer."',
       detect: (p) =>
         has(p, ['you are', 'act as', 'as a ', 'assistant', 'teller', 'banker', 'branch', 'member-ready', 'for the member']),
-      good: 'Frames a calm, member-ready explanation rather than an internal calculation dump.',
-      bad: 'No role — the answer reads like raw scratch math, not something you would say to a member.',
+      good: 'Here’s a clear, member-ready way to explain the early CD closure.',
+      bad: 'scratch: P=10000, r=0.04, t=40d, pen=?, net=P−pen.',
     },
     {
       key: 'objective',
@@ -126,8 +127,8 @@ const cdPenalty: WizardScenario = {
       missingHint: 'Say what to produce — "calculate the 90-day penalty and the final amount the member receives."',
       detect: (p) =>
         has(p, ['penalty', 'calculate', 'compute', 'how much', 'walk away', 'walk-away', 'final amount', 'receive', 'net']),
-      good: 'Computes both the penalty and the final walk-away amount, which is what the member actually asked.',
-      bad: 'Explains what an early-withdrawal penalty is in general but never produces the numbers the member asked for.',
+      good: 'Closing the 12-month CD 40 days early triggers a penalty, and you receive the balance minus that penalty.',
+      bad: 'Early-withdrawal penalties are a standard CD feature meant to discourage closing the account before maturity.',
     },
     {
       key: 'resources',
@@ -136,8 +137,8 @@ const cdPenalty: WizardScenario = {
       missingHint: 'Add: "Use only the penalty schedule below for the formula. Do not assume a different penalty."',
       detect: (p) =>
         has(p, ['schedule', 'policy', 'below', 'provided', 'only use', 'use only', 'based on', 'source', 'excerpt', 'do not guess', 'do not assume', 'do not make up', '90 days', '90-day']),
-      good: 'Uses the correct rule — 90 days of simple interest at 4.00%: $10,000 × 0.04 × (90 ÷ 365) ≈ $98.63 penalty → about $9,901.37 returned.',
-      bad: '⚠ Ungrounded — the AI guesses a "6-month interest" penalty and produces a wrong ~$200 figure you would have quoted to the member.',
+      good: 'The penalty is 90 days of simple interest at the 4.00% rate — $10,000 × 0.04 × (90 ÷ 365) ≈ $98.63 — so about $9,901.37 is returned.',
+      bad: 'The penalty is usually around six months of interest, so roughly $200 — you’d get back about $9,800.',
     },
     {
       key: 'expectations',
@@ -146,8 +147,8 @@ const cdPenalty: WizardScenario = {
       missingHint: 'Add: "Show the steps, then a one-line member-ready answer, and note it must be confirmed in core before quoting."',
       detect: (p) =>
         has(p, ['step', 'show your work', 'show the work', 'bullet', 'one-line', 'one line', 'plain english', 'note that', 'flag', 'confirm', 'estimate', 'format', 'under ']),
-      good: 'Shows the steps, gives a one-line member-ready figure, and flags that the estimate must be confirmed in core before quoting.',
-      bad: 'Buries a single number in a dense paragraph with no steps and no "confirm in core" caveat — easy to mis-quote.',
+      good: 'This is an estimate — confirm the exact figure in the core system before you quote it to the member.',
+      bad: 'That should give you a rough sense of it.',
     },
   ],
   winLine:

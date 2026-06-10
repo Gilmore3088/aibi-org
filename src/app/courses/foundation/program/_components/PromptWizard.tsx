@@ -397,28 +397,27 @@ function Scorecard({
 }
 
 function AnswerPreview({ scenario, attempt }: { scenario: WizardScenario; attempt: Attempt }) {
+  const anyBroken = scenario.elements.some((el) => !attempt.present[el.key]);
   return (
     <div style={{ marginTop: 14 }}>
-      <div style={{ ...eyebrow, marginBottom: 8 }}>How your prompt shaped the answer</div>
-      <div style={{ background: CREAM, borderRadius: 12, padding: 14, display: 'grid', gap: 8 }}>
-        {scenario.elements.map((el) => {
-          const ok = attempt.present[el.key];
-          return (
-            <p
-              key={el.key}
-              style={{
-                margin: 0,
-                fontFamily: INTER,
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: ok ? INK : RED,
-              }}
-            >
-              {ok ? el.good : el.bad}
-            </p>
-          );
-        })}
+      <div style={{ ...eyebrow, marginBottom: 8 }}>The reply you’d get back</div>
+      <div style={{ background: CREAM, borderRadius: 12, padding: 14, borderLeft: `3px solid ${GOLD_DEEP}` }}>
+        <p style={{ margin: 0, fontFamily: INTER, fontSize: 13.5, lineHeight: 1.65 }}>
+          {scenario.elements.map((el) => {
+            const ok = attempt.present[el.key];
+            return (
+              <span key={el.key} style={{ color: ok ? INK : RED, fontWeight: ok ? 400 : 600 }}>
+                {ok ? el.good : el.bad}{' '}
+              </span>
+            );
+          })}
+        </p>
       </div>
+      {anyBroken && (
+        <p style={{ fontSize: 11.5, color: RED, margin: '6px 0 0', fontFamily: INTER }}>
+          Red = where a missing CORE part broke the answer. Fix that part of your prompt and Run again.
+        </p>
+      )}
     </div>
   );
 }
