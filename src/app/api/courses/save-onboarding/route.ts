@@ -96,7 +96,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // --- Authenticate user (T-04-03) ---
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   const anonClient = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

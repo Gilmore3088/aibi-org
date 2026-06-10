@@ -69,7 +69,7 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   const supabase = ssrCreateServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

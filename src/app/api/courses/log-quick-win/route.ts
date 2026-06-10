@@ -7,7 +7,7 @@
 //   - Service role client used for writes; anon client for auth resolution only
 
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { cookies, type UnsafeUnwrappedCookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { dbReadValues } from '@/lib/products/normalize';
@@ -31,7 +31,7 @@ interface QuickWinBody {
 function buildAnonClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const cookieStore = cookies();
+  const cookieStore = (cookies() as unknown as UnsafeUnwrappedCookies);
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

@@ -25,14 +25,15 @@ import {
 import { PLAYBOOKS } from '../../data';
 
 interface PageProps {
-  params: { role: string; asset: string };
+  params: Promise<{ role: string; asset: string }>;
 }
 
 export function generateStaticParams() {
   return PLAYBOOK_ASSETS.map((a) => ({ role: a.playbook, asset: a.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const a = getPlaybookAsset(params.asset);
   if (!a || a.playbook !== params.role) return { title: 'Asset not found' };
   return {
@@ -59,7 +60,8 @@ function playbookLabel(slug: string): string {
   ) ?? slug;
 }
 
-export default function PlaybookAssetPage({ params }: PageProps) {
+export default async function PlaybookAssetPage(props: PageProps) {
+  const params = await props.params;
   const a = getPlaybookAsset(params.asset);
   if (!a || a.playbook !== params.role) notFound();
 

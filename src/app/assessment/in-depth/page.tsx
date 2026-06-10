@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 interface InDepthAssessmentPageProps {
-  readonly searchParams?: { readonly reason?: string };
+  readonly searchParams?: Promise<{ readonly reason?: string }>;
 }
 
 const KICKER: React.CSSProperties = {
@@ -88,9 +88,8 @@ const KICKER_GOLD_ON_LIGHT: React.CSSProperties = {
   color: 'var(--gold-deep)',
 };
 
-export default async function InDepthAssessmentPage({
-  searchParams,
-}: InDepthAssessmentPageProps) {
+export default async function InDepthAssessmentPage(props: InDepthAssessmentPageProps) {
+  const searchParams = await props.searchParams;
   const noPurchase = searchParams?.reason === 'no-purchase';
   const signedInEmail = await getSignedInEmail();
 

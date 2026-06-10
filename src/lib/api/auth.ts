@@ -19,7 +19,7 @@ export async function getAuthUser(): Promise<User | null> {
     return null;
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const client = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {

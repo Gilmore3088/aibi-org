@@ -65,7 +65,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
   let userEmail: string | null = null;
 
   if (resource.tier_required !== 'free') {
-    const supabase = createServerClientWithCookies(cookies());
+    const supabase = createServerClientWithCookies(await cookies());
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -99,7 +99,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     }
   } else {
     // For free resources still try to attribute the download to a logged-in user
-    const supabase = createServerClientWithCookies(cookies());
+    const supabase = createServerClientWithCookies(await cookies());
     const {
       data: { user },
     } = await supabase.auth.getUser();

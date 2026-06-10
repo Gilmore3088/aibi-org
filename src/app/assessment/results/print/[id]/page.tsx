@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 interface PrintPageProps {
-  readonly params: { readonly id: string };
+  readonly params: Promise<{ readonly id: string }>;
 }
 
 interface RankedDim {
@@ -46,7 +46,8 @@ function rankWeakest(
     .sort((a, b) => a.pct - b.pct);
 }
 
-export default async function PrintPage({ params }: PrintPageProps) {
+export default async function PrintPage(props: PrintPageProps) {
+  const params = await props.params;
   if (!isSupabaseConfigured()) notFound();
 
   const client = createServiceRoleClient();

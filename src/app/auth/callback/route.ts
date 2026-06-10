@@ -96,7 +96,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   const cookiesToWrite: CookieToSet[] = [];
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {

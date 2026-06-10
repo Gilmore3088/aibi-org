@@ -53,7 +53,7 @@ async function authenticate(): Promise<
 > {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   const anonClient = createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

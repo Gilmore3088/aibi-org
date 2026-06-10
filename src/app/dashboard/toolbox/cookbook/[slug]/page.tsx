@@ -17,10 +17,11 @@ import { RecipeStep } from '../_components/RecipeStep';
 import { TrackRecipeView } from '../_components/TrackRecipeView';
 
 interface PageProps {
-  readonly params: { slug: string };
+  readonly params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const recipe = await getRecipeBySlug(params.slug);
   return {
     title: recipe ? `${recipe.title} · Cookbook` : 'Recipe not found · Cookbook',
@@ -44,7 +45,8 @@ async function resolveLibrarySkillIds(
   return map;
 }
 
-export default async function CookbookRecipePage({ params }: PageProps) {
+export default async function CookbookRecipePage(props: PageProps) {
+  const params = await props.params;
   const access = await getPaidToolboxAccess();
   if (!access) redirect('/dashboard/toolbox?paywall=1');
 

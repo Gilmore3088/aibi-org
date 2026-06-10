@@ -58,7 +58,7 @@ import {
 } from '@content/courses/foundation-program/module-activities';
 
 interface ModulePageParams {
-  readonly params: { module: string };
+  readonly params: Promise<{ module: string }>;
 }
 
 // Mockup-system shared text styles — kept in module scope so this file
@@ -86,7 +86,8 @@ export function generateStaticParams() {
   return modules.map((m) => ({ module: String(m.number) }));
 }
 
-export async function generateMetadata({ params }: ModulePageParams): Promise<Metadata> {
+export async function generateMetadata(props: ModulePageParams): Promise<Metadata> {
+  const params = await props.params;
   const moduleNum = parseInt(params.module, 10);
   const mod = getModuleByNumber(moduleNum);
   if (!mod) {
@@ -97,7 +98,8 @@ export async function generateMetadata({ params }: ModulePageParams): Promise<Me
   };
 }
 
-export default async function ModulePage({ params }: ModulePageParams) {
+export default async function ModulePage(props: ModulePageParams) {
+  const params = await props.params;
   const moduleNum = parseInt(params.module, 10);
 
   if (isNaN(moduleNum) || moduleNum < 1 || moduleNum > modules.length) {
