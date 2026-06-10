@@ -15,6 +15,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { InDepthBriefingView } from './_components/InDepthBriefingView';
 import { PaidReport } from './_components/PaidReport';
+import { buildSampleInDepthReport } from './_lib/sampleReport';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -31,8 +32,17 @@ interface PageProps {
 }
 
 export default async function InDepthResultsPage({ params }: PageProps) {
-  if (!isSupabaseConfigured()) notFound();
   const { id } = await params;
+
+  // Reserved sample id: render a synthetic example briefing so the cohort
+  // dashboard's "See the individual briefing format" CTA (and marketing links)
+  // work without a saved profile. Must precede the Supabase + UUID guards —
+  // there is no row to load. A real profileId is always a UUID, never 'preview'.
+  if (id === 'preview') {
+    return <PaidReport {...buildSampleInDepthReport()} />;
+  }
+
+  if (!isSupabaseConfigured()) notFound();
 
   const response = await loadAssessmentResponse(id);
   if (!response) notFound();

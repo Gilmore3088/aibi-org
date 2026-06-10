@@ -5,17 +5,25 @@
 // any processing occurs. Unverified requests are rejected with 400.
 //
 // Events handled:
-//   checkout.session.completed (individual mode) → creates course_enrollments row
-//   checkout.session.completed (institution mode) → creates institution_enrollments row
+//   checkout.session.completed (individual)   → creates course_enrollments row
+//   checkout.session.completed (institution)  → creates institution_enrollments row
+//   payment_intent.payment_failed             → logs + purchase_failed analytics
+//   charge.refunded                           → deletes course_enrollments row
+//                                                (entitlements trigger revokes)
+//   payment_intent.succeeded                  → ack (provisioning lives on
+//                                                checkout.session.completed)
 //
-// All other event types are acknowledged with 200 and ignored.
+// Every received event is logged at info-level on entry so unknown event
+// types still leave a forensic trail.
 // Idempotency: duplicate deliveries of the same stripe_session_id are skipped.
 
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { track as trackServer } from '@vercel/analytics/server';
 import { provisionEnrollment } from '@/lib/stripe/provision-enrollment';
+import { isFullyRefunded } from '@/lib/stripe/refund';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
+import { createServiceRoleClient } from '@/lib/supabase/client';
 import {
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
@@ -73,7 +81,134 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Only process checkout.session.completed; acknowledge everything else.
+  // Log every received event so failed payments, refunds, and unknown
+  // event types leave a forensic trail. Previously these all silently 200'd.
+  console.info('[webhook] received', { type: event.type, id: event.id });
+
+  // payment_intent.payment_failed — buyer attempted a charge that failed.
+  // We never created a course_enrollments row (provisioning only fires on
+  // checkout.session.completed), so there's nothing to revoke. Logging
+  // + analytics is sufficient for now; surface it for ops visibility.
+  if (event.type === 'payment_intent.payment_failed') {
+    const pi = event.data.object as Stripe.PaymentIntent;
+    console.warn('[webhook] payment_intent.payment_failed', {
+      id: pi.id,
+      amount: pi.amount,
+      currency: pi.currency,
+      last_payment_error: pi.last_payment_error?.code ?? null,
+    });
+    void trackServer('purchase_failed', {
+      stripePaymentIntentId: pi.id,
+      reason: pi.last_payment_error?.code ?? 'unknown',
+    }).catch((err) => console.warn('[webhook] analytics track failed', err));
+    return NextResponse.json({ received: true });
+  }
+
+  // charge.refunded — buyer refunded. Revoke the matching course_enrollments
+  // row; the entitlements trigger (00015) flips entitlements.active to false
+  // and stamps revoked_at. Stripe's charge object carries payment_intent;
+  // we look up the checkout session via that and match by stripe_session_id.
+  if (event.type === 'charge.refunded') {
+    const charge = event.data.object as Stripe.Charge;
+
+    // F3 — only revoke on a FULL refund. charge.refunded fires for partial
+    // refunds too; a partial credit must not pull a paid buyer's access.
+    if (!isFullyRefunded(charge)) {
+      console.info('[webhook] charge.refunded partial — access retained', {
+        id: charge.id,
+        amount: charge.amount,
+        amountRefunded: charge.amount_refunded ?? 0,
+      });
+      return NextResponse.json({ received: true });
+    }
+
+    const paymentIntentId =
+      typeof charge.payment_intent === 'string' ? charge.payment_intent : charge.payment_intent?.id;
+    if (!paymentIntentId) {
+      // F6 — a refunded charge we cannot map back to access. Surfaced at error
+      // level so it leaves an alertable trail instead of a silent ack.
+      console.error('[webhook] charge.refunded missing payment_intent — access NOT revoked', {
+        id: charge.id,
+      });
+      return NextResponse.json({ received: true });
+    }
+    try {
+      const sessions = await stripe.checkout.sessions.list({
+        payment_intent: paymentIntentId,
+        limit: 1,
+      });
+      const sessionId = sessions.data[0]?.id;
+      if (!sessionId) {
+        // F6 — paid charge fully refunded but no Checkout Session maps to it
+        // (e.g. a payment created outside Checkout). Access was NOT revoked;
+        // log at error level for operator follow-up.
+        console.error('[webhook] charge.refunded: no Checkout Session for PI — access NOT revoked', {
+          paymentIntentId,
+          chargeId: charge.id,
+        });
+        return NextResponse.json({ received: true });
+      }
+      const supabase = createServiceRoleClient();
+
+      // Individual purchase: delete the course_enrollments row; the entitlements
+      // trigger flips entitlements.active=false.
+      const { error: delErr, count } = await supabase
+        .from('course_enrollments')
+        .delete({ count: 'exact' })
+        .eq('stripe_session_id', sessionId);
+      if (delErr) {
+        console.error('[webhook] charge.refunded revoke failed', delErr);
+        return NextResponse.json({ error: 'Revoke failed.' }, { status: 500 });
+      }
+
+      // F4 — institution master purchase: there is no course_enrollments row for
+      // its session, so the delete above matches nothing. Release the persistent
+      // discount lock so future per-seat purchases stop inheriting team pricing.
+      // UPDATE (not DELETE): learner course_enrollments reference this row via a
+      // RESTRICT foreign key, and revoking seated-staff access is a separate
+      // product decision.
+      const { error: instErr, count: instCount } = await supabase
+        .from('institution_enrollments')
+        .update({ discount_locked: false }, { count: 'exact' })
+        .eq('stripe_session_id', sessionId)
+        .eq('discount_locked', true);
+      if (instErr) {
+        console.error('[webhook] charge.refunded institution unlock failed', instErr);
+      }
+
+      // F2 — record the refunded session so a replayed checkout.session.completed
+      // cannot re-provision it. provisionEnrollment consults this table (fail-open).
+      const { error: rfErr } = await supabase
+        .from('refunded_checkout_sessions')
+        .upsert({ stripe_session_id: sessionId }, { onConflict: 'stripe_session_id' });
+      if (rfErr) {
+        console.warn('[webhook] refunded-session record failed:', rfErr.message);
+      }
+
+      console.info('[webhook] charge.refunded processed', {
+        sessionId,
+        enrollmentsRevoked: count ?? 0,
+        institutionDiscountsReleased: instCount ?? 0,
+      });
+      void trackServer('purchase_refunded', {
+        stripeSessionId: sessionId,
+        amountRefunded: (charge.amount_refunded ?? 0) / 100,
+      }).catch((err) => console.warn('[webhook] analytics track failed', err));
+    } catch (err) {
+      console.error('[webhook] charge.refunded handler error', err);
+      return NextResponse.json({ error: 'Revoke handler error.' }, { status: 500 });
+    }
+    return NextResponse.json({ received: true });
+  }
+
+  // payment_intent.succeeded — informational; the actual provisioning fires
+  // off checkout.session.completed which carries the metadata. Log and ack.
+  if (event.type === 'payment_intent.succeeded') {
+    return NextResponse.json({ received: true });
+  }
+
+  // Anything else (subscription events, balance updates, etc.) — ack but
+  // the top-of-handler log already recorded the type.
   if (event.type !== 'checkout.session.completed') {
     return NextResponse.json({ received: true });
   }

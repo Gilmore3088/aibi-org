@@ -16,6 +16,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 import ToolboxPage from './_client';
 
 export const metadata: Metadata = {
@@ -55,6 +56,15 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect(loginHref);
+
+  // #187 PR 2 — trusted-device defense-in-depth, parity with /dashboard
+  // and /courses/foundation/program. Without this, a transient
+  // /api/auth/check-device failure at sign-in time silently lands the
+  // user on /my-toolbox with no trust check.
+  const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
+  if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
+    redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
+  }
 
   return <ToolboxPage />;
 }

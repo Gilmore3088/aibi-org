@@ -12,6 +12,10 @@
 
 import { NextResponse } from 'next/server';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import {
+  checkoutIdempotencyKey,
+  dynamicPaymentMethodDefaults,
+} from '@/lib/stripe/checkout-defaults';
 
 async function getStripe() {
   const { stripe } = await import('@/lib/stripe');
@@ -28,6 +32,13 @@ interface CheckoutBody {
 type CheckoutMode = 'individual' | 'institution';
 
 function getOrigin(request: Request): string {
+  // F7 — in production, build redirect targets (success_url / cancel_url) from
+  // the configured canonical origin rather than the client-controllable Host
+  // header, so a spoofed Host can't steer a post-payment redirect. Preview and
+  // local still use Host so each deployment redirects back to itself for QA.
+  if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/+$/, '');
+  }
   const host = request.headers.get('host') ?? 'aibankinginstitute.com';
   const proto = request.headers.get('x-forwarded-proto') ?? 'https';
   return `${proto}://${host}`;
@@ -95,9 +106,9 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      // Card only — see #319. BNPL/Cash App/etc. off-brand for a $99
-      // community-bank-staff diagnostic.
-      payment_method_types: ['card'],
+      // #319 — DPM-with-exclusions instead of payment_method_types:['card']
+      // so dynamic payment methods stays on. See checkout-defaults.ts.
+      ...dynamicPaymentMethodDefaults(),
       // #314 — kill the Stripe Link 'Save my information' toggle so
       // the Pay button isn't silently blocked by an unfilled phone field.
       // customer_creation:'always' satisfies Stripe's requirement that
@@ -115,6 +126,11 @@ export async function POST(request: Request) {
         ...(userEmail ? { user_email: userEmail } : {}),
       },
       ...(userEmail ? { customer_email: userEmail } : {}),
+    }, {
+      idempotencyKey: checkoutIdempotencyKey({
+        product: 'in-depth-assessment',
+        email: userEmail,
+      }),
     });
 
     return NextResponse.json({ url: session.url });
