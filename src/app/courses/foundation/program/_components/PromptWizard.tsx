@@ -399,7 +399,7 @@ function Scorecard({
 function AnswerPreview({ scenario, attempt }: { scenario: WizardScenario; attempt: Attempt }) {
   return (
     <div style={{ marginTop: 14 }}>
-      <div style={{ ...eyebrow, marginBottom: 8 }}>What the AI answered</div>
+      <div style={{ ...eyebrow, marginBottom: 8 }}>How your prompt shaped the answer</div>
       <div style={{ background: CREAM, borderRadius: 12, padding: 14, display: 'grid', gap: 8 }}>
         {scenario.elements.map((el) => {
           const ok = attempt.present[el.key];
