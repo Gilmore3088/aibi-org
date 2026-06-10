@@ -94,4 +94,34 @@ describe('provisionEnrollment — F1: enrollment user_id is never null', () => {
     expect(insertSpy).not.toHaveBeenCalled();
     expect(result).toEqual({ error: 'Could not resolve buyer account', code: 'db_error' });
   });
+
+  it('skips a refunded session (F2 replay guard) — no insert, no account ensured', async () => {
+    // A replayed checkout.session.completed for a refunded purchase: the guard
+    // table reports the session as refunded, so provisioning must skip.
+    fromMock.mockImplementation((table: string) => {
+      if (table === 'refunded_checkout_sessions') {
+        return {
+          select: vi.fn().mockReturnThis(),
+          eq: vi.fn().mockReturnThis(),
+          limit: vi.fn(async () => ({
+            data: [{ stripe_session_id: 'cs_test_indepth_anon' }],
+            error: null,
+          })),
+        };
+      }
+      // course_enrollments: no existing row (idempotency miss), plus insert spy.
+      return {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        limit: vi.fn(async () => ({ data: [], error: null })),
+        insert: insertSpy,
+      };
+    });
+
+    const result = await provisionEnrollment(makeIndividualSession('in-depth-assessment'));
+
+    expect(result).toEqual({ action: 'skipped', type: 'individual' });
+    expect(insertSpy).not.toHaveBeenCalled();
+    expect(ensureAuthUserMock).not.toHaveBeenCalled();
+  });
 });

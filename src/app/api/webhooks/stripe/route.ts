@@ -176,6 +176,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.error('[webhook] charge.refunded institution unlock failed', instErr);
       }
 
+      // F2 — record the refunded session so a replayed checkout.session.completed
+      // cannot re-provision it. provisionEnrollment consults this table (fail-open).
+      const { error: rfErr } = await supabase
+        .from('refunded_checkout_sessions')
+        .upsert({ stripe_session_id: sessionId }, { onConflict: 'stripe_session_id' });
+      if (rfErr) {
+        console.warn('[webhook] refunded-session record failed:', rfErr.message);
+      }
+
       console.info('[webhook] charge.refunded processed', {
         sessionId,
         enrollmentsRevoked: count ?? 0,

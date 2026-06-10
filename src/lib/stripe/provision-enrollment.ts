@@ -17,6 +17,28 @@ export interface ProvisionError {
   code: 'missing_metadata' | 'db_error' | 'lookup_error';
 }
 
+// F2 — a refunded Checkout Session must never be re-provisioned. Stripe can
+// re-deliver checkout.session.completed (it retries non-2xx for ~3 days and can
+// send occasional duplicates); the refund handler hard-deletes the enrollment,
+// so without this guard a replay would silently re-create it and restore a
+// refunded buyer's access. Fail-open: if the guard table is missing (migration
+// 00041 not yet applied) or the read errors, do not block a legitimate provision.
+async function isRefundedSession(
+  supabase: ReturnType<typeof createServiceRoleClient>,
+  sessionId: string,
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('refunded_checkout_sessions')
+    .select('stripe_session_id')
+    .eq('stripe_session_id', sessionId)
+    .limit(1);
+  if (error) {
+    console.warn('[webhook] refunded-session check skipped:', error.message);
+    return false;
+  }
+  return !!data && data.length > 0;
+}
+
 /**
  * Provisions an enrollment for a completed Stripe Checkout Session.
  * Uses the service role client to bypass RLS for both tables.
@@ -52,6 +74,11 @@ export async function provisionEnrollment(
     }
 
     if (existing && existing.length > 0) {
+      return { action: 'skipped', type: 'individual' };
+    }
+
+    // F2 — replay guard: a refunded session must not be re-provisioned.
+    if (await isRefundedSession(supabase, sessionId)) {
       return { action: 'skipped', type: 'individual' };
     }
 
@@ -141,6 +168,11 @@ export async function provisionEnrollment(
     }
 
     if (existing && existing.length > 0) {
+      return { action: 'skipped', type: 'institution' };
+    }
+
+    // F2 — replay guard: a refunded session must not be re-provisioned.
+    if (await isRefundedSession(supabase, sessionId)) {
       return { action: 'skipped', type: 'institution' };
     }
 
