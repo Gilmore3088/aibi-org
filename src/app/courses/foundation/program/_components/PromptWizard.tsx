@@ -152,8 +152,20 @@ export function PromptWizard({
     <div style={card}>
       <div style={eyebrow}>Prompt wizard · {activity.title}</div>
 
-      {/* Progress dots */}
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center', margin: '8px 0 14px' }}>
+      {/* How it works — the widget has to explain itself when read cold */}
+      <p style={{ color: SLATE, fontSize: 13.5, lineHeight: 1.6, margin: '8px 0 14px' }}>
+        Write the prompt you would actually send an AI to handle the task below — using only the
+        source provided. Press <strong style={{ color: INK }}>Run the prompt</strong> and the wizard
+        scores it on the four <strong style={{ color: INK }}>CORE</strong> parts —{' '}
+        <strong style={{ color: INK }}>C</strong>ontext,{' '}
+        <strong style={{ color: INK }}>O</strong>bjective,{' '}
+        <strong style={{ color: INK }}>R</strong>esources,{' '}
+        <strong style={{ color: INK }}>E</strong>xpectations — and shows how the AI’s answer changes
+        as a result. Revise and Run again until all four turn green.
+      </p>
+
+      {/* Which task */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', margin: '0 0 18px' }}>
         {WIZARD_SCENARIOS.map((s, i) => (
           <span
             key={s.id}
@@ -168,21 +180,22 @@ export function PromptWizard({
               color: i === scenarioIdx ? CREAM : SLATE,
             }}
           >
-            {i + 1}. {s.kind === 'warmup' ? 'Warm-up' : 'Graded'}
+            Task {i + 1} · {s.kind === 'warmup' ? 'Warm-up' : 'Graded'}
           </span>
         ))}
       </div>
 
-      {/* Scenario brief */}
-      <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '0 0 6px' }}>{scenario.memberQuestion}</p>
-      <details style={{ marginBottom: 14 }}>
-        <summary style={{ cursor: 'pointer', color: GOLD_DEEP, fontSize: 12, fontWeight: 700 }}>
-          {scenario.sourceLabel}
-        </summary>
-        <p style={{ color: SLATE, fontSize: 13, lineHeight: 1.55, margin: '8px 0 0', background: CREAM, padding: 12, borderRadius: 10 }}>
-          {scenario.sourceMaterial}
-        </p>
-      </details>
+      {/* The task */}
+      <div style={eyebrow}>The task</div>
+      <p style={{ color: INK, fontSize: 16, fontWeight: 700, lineHeight: 1.4, margin: '4px 0 16px' }}>
+        {scenario.memberQuestion}
+      </p>
+
+      {/* The source */}
+      <div style={eyebrow}>Your only source — tell the AI to use this, and nothing else</div>
+      <p style={{ color: INK, fontSize: 13, lineHeight: 1.6, margin: '4px 0 0', background: CREAM, padding: 14, borderRadius: 10, border: `1px solid ${LINE}` }}>
+        {scenario.sourceMaterial}
+      </p>
 
       {/* Two-pane: editor on the left, results + attempt grid on the right.
           flex-wrap stacks them on narrow screens. */}
@@ -237,6 +250,7 @@ export function PromptWizard({
 
         {/* Results pane */}
         <div style={{ flex: '1 1 420px', minWidth: 300 }}>
+          <div style={{ ...eyebrow, marginBottom: 8 }}>Your attempts · scored on C · O · R · E</div>
           <AttemptGrid scenario={scenario} history={history} />
           {last && (
             <div aria-live="polite" style={{ marginTop: 16 }}>
