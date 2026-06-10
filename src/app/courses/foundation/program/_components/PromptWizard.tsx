@@ -136,11 +136,14 @@ export function PromptWizard({
         <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
           You built a prompt that gets to the CORE. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: 0 }}>
+        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 14px' }}>
           You watched the answer change as each element clicked into place — Context,
           Objective, Resources, Expectations. That is the whole craft: a complete prompt
           is a usable answer. Module 9 adds the two moves that make it <strong>safe</strong>.
         </p>
+        <a href="/api/courses/cards/core" style={downloadLink}>
+          Download the CORE card (PDF)
+        </a>
       </div>
     );
   }
@@ -409,6 +412,20 @@ const card: CSSProperties = {
   borderRadius: 18,
   padding: 22,
   margin: '28px 0',
+};
+const downloadLink: CSSProperties = {
+  display: 'inline-block',
+  fontFamily: INTER,
+  fontSize: 11,
+  fontWeight: 800,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: INK,
+  background: 'transparent',
+  border: `1px solid ${LINE}`,
+  borderRadius: 12,
+  padding: '10px 18px',
+  textDecoration: 'none',
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,

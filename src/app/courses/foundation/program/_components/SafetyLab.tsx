@@ -120,11 +120,14 @@ export function SafetyLab({
         <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
           The 5-move card is complete. State · Ground · Constrain · Check · Escalate. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: 0 }}>
+        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 14px' }}>
           You caught an invented figure, a needless data leak, a red-zone decision, and a
           hidden instruction — and repaired each one. An effective prompt is not enough; a
           banker ships prompts that are effective <strong>and</strong> safe.
         </p>
+        <a href="/api/courses/cards/five-move-zones" style={downloadLink}>
+          Download the 5-Move + Zones card (PDF)
+        </a>
       </div>
     );
   }
@@ -402,6 +405,20 @@ const eyebrow: CSSProperties = {
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
   color: GOLD_DEEP,
+};
+const downloadLink: CSSProperties = {
+  display: 'inline-block',
+  fontFamily: INTER,
+  fontSize: 11,
+  fontWeight: 800,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: INK,
+  background: 'transparent',
+  border: `1px solid ${LINE}`,
+  borderRadius: 12,
+  padding: '10px 18px',
+  textDecoration: 'none',
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,
