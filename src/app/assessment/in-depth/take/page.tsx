@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
-import { findEnrollmentByEmailOrUserId } from '@/lib/enrollment/findEnrollment';
+import { findEnrollmentByEmailOrUserIdWithRetry } from '@/lib/enrollment/findEnrollment';
 import { InDepthRunner } from './_components/InDepthRunner';
 
 export const metadata: Metadata = {
@@ -62,7 +62,10 @@ export default async function InDepthTakePage() {
     redirect('/auth/login?next=/assessment/in-depth/take');
   }
 
-  const enrollment = await findEnrollmentByEmailOrUserId(supabase, {
+  // Retry variant: a buyer arriving straight from Stripe's success page can
+  // beat the webhook that writes their enrollment row. Absorb that latency
+  // instead of telling someone who paid 10 seconds ago "purchase required".
+  const enrollment = await findEnrollmentByEmailOrUserIdWithRetry(supabase, {
     user,
     products: ['in-depth-assessment'],
     columns: 'id, enrolled_at',

@@ -79,7 +79,6 @@ export function ResultsViewV2({
   tier,
   tierId,
   dimensionBreakdown,
-  email,
   firstName,
   institutionName,
   profileId,
@@ -401,7 +400,7 @@ export function ResultsViewV2({
       <SectionAnchor id="section-9" />
       <ClosingCta tierId={tierId} />
 
-      {profileId ? <PdfDownloadButton profileId={profileId} email={email} /> : null}
+      {profileId ? <PdfDownloadButton profileId={profileId} /> : null}
     </div>
   );
 }

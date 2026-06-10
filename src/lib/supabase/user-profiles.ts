@@ -10,6 +10,7 @@
 // Never import this module in Client Components — it uses the service role key.
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { emailVariants } from '@/lib/email/canonicalize';
 import type { ReadinessResult, ProficiencyResult } from '@/lib/user-data';
 import type { Role } from '@content/assessments/v2/role';
 import type { RoleV4 } from '@content/assessments/v4/roles';
@@ -47,11 +48,55 @@ export async function upsertReadinessResult(
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
   const client = createServiceRoleClient();
+
+  // The upsert conflict key is the raw email string, so 'Jane@Bank.com' at
+  // the email gate and 'jane@bank.com' at login used to split into two rows
+  // (journey audit 2026-06-10, F7). Resolve the existing row case- and
+  // alias-insensitively first and reuse ITS stored email as the conflict key;
+  // new rows are written lowercased.
+  const normalizedEmail = email.trim().toLowerCase();
+  const variants = emailVariants(email);
+  // ilike without wildcards = case-insensitive equality, so legacy
+  // mixed-case rows match too.
+  const { data: existingRows } = await client
+    .from('user_profiles')
+    .select('id, email, readiness_version, readiness_score, readiness_tier_id, readiness_tier_label, readiness_answers, readiness_at, readiness_max_score, readiness_dimension_breakdown')
+    .or(variants.map((v) => `email.ilike.${v}`).join(','))
+    .order('readiness_at', { ascending: false, nullsFirst: false })
+    .limit(1);
+  const existing = existingRows?.[0] ?? null;
+  const keyEmail = existing?.email ?? normalizedEmail;
+
+  // F10 — the paid In-Depth (v4) submit overwrites the same row's free (v3)
+  // result. Archive the v3 fields first so the buyer's free baseline
+  // survives the upgrade. Fail-open: ignore errors (e.g. migration 00042
+  // not applied yet) — losing the archive must not block the paid result.
+  if (existing && result.version === 'v4' && existing.readiness_version === 'v3') {
+    const { error: archiveError } = await client
+      .from('user_profiles')
+      .update({
+        readiness_v3_archive: {
+          score: existing.readiness_score,
+          tier_id: existing.readiness_tier_id,
+          tier_label: existing.readiness_tier_label,
+          answers: existing.readiness_answers,
+          at: existing.readiness_at,
+          max_score: existing.readiness_max_score,
+          dimension_breakdown: existing.readiness_dimension_breakdown,
+          version: 'v3',
+        },
+      })
+      .eq('id', existing.id);
+    if (archiveError) {
+      console.warn('[user-profiles] v3 archive skipped:', archiveError.message);
+    }
+  }
+
   const { data, error } = await client
     .from('user_profiles')
     .upsert(
       {
-        email,
+        email: keyEmail,
         readiness_score: result.score,
         readiness_tier_id: result.tierId,
         readiness_tier_label: result.tierLabel,
@@ -92,9 +137,18 @@ export async function upsertProficiencyResult(
   if (SKIP || !isSupabaseConfigured()) return;
 
   const client = createServiceRoleClient();
+  // Same case/alias-insensitive key resolution as upsertReadinessResult (F7).
+  const variants = emailVariants(email);
+  const { data: existingRows } = await client
+    .from('user_profiles')
+    .select('email')
+    .or(variants.map((v) => `email.ilike.${v}`).join(','))
+    .limit(1);
+  const keyEmail = existingRows?.[0]?.email ?? email.trim().toLowerCase();
+
   const { error } = await client.from('user_profiles').upsert(
     {
-      email,
+      email: keyEmail,
       proficiency_pct: result.pctCorrect,
       proficiency_level_id: result.levelId,
       proficiency_level_label: result.levelLabel,

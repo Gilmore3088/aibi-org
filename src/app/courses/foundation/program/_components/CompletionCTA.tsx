@@ -10,6 +10,7 @@
 // TimeSavingsCard is appended after each contextual message.
 // Mockup chrome: cream surface, gold primary CTA on ink fill, slate body.
 
+import Link from 'next/link';
 import { TimeSavingsCard } from './TimeSavingsCard';
 import { trackBriefingBooked } from '@/lib/analytics/events';
 
@@ -124,10 +125,10 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             capability. This is not a test — it is a demonstration of the skills you have built
             throughout this course.
           </p>
-          <a href="/courses/foundation/program/submit" style={ctaPrimary}>
+          <Link href="/courses/foundation/program/submit" style={ctaPrimary}>
             Begin work product submission
             <ArrowIcon />
-          </a>
+          </Link>
           <p
             style={{
               marginTop: 12,
@@ -178,10 +179,10 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             Take the same readiness assessment you completed before the course. The side-by-side
             comparison shows your AI readiness improvement — dimension by dimension.
           </p>
-          <a href="/courses/foundation/program/post-assessment" style={ctaSecondary}>
+          <Link href="/courses/foundation/program/post-assessment" style={ctaSecondary}>
             Measure your growth
             <ArrowIcon />
-          </a>
+          </Link>
         </div>
 
         <TimeSavingsCard moduleNumber={moduleNumber} />

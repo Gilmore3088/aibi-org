@@ -13,6 +13,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
+import { EmailSignInLink } from './_components/EmailSignInLink';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -255,26 +256,14 @@ export default async function InDepthPurchasedPage({
                   I ALREADY HAVE ONE
                 </Link>
                 {/* #324 — third option for the common case of "I bought
-                    with this email but I don't remember my password" or
-                    "I paid with a different email than the one I sign in
-                    with". Pre-fills the email and lands on the magic-link
-                    tab so the buyer is one click + one email away from
-                    being signed in. */}
-                <Link
-                  href={`/auth/login?mode=magic&next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block uppercase transition-colors"
-                  style={{
-                    border: '1px solid var(--ink-a15)',
-                    color: 'var(--ink)',
-                    padding: '14px 28px',
-                    borderRadius: 12,
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: '0.16em',
-                  }}
-                >
-                  EMAIL ME A SIGN-IN LINK
-                </Link>
+                    with this email but I don't remember / never set a
+                    password". Sends the password-setup email directly
+                    (magic-link sign-in was retired 2026-05-28, so the old
+                    /auth/login?mode=magic deep link was a dead end). */}
+                <EmailSignInLink
+                  email={prefillEmail}
+                  next="/assessment/in-depth/take"
+                />
               </div>
             </>
           )}

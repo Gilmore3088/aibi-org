@@ -48,3 +48,30 @@ export async function findEnrollmentByEmailOrUserId<T = unknown>(
 
   return (data as T | null) ?? null;
 }
+
+/**
+ * Entitlement lookup with a short retry window for the post-payment race.
+ *
+ * Stripe redirects the buyer to the success page immediately; the
+ * course_enrollments row is written by the async checkout.session.completed
+ * webhook, typically 1–10 s behind. A fast buyer who clicks straight through
+ * to a gated page can therefore beat their own provisioning and get bounced
+ * with "purchase required" seconds after paying (journey audit 2026-06-10,
+ * F2). Retrying the lookup a few times before giving up absorbs normal
+ * webhook latency without weakening the gate: a genuine non-buyer just waits
+ * ~9 s longer for the same redirect.
+ */
+export async function findEnrollmentByEmailOrUserIdWithRetry<T = unknown>(
+  supabase: SupabaseClient,
+  options: FindEnrollmentOptions,
+  { attempts = 4, delayMs = 3000 }: { attempts?: number; delayMs?: number } = {},
+): Promise<T | null> {
+  for (let i = 0; i < attempts; i++) {
+    const found = await findEnrollmentByEmailOrUserId<T>(supabase, options);
+    if (found) return found;
+    if (i < attempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  return null;
+}

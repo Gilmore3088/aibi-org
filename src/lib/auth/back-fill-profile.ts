@@ -52,13 +52,31 @@ export async function backFillProfile(
   const oldId = existing.id;
   const oldPath = existing.pdf_storage_path;
 
-  const { error: updateError } = await client
+  // Record the old id so emailed /results/{oldId} bearer links keep working
+  // after the re-key (journey audit 2026-06-10, F5). Fail-open: if migration
+  // 00042 hasn't been applied, retry the update without previous_id.
+  let { error: updateError } = await client
     .from('user_profiles')
     .update({
       id: authUserId,
+      previous_id: oldId,
       pdf_storage_path: oldPath ? `${authUserId}.pdf` : null,
     })
     .eq('id', oldId);
+
+  if (updateError) {
+    console.warn(
+      '[back-fill-profile] update with previous_id failed, retrying without:',
+      updateError.message,
+    );
+    ({ error: updateError } = await client
+      .from('user_profiles')
+      .update({
+        id: authUserId,
+        pdf_storage_path: oldPath ? `${authUserId}.pdf` : null,
+      })
+      .eq('id', oldId));
+  }
 
   if (updateError) {
     throw new Error(`[back-fill-profile] update failed: ${updateError.message}`);

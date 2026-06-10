@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import {
   SiteHeader,
@@ -352,7 +353,7 @@ export default function PlaygroundPage() {
             { icon: FileIcon, role: 'Lending', title: 'Adverse Action Letter', desc: 'Draft an ECOA-compliant decline letter from a denial decision summary.', time: '~14 min', tags: '5 review tags' },
             { icon: StarIcon, role: 'Operations', title: 'Incident Runbook', desc: 'Transform a Slack thread into a structured incident runbook with owner + escalation path.', time: '~16 min', tags: '4 review tags' },
           ].map(({ icon: Icon, role, title, desc, time, tags }) => (
-            <a key={title} className="mk-scen" href="/practice">
+            <Link key={title} className="mk-scen" href="/practice">
               <div className="mk-top">
                 <span className="mk-pic"><Icon size={20} /></span>
                 <span className="mk-role">{role}</span>
@@ -363,7 +364,7 @@ export default function PlaygroundPage() {
                 <span>{time}</span>
                 <span>{tags}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: 32 }}>

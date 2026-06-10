@@ -228,7 +228,7 @@ export default async function AiBIPurchasedPage({
                 index={2}
                 done={false}
                 title="Open Module 1: Foundations"
-                body="About 35 minutes. Read the takeaway, run one sandbox prompt, and submit your first work product."
+                body="A two-minute onboarding (your role and goals) runs first, then Module 1: about 35 minutes — read the takeaway, run one sandbox prompt, and submit your first work product."
                 action={
                   step1Done ? (
                     <div style={{ marginTop: 14 }}>

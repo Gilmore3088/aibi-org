@@ -17,6 +17,7 @@
 //   - Submission failed (no prior resubmission) → form in resubmission mode
 //   - No submission → form in initial submission mode
 
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getEnrollment } from '../_lib/getEnrollment';
@@ -128,9 +129,9 @@ export default async function SubmitPage() {
             >
               Complete all 12 modules before submitting your work product.
             </p>
-            <a href="/courses/foundation/program" style={inlineCtaInk}>
+            <Link href="/courses/foundation/program" style={inlineCtaInk}>
               Return to course
-            </a>
+            </Link>
           </div>
         )}
 
@@ -188,7 +189,7 @@ export default async function SubmitPage() {
             >
               Your work product has been approved. Your AiBI-Foundation credential has been issued.
             </p>
-            <a
+            <Link
               href="/courses/foundation/program/certificate"
               style={{
                 ...inlineCtaInk,
@@ -197,7 +198,7 @@ export default async function SubmitPage() {
               }}
             >
               View certificate
-            </a>
+            </Link>
           </div>
         )}
 
