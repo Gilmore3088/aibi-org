@@ -1,0 +1,153 @@
+{
+  "base": "http://localhost:3000",
+  "generated": "2026-06-10T03:18:28.803Z",
+  "steps": [
+    {
+      "scenario": "S1",
+      "id": "S1-1-landing",
+      "note": "landed http://localhost:3000/assessment",
+      "screen": "screenshots/S1-1-landing.png"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-2-take",
+      "note": "assessment runner",
+      "screen": "screenshots/S1-2-take.png"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-3-email-gate",
+      "note": "reached email gate",
+      "severity": "info",
+      "screen": "screenshots/S1-3-email-gate.png"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-3b-gate-copy",
+      "note": "gate copy mentions password/account: false",
+      "gateCopy": "AI Readiness Assessment\n12 of 12 complete\nYour AI readiness snapshot is ready.\n\nYour score and starting direction are to the right. Send the full result for the plain-English diagnosis, your copy-ready starter prompt, the AI working brief you can paste into any tool, and a 30-day action path.\n\nPREVIEW SCORE\n\n13/ 48\n\nTIER\n\nStarting Point\n\nTOP GAP\n\nStrategic Value\n\nYou use AI in general, not on specific work that matters to you.\n\nWHERE TO START\n\nStart by listing three tasks in your week where AI could save real time — be specific enough that you could try one tomorrow.\n\nSEND THE FULL RESULT\n\nWhe"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-4-after-capture",
+      "note": "capture-email → 200; landed http://localhost:3000/assessment/take",
+      "screen": "screenshots/S1-4-after-capture.png"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-5-result-ctas",
+      "note": "result CTAs: none harvested"
+    },
+    {
+      "scenario": "S1",
+      "id": "S1-6-download-click",
+      "note": "no download button rendered (profileId null in degraded mode — gated button hidden)"
+    },
+    {
+      "scenario": "S2",
+      "id": "S2-1-landing",
+      "note": "landed http://localhost:3000/assessment/in-depth",
+      "screen": "screenshots/S2-1-landing.png"
+    },
+    {
+      "scenario": "S2",
+      "id": "S2-2-checkout-call",
+      "note": "POST /api/checkout/in-depth → 503 {\"error\":\"Payment system not configured.\"}",
+      "severity": "warn",
+      "screen": "screenshots/S2-2-checkout-call.png"
+    },
+    {
+      "scenario": "S2",
+      "id": "S2-3-success-page",
+      "note": "success page landed http://localhost:3000/assessment/in-depth/purchased?session_id=cs_test_audit",
+      "screen": "screenshots/S2-3-success-page.png"
+    },
+    {
+      "scenario": "S2",
+      "id": "S2-3b-success-ctas",
+      "note": "CREATE MY ACCOUNT→/auth/signup?next=/assessment/in-depth/take | I ALREADY HAVE ONE→/auth/login?next=/assessment/in-depth/take | EMAIL ME A SIGN-IN LINK→/auth/login?mode=magic&next=/assessment/in-depth/take | BROWSE THE LIBRARY →→/resources | SEE THE FOUNDATION UPGRADE→/courses/foundation/program/purchase | [Ai]Banking Institute→/ | Free assessment→/assessment/take | In-depth assessment→/assessment/in-depth | AiBI-Foundation course→/courses | For institutions→/for-institutions | Downloads & templates→/resources | Templates→/resources/templates/ai-use-policy-starter | Role playbooks→/playbooks | Efficiency ratio workbook→/for-institutions/samples/efficiency-ratio-workbook | FAQ→/faq | Security & governance→/security | Terms→/terms | Privacy→/privacy | AI use disclaimer→/ai-use-disclaimer"
+    },
+    {
+      "scenario": "S2",
+      "id": "S2-4-take-gate",
+      "note": "unauthenticated /take landed on http://localhost:3000/assessment/in-depth/take (next preserved: false)",
+      "severity": "info",
+      "screen": "screenshots/S2-4-take-gate.png"
+    },
+    {
+      "scenario": "S3",
+      "id": "S3-1-purchase-page",
+      "note": "landed http://localhost:3000/courses/foundation/program/purchase",
+      "screen": "screenshots/S3-1-purchase-page.png"
+    },
+    {
+      "scenario": "S3",
+      "id": "S3-2-checkout-call",
+      "note": "POST /api/create-checkout → 503 {\"error\":\"Payment system not configured.\"}",
+      "screen": "screenshots/S3-2-checkout-call.png"
+    },
+    {
+      "scenario": "S3",
+      "id": "S3-3-success-page",
+      "note": "success page landed http://localhost:3000/courses/foundation/program/purchased?session_id=cs_test_audit",
+      "screen": "screenshots/S3-3-success-page.png"
+    },
+    {
+      "scenario": "S3",
+      "id": "S3-3b-success-ctas",
+      "note": "CREATE MY ACCOUNT→/auth/signup?next=/courses/foundation/program | I ALREADY HAVE ONE→/auth/login?next=/courses/foundation/program"
+    },
+    {
+      "scenario": "S3",
+      "id": "S3-4-module-gate",
+      "note": "unauthenticated module 1 landed on http://localhost:3000/courses/foundation/program/1",
+      "screen": "screenshots/S3-4-module-gate.png"
+    },
+    {
+      "scenario": "S4",
+      "id": "S4-1-stale-result",
+      "note": "stale free-result link UX: http://localhost:3000/results/00000000-0000-4000-8000-000000000000 :: 404 · PAGE NOT FOUND That page is not in our archive. The page you are looking for may have moved, or it may not exist yet. While you are here, the free AI readiness assessment takes under three minut",
+      "screen": "screenshots/S4-1-stale-result.png"
+    },
+    {
+      "scenario": "S4",
+      "id": "S4-2-stale-paid-result",
+      "note": "stale paid-result link UX: http://localhost:3000/assessment/in-depth/results/00000000-0000-4000-8000-000000000000 :: [ A i ] Banking Institute Home Assessment Learn Resources Institutions Take the In-Depth 404 · RESULT NOT FOUND We couldn't find that briefing. The link may be from an old session or the result may ha",
+      "screen": "screenshots/S4-2-stale-paid-result.png"
+    },
+    {
+      "scenario": "S4",
+      "id": "S4-3-upgrade-path",
+      "note": "upgrade CTAs on results surface: Get the In-Depth report ($99)→/assessment/in-depth | In-depth assessment→/assessment/in-depth",
+      "severity": "info",
+      "screen": "screenshots/S4-3-upgrade-path.png"
+    },
+    {
+      "scenario": "S5",
+      "id": "S5-_dashboard",
+      "note": "/dashboard → http://localhost:3000/dashboard (RENDERED without auth — preview bypass or public)",
+      "severity": "info",
+      "screen": "screenshots/S5-dashboard.png"
+    },
+    {
+      "scenario": "S5",
+      "id": "S5-_my-toolbox",
+      "note": "/my-toolbox → http://localhost:3000/my-toolbox (RENDERED without auth — preview bypass or public)",
+      "severity": "info",
+      "screen": "screenshots/S5-my-toolbox.png"
+    },
+    {
+      "scenario": "S5",
+      "id": "S5-_assessment_in-depth_access",
+      "note": "/assessment/in-depth/access → http://localhost:3000/auth/login?next=/assessment/in-depth/access (next preserved: true)",
+      "severity": "info",
+      "screen": "screenshots/S5-assessment-in-depth-access.png"
+    },
+    {
+      "scenario": "S5",
+      "id": "S5-login-prefill",
+      "note": "login with next + email prefill (post-purchase re-entry shape)",
+      "screen": "screenshots/S5-login-prefill.png"
+    }
+  ]
+}
