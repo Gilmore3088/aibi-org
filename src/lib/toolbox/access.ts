@@ -7,10 +7,12 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
  *
  *   - 'full'    — Foundation course buyers (AiBI-Foundation, AiBI-S, AiBI-L,
  *                 toolbox-only). Library + Cookbook + Build + Playground.
- *   - 'starter' — In-Depth Assessment ($99) buyers. Library + Cookbook only;
- *                 Build, Playground, Save, Run gated at the API layer.
+ *   - 'starter' — In-Depth Assessment ($99) buyers. Retained in the data
+ *                 layer, but per the 2026-06-02 operator decision it no longer
+ *                 gates Build/Run — canBuildOrRun unlocks all paid tiers.
  *
- * See issue #219 for the full design + acceptance criteria.
+ * See issue #219 for the original design; the 2026-06-02 decision (commit
+ * 02aa158a) unlocked Build/Run for In-Depth buyers too.
  */
 export type ToolboxTier = 'full' | 'starter';
 
@@ -116,13 +118,15 @@ export async function getPaidToolboxAccess(): Promise<PaidAccess | null> {
 
 /**
  * True when the access record allows write/run operations — Save, Run,
- * Run/Stream, Skills CRUD. Used by every mutating /api/toolbox/** route
- * to reject Starter-tier requests with 403 BEFORE the Supabase call.
+ * Run/Stream, Skills CRUD. Used by every mutating /api/toolbox/** route as
+ * the paid-access gate BEFORE the Supabase call.
  *
- * Critical: this is the only protection against a Starter user opening
- * DevTools and POSTing directly to /api/toolbox/save. RLS does not catch
- * this because toolbox_skills is gated on auth.uid() = user_id, not on
- * tier.
+ * Per the 2026-06-02 operator decision, ALL paid buyers (Foundation AND
+ * In-Depth Assessment) may build/run, so this returns true for any non-null
+ * paid access and false only when there is no paid entitlement. The
+ * starter/full split is retained in the data layer for a possible future free
+ * read-only tier. This stays the single paid-access checkpoint: RLS does not
+ * gate on tier — toolbox_skills is keyed on auth.uid() = user_id.
  */
 export function canBuildOrRun(access: PaidAccess | null): boolean {
   // 2026-06-02: Toolbox build/save unlocked for BOTH Foundation and
