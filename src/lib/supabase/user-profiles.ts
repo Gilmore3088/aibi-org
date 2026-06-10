@@ -51,9 +51,13 @@ export async function upsertReadinessResult(
 
   // The upsert conflict key is the raw email string, so 'Jane@Bank.com' at
   // the email gate and 'jane@bank.com' at login used to split into two rows
-  // (journey audit 2026-06-10, F7). Resolve the existing row case- and
-  // alias-insensitively first and reuse ITS stored email as the conflict key;
-  // new rows are written lowercased.
+  // (journey audit 2026-06-10, F7). Resolve the existing row first and reuse
+  // ITS stored email as the conflict key; new rows are written lowercased.
+  //
+  // Match priority mirrors resolveUserId / ensureAuthUser (2026-05-11
+  // incident): EXACT case-insensitive match first; Gmail-canonical
+  // (+alias / dots stripped) only as a fallback. Canonical-first picked the
+  // wrong row when both an alias row and the real row existed.
   const normalizedEmail = email.trim().toLowerCase();
   const variants = emailVariants(email);
   // ilike without wildcards = case-insensitive equality, so legacy
@@ -63,9 +67,42 @@ export async function upsertReadinessResult(
     .select('id, email, readiness_version, readiness_score, readiness_tier_id, readiness_tier_label, readiness_answers, readiness_at, readiness_max_score, readiness_dimension_breakdown')
     .or(variants.map((v) => `email.ilike.${v}`).join(','))
     .order('readiness_at', { ascending: false, nullsFirst: false })
-    .limit(1);
-  const existing = existingRows?.[0] ?? null;
-  const keyEmail = existing?.email ?? normalizedEmail;
+    .limit(10);
+  const rows = existingRows ?? [];
+  const existing =
+    rows.find((r) => (r.email as string)?.toLowerCase() === normalizedEmail) ??
+    rows[0] ??
+    null;
+  const keyEmail = (existing?.email as string | undefined) ?? normalizedEmail;
+
+  // Version-downgrade guard (2026-06-10 prod incident): a free (v3) submit
+  // that resolves to a row holding a paid In-Depth (v4) result must NOT
+  // overwrite it — the $99 report would be destroyed and its
+  // /assessment/in-depth/results/{id} link would start 404ing (that surface
+  // rejects v3 rows). Instead, archive the fresh v3 result alongside the
+  // paid one and return the row id; the results redirect then shows the
+  // paid report, which remains the user's primary surface.
+  if (existing && result.version === 'v3' && existing.readiness_version === 'v4') {
+    const { error: archiveError } = await client
+      .from('user_profiles')
+      .update({
+        readiness_v3_archive: {
+          score: result.score,
+          tier_id: result.tierId,
+          tier_label: result.tierLabel,
+          answers: result.answers,
+          at: result.completedAt,
+          max_score: result.maxScore,
+          dimension_breakdown: result.dimensionBreakdown,
+          version: 'v3',
+        },
+      })
+      .eq('id', existing.id);
+    if (archiveError) {
+      console.warn('[user-profiles] v3-over-v4 archive skipped:', archiveError.message);
+    }
+    return { id: existing.id as string };
+  }
 
   // F10 — the paid In-Depth (v4) submit overwrites the same row's free (v3)
   // result. Archive the v3 fields first so the buyer's free baseline

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import {
   SiteHeader,
@@ -505,9 +506,9 @@ export default function ForInstitutionsPage() {
           </div>
           {/* Mobile-only: link to the live dashboard demo since the grid above
               gets visually compressed to ~80px-tall cards on a phone. */}
-          <a className="mk-dept-mobile-link" href="/for-institutions">
+          <Link className="mk-dept-mobile-link" href="/for-institutions">
             See the full department dashboard →
-          </a>
+          </Link>
         </div>
       </Section>
 
