@@ -306,6 +306,18 @@ on production to close it.
 3. Run the §6 QATEST100 runbook on production after deploy; step A-4
    (post-completion redirect) is the remaining F4 verification.
 
+### F13 (NEW, HIGH — found during PR prep, fixed on this branch)
+
+The Next 15 upgrade merged to main (#451) left `next build` **failing on
+main**: eslint-config-next 15 enforces `@next/next/no-html-link-for-pages`
+as an error, and seven internal `<a href>` links across six files
+(`PaidReport.tsx`, `CompletionCTA.tsx`, `TransformationCard.tsx`,
+`submit/page.tsx`, `my-toolbox/_client.tsx`, `playground/_client.tsx`)
+violate it. Until fixed, production deploys from main fail. This branch
+converts all seven to `<Link>` — verified with a clean `next build` against
+the merged tree, plus a control build of bare `origin/main` reproducing the
+failure.
+
 ### New observations from the re-run (not regressions)
 
 - Unauthenticated `/assessment/in-depth/access` locally lands on

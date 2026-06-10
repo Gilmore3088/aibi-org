@@ -15,6 +15,7 @@
 //     4. Reviewer Packet        (5 docs + visual stack + 4 playbook cards)
 //     5. Score Appendix         (compact eight-dimension scorecard, demoted)
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
@@ -1173,7 +1174,7 @@ function SaveToToolboxButton({
   // purchase page — In-Depth-only buyers cannot save until they upgrade.
   if (status === 'foundation-required') {
     return (
-      <a
+      <Link
         href="/courses/foundation/program/purchase"
         style={{
           ...btnOutline,
@@ -1185,7 +1186,7 @@ function SaveToToolboxButton({
       >
         {icon}
         <span>{label}</span>
-      </a>
+      </Link>
     );
   }
   return (

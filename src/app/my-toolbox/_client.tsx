@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import {
   SiteHeader,
@@ -257,9 +258,9 @@ export default function ToolboxPage() {
             <pre className="mk-prompt-body">{PROMPT_BODY}</pre>
             <div className="mk-actions">
               <div className="mk-meta-text">Last reviewed: 2026-04-18 · Reviewer: Lisa M.</div>
-              <a className="mk-link" href="/my-toolbox/skills/kyc-refresh-guide">
+              <Link className="mk-link" href="/my-toolbox/skills/kyc-refresh-guide">
                 View 3 saved variations <ArrowR className="mk-ic" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

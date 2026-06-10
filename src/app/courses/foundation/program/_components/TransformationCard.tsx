@@ -7,6 +7,7 @@
 // Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold,
 // tabular-nums via fontVariantNumeric).
 
+import Link from 'next/link';
 import { useState, useCallback } from 'react';
 
 interface TransformationCardProps {
@@ -290,10 +291,10 @@ export function TransformationCard({
           borderTop: '1px solid var(--ink-a10)',
         }}
       >
-        <a href="/courses/foundation/program/certificate" style={primaryBtn}>
+        <Link href="/courses/foundation/program/certificate" style={primaryBtn}>
           View Certificate
           <ArrowIcon />
-        </a>
+        </Link>
 
         <button
           type="button"
