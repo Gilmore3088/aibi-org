@@ -157,20 +157,23 @@ Stale paid-result links land on the custom, recoverable 404.
 
 ## 3. Consolidated findings
 
-| # | Sev | Finding | Where |
-|---|-----|---------|-------|
-| F1 | **HIGH** | Free-assessment download demands password; PDF gate contradicts the bearer-token results page and the no-auth starter artifact | `PdfDownloadButton.tsx:54-66`, `api/assessment/pdf/download/route.ts:31-40`, `SignupModal.tsx` |
-| F2 | **HIGH** | Post-payment webhook race: just-paid buyer can hit "purchase required" on `/assessment/in-depth/take` (same class applies to course Module 1) | `take/page.tsx:65-72`, webhook async provisioning |
-| F3 | **HIGH** | "EMAIL ME A SIGN-IN LINK" CTA points at retired `mode=magic` — login page ignores the param; passwordless buyers stranded on a password form | `assessment/in-depth/purchased/page.tsx:264`, `auth/login/page.tsx` |
-| F4 | **HIGH** | In-depth post-completion 404 (your report) has **no fix on main**; candidates documented in §2-S2 — needs prod verification | submit → results redirect path |
-| F5 | MED | `backFillProfile` re-keys profile id → previously emailed `/results/{id}` links 404 | `back-fill-profile.ts:55-61` |
-| F6 | MED | `/results/[id]` lacks a custom not-found (generic "archive" 404); paid surface has a good one — copy it | `src/app/results/[id]/` |
-| F7 | MED | `user_profiles` upsert keys on raw exact email string (no canonicalization) → split identities on case/alias variants | `user-profiles.ts:50-72` |
-| F8 | MED | Webhook swallows `ensureAuthUser`/magic-link failures → purchase email without sign-in link, enrollment `user_id=null` | `webhooks/stripe/route.ts:114-120` |
-| F9 | LOW | Course success ladder says "Open Module 1" but new signups are routed to onboarding first | `program/purchased/page.tsx`, `program/layout.tsx` |
-| F10 | LOW | In-Depth submit overwrites the free v3 result (one row per email) — silent history loss | `upsertReadinessResult` |
-| F11 | INFO | Promo codes enabled on **both** checkouts (`allow_promotion_codes: true`) — QATEST100 will surface in Stripe Checkout | both checkout routes |
-| F12 | INFO | Solid: idempotent webhook, server-side scoring, scanner-safe GET/POST callback, open-redirect guard, trusted-device flow, exact+canonical user resolution (post 2026-05-11 incident) | — |
+> **Status column added 2026-06-10 (remediation pass, same branch).**
+> Details of every fix are in §7.
+
+| # | Sev | Finding | Where | Status |
+|---|-----|---------|-------|--------|
+| F1 | **HIGH** | Free-assessment download demands password; PDF gate contradicts the bearer-token results page and the no-auth starter artifact | `PdfDownloadButton.tsx:54-66`, `api/assessment/pdf/download/route.ts:31-40`, `SignupModal.tsx` | ✅ FIXED |
+| F2 | **HIGH** | Post-payment webhook race: just-paid buyer can hit "purchase required" on `/assessment/in-depth/take` (same class applies to course Module 1) | `take/page.tsx:65-72`, webhook async provisioning | ✅ FIXED |
+| F3 | **HIGH** | "EMAIL ME A SIGN-IN LINK" CTA points at retired `mode=magic` — login page ignores the param; passwordless buyers stranded on a password form | `assessment/in-depth/purchased/page.tsx:264`, `auth/login/page.tsx` | ✅ FIXED |
+| F4 | **HIGH** | In-depth post-completion 404 (your report) has **no fix on main**; candidates documented in §2-S2 — needs prod verification | submit → results redirect path | ⚠️ ATTRIBUTED — verify on prod |
+| F5 | MED | `backFillProfile` re-keys profile id → previously emailed `/results/{id}` links 404 | `back-fill-profile.ts:55-61` | ✅ FIXED (needs migration 00042) |
+| F6 | MED | `/results/[id]` lacks a custom not-found (generic "archive" 404); paid surface has a good one — copy it | `src/app/results/[id]/` | ✅ FIXED |
+| F7 | MED | `user_profiles` upsert keys on raw exact email string (no canonicalization) → split identities on case/alias variants | `user-profiles.ts:50-72` | ✅ FIXED |
+| F8 | MED | Webhook swallows `ensureAuthUser`/magic-link failures → purchase email without sign-in link, enrollment `user_id=null` | `webhooks/stripe/route.ts:114-120` | ✅ FIXED (user_id half fixed upstream in ed4c323d) |
+| F9 | LOW | Course success ladder says "Open Module 1" but new signups are routed to onboarding first | `program/purchased/page.tsx`, `program/layout.tsx` | ✅ FIXED (copy) |
+| F10 | LOW | In-Depth submit overwrites the free v3 result (one row per email) — silent history loss | `upsertReadinessResult` | ✅ FIXED (needs migration 00042) |
+| F11 | INFO | Promo codes enabled on **both** checkouts (`allow_promotion_codes: true`) — QATEST100 will surface in Stripe Checkout | both checkout routes | n/a |
+| F12 | INFO | Solid: idempotent webhook, server-side scoring, scanner-safe GET/POST callback, open-redirect guard, trusted-device flow, exact+canonical user resolution (post 2026-05-11 incident) | — | n/a |
 
 **Priority order if you fix nothing else:** F1 (kills the free funnel's
 payoff moment), F3 (strands paid buyers — likely a contributor to your "auth
@@ -245,3 +248,71 @@ Afterwards: refund/void the $0 sessions if desired and delete the
 `+qa-` test users (the e2e seed helper's cleanup pattern matches
 `e2e+*@aibankinginstitute.test` only, so these Gmail aliases need manual
 removal in Supabase).
+
+---
+
+## 7. Remediation — 2026-06-10 (this branch)
+
+All actionable findings were fixed on `claude/great-gauss-spa911` after
+merging the upstream refund/checkout audit work
+(`ed4c323d`, `42afb8b9`, `44d8e13d`, `38f02a77` — reviewed and verified
+sound; `ed4c323d` is the likeliest root cause of the original "charged but
+never provisioned" failure: a null-`user_id` enrollment insert made the
+entitlements trigger throw and roll back the whole enrollment).
+
+| # | Fix | Files |
+|---|-----|-------|
+| F1 | PDF download moved to the same bearer-token model as the `/results/[id]` page that displays the identical data: the endpoint validates the profile row (service role) + per-IP rate limit instead of demanding a session; the button no longer checks `/api/auth/me`; the blocking "Set a password to download" `SignupModal` is deleted | `api/assessment/pdf/download/route.ts`, `PdfDownloadButton.tsx`, `SignupModal.tsx` (removed), `ResultsViewV2/V3.tsx` |
+| F2 | Entitlement gates retry before bouncing a just-paid buyer: new `findEnrollmentByEmailOrUserIdWithRetry` (4 attempts / 3 s) on `/assessment/in-depth/take`; same 3×3 s retry loop on the course module page. A genuine non-buyer just waits ~9 s longer for the identical redirect | `lib/enrollment/findEnrollment.ts`, `assessment/in-depth/take/page.tsx`, `courses/foundation/program/[module]/page.tsx` |
+| F3 | "EMAIL ME A SIGN-IN LINK" now actually sends one: new `EmailSignInLink` client component calls `sendPasswordSetupAction(email, next)` one-click when the buyer email is known (Stripe session / signed-in), falls back to `/auth/forgot-password` otherwise. The dead `?mode=magic` deep link is gone | `assessment/in-depth/purchased/_components/EmailSignInLink.tsx` (new), `purchased/page.tsx` |
+| F5 | `backFillProfile` records the old row id in `user_profiles.previous_id` when re-keying; the results loader falls back to `previous_id` on a primary-id miss, so emailed `/results/{oldId}` links survive account creation. Fail-open if migration not applied | `lib/auth/back-fill-profile.ts`, `lib/assessment/load-response.ts`, migration `00042` |
+| F6 | `/results/[id]` got a typed not-found (mirrors the paid surface's #325 page): "We couldn't find that result" + sign-in / retake CTAs, replacing the generic "not in our archive" 404 | `app/results/[id]/not-found.tsx` (new) |
+| F7 | `upsertReadinessResult` / `upsertProficiencyResult` resolve the existing row case- and alias-insensitively (`ilike` on `emailVariants`) and reuse its stored email as the conflict key; new rows are written lowercased. No more split identities for `Jane@Bank.com` vs `jane@bank.com` | `lib/supabase/user-profiles.ts` |
+| F8 | Purchase emails can no longer go out without a working entry path: if magic-link generation fails, the webhook substitutes `/auth/signup?next=…&email=…` (the templates' own fallbacks pointed at gated pages) and logs at error level. The `user_id=null` enrollment half was already fixed upstream (`ed4c323d`) | `api/webhooks/stripe/route.ts` |
+| F9 | Success-ladder Step 2 copy now sets the real expectation: "A two-minute onboarding (your role and goals) runs first, then Module 1…" | `courses/foundation/program/purchased/page.tsx` |
+| F10 | Before a v4 (paid) submit overwrites a v3 (free) result on the same row, the v3 fields are archived to `user_profiles.readiness_v3_archive` (fail-open) — the buyer's free baseline survives the upgrade | `lib/supabase/user-profiles.ts`, migration `00042` |
+
+**F4 status:** attributed, not independently reproducible from this
+environment. The two upstream fixes cover the plausible causes (`ed4c323d`:
+enrollment rollback meant any post-payment surface failed; `38f02a77`: the
+cohort dashboard's briefing-format link 404'd), and this branch adds the F2
+retry + F5 link fallback for the remaining windows. Run runbook §6-A step 4
+on production to close it.
+
+### Verification
+
+- `vitest run` — 38 files, 219 tests, all passing (includes upstream
+  provision-enrollment + refund regression suites).
+- `next build` — clean compile, no type or lint errors.
+- Scenario harness re-run (`scripts/auth-scenario-audit.mjs`, local degraded
+  mode, 24 steps, evidence refreshed in `report.json` + `screenshots/`):
+  - S2 success-page CTA harvest shows the magic-link dead end replaced
+    (forgot-password fallback rendered locally where no buyer email exists;
+    one-click send renders when Stripe supplies the email).
+  - S4 stale free-result link now lands on the branded "Result not found"
+    page with recovery CTAs instead of the generic archive 404.
+  - Module-1 gate redirects to `/purchase` after the retry window;
+    `next=` preservation on `/auth/login` unchanged.
+  - No dead links on any harvested surface.
+
+### Deployment notes (operator)
+
+1. **Apply migration `00042_user_profiles_previous_id_and_v3_archive.sql`**
+   to the production DB (same as you did for 00041). All code that touches
+   the new columns is fail-open until then — behavior simply stays as-was.
+2. Set `NEXT_PUBLIC_SITE_URL=https://www.aibankinginstitute.com` (with
+   `www`) in the Vercel production env — both the upstream F7 origin fix and
+   this branch's F8 fallback link read it.
+3. Run the §6 QATEST100 runbook on production after deploy; step A-4
+   (post-completion redirect) is the remaining F4 verification.
+
+### New observations from the re-run (not regressions)
+
+- Unauthenticated `/assessment/in-depth/access` locally lands on
+  `?reason=no-purchase` because the page gained the documented preview
+  bypass in the upstream merge (parity with `/dashboard`); production
+  hard-floors the bypass and still redirects to login. Include in the prod
+  walk to confirm.
+- The course module gate's retry adds ~9 s before redirecting visitors who
+  genuinely never purchased and deep-link a module URL. Accepted trade-off;
+  revisit only if bounce telemetry shows it matters.

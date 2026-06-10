@@ -253,6 +253,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       } catch (err) {
         console.warn('[webhook] auth-admin magic-link skip', err);
       }
+      // F8 (journey audit 2026-06-10): never send a purchase email without a
+      // working entry path. The templates' own fallbacks point at gated pages
+      // (e.g. the in-depth fallback lands on /assessment/in-depth/purchased,
+      // which bounces session-less visitors to "purchase required"), so a
+      // failed magic link stranded the buyer. Fall back to a signup deep link
+      // with the email pre-filled and next= preserved.
+      if (!magicLinkUrl) {
+        const siteUrl = (
+          process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com'
+        ).replace(/\/+$/, '');
+        magicLinkUrl = `${siteUrl}/auth/signup?next=${encodeURIComponent(
+          nextPathForProduct(product),
+        )}&email=${encodeURIComponent(email)}`;
+        console.error(
+          '[webhook] magic link unavailable — purchase email sent with signup fallback',
+          { product },
+        );
+      }
 
       if (result.type === 'individual') {
         if (product === 'in-depth-assessment') {

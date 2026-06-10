@@ -11,7 +11,7 @@ import { EmailGate } from '../_components/EmailGate';
 import type { FreeRole } from '@content/assessments/v3/roles';
 
 // ResultsViewV3 is a ~25 KB source component (drags in PdfDownloadButton +
-// SignupModal + result-rendering helpers). It only renders after the user
+// result-rendering helpers). It only renders after the user
 // completes questions AND captures email. Defer the chunk until then so
 // the initial page bundle stays light — the user has spent ~2 minutes
 // answering questions by the time this is needed.

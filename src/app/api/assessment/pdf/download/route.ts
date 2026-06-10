@@ -1,16 +1,21 @@
 // GET /api/assessment/pdf/download?profileId=...
-// Validates Supabase Auth session, confirms ownership via auth.uid() =
-// user_profiles.id, returns a 24h signed Storage URL.
+// Returns a 24h signed Storage URL for the assessment briefing PDF.
+//
+// Access model: the profileId UUID is the credential (bearer pattern), the
+// same model as the /results/[id] page that renders this exact data and the
+// /api/assessment/pdf/warm endpoint that generates the file. The free
+// email-capture flow deliberately never creates a browser session, so a
+// session gate here forced email-captured users into password setup to
+// download a PDF of numbers already visible on their screen (journey audit
+// 2026-06-10, F1). 122 bits of UUID entropy + the row-existence check below
+// provide the same protection as the results page itself.
 //
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
 
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import {
-  createServerClientWithCookies,
-  isSupabaseConfigured,
-} from '@/lib/supabase/client';
+import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getSignedDownloadUrl } from '@/lib/pdf/storage';
+import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,17 +31,24 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'invalid-profile-id' }, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const client = createServerClientWithCookies(cookieStore);
-  const {
-    data: { user },
-  } = await client.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  // Mitigates UUID-guessing sweeps now that there is no session gate.
+  const limited = await rateLimitOrFail({
+    key: 'pdf-download',
+    scope: 'ip',
+    identifier: getRequestIp(request),
+    max: 20,
+    windowSeconds: 60,
+  });
+  if (limited) return limited;
 
-  if (user.id !== profileId) {
-    return NextResponse.json({ error: 'forbidden' }, { status: 404 });
+  const client = createServiceRoleClient();
+  const { data: profile } = await client
+    .from('user_profiles')
+    .select('id, readiness_tier_id')
+    .eq('id', profileId)
+    .maybeSingle();
+  if (!profile || !profile.readiness_tier_id) {
+    return NextResponse.json({ error: 'profile-not-found' }, { status: 404 });
   }
 
   const signedUrl = await getSignedDownloadUrl(profileId);

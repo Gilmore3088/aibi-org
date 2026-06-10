@@ -109,15 +109,32 @@ export async function loadAssessmentResponse(
 
   // The id parameter is user_profiles.id, used as a bearer token.
   const client = createServiceRoleClient();
-  const { data, error } = await client
+  const COLUMNS =
+    'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context';
+  const primary = await client
     .from('user_profiles')
-    .select(
-      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context',
-    )
+    .select(COLUMNS)
     .eq('id', id)
     .maybeSingle();
+  let data = primary.data;
 
-  if (error || !data) return null;
+  // Fallback: back-fill-profile re-keys user_profiles.id to the auth user id
+  // when a lead converts, which orphaned previously-emailed /results/{oldId}
+  // bearer links (journey audit 2026-06-10, F5). previous_id (migration
+  // 00042) records the pre-conversion id; honor it so old links keep
+  // resolving. Fail-open if the column doesn't exist yet.
+  if (!primary.error && !data) {
+    const fallback = await client
+      .from('user_profiles')
+      .select(COLUMNS)
+      .eq('previous_id', id)
+      .maybeSingle();
+    if (!fallback.error && fallback.data) {
+      data = fallback.data;
+    }
+  }
+
+  if (primary.error || !data) return null;
   if (data.readiness_tier_id == null) return null;
   if (typeof data.readiness_score !== 'number') return null;
   if (!data.readiness_dimension_breakdown) return null;

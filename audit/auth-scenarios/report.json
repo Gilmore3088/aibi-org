@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:3000",
-  "generated": "2026-06-10T03:18:28.803Z",
+  "generated": "2026-06-10T03:46:32.579Z",
   "steps": [
     {
       "scenario": "S1",
@@ -65,7 +65,7 @@
     {
       "scenario": "S2",
       "id": "S2-3b-success-ctas",
-      "note": "CREATE MY ACCOUNT→/auth/signup?next=/assessment/in-depth/take | I ALREADY HAVE ONE→/auth/login?next=/assessment/in-depth/take | EMAIL ME A SIGN-IN LINK→/auth/login?mode=magic&next=/assessment/in-depth/take | BROWSE THE LIBRARY →→/resources | SEE THE FOUNDATION UPGRADE→/courses/foundation/program/purchase | [Ai]Banking Institute→/ | Free assessment→/assessment/take | In-depth assessment→/assessment/in-depth | AiBI-Foundation course→/courses | For institutions→/for-institutions | Downloads & templates→/resources | Templates→/resources/templates/ai-use-policy-starter | Role playbooks→/playbooks | Efficiency ratio workbook→/for-institutions/samples/efficiency-ratio-workbook | FAQ→/faq | Security & governance→/security | Terms→/terms | Privacy→/privacy | AI use disclaimer→/ai-use-disclaimer"
+      "note": "CREATE MY ACCOUNT→/auth/signup?next=/assessment/in-depth/take | I ALREADY HAVE ONE→/auth/login?next=/assessment/in-depth/take | EMAIL ME A SIGN-IN LINK→/auth/forgot-password | BROWSE THE LIBRARY →→/resources | SEE THE FOUNDATION UPGRADE→/courses/foundation/program/purchase | [Ai]Banking Institute→/ | Free assessment→/assessment/take | In-depth assessment→/assessment/in-depth | AiBI-Foundation course→/courses | For institutions→/for-institutions | Downloads & templates→/resources | Templates→/resources/templates/ai-use-policy-starter | Role playbooks→/playbooks | Efficiency ratio workbook→/for-institutions/samples/efficiency-ratio-workbook | FAQ→/faq | Security & governance→/security | Terms→/terms | Privacy→/privacy | AI use disclaimer→/ai-use-disclaimer"
     },
     {
       "scenario": "S2",
@@ -100,13 +100,13 @@
     {
       "scenario": "S3",
       "id": "S3-4-module-gate",
-      "note": "unauthenticated module 1 landed on http://localhost:3000/courses/foundation/program/1",
+      "note": "unauthenticated module 1 landed on http://localhost:3000/courses/foundation/program/purchase",
       "screen": "screenshots/S3-4-module-gate.png"
     },
     {
       "scenario": "S4",
       "id": "S4-1-stale-result",
-      "note": "stale free-result link UX: http://localhost:3000/results/00000000-0000-4000-8000-000000000000 :: 404 · PAGE NOT FOUND That page is not in our archive. The page you are looking for may have moved, or it may not exist yet. While you are here, the free AI readiness assessment takes under three minut",
+      "note": "stale free-result link UX: http://localhost:3000/results/00000000-0000-4000-8000-000000000000 :: [ A i ] Banking Institute Home Assessment Learn Resources Institutions Take the assessment 404 · RESULT NOT FOUND We couldn't find that result. The link may be from an old session. If you created an a",
       "screen": "screenshots/S4-1-stale-result.png"
     },
     {
@@ -139,7 +139,7 @@
     {
       "scenario": "S5",
       "id": "S5-_assessment_in-depth_access",
-      "note": "/assessment/in-depth/access → http://localhost:3000/auth/login?next=/assessment/in-depth/access (next preserved: true)",
+      "note": "/assessment/in-depth/access → http://localhost:3000/assessment/in-depth?reason=no-purchase (RENDERED without auth — preview bypass or public)",
       "severity": "info",
       "screen": "screenshots/S5-assessment-in-depth-access.png"
     },

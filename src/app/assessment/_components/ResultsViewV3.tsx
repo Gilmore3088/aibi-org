@@ -120,7 +120,6 @@ export function ResultsViewV3({
   tier,
   tierId,
   dimensionBreakdown,
-  email,
   firstName,
   profileId,
   role,
@@ -418,7 +417,7 @@ export function ResultsViewV3({
                 </p>
                 {profileId && (
                   <div className="mt-auto pt-4">
-                    <PdfDownloadButton profileId={profileId} email={email} />
+                    <PdfDownloadButton profileId={profileId} />
                   </div>
                 )}
               </article>

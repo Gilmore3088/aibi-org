@@ -109,7 +109,14 @@ export default async function ModulePage({ params }: ModulePageParams) {
     notFound();
   }
 
-  const enrollment = await getEnrollment();
+  // Post-payment race guard: a brand-new buyer can reach Module 1 before the
+  // Stripe webhook writes their enrollment row (journey audit 2026-06-10,
+  // F2). Retry the lookup briefly before concluding they haven't purchased.
+  let enrollment = await getEnrollment();
+  for (let attempt = 0; !enrollment && attempt < 3; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    enrollment = await getEnrollment();
+  }
   if (!enrollment) {
     redirect('/courses/foundation/program/purchase');
   }
