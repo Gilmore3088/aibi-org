@@ -24,11 +24,13 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 interface ResultsPageProps {
-  readonly params: { readonly id: string };
-  readonly searchParams?: { readonly [key: string]: string | string[] | undefined };
+  readonly params: Promise<{ readonly id: string }>;
+  readonly searchParams?: Promise<{ readonly [key: string]: string | string[] | undefined }>;
 }
 
-export default async function ResultsPage({ params, searchParams }: ResultsPageProps) {
+export default async function ResultsPage(props: ResultsPageProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   if (!isSupabaseConfigured()) notFound();
 
   const response = await loadAssessmentResponse(params.id);

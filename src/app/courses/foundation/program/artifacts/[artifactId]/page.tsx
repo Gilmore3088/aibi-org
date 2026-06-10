@@ -12,7 +12,7 @@ import { ArtifactActions } from './_local/ArtifactActions';
 import { getEnrollment } from '../../_lib/getEnrollment';
 
 interface ArtifactPageProps {
-  readonly params: { artifactId: string };
+  readonly params: Promise<{ artifactId: string }>;
 }
 
 export const dynamic = 'force-dynamic';
@@ -21,7 +21,8 @@ export function generateStaticParams() {
   return FOUNDATION_ARTIFACTS.map((artifact) => ({ artifactId: artifact.id }));
 }
 
-export function generateMetadata({ params }: ArtifactPageProps) {
+export async function generateMetadata(props: ArtifactPageProps) {
+  const params = await props.params;
   const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);
   return {
     title: artifact
@@ -33,7 +34,8 @@ export function generateMetadata({ params }: ArtifactPageProps) {
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
-export default async function ArtifactDetailPage({ params }: ArtifactPageProps) {
+export default async function ArtifactDetailPage(props: ArtifactPageProps) {
+  const params = await props.params;
   const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);
 
   if (!artifact) {

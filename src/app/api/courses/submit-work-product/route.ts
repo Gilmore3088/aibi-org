@@ -57,7 +57,7 @@ function allModulesComplete(completedModules: number[]): boolean {
   return true;
 }
 
-async function authenticateUser(cookieStore: ReturnType<typeof cookies>) {
+async function authenticateUser(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -105,7 +105,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const action = searchParams.get('action');
 
   // --- Authenticate ---
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const { user } = await authenticateUser(cookieStore);
 
   if (!user) {

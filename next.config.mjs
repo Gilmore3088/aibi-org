@@ -34,24 +34,24 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  experimental: {
-    // Native-binary packages that must not be bundled by webpack.
-    //   @react-pdf/renderer  — uses native canvas modules
-    //   @sparticuz/chromium  — bundles Chromium binary for Vercel serverless
-    //   puppeteer-core       — peer of @sparticuz/chromium; same exclusion needed
-    serverComponentsExternalPackages: [
-      '@react-pdf/renderer',
-      '@sparticuz/chromium',
-      'puppeteer-core',
+  // Native-binary packages that must not be bundled by webpack.
+  //   @react-pdf/renderer  — uses native canvas modules
+  //   @sparticuz/chromium  — bundles Chromium binary for Vercel serverless
+  //   puppeteer-core       — peer of @sparticuz/chromium; same exclusion needed
+  // Next 15: serverComponentsExternalPackages -> serverExternalPackages, and
+  // outputFileTracingIncludes graduated from experimental to top-level.
+  serverExternalPackages: [
+    '@react-pdf/renderer',
+    '@sparticuz/chromium',
+    'puppeteer-core',
+  ],
+  // Ship the skill-template markdown into the serverless function bundle so
+  // /api/courses/artifacts/skill-templates/[name] can read + log them at
+  // runtime (the route falls back to the static asset if this ever misses).
+  outputFileTracingIncludes: {
+    '/api/courses/artifacts/skill-templates/[name]': [
+      './public/artifacts/skill-templates/**',
     ],
-    // Ship the skill-template markdown into the serverless function bundle so
-    // /api/courses/artifacts/skill-templates/[name] can read + log them at
-    // runtime (the route falls back to the static asset if this ever misses).
-    outputFileTracingIncludes: {
-      '/api/courses/artifacts/skill-templates/[name]': [
-        './public/artifacts/skill-templates/**',
-      ],
-    },
   },
   // Decision log: 2026-04-17 — /courses and /certifications merged into /education
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:

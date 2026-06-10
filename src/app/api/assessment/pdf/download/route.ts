@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'invalid-profile-id' }, { status: 400 });
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const client = createServerClientWithCookies(cookieStore);
   const {
     data: { user },
