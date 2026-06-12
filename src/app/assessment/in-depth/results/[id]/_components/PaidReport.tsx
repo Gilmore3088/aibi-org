@@ -21,7 +21,7 @@ import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/as
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
 import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
-import { DIMENSION_BRIEF, learningPath, type ModuleRec } from '@content/assessments/v4/exec-summary';
+import { DIMENSION_BRIEF, learningPath, PLAYBOOK_FOR_GAP, type ModuleRec } from '@content/assessments/v4/exec-summary';
 import { ACTION_FOR } from '@content/assessments/v4/action-plan';
 import {
   getActionPacket,
@@ -141,7 +141,7 @@ export function PaidReport({
             />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
-            <SectionLearning protect={protect} packet={packet} />
+            <SectionLearning protect={protect} />
             <Section5ScoreAppendix
               score={score}
               band={band}
@@ -359,6 +359,10 @@ function Section1Summary({
 }): JSX.Element {
   const headline = deriveHeadline(packet, topGap);
   const brief = topGap ? DIMENSION_BRIEF[topGap.key] : null;
+  // Serve the playbook that matches the RESULT (the top gap), not the role's
+  // default — so a Compliance gap opens the Compliance playbook.
+  const gapPlaybook = topGap ? PLAYBOOK_FOR_GAP[topGap.key] : null;
+  const recPlaybook = gapPlaybook ?? { slug: packet.playbookPath.best.slug, label: packet.playbookPath.best.label };
   return (
     <section id="summary" style={pageStyle}>
       <div style={sectionPad}>
@@ -402,8 +406,8 @@ function Section1Summary({
           <a href={briefingMailto} style={btnPrimary}>
             Book briefing
           </a>
-          <a href={`/playbooks/${packet.playbookPath.best.slug}`} style={btnDark}>
-            Open {packet.playbookPath.best.label} playbook
+          <a href={`/playbooks/${recPlaybook.slug}`} style={btnDark}>
+            Open the {recPlaybook.label} playbook
           </a>
           <PrintButton />
         </div>
@@ -1055,12 +1059,24 @@ function SnapField({ label, value }: { label: string; value: string }): JSX.Elem
 // the role playbooks.
 function SectionLearning({
   protect,
-  packet,
 }: {
   protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
-  packet: ActionPacket;
 }): JSX.Element {
   const path: readonly ModuleRec[] = learningPath(protect.map((d) => d.key));
+  // Resources by results: the playbooks that serve the top gaps, de-duplicated,
+  // rather than the role's default playbook path.
+  const gapPlaybooks = (() => {
+    const seen = new Set<string>();
+    const out: { readonly slug: string; readonly label: string }[] = [];
+    for (const d of protect) {
+      const pb = PLAYBOOK_FOR_GAP[d.key];
+      if (!seen.has(pb.slug)) {
+        seen.add(pb.slug);
+        out.push(pb);
+      }
+    }
+    return out;
+  })();
   return (
     <section id="learning" style={pageStyle}>
       <div style={sectionPad}>
@@ -1124,7 +1140,7 @@ function SectionLearning({
         <div style={{ marginTop: 22 }}>
           <Label>Recommended playbooks</Label>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
-            {[packet.playbookPath.best, ...packet.playbookPath.supporting].map((p) => (
+            {gapPlaybooks.map((p) => (
               <Link
                 key={p.slug}
                 href={`/playbooks/${p.slug}`}
