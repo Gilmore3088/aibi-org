@@ -303,6 +303,9 @@ export async function POST(request: Request) {
     : null;
 
   let profileId: string | null = null;
+  // The id used for the email link + tagging (always the real row, even when
+  // the client should render inline instead of routing to it).
+  let emailLinkId: string | null = null;
   if (isSupabaseConfigured()) {
     const result = await upsertReadinessResult(
       email,
@@ -322,9 +325,15 @@ export async function POST(request: Request) {
       role ? { role } : {},
     ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
-      return { id: null as string | null };
+      return { id: null as string | null, paidPrimary: false };
     });
-    profileId = result.id;
+    emailLinkId = result.id;
+    // A free (v3) retake on an email that already has a paid (v4) report keeps
+    // the paid report as the canonical row (paidPrimary). Don't hand the client
+    // that row id — so the take flow renders the fresh free result inline
+    // instead of redirecting to the paid /100 report. The email + tag still use
+    // the real row id above.
+    profileId = result.paidPrimary ? null : result.id;
   }
 
   // MailerLite tier-routing. Honors the marketingOptIn flag from the client
@@ -374,8 +383,8 @@ export async function POST(request: Request) {
 
     if (added.status === 'tagged') {
       mailerliteTagged = true;
-      if (profileId) {
-        await markConvertKitTagged(profileId);
+      if (emailLinkId) {
+        await markConvertKitTagged(emailLinkId);
       }
     } else if (added.status === 'failed') {
       console.warn('[capture-email] mailerlite tier add failed:', added.reason);
@@ -408,7 +417,7 @@ export async function POST(request: Request) {
         dimensionBreakdown,
         starterArtifactTitle: artifact?.title,
         starterArtifactBody: artifact?.body,
-        profileId,
+        profileId: emailLinkId,
         ...(magicLinkUrl ? { magicLinkUrl } : {}),
       }).catch((err) => console.warn('[capture-email] resend skip', err));
     } catch (err) {
