@@ -21,6 +21,7 @@ import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/as
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
 import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
+import { DIMENSION_BRIEF, learningPath, type ModuleRec } from '@content/assessments/v4/exec-summary';
 import {
   getActionPacket,
   classifyDimensions,
@@ -85,7 +86,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'workproducts', 'timeline', 'packet', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -120,6 +121,7 @@ export function PaidReport({
               packet={packet}
               briefingMailto={briefingMailto}
               personalization={personalization}
+              band={band}
               topGap={topGap}
             />
             <SectionRootCause protect={protect} use={use} />
@@ -137,6 +139,7 @@ export function PaidReport({
             />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
+            <SectionLearning protect={protect} packet={packet} />
             <Section5ScoreAppendix
               score={score}
               band={band}
@@ -259,7 +262,8 @@ function Sidebar({
         <SidebarNav href="#workproducts" label="Work Products" num="04" active={activeSection === 'workproducts'} />
         <SidebarNav href="#timeline" label="Timeline" num="05" active={activeSection === 'timeline'} />
         <SidebarNav href="#packet" label="Reviewer Packet" num="06" active={activeSection === 'packet'} />
-        <SidebarNav href="#score" label="Score Appendix" num="07" active={activeSection === 'score'} />
+        <SidebarNav href="#learning" label="Learning Path" num="07" active={activeSection === 'learning'} />
+        <SidebarNav href="#score" label="Score Appendix" num="08" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -341,14 +345,17 @@ function Section1Summary({
   packet,
   briefingMailto,
   personalization,
+  band,
   topGap,
 }: {
   packet: ActionPacket;
   briefingMailto: string;
   personalization: PersonalizationState;
-  topGap: { label: string } | undefined;
+  band: MaturityBand;
+  topGap: { key: Dimension; score: number; label: string } | undefined;
 }): JSX.Element {
   const headline = deriveHeadline(packet, topGap);
+  const brief = topGap ? DIMENSION_BRIEF[topGap.key] : null;
   return (
     <section id="summary" style={pageStyle}>
       <div style={sectionPad}>
@@ -367,6 +374,24 @@ function Section1Summary({
         <p style={{ maxWidth: 850, fontSize: 18, color: SLATE, lineHeight: 1.58 }}>
           {packet.thesisBody}
         </p>
+        {topGap && brief && (
+          <div style={{ margin: '22px 0 0', border: `1px solid ${LINE}`, borderRadius: 18, overflow: 'hidden' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
+              <SnapField label="Readiness level" value={band.label} />
+              <SnapField label="Top gap" value={`${topGap.label} · ${topGap.score}/100`} />
+              <SnapField label="Primary risk" value={brief.risk} />
+              <SnapField label="Primary opportunity" value={brief.opportunity} />
+            </div>
+            <div style={{ background: INK, color: 'white', padding: '16px 20px' }}>
+              <span style={{ color: GOLD, fontSize: 10.5, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                Recommendation
+              </span>
+              <p style={{ margin: '6px 0 0', fontSize: 16, lineHeight: 1.5 }}>
+                Your greatest opportunity is {brief.recommendation}.
+              </p>
+            </div>
+          </div>
+        )}
         <AIExecSummary state={personalization} />
         <div
           style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}
@@ -924,6 +949,112 @@ function SectionRootCause({
               </div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SnapField({ label, value }: { label: string; value: string }): JSX.Element {
+  return (
+    <div style={{ padding: '14px 18px', borderRight: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
+      <div style={{ color: '#9A7A2F', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+        {label}
+      </div>
+      <div style={{ marginTop: 5, fontSize: 14, lineHeight: 1.4, color: INK }}>{value}</div>
+    </div>
+  );
+}
+
+// ── Section: Learning Recommendations ───────────────────────────────────────
+// The assessment as the front door: results map straight into Foundation and
+// the role playbooks.
+function SectionLearning({
+  protect,
+  packet,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  packet: ActionPacket;
+}): JSX.Element {
+  const path: readonly ModuleRec[] = learningPath(protect.map((d) => d.key));
+  return (
+    <section id="learning" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Learning recommendations</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          Where to build the skill.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, maxWidth: 680 }}>
+          Your results map straight into the Foundation course. Start here, in this order —
+          each module closes one of your priority gaps.
+        </p>
+        <div style={{ display: 'grid', gap: 12, marginTop: 18 }}>
+          {path.map((m, i) => (
+            <Link
+              key={m.number}
+              href={`/courses/foundation/program/${m.number}`}
+              style={{
+                display: 'flex',
+                gap: 14,
+                alignItems: 'center',
+                background: 'white',
+                border: `1px solid ${LINE}`,
+                borderRadius: 18,
+                padding: 16,
+                textDecoration: 'none',
+                color: INK,
+              }}
+            >
+              <span
+                style={{
+                  flex: 'none',
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: INK,
+                  background: GOLD,
+                  borderRadius: 999,
+                  padding: '4px 11px',
+                }}
+              >
+                Priority {i + 1}
+              </span>
+              <div>
+                <b style={{ display: 'block', fontSize: 16 }}>
+                  Module {m.number} · {m.title}
+                </b>
+                <span style={{ display: 'block', color: SLATE, fontSize: 13.5, marginTop: 3 }}>{m.why}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <Label>Recommended playbooks</Label>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+            {[packet.playbookPath.best, ...packet.playbookPath.supporting].map((p) => (
+              <Link
+                key={p.slug}
+                href={`/playbooks/${p.slug}`}
+                style={{
+                  ...btnOutline,
+                  border: `1px solid ${LINE}`,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                }}
+              >
+                {p.label} playbook
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
