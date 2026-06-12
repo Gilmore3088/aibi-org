@@ -1413,6 +1413,13 @@ function PlaybookCardEl({
 
 // ── Section 5: Score Appendix (demoted, but present for paid users) ────────
 
+function dimTier(score: number): { tier: string; target: string } {
+  if (score < 40) return { tier: 'Nascent', target: 'Target 60+' };
+  if (score < 60) return { tier: 'Emerging', target: 'Target 75+' };
+  if (score < 80) return { tier: 'Developing', target: 'Target 90+' };
+  return { tier: 'Established', target: 'Maintain 90+' };
+}
+
 function Section5ScoreAppendix({
   score,
   band,
@@ -1445,46 +1452,69 @@ function Section5ScoreAppendix({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 10,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+            gap: 12,
             marginTop: 18,
           }}
         >
           {(Object.entries(dimensionBreakdown) as [Dimension, DimensionScoreSerializedV4][]).map(
-            ([key, dim]) => (
-              <div
-                key={key}
-                style={{
-                  background: 'white',
-                  border: `1px solid ${LINE}`,
-                  borderRadius: 14,
-                  padding: 14,
-                }}
-              >
+            ([key, dim]) => {
+              const t = dimTier(dim.score);
+              return (
                 <div
+                  key={key}
                   style={{
-                    fontSize: 11,
-                    fontWeight: 800,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
-                    color: GOLD_DEEP,
+                    background: 'white',
+                    border: `1px solid ${LINE}`,
+                    borderRadius: 14,
+                    padding: 16,
                   }}
                 >
-                  {DIMENSION_LABELS[key]}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 800,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        color: GOLD_DEEP,
+                      }}
+                    >
+                      {DIMENSION_LABELS[key]}
+                    </div>
+                    <span style={{ fontSize: 10.5, fontWeight: 800, color: SLATE, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      {t.tier}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 6 }}>
+                    <span
+                      style={{
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                        fontSize: 26,
+                        fontWeight: 800,
+                        color: INK,
+                      }}
+                    >
+                      {dim.score}
+                    </span>
+                    <span style={{ fontSize: 12, color: SLATE }}>/ 100 · {t.target}</span>
+                  </div>
+                  <div style={{ height: 6, background: '#EEF1F5', borderRadius: 999, marginTop: 10, overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${Math.max(0, Math.min(100, dim.score))}%`,
+                        background: dim.score < 60 ? GOLD : INK,
+                        borderRadius: 999,
+                      }}
+                    />
+                  </div>
+                  <p style={{ margin: '10px 0 0', color: SLATE, fontSize: 12.5, lineHeight: 1.45 }}>
+                    <b style={{ color: INK }}>Business impact:</b> {DIMENSION_BRIEF[key].risk}
+                  </p>
                 </div>
-                <div
-                  style={{
-                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                    fontSize: 24,
-                    fontWeight: 800,
-                    color: INK,
-                    marginTop: 4,
-                  }}
-                >
-                  {dim.score}
-                </div>
-              </div>
-            ),
+              );
+            },
           )}
         </div>
       </div>
