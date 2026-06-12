@@ -1859,9 +1859,12 @@ function PrintCSS(): JSX.Element {
         .mk-pr-wrap { padding: 0 !important; max-width: 100% !important; }
         [style*="position: sticky"] { position: static !important; }
         section[id="summary"],
+        section[id="rootcause"],
         section[id="artifact"],
+        section[id="workproducts"],
         section[id="timeline"],
         section[id="packet"],
+        section[id="learning"],
         section[id="score"] {
           page-break-inside: avoid;
           page-break-after: always;
