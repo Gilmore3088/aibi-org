@@ -9,6 +9,44 @@ import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
 import { sanitizeNext } from '@/lib/supabase/auth';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
+import { sendIndepthAssessmentPurchase } from '@/lib/resend';
+
+/**
+ * Re-send the In-Depth buyer their ONE-CLICK access link — the same
+ * passwordless magic link the Stripe webhook emails on purchase. No password
+ * to set: the link verifies through /auth/callback and drops them straight
+ * into /assessment/in-depth/take with a session.
+ *
+ * The account + entitlement already exist (provisioned by the webhook);
+ * ensureAuthUser is idempotent and just guarantees the row before we mint the
+ * link. This is the primary recovery path on the purchase success page —
+ * preferred over sendPasswordSetupAction, which forces a password step.
+ */
+export async function sendInDepthAccessLinkAction(
+  email: string,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) {
+    return { error: 'Auth is not configured.' };
+  }
+  try {
+    await ensureAuthUser(email); // idempotent — guarantees the auth row exists
+    const magicLinkUrl = await generateMagicLink(email, '/assessment/in-depth/take');
+    if (!magicLinkUrl) {
+      return { error: 'Could not generate your access link — try the password option below.' };
+    }
+    const res = await sendIndepthAssessmentPurchase({ email, amountPaid: '', magicLinkUrl });
+    if ('skipped' in res) {
+      return { error: 'Email is temporarily unavailable — try the password option below.' };
+    }
+    if (!res.ok) {
+      return { error: 'Could not send the email — try the password option below.' };
+    }
+    return { error: null };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Could not send your access link.' };
+  }
+}
 
 /**
  * Send a "set your password" email — the post-assessment account-completion

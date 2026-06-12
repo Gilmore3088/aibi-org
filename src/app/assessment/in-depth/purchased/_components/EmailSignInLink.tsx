@@ -1,28 +1,30 @@
 'use client';
 
-// "Email me a sign-in link" CTA on the In-Depth purchase success page.
+// "Email my one-click link" — the primary recovery path on the In-Depth
+// purchase success page.
 //
-// #324 wanted a passwordless path for "I bought with this email but don't
-// have / don't remember a password". The original CTA linked to
-// /auth/login?mode=magic — but magic-link sign-in was retired 2026-05-28
-// (#187) and the login page silently ignores the param, stranding a
-// passwordless buyer on a password form (journey audit 2026-06-10, F3).
-// This sends the password-setup email (a Supabase recovery link framed as
-// "set your password") directly from the success page instead: one click,
-// one email, and the buyer lands back on the assessment with a session.
+// The Stripe webhook already created the buyer's account + entitlement and
+// emailed them a one-click magic link. This button RE-SENDS that exact link
+// (sendInDepthAccessLinkAction → generateMagicLink), so a buyer who didn't
+// get / lost the email gets back in with ONE click and NO password step.
+//
+// History: the original CTA linked to /auth/login?mode=magic (dead after the
+// 2026-05-28 magic-link retirement, #187 / journey audit F3). The interim fix
+// sent a password-SETUP email — correct, but it forced a password. This sends
+// the same passwordless magic link the webhook uses, which is the lowest-
+// friction path for someone who just paid.
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { sendPasswordSetupAction } from '@/app/auth/actions';
+import { sendInDepthAccessLinkAction } from '@/app/auth/actions';
 
 interface EmailSignInLinkProps {
   readonly email: string | null;
-  readonly next: string;
 }
 
 const buttonStyle: React.CSSProperties = {
-  border: '1px solid var(--ink-a15)',
-  color: 'var(--ink)',
+  background: 'var(--gold)',
+  color: '#fff',
   padding: '14px 28px',
   borderRadius: 12,
   fontSize: 11,
@@ -30,12 +32,12 @@ const buttonStyle: React.CSSProperties = {
   letterSpacing: '0.16em',
 };
 
-export function EmailSignInLink({ email, next }: EmailSignInLinkProps) {
+export function EmailSignInLink({ email }: EmailSignInLinkProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
-  // Without a known buyer email there is nothing to send to one-click;
-  // forgot-password is the same flow with an email field.
+  // Without a known buyer email there is nothing to send — forgot-password is
+  // the same one-click flow with an email field.
   if (!email) {
     return (
       <Link
@@ -43,7 +45,7 @@ export function EmailSignInLink({ email, next }: EmailSignInLinkProps) {
         className="inline-block uppercase transition-colors"
         style={buttonStyle}
       >
-        EMAIL ME A SIGN-IN LINK
+        EMAIL MY ONE-CLICK LINK
       </Link>
     );
   }
@@ -52,7 +54,7 @@ export function EmailSignInLink({ email, next }: EmailSignInLinkProps) {
     setStatus('sending');
     setMessage(null);
     try {
-      const result = await sendPasswordSetupAction(email, next);
+      const result = await sendInDepthAccessLinkAction(email);
       if (result.error === null) {
         setStatus('sent');
       } else {
@@ -67,12 +69,13 @@ export function EmailSignInLink({ email, next }: EmailSignInLinkProps) {
 
   if (status === 'sent') {
     return (
-      <p style={{ fontSize: 13, color: 'var(--slate-600)', alignSelf: 'center' }}>
+      <p style={{ fontSize: 14, color: 'var(--slate-600)', lineHeight: 1.5 }}>
         <span style={{ fontWeight: 700, color: 'var(--gold-deep)', letterSpacing: '0.08em' }}>
           CHECK YOUR INBOX
         </span>{' '}
         — we emailed <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{email}</span> a
-        link. Open it, choose a password, and you&rsquo;ll land in the assessment.
+        one-click link. Open it and you&rsquo;ll land straight in your assessment — no password
+        needed.
       </p>
     );
   }
@@ -86,13 +89,13 @@ export function EmailSignInLink({ email, next }: EmailSignInLinkProps) {
         className="inline-block uppercase transition-colors"
         style={{ ...buttonStyle, cursor: status === 'sending' ? 'wait' : 'pointer' }}
       >
-        {status === 'sending' ? 'SENDING…' : 'EMAIL ME A SIGN-IN LINK'}
+        {status === 'sending' ? 'SENDING…' : 'EMAIL MY ONE-CLICK LINK'}
       </button>
       {status === 'error' && (
         <span style={{ fontSize: 12, color: '#9b2226' }}>
-          {message ?? 'Could not send the email.'} Try again or use{' '}
+          {message ?? 'Could not send the email.'} Try again or{' '}
           <Link href="/auth/forgot-password" style={{ textDecoration: 'underline' }}>
-            forgot password
+            use forgot password
           </Link>
           .
         </span>
