@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
+import { rootCauseFor } from '@content/assessments/v4/root-causes';
 import {
   getActionPacket,
   classifyDimensions,
@@ -83,7 +84,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'artifact', 'timeline', 'packet', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'timeline', 'packet', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -120,6 +121,7 @@ export function PaidReport({
               personalization={personalization}
               topGap={topGap}
             />
+            <SectionRootCause protect={protect} use={use} />
             <Section2Artifact
               packet={packet}
               protect={protect}
@@ -246,10 +248,11 @@ function Sidebar({
       <SidebarBlock label="Primary artifact" value={primaryArtifact} />
       <nav style={{ padding: 18 }}>
         <SidebarNav href="#summary" label="Action Packet" num="01" active={activeSection === 'summary'} />
-        <SidebarNav href="#artifact" label="Artifact" num="02" active={activeSection === 'artifact'} />
-        <SidebarNav href="#timeline" label="Timeline" num="03" active={activeSection === 'timeline'} />
-        <SidebarNav href="#packet" label="Reviewer Packet" num="04" active={activeSection === 'packet'} />
-        <SidebarNav href="#score" label="Score Appendix" num="05" active={activeSection === 'score'} />
+        <SidebarNav href="#rootcause" label="Root Cause" num="02" active={activeSection === 'rootcause'} />
+        <SidebarNav href="#artifact" label="Artifact" num="03" active={activeSection === 'artifact'} />
+        <SidebarNav href="#timeline" label="Timeline" num="04" active={activeSection === 'timeline'} />
+        <SidebarNav href="#packet" label="Reviewer Packet" num="05" active={activeSection === 'packet'} />
+        <SidebarNav href="#score" label="Score Appendix" num="06" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -831,6 +834,94 @@ function Section3Timeline({
 }
 
 // ── Section 4: Reviewer Packet ──────────────────────────────────────────────
+
+// ── Section: Root Cause Analysis ────────────────────────────────────────────
+// A score is a symptom. For each priority gap, show the structural reasons
+// behind it — what is missing, not just what is low — plus a confidence.
+function SectionRootCause({
+  protect,
+  use,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  use: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+}): JSX.Element {
+  const items = [...protect, ...use];
+  return (
+    <section id="rootcause" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Root cause analysis</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          Why these scores exist.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58 }}>
+          A score is a symptom. Each priority gap below is broken down into the
+          structural reasons behind it — what is missing, not just what is low.
+          That is the difference between a report and a diagnosis.
+        </p>
+        <div style={{ display: 'grid', gap: 14, marginTop: 18 }}>
+          {items.map((d) => {
+            const rc = rootCauseFor(d.key, d.score);
+            return (
+              <div
+                key={d.key}
+                style={{
+                  background: 'white',
+                  border: `1px solid ${LINE}`,
+                  borderRadius: 18,
+                  padding: 18,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    gap: 12,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>
+                    {d.label} scored {d.score}/100 because:
+                  </b>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: rc.confidence === 'High' ? '#047857' : '#9A7A2F',
+                    }}
+                  >
+                    Confidence: {rc.confidence}
+                  </span>
+                </div>
+                <ul style={{ margin: '12px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 9 }}>
+                  {rc.reasons.map((r) => (
+                    <li
+                      key={r}
+                      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: SLATE, fontSize: 14, lineHeight: 1.5 }}
+                    >
+                      <span style={{ color: GOLD, fontWeight: 900, flex: 'none' }}>—</span>
+                      <span>{r}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
   return (
