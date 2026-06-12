@@ -2,8 +2,12 @@
 
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { resetPassword } from '@/lib/supabase/auth';
+
+// Lenient email-shaped check so a crafted ?email= can't pre-fill garbage.
+const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const cardStyle: CSSProperties = {
   width: '100%',
@@ -114,6 +118,9 @@ function Field({
 }
 
 export default function ForgotPasswordPage() {
+  const searchParams = useSearchParams();
+  const rawEmail = searchParams.get('email');
+  const prefillEmail = rawEmail && EMAIL_SHAPE.test(rawEmail) ? rawEmail : '';
   const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -183,6 +190,7 @@ export default function ForgotPasswordPage() {
                 autoComplete="email"
                 required
                 placeholder="you@yourbank.com"
+                defaultValue={prefillEmail}
               />
               <button type="submit" style={primaryBtnStyle} disabled={pending}>
                 {pending ? 'SENDING…' : 'SEND RESET LINK'}
