@@ -50,6 +50,11 @@ function formatAmount(amountCents: number | null | undefined, currency: string |
 // Webhook needs raw body access; nodejs runtime required.
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// Fulfillment runs synchronously before we ack (provisionEnrollment +
+// ensureAuthUser, which pages auth users + a transactional email). Give it
+// headroom so a slow Supabase/Resend call can't trip Stripe's timeout and
+// get the event marked failed.
+export const maxDuration = 60;
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
