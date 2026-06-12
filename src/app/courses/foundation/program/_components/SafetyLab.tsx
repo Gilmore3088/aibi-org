@@ -125,7 +125,8 @@ export function SafetyLab({
           hidden instruction — and repaired each one. An effective prompt is not enough; a
           banker ships prompts that are effective <strong>and</strong> safe.
         </p>
-        <a href="/api/courses/cards/five-move-zones" style={downloadLink}>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- API route file download, not page navigation */}
+        <a href="/api/courses/cards/five-move-zones" style={downloadLink} download>
           Download the 5-Move + Zones card (PDF)
         </a>
       </div>

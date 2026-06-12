@@ -141,7 +141,8 @@ export function PromptWizard({
           Objective, Resources, Expectations. That is the whole craft: a complete prompt
           is a usable answer. Module 9 adds the two moves that make it <strong>safe</strong>.
         </p>
-        <a href="/api/courses/cards/core" style={downloadLink}>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- API route file download, not page navigation */}
+        <a href="/api/courses/cards/core" style={downloadLink} download>
           Download the CORE card (PDF)
         </a>
       </div>
