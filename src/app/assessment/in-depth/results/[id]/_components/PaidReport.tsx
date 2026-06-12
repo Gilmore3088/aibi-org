@@ -22,6 +22,7 @@ import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
 import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
 import { DIMENSION_BRIEF, learningPath, type ModuleRec } from '@content/assessments/v4/exec-summary';
+import { ACTION_FOR } from '@content/assessments/v4/action-plan';
 import {
   getActionPacket,
   classifyDimensions,
@@ -86,7 +87,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -125,6 +126,7 @@ export function PaidReport({
               topGap={topGap}
             />
             <SectionRootCause protect={protect} use={use} />
+            <SectionActionPlan protect={protect} use={use} />
             <Section2Artifact
               packet={packet}
               protect={protect}
@@ -258,12 +260,13 @@ function Sidebar({
       <nav style={{ padding: 18 }}>
         <SidebarNav href="#summary" label="Action Packet" num="01" active={activeSection === 'summary'} />
         <SidebarNav href="#rootcause" label="Root Cause" num="02" active={activeSection === 'rootcause'} />
-        <SidebarNav href="#artifact" label="Artifact" num="03" active={activeSection === 'artifact'} />
-        <SidebarNav href="#workproducts" label="Work Products" num="04" active={activeSection === 'workproducts'} />
-        <SidebarNav href="#timeline" label="Timeline" num="05" active={activeSection === 'timeline'} />
-        <SidebarNav href="#packet" label="Reviewer Packet" num="06" active={activeSection === 'packet'} />
-        <SidebarNav href="#learning" label="Learning Path" num="07" active={activeSection === 'learning'} />
-        <SidebarNav href="#score" label="Score Appendix" num="08" active={activeSection === 'score'} />
+        <SidebarNav href="#actionplan" label="Action Plan" num="03" active={activeSection === 'actionplan'} />
+        <SidebarNav href="#artifact" label="Artifact" num="04" active={activeSection === 'artifact'} />
+        <SidebarNav href="#workproducts" label="Work Products" num="05" active={activeSection === 'workproducts'} />
+        <SidebarNav href="#timeline" label="Timeline" num="06" active={activeSection === 'timeline'} />
+        <SidebarNav href="#packet" label="Reviewer Packet" num="07" active={activeSection === 'packet'} />
+        <SidebarNav href="#learning" label="Learning Path" num="08" active={activeSection === 'learning'} />
+        <SidebarNav href="#score" label="Score Appendix" num="09" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -828,7 +831,10 @@ function Section3Timeline({
               <h3 style={{ fontSize: 23, letterSpacing: '-0.025em', margin: 0, fontWeight: 800 }}>
                 {p.heading}
               </h3>
-              <div style={{ display: 'grid', gap: 10, marginTop: 12 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP, margin: '12px 0 0' }}>
+                Completion evidence
+              </div>
+              <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
                 {checks.map((c) => (
                   <label
                     key={c}
@@ -856,6 +862,18 @@ function Section3Timeline({
                   </label>
                 ))}
               </div>
+              <div style={{ marginTop: 12, padding: '10px 12px', background: '#F7F3EA', borderRadius: 10 }}>
+                <span style={{ color: GOLD_DEEP, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 10, fontWeight: 800 }}>
+                  Success metric
+                </span>
+                <span style={{ display: 'block', marginTop: 2, fontSize: 13, color: INK, lineHeight: 1.45 }}>
+                  {[
+                    'Your first approved artifact is published and in use by the team.',
+                    'One AI-assisted workflow runs end-to-end with evidenced human review.',
+                    'The practice is owned, measured, and repeatable without you driving it.',
+                  ][i] ?? 'The phase outcome is evidenced and signed off.'}
+                </span>
+              </div>
             </div>
           </div>
           );
@@ -866,6 +884,72 @@ function Section3Timeline({
 }
 
 // ── Section 4: Reviewer Packet ──────────────────────────────────────────────
+
+// ── Section: Action Plan ────────────────────────────────────────────────────
+// Root cause says what is wrong; this says what to do — one concrete, owned
+// move per priority gap, sized by effort, impact, and timeline.
+function ActionChip({ label, value }: { label: string; value: string }): JSX.Element {
+  return (
+    <span style={{ display: 'inline-flex', flexDirection: 'column', gap: 1, border: `1px solid ${LINE}`, borderRadius: 10, padding: '6px 12px' }}>
+      <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A7A2F' }}>{label}</span>
+      <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>{value}</span>
+    </span>
+  );
+}
+
+function SectionActionPlan({
+  protect,
+  use,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  use: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+}): JSX.Element {
+  const items = [...protect, ...use];
+  return (
+    <section id="actionplan" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Action plan</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What to do, and who owns it.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, maxWidth: 680 }}>
+          Each priority gap becomes one concrete move — sized by effort, impact, and
+          timeline, with an owner. Not advice; assignments.
+        </p>
+        <div style={{ display: 'grid', gap: 14, marginTop: 18 }}>
+          {items.map((d, i) => {
+            const a = ACTION_FOR[d.key];
+            return (
+              <div key={d.key} style={{ background: 'white', border: `1px solid ${LINE}`, borderRadius: 18, padding: 18 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+                  Move {i + 1} · {d.label}
+                </div>
+                <b style={{ display: 'block', fontSize: 18, letterSpacing: '-0.01em', margin: '6px 0 0' }}>{a.what}</b>
+                <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 14, lineHeight: 1.5 }}>
+                  <b style={{ color: INK }}>Why:</b> {a.why}
+                </p>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
+                  <ActionChip label="Owner" value={a.owner} />
+                  <ActionChip label="Effort" value={a.effort} />
+                  <ActionChip label="Impact" value={a.impact} />
+                  <ActionChip label="Timeline" value={a.timeline} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 // ── Section: Root Cause Analysis ────────────────────────────────────────────
 // A score is a symptom. For each priority gap, show the structural reasons
@@ -1890,6 +1974,7 @@ function PrintCSS(): JSX.Element {
         [style*="position: sticky"] { position: static !important; }
         section[id="summary"],
         section[id="rootcause"],
+        section[id="actionplan"],
         section[id="artifact"],
         section[id="workproducts"],
         section[id="timeline"],
