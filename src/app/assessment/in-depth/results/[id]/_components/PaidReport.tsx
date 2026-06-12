@@ -141,7 +141,7 @@ export function PaidReport({
             />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
-            <SectionLearning protect={protect} />
+            <SectionLearning protect={protect} packet={packet} />
             <Section5ScoreAppendix
               score={score}
               band={band}
@@ -1059,18 +1059,22 @@ function SnapField({ label, value }: { label: string; value: string }): JSX.Elem
 // the role playbooks.
 function SectionLearning({
   protect,
+  packet,
 }: {
   protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  packet: ActionPacket;
 }): JSX.Element {
   const path: readonly ModuleRec[] = learningPath(protect.map((d) => d.key));
-  // Resources by results: the playbooks that serve the top gaps, de-duplicated,
-  // rather than the role's default playbook path.
+  // Offer BOTH: the role's playbooks (kept) AND the playbooks that serve the
+  // top gaps — de-duplicated so the same playbook never shows in both groups.
+  const rolePlaybooks = [packet.playbookPath.best, ...packet.playbookPath.supporting];
+  const roleSlugs = new Set(rolePlaybooks.map((p) => p.slug));
   const gapPlaybooks = (() => {
     const seen = new Set<string>();
     const out: { readonly slug: string; readonly label: string }[] = [];
     for (const d of protect) {
       const pb = PLAYBOOK_FOR_GAP[d.key];
-      if (!seen.has(pb.slug)) {
+      if (!seen.has(pb.slug) && !roleSlugs.has(pb.slug)) {
         seen.add(pb.slug);
         out.push(pb);
       }
@@ -1139,22 +1143,40 @@ function SectionLearning({
         </div>
         <div style={{ marginTop: 22 }}>
           <Label>Recommended playbooks</Label>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
-            {gapPlaybooks.map((p) => (
-              <Link
-                key={p.slug}
-                href={`/playbooks/${p.slug}`}
-                style={{
-                  ...btnOutline,
-                  border: `1px solid ${LINE}`,
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                }}
-              >
-                {p.label} playbook
-              </Link>
-            ))}
+          <div style={{ marginTop: 12 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+              Matched to your role
+            </div>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 8 }}>
+              {rolePlaybooks.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/playbooks/${p.slug}`}
+                  style={{ ...btnOutline, border: `1px solid ${LINE}`, textDecoration: 'none', display: 'inline-flex' }}
+                >
+                  {p.label} playbook
+                </Link>
+              ))}
+            </div>
           </div>
+          {gapPlaybooks.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+                Matched to your top gaps
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 8 }}>
+                {gapPlaybooks.map((p) => (
+                  <Link
+                    key={p.slug}
+                    href={`/playbooks/${p.slug}`}
+                    style={{ ...btnOutline, border: `1px solid ${LINE}`, textDecoration: 'none', display: 'inline-flex' }}
+                  >
+                    {p.label} playbook
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
