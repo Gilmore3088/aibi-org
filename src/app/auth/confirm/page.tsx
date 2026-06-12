@@ -50,29 +50,43 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
   const hasValidToken =
     Boolean(code) || (Boolean(tokenHash) && Boolean(type) && VALID_TYPES.has(type ?? ''));
 
+  // A buyer returning to claim a purchase should never see generic auth copy
+  // like "Confirm your email address change" — they came to open what they
+  // paid for. Keyed on the validated `next` (a purchase surface), so it
+  // overrides whatever Supabase token type the link happens to carry.
+  const goingToAssessment = next.startsWith('/assessment/in-depth');
+  const goingToCourse = next.startsWith('/courses/');
+
   // Friendly headline per flow type. Falls back to the generic
   // "Confirm to sign in" wording.
-  const headline =
-    type === 'signup'
-      ? 'Confirm your email to finish creating your account.'
-      : type === 'recovery'
-        ? 'Confirm to set a new password.'
-        : type === 'email_change' || type === 'email'
-          ? 'Confirm your email address change.'
-          : type === 'invite'
-            ? 'Accept your invitation.'
-            : type === 'magiclink' || code
-              ? 'Confirm to sign in.'
-              : 'Confirm the link from your email.';
+  const headline = goingToAssessment
+    ? 'Confirm to open your In-Depth assessment.'
+    : goingToCourse
+      ? 'Confirm to open your course.'
+      : type === 'signup'
+        ? 'Confirm your email to finish creating your account.'
+        : type === 'recovery'
+          ? 'Confirm to set a new password.'
+          : type === 'email_change' || type === 'email'
+            ? 'Confirm your email address change.'
+            : type === 'invite'
+              ? 'Accept your invitation.'
+              : type === 'magiclink' || code
+                ? 'Confirm to sign in.'
+                : 'Confirm the link from your email.';
 
   const cta =
-    type === 'signup'
-      ? 'Confirm and sign in'
-      : type === 'recovery'
-        ? 'Continue to password reset'
-        : type === 'invite'
-          ? 'Accept and continue'
-          : 'Sign in';
+    goingToAssessment
+      ? 'Open my assessment'
+      : goingToCourse
+        ? 'Open my course'
+        : type === 'signup'
+          ? 'Confirm and sign in'
+          : type === 'recovery'
+            ? 'Continue to password reset'
+            : type === 'invite'
+              ? 'Accept and continue'
+              : 'Sign in';
 
   return (
     <div style={{ width: '100%', maxWidth: 560 }}>
