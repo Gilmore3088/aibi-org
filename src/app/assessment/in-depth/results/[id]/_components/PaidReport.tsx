@@ -19,6 +19,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
+import { rootCauseFor } from '@content/assessments/v4/root-causes';
+import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
+import { DIMENSION_BRIEF, learningPath, type ModuleRec } from '@content/assessments/v4/exec-summary';
 import {
   getActionPacket,
   classifyDimensions,
@@ -83,7 +86,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'artifact', 'timeline', 'packet', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -118,8 +121,10 @@ export function PaidReport({
               packet={packet}
               briefingMailto={briefingMailto}
               personalization={personalization}
+              band={band}
               topGap={topGap}
             />
+            <SectionRootCause protect={protect} use={use} />
             <Section2Artifact
               packet={packet}
               protect={protect}
@@ -127,8 +132,14 @@ export function PaidReport({
               build={build}
               roleLabel={roleMeta?.label ?? 'role'}
             />
+            <SectionWorkProducts
+              protect={protect}
+              use={use}
+              roleLabel={roleMeta?.label ?? 'role'}
+            />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
+            <SectionLearning protect={protect} packet={packet} />
             <Section5ScoreAppendix
               score={score}
               band={band}
@@ -246,10 +257,13 @@ function Sidebar({
       <SidebarBlock label="Primary artifact" value={primaryArtifact} />
       <nav style={{ padding: 18 }}>
         <SidebarNav href="#summary" label="Action Packet" num="01" active={activeSection === 'summary'} />
-        <SidebarNav href="#artifact" label="Artifact" num="02" active={activeSection === 'artifact'} />
-        <SidebarNav href="#timeline" label="Timeline" num="03" active={activeSection === 'timeline'} />
-        <SidebarNav href="#packet" label="Reviewer Packet" num="04" active={activeSection === 'packet'} />
-        <SidebarNav href="#score" label="Score Appendix" num="05" active={activeSection === 'score'} />
+        <SidebarNav href="#rootcause" label="Root Cause" num="02" active={activeSection === 'rootcause'} />
+        <SidebarNav href="#artifact" label="Artifact" num="03" active={activeSection === 'artifact'} />
+        <SidebarNav href="#workproducts" label="Work Products" num="04" active={activeSection === 'workproducts'} />
+        <SidebarNav href="#timeline" label="Timeline" num="05" active={activeSection === 'timeline'} />
+        <SidebarNav href="#packet" label="Reviewer Packet" num="06" active={activeSection === 'packet'} />
+        <SidebarNav href="#learning" label="Learning Path" num="07" active={activeSection === 'learning'} />
+        <SidebarNav href="#score" label="Score Appendix" num="08" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -331,14 +345,17 @@ function Section1Summary({
   packet,
   briefingMailto,
   personalization,
+  band,
   topGap,
 }: {
   packet: ActionPacket;
   briefingMailto: string;
   personalization: PersonalizationState;
-  topGap: { label: string } | undefined;
+  band: MaturityBand;
+  topGap: { key: Dimension; score: number; label: string } | undefined;
 }): JSX.Element {
   const headline = deriveHeadline(packet, topGap);
+  const brief = topGap ? DIMENSION_BRIEF[topGap.key] : null;
   return (
     <section id="summary" style={pageStyle}>
       <div style={sectionPad}>
@@ -357,6 +374,24 @@ function Section1Summary({
         <p style={{ maxWidth: 850, fontSize: 18, color: SLATE, lineHeight: 1.58 }}>
           {packet.thesisBody}
         </p>
+        {topGap && brief && (
+          <div style={{ margin: '22px 0 0', border: `1px solid ${LINE}`, borderRadius: 18, overflow: 'hidden' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
+              <SnapField label="Readiness level" value={band.label} />
+              <SnapField label="Top gap" value={`${topGap.label} · ${topGap.score}/100`} />
+              <SnapField label="Primary risk" value={brief.risk} />
+              <SnapField label="Primary opportunity" value={brief.opportunity} />
+            </div>
+            <div style={{ background: INK, color: 'white', padding: '16px 20px' }}>
+              <span style={{ color: GOLD, fontSize: 10.5, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                Recommendation
+              </span>
+              <p style={{ margin: '6px 0 0', fontSize: 16, lineHeight: 1.5 }}>
+                Your greatest opportunity is {brief.recommendation}.
+              </p>
+            </div>
+          </div>
+        )}
         <AIExecSummary state={personalization} />
         <div
           style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}
@@ -831,6 +866,412 @@ function Section3Timeline({
 }
 
 // ── Section 4: Reviewer Packet ──────────────────────────────────────────────
+
+// ── Section: Root Cause Analysis ────────────────────────────────────────────
+// A score is a symptom. For each priority gap, show the structural reasons
+// behind it — what is missing, not just what is low — plus a confidence.
+function SectionRootCause({
+  protect,
+  use,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  use: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+}): JSX.Element {
+  const items = [...protect, ...use];
+  return (
+    <section id="rootcause" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Root cause analysis</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          Why these scores exist.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58 }}>
+          A score is a symptom. Each priority gap below is broken down into the
+          structural reasons behind it — what is missing, not just what is low.
+          That is the difference between a report and a diagnosis.
+        </p>
+        <div style={{ display: 'grid', gap: 14, marginTop: 18 }}>
+          {items.map((d) => {
+            const rc = rootCauseFor(d.key, d.score);
+            return (
+              <div
+                key={d.key}
+                style={{
+                  background: 'white',
+                  border: `1px solid ${LINE}`,
+                  borderRadius: 18,
+                  padding: 18,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    gap: 12,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>
+                    {d.label} scored {d.score}/100 because:
+                  </b>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: rc.confidence === 'High' ? '#047857' : '#9A7A2F',
+                    }}
+                  >
+                    Confidence: {rc.confidence}
+                  </span>
+                </div>
+                <ul style={{ margin: '12px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 9 }}>
+                  {rc.reasons.map((r) => (
+                    <li
+                      key={r}
+                      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: SLATE, fontSize: 14, lineHeight: 1.5 }}
+                    >
+                      <span style={{ color: GOLD, fontWeight: 900, flex: 'none' }}>—</span>
+                      <span>{r}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SnapField({ label, value }: { label: string; value: string }): JSX.Element {
+  return (
+    <div style={{ padding: '14px 18px', borderRight: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
+      <div style={{ color: '#9A7A2F', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+        {label}
+      </div>
+      <div style={{ marginTop: 5, fontSize: 14, lineHeight: 1.4, color: INK }}>{value}</div>
+    </div>
+  );
+}
+
+// ── Section: Learning Recommendations ───────────────────────────────────────
+// The assessment as the front door: results map straight into Foundation and
+// the role playbooks.
+function SectionLearning({
+  protect,
+  packet,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  packet: ActionPacket;
+}): JSX.Element {
+  const path: readonly ModuleRec[] = learningPath(protect.map((d) => d.key));
+  return (
+    <section id="learning" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Learning recommendations</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          Where to build the skill.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, maxWidth: 680 }}>
+          Your results map straight into the Foundation course. Start here, in this order —
+          each module closes one of your priority gaps.
+        </p>
+        <div style={{ display: 'grid', gap: 12, marginTop: 18 }}>
+          {path.map((m, i) => (
+            <Link
+              key={m.number}
+              href={`/courses/foundation/program/${m.number}`}
+              style={{
+                display: 'flex',
+                gap: 14,
+                alignItems: 'center',
+                background: 'white',
+                border: `1px solid ${LINE}`,
+                borderRadius: 18,
+                padding: 16,
+                textDecoration: 'none',
+                color: INK,
+              }}
+            >
+              <span
+                style={{
+                  flex: 'none',
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: INK,
+                  background: GOLD,
+                  borderRadius: 999,
+                  padding: '4px 11px',
+                }}
+              >
+                Priority {i + 1}
+              </span>
+              <div>
+                <b style={{ display: 'block', fontSize: 16 }}>
+                  Module {m.number} · {m.title}
+                </b>
+                <span style={{ display: 'block', color: SLATE, fontSize: 13.5, marginTop: 3 }}>{m.why}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <Label>Recommended playbooks</Label>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+            {[packet.playbookPath.best, ...packet.playbookPath.supporting].map((p) => (
+              <Link
+                key={p.slug}
+                href={`/playbooks/${p.slug}`}
+                style={{
+                  ...btnOutline,
+                  border: `1px solid ${LINE}`,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                }}
+              >
+                {p.label} playbook
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Section: Generated Work Products (+ Toolbox feed) ───────────────────────
+// The thesis made tangible — not advice, assets. Each is a ready-to-run prompt
+// that produces a usable banking document; copy it, or add it to the Toolbox
+// as a skill in one click. "Add all" is the success-metric behaviour.
+function SectionWorkProducts({
+  protect,
+  use,
+  roleLabel,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  use: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  roleLabel: string;
+}): JSX.Element {
+  const priorityDims = [...protect, ...use].map((d) => d.key);
+  const recommended = new Set(protect.map((d) => d.key));
+  const products = orderWorkProducts(priorityDims);
+  return (
+    <section id="workproducts" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Generated work products</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What you receive today.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, maxWidth: 680 }}>
+          Not advice — assets. Each is a ready-to-run prompt that produces a usable
+          banking document, grounded in your own approved sources. Copy it, or add it
+          to your Toolbox as a reusable skill in one click.
+        </p>
+        <div style={{ marginTop: 16 }}>
+          <AddAllToToolbox products={products} roleLabel={roleLabel} />
+        </div>
+        <div style={{ display: 'grid', gap: 14, marginTop: 18 }}>
+          {products.map((w) => (
+            <WorkProductCard
+              key={w.id}
+              product={w}
+              roleLabel={roleLabel}
+              recommended={recommended.has(w.dimension)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WorkProductCard({
+  product,
+  roleLabel,
+  recommended,
+}: {
+  product: WorkProduct;
+  roleLabel: string;
+  recommended: boolean;
+}): JSX.Element {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      style={{
+        background: 'white',
+        border: `1px solid ${recommended ? GOLD : LINE}`,
+        borderRadius: 18,
+        padding: 18,
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'baseline' }}>
+        <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>{product.name}</b>
+        {recommended && (
+          <span
+            style={{
+              fontSize: 10.5,
+              fontWeight: 800,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: INK,
+              background: GOLD,
+              borderRadius: 999,
+              padding: '3px 10px',
+            }}
+          >
+            Closes your {DIMENSION_LABELS[product.dimension]} gap
+          </span>
+        )}
+      </div>
+      <p style={{ margin: '6px 0 0', color: SLATE, fontSize: 14, lineHeight: 1.5 }}>{product.intent}</p>
+      <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 13 }}>
+        <b style={{ color: INK }}>Use before:</b> {product.useBefore}
+      </p>
+      {open && (
+        <div style={{ marginTop: 12 }}>
+          <PromptBlock text={product.copyPrompt} stretch />
+          <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 12.5 }}>{product.copyRule}</p>
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          style={{ ...btnOutline, border: `1px solid ${LINE}`, cursor: 'pointer' }}
+        >
+          {open ? 'Hide prompt' : 'View prompt'}
+        </button>
+        <CopyButton text={product.copyPrompt} label="Copy prompt" />
+        <SaveToToolboxButton
+          artifactName={product.name}
+          roleLabel={roleLabel}
+          prompt={product.copyPrompt}
+          rule={product.copyRule}
+        />
+      </div>
+    </div>
+  );
+}
+
+function AddAllToToolbox({
+  products,
+  roleLabel,
+}: {
+  products: readonly WorkProduct[];
+  roleLabel: string;
+}): JSX.Element {
+  type S = 'idle' | 'saving' | 'done' | 'auth' | 'upgrade' | 'error';
+  const [status, setStatus] = useState<S>('idle');
+  const [n, setN] = useState(0);
+  const goldCta: React.CSSProperties = {
+    background: GOLD,
+    color: INK,
+    border: 'none',
+    borderRadius: 12,
+    padding: '11px 18px',
+    fontWeight: 800,
+    fontSize: 13,
+    textDecoration: 'none',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+  };
+  if (status === 'upgrade') {
+    return (
+      <Link href="/courses/foundation/program/purchase" style={goldCta}>
+        <BookmarkIcon />
+        <span>Upgrade to add all</span>
+      </Link>
+    );
+  }
+  const label =
+    status === 'saving'
+      ? `Adding ${n}/${products.length}…`
+      : status === 'done'
+        ? `Added ${products.length} to Toolbox ✓`
+        : status === 'auth'
+          ? 'Sign in to add'
+          : status === 'error'
+            ? 'Try again'
+            : `Add all ${products.length} to Toolbox`;
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        setStatus('saving');
+        setN(0);
+        for (let i = 0; i < products.length; i++) {
+          const w = products[i];
+          try {
+            const res = await fetch('/api/toolbox/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                origin: 'in-depth',
+                payload: { artifactName: w.name, roleLabel, prompt: w.copyPrompt, rule: w.copyRule },
+              }),
+            });
+            if (res.status === 401) {
+              setStatus('auth');
+              setTimeout(() => {
+                window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+              }, 800);
+              return;
+            }
+            if (res.status === 403) {
+              setStatus('upgrade');
+              return;
+            }
+            if (!res.ok) {
+              setStatus('error');
+              return;
+            }
+            setN(i + 1);
+          } catch {
+            setStatus('error');
+            return;
+          }
+        }
+        setStatus('done');
+      }}
+      style={goldCta}
+    >
+      <BookmarkIcon />
+      <span>{label}</span>
+    </button>
+  );
+}
 
 function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
   return (
@@ -1418,9 +1859,12 @@ function PrintCSS(): JSX.Element {
         .mk-pr-wrap { padding: 0 !important; max-width: 100% !important; }
         [style*="position: sticky"] { position: static !important; }
         section[id="summary"],
+        section[id="rootcause"],
         section[id="artifact"],
+        section[id="workproducts"],
         section[id="timeline"],
         section[id="packet"],
+        section[id="learning"],
         section[id="score"] {
           page-break-inside: avoid;
           page-break-after: always;
