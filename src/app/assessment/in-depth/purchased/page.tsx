@@ -212,58 +212,40 @@ export default async function InDepthPurchasedPage({
             </>
           ) : (
             <>
-              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
-                One last step: {prefillEmail ? 'finish creating' : 'create or sign into'} your
-                account{prefillEmail ? (
+              {/* The webhook already created the account + entitlement and
+                  emailed a one-click link. So this is NOT "create an account"
+                  — it's "open what you bought". Lead with the one-click link;
+                  password login is a small secondary option. */}
+              <p className="mb-2" style={{ fontSize: 15, color: 'var(--ink)', fontWeight: 600 }}>
+                ✓ Payment confirmed{prefillEmail ? (
                   <>
                     {' '}for{' '}
-                    <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
-                      {prefillEmail}
-                    </span>
+                    <span style={{ color: 'var(--ink)' }}>{prefillEmail}</span>
                   </>
-                ) : null}{' '}
-                to open the assessment. Takes 30 seconds.
+                ) : null}. Your assessment is ready.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block uppercase transition-colors"
-                  style={{
-                    background: 'var(--gold)',
-                    color: '#fff',
-                    padding: '14px 28px',
-                    borderRadius: 12,
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: '0.16em',
-                  }}
-                >
-                  CREATE MY ACCOUNT
-                </Link>
-                <Link
-                  href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
-                  className="inline-block uppercase transition-colors"
-                  style={{
-                    border: '1px solid var(--ink-a15)',
-                    color: 'var(--ink)',
-                    padding: '14px 28px',
-                    borderRadius: 12,
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: '0.16em',
-                  }}
-                >
-                  I ALREADY HAVE ONE
-                </Link>
-                {/* #324 — third option for the common case of "I bought
-                    with this email but I don't remember / never set a
-                    password". Sends the password-setup email directly
-                    (magic-link sign-in was retired 2026-05-28, so the old
-                    /auth/login?mode=magic deep link was a dead end). */}
-                <EmailSignInLink
-                  email={prefillEmail}
-                  next="/assessment/in-depth/take"
-                />
+              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+                We just emailed you a <strong>one-click link</strong> to open it — no password
+                needed. Didn&rsquo;t get it? Resend it:
+              </p>
+              <div className="flex flex-col gap-3" style={{ alignItems: 'flex-start' }}>
+                <EmailSignInLink email={prefillEmail} />
+                <p style={{ fontSize: 13, color: 'var(--slate-500)' }}>
+                  Prefer a password?{' '}
+                  <Link
+                    href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
+                    style={{ textDecoration: 'underline', color: 'var(--ink)' }}
+                  >
+                    Set one
+                  </Link>{' '}
+                  ·{' '}
+                  <Link
+                    href={`/auth/login?next=/assessment/in-depth/take${emailQs}`}
+                    style={{ textDecoration: 'underline', color: 'var(--ink)' }}
+                  >
+                    Log in
+                  </Link>
+                </p>
               </div>
             </>
           )}
