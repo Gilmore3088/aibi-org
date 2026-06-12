@@ -233,10 +233,10 @@ export default async function InDepthPurchasedPage({
                 <p style={{ fontSize: 13, color: 'var(--slate-500)' }}>
                   Prefer a password?{' '}
                   <Link
-                    href={`/auth/signup?next=/assessment/in-depth/take${emailQs}`}
+                    href={prefillEmail ? `/auth/forgot-password?email=${encodeURIComponent(prefillEmail)}` : '/auth/forgot-password'}
                     style={{ textDecoration: 'underline', color: 'var(--ink)' }}
                   >
-                    Set one
+                    Set a password
                   </Link>{' '}
                   ·{' '}
                   <Link
