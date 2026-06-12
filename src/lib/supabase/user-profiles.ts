@@ -44,7 +44,7 @@ export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
   options: { role?: AnyRole | null } = {},
-): Promise<{ id: string | null }> {
+): Promise<{ id: string | null; paidPrimary?: boolean }> {
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
   const client = createServiceRoleClient();
@@ -101,7 +101,10 @@ export async function upsertReadinessResult(
     if (archiveError) {
       console.warn('[user-profiles] v3-over-v4 archive skipped:', archiveError.message);
     }
-    return { id: existing.id as string };
+    // paidPrimary: the row stays the paid (v4) report. Callers use this to
+    // keep the email/link pointed at the paid report while showing the fresh
+    // free result inline rather than redirecting back to the paid surface.
+    return { id: existing.id as string, paidPrimary: true };
   }
 
   // F10 — the paid In-Depth (v4) submit overwrites the same row's free (v3)
