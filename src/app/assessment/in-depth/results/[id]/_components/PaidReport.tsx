@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
+import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
 import {
   getActionPacket,
   classifyDimensions,
@@ -84,7 +85,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'timeline', 'packet', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'artifact', 'workproducts', 'timeline', 'packet', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -127,6 +128,11 @@ export function PaidReport({
               protect={protect}
               use={use}
               build={build}
+              roleLabel={roleMeta?.label ?? 'role'}
+            />
+            <SectionWorkProducts
+              protect={protect}
+              use={use}
               roleLabel={roleMeta?.label ?? 'role'}
             />
             <Section3Timeline packet={packet} personalization={personalization} />
@@ -250,9 +256,10 @@ function Sidebar({
         <SidebarNav href="#summary" label="Action Packet" num="01" active={activeSection === 'summary'} />
         <SidebarNav href="#rootcause" label="Root Cause" num="02" active={activeSection === 'rootcause'} />
         <SidebarNav href="#artifact" label="Artifact" num="03" active={activeSection === 'artifact'} />
-        <SidebarNav href="#timeline" label="Timeline" num="04" active={activeSection === 'timeline'} />
-        <SidebarNav href="#packet" label="Reviewer Packet" num="05" active={activeSection === 'packet'} />
-        <SidebarNav href="#score" label="Score Appendix" num="06" active={activeSection === 'score'} />
+        <SidebarNav href="#workproducts" label="Work Products" num="04" active={activeSection === 'workproducts'} />
+        <SidebarNav href="#timeline" label="Timeline" num="05" active={activeSection === 'timeline'} />
+        <SidebarNav href="#packet" label="Reviewer Packet" num="06" active={activeSection === 'packet'} />
+        <SidebarNav href="#score" label="Score Appendix" num="07" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -920,6 +927,218 @@ function SectionRootCause({
         </div>
       </div>
     </section>
+  );
+}
+
+// ── Section: Generated Work Products (+ Toolbox feed) ───────────────────────
+// The thesis made tangible — not advice, assets. Each is a ready-to-run prompt
+// that produces a usable banking document; copy it, or add it to the Toolbox
+// as a skill in one click. "Add all" is the success-metric behaviour.
+function SectionWorkProducts({
+  protect,
+  use,
+  roleLabel,
+}: {
+  protect: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  use: ReadonlyArray<{ key: Dimension; score: number; label: string }>;
+  roleLabel: string;
+}): JSX.Element {
+  const priorityDims = [...protect, ...use].map((d) => d.key);
+  const recommended = new Set(protect.map((d) => d.key));
+  const products = orderWorkProducts(priorityDims);
+  return (
+    <section id="workproducts" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>Generated work products</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(30px, 3vw, 46px)',
+            lineHeight: 1,
+            letterSpacing: '-0.045em',
+            margin: '6px 0 14px',
+            fontWeight: 800,
+          }}
+        >
+          What you receive today.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, maxWidth: 680 }}>
+          Not advice — assets. Each is a ready-to-run prompt that produces a usable
+          banking document, grounded in your own approved sources. Copy it, or add it
+          to your Toolbox as a reusable skill in one click.
+        </p>
+        <div style={{ marginTop: 16 }}>
+          <AddAllToToolbox products={products} roleLabel={roleLabel} />
+        </div>
+        <div style={{ display: 'grid', gap: 14, marginTop: 18 }}>
+          {products.map((w) => (
+            <WorkProductCard
+              key={w.id}
+              product={w}
+              roleLabel={roleLabel}
+              recommended={recommended.has(w.dimension)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WorkProductCard({
+  product,
+  roleLabel,
+  recommended,
+}: {
+  product: WorkProduct;
+  roleLabel: string;
+  recommended: boolean;
+}): JSX.Element {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      style={{
+        background: 'white',
+        border: `1px solid ${recommended ? GOLD : LINE}`,
+        borderRadius: 18,
+        padding: 18,
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'baseline' }}>
+        <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>{product.name}</b>
+        {recommended && (
+          <span
+            style={{
+              fontSize: 10.5,
+              fontWeight: 800,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: INK,
+              background: GOLD,
+              borderRadius: 999,
+              padding: '3px 10px',
+            }}
+          >
+            Closes your {DIMENSION_LABELS[product.dimension]} gap
+          </span>
+        )}
+      </div>
+      <p style={{ margin: '6px 0 0', color: SLATE, fontSize: 14, lineHeight: 1.5 }}>{product.intent}</p>
+      <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 13 }}>
+        <b style={{ color: INK }}>Use before:</b> {product.useBefore}
+      </p>
+      {open && (
+        <div style={{ marginTop: 12 }}>
+          <PromptBlock text={product.copyPrompt} stretch />
+          <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 12.5 }}>{product.copyRule}</p>
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          style={{ ...btnOutline, border: `1px solid ${LINE}`, cursor: 'pointer' }}
+        >
+          {open ? 'Hide prompt' : 'View prompt'}
+        </button>
+        <CopyButton text={product.copyPrompt} label="Copy prompt" />
+        <SaveToToolboxButton
+          artifactName={product.name}
+          roleLabel={roleLabel}
+          prompt={product.copyPrompt}
+          rule={product.copyRule}
+        />
+      </div>
+    </div>
+  );
+}
+
+function AddAllToToolbox({
+  products,
+  roleLabel,
+}: {
+  products: readonly WorkProduct[];
+  roleLabel: string;
+}): JSX.Element {
+  type S = 'idle' | 'saving' | 'done' | 'auth' | 'upgrade' | 'error';
+  const [status, setStatus] = useState<S>('idle');
+  const [n, setN] = useState(0);
+  const goldCta: React.CSSProperties = {
+    background: GOLD,
+    color: INK,
+    border: 'none',
+    borderRadius: 12,
+    padding: '11px 18px',
+    fontWeight: 800,
+    fontSize: 13,
+    textDecoration: 'none',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+  };
+  if (status === 'upgrade') {
+    return (
+      <Link href="/courses/foundation/program/purchase" style={goldCta}>
+        <BookmarkIcon />
+        <span>Upgrade to add all</span>
+      </Link>
+    );
+  }
+  const label =
+    status === 'saving'
+      ? `Adding ${n}/${products.length}…`
+      : status === 'done'
+        ? `Added ${products.length} to Toolbox ✓`
+        : status === 'auth'
+          ? 'Sign in to add'
+          : status === 'error'
+            ? 'Try again'
+            : `Add all ${products.length} to Toolbox`;
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        setStatus('saving');
+        setN(0);
+        for (let i = 0; i < products.length; i++) {
+          const w = products[i];
+          try {
+            const res = await fetch('/api/toolbox/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                origin: 'in-depth',
+                payload: { artifactName: w.name, roleLabel, prompt: w.copyPrompt, rule: w.copyRule },
+              }),
+            });
+            if (res.status === 401) {
+              setStatus('auth');
+              setTimeout(() => {
+                window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+              }, 800);
+              return;
+            }
+            if (res.status === 403) {
+              setStatus('upgrade');
+              return;
+            }
+            if (!res.ok) {
+              setStatus('error');
+              return;
+            }
+            setN(i + 1);
+          } catch {
+            setStatus('error');
+            return;
+          }
+        }
+        setStatus('done');
+      }}
+      style={goldCta}
+    >
+      <BookmarkIcon />
+      <span>{label}</span>
+    </button>
   );
 }
 
