@@ -102,3 +102,18 @@ export function learningPath(topGapDimensions: readonly Dimension[]): readonly M
   push(PROMPTING_BASELINE); // everyone needs the prompting baseline
   return path.slice(0, 3);
 }
+
+// The role playbook that most directly serves each gap dimension. Used to
+// keep the headline recommendation's CTA aligned with the *result* (the top
+// gap), not just the taker's role — so a Compliance gap surfaces the
+// Compliance playbook, not whatever the role's default playbook is.
+export const PLAYBOOK_FOR_GAP: Record<Dimension, { readonly slug: string; readonly label: string }> = {
+  'ai-access-architecture': { slug: 'infosec', label: 'IT / InfoSec' },
+  'model-risk-validation': { slug: 'compliance', label: 'Compliance' },
+  'compliance-explainability': { slug: 'compliance', label: 'Compliance' },
+  'data-security-guardrails': { slug: 'infosec', label: 'IT / InfoSec' },
+  'workflow-orchestration': { slug: 'operations', label: 'Operations' },
+  'bounded-autonomy-human-review': { slug: 'compliance', label: 'Compliance' },
+  'vendor-risk-interoperability': { slug: 'infosec', label: 'IT / InfoSec' },
+  'governance-roles-human-capital': { slug: 'executive', label: 'Executive / Leadership' },
+};
