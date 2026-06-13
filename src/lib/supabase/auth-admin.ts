@@ -68,9 +68,26 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
   const lowered = email.trim().toLowerCase();
   const canonical = canonicalEmail(email);
 
-  // Existence check FIRST. Avoids the previous "always try create, fall back
-  // to listUsers on conflict" pattern, which silently created +alias
-  // duplicates whenever the alias didn't exactly match an existing row.
+  // Fast path: indexed email lookup via the find_auth_user_id_by_email RPC
+  // (migration 00043) — one query instead of paging through every auth user.
+  // Falls through to the full scan below on any error (e.g. the migration not
+  // yet applied) or a NULL result (the rare alias-stored edge), so behaviour
+  // is unchanged before the migration lands and correctness is preserved.
+  try {
+    const { data: rpcId, error: rpcError } = await supabase.rpc(
+      'find_auth_user_id_by_email',
+      { p_lowered: lowered, p_canonical: canonical },
+    );
+    if (!rpcError && typeof rpcId === 'string' && rpcId.length > 0) {
+      return { userId: rpcId, created: false };
+    }
+  } catch (err) {
+    console.warn('[auth-admin] find_auth_user_id_by_email RPC unavailable, using scan:', err);
+  }
+
+  // Existence check (full scan fallback). Avoids the previous "always try
+  // create, fall back to listUsers on conflict" pattern, which silently created
+  // +alias duplicates whenever the alias didn't exactly match an existing row.
   try {
     const { users, error: listError } = await listAllAuthUsers(supabase);
     if (listError) {
