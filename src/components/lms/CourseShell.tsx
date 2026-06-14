@@ -61,6 +61,17 @@ export function CourseShell({ modules, completed, current, learner, children }: 
         .lms-shell {
           grid-template-columns: minmax(0, 1fr);
         }
+        /* The desktop sidebar <aside> carries inline display:flex, which beats
+           its own Tailwind "hidden md:flex" class (inline wins specificity) —
+           so it leaked onto mobile, stacking the full module tree above the
+           content next to the hamburger. Hide the direct-child aside below md
+           with !important to beat the inline style; the mobile drawer's
+           sidebar is nested (not a direct child) and is unaffected. */
+        @media (max-width: 767px) {
+          .lms-shell > aside {
+            display: none !important;
+          }
+        }
         @media (min-width: 768px) {
           .lms-shell {
             grid-template-columns: minmax(0, 280px) minmax(0, 1fr);

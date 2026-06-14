@@ -84,6 +84,7 @@ export function StickyResumeBar({
       }}
     >
       <div
+        className="aibi-resume-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) auto',
@@ -187,6 +188,21 @@ export function StickyResumeBar({
           </span>
         </PrimaryButton>
       </div>
+      {/* Stack title above the CTA on mobile so the narrow title column
+          doesn't truncate the module name. dangerouslySetInnerHTML matches
+          the LMSTopBar/CourseShell hydration-safe inline-style pattern. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @media (max-width: 767px) {
+          .aibi-resume-grid {
+            grid-template-columns: 1fr !important;
+            gap: 18px !important;
+          }
+        }
+      `,
+        }}
+      />
     </div>
   );
 }
