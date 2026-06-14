@@ -31,6 +31,7 @@ const COLUMNS = [
 export function SampleWeek() {
   return (
     <section
+      className="aibi-pad-section"
       style={{
         marginBottom: 56,
         background: 'var(--cream-2)',
@@ -83,13 +84,7 @@ export function SampleWeek() {
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 18,
-        }}
-      >
+      <div className="aibi-grid aibi-grid--3" style={{ gap: 18 }}>
         {COLUMNS.map((col) => (
           <article
             key={col.kicker}

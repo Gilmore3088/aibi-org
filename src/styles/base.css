@@ -100,3 +100,41 @@ h1, h2, h3, h4 {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ---------------------------------------------------------------------
+ * Responsive helpers for inline-styled marketing / LMS surfaces.
+ *
+ * Several surfaces (the enroll page especially) are built with inline
+ * `style` objects, which cannot carry media queries. A fixed multi-column
+ * `gridTemplateColumns` therefore stays multi-column on phones and crushes
+ * its content (e.g. the enroll page's pricing card + reviewer quote jammed
+ * side-by-side). These classes let an inline-styled grid stack to a single
+ * column on narrow viewports and expand at the labelled breakpoint.
+ *
+ * Usage: keep `display:grid` + `gap` inline, REMOVE the inline
+ * `gridTemplateColumns` (inline styles beat class selectors, so it must be
+ * gone for the class to take effect), and add `aibi-grid` plus a variant.
+ * ------------------------------------------------------------------- */
+.aibi-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 640px) {
+  .aibi-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  .aibi-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aibi-grid--cta { grid-template-columns: 1.4fr auto; }
+}
+@media (min-width: 920px) {
+  .aibi-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Tighter horizontal padding on phones for inline-styled containers whose
+ * desktop padding would otherwise crush content on a narrow viewport.
+ * `!important` is required to beat the inline `padding` these elements
+ * carry — same reasoning as the grid helpers above. */
+@media (max-width: 767px) {
+  .aibi-pad-page { padding: 28px 16px 56px !important; }
+  .aibi-pad-section { padding: 28px 20px !important; }
+}

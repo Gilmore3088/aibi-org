@@ -29,6 +29,12 @@ const NAV_SECTIONS = [
   { id: 'toolbox', label: 'Your Toolbox', href: '/dashboard/toolbox' },
 ] as const;
 
+// NOTE: `display` is intentionally NOT set here. The `hidden md:flex`
+// className on the <aside> owns it so the rail hides on mobile (<768px)
+// and the off-canvas drawer takes over. An inline `display:flex` would
+// beat the `hidden` utility (inline styles win the specificity battle)
+// and leak the full desktop rail onto every course page on mobile — the
+// same trap the LMSMobileNav button comments call out.
 const shellStyle: React.CSSProperties = {
   background: 'var(--cream-2)',
   borderRight: '1px solid var(--ink-a10)',
@@ -36,7 +42,6 @@ const shellStyle: React.CSSProperties = {
   position: 'sticky',
   top: 0,
   alignSelf: 'start',
-  display: 'flex',
   flexDirection: 'column',
 };
 

@@ -23,11 +23,10 @@ export function PricingProof({
   return (
     <section
       id="enroll"
+      className="aibi-grid aibi-grid--2"
       style={{
         marginBottom: 56,
         scrollMarginTop: 80,
-        display: 'grid',
-        gridTemplateColumns: '1.1fr 1fr',
         gap: 22,
       }}
     >
