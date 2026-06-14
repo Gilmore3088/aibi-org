@@ -43,12 +43,12 @@ export function WhereYoureGoing({
     >
       <div
         style={{
-          fontSize: 10.5,
+          fontSize: 12,
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color: 'var(--gold-deep)',
-          marginBottom: 8,
+          marginBottom: 10,
         }}
       >
         Where you are going
@@ -57,9 +57,9 @@ export function WhereYoureGoing({
         id="where-going-heading"
         style={{
           margin: 0,
-          fontSize: 22,
+          fontSize: 'clamp(24px, 2.4vw, 28px)',
           fontWeight: 700,
-          letterSpacing: '-0.01em',
+          letterSpacing: '-0.015em',
           color: 'var(--ink)',
           marginBottom: 20,
         }}
@@ -84,7 +84,7 @@ export function WhereYoureGoing({
               gridTemplateColumns: 'auto 1fr',
               alignItems: 'center',
               gap: 16,
-              padding: '14px 16px',
+              padding: '16px 18px',
               borderRadius: 16,
               background: '#FFFFFF',
               border: '1px solid var(--slate-200)',
@@ -101,7 +101,7 @@ export function WhereYoureGoing({
                 borderRadius: 999,
                 background: 'var(--ink)',
                 color: 'var(--gold)',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: 700,
                 letterSpacing: 0,
                 flex: 'none',
@@ -112,7 +112,7 @@ export function WhereYoureGoing({
             <div>
               <div
                 style={{
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: 700,
                   color: 'var(--ink)',
                   letterSpacing: '-0.005em',
@@ -122,10 +122,10 @@ export function WhereYoureGoing({
               </div>
               <div
                 style={{
-                  fontSize: 13,
+                  fontSize: 15,
                   color: 'var(--slate-600)',
                   marginTop: 4,
-                  lineHeight: 1.5,
+                  lineHeight: 1.6,
                 }}
               >
                 <span style={{ color: 'var(--slate-500)' }} aria-hidden="true">→ </span>

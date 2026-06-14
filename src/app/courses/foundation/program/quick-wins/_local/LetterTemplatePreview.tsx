@@ -132,7 +132,7 @@ export function LetterTemplatePreview({
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -158,8 +158,8 @@ export function LetterTemplatePreview({
 
       <p
         style={{
-          fontSize: 15,
-          lineHeight: 1.55,
+          fontSize: 17,
+          lineHeight: 1.6,
           color: 'var(--gold-soft)',
           margin: '0 0 22px',
           maxWidth: '64ch',
@@ -208,7 +208,7 @@ export function LetterTemplatePreview({
             padding: '12px 22px',
             background: ready ? 'var(--gold)' : 'transparent',
             color: ready ? 'var(--ink)' : 'var(--gold-soft)',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -227,7 +227,7 @@ export function LetterTemplatePreview({
         <span
           aria-live="polite"
           style={{
-            fontSize: 12,
+            fontSize: 13,
             color: 'var(--gold-soft)',
             letterSpacing: '0.04em',
           }}

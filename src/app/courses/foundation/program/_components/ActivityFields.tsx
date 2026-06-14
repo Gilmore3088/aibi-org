@@ -21,7 +21,8 @@ const readOnlyValueStyle: CSSProperties = {
   border: '1px solid var(--ink-a10)',
   background: 'var(--cream-2)',
   fontFamily: INTER_STACK,
-  fontSize: 13.5,
+  fontSize: 16,
+  lineHeight: 1.6,
   color: 'var(--ink)',
   minHeight: 36,
   whiteSpace: 'pre-wrap',
@@ -47,7 +48,8 @@ export function ActivityReadOnlyField({
                 alignItems: 'center',
                 gap: 8,
                 fontFamily: INTER_STACK,
-                fontSize: 13.5,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: 'var(--ink)',
               }}
             >
@@ -79,7 +81,7 @@ export function ActivityReadOnlyField({
           ...readOnlyValueStyle,
           minHeight: field.type === 'textarea' ? 80 : 36,
           fontFamily: field.type === 'textarea' ? MONO_STACK : INTER_STACK,
-          fontSize: field.type === 'textarea' ? 12.5 : 13.5,
+          fontSize: 16,
         }}
       >
         {display || (
@@ -122,7 +124,8 @@ export function ActivityInteractiveField({
                 gap: 8,
                 cursor: 'pointer',
                 fontFamily: INTER_STACK,
-                fontSize: 13.5,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: 'var(--ink)',
               }}
             >

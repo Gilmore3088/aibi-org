@@ -38,7 +38,7 @@ const ROLE_FILTER_OPTIONS: readonly { value: RoleFilter; label: string }[] = [
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -68,8 +68,8 @@ const headlineStyle: CSSProperties = {
 
 const ledeStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 16,
-  lineHeight: 1.55,
+  fontSize: 17,
+  lineHeight: 1.6,
   color: 'var(--slate-600)',
   margin: 0,
   maxWidth: '60ch',
@@ -98,7 +98,7 @@ const tileActiveStyle: CSSProperties = {
 };
 
 const tileRoleStyle: CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -106,7 +106,7 @@ const tileRoleStyle: CSSProperties = {
 };
 
 const tileTitleStyle: CSSProperties = {
-  fontSize: 15,
+  fontSize: 16,
   fontWeight: 700,
   lineHeight: 1.3,
   color: 'var(--ink)',
@@ -114,7 +114,7 @@ const tileTitleStyle: CSSProperties = {
 };
 
 const tileSnippetStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: 13,
   lineHeight: 1.5,
   color: 'var(--slate-600)',
   margin: 0,
@@ -127,7 +127,7 @@ const tileSnippetStyle: CSSProperties = {
 function pillStyle(isActive: boolean): CSSProperties {
   return {
     padding: '8px 14px',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
     letterSpacing: '0.18em',
     textTransform: 'uppercase',
@@ -310,7 +310,8 @@ export function OutputGalleryClient() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 margin: 0,
               }}

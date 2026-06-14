@@ -60,7 +60,7 @@ function getAccessLabel(fieldId: string, value: string): string {
 }
 
 const KICKER: React.CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -211,7 +211,7 @@ export function SubscriptionInventory({
             </span>
           )}
         </div>
-        <p style={{ fontSize: 14, color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: 16, color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
           {activity.description}
         </p>
       </div>
@@ -235,14 +235,14 @@ export function SubscriptionInventory({
               >
                 <span
                   style={{
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: 600,
                     color: 'var(--ink)',
                   }}
                 >
                   {PLATFORM_LABELS[field.id] ?? field.label}
                 </span>
-                <span style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+                <span style={{ fontSize: 16, color: 'var(--slate-600)' }}>
                   {selectedOption?.label ?? getAccessLabel(field.id, value) ?? 'No selection'}
                 </span>
               </div>
@@ -259,7 +259,7 @@ export function SubscriptionInventory({
               >
                 <legend
                   style={{
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: 600,
                     color: 'var(--ink)',
                     marginBottom: 8,
@@ -268,7 +268,7 @@ export function SubscriptionInventory({
                 >
                   {PLATFORM_LABELS[field.id] ?? field.label}
                   <span
-                    style={{ marginLeft: 4, color: ERROR_RED, fontSize: 12 }}
+                    style={{ marginLeft: 4, color: ERROR_RED, fontSize: 13 }}
                     aria-label="required"
                   >
                     *
@@ -314,7 +314,7 @@ export function SubscriptionInventory({
                           }}
                           aria-label={`${PLATFORM_LABELS[field.id] ?? field.label}: ${opt.label}`}
                         />
-                        <span style={{ fontSize: 14, color: 'var(--ink)' }}>
+                        <span style={{ fontSize: 16, color: 'var(--ink)' }}>
                           {opt.label}
                         </span>
                       </label>
@@ -329,7 +329,7 @@ export function SubscriptionInventory({
             <p
               style={{
                 marginTop: 16,
-                fontSize: 14,
+                fontSize: 16,
                 color: ERROR_RED,
                 background: '#FEF2F2',
                 border: `1px solid ${ERROR_RED}33`,
@@ -346,7 +346,7 @@ export function SubscriptionInventory({
             <p
               style={{
                 marginTop: 16,
-                fontSize: 14,
+                fontSize: 16,
                 color: ERROR_RED,
                 background: '#FEF2F2',
                 border: `1px solid ${ERROR_RED}33`,
@@ -373,7 +373,7 @@ export function SubscriptionInventory({
                 padding: '12px 24px',
                 background: state.submitting ? 'var(--slate-400)' : 'var(--ink)',
                 color: '#FFFFFF',
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',

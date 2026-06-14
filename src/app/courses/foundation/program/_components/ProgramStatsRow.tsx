@@ -61,7 +61,7 @@ export function ProgramStatsRow({
           <div
             style={{
               fontFamily: FONT_INTER,
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -86,7 +86,7 @@ export function ProgramStatsRow({
           <div
             style={{
               fontFamily: FONT_INTER,
-              fontSize: 12,
+              fontSize: 13,
               color: 'var(--slate-600)',
               marginTop: 4,
             }}

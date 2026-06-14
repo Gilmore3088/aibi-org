@@ -26,7 +26,7 @@ function getCumulativeOneTimeMinutes(upToModule: number): number {
 
 const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -61,20 +61,20 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
 
       {/* Per-activity savings */}
       <div style={{ marginBottom: 16 }}>
-        <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '0 0 4px' }}>
+        <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '0 0 4px' }}>
           {savings.activityLabel}
         </p>
 
         {savings.mode === 'recurring' && (
           <>
-            <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
+            <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
               <span style={TNUM}>{savings.perUseMinutes}</span>{' '}
               min saved per use &middot;{' '}
               <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
             </p>
             <p
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: 600,
                 color: 'var(--ink)',
                 margin: '4px 0 0',
@@ -87,7 +87,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
 
         {savings.mode === 'one-time' && (
           <p
-            style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', margin: 0 }}
+            style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink)', margin: 0 }}
           >
             <span style={TNUM}>{savings.oneTimeMinutes}</span>{' '}
             minutes saved &middot; one-time
@@ -95,7 +95,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
         )}
 
         {savings.mode === 'ongoing' && savings.perUseMinutes > 0 && (
-          <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
+          <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
             <span style={TNUM}>{savings.perUseMinutes}</span>{' '}
             min per use &middot;{' '}
             <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
@@ -103,7 +103,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
         )}
 
         {savings.mode === 'ongoing' && savings.perUseMinutes === 0 && (
-          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
+          <p style={{ fontSize: 16, color: 'var(--slate-500)', margin: 0 }}>
             {savings.usageLabel}
           </p>
         )}
@@ -119,7 +119,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
             Cumulative across completed modules
           </p>
           {cumulativeHours > 0 && (
-            <p style={{ fontSize: 14, color: 'var(--ink)', margin: 0 }}>
+            <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
               <span
                 style={{
                   ...TNUM,
@@ -134,7 +134,7 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
             </p>
           )}
           {cumulativeOneTime > 0 && (
-            <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '2px 0 0' }}>
               + <span style={TNUM}>{cumulativeOneTime}</span> min in one-time savings
             </p>
           )}

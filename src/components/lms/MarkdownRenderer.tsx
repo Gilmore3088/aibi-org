@@ -108,7 +108,8 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 
   return (
     <div
-      className={`prose-aibi text-sm leading-relaxed text-[color:var(--ink)] ${className ?? ''}`}
+      className={`prose-aibi text-base leading-relaxed text-[color:var(--ink)] ${className ?? ''}`}
+      style={{ maxWidth: '72ch' }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

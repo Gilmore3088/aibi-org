@@ -132,12 +132,12 @@ export function ModuleContentClient({
             style={{
               width: '100%',
               padding: 12,
-              fontSize: 14,
+              fontSize: 16,
               fontFamily: 'inherit',
               border: '1px solid rgba(7,26,47,.12)',
               borderRadius: 12,
               resize: 'vertical',
-              lineHeight: 1.5,
+              lineHeight: 1.6,
             }}
           />
           <ActivityCritique moduleNumber={moduleNumber} responseValue={critiqueDraft} />
@@ -147,7 +147,7 @@ export function ModuleContentClient({
       {/* Activity-less module completion (e.g. M9) */}
       {hasNoActivities && !moduleComplete && (
         <div className="mt-8 pt-6 border-t border-[color:var(--ink-a10)]">
-          <p className="text-sm text-[color:var(--slate-600)] mb-4 leading-relaxed">
+          <p className="text-base text-[color:var(--slate-600)] mb-4 leading-relaxed">
             You have reviewed all content in this module. Mark it complete to continue.
           </p>
           <button

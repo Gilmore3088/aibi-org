@@ -73,7 +73,7 @@ function quarterlyHours(win: QuickWin): number {
 
 const fieldLabelStyle: CSSProperties = {
   display: 'block',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -87,7 +87,7 @@ const inputStyle: CSSProperties = {
   border: '1px solid var(--ink-a10)',
   borderRadius: 12,
   padding: '12px 14px',
-  fontSize: 14,
+  fontSize: 16,
   color: 'var(--ink)',
   outline: 'none',
   fontFamily: 'inherit',
@@ -189,7 +189,7 @@ export function QuickWinsClient() {
             display: 'flex',
             alignItems: 'center',
             gap: 8,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -239,7 +239,7 @@ export function QuickWinsClient() {
       >
         <span
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -250,13 +250,13 @@ export function QuickWinsClient() {
         </span>
         <span
           aria-hidden="true"
-          style={{ fontSize: 11, color: 'var(--slate-400)' }}
+          style={{ fontSize: 12, color: 'var(--slate-400)' }}
         >
           ·
         </span>
         <span
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -270,13 +270,13 @@ export function QuickWinsClient() {
           <>
             <span
               aria-hidden="true"
-              style={{ fontSize: 11, color: 'var(--slate-400)' }}
+              style={{ fontSize: 12, color: 'var(--slate-400)' }}
             >
               ·
             </span>
             <span
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -305,7 +305,7 @@ export function QuickWinsClient() {
         </h2>
 
         {loading && (
-          <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
+          <p style={{ fontSize: 16, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
         )}
 
         {!loading && wins.length === 0 && (
@@ -319,7 +319,7 @@ export function QuickWinsClient() {
           >
             <p
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -331,7 +331,7 @@ export function QuickWinsClient() {
             </p>
             <p
               style={{
-                fontSize: 15,
+                fontSize: 16,
                 fontWeight: 600,
                 color: 'var(--ink)',
                 margin: '0 0 8px',
@@ -342,10 +342,10 @@ export function QuickWinsClient() {
             </p>
             <p
               style={{
-                fontSize: 13,
+                fontSize: 16,
                 color: 'var(--slate-500)',
                 margin: 0,
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Use the form below to log your first one.
@@ -386,7 +386,7 @@ export function QuickWinsClient() {
                 >
                   <p
                     style={{
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: 600,
                       color: 'var(--ink)',
                       lineHeight: 1.4,
@@ -398,7 +398,7 @@ export function QuickWinsClient() {
                   </p>
                   <span
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: 700,
                       color: 'var(--ink)',
                       fontVariantNumeric: 'tabular-nums',
@@ -426,7 +426,7 @@ export function QuickWinsClient() {
                     <span
                       key={`${win.id}-meta-${i}`}
                       style={{
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: 600,
                         letterSpacing: '0.16em',
                         textTransform: 'uppercase',
@@ -459,9 +459,9 @@ export function QuickWinsClient() {
         </h2>
         <p
           style={{
-            fontSize: 14,
+            fontSize: 16,
             color: 'var(--slate-600)',
-            lineHeight: 1.55,
+            lineHeight: 1.6,
             margin: '0 0 20px',
             maxWidth: '60ch',
           }}
@@ -478,7 +478,7 @@ export function QuickWinsClient() {
               border: '1px solid var(--ink-a15)',
               background: 'var(--cream-2)',
               borderRadius: 12,
-              fontSize: 14,
+              fontSize: 16,
               color: 'var(--ink)',
             }}
           >
@@ -496,7 +496,7 @@ export function QuickWinsClient() {
               border: '1px solid var(--emerald-700)',
               background: 'var(--cream-2)',
               borderRadius: 12,
-              fontSize: 14,
+              fontSize: 16,
               color: 'var(--emerald-800)',
             }}
           >
@@ -647,7 +647,7 @@ export function QuickWinsClient() {
               padding: '14px 24px',
               background: 'var(--ink)',
               color: 'var(--cream-2)',
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',

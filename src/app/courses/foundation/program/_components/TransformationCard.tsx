@@ -59,7 +59,7 @@ function CheckIcon() {
 
 const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -142,7 +142,7 @@ export function TransformationCard({
     padding: '10px 20px',
     background: 'var(--ink)',
     color: '#FFFFFF',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -159,7 +159,7 @@ export function TransformationCard({
     padding: '10px 20px',
     background: '#FFFFFF',
     color: 'var(--ink)',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -208,7 +208,7 @@ export function TransformationCard({
             ) : (
               <span style={{ color: postTierColorVar }}>{postScore}</span>
             )}
-            <span style={{ fontSize: 14, fontWeight: 400, color: 'var(--slate-500)' }}>
+            <span style={{ fontSize: 16, fontWeight: 400, color: 'var(--slate-500)' }}>
               {' '}/ 48
             </span>
           </dd>
@@ -216,7 +216,7 @@ export function TransformationCard({
             <dd
               style={{
                 ...TNUM,
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: 600,
                 color: postTierColorVar,
                 margin: '2px 0 0',
@@ -245,7 +245,7 @@ export function TransformationCard({
               <span
                 style={{
                   display: 'block',
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: 400,
                   letterSpacing: 0,
                   textTransform: 'none',

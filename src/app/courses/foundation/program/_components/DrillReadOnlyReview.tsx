@@ -43,7 +43,7 @@ const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 const eyebrowStyle: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -121,7 +121,7 @@ export function DrillReadOnlyReview({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 600,
             color: 'var(--on-dark-70)',
             margin: '8px 0 0 0',
@@ -220,7 +220,7 @@ export function DrillReadOnlyReview({
                     alignItems: 'center',
                     gap: 6,
                     fontFamily: INTER_STACK,
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: 700,
                     letterSpacing: '0.22em',
                     textTransform: 'uppercase',
@@ -259,7 +259,7 @@ export function DrillReadOnlyReview({
                 style={{
                   marginTop: 10,
                   fontFamily: INTER_STACK,
-                  fontSize: 14,
+                  fontSize: 16,
                   color: 'var(--ink)',
                   lineHeight: 1.6,
                   marginBottom: 0,
@@ -281,7 +281,7 @@ export function DrillReadOnlyReview({
                   <p
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 12,
+                      fontSize: 13,
                       color: 'var(--slate-600)',
                       margin: 0,
                     }}
@@ -294,7 +294,7 @@ export function DrillReadOnlyReview({
                   <p
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 12,
+                      fontSize: 13,
                       color: 'var(--slate-600)',
                       margin: 0,
                     }}
@@ -308,9 +308,9 @@ export function DrillReadOnlyReview({
                     style={{
                       marginTop: 6,
                       fontFamily: INTER_STACK,
-                      fontSize: 13,
+                      fontSize: 14,
                       color: 'var(--slate-600)',
-                      lineHeight: 1.55,
+                      lineHeight: 1.6,
                       margin: '6px 0 0 0',
                     }}
                   >

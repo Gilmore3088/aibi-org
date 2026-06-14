@@ -14,7 +14,7 @@ export interface ModuleNavigationProps {
 
 const linkStyle: React.CSSProperties = {
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 11,
+  fontSize: 14,
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -29,7 +29,7 @@ const ctaBase: React.CSSProperties = {
   padding: '12px 22px',
   borderRadius: 12,
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 11,
+  fontSize: 14,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',

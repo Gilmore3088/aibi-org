@@ -45,20 +45,20 @@ export function DiagnosisReadOnly({
       className="space-y-4"
     >
       <div>
-        <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
+        <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-1">
           {missingComponentLabel}
         </p>
-        <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-sm text-[color:var(--ink)]">
+        <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-base text-[color:var(--ink)]">
           {selectedOption || (
             <span className="text-[color:var(--slate-500)]">No response</span>
           )}
         </div>
       </div>
       <div>
-        <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
+        <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-1">
           {improvedSkillLabel}
         </p>
-        <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-sm text-[color:var(--ink)] min-h-[80px] whitespace-pre-wrap">
+        <div className="w-full rounded-xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-3 py-2 font-sans text-base text-[color:var(--ink)] min-h-[80px] whitespace-pre-wrap">
           {improvedSkill || (
             <span className="text-[color:var(--slate-500)]">No response</span>
           )}

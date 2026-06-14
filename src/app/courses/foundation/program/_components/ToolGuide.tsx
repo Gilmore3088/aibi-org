@@ -19,7 +19,7 @@ interface ToolGuideProps {
 const COPY_RESET_MS = 2000;
 
 const KICKER: React.CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -82,7 +82,7 @@ function AccordionSection({
       >
         <span
           style={{
-            fontSize: 15,
+            fontSize: 16,
             fontWeight: 700,
             color: 'var(--ink)',
             borderBottom: open ? `2px solid ${accentVar}` : 'none',
@@ -169,7 +169,7 @@ function CopyablePrompt({ text }: { readonly text: string }) {
         <pre
           style={{
             fontFamily: MONO_STACK,
-            fontSize: 13,
+            fontSize: 16,
             lineHeight: 1.6,
             color: 'var(--ink)',
             whiteSpace: 'pre-wrap',
@@ -188,7 +188,7 @@ function CopyablePrompt({ text }: { readonly text: string }) {
           top: 8,
           right: 8,
           padding: '6px 12px',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 700,
           letterSpacing: '0.12em',
           textTransform: 'uppercase',
@@ -313,7 +313,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               >
                 {i + 1}.
               </span>
-              <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
+              <span style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6 }}>
                 {step}
               </span>
             </li>
@@ -328,7 +328,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
             background: '#FFFFFF',
           }}
         >
-          <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
             {guide.gettingStarted.firstSessionNote}
           </p>
         </div>
@@ -359,7 +359,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 >
                   {tier.tierName}
                 </span>
-                <span style={{ fontFamily: MONO_STACK, fontSize: 14, color: 'var(--ink)' }}>
+                <span style={{ fontFamily: MONO_STACK, fontSize: 16, color: 'var(--ink)' }}>
                   {tier.cost}
                 </span>
               </div>
@@ -386,7 +386,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                       }}
                       aria-hidden="true"
                     />
-                    <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
+                    <span style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6 }}>
                       {limit}
                     </span>
                   </li>
@@ -394,7 +394,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               </ul>
               <div style={{ paddingTop: 12, borderTop: '1px solid var(--ink-a10)' }}>
                 <SectionLabel>Banking verdict</SectionLabel>
-                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {tier.bankingVerdict}
                 </p>
               </div>
@@ -434,7 +434,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                 </span>
                 <h3
                   style={{
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: 700,
                     color: 'var(--ink)',
                     lineHeight: 1.4,
@@ -450,7 +450,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               </div>
               <div>
                 <SectionLabel>What you will get</SectionLabel>
-                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {useCase.expectedOutput}
                 </p>
               </div>
@@ -466,7 +466,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
             <>
               <div>
                 <SectionLabel>How to configure</SectionLabel>
-                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {guide.customInstructions.howTo}
                 </p>
               </div>
@@ -478,7 +478,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               )}
             </>
           ) : (
-            <p style={{ fontSize: 14, color: 'var(--slate-500)', margin: 0 }}>
+            <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--slate-500)', margin: 0 }}>
               Custom instructions are not available on this platform.
             </p>
           )}
@@ -498,7 +498,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
           >
             <p
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: 600,
                 color: 'var(--ink)',
                 lineHeight: 1.6,
@@ -522,7 +522,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
                   }}
                   aria-hidden="true"
                 />
-                <span style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>
+                <span style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6 }}>
                   {detail}
                 </span>
               </li>
@@ -537,7 +537,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
             }}
           >
             <SectionLabel>Banking verdict</SectionLabel>
-            <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
               {guide.dataSafety.bankingVerdict}
             </p>
           </div>
@@ -564,7 +564,7 @@ export function ToolGuide({ guide }: ToolGuideProps) {
               </span>
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 16,
                   color: 'var(--ink)',
                   lineHeight: 1.6,
                   paddingTop: 2,

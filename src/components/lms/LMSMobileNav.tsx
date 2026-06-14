@@ -72,7 +72,7 @@ const closeButtonStyle: CSSProperties = {
   padding: 6,
   color: 'var(--ink)',
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 11,
+  fontSize: 12,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 600,

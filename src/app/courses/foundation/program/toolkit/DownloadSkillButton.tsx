@@ -39,7 +39,7 @@ export function DownloadSkillButton({
         border: '1px solid var(--ink-a10)',
         background: 'var(--cream)',
         color: 'var(--ink)',
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: 600,
         letterSpacing: '0.16em',
         textTransform: 'uppercase',

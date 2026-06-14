@@ -13,7 +13,7 @@ const baseStyle: CSSProperties = {
   alignItems: 'center',
   gap: 10,
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 11,
+  fontSize: 12,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 600,

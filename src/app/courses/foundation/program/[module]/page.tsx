@@ -250,7 +250,7 @@ export default async function ModulePage(props: ModulePageParams) {
           color: 'var(--ink)',
         }}
       >
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 36px 16px' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '40px 36px 16px' }}>
           {/* Module header — dark-band + white-body card (matches /program
               home's ThisWeeksModule pattern; ports course.html .curric). */}
           <header
@@ -284,7 +284,7 @@ export default async function ModulePage(props: ModulePageParams) {
                   background: 'var(--gold-a20)',
                   color: 'var(--gold-soft)',
                   fontFamily: MOCKUP_FONT,
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -304,7 +304,7 @@ export default async function ModulePage(props: ModulePageParams) {
                   fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '0.14em',
-                  fontSize: 11,
+                  fontSize: 12,
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -347,7 +347,7 @@ export default async function ModulePage(props: ModulePageParams) {
                 style={{
                   fontFamily: MOCKUP_FONT,
                   fontSize: 17,
-                  lineHeight: 1.5,
+                  lineHeight: 1.6,
                   color: 'var(--slate-600)',
                   margin: '0 0 18px',
                   maxWidth: '72ch',
@@ -390,12 +390,12 @@ export default async function ModulePage(props: ModulePageParams) {
         {artifactFirst && <ModuleArtifactHeader meta={artifactFirst} />}
 
         {/* Sticky sub-task progress strip — primary in-page nav (audit §3 structural). */}
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 36px' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 36px' }}>
           <SubTaskProgressStrip items={subTaskItems} />
         </div>
 
         {/* Scroll-through sections — each sub-task anchored, no tabs. */}
-        <article style={{ maxWidth: 1180, margin: '0 auto', padding: '24px 36px 80px' }}>
+        <article style={{ maxWidth: 1320, margin: '0 auto', padding: '24px 36px 80px' }}>
           <section
             id="st-takeaway"
             aria-labelledby="st-takeaway-h"

@@ -161,7 +161,7 @@ export function SkillDiagnosis({
     >
       {/* Activity header */}
       <div className="mb-5">
-        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
+        <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
@@ -169,19 +169,19 @@ export function SkillDiagnosis({
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
+            <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)]">
+        <p className="font-sans text-base leading-relaxed text-[color:var(--slate-600)]">
           {activity.description}
         </p>
       </div>
 
       {/* Weak prompt callout */}
       <div className="mb-6 rounded-2xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] px-5 py-4">
-        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)] mb-2">
+        <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)] mb-2">
           The prompt to evaluate
         </p>
         <blockquote className="border-l-2 border-[color:var(--gold)] pl-4 font-sans text-[17px] font-semibold leading-relaxed text-[color:var(--ink)]">

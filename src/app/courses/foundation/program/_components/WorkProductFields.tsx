@@ -58,7 +58,7 @@ export function isFormValid(values: FormValues, skillFilePath: string | null): b
 }
 
 const baseTextAreaClass =
-  'w-full border rounded-lg px-3 py-2 text-sm font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:border-[color:var(--gold)] transition-shadow resize-y';
+  'w-full border rounded-lg px-3 py-2 text-base font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:border-[color:var(--gold)] transition-shadow resize-y';
 
 function errorBorderClass(hasError: boolean): string {
   return hasError
@@ -96,10 +96,10 @@ export function TextAreaField({
     <div className="mb-6">
       <label
         htmlFor={id}
-        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
+        className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1"
       >
         {label}
-        <span className="ml-1 text-[color:var(--gold-deep)] text-xs" aria-label="required">
+        <span className="ml-1 text-[color:var(--gold-deep)] text-sm" aria-label="required">
           *
         </span>
       </label>
@@ -121,7 +121,7 @@ export function TextAreaField({
       {hasError && (
         <p
           id={errorId}
-          className="mt-1 text-[color:var(--gold-deep)] font-sans text-xs"
+          className="mt-1 text-[color:var(--gold-deep)] font-sans text-sm"
           role="alert"
         >
           Error: {error}

@@ -102,7 +102,7 @@ export function ModulePractice({
           color: GOLD_DEEP,
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 800,
         }}
       >
@@ -111,8 +111,8 @@ export function ModulePractice({
       <p
         style={{
           color: SLATE,
-          fontSize: 14,
-          lineHeight: 1.55,
+          fontSize: 16,
+          lineHeight: 1.6,
           margin: '8px 0 16px',
         }}
       >
@@ -135,7 +135,7 @@ export function ModulePractice({
               padding: '10px 12px',
               cursor: 'pointer',
               fontWeight: 600,
-              fontSize: 14,
+              fontSize: 16,
               color: INK,
             }}
           >
@@ -181,7 +181,7 @@ export function ModulePractice({
             borderRadius: 16,
             padding: 18,
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            fontSize: 13,
+            fontSize: 16,
             lineHeight: 1.6,
             whiteSpace: 'pre-wrap',
             overflowX: 'auto',
@@ -198,8 +198,8 @@ export function ModulePractice({
           style={{
             marginTop: 16,
             color: '#912018',
-            fontSize: 14,
-            lineHeight: 1.5,
+            fontSize: 16,
+            lineHeight: 1.6,
           }}
         >
           {state.message}
