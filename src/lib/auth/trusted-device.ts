@@ -26,6 +26,19 @@ export const DEVICE_CONFIRMATION_TTL_MINUTES = 10;
 
 const SECONDS_PER_DAY = 60 * 60 * 24;
 
+// Auto-trust allowlist. A verified-email round-trip (signup confirmation,
+// magic link, or email OTP) proves the user controls the inbox, so the
+// /auth/callback route mints a trusted-device cookie for these OTP types.
+// `recovery` is deliberately EXCLUDED — a password reset must never silently
+// trust a device. This is an ALLOWLIST (not a denylist): any future/unknown
+// OTP type fails closed (no auto-trust). `generateMagicLink` emits type
+// `email`, so `email` MUST stay in this set or the welcome link re-locks buyers.
+const AUTO_TRUST_OTP_TYPES = new Set<string>(['signup', 'magiclink', 'email']);
+
+export function isAutoTrustableType(type: string | null | undefined): boolean {
+  return type != null && AUTO_TRUST_OTP_TYPES.has(type);
+}
+
 export function trustedDeviceCookieOptions(): CookieOptions {
   return {
     path: '/',

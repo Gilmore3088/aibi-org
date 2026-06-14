@@ -31,10 +31,17 @@
 // though the link "worked."
 
 import { NextResponse, type NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { backFillProfile } from '@/lib/auth/back-fill-profile';
+import { hashIp } from '@/lib/ai-harness/rate-limit';
+import {
+  issueTrustedDevice,
+  isAutoTrustableType,
+  TRUSTED_DEVICE_COOKIE,
+  trustedDeviceCookieOptions,
+} from '@/lib/auth/trusted-device';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -167,6 +174,41 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.warn('[auth/callback] back-fill failed:', err);
       }
     }
+
+    // LINCHPIN (fix-post-purchase-course-access): a verified-email session
+    // (signup confirm, magic link, email OTP) proves inbox control, so mint
+    // the trusted-device cookie HERE. Without this, every email-link entry
+    // lands authenticated-but-untrusted and the device gates bounce the buyer
+    // to a "check your email" page whose email is never sent — locking every
+    // paying customer out. Allowlist only; `recovery` already returned above.
+    const trustUser = data.session?.user;
+    if (trustUser && isAutoTrustableType(type)) {
+      const headerList = await headers();
+      const rawIp =
+        headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+        headerList.get('x-real-ip') ??
+        'anonymous';
+      const issued = await issueTrustedDevice({
+        userId: trustUser.id,
+        ipHash: hashIp(rawIp),
+        userAgent: headerList.get('user-agent'),
+        label: `auto-trust:${type}`,
+      });
+      if ('error' in issued) {
+        // Fail-open: the buyer already paid AND proved inbox control — don't
+        // block content on a trusted_devices insert hiccup; just log it.
+        console.warn(
+          `[auth/callback] auto-trust failed userId=${trustUser.id} error=${issued.error}`,
+        );
+      } else {
+        cookiesToWrite.push({
+          name: TRUSTED_DEVICE_COOKIE,
+          value: issued.cookieToken,
+          options: trustedDeviceCookieOptions(),
+        });
+      }
+    }
+
     return buildResponse(`${origin}${safeNext}`);
   }
 
