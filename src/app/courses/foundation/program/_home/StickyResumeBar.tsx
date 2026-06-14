@@ -74,9 +74,6 @@ export function StickyResumeBar({
   return (
     <div
       style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 30,
         marginBottom: 40,
         background: 'var(--ink)',
         color: 'var(--cream)',
