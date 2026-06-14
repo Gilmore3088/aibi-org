@@ -94,7 +94,7 @@ const DEV_ACTIVITY_RESPONSES: Record<string, Record<string, string>> = {
 // ---- Shared styles ----
 
 const kickerStyle: CSSProperties = {
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -410,8 +410,8 @@ export default async function ToolkitPage() {
         </p>
         <p
           style={{
-            fontSize: 15,
-            lineHeight: 1.55,
+            fontSize: 17,
+            lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: 0,
             maxWidth: '60ch',
@@ -431,10 +431,10 @@ export default async function ToolkitPage() {
         <SectionCard title="Subscription inventory detail" label="Module 2 baseline">
           <p
             style={{
-              fontSize: 13,
+              fontSize: 16,
               color: 'var(--slate-500)',
               marginBottom: 16,
-              lineHeight: 1.55,
+              lineHeight: 1.6,
             }}
           >
             Recorded during Module 2. Update by revisiting{' '}
@@ -468,7 +468,7 @@ export default async function ToolkitPage() {
                 >
                   <span
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: 600,
                       color: 'var(--ink)',
                       flex: '0 0 220px',
@@ -476,7 +476,7 @@ export default async function ToolkitPage() {
                   >
                     {platformName}
                   </span>
-                  <span style={{ fontSize: 14, color: 'var(--slate-500)' }}>
+                  <span style={{ fontSize: 16, color: 'var(--slate-500)' }}>
                     {displayValue || 'No selection recorded'}
                   </span>
                 </div>
@@ -492,9 +492,9 @@ export default async function ToolkitPage() {
           <div style={{ display: 'grid', gap: 16 }}>
             <p
               style={{
-                fontSize: 13,
+                fontSize: 16,
                 color: 'var(--slate-500)',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
                 margin: 0,
               }}
             >
@@ -505,7 +505,7 @@ export default async function ToolkitPage() {
 
             <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
               <p style={{ ...kickerStyle, marginBottom: 4 }}>Skill used for capstone</p>
-              <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+              <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                 {m7Title}{' '}
                 {m8Response['sharing-ladder-level'] ? (
                   <span style={{ color: 'var(--slate-500)' }}>
@@ -526,7 +526,7 @@ export default async function ToolkitPage() {
             {m8Response['test-input-1'] && (
               <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
                 <p style={{ ...kickerStyle, marginBottom: 4 }}>Tested against</p>
-                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {m8Response['test-input-1']}
                 </p>
               </div>
@@ -535,7 +535,7 @@ export default async function ToolkitPage() {
             {m8Response['revision-notes'] && (
               <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
                 <p style={{ ...kickerStyle, marginBottom: 4 }}>Iteration improvements</p>
-                <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                   {m8Response['revision-notes']}
                 </p>
               </div>
@@ -543,7 +543,7 @@ export default async function ToolkitPage() {
 
             <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
               <p style={{ ...kickerStyle, marginBottom: 4 }}>Quality standard met</p>
-              <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.55, margin: 0 }}>
+              <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
                 Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
                 Tone, Judgment, and Skill Quality.
               </p>

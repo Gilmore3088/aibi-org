@@ -71,7 +71,7 @@ const secondaryButtonStyle: CSSProperties = {
   alignItems: 'center',
   gap: 8,
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -270,7 +270,8 @@ export function OnboardingSurvey({ enrollmentId }: OnboardingSurveyProps) {
                     border: '1px solid var(--gold-deep)',
                     color: 'var(--gold-deep)',
                     fontFamily: INTER_STACK,
-                    fontSize: 13,
+                    fontSize: 16,
+                    lineHeight: 1.6,
                     fontWeight: 600,
                   }}
                 >

@@ -51,7 +51,7 @@ const buttonStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   padding: '11px 18px',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',

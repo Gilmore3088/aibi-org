@@ -39,7 +39,7 @@ const buttonStyle: CSSProperties = {
   alignItems: 'center',
   gap: 10,
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 11,
+  fontSize: 12,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 700,

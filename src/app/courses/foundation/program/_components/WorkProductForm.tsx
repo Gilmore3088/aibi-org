@@ -147,13 +147,13 @@ export function WorkProductForm({
         className="border border-[color:var(--ink-a10)] border-l-4 rounded-2xl p-6 bg-[color:var(--cream)] shadow-[var(--shadow-soft)] focus:outline-none"
         style={{ borderLeftColor: 'var(--emerald-700)' }}
       >
-        <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)] mb-2">
+        <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)] mb-2">
           Submitted
         </p>
         <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-2">
           Your work product has been submitted.
         </p>
-        <p className="font-sans text-sm text-[color:var(--slate-600)]">
+        <p className="font-sans text-base text-[color:var(--slate-600)]">
           You will receive feedback within five business days.
         </p>
       </div>

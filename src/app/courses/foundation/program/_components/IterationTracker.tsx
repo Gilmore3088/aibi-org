@@ -146,32 +146,32 @@ export function IterationTracker({
       style={{ borderLeftColor: 'var(--gold)' }}
     >
       <div className="px-6 pt-6 pb-5">
-        <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">
+        <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-sans text-xl font-bold tracking-tight text-[color:var(--ink)] mb-2">{activity.title}</h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--emerald-50)] border border-[color:var(--emerald-700)] rounded-full font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)]">
+            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-[color:var(--emerald-50)] border border-[color:var(--emerald-700)] rounded-full font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">{activity.description}</p>
+        <p className="text-base font-sans text-[color:var(--slate-600)] leading-relaxed">{activity.description}</p>
       </div>
 
       <div className="border-t border-[color:var(--ink-a10)] px-6 py-6">
         {!state.submitted && (
           <div className="mb-6 p-4 bg-[color:var(--cream-2)] border border-[color:var(--ink-a10)] rounded-xl">
-            <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">Before you begin</p>
+            <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">Before you begin</p>
             {state.skillLoading ? (
-              <p className="text-sm font-sans text-[color:var(--slate-600)]">Loading your Module 7 skill...</p>
+              <p className="text-base font-sans text-[color:var(--slate-600)]">Loading your Module 7 skill...</p>
             ) : state.originalSkillMd ? (
-              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
+              <p className="text-base font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Your Module 7 skill file has been loaded. After submitting, an updated version (.md v1.1) with your iteration notes will download automatically.
               </p>
             ) : (
-              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
+              <p className="text-base font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Open your Module 7 skill .md file alongside this activity for reference. Your iteration notes will be saved. To export an updated skill file, apply the changes you document below to your Module 7 .md file manually.
               </p>
             )}
@@ -189,8 +189,8 @@ export function IterationTracker({
               </div>
             ))}
             <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
-              <p className="text-[10px] font-sans font-bold text-[color:var(--gold-deep)] uppercase tracking-widest mb-2">Iteration complete</p>
-              <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed">
+              <p className="text-[11px] font-sans font-bold text-[color:var(--gold-deep)] uppercase tracking-widest mb-2">Iteration complete</p>
+              <p className="text-base font-sans text-[color:var(--slate-600)] leading-relaxed">
                 Your iteration notes have been saved. If your Module 7 skill file was available, an updated .md file (v1.1) was downloaded with your revision notes prepended. Otherwise, apply the changes documented above to your Module 7 .md file manually.
               </p>
             </div>
@@ -206,12 +206,12 @@ export function IterationTracker({
               </div>
             ))}
             {state.serverError && (
-              <p className="mt-3 mb-3 text-sm font-sans text-[color:var(--ink)] bg-[color:var(--cream-2)] border-l-2 border-[color:var(--gold-deep)] rounded-r-lg px-3 py-2" role="alert">
+              <p className="mt-3 mb-3 text-base font-sans text-[color:var(--ink)] bg-[color:var(--cream-2)] border-l-2 border-[color:var(--gold-deep)] rounded-r-lg px-3 py-2" role="alert">
                 {state.serverError}
               </p>
             )}
             <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
-              <p className="text-xs font-sans text-[color:var(--slate-600)] mb-3 leading-relaxed">
+              <p className="text-sm font-sans text-[color:var(--slate-600)] mb-3 leading-relaxed">
                 Submitting will save your iteration notes.{state.originalSkillMd ? ' An updated .md file (v1.1) with your revision notes will also download automatically.' : ''}
               </p>
               <button

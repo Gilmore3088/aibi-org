@@ -109,7 +109,7 @@ const INTER_STACK =
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -119,7 +119,7 @@ const KICKER: React.CSSProperties = {
 
 const META_LABEL: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -154,7 +154,7 @@ export default async function CertificatePage() {
           >
             Service Unavailable
           </h1>
-          <p style={{ color: 'var(--slate-600)', fontSize: 15, margin: 0 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: 16, lineHeight: 1.6, margin: 0 }}>
             The certificate service is not configured. Please contact support.
           </p>
         </div>
@@ -490,7 +490,7 @@ export default async function CertificatePage() {
                 <h3
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: 700,
                     color: 'var(--ink)',
                     margin: '0 0 8px',
@@ -501,8 +501,8 @@ export default async function CertificatePage() {
                 <p
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 13,
-                    lineHeight: 1.55,
+                    fontSize: 16,
+                    lineHeight: 1.6,
                     color: 'var(--slate-600)',
                     margin: '0 0 14px',
                   }}
@@ -513,7 +513,7 @@ export default async function CertificatePage() {
                 <p
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: 500,
                     lineHeight: 1.55,
                     color: 'var(--ink)',
@@ -576,7 +576,7 @@ export default async function CertificatePage() {
                 <h3
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: 700,
                     color: 'var(--ink)',
                     margin: '0 0 8px',
@@ -587,8 +587,8 @@ export default async function CertificatePage() {
                 <p
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 13,
-                    lineHeight: 1.55,
+                    fontSize: 16,
+                    lineHeight: 1.6,
                     color: 'var(--slate-600)',
                     margin: '0 0 16px',
                     flex: 1,
@@ -657,7 +657,7 @@ export default async function CertificatePage() {
                   <p
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 13,
+                      fontSize: 16,
                       lineHeight: 1.6,
                       color: 'var(--on-dark-80)',
                       margin: '0 0 18px',
@@ -744,7 +744,7 @@ export default async function CertificatePage() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: 16,
                 lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 maxWidth: 460,

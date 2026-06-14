@@ -39,7 +39,7 @@ const USER_PROMPT_PREFIX =
 
 const eyebrowStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -67,7 +67,7 @@ const primaryButtonStyle: CSSProperties = {
 
 const linkButtonStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -192,7 +192,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
           <pre
             style={{
               fontFamily: MONO_STACK,
-              fontSize: 13,
+              fontSize: 16,
               color: 'var(--ink)',
               lineHeight: 1.6,
               whiteSpace: 'pre-wrap',
@@ -229,7 +229,8 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <p
                 style={{
                   fontFamily: MONO_STACK,
-                  fontSize: 13,
+                  fontSize: 16,
+                  lineHeight: 1.6,
                   color: 'var(--slate-500)',
                   margin: 0,
                 }}
@@ -241,7 +242,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <pre
                 style={{
                   fontFamily: MONO_STACK,
-                  fontSize: 13,
+                  fontSize: 16,
                   color: 'var(--ink)',
                   lineHeight: 1.6,
                   whiteSpace: 'pre-wrap',
@@ -255,7 +256,8 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <p
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 13,
+                  fontSize: 16,
+                  lineHeight: 1.6,
                   fontWeight: 600,
                   color: 'var(--gold-deep)',
                   marginTop: 12,
@@ -302,7 +304,8 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 maxWidth: 480,
                 margin: 0,

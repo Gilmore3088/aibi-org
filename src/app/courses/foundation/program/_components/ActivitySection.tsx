@@ -252,7 +252,7 @@ export function ActivitySection({
           // Drill scenarios must be present
           if (drillScenarios.length === 0) {
             return (
-              <p key={activity.id} className="text-sm text-[color:var(--slate-500)]">
+              <p key={activity.id} className="text-base text-[color:var(--slate-500)]">
                 Classification drill scenarios not available.
               </p>
             );
@@ -302,7 +302,7 @@ export function ActivitySection({
       {/* Progress save — only show when all activities are done */}
       {allSubmitted && !progressSaved && (
         <div className="mt-6 pt-6 border-t border-[color:var(--ink-a10)]">
-          <p className="text-sm font-sans text-[color:var(--slate-600)] mb-4">
+          <p className="text-base font-sans text-[color:var(--slate-600)] mb-4">
             All activities complete. Mark this module as done to continue.
           </p>
           <button

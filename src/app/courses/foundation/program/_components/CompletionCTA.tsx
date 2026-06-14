@@ -29,7 +29,7 @@ const ctaPrimary: React.CSSProperties = {
   background: 'var(--gold)',
   color: 'var(--ink)',
   fontFamily: fontStack,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -46,7 +46,7 @@ const ctaSecondary: React.CSSProperties = {
   background: 'transparent',
   color: 'var(--ink)',
   fontFamily: fontStack,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -58,7 +58,7 @@ const ctaSecondary: React.CSSProperties = {
 
 const eyebrow: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -114,7 +114,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 15,
+              fontSize: 16,
               color: 'var(--slate-600)',
               lineHeight: 1.65,
               margin: '0 0 20px',
@@ -133,7 +133,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             style={{
               marginTop: 12,
               fontFamily: fontStack,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -159,7 +159,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 600,
               color: 'var(--ink)',
               margin: '0 0 4px',
@@ -170,7 +170,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 13,
+              fontSize: 16,
               color: 'var(--slate-600)',
               lineHeight: 1.6,
               margin: '0 0 16px',
@@ -221,7 +221,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 15,
+              fontSize: 16,
               color: 'var(--slate-600)',
               lineHeight: 1.65,
               margin: '0 0 20px',
@@ -245,7 +245,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             style={{
               marginTop: 12,
               fontFamily: fontStack,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -294,7 +294,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
         <p
           style={{
             fontFamily: fontStack,
-            fontSize: 14,
+            fontSize: 16,
             color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: 0,
