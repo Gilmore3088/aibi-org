@@ -160,13 +160,7 @@ export function ArtifactThumbnails() {
         </h2>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 18,
-        }}
-      >
+      <div className="aibi-grid aibi-grid--2" style={{ gap: 18 }}>
         {ARTIFACTS.map((a) => (
           <article
             key={a.title}

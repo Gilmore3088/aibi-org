@@ -262,7 +262,10 @@ export default async function PurchasePage(
         }
       />
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}>
+      <div
+        className="aibi-pad-page"
+        style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}
+      >
         {/* #327D — role-aware banner. Only rendered when the visitor
             arrives from a /playbooks/<role> CTA. The label is honest:
             it acknowledges the source playbook and names the modules
@@ -303,8 +306,10 @@ export default async function PurchasePage(
             </p>
           </aside>
         )}
-        {/* 1. HERO — dark navy. Real artifact on the right. */}
+        {/* 1. HERO — dark navy. Real artifact on the right. Stacks to a
+            single column on phones via aibi-grid (see base.css). */}
         <section
+          className="aibi-grid aibi-grid--2 aibi-pad-section"
           style={{
             marginBottom: 48,
             background: 'var(--ink)',
@@ -312,8 +317,6 @@ export default async function PurchasePage(
             padding: '48px 44px',
             borderRadius: 32,
             boxShadow: 'var(--shadow-hero)',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
             gap: 36,
             alignItems: 'center',
           }}
@@ -418,8 +421,10 @@ export default async function PurchasePage(
         {/* 6. FAQ */}
         <PurchaseFAQ />
 
-        {/* 7. FINAL CTA — dark navy, one paragraph + anchor back to #enroll */}
+        {/* 7. FINAL CTA — dark navy, one paragraph + anchor back to #enroll.
+            Text over button on phones; side-by-side on desktop. */}
         <section
+          className="aibi-grid aibi-grid--cta aibi-pad-section"
           style={{
             marginTop: 56,
             background: 'var(--ink)',
@@ -427,8 +432,6 @@ export default async function PurchasePage(
             padding: '40px 44px',
             borderRadius: 28,
             boxShadow: 'var(--shadow-hero)',
-            display: 'grid',
-            gridTemplateColumns: '1.4fr auto',
             gap: 28,
             alignItems: 'center',
           }}
