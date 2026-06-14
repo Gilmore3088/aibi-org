@@ -141,7 +141,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -151,7 +151,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         </span>
         <span
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -167,8 +167,8 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         <h2
           id="this-weeks-heading"
           style={{
-            margin: '0 0 8px',
-            fontSize: 'clamp(24px, 2.6vw, 30px)',
+            margin: '0 0 10px',
+            fontSize: 'clamp(26px, 2.8vw, 32px)',
             fontWeight: 700,
             letterSpacing: '-0.015em',
             color: 'var(--ink)',
@@ -179,11 +179,11 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         </h2>
         <p
           style={{
-            margin: '0 0 24px',
-            fontSize: 15,
-            lineHeight: 1.55,
+            margin: '0 0 28px',
+            fontSize: 17,
+            lineHeight: 1.6,
             color: 'var(--slate-600)',
-            maxWidth: '62ch',
+            maxWidth: '64ch',
           }}
         >
           {currentModule.goal}
@@ -216,7 +216,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             <div>
               <div
                 style={{
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: 700,
                   color: 'var(--ink)',
                   letterSpacing: '-0.005em',
@@ -226,9 +226,9 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
               </div>
               <div
                 style={{
-                  fontSize: 13,
+                  fontSize: 14,
                   color: 'var(--slate-600)',
-                  marginTop: 2,
+                  marginTop: 3,
                 }}
               >
                 {task.description}
@@ -236,7 +236,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             </div>
             <span
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -257,11 +257,11 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
               display: 'inline-flex',
               alignItems: 'center',
               gap: 8,
-              padding: '12px 22px',
+              padding: '14px 26px',
               borderRadius: 12,
               background: 'var(--gold)',
               color: 'var(--ink)',
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

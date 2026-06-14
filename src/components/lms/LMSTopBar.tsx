@@ -24,7 +24,7 @@ export function LMSTopBar({ crumbs, right }: Props) {
         style={{
           fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
           fontWeight: 700,
-          fontSize: 12,
+          fontSize: 13,
           letterSpacing: '-0.005em',
           textTransform: 'uppercase',
           color: 'var(--slate-600)',

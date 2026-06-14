@@ -80,7 +80,7 @@ export function StickyResumeBar({
         marginBottom: 40,
         background: 'var(--ink)',
         color: 'var(--cream)',
-        padding: '20px 24px',
+        padding: 'clamp(24px, 2.6vw, 32px) clamp(24px, 2.8vw, 36px)',
         borderRadius: 24,
         boxShadow: 'var(--shadow-feature)',
         fontFamily: FONT_INTER,
@@ -97,12 +97,12 @@ export function StickyResumeBar({
         <div style={{ minWidth: 0 }}>
           <div
             style={{
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
               color: 'var(--gold-soft)',
-              marginBottom: 8,
+              marginBottom: 10,
             }}
           >
             {kicker}
@@ -110,10 +110,10 @@ export function StickyResumeBar({
           <h2
             style={{
               margin: 0,
-              fontSize: 22,
+              fontSize: 'clamp(26px, 2.6vw, 30px)',
               fontWeight: 700,
-              letterSpacing: '-0.01em',
-              lineHeight: 1.2,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.18,
               color: 'var(--cream)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -136,7 +136,7 @@ export function StickyResumeBar({
             ))}
             <span
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -149,9 +149,9 @@ export function StickyResumeBar({
           </div>
           <p
             style={{
-              margin: '14px 0 0',
-              fontSize: 13,
-              lineHeight: 1.5,
+              margin: '16px 0 0',
+              fontSize: 15,
+              lineHeight: 1.6,
               color: 'var(--on-dark-70, rgba(247,243,234,0.7))',
               maxWidth: '64ch',
             }}

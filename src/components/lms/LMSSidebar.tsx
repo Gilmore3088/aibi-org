@@ -103,7 +103,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                 padding: '9px 16px',
                 color: active ? 'var(--gold)' : 'var(--ink)',
                 fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: active ? 600 : 500,
                 borderLeft: active
                   ? '2px solid var(--gold)'
@@ -125,7 +125,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
             padding: '18px 22px 10px',
             fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontWeight: 700,
-            fontSize: 11,
+            fontSize: 12,
             letterSpacing: '-0.005em',
             textTransform: 'uppercase',
             color: 'var(--slate-600)',
@@ -160,7 +160,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                   style={{
                     fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                     fontWeight: 700,
-                    fontSize: 11,
+                    fontSize: 12,
                     letterSpacing: '-0.005em',
                     textTransform: 'uppercase',
                     color: 'var(--ink)',
@@ -189,7 +189,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                         <span
                           style={{
                             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                            fontSize: 10,
+                            fontSize: 11,
                             color: 'var(--slate-500)',
                             marginRight: 6,
                           }}
@@ -201,7 +201,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                       <span
                         style={{
                           fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                          fontSize: 9.5,
+                          fontSize: 11,
                           color: 'var(--slate-500)',
                         }}
                       >
@@ -219,14 +219,14 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
                       ? 'rgba(200, 162, 74, 0.18)'
                       : 'transparent',
                     textAlign: 'left',
-                    padding: '7px 22px',
+                    padding: '9px 22px',
                     color: locked
                       ? 'rgba(14,27,45,0.35)'
                       : active
                         ? 'var(--gold)'
                         : 'var(--ink-2)',
                     fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                    fontSize: 12.5,
+                    fontSize: 14,
                     fontWeight: active ? 600 : 500,
                     opacity: locked ? 0.6 : 1,
                     borderLeft: active
@@ -302,7 +302,7 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
             <div
               style={{
                 fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: 9.5,
+                fontSize: 11,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
                 color: 'var(--slate-500)',

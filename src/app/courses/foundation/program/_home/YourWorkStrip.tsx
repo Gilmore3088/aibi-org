@@ -52,12 +52,12 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
       <div style={{ marginBottom: 16 }}>
         <div
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: 'var(--gold-deep)',
-            marginBottom: 8,
+            marginBottom: 10,
           }}
         >
           Your Foundation Packet
@@ -67,16 +67,16 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
             id="packet-heading"
             style={{
               margin: 0,
-              fontSize: 'clamp(22px, 2.4vw, 28px)',
+              fontSize: 'clamp(24px, 2.4vw, 30px)',
               fontWeight: 700,
               letterSpacing: '-0.015em',
               color: 'var(--ink)',
-              lineHeight: 1.2,
+              lineHeight: 1.18,
             }}
           >
             Twelve modules. Twelve work products.
           </h2>
-          <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--slate-600)' }}>
+          <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--slate-600)' }}>
             {savedCount} of {total} saved
           </span>
         </div>
@@ -113,8 +113,8 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
           margin: 0,
           padding: 0,
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: 10,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: 12,
         }}
       >
         {modules.map((m) => {
@@ -125,12 +125,12 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               <span
                 style={{
                   fontFamily: FONT_INTER,
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: 700,
                   fontVariantNumeric: 'tabular-nums',
                   color: 'var(--slate-500)',
                   flex: 'none',
-                  width: 44,
+                  width: 48,
                 }}
               >
                 {m.number} / {total}
@@ -138,10 +138,10 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               <span
                 style={{
                   fontFamily: FONT_INTER,
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: 600,
                   color: 'var(--ink)',
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
                   flex: 1,
                 }}
               >
@@ -150,9 +150,9 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               <span
                 style={{
                   flex: 'none',
-                  padding: '3px 9px',
+                  padding: '4px 10px',
                   borderRadius: 999,
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -167,8 +167,8 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
           const rowStyle: React.CSSProperties = {
             display: 'flex',
             alignItems: 'center',
-            gap: 12,
-            padding: '12px 16px',
+            gap: 14,
+            padding: '15px 18px',
             background: '#FFFFFF',
             border: '1px solid var(--slate-200)',
             borderLeft: `3px solid ${
