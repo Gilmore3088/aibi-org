@@ -65,7 +65,7 @@ export function ActivityWorkspace({
         <span
           style={{
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-            fontSize: 10.5,
+            fontSize: 12,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
             color: 'var(--gold)',
@@ -95,7 +95,7 @@ export function ActivityWorkspace({
               background: 'rgba(30,58,95,0.08)',
               color: 'var(--ink-2)',
               fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: 10,
+              fontSize: 12,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               fontWeight: 600,
@@ -117,9 +117,9 @@ export function ActivityWorkspace({
             style={{
               margin: '0 0 18px',
               fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                            fontSize: 15,
+                            fontSize: 17,
               color: 'var(--ink-2)',
-              lineHeight: 1.55,
+              lineHeight: 1.6,
             }}
           >
             {lead}

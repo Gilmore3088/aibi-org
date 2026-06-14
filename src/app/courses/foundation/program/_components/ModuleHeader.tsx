@@ -37,7 +37,7 @@ export function ModuleHeader({
           <span
             style={{
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 700,
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
@@ -67,7 +67,7 @@ export function ModuleHeader({
               key={label}
               style={{
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -83,7 +83,7 @@ export function ModuleHeader({
         style={{
           marginTop: 10,
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: 500,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',

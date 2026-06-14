@@ -150,7 +150,7 @@ export function ModuleTabs({
         style={{
           margin: '0 0 24px',
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 12,
+          fontSize: 13,
           color: 'var(--slate-500)',
           letterSpacing: '0.04em',
         }}

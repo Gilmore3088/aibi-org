@@ -6,7 +6,7 @@
 import type { CSSProperties } from 'react';
 
 const kicker: CSSProperties = {
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -70,7 +70,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
         <div style={block}>
           <p
             style={{
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -109,7 +109,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
         <div style={{ ...block, borderColor: 'var(--gold)' }}>
           <p
             style={{
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -135,9 +135,9 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
 
       <p
         style={{
-          fontSize: 13,
+          fontSize: 16,
           color: 'var(--slate-600)',
-          lineHeight: 1.55,
+          lineHeight: 1.6,
           margin: '18px 0 0',
         }}
       >

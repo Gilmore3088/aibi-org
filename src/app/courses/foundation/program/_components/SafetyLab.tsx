@@ -117,10 +117,10 @@ export function SafetyLab({
     return (
       <div style={card}>
         <div style={eyebrow}>Safety lab · complete</div>
-        <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           The 5-move card is complete. State · Ground · Constrain · Check · Escalate. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 14px' }}>
+        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 14px' }}>
           You caught an invented figure, a needless data leak, a red-zone decision, and a
           hidden instruction — and repaired each one. An effective prompt is not enough; a
           banker ships prompts that are effective <strong>and</strong> safe.
@@ -138,14 +138,14 @@ export function SafetyLab({
       <div style={card}>
         <div style={eyebrow}>Safety lab · the card is complete</div>
         <FiveMoveCard />
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '12px 0 14px' }}>
+        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '12px 0 14px' }}>
           Module 3 lit the first three moves. You just earned the last two — Check and
           Escalate. Save your work to complete the module.
         </p>
         <button type="button" onClick={submit} disabled={submitting} style={primaryBtn}>
           {submitting ? 'Saving…' : 'Save & complete module'}
         </button>
-        {serverError && <p style={{ color: RED, fontSize: 13, marginTop: 10 }}>{serverError}</p>}
+        {serverError && <p style={{ color: RED, fontSize: 14, marginTop: 10 }}>{serverError}</p>}
       </div>
     );
   }
@@ -161,7 +161,7 @@ export function SafetyLab({
             key={x.id}
             style={{
               fontFamily: INTER,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 700,
               padding: '3px 9px',
               borderRadius: 999,
@@ -176,8 +176,8 @@ export function SafetyLab({
         <span style={zoneTag(s.zone)}>{s.zone} zone</span>
       </div>
 
-      <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '0 0 8px' }}>{s.title}</p>
-      <p style={{ color: SLATE, fontSize: 13, margin: '0 0 10px' }}>{s.task}</p>
+      <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '0 0 8px' }}>{s.title}</p>
+      <p style={{ color: SLATE, fontSize: 14, margin: '0 0 10px' }}>{s.task}</p>
 
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         <div style={{ flex: '1 1 300px', minWidth: 260 }}>
@@ -222,7 +222,7 @@ export function SafetyLab({
           <Labeled label="Re-run — same task, now safe" tone="good">
             {s.safeOutput}
           </Labeled>
-          <p style={{ color: EMERALD, fontSize: 13, fontWeight: 700, margin: '12px 0 0' }}>
+          <p style={{ color: EMERALD, fontSize: 16, lineHeight: 1.6, fontWeight: 700, margin: '12px 0 0' }}>
             ✓ {s.lesson}
           </p>
           <button type="button" onClick={next} style={{ ...primaryBtn, marginTop: 14 }}>
@@ -256,7 +256,7 @@ function Question({
   return (
     <div style={{ marginTop: 16 }}>
       <div style={{ ...eyebrow, marginBottom: 6 }}>{eyebrowText}</div>
-      <p style={{ color: INK, fontSize: 14, fontWeight: 600, margin: '0 0 10px' }}>{question}</p>
+      <p style={{ color: INK, fontSize: 16, lineHeight: 1.6, fontWeight: 600, margin: '0 0 10px' }}>{question}</p>
       <div style={{ display: 'grid', gap: 8 }}>
         {choices.map((c) => {
           const isPicked = picked === c.id;
@@ -271,8 +271,8 @@ function Question({
               style={{
                 textAlign: 'left',
                 fontFamily: INTER,
-                fontSize: 13.5,
-                lineHeight: 1.5,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: INK,
                 background: bg,
                 border: `1px solid ${bd}`,
@@ -288,7 +288,7 @@ function Question({
         })}
       </div>
       {pickedWrong && (
-        <p style={{ color: RED, fontSize: 12.5, margin: '8px 0 0' }}>
+        <p style={{ color: RED, fontSize: 13, margin: '8px 0 0' }}>
           Not the core issue — look again at what the prompt did and did not give the AI.
         </p>
       )}
@@ -302,8 +302,8 @@ function Resolved({ text }: { text: string }) {
     <p
       style={{
         color: INK,
-        fontSize: 13,
-        lineHeight: 1.55,
+        fontSize: 16,
+        lineHeight: 1.6,
         background: CREAM,
         borderLeft: `3px solid ${GOLD_DEEP}`,
         padding: '10px 12px',
@@ -335,8 +335,8 @@ function Labeled({
         style={{
           margin: 0,
           fontFamily: INTER,
-          fontSize: 13,
-          lineHeight: 1.55,
+          fontSize: 16,
+          lineHeight: 1.6,
           color: INK,
           background: 'white',
           border: `1px solid ${border}`,
@@ -385,7 +385,7 @@ function zoneTag(zone: string): CSSProperties {
   const red = zone === 'Red';
   return {
     fontFamily: INTER,
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 800,
     letterSpacing: '0.08em',
     textTransform: 'uppercase',
@@ -407,7 +407,7 @@ const card: CSSProperties = {
 };
 const eyebrow: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -416,7 +416,7 @@ const eyebrow: CSSProperties = {
 const downloadLink: CSSProperties = {
   display: 'inline-block',
   fontFamily: INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -429,7 +429,7 @@ const downloadLink: CSSProperties = {
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',

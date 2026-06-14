@@ -99,10 +99,10 @@ export function StrategyDrill({
     return (
       <div style={card}>
         <div style={eyebrow}>Strategy drill · complete</div>
-        <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           You can name the kind of work before you write. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: 0 }}>
+        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: 0 }}>
           Structured for new work, transformation to reshape, analysis to review, thinking to
           plan, template to repeat, sanitisation to protect. Next, build one in the Prompt
           Wizard below.
@@ -115,17 +115,17 @@ export function StrategyDrill({
     return (
       <div style={card}>
         <div style={eyebrow}>Strategy drill · {score}/{total}</div>
-        <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           {score === total ? 'Clean sweep.' : `You matched ${score} of ${total}.`}
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 14px' }}>
+        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 14px' }}>
           Naming the kind of work is half of getting a clean result. Save this and move on to
           the Prompt Wizard.
         </p>
         <button type="button" onClick={submit} disabled={submitting} style={primaryBtn}>
           {submitting ? 'Saving…' : 'Save & continue'}
         </button>
-        {serverError && <p style={{ color: RED, fontSize: 13, marginTop: 10 }}>{serverError}</p>}
+        {serverError && <p style={{ color: RED, fontSize: 14, marginTop: 10 }}>{serverError}</p>}
       </div>
     );
   }
@@ -135,7 +135,7 @@ export function StrategyDrill({
   return (
     <div style={card}>
       <div style={eyebrow}>Strategy drill · {activity.title}</div>
-      <p style={{ color: SLATE, fontSize: 12, margin: '6px 0 12px' }}>
+      <p style={{ color: SLATE, fontSize: 13, margin: '6px 0 12px' }}>
         Task {idx + 1} of {total} · score {score}
       </p>
 
@@ -158,7 +158,7 @@ export function StrategyDrill({
               disabled={answered}
               style={{
                 fontFamily: INTER,
-                fontSize: 13,
+                fontSize: 16,
                 fontWeight: 700,
                 color: INK,
                 background: bg,
@@ -181,8 +181,8 @@ export function StrategyDrill({
           <p
             style={{
               color: INK,
-              fontSize: 13,
-              lineHeight: 1.55,
+              fontSize: 16,
+              lineHeight: 1.6,
               background: CREAM,
               borderLeft: `3px solid ${pick === round.answer ? EMERALD : GOLD_DEEP}`,
               padding: '10px 12px',
@@ -210,7 +210,7 @@ const card: CSSProperties = {
 };
 const eyebrow: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -218,7 +218,7 @@ const eyebrow: CSSProperties = {
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',

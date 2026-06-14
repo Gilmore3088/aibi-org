@@ -24,7 +24,7 @@ const INTER_STACK =
 const labelStyle: CSSProperties = {
   display: 'block',
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -40,7 +40,7 @@ const requiredMarkStyle: CSSProperties = {
 const hintStyle: CSSProperties = {
   marginTop: 6,
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: 13,
   fontWeight: 500,
   letterSpacing: '0.01em',
   color: 'var(--slate-600)',
@@ -49,7 +49,7 @@ const hintStyle: CSSProperties = {
 const errorStyle: CSSProperties = {
   marginTop: 6,
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: 13,
   fontWeight: 600,
   letterSpacing: '0.01em',
   color: 'var(--gold-deep)',
@@ -101,7 +101,7 @@ export function mockupInputStyle({ invalid, multi }: InputStyleOptions = {}): CS
     border: `1px solid ${invalid ? 'var(--gold-deep)' : 'var(--ink-a10)'}`,
     background: 'var(--cream)',
     fontFamily: INTER_STACK,
-    fontSize: multi ? 13 : 14,
+    fontSize: multi ? 16 : 16,
     fontWeight: 500,
     color: 'var(--ink)',
     resize: multi ? 'vertical' : undefined,

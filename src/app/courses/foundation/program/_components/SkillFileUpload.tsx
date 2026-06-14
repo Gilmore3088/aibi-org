@@ -81,14 +81,14 @@ export function SkillFileUpload({
     <div className="mb-6">
       <label
         htmlFor="skill-file"
-        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
+        className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1"
       >
         Skill File (.md or .txt)
-        <span className="ml-1 text-red-700 text-xs" aria-label="required">
+        <span className="ml-1 text-red-700 text-sm" aria-label="required">
           *
         </span>
       </label>
-      <p className="font-sans text-xs text-[color:var(--slate-600)] mb-2">
+      <p className="font-sans text-sm text-[color:var(--slate-600)] mb-2">
         Upload the completed skill template you built during the course.
       </p>
 
@@ -100,7 +100,7 @@ export function SkillFileUpload({
         disabled={uploadStatus === 'uploading'}
         aria-describedby={error ? 'skill-file-error' : 'skill-file-hint'}
         aria-invalid={Boolean(error)}
-        className="block w-full rounded-xl text-sm font-sans text-[color:var(--ink)] file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-[color:var(--ink-a10)] file:text-[11px] file:font-sans file:font-bold file:uppercase file:tracking-[0.22em] file:text-[color:var(--ink)] file:bg-[color:var(--cream-2)] hover:file:bg-[color:var(--ink)] hover:file:text-[color:var(--gold-soft)] hover:file:border-[color:var(--ink)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+        className="block w-full rounded-xl text-base font-sans text-[color:var(--ink)] file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-[color:var(--ink-a10)] file:text-[12px] file:font-sans file:font-bold file:uppercase file:tracking-[0.22em] file:text-[color:var(--ink)] file:bg-[color:var(--cream-2)] hover:file:bg-[color:var(--ink)] hover:file:text-[color:var(--gold-soft)] hover:file:border-[color:var(--ink)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
       />
 
       <p id="skill-file-hint" className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
@@ -125,7 +125,7 @@ export function SkillFileUpload({
       {uploadStatus === 'error' && error && (
         <p
           id="skill-file-error"
-          className="mt-1 font-sans text-xs text-red-700"
+          className="mt-1 font-sans text-sm text-red-700"
           role="alert"
         >
           Error: {error}

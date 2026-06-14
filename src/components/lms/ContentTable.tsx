@@ -17,14 +17,14 @@ function TableView({ table }: ContentTableProps) {
       className="overflow-x-auto -webkit-overflow-scrolling-touch rounded-sm border border-[color:var(--cream-2)]"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
-      <table className="w-full text-sm border-collapse min-w-[600px]">
+      <table className="w-full text-base border-collapse min-w-[600px]">
         <thead>
           <tr className="bg-[color:var(--cream-2)]">
             {table.columns.map((col) => (
               <th
                 key={col.key}
                 scope="col"
-                className="px-4 py-3 text-left font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)] whitespace-nowrap"
+                className="px-4 py-3 text-left font-mono text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] whitespace-nowrap"
               >
                 {col.header}
               </th>
@@ -40,7 +40,7 @@ function TableView({ table }: ContentTableProps) {
               {table.columns.map((col) => (
                 <td
                   key={col.key}
-                  className="px-4 py-3 text-[color:var(--ink)] align-top text-sm leading-relaxed"
+                  className="px-4 py-3 text-[color:var(--ink)] align-top text-base leading-relaxed"
                 >
                   {row[col.key] ?? ''}
                 </td>
@@ -76,10 +76,10 @@ function CardGrid({ table }: ContentTableProps) {
           <div className="px-4 pb-4 space-y-2">
             {metaColumns.map((col) => (
               <div key={col.key}>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)] block mb-0.5">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] block mb-0.5">
                   {col.header}
                 </span>
-                <span className="text-sm text-[color:var(--ink)] leading-relaxed block">
+                <span className="text-base text-[color:var(--ink)] leading-relaxed block">
                   {row[col.key] ?? ''}
                 </span>
               </div>

@@ -30,7 +30,7 @@ const TIER_ORDER = ['starting-point', 'early-stage', 'building-momentum', 'ready
 
 const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -75,11 +75,11 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
           marginBottom: 8,
         }}
       >
-        <span style={{ fontSize: 14, color: 'var(--ink)' }}>{label}</span>
+        <span style={{ fontSize: 16, color: 'var(--ink)' }}>{label}</span>
         <span
           style={{
             ...TNUM,
-            fontSize: 12,
+            fontSize: 13,
             fontWeight: 600,
             color: improved ? 'var(--gold-deep)' : 'var(--slate-500)',
           }}
@@ -130,7 +130,7 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
       </div>
 
       <div style={{ marginTop: 4 }}>
-        <span style={{ ...TNUM, fontSize: 10, color: 'var(--slate-500)' }}>
+        <span style={{ ...TNUM, fontSize: 11, color: 'var(--slate-500)' }}>
           {preScore !== null ? `${preScore} → ` : ''}
           <span style={{ color: 'var(--ink)' }}>{postScore}</span> / {maxScore}
         </span>
@@ -253,7 +253,7 @@ export function GrowthComparison({
               }}
             >
               {preScore}
-              <span style={{ fontSize: 14, fontWeight: 400 }}> / 48</span>
+              <span style={{ fontSize: 16, fontWeight: 400 }}> / 48</span>
             </p>
           </div>
           <div>
@@ -270,7 +270,7 @@ export function GrowthComparison({
               }}
             >
               {postScore}
-              <span style={{ fontSize: 14, fontWeight: 400 }}> / 48</span>
+              <span style={{ fontSize: 16, fontWeight: 400 }}> / 48</span>
             </p>
           </div>
         </div>
@@ -290,9 +290,9 @@ export function GrowthComparison({
           {preScore !== null && (
             <p
               style={{
-                fontSize: 12,
+                fontSize: 13,
                 color: 'var(--slate-500)',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
                 marginTop: 16,
               }}
             >

@@ -49,7 +49,7 @@ export function ProgramModuleCard({
       <span
         style={{
           fontFamily: FONT_INTER,
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 700,
           color: 'var(--slate-500)',
           letterSpacing: '0.14em',
@@ -73,10 +73,10 @@ export function ProgramModuleCard({
         <div
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 13,
+            fontSize: 16,
             color: 'var(--slate-600)',
             marginTop: 4,
-            lineHeight: 1.5,
+            lineHeight: 1.6,
           }}
         >
           {expanded?.goal ?? mod.output}
@@ -85,7 +85,7 @@ export function ProgramModuleCard({
       <span
         style={{
           fontFamily: FONT_INTER,
-          fontSize: 10.5,
+          fontSize: 12,
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',

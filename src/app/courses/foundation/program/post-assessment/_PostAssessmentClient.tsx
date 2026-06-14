@@ -228,7 +228,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   borderRadius: 999,
                   background: 'var(--gold-a10)',
                   color: 'var(--gold-deep)',
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -251,7 +251,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               </h1>
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 16,
                   color: 'var(--slate-600)',
                   lineHeight: 1.6,
                   margin: '0 0 24px',
@@ -290,7 +290,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   borderRadius: 999,
                   background: 'var(--gold-a10)',
                   color: 'var(--gold-deep)',
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -323,7 +323,8 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
               {preData?.score && (
                 <p
                   style={{
-                    fontSize: 15,
+                    fontSize: 17,
+                    lineHeight: 1.6,
                     color: 'var(--slate-600)',
                     marginTop: 16,
                   }}
@@ -348,7 +349,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   padding: '14px 28px',
                   background: 'var(--ink)',
                   color: 'var(--cream-2)',
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 600,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -384,7 +385,7 @@ export function PostAssessmentClient({ enrollmentId }: PostAssessmentClientProps
                   borderRadius: 999,
                   background: 'var(--gold-a20)',
                   color: 'var(--gold-soft)',
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',

@@ -77,7 +77,7 @@ export function SubTaskProgressStrip({ items }: Props) {
     >
       <nav
         style={{
-          maxWidth: 1180,
+          maxWidth: 1320,
           margin: '0 auto',
           display: 'flex',
           gap: 10,
@@ -104,7 +104,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                   borderColor: isActive ? 'var(--ink)' : 'var(--ink-a10, rgba(7,26,47,0.10))',
                   fontFamily:
                     'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: 600,
                   letterSpacing: '0.02em',
                   textDecoration: 'none',
@@ -132,7 +132,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                 {item.minutes !== null && (
                   <span
                     style={{
-                      fontSize: 11,
+                      fontSize: 13,
                       fontWeight: 500,
                       color: isActive ? 'var(--gold-soft)' : 'var(--slate-500)',
                       letterSpacing: '0.04em',

@@ -44,7 +44,7 @@ const PILLAR_ICONS: Record<Pillar, React.ReactElement> = {
 
 const statusLabel: React.CSSProperties = {
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -112,7 +112,7 @@ export function PillarCard({
       <p
         style={{
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 14,
+          fontSize: 16,
           color: 'var(--slate-600)',
           lineHeight: 1.6,
           margin: '0 0 16px',

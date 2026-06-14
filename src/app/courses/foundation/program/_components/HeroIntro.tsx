@@ -27,7 +27,7 @@ export function HeroIntro({ completedCount, promise, fetchFailed }: HeroIntroPro
         <span
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -89,7 +89,8 @@ export function HeroIntro({ completedCount, promise, fetchFailed }: HeroIntroPro
             background: 'var(--cream-2)',
             borderRadius: 12,
             fontFamily: FONT_INTER,
-            fontSize: 14,
+            fontSize: 16,
+            lineHeight: 1.6,
             color: 'var(--ink)',
           }}
         >

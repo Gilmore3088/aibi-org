@@ -50,7 +50,7 @@ const PLATFORM_TAGS: Readonly<Record<PlatformId, readonly UseCaseFilter[]>> = {
 };
 
 const kicker = {
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase' as const,
@@ -154,8 +154,8 @@ export default async function ToolGuidesPage() {
               </div>
               <p
                 style={{
-                  fontSize: 15,
-                  lineHeight: 1.55,
+                  fontSize: 16,
+                  lineHeight: 1.6,
                   color: 'var(--slate-600)',
                   margin: 0,
                   maxWidth: '70ch',
@@ -200,7 +200,7 @@ export default async function ToolGuidesPage() {
             </h2>
             <p
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 color: 'var(--slate-600)',
                 lineHeight: 1.6,
                 margin: 0,
@@ -233,7 +233,7 @@ export default async function ToolGuidesPage() {
                   <Link
                     href={item.href}
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       color: 'var(--gold-deep)',
                       textDecoration: 'underline',
                       textUnderlineOffset: 2,
