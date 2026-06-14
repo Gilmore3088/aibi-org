@@ -55,6 +55,7 @@ function StateMark({ state }: { readonly state: SubTaskState }) {
   if (state === 'done') {
     return (
       <span
+        role="img"
         aria-label="Completed"
         style={{
           display: 'inline-flex',
@@ -76,6 +77,7 @@ function StateMark({ state }: { readonly state: SubTaskState }) {
   if (state === 'in-progress') {
     return (
       <span
+        role="img"
         aria-label="In progress"
         style={{
           display: 'inline-block',
@@ -90,6 +92,7 @@ function StateMark({ state }: { readonly state: SubTaskState }) {
   }
   return (
     <span
+      role="img"
       aria-label="Pending"
       style={{
         display: 'inline-block',
