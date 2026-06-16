@@ -38,6 +38,7 @@ next-env.d.ts
 # AiBI-specific
 .env
 .env.local
+.env.local.*
 .env.production
 /.vscode
 

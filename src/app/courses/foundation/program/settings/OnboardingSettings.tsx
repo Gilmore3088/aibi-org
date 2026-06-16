@@ -12,6 +12,7 @@
 import React, { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signOutAction } from '@/app/auth/actions';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
 
@@ -594,13 +595,14 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           >
             Change email
           </a>
-          <Link
-            href="/auth/signout"
-            style={signOutLinkStyle}
+          <button
+            type="button"
+            onClick={() => { void signOutAction(); }}
+            style={{ ...signOutLinkStyle, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             Sign out
-          </Link>
+          </button>
         </div>
       </section>
     </div>

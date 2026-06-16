@@ -22,8 +22,9 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     request: { headers: request.headers },
   });
 
-  // Always forward the pathname header regardless of Supabase config.
+  // Always forward the pathname and search headers regardless of Supabase config.
   response.headers.set('x-pathname', request.nextUrl.pathname);
+  response.headers.set('x-search', request.nextUrl.search);
 
   // If Supabase is not configured (local dev without .env.local), skip session refresh.
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
@@ -45,6 +46,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
           request: { headers: request.headers },
         });
         response.headers.set('x-pathname', request.nextUrl.pathname);
+        response.headers.set('x-search', request.nextUrl.search);
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options),
         );
