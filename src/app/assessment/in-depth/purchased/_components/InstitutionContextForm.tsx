@@ -113,7 +113,7 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           gap: 12,
         }}
       >
-        <span style={{ fontSize: 20 }}>✓</span>
+        <span style={{ fontSize: 20 }} aria-hidden="true">✓</span>
         <p style={{ margin: 0, fontSize: 15, color: '#065F46', fontWeight: 600 }}>
           Saved. Your report will be personalized with this context.
         </p>
@@ -125,8 +125,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
     <form onSubmit={handleSubmit}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div>
-          <label style={labelStyle}>First name</label>
+          <label htmlFor="ictx-first-name" style={labelStyle}>First name</label>
           <input
+            id="ictx-first-name"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -136,8 +137,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           />
         </div>
         <div>
-          <label style={labelStyle}>Last name</label>
+          <label htmlFor="ictx-last-name" style={labelStyle}>Last name</label>
           <input
+            id="ictx-last-name"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -149,8 +151,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
       </div>
 
       <div style={{ marginBottom: 16 }}>
-        <label style={labelStyle}>Institution name</label>
+        <label htmlFor="ictx-institution" style={labelStyle}>Institution name</label>
         <input
+          id="ictx-institution"
           type="text"
           value={institutionName}
           onChange={(e) => setInstitutionName(e.target.value)}
@@ -162,8 +165,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div>
-          <label style={labelStyle}>Asset size</label>
+          <label htmlFor="ictx-asset-band" style={labelStyle}>Asset size</label>
           <select
+            id="ictx-asset-band"
             value={assetBand}
             onChange={(e) => setAssetBand(e.target.value)}
             style={{ ...inputStyle, cursor: 'pointer' }}
@@ -175,8 +179,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           </select>
         </div>
         <div>
-          <label style={labelStyle}>State</label>
+          <label htmlFor="ictx-state" style={labelStyle}>State</label>
           <select
+            id="ictx-state"
             value={state}
             onChange={(e) => setState(e.target.value)}
             style={{ ...inputStyle, cursor: 'pointer' }}
@@ -188,8 +193,9 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           </select>
         </div>
         <div>
-          <label style={labelStyle}>Primary regulator</label>
+          <label htmlFor="ictx-regulator" style={labelStyle}>Primary regulator</label>
           <select
+            id="ictx-regulator"
             value={regulator}
             onChange={(e) => setRegulator(e.target.value)}
             style={{ ...inputStyle, cursor: 'pointer' }}
@@ -224,7 +230,7 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           {status === 'saving' ? 'Saving…' : 'Save context'}
         </button>
         {status === 'error' && (
-          <p style={{ margin: 0, fontSize: 13, color: '#C0392B' }}>
+          <p role="alert" style={{ margin: 0, fontSize: 13, color: '#C0392B' }}>
             Could not save — check your connection and try again.
           </p>
         )}
