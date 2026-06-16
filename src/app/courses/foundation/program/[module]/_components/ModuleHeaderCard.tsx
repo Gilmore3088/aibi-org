@@ -1,9 +1,11 @@
+import type { CSSProperties } from 'react';
 import { PillarTag } from '@/components/lms';
+import type { LMSPillar } from '@/components/lms';
 import type { ModuleStatus } from '../../_lib/courseProgress';
 
 const MOCKUP_FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
-const KICKER_STYLE: React.CSSProperties = {
+const KICKER_STYLE: CSSProperties = {
   fontFamily: MOCKUP_FONT,
   fontSize: 11,
   fontWeight: 700,
@@ -12,7 +14,7 @@ const KICKER_STYLE: React.CSSProperties = {
   color: 'var(--gold-deep)',
 };
 
-const META_STYLE: React.CSSProperties = {
+const META_STYLE: CSSProperties = {
   fontFamily: MOCKUP_FONT,
   fontSize: 12,
   fontWeight: 500,
@@ -27,7 +29,7 @@ interface ModuleHeaderCardProps {
   readonly keyOutput: string;
   readonly goalLine: string;
   readonly estimatedMinutes: number;
-  readonly pillarId: string;
+  readonly pillarId: LMSPillar['id'];
   readonly status: ModuleStatus;
   readonly statusLabel: string;
 }
