@@ -822,10 +822,10 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         </button>
         <button
           type="button"
-          onClick={onBuild}
+          onClick={onBrowse}
           className="border border-[color:var(--ink-a15)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
-          Build from scratch
+          Open the BSA kit →
         </button>
       </div>
     </section>
