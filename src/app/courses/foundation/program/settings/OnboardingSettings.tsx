@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
+import { signOutAction } from '@/app/auth/actions';
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -594,13 +595,14 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           >
             Change email
           </a>
-          <Link
-            href="/auth/signout"
+          <button
+            type="button"
+            onClick={() => signOutAction()}
             style={signOutLinkStyle}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             Sign out
-          </Link>
+          </button>
         </div>
       </section>
     </div>
