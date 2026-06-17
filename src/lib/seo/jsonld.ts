@@ -12,6 +12,13 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
 export function organizationJsonLd(): Record<string, unknown> {
+  // sameAs (#278): add verified profile URLs as env vars are configured.
+  const sameAsUrls = [
+    process.env.NEXT_PUBLIC_LINKEDIN_URL,
+    process.env.NEXT_PUBLIC_TWITTER_URL,
+    process.env.NEXT_PUBLIC_YOUTUBE_URL,
+  ].filter(Boolean) as string[];
+
   return {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
@@ -40,6 +47,7 @@ export function organizationJsonLd(): Record<string, unknown> {
       '@type': 'EducationalAudience',
       educationalRole: 'community bank and credit union staff',
     },
+    ...(sameAsUrls.length > 0 ? { sameAs: sameAsUrls } : {}),
   };
 }
 

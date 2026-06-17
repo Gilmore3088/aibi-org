@@ -20,6 +20,7 @@ import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
 import { TemplateBuilder } from './_components/TemplateBuilder';
 import { ToolboxHomeV5 } from './_components/ToolboxHomeV5';
+import { WelcomeOverlay, readOnboarded } from './_components/WelcomeOverlay';
 import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
@@ -140,6 +141,13 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
   // on a Starter user), collapse back to 'guide' rather than rendering a
   // tab the user shouldn't reach.
   const safeTab = tabsForActiveTier.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
+
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  // Show welcome overlay once per browser, on first mount (#231 Slice 3).
+  useEffect(() => {
+    if (!readOnboarded()) setShowWelcome(true);
+  }, []);
 
   const [skills, setSkills] = useState<ToolboxSkill[]>([]);
   const [librarySlugMap, setLibrarySlugMap] = useState<Record<string, string>>({});
@@ -649,6 +657,10 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
             setTab('build');
           }}
         />
+      )}
+
+      {showWelcome && (
+        <WelcomeOverlay tier={tier} onDismiss={() => setShowWelcome(false)} />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type CSSProperties } from 'react';
+import { type CSSProperties, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -64,29 +64,36 @@ const stampStyle: CSSProperties = {
 };
 
 const resendBtnStyle: CSSProperties = {
-  background: 'none',
+  display: 'inline-block',
+  marginTop: 20,
+  padding: '10px 22px',
+  borderRadius: 10,
+  background: 'var(--gold)',
+  color: '#fff',
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
   border: 'none',
-  padding: 0,
   cursor: 'pointer',
-  ...linkStyle,
 };
 
 export default function ConfirmDevicePendingPage() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') ?? 'your inbox';
-  const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   async function handleResend() {
-    setResendState('sending');
+    setResendStatus('sending');
     try {
       const res = await fetch('/api/auth/check-device', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ redirectTo: '/dashboard' }),
       });
-      setResendState(res.ok ? 'sent' : 'error');
+      setResendStatus(res.ok ? 'sent' : 'error');
     } catch {
-      setResendState('error');
+      setResendStatus('error');
     }
   }
 
@@ -104,47 +111,47 @@ export default function ConfirmDevicePendingPage() {
           We only ask for this on devices we have not seen before. After this confirmation, this
           browser will recognize you for the next 90 days.
         </p>
-        <p style={stampStyle}>Link expires in 10 minutes · check spam if it does not arrive</p>
 
-        {resendState === 'idle' && (
-          <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '16px 0 0' }}>
-            Didn&rsquo;t receive it?{' '}
-            <button type="button" onClick={handleResend} style={resendBtnStyle}>
-              Resend confirmation email
-            </button>
+        {/* Resend action */}
+        {resendStatus === 'sent' ? (
+          <p style={{ fontSize: 14, color: 'var(--gold-deep)', fontWeight: 600, margin: '20px 0 0' }}>
+            New link sent — check your inbox.
           </p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => { void handleResend(); }}
+            disabled={resendStatus === 'sending'}
+            style={{ ...resendBtnStyle, opacity: resendStatus === 'sending' ? 0.6 : 1 }}
+          >
+            {resendStatus === 'sending' ? 'Sending…' : 'Resend confirmation email'}
+          </button>
         )}
-        {resendState === 'sending' && (
-          <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '16px 0 0' }}>
-            Sending&hellip;
-          </p>
-        )}
-        {resendState === 'sent' && (
-          <p style={{ fontSize: 13, color: 'var(--gold-deep)', margin: '16px 0 0', fontWeight: 600 }}>
-            New link sent. Check your inbox (and spam).
-          </p>
-        )}
-        {resendState === 'error' && (
-          <p style={{ fontSize: 13, color: '#b91c1c', margin: '16px 0 0' }}>
+        {resendStatus === 'error' && (
+          <p style={{ fontSize: 13, color: '#9b2226', margin: '8px 0 0' }}>
             Could not resend.{' '}
-            <button type="button" onClick={handleResend} style={{ ...resendBtnStyle, color: '#b91c1c' }}>
-              Try again
-            </button>{' '}
-            or{' '}
-            <Link href="/auth/login" style={{ ...linkStyle, color: '#b91c1c' }}>
-              sign in again
-            </Link>
-            .
+            <Link href="/auth/login" style={linkStyle}>Sign in again</Link> to start a new session.
           </p>
         )}
+
+        <p style={stampStyle}>Link expires in 10 minutes · check spam if it does not arrive</p>
       </div>
 
-      <p style={{ textAlign: 'center', fontSize: 14, color: 'var(--slate-600)', margin: 0 }}>
-        Wrong email?{' '}
-        <Link href="/auth/login" style={linkStyle}>
-          Sign in again
-        </Link>
-      </p>
+      <div style={{ textAlign: 'center', fontSize: 14, color: 'var(--slate-600)', margin: 0 }}>
+        <p style={{ margin: '0 0 8px' }}>
+          Wrong email?{' '}
+          <Link href="/auth/login" style={linkStyle}>
+            Sign in again
+          </Link>
+        </p>
+        <p style={{ margin: 0, fontSize: 13 }}>
+          Opened the link on a different device?{' '}
+          <Link href="/auth/login" style={linkStyle}>
+            Sign in here
+          </Link>{' '}
+          to confirm in this browser.
+        </p>
+      </div>
     </div>
   );
 }

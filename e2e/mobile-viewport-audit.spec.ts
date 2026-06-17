@@ -29,7 +29,7 @@ const PUBLIC_ROUTES: readonly RouteCase[] = [
   { path: '/', label: 'homepage', mustContain: /Turning Bankers into Builders/i },
   { path: '/for-institutions', label: 'for-institutions' },
   { path: '/for-institutions/advisory', label: 'for-institutions-advisory' },
-  { path: '/education', label: 'education' },
+  // /education was consolidated into /resources per #420 — removed from audit
   { path: '/about', label: 'about' },
   { path: '/security', label: 'security' },
   { path: '/resources', label: 'resources' },

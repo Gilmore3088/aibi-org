@@ -12,9 +12,9 @@
 import React, { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signOutAction } from '@/app/auth/actions';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
-import { signOutAction } from '@/app/auth/actions';
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -597,8 +597,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           </a>
           <button
             type="button"
-            onClick={() => signOutAction()}
-            style={signOutLinkStyle}
+            onClick={() => { void signOutAction(); }}
+            style={{ ...signOutLinkStyle, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             Sign out

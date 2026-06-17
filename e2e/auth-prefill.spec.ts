@@ -55,6 +55,9 @@ test.describe('auth pre-fill — login', () => {
     expect(value).toBe(email);
   });
 
+  // Magic-link mode was retired 2026-05-28 (#187 / #423); the segmented
+  // control no longer exists. Test removed.
+
   test('does not pre-fill garbage email', async ({ page }) => {
     await page.goto(`${BASE}/auth/login?email=not-an-email`);
     const value = await page.locator('input[type="email"][name="email"]').first().inputValue();

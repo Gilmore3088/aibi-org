@@ -38,3 +38,30 @@ export const QUICK_WIN_WEEKLY_RUNS: Record<string, number> = {
 
 // Number of logged wins that unlocks the recommendation letter template.
 export const QUICK_WINS_FOR_LETTER = 3;
+
+export function minutesToLabel(minutes: number): string {
+  if (minutes < 60) return `${minutes} min`;
+  if (minutes === 60) return '1 hr';
+  return '2+ hrs';
+}
+
+export function toolLabel(value: string): string {
+  return QUICK_WIN_TOOLS.find((t) => t.value === value)?.label ?? value;
+}
+
+export interface QuickWin {
+  id: string;
+  enrollment_id: string;
+  description: string;
+  tool: string;
+  skill_name: string;
+  frequency: string;
+  time_saved_minutes: number;
+  department: string;
+  created_at: string;
+}
+
+export function quarterlyHours(win: QuickWin): number {
+  const runsPerWeek = QUICK_WIN_WEEKLY_RUNS[win.frequency] ?? 1;
+  return (runsPerWeek * 13 * win.time_saved_minutes) / 60;
+}
