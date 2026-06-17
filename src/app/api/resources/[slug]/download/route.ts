@@ -118,7 +118,22 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     });
 
   if (signedErr || !signed?.signedUrl) {
-    return NextResponse.json({ error: 'Could not generate download URL.' }, { status: 500 });
+    // Storage failed (bucket not seeded or not created yet). For free-tier
+    // resources the file is also served as a static asset from /public/downloads/,
+    // so fall back there rather than erroring. Gated resources have no public
+    // fallback — return 503 instead of 500 so the caller knows it's transient.
+    if (resource.tier_required === 'free') {
+      console.warn(
+        `[resources:download] storage unavailable for ${slug} — falling back to static /downloads/${resource.file_path}`,
+        signedErr?.message,
+      );
+      return NextResponse.redirect(
+        new URL(`/downloads/${resource.file_path}`, request.url).toString(),
+        { status: 302 },
+      );
+    }
+    console.error(`[resources:download] storage error for ${slug}:`, signedErr?.message);
+    return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });
   }
 
   // Log download (non-blocking; failure should not break the download)

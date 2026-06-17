@@ -137,7 +137,7 @@ export const module1: Module = {
       format: 'pdf',
       triggeredBy: '1.1',
       dynamic: false,
-      downloadHref: '/downloads/regulatory-cheatsheet.pdf',
+      downloadHref: '/api/resources/regulatory-cheatsheet/download',
     },
   ],
 } as const;

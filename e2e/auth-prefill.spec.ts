@@ -6,8 +6,8 @@
 //
 // What this covers:
 //   • /auth/signup?email=foo pre-fills the email input.
-//   • /auth/login?email=foo pre-fills the email input in both password
-//     and magic-link modes.
+//   • /auth/login?email=foo pre-fills the email input (password mode only;
+//     magic-link was retired 2026-05-28).
 //   • Email-shaped guard rejects garbage values (no pre-fill of "<script>").
 //   • ?next= is preserved alongside ?email= across signup↔login.
 //   • /assessment/in-depth?reason=no-purchase shows "Purchase required".
@@ -55,16 +55,8 @@ test.describe('auth pre-fill — login', () => {
     expect(value).toBe(email);
   });
 
-  test('magic-link mode pre-fills email from ?email=', async ({ page }) => {
-    const email = 'buyer@bank.example';
-    await page.goto(`${BASE}/auth/login?email=${encodeURIComponent(email)}`);
-    // The mode toggle is a custom segmented control; match by visible text
-    // rather than ARIA role.
-    await page.locator('button:has-text("Magic Link")').first().click();
-    await page.waitForTimeout(300);
-    const value = await page.locator('input[type="email"][name="email"]').first().inputValue();
-    expect(value).toBe(email);
-  });
+  // Magic-link mode was retired 2026-05-28 (#187 / #423); the segmented
+  // control no longer exists. Test removed.
 
   test('does not pre-fill garbage email', async ({ page }) => {
     await page.goto(`${BASE}/auth/login?email=not-an-email`);

@@ -453,7 +453,7 @@ export const FOUNDATION_ARTIFACTS: readonly Artifact[] = [
     description: 'A quick reference for what to strip, what to verify, and when to escalate.',
     format: 'md',
     sourceActivityId: 'safe-prompt-conversion',
-    downloadHref: '/downloads/safe-ai-use-checklist.pdf',
+    downloadHref: '/api/resources/safe-ai-use-checklist/download',
     countsTowardCertificate: true,
   },
   {
@@ -474,7 +474,7 @@ export const FOUNDATION_ARTIFACTS: readonly Artifact[] = [
     description: 'A quick guide for choosing structured, transformation, analysis, thinking, template, or sanitization prompts.',
     format: 'worksheet',
     sourceActivityId: 'first-role-prompt',
-    downloadHref: '/downloads/prompt-strategy-cheat-sheet.pdf',
+    downloadHref: '/api/resources/prompt-strategy-cheat-sheet/download',
     countsTowardCertificate: true,
   },
   {
@@ -495,7 +495,7 @@ export const FOUNDATION_ARTIFACTS: readonly Artifact[] = [
     description: 'A plain-English AI use boundary guide for regulated banking work.',
     format: 'md',
     sourceActivityId: 'classify-the-ai-use-case',
-    downloadHref: '/downloads/red-yellow-green-use-card.pdf',
+    downloadHref: '/api/resources/red-yellow-green-use-card/download',
     countsTowardCertificate: true,
   },
   {

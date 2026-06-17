@@ -22,9 +22,8 @@ const PROTECTED_POST: ReadonlyArray<{ path: string; body: unknown; expectedStatu
 
 const PUBLIC_BUT_VALIDATED: ReadonlyArray<{ path: string; body: unknown; expectedStatus: number[] }> = [
   { path: '/api/capture-email', body: { email: 'not-an-email' }, expectedStatus: [400] },
-  { path: '/api/subscribe-newsletter', body: { email: 'not-an-email' }, expectedStatus: [400] },
+  // /api/subscribe-newsletter and /api/waitlist were removed (#426); routes no longer exist.
   { path: '/api/inquiry', body: {}, expectedStatus: [400] },
-  { path: '/api/waitlist', body: { email: 'not-an-email' }, expectedStatus: [400] },
   { path: '/api/checkout/in-depth', body: { mode: 'invalid' }, expectedStatus: [400] },
   { path: '/api/create-checkout', body: { mode: 'invalid' }, expectedStatus: [400] },
 ];
@@ -60,15 +59,19 @@ test.describe('API gates — public input validation', () => {
 });
 
 test.describe('API gates — webhook signature', () => {
+  // The webhook route returns 503 when STRIPE_WEBHOOK_SECRET is not
+  // configured (local/preview without secrets). Accept 400–499 OR 503
+  // so local runs are deterministic without leaking production secrets (#427).
   test('§16.443 /api/webhooks/stripe rejects unsigned POST', async ({ request }) => {
-    // No Stripe-Signature header → constructEvent throws → route should
-    // return 400 (NOT 200, NOT 500 with stack trace).
     const res = await request.post('/api/webhooks/stripe', {
       data: { id: 'evt_fake', type: 'checkout.session.completed' },
       headers: { 'Content-Type': 'application/json' },
     });
-    expect(res.status()).toBeGreaterThanOrEqual(400);
-    expect(res.status()).toBeLessThan(500);
+    const status = res.status();
+    expect(
+      status === 503 || (status >= 400 && status < 500),
+      `/api/webhooks/stripe returned unexpected ${status}`,
+    ).toBe(true);
   });
 
   test('§16.443 /api/webhooks/stripe rejects POST with invalid signature', async ({ request }) => {
@@ -79,8 +82,11 @@ test.describe('API gates — webhook signature', () => {
         'Stripe-Signature': 't=0,v1=deadbeef',
       },
     });
-    expect(res.status()).toBeGreaterThanOrEqual(400);
-    expect(res.status()).toBeLessThan(500);
+    const status = res.status();
+    expect(
+      status === 503 || (status >= 400 && status < 500),
+      `/api/webhooks/stripe returned unexpected ${status}`,
+    ).toBe(true);
   });
 });
 

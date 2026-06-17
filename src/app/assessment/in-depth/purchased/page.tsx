@@ -14,6 +14,7 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
 import { EmailSignInLink } from './_components/EmailSignInLink';
+import { InstitutionContextForm } from './_components/InstitutionContextForm';
 
 export const metadata: Metadata = {
   title: 'Purchase confirmed | The AI Banking Institute',
@@ -39,6 +40,7 @@ export default async function InDepthPurchasedPage({
   searchParams,
 }: InDepthPurchasedPageProps) {
   let signedInEmail: string | null = null;
+  let signedInProfileId: string | null = null;
 
   if (isSupabaseConfigured()) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -56,6 +58,7 @@ export default async function InDepthPurchasedPage({
       data: { user },
     } = await supabase.auth.getUser();
     signedInEmail = user?.email ?? null;
+    signedInProfileId = user?.id ?? null;
   }
 
   const sp = (await searchParams) ?? {};
@@ -263,6 +266,60 @@ export default async function InDepthPurchasedPage({
             </a>
             .
           </p>
+        </section>
+
+        {/* Institution context intake — personalizes the AI report. Any of
+            sessionId or signedInEmail provides the identity credential. */}
+        <section
+          className="mt-10"
+          style={{
+            border: '1px solid var(--ink-a10)',
+            background: '#fff',
+            borderRadius: 24,
+            padding: 32,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+          }}
+        >
+          <p
+            className="uppercase"
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              color: 'var(--gold-deep)',
+              marginBottom: 10,
+            }}
+          >
+            Personalize your report
+          </p>
+          <h2
+            style={{
+              fontSize: 22,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+              color: 'var(--ink)',
+              marginBottom: 8,
+            }}
+          >
+            Tell us about your institution
+          </h2>
+          <p
+            className="mb-6"
+            style={{
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: 'var(--slate-600)',
+              maxWidth: '60ch',
+            }}
+          >
+            Optional — takes 30 seconds. Your name, institution, and charter details
+            are used only to personalize the narrative and action items in your diagnostic report.
+          </p>
+          <InstitutionContextForm
+            sessionId={signedInProfileId ? null : (sp.session_id ?? null)}
+            profileId={signedInProfileId}
+          />
         </section>
 
         <section

@@ -802,7 +802,7 @@ function Drawer({
   );
 }
 
-function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
+function EmptyState({ onBrowse, onBuild: _onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
   return (
     <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-8 py-16 text-center">
       <h2 className="text-4xl tracking-[-0.025em] text-[color:var(--ink)]">
@@ -822,10 +822,10 @@ function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; read
         </button>
         <button
           type="button"
-          onClick={onBuild}
+          onClick={onBrowse}
           className="border border-[color:var(--ink-a15)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
-          Build from scratch
+          Open the BSA kit →
         </button>
       </div>
     </section>

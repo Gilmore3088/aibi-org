@@ -64,7 +64,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
         title: 'Book an Executive Briefing',
         description:
           'Use your maturity to shape a bank-wide AI operating model, training cadence, and board story.',
-        href: process.env.NEXT_PUBLIC_CALENDLY_URL ?? '/services',
+        href: '/services',
         cta: 'Contact us',
       };
   }

@@ -60,6 +60,7 @@ export default async function InDepthResultsPage({ params }: PageProps) {
         dimensionBreakdown={response.dimensionBreakdown}
         readinessAt={response.readinessAt}
         institutionContext={response.institutionContext}
+        actionPacketNotes={response.actionPacketNotes}
       />
     );
   }
