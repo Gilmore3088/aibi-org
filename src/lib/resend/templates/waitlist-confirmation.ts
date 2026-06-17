@@ -4,14 +4,15 @@ import { emailShell, kicker, heading, body, divider } from './base';
 
 export interface WaitlistConfirmationVars {
   interestLabel: string;
-  institution: string;
+  institution?: string;
 }
 
 export function waitlistConfirmationHtml(v: WaitlistConfirmationVars): string {
+  const institution = v.institution || 'your institution';
   const bodyContent = `
     ${kicker("You're on the list")}
     ${heading(`We've got you down for ${v.interestLabel}.`)}
-    ${body(`We'll reach out to <strong>${v.institution}</strong> as soon as a spot opens up. No action needed on your end.`)}
+    ${body(`We'll reach out to <strong>${institution}</strong> as soon as a spot opens up. No action needed on your end.`)}
     ${divider()}
     <p style="margin:0;font-size:14px;line-height:1.6;color:#637083">
       While you wait, the free AI Readiness Assessment is available now — 12 questions, instant results, no payment required.
@@ -26,9 +27,10 @@ export function waitlistConfirmationHtml(v: WaitlistConfirmationVars): string {
 }
 
 export function waitlistConfirmationText(v: WaitlistConfirmationVars): string {
+  const institution = v.institution || 'your institution';
   return `You're on the list — ${v.interestLabel}
 
-We've got you down for ${v.interestLabel} at ${v.institution}. We'll reach out as soon as a spot opens up.
+We've got you down for ${v.interestLabel} at ${institution}. We'll reach out as soon as a spot opens up.
 
 While you wait, the free AI Readiness Assessment is available now — 12 questions, instant results.
 https://aibankinginstitute.com/assessment
