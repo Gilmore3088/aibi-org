@@ -57,10 +57,24 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  // Dual-secret support: one deployed endpoint frequently has to validate BOTH
+  // a live-mode and a test-mode Stripe webhook (e.g. QA'ing payments in test
+  // mode against the production URL, or running both a live and a test endpoint
+  // pointed at the same path). Each mode signs with its own secret, so we accept
+  // STRIPE_WEBHOOK_SECRET (primary/live) AND an optional STRIPE_WEBHOOK_SECRET_TEST,
+  // trying each until one verifies. This removes a whole class of silent
+  // "signature verification failed" rejections that surface in Stripe's
+  // dashboard only as generic "other errors". Live secret is tried first; blanks
+  // are filtered so a defined-but-empty env var can't shadow a real one.
+  const webhookSecrets = [
+    process.env.STRIPE_WEBHOOK_SECRET,
+    process.env.STRIPE_WEBHOOK_SECRET_TEST,
+  ].filter((s): s is string => typeof s === 'string' && s.length > 0);
 
-  if (!webhookSecret) {
-    console.error('[webhook] STRIPE_WEBHOOK_SECRET is not configured.');
+  if (webhookSecrets.length === 0) {
+    console.error(
+      '[webhook] No signing secret configured (STRIPE_WEBHOOK_SECRET / STRIPE_WEBHOOK_SECRET_TEST).',
+    );
     return NextResponse.json({ error: 'Webhook not configured.' }, { status: 503 });
   }
 
@@ -75,11 +89,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // Lazy-import to avoid module-level throw at build time when env var not set.
   const { stripe } = await import('@/lib/stripe');
 
-  let event: Stripe.Event;
-  try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-  } catch (err) {
-    console.error('[webhook] Signature verification failed:', err);
+  let event: Stripe.Event | null = null;
+  let lastErr: unknown = null;
+  for (const secret of webhookSecrets) {
+    try {
+      event = stripe.webhooks.constructEvent(body, sig, secret);
+      break; // verified against this secret — stop trying
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  if (!event) {
+    console.error(
+      `[webhook] Signature verification failed against ${webhookSecrets.length} secret(s):`,
+      lastErr,
+    );
     return NextResponse.json(
       { error: 'Webhook signature verification failed.' },
       { status: 400 }
