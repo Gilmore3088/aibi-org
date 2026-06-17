@@ -5,7 +5,6 @@ import {
   QUICK_WIN_TOOLS as TOOLS,
   QUICK_WIN_FREQUENCIES as FREQUENCIES,
   QUICK_WIN_TIME_OPTIONS as TIME_OPTIONS,
-  type QuickWin,
 } from '../../_lib/quickWinsData';
 
 interface FormState {

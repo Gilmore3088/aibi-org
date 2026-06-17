@@ -95,7 +95,7 @@ export function buildCountLine(c: CountSummary): string {
 
 export function buildArtifacts(args: {
   inventoryResponse: Record<string, string> | undefined;
-  completedModules: number[];
+  completedModules: readonly number[];
   courseComplete: boolean;
   m7Title: string;
   m7SkillMd: string | null;

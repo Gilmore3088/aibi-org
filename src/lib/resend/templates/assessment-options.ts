@@ -1,7 +1,7 @@
 // Email 7: Assessment options (sent when a visitor signs up for "assessment" waitlist).
 // The assessment is live — we don't make them wait; instead we give them both options.
 
-import { emailShell, kicker, heading, body, ctaButton, divider } from './base';
+import { emailShell, kicker, heading, body, divider } from './base';
 
 export interface AssessmentOptionsVars {
   institution: string;
