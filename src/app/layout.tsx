@@ -42,6 +42,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/certifications',
   '/education',
   '/resources',
+  '/faq',
   '/privacy',
   '/terms',
   '/ai-use-disclaimer',
