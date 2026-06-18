@@ -28,10 +28,21 @@ interface Props {
  * <LMSTopBar/> with breadcrumbs specific to that route.
  */
 export function CourseShell({ modules, completed, current, learner, children }: Props) {
+  // Soft-slate course palette. The whole course was warm "cream"; the brief is
+  // a cool, modern soft slate. Rather than hand-edit every component, we
+  // override the --cream / --cream-2 custom properties for the course subtree
+  // ONLY (marketing/site keep the cream brand). Every descendant that uses
+  // var(--cream)/var(--cream-2) — the sidebar, top bar, cards, fills — recolors
+  // in one place. Tune these two values to adjust the whole course tone.
+  const slatePalette = {
+    '--cream': '#F1F5F9', // slate-100 — soft-slate canvas (was warm cream)
+    '--cream-2': '#E2E8F0', // slate-200 — secondary slate surface
+  } as React.CSSProperties;
   return (
     <div
       className="lms-shell"
       style={{
+        ...slatePalette,
         display: 'grid',
         minHeight: '100vh',
         background: 'var(--cream)',

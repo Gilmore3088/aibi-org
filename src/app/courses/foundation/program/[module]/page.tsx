@@ -210,7 +210,7 @@ export default async function ModulePage(props: ModulePageParams) {
       />
 
       <div style={{ background: 'var(--cream)', fontFamily: MOCKUP_FONT, color: 'var(--ink)' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '40px 36px 16px' }}>
+        <div style={{ maxWidth: 'none', margin: '0 auto', padding: '40px 36px 16px' }}>
           <ModuleHeaderCard
             moduleNumber={mod.number}
             titleMain={titleMain}
@@ -226,11 +226,11 @@ export default async function ModulePage(props: ModulePageParams) {
 
         {artifactFirst && <ModuleArtifactHeader meta={artifactFirst} />}
 
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 36px' }}>
+        <div style={{ maxWidth: 'none', margin: '0 auto', padding: '0 36px' }}>
           <SubTaskProgressStrip items={subTaskItems} />
         </div>
 
-        <article style={{ maxWidth: 1320, margin: '0 auto', padding: '24px 36px 80px' }}>
+        <article style={{ maxWidth: 'none', margin: '0 auto', padding: '24px 36px 80px' }}>
           <section id="st-takeaway" aria-labelledby="st-takeaway-h" style={{ scrollMarginTop: 160, paddingTop: 12 }}>
             <h2
               id="st-takeaway-h"
