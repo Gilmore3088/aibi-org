@@ -19,26 +19,27 @@ interface Props {
   };
 }
 
+// In-flow (not position:fixed) labelled control. The old fixed button floated
+// over content below the global SiteNav and "never went away" while scrolling
+// (a second mystery hamburger). In normal flow it sits at the top of the
+// course column on mobile, scrolls away with the page, and reads as an
+// intentional "Course menu" control. Hidden on desktop via the md:hidden
+// wrapper (the rail is visible there). The open drawer below stays fixed.
 const buttonStyle: CSSProperties = {
-  position: 'fixed',
-  // 68px clears the global SiteNav (sticky top:0, ~63px tall + a 5px gap).
-  // Without this offset the button overlapped the SiteNav wordmark on
-  // mobile and clipped the leading "TH" of "THE AI BANKING INSTITUTE".
-  // See #205.
-  top: 68,
-  left: 10,
-  zIndex: 30,
   display: 'inline-flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  width: 40,
-  height: 40,
-  borderRadius: 3,
+  gap: 8,
+  margin: '12px 16px',
+  padding: '8px 14px',
+  borderRadius: 10,
   background: 'var(--cream-2)',
   border: '1px solid var(--ink-a10)',
   color: 'var(--ink)',
   cursor: 'pointer',
-  padding: 0,
+  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+  fontSize: 13,
+  fontWeight: 600,
+  letterSpacing: '0.02em',
 };
 
 const backdropStyle: CSSProperties = {
@@ -128,6 +129,7 @@ export function LMSMobileNav({ modules, completed, current, learner }: Props) {
           aria-controls="lms-mobile-drawer"
         >
           <HamburgerIcon />
+          <span>Course menu</span>
         </button>
       </div>
 

@@ -97,9 +97,9 @@ export default async function CourseOverviewPage() {
 
       <div
         style={{
-          maxWidth: 1320,
+          maxWidth: 'none',
           margin: '0 auto',
-          padding: 'clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px) 104px',
+          padding: 'clamp(28px, 4vw, 48px) clamp(24px, 4vw, 56px) 104px',
         }}
       >
         {fetchFailed && (
