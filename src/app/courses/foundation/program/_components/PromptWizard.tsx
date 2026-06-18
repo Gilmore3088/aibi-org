@@ -25,7 +25,7 @@ import {
 
 const INK = '#071A2F';
 const GOLD_DEEP = '#9A7A2F';
-const CREAM = '#F7F3EA';
+const CREAM = 'var(--cream)'; // inherits the course soft-slate override (CourseShell)
 const LINE = 'rgba(7,26,47,.12)';
 const SLATE = '#475569';
 const EMERALD = '#047857';
