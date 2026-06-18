@@ -2,16 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import {
   SiteHeader,
-  Section,
-  SectionHead,
   Button,
   EyebrowChip,
   CtaBand,
 } from '@/components/mockup';
-import Link from 'next/link';
 import { PLAYBOOKS, type RoleSlug } from '../data';
 import { PlaybookDownloadButton } from '../_components/PlaybookDownloadButton';
 import { getAssetsForPlaybook, type PlaybookSlug } from '@content/playbook-assets/data';
+import { PlaybookTabs } from './PlaybookTabs';
 
 export function generateStaticParams() {
   return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
@@ -58,16 +56,33 @@ const sw = (p: IconProps) => ({
 const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
 const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
 const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
-const ChatIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>);
 const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
 const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
-const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10l-4.6 3.4L17.2 20 12 16.6 6.8 20l1.8-6.6L4 10l6.1-1.2z" /></svg>);
-const CheckIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="20 6 9 17 4 12" /></svg>);
 
 export default async function PlaybookPage({ params }: { params: Promise<{ role: string }> }) {
   const { role } = await params;
   const data = PLAYBOOKS[role as RoleSlug];
   if (!data) notFound();
+  const builtAssets = getAssetsForPlaybook(role as PlaybookSlug);
+  const tabAssets = data.assets.map((asset) => {
+    const built = builtAssets.find(
+      (a) =>
+        a.title.toLowerCase() === asset.name.toLowerCase() ||
+        a.slug === toSlug(asset.name),
+    );
+    const linkable = asset.status === 'Ready' && Boolean(built);
+    return {
+      name: asset.name,
+      type: asset.type,
+      linkable,
+      href: linkable && built ? `/playbooks/${role}/${built.slug}` : undefined,
+      statusLabel: linkable
+        ? 'Open template'
+        : asset.status === 'Draft'
+          ? 'Coming soon'
+          : 'In review',
+    };
+  });
 
   return (
     <div className="mockup-scope">
@@ -136,17 +151,8 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
                 </div>
               ))}
             </div>
-            <p
-              style={{
-                fontSize: 11,
-                lineHeight: 1.5,
-                color: 'var(--slate-500)',
-                margin: '10px 0 0',
-              }}
-            >
-              Illustrative starting picture for a typical community-bank team — not a
-              measurement. Your readiness assessment replaces these with your
-              institution&rsquo;s real scores.
+            <p className="mk-pb-snap-note">
+              Illustrative preview; your assessment personalizes the scores.
             </p>
             <div className="mk-path">
               <div className="mk-l">Recommended path</div>
@@ -156,140 +162,15 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         </div>
       </section>
 
-      {/* USE-CASE MAP */}
-      <Section variant="std">
-        <SectionHead kicker="Use-Case Map" heading={<>{data.usesHeading}</>} lede={<>Concrete, role-specific use cases replace generic AI advice.</>} />
-        <div className="mk-uses">
-          {data.uses.map((u, i) => (
-            <div key={u.title} className="mk-uc">
-              <div className="mk-top">
-                {i % 4 === 0 && <FileIcon size={24} />}
-                {i % 4 === 1 && <ShieldIcon size={24} />}
-                {i % 4 === 2 && <ChatIcon size={24} />}
-                {i % 4 === 3 && <CheckIcon size={24} />}
-                <span className={`mk-risk is-${u.risk}`}>{u.risk.toUpperCase()} RISK</span>
-              </div>
-              <h3>{u.title}</h3>
-              <p>{u.desc}</p>
-              <div className="mk-art">
-                <div className="mk-l">Artifact</div>
-                <div className="mk-v">{u.artifact}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* OPERATING MODEL */}
-      <Section variant="std" surface="cream">
-        <SectionHead kicker={`${data.eyebrow.split(' ')[0]} Operating Model`} heading={<>{data.opHeading}</>} />
-        <div className="mk-om">
-          {data.ops.map((op, i) => (
-            <div key={op.step}>
-              <div className="mk-top">
-                <span className="mk-pic">
-                  {i % 4 === 0 && <CheckIcon size={20} />}
-                  {i % 4 === 1 && <ShieldIcon size={20} />}
-                  {i % 4 === 2 && <StarIcon size={20} />}
-                  {i % 4 === 3 && <FileIcon size={20} />}
-                </span>
-                <span className="mk-step">{op.step}</span>
-              </div>
-              <h3>{op.title}</h3>
-              <p>{op.desc}</p>
-              <div className="mk-art">
-                <div className="mk-l">Artifact produced</div>
-                <div className="mk-v">{op.artifact}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* REVIEW CHECKLIST */}
-      <Section variant="std" surface="white">
-        <SectionHead kicker="Review Checklist" heading={<>Before AI output is used.</>} />
-        <div className="mk-by-dept">
-          <div className="mk-dept-grid">
-            {data.checklist.map((line) => (
-              <div key={line} className="mk-dpt" style={{ gridTemplateColumns: 'auto 1fr' }}>
-                <span className="mk-pic">
-                  <CheckIcon size={18} />
-                </span>
-                <div className="mk-nm">{line}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* TOOLBOX ASSETS — #327B: each "Ready" asset now resolves to a
-          real page at /playbooks/<role>/<asset-slug>. "Draft" assets stay
-          listed (the playbook scope hasn't changed) but render as visibly
-          unclickable cards with a "Coming soon" status so the page no
-          longer promises what we don't deliver. */}
-      <Section variant="std">
-        <SectionHead
-          kicker="Toolbox Assets"
-          heading={<>The playbook ships real tools.</>}
-          lede={<>A strong role playbook ends with downloadable, customizable work products — not slides.</>}
-        />
-        <div className="mk-cats">
-          {data.assets.map((asset) => {
-            const built = getAssetsForPlaybook(role as PlaybookSlug).find(
-              (a) =>
-                a.title.toLowerCase() === asset.name.toLowerCase() ||
-                a.slug === toSlug(asset.name),
-            );
-            const isLinkable = asset.status === 'Ready' && built;
-            const statusLabel = isLinkable
-              ? 'Open template'
-              : asset.status === 'Draft'
-                ? 'Coming soon'
-                : 'In review';
-
-            const cardBody = (
-              <div className="mk-bar" style={{ display: 'contents' }}>
-                <div className="mk-bar" />
-                <div className="mk-body">
-                  <div className="mk-top">
-                    <span className="mk-pic">
-                      <FileIcon size={20} />
-                    </span>
-                    <span
-                      className={`mk-risk is-${isLinkable ? 'low' : 'med'}`}
-                    >
-                      {statusLabel}
-                    </span>
-                  </div>
-                  <h3 style={{ fontSize: 18 }}>{asset.name}</h3>
-                  <p style={{ minHeight: 'auto' }}>{asset.type}</p>
-                </div>
-              </div>
-            );
-
-            return isLinkable && built ? (
-              <Link
-                key={asset.name}
-                href={`/playbooks/${role}/${built.slug}`}
-                className="mk-cat"
-                style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-              >
-                {cardBody}
-              </Link>
-            ) : (
-              <div
-                key={asset.name}
-                className="mk-cat"
-                aria-disabled="true"
-                style={{ opacity: 0.78, cursor: 'not-allowed' }}
-              >
-                {cardBody}
-              </div>
-            );
-          })}
-        </div>
-      </Section>
+      <PlaybookTabs
+        usesHeading={data.usesHeading}
+        useCases={data.uses}
+        opKicker={`${data.eyebrow.split(' ')[0]} operating model`}
+        opHeading={data.opHeading}
+        steps={data.ops}
+        checklist={data.checklist}
+        assets={tabAssets}
+      />
 
       <CtaBand
         kicker={`${data.eyebrow}`}

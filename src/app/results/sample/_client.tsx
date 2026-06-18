@@ -180,20 +180,14 @@ export default function ResultsPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>What your AI readiness snapshot will look like.</h1>
+            <h1>Preview the free readiness report.</h1>
             <p className="mk-lede">
-              A walkthrough of the report you receive after the free 12-question assessment.
-              Every score below is illustrative — the real assessment takes three minutes and
-              your own report renders inline once you submit your email. Want the same shape
-              with 8 scored dimensions and a role-specific roadmap? The In-Depth report
-              ($99) goes deeper across every section below.
+              See the score, tier, top gap, and recommended next step before taking the
+              12-question scan.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment/in-depth">
-                Get the In-Depth report ($99) <ArrowR className="mk-ic" />
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/assessment">
-                Take the free assessment first
+              <Button variant="gold" size="lg" href="/assessment">
+                Take the free assessment <ArrowR className="mk-ic" />
               </Button>
               <Button
                 variant="ghost-dark"

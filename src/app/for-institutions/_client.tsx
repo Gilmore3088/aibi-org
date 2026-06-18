@@ -120,61 +120,20 @@ export default function ForInstitutionsPage() {
             >
               Capability, not a platform
             </p>
-            <h1>Get your staff ready to use AI safely, by role.</h1>
+            <h1>Show AI readiness by role, not by guesswork.</h1>
             <p className="mk-lede">
-              An education engagement for banks and credit unions that need staff
-              readiness, role-based training, and leadership visibility.
-            </p>
-            <p
-              style={{
-                margin: '24px 0 8px',
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-soft)',
-              }}
-            >
-              For teams that need
-            </p>
-            <ul
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                fontSize: 15,
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.88)',
-              }}
-            >
-              <li>— Staff readiness measured</li>
-              <li>— Role-based training delivered</li>
-              <li>— Reusable AI workflows documented</li>
-              <li>— Leadership briefed on progress</li>
-            </ul>
-            <p
-              style={{
-                marginTop: 14,
-                paddingTop: 12,
-                borderTop: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.62)',
-                fontSize: 13,
-                fontWeight: 500,
-              }}
-            >
-              No software seats. No vendor lock-in.
+              A coached training engagement with staff artifacts, readiness scores,
+              and leadership visibility.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/for-institutions">
                 Contact us <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#engagement">
-                See enrollment options
+                Enrollment options
               </Button>
             </div>
+            <p className="mk-hero-foot">No software seats. No vendor lock-in.</p>
           </div>
 
           {/* Mobile-only: compact metric summary */}

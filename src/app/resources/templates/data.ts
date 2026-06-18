@@ -12,6 +12,7 @@
 //   - GAO 25-107197 (May 2025)
 
 export type TemplateSlug =
+  | 'ai-use-case-inventory'
   | 'ai-use-policy-starter'
   | 'ai-workflow-sop'
   | 'board-briefing-checklist'
@@ -39,6 +40,70 @@ export interface Template {
 }
 
 export const TEMPLATES: readonly Template[] = [
+  {
+    slug: 'ai-use-case-inventory',
+    title: 'AI Use-Case Inventory',
+    dek: 'A register for documenting every approved, restricted, and proposed AI use case before it becomes normal work.',
+    audience: 'Compliance, risk, operations, and AI program owners',
+    readMinutes: 6,
+    sourcedFrom: [
+      'AIEOG AI Lexicon — AI governance, AI use case inventory',
+      'SR 11-7 Model Risk Management Guidance',
+      'Interagency TPRM Guidance',
+    ],
+    sections: [
+      {
+        heading: 'Use case',
+        intro:
+          'Name the AI-assisted work in plain language. The title should tell a reviewer what staff are trying to accomplish without needing a demo.',
+        items: [
+          'Business purpose: the operational, member, risk, or compliance reason this use case exists.',
+          'Owning department and named owner.',
+          'Current status: proposed, sandbox, approved, restricted, retired.',
+        ],
+      },
+      {
+        heading: 'Tool and vendor',
+        intro:
+          'Record the exact tool being used, including whether it is a public AI service, a vendor feature, or a private deployment.',
+        items: [
+          'Tool name, vendor, and version if known.',
+          'Approved-list status and approval date.',
+          'Vendor agreement, retention setting, and review owner.',
+        ],
+      },
+      {
+        heading: 'Data class',
+        intro:
+          'Document the highest-risk data that may enter the workflow. If the workflow can operate without confidential or regulated data, say so explicitly.',
+        items: [
+          'Public, internal, confidential, NPI, regulated, or examination-sensitive.',
+          'Whether customer-identifying data is prohibited, restricted, or allowed only in an approved private tool.',
+          'Sanitization rule before any prompt is used.',
+        ],
+      },
+      {
+        heading: 'Human review',
+        intro:
+          'Every reusable AI workflow needs a named review point before output is relied on, sent, filed, or shared.',
+        items: [
+          'Reviewer role and backup reviewer.',
+          'Review criteria: accuracy, data handling, regulatory references, tone, and final-use approval.',
+          'Evidence retained: prompt, output, reviewer notation, or ticket reference.',
+        ],
+      },
+      {
+        heading: 'Risk tier and cadence',
+        intro:
+          'Assign a risk tier and a review cadence so the inventory remains useful after the first approval conversation.',
+        items: [
+          'Low, medium, high, or blocked with reason.',
+          'Re-review trigger: tool change, policy change, incident, vendor update, or annual cycle.',
+          'Next review date and accountable owner.',
+        ],
+      },
+    ],
+  },
   {
     slug: 'ai-use-policy-starter',
     title: 'AI Use Policy Starter',

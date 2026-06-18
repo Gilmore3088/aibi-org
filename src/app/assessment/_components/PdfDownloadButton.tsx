@@ -11,6 +11,9 @@ type State =
 
 interface PdfDownloadButtonProps {
   readonly profileId: string;
+  readonly label?: string;
+  readonly compact?: boolean;
+  readonly className?: string;
 }
 
 async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; message: string }> {
@@ -30,7 +33,12 @@ async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; m
   }
 }
 
-export function PdfDownloadButton({ profileId }: PdfDownloadButtonProps) {
+export function PdfDownloadButton({
+  profileId,
+  label = 'Download PDF',
+  compact = false,
+  className = '',
+}: PdfDownloadButtonProps) {
   const [state, setState] = useState<State>({ kind: 'warming' });
 
   useEffect(() => {
@@ -91,34 +99,48 @@ export function PdfDownloadButton({ profileId }: PdfDownloadButtonProps) {
     }
   };
 
+  const shellClass = compact
+    ? `inline-flex items-center ${className}`
+    : `mt-12 text-center ${className}`;
+
+  const buttonClass = compact
+    ? 'inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--gold)] px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]'
+    : 'inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--gold)] px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]';
+
   return (
     <>
-      <div className="mt-12 text-center" data-print-hide="true">
+      <div className={shellClass} data-print-hide="true">
         {state.kind === 'warming' && (
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55">
-            Preparing your brief&hellip;
+          <p
+            className={
+              compact
+                ? 'text-[14px] font-semibold text-[color:var(--slate-600)]'
+                : 'text-[13px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55'
+            }
+          >
+            Preparing PDF&hellip;
           </p>
         )}
         {state.kind === 'ready' && (
           <button
             onClick={handleDownload}
-            className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[12px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors"
+            className={buttonClass}
           >
-            Download PDF
+            {label}
           </button>
         )}
         {state.kind === 'downloading' && (
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55">
+          <p className="text-[14px] font-semibold text-[color:var(--ink)]/55">
             Downloading&hellip;
           </p>
         )}
         {state.kind === 'done' && (
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
+          <p className="text-[14px] font-semibold text-[color:var(--gold-deep)]">
             Downloaded
           </p>
         )}
         {state.kind === 'error' && (
-          <p className="text-[10px] text-[color:#9b2226]">
+          <p className="text-[14px] text-[color:#9b2226]">
             Could not prepare PDF: {state.message}
           </p>
         )}

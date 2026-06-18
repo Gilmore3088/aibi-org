@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { MockupShell } from '@/components/mockup';
+import { DocumentPreview, MockupShell } from '@/components/mockup';
 import { GuideRequestForm } from './_components/GuideRequestForm';
 
 export const metadata: Metadata = {
@@ -42,49 +42,23 @@ const GUIDE_CHAPTERS = [
   },
 ] as const;
 
+const REGULATORY_REFERENCES = [
+  'SR 11-7 — Model Risk',
+  'Interagency TPRM Guidance',
+  'ECOA / Reg B',
+  'AIEOG AI Lexicon',
+] as const;
+
 export default function SecurityPage() {
   return (
     <MockupShell
       activePath="/security"
       eyebrow="Security & Governance · Free guide"
-      title={<>AI governance built for institutions that get examined.</>}
+      title={<>Set the AI boundary before staff use it.</>}
       lede={
         <>
-          <span style={{ display: 'block', marginBottom: 16 }}>
-            If your board has been asking whether AI is safe for a regulated institution,
-            the answer is not a brochure. It is a framework.
-          </span>
-          <span
-            style={{
-              display: 'block',
-              fontSize: 14,
-              fontWeight: 600,
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-soft)',
-              marginBottom: 10,
-            }}
-          >
-            Aligned with
-          </span>
-          <ul
-            style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              display: 'grid',
-              gap: 8,
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              fontSize: 15,
-              fontWeight: 600,
-              color: 'rgba(255,255,255,0.92)',
-            }}
-          >
-            <li>SR 11-7 — Model Risk</li>
-            <li>Interagency TPRM Guidance</li>
-            <li>ECOA / Reg B</li>
-            <li>AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC · Feb 2026)</li>
-          </ul>
+          A practical guide to approved tools, restricted data, human review,
+          and evidence your examiners can understand.
         </>
       }
       heroAside={
@@ -128,144 +102,51 @@ export default function SecurityPage() {
               margin: '0 0 20px',
             }}
           >
-            Six chapters. Written for community banks and credit unions. One page per chapter.
-            Maps directly to SR 11-7 and the AIEOG AI Lexicon.
+            Six one-page decisions for community banks and credit unions.
           </p>
           <GuideRequestForm />
-
-          {/* Companion takeaways — direct download, no gate. Pair the full 48-page guide
-              with two single-page artifacts a banker can print and tape to a wall. */}
-          <div
-            style={{
-              marginTop: 28,
-              paddingTop: 20,
-              borderTop: '1px solid rgba(255,255,255,0.16)',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                letterSpacing: '1.8px',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.55)',
-                fontWeight: 600,
-                marginBottom: 12,
-              }}
-            >
-              Companion takeaways
-            </div>
-            <a
-              href="/api/resources/safe-ai-use-checklist/download"
-              download
-              style={{
-                display: 'block',
-                color: '#fff',
-                textDecoration: 'none',
-                padding: '10px 0',
-                borderBottom: '1px solid rgba(255,255,255,0.10)',
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Safe AI Use Checklist (PDF) →
-            </a>
-            <a
-              href="/api/resources/red-yellow-green-use-card/download"
-              download
-              style={{
-                display: 'block',
-                color: '#fff',
-                textDecoration: 'none',
-                padding: '10px 0',
-                borderBottom: '1px solid rgba(255,255,255,0.10)',
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Red / Yellow / Green Use Card (PDF) →
-            </a>
-            {/* All three resolve through the resources API (entitlement +
-                download logging); the Supabase resources seed has run, so the
-                free-tier desk cards and playbook return the signed file. */}
-            <a
-              href="/api/resources/compliance-playbook/download"
-              download
-              style={{
-                display: 'block',
-                color: '#fff',
-                textDecoration: 'none',
-                padding: '10px 0',
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Compliance Officer Playbook (PDF) →
-            </a>
-          </div>
         </aside>
       }
       sections={[
         {
           kicker: '§01 · What is inside',
-          heading: <>Six chapters your compliance officer will actually read.</>,
+          heading: <>Preview the guide before you request it.</>,
           body: (
-            <div
-              style={{
-                display: 'grid',
-                gap: 32,
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                marginTop: 32,
-              }}
-            >
-              {GUIDE_CHAPTERS.map((chapter, idx) => (
-                <article
-                  key={chapter.title}
-                  style={{
-                    borderTop: '1px solid var(--slate-200)',
-                    paddingTop: 20,
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily:
-                        'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                      fontSize: 13,
-                      fontWeight: 600,
-                      fontVariantNumeric: 'tabular-nums',
-                      color: 'var(--gold-deep)',
-                      margin: '0 0 12px',
-                    }}
-                  >
-                    {String(idx + 1).padStart(2, '0')}
+            <DocumentPreview
+              eyebrow="Safe AI Use Guide"
+              title="Six one-page decisions, not a governance textbook."
+              dek="Each chapter gives a boundary, a banking example, and the artifact that proves the work."
+              sections={GUIDE_CHAPTERS.map((chapter) => ({
+                heading: chapter.title,
+                lines: [chapter.body],
+              }))}
+              aside={
+                <>
+                  <p className="mk-proof-eyebrow">Companion takeaways</p>
+                  <p>
+                    The PDF pairs with printable desk cards and the Compliance Officer
+                    Playbook, so staff have a short answer when the next AI question
+                    appears.
                   </p>
-                  <h3
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 600,
-                      lineHeight: 1.25,
-                      color: 'var(--ink)',
-                      margin: '0 0 12px',
-                    }}
-                  >
-                    {chapter.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 15,
-                      lineHeight: 1.6,
-                      color: 'var(--slate-600)',
-                      margin: 0,
-                    }}
-                  >
-                    {chapter.body}
-                  </p>
-                </article>
-              ))}
-            </div>
+                </>
+              }
+            />
           ),
         },
         {
-          kicker: '§02 · Not just a PDF',
+          kicker: '§02 · Regulatory alignment',
+          heading: <>The guide uses the vocabulary your reviewers expect.</>,
+          body: (
+            <div className="mk-reg-ref-grid">
+              {REGULATORY_REFERENCES.map((reference) => (
+                <div key={reference}>{reference}</div>
+              ))}
+            </div>
+          ),
+          surface: 'cream',
+        },
+        {
+          kicker: '§03 · Not just a PDF',
           heading: (
             <>The guide is the starting point. The engagement is how it gets operationalized.</>
           ),

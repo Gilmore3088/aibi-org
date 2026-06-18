@@ -72,6 +72,29 @@ interface CourseJsonLdInput {
   readonly priceUSD?: number;
 }
 
+interface FAQJsonLdInput {
+  readonly questions: readonly {
+    readonly question: string;
+    readonly answer: string;
+  }[];
+}
+
+interface ArticleJsonLdInput {
+  readonly slug: string;
+  readonly headline: string;
+  readonly description: string;
+  readonly datePublished?: string;
+  readonly dateModified?: string;
+  readonly authorName?: string;
+}
+
+interface BreadcrumbJsonLdInput {
+  readonly items: readonly {
+    readonly name: string;
+    readonly slug: string;
+  }[];
+}
+
 export function courseJsonLd(input: CourseJsonLdInput): Record<string, unknown> {
   const courseUrl = `${SITE_URL}${input.slug}`;
   return {
@@ -107,6 +130,56 @@ export function courseJsonLd(input: CourseJsonLdInput): Record<string, unknown> 
           },
         }
       : {}),
+  };
+}
+
+export function faqPageJsonLd(input: FAQJsonLdInput): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: input.questions.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function articleJsonLd(input: ArticleJsonLdInput): Record<string, unknown> {
+  const articleUrl = `${SITE_URL}${input.slug}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${articleUrl}#article`,
+    headline: input.headline,
+    description: input.description,
+    url: articleUrl,
+    mainEntityOfPage: articleUrl,
+    publisher: { '@id': `${SITE_URL}#organization` },
+    author: {
+      '@type': 'Organization',
+      name: input.authorName ?? 'The AI Banking Institute',
+      url: SITE_URL,
+    },
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+    inLanguage: 'en-US',
+  };
+}
+
+export function breadcrumbListJsonLd(input: BreadcrumbJsonLdInput): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: input.items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.slug}`,
+    })),
   };
 }
 

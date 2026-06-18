@@ -16,6 +16,7 @@ import {
   Section,
   EyebrowChip,
   CtaBand,
+  DocumentPreview,
 } from '@/components/mockup';
 import {
   PLAYBOOK_ASSETS,
@@ -58,6 +59,15 @@ function playbookLabel(slug: string): string {
     / Playbook$/,
     '',
   ) ?? slug;
+}
+
+function sectionPreviewLines(section: AssetSection): string[] {
+  if (section.items && section.items.length > 0) return section.items.slice(0, 3);
+  if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
+  if (section.principle) return [section.principle];
+  if (section.intro) return [section.intro];
+  if (section.prompt) return ['Copy the prompt block, then adapt the role, context, and review owner.'];
+  return ['Open the full section below for detail.'];
 }
 
 export default async function PlaybookAssetPage(props: PageProps) {
@@ -113,6 +123,38 @@ export default async function PlaybookAssetPage(props: PageProps) {
           </div>
         </div>
       </section>
+
+      <Section variant="std" surface="white">
+        <DocumentPreview
+          eyebrow={`${a.kind} preview`}
+          title={a.title}
+          dek={a.dek}
+          sections={a.sections.slice(0, 4).map((section) => ({
+            heading: section.heading,
+            lines: sectionPreviewLines(section),
+          }))}
+          aside={
+            <>
+              <p className="mk-proof-eyebrow">Use this when</p>
+              <p>{a.audience} need a structured starting point before adoption.</p>
+              <p className="mk-proof-eyebrow" style={{ marginTop: 18 }}>
+                Next step
+              </p>
+              <p>
+                Review the full artifact below, then return to the role playbook
+                for related tools.
+              </p>
+              <Link
+                href={`/playbooks/${a.playbook}`}
+                className="mk-btn mk-btn-gold"
+                style={{ marginTop: 18, color: 'var(--ink)' }}
+              >
+                Back to playbook
+              </Link>
+            </>
+          }
+        />
+      </Section>
 
       {/* Sections — each rendered with the PDF .play-head pattern: a navy
           panel introducing the section, then the content body in a white

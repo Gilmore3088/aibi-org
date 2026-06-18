@@ -18,20 +18,15 @@ import {
   ArrowRight,
   CheckCircle,
   Download,
-  Layers,
 } from './icons';
 import {
-  type ChooserTab,
   type DeskCard as DeskCardData,
   type PaidPreview as PaidPreviewData,
-  type ProblemPath,
   type RolePlaybook,
   type StarterKit,
   type Template as TemplateData,
-  chooserTabs,
   deskCards,
   paidPreviews,
-  problemPaths,
   rolePlaybooks,
   starterKits,
   templates,
@@ -104,7 +99,6 @@ function paidPreviewMatches(preview: PaidPreviewData, f: FilterState): boolean {
 }
 
 export function ResourcesExperience() {
-  const [activeTab, setActiveTab] = useState<ChooserTab>('By role');
   const [selectedKit, setSelectedKit] = useState<StarterKit>(starterKits[0]);
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
 
@@ -136,14 +130,14 @@ export function ResourcesExperience() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>Find the AI artifact your team needs next.</h1>
+            <h1>Start with the artifact, not a blank page.</h1>
             <p className="mk-lede">
-              Playbooks, checklists, templates, and prompt cards for banks and credit unions
-              moving from AI curiosity to governed practice.
+              Policy starters, workflow SOPs, review checklists, and prompt cards built for
+              banking teams.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#starter-kits">
-                Browse starter kits <ArrowRight size={16} />
+                Browse kits <ArrowRight size={16} />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/assessment">
                 Get readiness score
@@ -159,30 +153,6 @@ export function ResourcesExperience() {
       <div className="rx-page-grid">
         <FilterRail filters={filters} setFilters={setFilters} />
         <div className="rx-page-main">
-
-      <Section variant="std">
-        <div className="rx-chooser">
-          <div className="rx-chooser-rail">
-            <div className="mk-k">Choose your starting point</div>
-            <h2>Tell us what you need.</h2>
-            <div className="rx-chooser-tabs">
-              {chooserTabs.map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActiveTab(tab)}
-                  aria-pressed={activeTab === tab}
-                  className={`rx-tab${activeTab === tab ? ' rx-tab-active' : ''}`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </div>
-          <ChooserPanel activeTab={activeTab} />
-        </div>
-      </Section>
-
       <Section variant="std" id="starter-kits">
         <SectionHead
           kicker="Featured starter kits"
@@ -258,9 +228,9 @@ export function ResourcesExperience() {
           <div className="rx-paid-grid">
             <div>
               <SectionHead
-                kicker="Preview paid outputs"
-                heading="See what the assessments produce before you buy."
-                lede="Use sample reports and buyer guides to decide whether the free snapshot or in-depth assessment is the right next step."
+                kicker="Sample outputs"
+                heading="See the deliverables before you choose."
+                lede="Open the sample report or playbook, then start with the free score if you need a recommendation."
               />
               <div className="rx-grid rx-grid-2 rx-feature-mobile">
                 {visiblePaidPreviews.map((preview) => (
@@ -359,70 +329,17 @@ function FeaturedKit({
               </li>
             ))}
           </ul>
-          <Button variant="ink" href={selectedKit.zip} className="rx-featured-cta">
-            Download kit ZIP · {selectedKit.zipSize} <Download size={16} />
+          <Button
+            variant="ink"
+            href={selectedKit.zip}
+            className="rx-featured-cta"
+            aria-label={`Download ${selectedKit.title} kit`}
+          >
+            Download kit <Download size={16} />
           </Button>
         </div>
       </div>
     </div>
-  );
-}
-
-function ChooserPanel({ activeTab }: { activeTab: ChooserTab }) {
-  if (activeTab === 'By problem') {
-    return (
-      <div className="rx-chooser-panel">
-        {problemPaths.map((path) => (
-          <ProblemCard key={path.title} path={path} />
-        ))}
-      </div>
-    );
-  }
-  if (activeTab === 'By format') {
-    const formats: { label: string; href: string }[] = [
-      { label: 'Playbook', href: '#role-playbooks' },
-      { label: 'Checklist', href: '#desk-cards' },
-      { label: 'Template', href: '#templates' },
-      { label: 'Prompt card', href: '/prompt-cards' },
-      { label: 'Report sample', href: '/api/resources/sample-readiness-report/download' },
-      { label: 'Markdown', href: '#templates' },
-    ];
-    return (
-      <div className="rx-chooser-panel">
-        {formats.map((f) => (
-          <a key={f.label} href={f.href} className="rx-mini-card">
-            <Layers size={24} className="rx-mini-icon" />
-            <p className="rx-mini-title">{f.label}</p>
-            <p className="rx-mini-sub">Browse by artifact type</p>
-          </a>
-        ))}
-      </div>
-    );
-  }
-  return (
-    <div className="rx-chooser-panel">
-      {rolePlaybooks.map((role) => {
-        const Icon = role.icon;
-        return (
-          <a key={role.slug} href={`/playbooks/${role.slug}`} className="rx-mini-card">
-            <Icon size={24} className="rx-mini-icon" />
-            <p className="rx-mini-title">{role.title}</p>
-            <p className="rx-mini-sub">Open role path</p>
-          </a>
-        );
-      })}
-    </div>
-  );
-}
-
-function ProblemCard({ path }: { path: ProblemPath }) {
-  const Icon = path.icon;
-  return (
-    <a className="rx-mini-card" href={path.href} target={path.href.startsWith('/') ? '_self' : undefined}>
-      <Icon size={24} className="rx-mini-icon" />
-      <p className="rx-mini-title">{path.title}</p>
-      <p className="rx-mini-sub">{path.artifact}</p>
-    </a>
   );
 }
 
@@ -459,8 +376,12 @@ function StarterKitCard({
           {kit.items.length} {kit.items.length === 1 ? 'file' : 'files'} · click to preview contents
         </p>
       </button>
-      <a className="rx-kit-card-zip" href={kit.zip}>
-        Download kit ZIP · {kit.items.length} files · {kit.zipSize} <Download size={14} />
+      <a
+        className="rx-kit-card-zip"
+        href={kit.zip}
+        aria-label={`Download ${kit.title} kit`}
+      >
+        Download kit <Download size={14} />
       </a>
     </article>
   );
@@ -510,9 +431,15 @@ function TemplateCard({ template }: { template: TemplateData }) {
         <Button variant="ink" href={template.href}>
           Open
         </Button>
-        {template.pdf && (
-          <Button variant="ghost-light" href={template.pdf}>
-            PDF <Download size={16} />
+        {template.download && (
+          <Button
+            variant="ghost-light"
+            href={template.download}
+            className="rx-download-icon-btn"
+            aria-label={`Download ${template.title}`}
+            title={`Download ${template.title}`}
+          >
+            <Download size={18} />
           </Button>
         )}
       </div>
@@ -541,9 +468,11 @@ function PaidPreviewCard({ preview }: { preview: PaidPreviewData }) {
       <Icon size={28} className="rx-kit-icon" />
       <h3 className="rx-kit-title">{preview.title}</h3>
       <p className="rx-kit-desc">{preview.desc}</p>
-      <Button variant="ghost-light" href={preview.href}>
-        Preview <ArrowRight size={16} />
-      </Button>
+      <div className="rx-pb-actions">
+        <Button variant="ink" href={preview.href}>
+          {preview.actionLabel} <ArrowRight size={16} />
+        </Button>
+      </div>
     </article>
   );
 }

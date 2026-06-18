@@ -19,7 +19,6 @@
 // The free funnel uses v3 (12 questions, 12 individual-voice signals).
 
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { SiteHeader } from '@/components/mockup';
@@ -167,7 +166,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     paddingBottom: 2,
                   }}
                 >
-                  Compare with the free scan →
+                  See what&apos;s included →
                 </a>
               </div>
             </div>
@@ -211,12 +210,12 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
           </section>
         )}
 
-        {/* COMPARE + BUY — two product cards, In-Depth recommended */}
+        {/* REPORT + BUY — keep the paid diagnostic as the primary product. */}
         <section id="compare" style={{ padding: '32px 0 64px' }}>
           <div className="mk-container">
             <div style={{ maxWidth: 880, margin: '0 auto 48px' }}>
               <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 14 }}>
-                Two ways in
+                In-depth assessment
               </span>
               <h2
                 style={{
@@ -227,11 +226,11 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   letterSpacing: '-0.02em',
                   color: 'var(--ink)',
                   margin: '14px 0 16px',
-                  maxWidth: '22ch',
+                  maxWidth: '24ch',
                 }}
               >
-                Curious, or{' '}
-                <span style={{ color: 'var(--gold-deep)' }}>deciding</span>?
+                Forty-eight questions.{' '}
+                <span style={{ color: 'var(--gold-deep)' }}>Eight dimensions.</span>
               </h2>
               <p
                 style={{
@@ -243,9 +242,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '52ch',
                 }}
               >
-                The free scan tells you roughly where you stand. The In-Depth
-                tells you what to do about it — and gives you a document to hand
-                your CEO, your board, or your examiner.
+                This page is for teams that need a decision document, not another
+                lightweight scan. Use the free snapshot only if you are not ready
+                for the full diagnostic yet.
               </p>
             </div>
 
@@ -256,97 +255,11 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 gridTemplateColumns: '1fr',
                 gap: 24,
                 alignItems: 'stretch',
+                maxWidth: 780,
+                margin: '0 auto',
               }}
               className="mk-in-depth-grid"
             >
-              {/* FREE — the curious browser */}
-              <article
-                style={{
-                  border: '1px solid var(--ink-a10)',
-                  background: '#fff',
-                  borderRadius: 24,
-                  padding: 'clamp(28px, 3.4vw, 40px)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  boxShadow: 'var(--shadow-soft)',
-                }}
-              >
-                <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 16, alignSelf: 'flex-start' }}>
-                  For the curious
-                </span>
-                <h3
-                  style={{
-                    fontFamily: INTER_STACK,
-                    fontSize: 28,
-                    fontWeight: 700,
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.015em',
-                    color: 'var(--ink)',
-                    margin: '0 0 10px',
-                  }}
-                >
-                  Free Readiness Scan
-                </h3>
-                <p
-                  style={{
-                    fontFamily: INTER_STACK,
-                    fontSize: 15,
-                    lineHeight: 1.55,
-                    color: 'var(--slate-600)',
-                    margin: '0 0 24px',
-                    maxWidth: '34ch',
-                  }}
-                >
-                  Twelve questions. Three minutes. A score and a tier — enough
-                  to know which conversation to start at your bank.
-                </p>
-                <p
-                  style={{
-                    fontFamily: INTER_STACK,
-                    fontSize: 36,
-                    fontWeight: 700,
-                    color: 'var(--ink)',
-                    lineHeight: 1,
-                    margin: '0 0 24px',
-                  }}
-                >
-                  Free
-                </p>
-                <Link
-                  href="/assessment/take"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '14px 22px',
-                    borderRadius: 12,
-                    border: '1px solid var(--ink)',
-                    color: 'var(--ink)',
-                    fontFamily: INTER_STACK,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Take the free scan →
-                </Link>
-                <p
-                  style={{
-                    fontFamily: INTER_STACK,
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'var(--slate-500)',
-                    margin: '14px 0 0',
-                  }}
-                >
-                  No account required
-                </p>
-              </article>
-
               {/* IN-DEPTH — recommended, gold-bordered */}
               <article
                 style={{
@@ -501,20 +414,36 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     ))}
                   </ul>
                 </div>
+                <a
+                  href="/assessment/take"
+                  style={{
+                    marginTop: 18,
+                    alignSelf: 'flex-start',
+                    color: 'var(--gold-deep)',
+                    fontFamily: INTER_STACK,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid var(--gold-a40)',
+                    paddingBottom: 2,
+                  }}
+                >
+                  Not ready? Take the free 12-question snapshot →
+                </a>
               </article>
             </div>
           </div>
         </section>
 
 
-        {/* THREE WAYS — narrative replacement for the old 8-row comparison
-            table. Per 2026-05-28 audit reframe: 'a banking/research brand
-            shouldn't read like a SaaS pricing table'. */}
+        {/* USE CASES — in-depth page should stay centered on the paid diagnostic. */}
         <section style={{ padding: '64px 0 96px', background: 'var(--cream-2)', borderTop: '1px solid var(--ink-a10)' }}>
           <div className="mk-container">
             <div style={{ maxWidth: 720, margin: '0 auto 36px' }}>
               <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 14 }}>
-                Three ways in
+                Use it when
               </span>
               <h2
                 style={{
@@ -528,7 +457,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '24ch',
                 }}
               >
-                Different jobs, different reports.
+                The in-depth assessment answers leadership questions.
               </h2>
             </div>
 
@@ -543,24 +472,24 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               className="mk-three-ways-grid"
             >
               <NarrativeCard
-                kicker="Free · 3 min"
-                title="Know where to start."
-                body="Twelve questions. A score and a tier. Enough to decide which conversation to have next — internal training, a board update, or the In-Depth diagnostic."
-                ctaLabel="Take the free scan →"
-                ctaHref="/assessment"
+                kicker="Board baseline"
+                title="You need a real readiness readout."
+                body="A normalized score, maturity band, and written explanation that leaders can review without unpacking raw survey answers."
+                ctaLabel="Purchase In-Depth →"
+                ctaHref="/assessment/in-depth#purchase"
               />
               <NarrativeCard
                 featured
-                kicker=" · Recommended"
-                title="Know what to do."
-                body="Forty-eight questions across eight dimensions. A written report with peer-band comparison and a ninety-day playbook keyed to your lowest-scoring dimensions."
+                kicker="Eight dimensions"
+                title="You need to know what is weak."
+                body="Dimension-level gaps turn a generic AI conversation into concrete priorities across governance, data, workflow, documentation, and leadership."
                 ctaLabel="Purchase In-Depth → "
                 ctaHref="/assessment/in-depth#purchase"
               />
               <NarrativeCard
-                kicker="Team · 10+ seats"
-                title="Know where your departments differ."
-                body="Anonymized cohort dashboard. Per-dimension medians and p25/p75 bands across your roster. Pair with a coached rollout for institutions running real change."
+                kicker="Team rollout · 10+ seats"
+                title="You need department-level evidence."
+                body="Aggregate results reveal where readiness differs by function, so training and governance work can be sequenced by actual gaps."
                 ctaLabel="Contact us →"
                 ctaHref="/for-institutions"
               />

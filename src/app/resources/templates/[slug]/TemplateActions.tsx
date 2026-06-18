@@ -2,12 +2,8 @@
 
 // Copy / download affordances for a static template page (qa-site-walk U18).
 // The template renders as read-only HTML; a banker is meant to adapt it in an
-// afternoon, so give them one-click "Copy Markdown" (paste into their own
-// tools) plus a branded PDF download. The PDF is served from Supabase Storage
-// via /api/resources/template-<slug>/download — the same signed-URL +
-// download-log path as every other resource, so the file is on-brand,
-// trackable, and counted. The old raw .md blob download was unbranded and
-// bypassed that logging entirely.
+// afternoon, so give them a Word-compatible document first, plus one-click
+// "Copy Markdown" for teams that want plain text.
 
 import { useState } from 'react';
 import { Button } from '@/components/mockup';
@@ -15,9 +11,10 @@ import { Button } from '@/components/mockup';
 interface TemplateActionsProps {
   readonly markdown: string;
   readonly slug: string;
+  readonly surface?: 'dark' | 'light';
 }
 
-export function TemplateActions({ markdown, slug }: TemplateActionsProps) {
+export function TemplateActions({ markdown, slug, surface = 'light' }: TemplateActionsProps) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -27,21 +24,25 @@ export function TemplateActions({ markdown, slug }: TemplateActionsProps) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Clipboard blocked (insecure context / permissions) — no-op; the
-      // PDF download is the fallback path.
+      // Word download is the fallback path.
     }
   }
 
   return (
     <div className="mk-tpl-copy" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-      <Button variant="gold" onClick={copy} aria-label="Copy this template as Markdown">
-        {copied ? 'Copied' : 'Copy Markdown'}
+      <Button
+        variant="gold"
+        href={`/api/resources/templates/${slug}/word`}
+        aria-label="Download this template as a Word document"
+      >
+        Download Word doc
       </Button>
       <Button
-        variant="ghost-light"
-        href={`/api/resources/template-${slug}/download`}
-        aria-label="Download this template as a branded PDF"
+        variant={surface === 'dark' ? 'ghost-dark' : 'ghost-light'}
+        onClick={copy}
+        aria-label="Copy this template as Markdown"
       >
-        Download PDF
+        {copied ? 'Copied' : 'Copy text'}
       </Button>
     </div>
   );

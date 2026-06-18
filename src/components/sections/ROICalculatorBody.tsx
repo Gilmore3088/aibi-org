@@ -75,8 +75,8 @@ export function ROICalculatorBody({
   );
 
   return (
-    <div className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-8 md:p-10">
-      <div className="space-y-6">
+    <div className="mk-roi-calculator">
+      <div className="mk-roi-controls">
         <Slider
           label="Full-time employees"
           value={fte}
@@ -115,14 +115,14 @@ export function ROICalculatorBody({
         />
       </div>
 
-      <div className="mt-10 pt-8 border-t border-[color:var(--ink)]/10">
-        <p className="font-serif-sc text-[11px] uppercase tracking-[0.15em] text-[color:var(--ink)]/70 mb-3">
-          Estimated annual labor hours recaptured
+      <div className="mk-roi-result">
+        <p className="mk-roi-result-label">
+          Estimated annual value recaptured
         </p>
-        <p className="font-mono text-5xl md:text-6xl text-[color:var(--gold)] leading-none tabular-nums">
+        <p className="mk-roi-result-value">
           {formatCurrency(result.mid)}
         </p>
-        <p className="font-mono text-xs text-[color:var(--ink)]/70 mt-3 leading-snug">
+        <p className="mk-roi-result-meta">
           Range: {formatCurrency(result.low)} &ndash; {formatCurrency(result.high)} &middot;{' '}
           {formatNumber(result.hoursPerYear)} hours/year &middot;{' '}
           ~{result.payrollRecaptured}% of payroll
@@ -136,7 +136,7 @@ export function ROICalculatorBody({
               ? () => trackBriefingBooked({ source: briefingSource })
               : undefined
           }
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+          className="mk-roi-result-cta"
         >
           {ctaLabel}
         </a>
@@ -158,15 +158,15 @@ interface SliderProps {
 function Slider({ label, value, min, max, step, onChange, display }: SliderProps) {
   const inputId = `roi-slider-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
-    <div>
-      <div className="flex items-baseline justify-between mb-2">
+    <div className="mk-roi-slider">
+      <div className="mk-roi-slider-head">
         <label
           htmlFor={inputId}
-          className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/70"
+          className="mk-roi-slider-label"
         >
           {label}
         </label>
-        <span className="font-mono text-base text-[color:var(--ink)]" aria-hidden="true">
+        <span className="mk-roi-slider-value" aria-hidden="true">
           {display}
         </span>
       </div>
@@ -179,7 +179,7 @@ function Slider({ label, value, min, max, step, onChange, display }: SliderProps
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         aria-valuetext={display}
-        className="w-full accent-[color:var(--gold)]"
+        className="mk-roi-range"
       />
     </div>
   );

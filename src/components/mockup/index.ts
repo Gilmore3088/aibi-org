@@ -36,5 +36,21 @@ export type { ArticleShellProps } from './ArticleShell';
 
 export { ArticleTOC } from './ArticleTOC';
 
+export {
+  ArticleVisualSummary,
+  DocumentPreview,
+  FAQAccordion,
+  RiskMatrix,
+  WorkflowMap,
+} from './ProofPreviews';
+export type {
+  ArticleVisualSummaryItem,
+  DocumentPreviewSection,
+  FAQAccordionGroup,
+  FAQAccordionItem,
+  RiskMatrixRow,
+  WorkflowMapStep,
+} from './ProofPreviews';
+
 export { BottomSheet } from './BottomSheet';
 export type { BottomSheetProps } from './BottomSheet';

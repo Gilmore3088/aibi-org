@@ -72,9 +72,52 @@ const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconPro
   { step: 'Build', title: 'Save reviewed workflows', body: 'Prompts, SOPs, and review checklists you keep — reusable across your team.', icon: ToolboxStackIcon, tier: 'paid' },
 ];
 
+const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [string, string][] }> = {
+  Assess: {
+    label: 'Sample readiness output',
+    title: 'Score, top gap, first artifact',
+    rows: [
+      ['Readiness', '62 / 100'],
+      ['Top gap', 'Workflow documentation'],
+      ['Starter', 'AI Workflow SOP'],
+    ],
+  },
+  Train: {
+    label: 'Foundation course output',
+    title: 'Module work becomes a packet',
+    rows: [
+      ['Module', 'Data boundary'],
+      ['Practice', 'Sanitized prompt run'],
+      ['Artifact', 'Acceptable Use card'],
+    ],
+  },
+  Practice: {
+    label: 'Sandbox run',
+    title: 'Scenario before real work',
+    rows: [
+      ['Data', 'Synthetic only'],
+      ['Output', 'Draft job aid'],
+      ['Review', 'Manager checklist'],
+    ],
+  },
+  Build: {
+    label: 'Saved workflow',
+    title: 'Prompt becomes reusable',
+    rows: [
+      ['Asset', 'Campaign review skill'],
+      ['Owner', 'Marketing + compliance'],
+      ['Status', 'Reviewed v1.1'],
+    ],
+  },
+};
+
 // ---------- Page ----------
 
 export default function HomePage() {
+  const [activeValueStep, setActiveValueStep] = useState(VALUE_PATH[0].step);
+  const activePreview = VALUE_PREVIEWS[activeValueStep];
+  const activeValueId = activeValueStep.toLowerCase();
+
   return (
     <div className="mockup-scope">
       <SiteHeader activePath="/" />
@@ -120,20 +163,49 @@ export default function HomePage() {
           kicker="The value path"
           heading={<>Start with readiness. Leave with reviewed workflows.</>}
         />
-        <div className="mk-value-path">
-          {VALUE_PATH.map(({ step, title, body, icon: Icon, tier }) => (
-            <div key={step} className="mk-vp-card">
-              <span className="mk-pic">
-                <Icon className="mk-ic-lg" size={20} />
-              </span>
-              <div className="mk-k">{step}</div>
-              <h3 className="mk-vp-title">{title}</h3>
-              <p className="mk-vp-body">{body}</p>
-              <span className={`mk-vp-tier mk-vp-tier-${tier}`}>
-                {tier === 'free' ? 'Free' : 'In Foundation course'}
-              </span>
+        <div className="mk-value-proof">
+          <div className="mk-value-proof-steps" role="tablist" aria-label="Value path preview">
+            {VALUE_PATH.map(({ step, title, body, icon: Icon, tier }) => (
+              <button
+                key={step}
+                id={`value-${step.toLowerCase()}-tab`}
+                type="button"
+                role="tab"
+                aria-selected={activeValueStep === step}
+                aria-controls={`value-${step.toLowerCase()}-panel`}
+                className={activeValueStep === step ? 'is-active' : undefined}
+                onClick={() => setActiveValueStep(step)}
+              >
+                <span className="mk-pic">
+                  <Icon className="mk-ic-lg" size={20} />
+                </span>
+                <span className="mk-k">{step}</span>
+                <strong>{title}</strong>
+                <span>{body}</span>
+                <em>{tier === 'free' ? 'Free' : 'In Foundation course'}</em>
+              </button>
+            ))}
+          </div>
+          <div
+            id={`value-${activeValueId}-panel`}
+            className="mk-value-proof-panel"
+            role="tabpanel"
+            aria-labelledby={`value-${activeValueId}-tab`}
+          >
+            <p className="mk-k">{activePreview.label}</p>
+            <h3>{activePreview.title}</h3>
+            <div className="mk-value-proof-rows">
+              {activePreview.rows.map(([label, value]) => (
+                <div key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
             </div>
-          ))}
+            <p className="mk-value-proof-note">
+              Each step produces a concrete artifact your team can review, save, and reuse.
+            </p>
+          </div>
         </div>
       </Section>
 
@@ -147,13 +219,13 @@ export default function HomePage() {
           heading={<>What could one hour saved per employee be worth?</>}
           lede={<>Adjust team size, cost, and the low/high range of hours automatable per week. See annual value, hours recaptured, and payroll percentage.</>}
         />
-        <ROIAccordion>
+        <div className="mk-roi-wrap">
           <ROICalculatorBody
             ctaLabel="Take the Assessment"
             ctaHref="/assessment/take"
             briefingSource="home"
           />
-        </ROIAccordion>
+        </div>
       </Section>
 
       <CtaBand
@@ -170,27 +242,6 @@ export default function HomePage() {
         href="/assessment/take"
         source="home-sticky"
       />
-    </div>
-  );
-}
-
-// Mobile: collapses the ROI calculator behind a "See what an hour saved is
-// worth →" trigger so the 4 sliders + result block don't eat ~600px of
-// vertical scroll. Desktop: trigger hidden, body always visible.
-// 2026-05-28 mobile audit punch-list item.
-function ROIAccordion({ children }: { readonly children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className={`mk-roi-wrap mk-roi-accordion${open ? ' is-open' : ''}`}>
-      <button
-        type="button"
-        className="mk-roi-accordion-trigger"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-      >
-        {open ? 'Hide the calculator' : 'See what an hour saved is worth →'}
-      </button>
-      <div className="mk-roi-accordion-body">{children}</div>
     </div>
   );
 }
@@ -225,25 +276,77 @@ function HeroReportCard() {
   );
 }
 
-const PRICE_TIERS: { label: string; price: string; note: string }[] = [
-  { label: 'Readiness baseline', price: 'Free', note: '12 questions, 3 minutes' },
-  { label: 'In-Depth Report', price: '$99', note: '48-question deep dive' },
-  { label: 'AiBI-Foundation Course', price: '$295', note: 'Full curriculum + certificate' },
-  { label: 'Institutional pricing', price: 'Custom', note: 'Team seats, on request' },
+const PRICE_TIERS: {
+  eyebrow: string;
+  label: string;
+  price: string;
+  note: string;
+  href: string;
+  action: string;
+  featured?: boolean;
+}[] = [
+  {
+    eyebrow: 'Start here',
+    label: 'Readiness baseline',
+    price: 'Free',
+    note: '12 questions. Score, top gap, and first artifact.',
+    href: '/assessment/take',
+    action: 'Start free',
+    featured: true,
+  },
+  {
+    eyebrow: 'Deep dive',
+    label: 'In-Depth Report',
+    price: '$99',
+    note: '48-question diagnostic with a 90-day playbook.',
+    href: '/assessment/in-depth',
+    action: 'View report',
+  },
+  {
+    eyebrow: 'Capability',
+    label: 'AiBI-Foundation',
+    price: '$295',
+    note: 'Course, practice reps, artifacts, and certificate.',
+    href: '/courses',
+    action: 'Explore course',
+  },
+  {
+    eyebrow: 'Teams',
+    label: 'Institutional rollout',
+    price: 'Custom',
+    note: 'Cohorts, seats, reporting, and advisory support.',
+    href: '/for-institutions',
+    action: 'Talk to us',
+  },
 ];
 
 function PriceStrip() {
   return (
-    <div className="mk-price-strip">
-      <div className="mk-container">
-        {PRICE_TIERS.map(({ label, price, note }) => (
-          <div key={label} className="mk-price-tile">
-            <span className="mk-price-amount">{price}</span>
-            <span className="mk-price-label">{label}</span>
-            <span className="mk-price-note">{note}</span>
-          </div>
-        ))}
+    <section className="mk-price-strip" aria-labelledby="home-price-strip-heading">
+      <div className="mk-container mk-price-strip-inner">
+        <div className="mk-price-strip-copy">
+          <p className="mk-k">Choose a path</p>
+          <h2 id="home-price-strip-heading">Start small or build the full capability.</h2>
+          <p>Each path leads to a concrete output, not another generic AI webinar.</p>
+        </div>
+        <div className="mk-price-options">
+          {PRICE_TIERS.map(({ eyebrow, label, price, note, href, action, featured }) => (
+            <a
+              key={label}
+              href={href}
+              className={`mk-price-option${featured ? ' is-featured' : ''}`}
+            >
+              <span className="mk-price-eyebrow">{eyebrow}</span>
+              <span className="mk-price-amount">{price}</span>
+              <span className="mk-price-label">{label}</span>
+              <span className="mk-price-note">{note}</span>
+              <span className="mk-price-action">
+                {action} <ArrowGlyph />
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
