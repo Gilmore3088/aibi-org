@@ -110,26 +110,46 @@ export async function loadAssessmentResponse(
 
   // The id parameter is user_profiles.id, used as a bearer token.
   const client = createServiceRoleClient();
-  const COLUMNS =
-    'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context, action_packet_notes';
-  const primary = await client
-    .from('user_profiles')
-    .select(COLUMNS)
-    .eq('id', id)
-    .maybeSingle();
+  // Core columns exist in every deployed schema. The optional columns ship in
+  // later migrations (00044 action_packet_notes, 00045 institution_context).
+  // Putting them in the SELECT is NOT fail-open: if prod runs code ahead of its
+  // migrations, the query errors and EVERY result 404s — the 2026-06-18
+  // incident where all assessments (free + paid) were unreachable while
+  // 00044/00045 were unapplied. So we try the full select and, on any error
+  // (typically "column does not exist"), retry with the core columns. The
+  // optional fields are then read defensively (?? null) below.
+  const CORE_COLUMNS =
+    'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role';
+  const OPTIONAL_COLUMNS = 'institution_context, action_packet_notes';
+
+  const selectProfile = async (column: 'id' | 'previous_id') => {
+    const full = await client
+      .from('user_profiles')
+      .select(`${CORE_COLUMNS}, ${OPTIONAL_COLUMNS}`)
+      .eq(column, id)
+      .maybeSingle();
+    if (!full.error) return full;
+    console.warn(
+      `[load-response] full select on ${column} failed (likely unapplied migration), retrying core columns:`,
+      full.error.message,
+    );
+    return client
+      .from('user_profiles')
+      .select(CORE_COLUMNS)
+      .eq(column, id)
+      .maybeSingle();
+  };
+
+  const primary = await selectProfile('id');
   let data = primary.data;
 
   // Fallback: back-fill-profile re-keys user_profiles.id to the auth user id
   // when a lead converts, which orphaned previously-emailed /results/{oldId}
   // bearer links (journey audit 2026-06-10, F5). previous_id (migration
   // 00042) records the pre-conversion id; honor it so old links keep
-  // resolving. Fail-open if the column doesn't exist yet.
+  // resolving. Fail-open if the previous_id column doesn't exist yet.
   if (!primary.error && !data) {
-    const fallback = await client
-      .from('user_profiles')
-      .select(COLUMNS)
-      .eq('previous_id', id)
-      .maybeSingle();
+    const fallback = await selectProfile('previous_id');
     if (!fallback.error && fallback.data) {
       data = fallback.data;
     }
