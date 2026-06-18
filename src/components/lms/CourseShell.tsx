@@ -35,8 +35,10 @@ export function CourseShell({ modules, completed, current, learner, children }: 
   // var(--cream)/var(--cream-2) — the sidebar, top bar, cards, fills — recolors
   // in one place. Tune these two values to adjust the whole course tone.
   const slatePalette = {
-    '--cream': '#F1F5F9', // slate-100 — soft-slate canvas (was warm cream)
-    '--cream-2': '#E2E8F0', // slate-200 — secondary slate surface
+    '--cream': '#F1F5F9', // slate-100 — the single soft-slate canvas tone
+    '--cream-2': '#FFFFFF', // white surfaces (sidebar, cards, fills) — one gray,
+    // not two. The earlier slate-100 + slate-200 pairing read as clashing
+    // "double grays"; white surfaces on a soft-slate canvas is cleaner.
   } as React.CSSProperties;
   return (
     <div
