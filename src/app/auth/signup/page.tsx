@@ -4,7 +4,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { signUp, sanitizeNext } from '@/lib/supabase/auth';
+import { signUp, resetPassword, sanitizeNext } from '@/lib/supabase/auth';
 import { MIN_PASSWORD_LENGTH, PASSWORD_HINT, validatePassword } from '@/lib/auth/password-policy';
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
@@ -133,7 +133,11 @@ export default function SignupPage() {
 
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  const [done, setDone] = useState(false);
+  // 'created'  → brand-new account, confirm via inbox link.
+  // 'existing' → email already had an account (e.g. provisioned at purchase);
+  //              we sent a "set your password" link instead of pretending the
+  //              typed password was saved.
+  const [done, setDone] = useState<null | 'created' | 'existing'>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -180,10 +184,55 @@ export default function SignupPage() {
       setError(result.error);
       return;
     }
-    setDone(true);
+    // The email already has an account (commonly: the Stripe webhook
+    // provisioned it at purchase). signUp did NOT set the password, so send a
+    // real "set your password" link rather than claim success.
+    if (result.alreadyRegistered) {
+      await resetPassword(email);
+      setDone('existing');
+      return;
+    }
+    setDone('created');
   }
 
-  if (done) {
+  if (done === 'existing') {
+    return (
+      <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ textAlign: 'center' }}>
+          <p style={eyebrowStyle}>You already have an account</p>
+          <h1 style={h1Style}>Check your inbox to set your password.</h1>
+        </div>
+        <div style={cardStyle}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
+            This email already has an account — your purchase set it up for you.
+            We just emailed a link to <strong>set your password</strong>. Click it,
+            choose a password, and you&rsquo;re in.
+          </p>
+          <p
+            style={{
+              margin: '12px 0 0',
+              fontSize: 11,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--slate-500)',
+              fontWeight: 600,
+              textAlign: 'center',
+            }}
+          >
+            The link expires in 24 hours · check spam if you don&apos;t see it
+          </p>
+        </div>
+        <p style={footerStyle}>
+          Already set it?{' '}
+          <Link href="/auth/login" style={linkStyle}>
+            Sign in
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
+  if (done === 'created') {
     return (
       <div style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: 20 }}>
         <div style={{ textAlign: 'center' }}>
