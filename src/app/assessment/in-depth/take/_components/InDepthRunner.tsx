@@ -79,6 +79,15 @@ export function InDepthRunner(): React.ReactElement {
             role,
           }),
         });
+        // Session lapsed during the ~20-minute assessment (the common cause
+        // of a completion that scores on-screen but never saves). Answers are
+        // preserved in sessionStorage by useAssessmentV4, so bounce through
+        // login and the restored state auto-resubmits on return — the
+        // completion is never lost.
+        if (response.status === 401) {
+          router.replace('/auth/login?next=/assessment/in-depth/take');
+          return;
+        }
         const data = (await response.json()) as { profileId?: string; error?: string };
         if (!response.ok) {
           setSubmit({
@@ -98,7 +107,8 @@ export function InDepthRunner(): React.ReactElement {
       } catch {
         setSubmit({
           kind: 'error',
-          message: 'Network error. Try clicking "Retry" below.',
+          message:
+            'Network error — your answers are saved on this device. Tap “Retry” to finish saving.',
         });
         submittedRef.current = false;
       }
