@@ -8,10 +8,12 @@ import {
 } from '@/components/mockup';
 import { PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 
+const PLAYBOOK_COUNT = PLAYBOOK_INDEX.length;
+
 export const metadata: Metadata = {
   title: 'Role Playbooks — The AI Banking Institute',
   description:
-    'Six role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, and IT/InfoSec. Reviewed prompts and reusable templates.',
+    'Nine role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, IT/InfoSec, executive, operations, and training/HR. Reviewed prompts and reusable templates.',
 };
 
 type IconProps = { className?: string; size?: number };
@@ -57,11 +59,10 @@ export default function PlaybooksIndexPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>Six role playbooks. Each one ends with usable artifacts.</h1>
+            <h1>Nine role playbooks. Each one ends with usable artifacts.</h1>
             <p className="mk-lede">
-              Pick the playbook for your role. Each is built around the same shape — use cases,
-              operating model, review checklist, evidence, and Toolbox assets — and ends with
-              work products you can ship Monday.
+              Pick the playbook for your role. Each one opens into use cases,
+              workflow, checklist, and ready-to-use assets.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/playbooks/compliance">
@@ -72,6 +73,7 @@ export default function PlaybooksIndexPage() {
               </Button>
             </div>
           </div>
+          <PlaybooksHeroPacket />
         </div>
       </section>
 
@@ -101,13 +103,62 @@ export default function PlaybooksIndexPage() {
 
       <CtaBand
         kicker="Role Playbooks"
-        heading={<>Six roles. One unified craft.</>}
-        body={<>Each playbook is built around the same operating model so the institution gets a coherent rollout instead of six disconnected efforts.</>}
+        heading={<>Nine roles. One operating model.</>}
+        body={<>Each playbook uses the same artifact structure so the institution gets a coherent rollout instead of disconnected AI experiments.</>}
         actions={[
           { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
           { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
         ]}
       />
     </div>
+  );
+}
+
+function PlaybooksHeroPacket() {
+  const readyAssets = Object.values(PLAYBOOKS)
+    .flatMap((playbook) => playbook.assets)
+    .filter((asset) => asset.status === 'Ready').length;
+
+  return (
+    <aside className="mk-pb-snap mk-playbooks-hero-packet" aria-label="Playbook packet preview">
+      <div className="mk-head">
+        <div className="mk-k">Playbook packet</div>
+        <div className="mk-t">Open a role. Leave with working assets.</div>
+      </div>
+      <div className="mk-quick">
+        <div className="mk-q">
+          <UsersIcon size={24} />
+          <div className="mk-l">Roles</div>
+          <div className="mk-v">{PLAYBOOK_COUNT} mapped paths</div>
+        </div>
+        <div className="mk-q">
+          <FileIcon size={24} />
+          <div className="mk-l">Views</div>
+          <div className="mk-v">Use cases · workflow · checklist · assets</div>
+        </div>
+        <div className="mk-q">
+          <ShieldIcon size={24} />
+          <div className="mk-l">Assets</div>
+          <div className="mk-v">{readyAssets}+ ready items</div>
+        </div>
+      </div>
+      <div className="mk-ms">
+        {['Select role', 'Review workflow', 'Open assets'].map((step, idx) => (
+          <div key={step} className="mk-ms-row">
+            <div className="mk-top">
+              <div className="mk-l">{step}</div>
+              <div className="mk-v">0{idx + 1}</div>
+            </div>
+            <div className="mk-bar">
+              <div className="mk-fill" style={{ width: `${68 + idx * 14}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mk-path">
+        <div className="mk-l">Packet flow</div>
+        <div className="mk-v">Role map → controlled workflow → reusable artifact</div>
+      </div>
+    </aside>
   );
 }

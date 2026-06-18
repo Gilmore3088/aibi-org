@@ -4,6 +4,7 @@
  * tokens in tokens-mockup.css; do not introduce new colors here. */
 
 .mockup-scope .rx-grid { display: grid; gap: 1.25rem; }
+.mockup-scope .rx-grid > * { min-width: 0; }
 @media (min-width: 768px) { .mockup-scope .rx-grid-2 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 768px) { .mockup-scope .rx-grid-3 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mockup-scope .rx-grid-3 { grid-template-columns: repeat(3, 1fr); } }
@@ -222,8 +223,14 @@
   background: transparent; border: 1px solid rgba(200, 162, 74, .4);
   text-transform: uppercase; letter-spacing: .14em;
 }
-.mockup-scope .rx-kit-title { font-size: 1.5rem; font-weight: 600; margin-top: 1.25rem; }
-.mockup-scope .rx-kit-desc { font-size: .875rem; line-height: 1.55; color: var(--slate-600); margin-top: .75rem; }
+.mockup-scope .rx-kit-title {
+  font-size: 1.5rem; font-weight: 600; margin-top: 1.25rem;
+  overflow-wrap: anywhere;
+}
+.mockup-scope .rx-kit-desc {
+  font-size: .875rem; line-height: 1.55; color: var(--slate-600); margin-top: .75rem;
+  overflow-wrap: anywhere;
+}
 .mockup-scope .rx-kit-audience {
   font-size: .75rem; font-weight: 600; text-transform: uppercase;
   letter-spacing: .14em; color: var(--gold-deep); margin-top: 1.25rem;
@@ -236,7 +243,29 @@
   border-radius: .75rem; background: var(--cream);
   padding: .5rem .75rem; font-size: .875rem; font-weight: 600; color: var(--slate-600);
 }
-.mockup-scope .rx-pb-actions { display: flex; gap: .5rem; margin-top: 1.25rem; }
+.mockup-scope .rx-pb-actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+  max-width: 100%;
+}
+.mockup-scope .rx-pb-actions .rx-download-icon-btn {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  justify-content: center;
+  flex: none;
+}
+@media (max-width: 767px) {
+  .mockup-scope .rx-pb-actions {
+    flex-wrap: wrap;
+  }
+  .mockup-scope .rx-pb-actions .mk-btn:not(.rx-download-icon-btn) {
+    padding: 0 12px;
+  }
+}
 .mockup-scope .rx-template-format {
   font-size: .75rem; font-weight: 600; text-transform: uppercase;
   letter-spacing: .14em; color: var(--gold-deep); margin-top: 1.25rem;
@@ -264,6 +293,7 @@
   border: 1px solid rgba(7, 26, 47, .1);
   transition: transform .15s ease, box-shadow .15s ease;
 }
+.mockup-scope .rx-desk-card > * { min-width: 0; }
 .mockup-scope .rx-desk-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-feature, 0 24px 40px -20px rgba(0,0,0,.20));
@@ -472,6 +502,7 @@
    Sticky left rail on desktop ≥1024px, collapsible <details> below.
    The rail sits in normal flow on small screens. */
 .mockup-scope .rx-page-grid {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;

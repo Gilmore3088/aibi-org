@@ -88,7 +88,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'compliance',
     eyebrow: 'Compliance Officer Playbook',
     title: 'Use AI without creating invisible risk.',
-    lede: 'A role-specific playbook for compliance teams to evaluate use cases, document workflows, review AI outputs, and help business teams adopt AI safely.',
+    lede: 'Evaluate use cases, document workflows, and review AI outputs before business teams scale them.',
     snapTitle: 'Compliance AI Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Safe adoption' },
@@ -141,7 +141,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'retail',
     eyebrow: 'Branch / Retail Playbook',
     title: 'Coach your frontline. Recover from hiccups. Move members.',
-    lede: 'Practical AI use for branch managers and frontline teams: coaching scripts, service recovery flows, and one-page references that actually get used.',
+    lede: 'Coaching scripts, service recovery flows, and one-page references your frontline can use.',
     snapTitle: 'Retail Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Faster enablement' },
@@ -194,7 +194,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'marketing',
     eyebrow: 'Marketing Playbook',
     title: 'Ship faster without skipping disclosure or review.',
-    lede: 'AI-assisted marketing for community banks and credit unions — campaign drafts with disclosure flags surfaced, brand variations, and a review path that actually closes.',
+    lede: 'Draft campaigns faster with disclosure flags surfaced and a review path that closes.',
     snapTitle: 'Marketing Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Faster review' },
@@ -247,7 +247,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'lending',
     eyebrow: 'Lending Playbook',
     title: 'Defensible decisions, faster.',
-    lede: 'Use AI to write better adverse-action letters, run fair-lending pre-checks, and document decline rationales in a way that holds up to review.',
+    lede: 'Write clearer letters, run fair-lending pre-checks, and document decisions for review.',
     snapTitle: 'Lending Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Defensible decisions' },
@@ -300,7 +300,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'bsa-aml',
     eyebrow: 'BSA / AML Playbook',
     title: 'Sharpen the SAR. Tighten CDD. Lose the noise.',
-    lede: 'Use AI to triage alerts, summarize SAR narratives, and document CDD baselines — without ever putting customer data into a model.',
+    lede: 'Triage alerts, draft SAR narratives, and document CDD drift without exposing customer data.',
     snapTitle: 'BSA / AML Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Sharper SAR' },
@@ -353,7 +353,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'infosec',
     eyebrow: 'IT / InfoSec Playbook',
     title: 'Decide which tools, which data, and which people — defensibly.',
-    lede: 'A playbook for the people who own the tool stack and the NPI boundary. Classify data, vet tools, document the verdict, and help business teams adopt approved AI without bypassing you.',
+    lede: 'Classify data, vet tools, document the verdict, and keep the NPI boundary visible.',
     snapTitle: 'IT / InfoSec Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Defensible verdict' },
@@ -406,7 +406,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'executive',
     eyebrow: 'Executive / Leadership Playbook',
     title: 'Set the direction. Govern the adoption. Report the return.',
-    lede: 'A playbook for the people who own the outcome: frame where AI earns its keep, put guardrails in place before staff improvise them, and turn scattered experiments into a number you can take to the board.',
+    lede: 'Set the AI direction, approve the guardrails, and report adoption with evidence.',
     snapTitle: 'Executive AI Direction Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Governed ROI' },
@@ -459,7 +459,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'operations',
     eyebrow: 'Operations Playbook',
     title: 'Turn ad hoc AI use into workflows a colleague could run.',
-    lede: 'A playbook for the people who own how the work gets done: take the AI shortcuts your team already uses, document them into repeatable workflows, and hand them off without losing the review step.',
+    lede: 'Turn useful AI shortcuts into documented workflows a colleague can run.',
     snapTitle: 'Operations Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Repeatable workflows' },
@@ -512,7 +512,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
     slug: 'training-hr',
     eyebrow: 'Training / HR Playbook',
     title: 'Build the capability adoption actually depends on.',
-    lede: 'A playbook for the people who build staff capability: replace generic AI awareness with role-specific safe-use training, give people examples they can apply the same day, and track who is actually ready.',
+    lede: 'Replace generic AI awareness with role-specific practice and visible readiness tracking.',
     snapTitle: 'Training / HR Enablement Map',
     snapQuick: [
       { label: 'Primary Goal', value: 'Staff readiness' },

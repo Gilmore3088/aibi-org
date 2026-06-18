@@ -3,7 +3,7 @@ import ForInstitutionsPage from './_client';
 
 const TITLE = 'For Institutions';
 const DESCRIPTION =
-  'Bring AI proficiency to your community bank or credit union — cohort enrollment, leader dashboard, and aggregate readiness across the eight dimensions.';
+  'A coached AI training engagement for community banks and credit unions with role-based staff artifacts, readiness scores, and leadership visibility.';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/for-institutions' },

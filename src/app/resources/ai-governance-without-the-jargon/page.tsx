@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
-import { ArticleShell } from "@/components/mockup";
+import { ArticleShell, ArticleVisualSummary, RiskMatrix } from "@/components/mockup";
+import { articleJsonLd, jsonLdString } from '@/lib/seo/jsonld';
+
+const ARTICLE_TITLE = 'AI Governance Without the Jargon — A Plain-Language Guide for Community Bankers';
+const ARTICLE_DESCRIPTION =
+  'Five regulatory frameworks govern AI use at community banks and credit unions today. Here is what each one actually means for your daily work — no law degree required.';
 
 export const metadata: Metadata = {
-  title: 'AI Governance Without the Jargon — A Plain-Language Guide for Community Bankers',
-  description:
-    'Five regulatory frameworks govern AI use at community banks and credit unions today. Here is what each one actually means for your daily work — no law degree required.',
+  title: ARTICLE_TITLE,
+  description: ARTICLE_DESCRIPTION,
 };
 
 const FRAMEWORKS = [
@@ -46,8 +50,20 @@ const FRAMEWORKS = [
 ] as const;
 
 export default function AIGovernanceWithoutJargonArticle() {
+  const articleSchema = articleJsonLd({
+    slug: '/resources/ai-governance-without-the-jargon',
+    headline: ARTICLE_TITLE,
+    description: ARTICLE_DESCRIPTION,
+    datePublished: '2026-04-01',
+    dateModified: '2026-05-01',
+  });
+
   return (
     <ArticleShell readMinutes={12} byline="The AI Banking Institute" lastUpdated="May 2026" showTOC>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: jsonLdString(articleSchema) }}
+    />
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -68,6 +84,26 @@ export default function AIGovernanceWithoutJargonArticle() {
             actually means for the people doing the work.
           </p>
         </header>
+
+        <ArticleVisualSummary
+          eyebrow="Plain-language map"
+          title="Five frameworks. One operating question."
+          metric={{ value: '5', label: 'regulatory lenses already governing AI use' }}
+          items={[
+            {
+              label: 'Credit work',
+              body: 'SR 11-7 and ECOA / Reg B decide whether an AI-supported output is explainable enough to use.',
+            },
+            {
+              label: 'Vendor work',
+              body: 'TPRM decides whether the tool and its data path have been reviewed before deployment.',
+            },
+            {
+              label: 'Policy work',
+              body: 'The AIEOG Lexicon gives staff and examiners the shared vocabulary for AI governance.',
+            },
+          ]}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
@@ -249,27 +285,17 @@ export default function AIGovernanceWithoutJargonArticle() {
           </h2>
         </section>
 
-        <dl className="grid sm:grid-cols-2 gap-4 my-10">
-          {FRAMEWORKS.map((f) => (
-            <div
-              key={f.code}
-              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
-            >
-              <dt className="font-mono text-xl text-[color:var(--gold)] leading-none tabular-nums mb-1">
-                {f.code}
-              </dt>
-              <dd className="font-serif text-base text-[color:var(--ink)] mb-3 leading-snug">
-                {f.fullName}
-              </dd>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-3">
-                {f.body} &middot; {f.level}
-              </p>
-              <p className="font-serif text-base text-[color:var(--ink)]/75 leading-relaxed italic">
-                &ldquo;{f.oneLiner}&rdquo;
-              </p>
-            </div>
-          ))}
-        </dl>
+        <RiskMatrix
+          eyebrow="Framework to action"
+          title="Use the framework to decide the next review step."
+          rows={FRAMEWORKS.map((framework) => ({
+            label: framework.code,
+            meta: `${framework.fullName} · ${framework.body}`,
+            risk: framework.level,
+            action: framework.oneLiner,
+            tone: framework.level === 'Critical' ? 'high' : 'med',
+          }))}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">

@@ -11,6 +11,7 @@ import {
   Button,
   EyebrowChip,
   CtaBand,
+  DocumentPreview,
 } from '@/components/mockup';
 import { TEMPLATES, getTemplate, type Template } from '../data';
 import { TemplateActions } from './TemplateActions';
@@ -38,6 +39,13 @@ function templateToMarkdown(t: Template): string {
   }
   lines.push('---', '', 'Starter template from The AI Banking Institute — adapt before adoption.');
   return lines.join('\n');
+}
+
+function templatePreviewLines(section: Template['sections'][number]): string[] {
+  if (section.items && section.items.length > 0) return section.items.slice(0, 3);
+  if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
+  if (section.intro) return [section.intro];
+  return ['Open the full section below for detail.'];
 }
 
 export function generateStaticParams() {
@@ -86,7 +94,11 @@ export default async function TemplatePage(props: PageProps) {
         cta={{ label: 'Get readiness score', href: '/assessment/take' }}
       />
 
-      <section className="mk-hero mk-hero-compact">
+      <section className="mk-hero mk-template-hero">
+        <div className="mk-deco">
+          <div className="mk-deco-ring" />
+          <div className="mk-deco-blur" />
+        </div>
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip>AI Banking Resources · Template</EyebrowChip>
@@ -97,11 +109,36 @@ export default async function TemplatePage(props: PageProps) {
               <span>{t.readMinutes} min</span>
             </div>
             <div style={{ marginTop: 20 }}>
-              <TemplateActions markdown={markdown} slug={t.slug} />
+              <TemplateActions markdown={markdown} slug={t.slug} surface="dark" />
             </div>
           </div>
+          <TemplateHeroPreview template={t} />
         </div>
       </section>
+
+      <Section variant="std" surface="white">
+        <DocumentPreview
+          eyebrow="Template preview"
+          title={t.title}
+          dek={t.dek}
+          sections={t.sections.slice(0, 4).map((section) => ({
+            heading: section.heading,
+            lines: templatePreviewLines(section),
+          }))}
+          aside={
+            <>
+              <p className="mk-proof-eyebrow">For</p>
+              <p>{t.audience}</p>
+              <p className="mk-proof-eyebrow" style={{ marginTop: 18 }}>
+                Actions
+              </p>
+              <div style={{ display: 'grid', gap: 10, marginTop: 12 }}>
+                <TemplateActions markdown={markdown} slug={t.slug} />
+              </div>
+            </>
+          }
+        />
+      </Section>
 
       <Section variant="std" surface="white">
         <article className="mk-tpl-doc">
@@ -159,5 +196,28 @@ export default async function TemplatePage(props: PageProps) {
         ]}
       />
     </div>
+  );
+}
+
+function TemplateHeroPreview({ template }: { readonly template: Template }) {
+  return (
+    <aside className="mk-template-hero-doc" aria-label={`${template.title} preview`}>
+      <div className="mk-template-hero-doc-head">
+        <p className="mk-proof-eyebrow">Word-ready starter</p>
+        <h2>{template.title}</h2>
+        <p>{template.audience}</p>
+      </div>
+      <div className="mk-template-hero-doc-body">
+        {template.sections.slice(0, 4).map((section, idx) => (
+          <div key={section.heading} className="mk-template-hero-doc-row">
+            <span>{String(idx + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{section.heading}</h3>
+              <p>{templatePreviewLines(section)[0]}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
   );
 }

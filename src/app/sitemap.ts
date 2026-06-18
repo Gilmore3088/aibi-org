@@ -1,4 +1,7 @@
 import type { MetadataRoute } from 'next';
+import { PLAYBOOK_INDEX } from './playbooks/data';
+import { TEMPLATES } from './resources/templates/data';
+import { PLAYBOOK_ASSETS } from '@content/playbook-assets/data';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
@@ -12,11 +15,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginsti
 const ROUTES = [
   // Marquee marketing pages
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
-  { path: '/assessment/take', priority: 0.95, changeFrequency: 'monthly' as const },
   { path: '/assessment', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/assessment/in-depth', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/courses', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },
+  { path: '/faq', priority: 0.65, changeFrequency: 'monthly' as const },
+  { path: '/prompt-cards', priority: 0.65, changeFrequency: 'monthly' as const },
   {
     path: '/for-institutions/samples/efficiency-ratio-workbook',
     priority: 0.7,
@@ -32,6 +36,22 @@ const ROUTES = [
   },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
+  { path: '/playbooks', priority: 0.8, changeFrequency: 'monthly' as const },
+  ...PLAYBOOK_INDEX.map((playbook) => ({
+    path: `/playbooks/${playbook.slug}`,
+    priority: 0.72,
+    changeFrequency: 'monthly' as const,
+  })),
+  ...PLAYBOOK_ASSETS.map((asset) => ({
+    path: `/playbooks/${asset.playbook}/${asset.slug}`,
+    priority: 0.62,
+    changeFrequency: 'monthly' as const,
+  })),
+  ...TEMPLATES.map((template) => ({
+    path: `/resources/templates/${template.slug}`,
+    priority: 0.68,
+    changeFrequency: 'monthly' as const,
+  })),
 
   // Artifact Library + every published essay (consolidated from /research,
   // 2026-06-01). Legacy /research and /research/* URLs permanently redirect

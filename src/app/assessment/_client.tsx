@@ -7,11 +7,9 @@
 // hero. See the 2026-05-28 product feedback: stop explaining how the
 // scoring works, show what the user gets.
 //
-// Free assessment vocabulary: 12 "readiness signals" (one question each).
-// In-depth assessment vocabulary: 8 "scored dimensions". Don't conflate.
+// Free assessment vocabulary: 12 questions.
+// In-depth assessment vocabulary: 8 scored readiness dimensions.
 
-import Link from 'next/link';
-import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -74,22 +72,12 @@ const FileIcon = (p: IconProps) => (
     <polyline points="14 2 14 8 20 8" />
   </svg>
 );
-// 12 readiness signals — labels match content/assessments/v3 dimension labels
-// so they read consistently with the runner and the breakdown page.
-// "Signal" is the user-facing word; the data layer still uses "dimension".
-const SIGNALS = [
-  { title: 'Strategic Value', desc: 'Where AI fits the business.' },
-  { title: 'Infrastructure Readiness', desc: 'Systems that can host AI.' },
-  { title: 'Data Quality', desc: 'What the model is fed.' },
-  { title: 'Security & Approved Tools', desc: 'Which tools are sanctioned.' },
-  { title: 'Runtime Safeguards', desc: 'Guardrails in production.' },
-  { title: 'Regulatory Compliance', desc: 'SR 11-7, ECOA, BSA fit.' },
-  { title: 'Fair Lending Testing', desc: 'Disparate-impact checks.' },
-  { title: 'Human-in-the-Loop', desc: 'Where people stay in control.' },
-  { title: 'Talent & Culture', desc: 'Who knows how to use AI.' },
-  { title: 'Data Safety Reflexes', desc: 'What not to enter.' },
-  { title: 'Continuous Validation', desc: 'Re-testing over time.' },
-  { title: 'Vendor Risk', desc: 'Third-party AI controls.' },
+
+const QUESTION_GROUPS = [
+  { title: 'Current AI use', desc: 'How your team is already experimenting.' },
+  { title: 'Data boundaries', desc: 'Whether staff know what cannot go into AI tools.' },
+  { title: 'Review habits', desc: 'Where human review and documentation already exist.' },
+  { title: 'Next best move', desc: 'Which artifact or training path should come first.' },
 ];
 
 // 8 in-depth dimensions — distinct from signals; lives below the fold.
@@ -114,41 +102,15 @@ const SAMPLE = {
   nextStep: 'Foundation Course or In-Depth Report',
 };
 
-// ---------- 12-signals grid with mobile accordion (rows 5-12) ----------
-//
-// On desktop: all 12 signal cards render inline (CSS uses display:contents).
-// On mobile: first 4 cards visible; rows 5-12 hidden behind a "Show all 12"
-// trigger. CSS lives in src/styles/mockup.css under ".mk-dims-accordion-*".
-// 2026-05-28 mobile audit punch-list item.
-
-function SignalsGrid() {
-  const [open, setOpen] = useState(false);
-  const headSignals = SIGNALS.slice(0, 4);
-  const tailSignals = SIGNALS.slice(4);
+function SnapshotQuestionGroups() {
   return (
     <div className="mk-dims-grid mk-dims-compact">
-      {headSignals.map((s) => (
-        <div key={s.title} className="mk-dcard">
-          <h4>{s.title}</h4>
-          <p>{s.desc}</p>
+      {QUESTION_GROUPS.map((group) => (
+        <div key={group.title} className="mk-dcard">
+          <h4>{group.title}</h4>
+          <p>{group.desc}</p>
         </div>
       ))}
-      <div className={`mk-dims-accordion-body${open ? ' is-open' : ''}`}>
-        {tailSignals.map((s) => (
-          <div key={s.title} className="mk-dcard">
-            <h4>{s.title}</h4>
-            <p>{s.desc}</p>
-          </div>
-        ))}
-      </div>
-      <button
-        type="button"
-        className="mk-dims-accordion-trigger"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-      >
-        {open ? 'Show fewer signals' : `Show all 12 signals (${tailSignals.length} more)`}
-      </button>
     </div>
   );
 }
@@ -225,8 +187,8 @@ export default function AssessmentLandingPage() {
           heading={<>Your result gives you the first move.</>}
           lede={
             <>
-              The free assessment is a snapshot. It screens 12 readiness signals and
-              recommends the first artifact to build.
+              The free assessment is a 12-question snapshot. It returns the score,
+              maturity tier, top gap, and first artifact to build.
             </>
           }
         />
@@ -258,11 +220,12 @@ export default function AssessmentLandingPage() {
       <Section variant="std">
         <SectionHead
           kicker="Free vs In-Depth"
-          heading={<>Start with a snapshot. Upgrade when you need the full diagnostic.</>}
+          heading={<>Compare the quick snapshot with the full diagnostic.</>}
           lede={
             <>
-              The free assessment screens 12 readiness signals. The $99 report goes
-              deeper across 8 scored dimensions and produces a role-specific action plan.
+              The free assessment asks 12 questions. The $99 in-depth assessment
+              asks 48 questions across eight readiness dimensions and produces a
+              role-specific action plan.
             </>
           }
         />
@@ -272,7 +235,7 @@ export default function AssessmentLandingPage() {
             title="Readiness Snapshot"
             price="$0"
             time="3 min · 12 questions"
-            desc="A quick screening result that tells you where to start."
+            desc="A quick result that tells you where to start."
             items={['Score out of 48', 'Maturity tier', 'Top gap', 'Starter artifact']}
             cta="Start free"
             href="/assessment/take"
@@ -295,46 +258,22 @@ export default function AssessmentLandingPage() {
             href="/assessment/in-depth"
             variant="gold"
           />
-          <ComparisonCard
-            label="Institutional"
-            title="Team View"
-            price="Custom"
-            time="Contact for pricing"
-            desc="Department rollups, leadership dashboard, briefing support."
-            items={['Department rollups', 'Leadership dashboard', 'Executive briefing']}
-            cta="Book briefing"
-            href="/for-institutions"
-            variant="ink"
-          />
-        </div>
-        {/* Upgrade tiers demote to chip links at every viewport so the free
-            Snapshot card stands alone as the unambiguous primary CTA. Audit
-            2026-05-28 (Bucket B): "free is the unambiguous hero". CSS in
-            mockup.css under .mk-tier-chips. */}
-        <div className="mk-tier-chips">
-
-          <Link href="/assessment/in-depth" className="mk-tier-chip">
-            or buy the In-Depth ($99) <span aria-hidden="true">&rarr;</span>
-          </Link>
-          <Link href="/for-institutions" className="mk-tier-chip">
-            for institutions: team view <span aria-hidden="true">&rarr;</span>
-          </Link>
         </div>
       </Section>
 
-      {/* ── 12 SIGNALS (FREE) ───────────────────────────────────── */}
+      {/* ── 12 QUESTIONS (FREE) ─────────────────────────────────── */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="Free snapshot"
-          heading={<>The 12 signals we screen in the free assessment.</>}
+          heading={<>Twelve questions. Four practical checks.</>}
           lede={
             <>
-              Each question gives us a quick read on one readiness signal. The free
-              result is a snapshot, not a full diagnostic.
+              The snapshot is intentionally lightweight. It gives a quick read on
+              where the next conversation should start, not a full diagnostic.
             </>
           }
         />
-        <SignalsGrid />
+        <SnapshotQuestionGroups />
       </Section>
 
       {/* ── 8 DIMENSIONS (IN-DEPTH) ─────────────────────────────── */}

@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArticleShell } from "@/components/mockup";
+import { ArticleShell, ArticleVisualSummary, RiskMatrix } from "@/components/mockup";
+import { articleJsonLd, jsonLdString } from '@/lib/seo/jsonld';
+
+const ARTICLE_TITLE = 'Six Ways AI Fails in Banking — The Hallucination Patterns Every Banker Must Know';
+const ARTICLE_DESCRIPTION =
+  'The AIEOG AI Lexicon defines hallucination as an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence. Here are the six patterns that surface specifically in banking — and what to do about each one.';
 
 export const metadata: Metadata = {
-  title: 'Six Ways AI Fails in Banking — The Hallucination Patterns Every Banker Must Know',
-  description:
-    'The AIEOG AI Lexicon defines hallucination as an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence. Here are the six patterns that surface specifically in banking — and what to do about each one.',
+  title: ARTICLE_TITLE,
+  description: ARTICLE_DESCRIPTION,
 };
 
 const PATTERNS = [
@@ -48,8 +52,20 @@ const PATTERNS = [
 ] as const;
 
 export default function SixWaysAIFailsArticle() {
+  const articleSchema = articleJsonLd({
+    slug: '/resources/six-ways-ai-fails-in-banking',
+    headline: ARTICLE_TITLE,
+    description: ARTICLE_DESCRIPTION,
+    datePublished: '2026-04-01',
+    dateModified: '2026-05-01',
+  });
+
   return (
     <ArticleShell readMinutes={14} byline="The AI Banking Institute" lastUpdated="May 2026" showTOC>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: jsonLdString(articleSchema) }}
+    />
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -68,6 +84,26 @@ export default function SixWaysAIFailsArticle() {
             name them are not yet safe to use AI in consequential workflows.
           </p>
         </header>
+
+        <ArticleVisualSummary
+          eyebrow="Executive scan"
+          title="Name the failure before it reaches the workflow."
+          metric={{ value: '6', label: 'repeatable AI failure patterns for banking work' }}
+          items={[
+            {
+              label: 'Highest-frequency risk',
+              body: 'Prompt Blindness and Hallucination Drift show up in everyday summaries, memos, and policy work.',
+            },
+            {
+              label: 'Highest-consequence risk',
+              body: 'Recursive Logic Bias creates fair-lending exposure when AI touches credit decisions.',
+            },
+            {
+              label: 'Fastest prevention win',
+              body: 'Data Exfiltration drops sharply when staff use a three-tier data classification check before prompting.',
+            },
+          ]}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
@@ -310,24 +346,17 @@ export default function SixWaysAIFailsArticle() {
           </h2>
         </section>
 
-        <dl className="grid sm:grid-cols-2 gap-4 my-10">
-          {PATTERNS.map((p) => (
-            <div
-              key={p.number}
-              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
-            >
-              <dt className="font-mono text-4xl md:text-5xl text-[color:var(--gold)] leading-none tabular-nums">
-                {p.number}
-              </dt>
-              <dd className="font-serif text-lg text-[color:var(--ink)] mt-2 mb-3 leading-snug">
-                {p.name}
-              </dd>
-              <p className="text-xs text-[color:var(--ink)]/60 leading-relaxed">
-                <strong>Risk:</strong> {p.danger}
-              </p>
-            </div>
-          ))}
-        </dl>
+        <RiskMatrix
+          eyebrow="Risk to action"
+          title="Use the pattern name to choose the control."
+          rows={PATTERNS.map((p) => ({
+            label: p.name,
+            risk: p.danger,
+            action: p.defense,
+            meta: `Pattern ${p.number}`,
+            tone: p.number === '03' || p.number === '02' ? 'high' : 'med',
+          }))}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">

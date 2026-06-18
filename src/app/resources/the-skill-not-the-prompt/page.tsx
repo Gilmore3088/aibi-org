@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArticleShell } from "@/components/mockup";
+import { ArticleShell, ArticleVisualSummary, RiskMatrix } from "@/components/mockup";
+import { articleJsonLd, jsonLdString } from '@/lib/seo/jsonld';
+
+const ARTICLE_TITLE = 'The Skill, Not the Prompt — Why Community Bankers Need a Different Frame for AI';
+const ARTICLE_DESCRIPTION =
+  'Prompting is a one-time act. A skill is a persistent, repeatable, institution-grade instruction that executes reliably every time you need it. Here is why the distinction matters for community banks — and how to build your first one.';
 
 export const metadata: Metadata = {
-  title: "The Skill, Not the Prompt — Why Community Bankers Need a Different Frame for AI",
-  description:
-    'Prompting is a one-time act. A skill is a persistent, repeatable, institution-grade instruction that executes reliably every time you need it. Here is why the distinction matters for community banks — and how to build your first one.',
+  title: ARTICLE_TITLE,
+  description: ARTICLE_DESCRIPTION,
 };
 
 const FIVE_COMPONENTS = [
@@ -37,8 +41,20 @@ const FIVE_COMPONENTS = [
 ] as const;
 
 export default function TheSkillNotThePromptArticle() {
+  const articleSchema = articleJsonLd({
+    slug: '/resources/the-skill-not-the-prompt',
+    headline: ARTICLE_TITLE,
+    description: ARTICLE_DESCRIPTION,
+    datePublished: '2026-04-01',
+    dateModified: '2026-05-01',
+  });
+
   return (
     <ArticleShell readMinutes={9} byline="The AI Banking Institute" lastUpdated="May 2026" showTOC>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: jsonLdString(articleSchema) }}
+    />
     <main className="px-6 py-14 md:py-20">
       <article className="max-w-3xl mx-auto">
         <header className="mb-12">
@@ -56,6 +72,26 @@ export default function TheSkillNotThePromptArticle() {
             one-time result and a permanent workflow improvement.
           </p>
         </header>
+
+        <ArticleVisualSummary
+          eyebrow="Working distinction"
+          title="A prompt is a request. A skill is infrastructure."
+          metric={{ value: '5', label: 'components that turn AI output into repeatable work' }}
+          items={[
+            {
+              label: 'What changes',
+              body: 'Role, context, task, format, and constraints stop living in one person’s memory.',
+            },
+            {
+              label: 'Why it matters',
+              body: 'The same work gets the same review standard across the department.',
+            },
+            {
+              label: 'Where to start',
+              body: 'Choose the repetitive workflow that currently requires the longest prompt reconstruction.',
+            },
+          ]}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
@@ -144,36 +180,17 @@ export default function TheSkillNotThePromptArticle() {
           </p>
         </section>
 
-        <div className="my-10 space-y-4">
-          {FIVE_COMPONENTS.map((c) => (
-            <div
-              key={c.label}
-              className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-6"
-            >
-              <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-                {c.label}
-              </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-2">
-                    Mediocre
-                  </p>
-                  <p className="font-serif text-base text-[color:var(--ink)]/70 italic leading-relaxed">
-                    {c.bad}
-                  </p>
-                </div>
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--ink)]/50 mb-2">
-                    Institution-grade
-                  </p>
-                  <p className="text-sm text-[color:var(--ink)] leading-relaxed">
-                    {c.good}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <RiskMatrix
+          eyebrow="Skill anatomy"
+          title="Each component removes one source of variation."
+          rows={FIVE_COMPONENTS.map((component) => ({
+            label: component.label,
+            risk: component.bad,
+            action: component.good,
+            meta: 'Mediocre prompt → institution-grade skill',
+            tone: 'med',
+          }))}
+        />
 
         <section className="space-y-6 text-[color:var(--ink)]/85 leading-relaxed text-lg">
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
