@@ -20,6 +20,7 @@ import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { getValidatedPaidSession } from '@/lib/stripe/get-validated-paid-session';
+import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { PrimaryButton, GhostButton } from '@/components/lms';
 import { SavedPromptPreview } from './_local/SavedPromptPreview';
 
@@ -88,6 +89,30 @@ export default async function AiBIPurchasedPage({
     : '';
 
   const step1Done = Boolean(signedInEmail);
+
+  // ONE-CLICK ENTRY. The webhook already created the account (password-less,
+  // email-confirmed) and the magic-link callback auto-trusts type=email — so a
+  // magic link logs the buyer straight into the course with no password and no
+  // device-confirmation email. Mint it here for the buyer whose Stripe session
+  // we just validated (same proof-of-email-control as the webhook's emailed
+  // link — minting is gated by the paid-session check above, which already
+  // redirected away anyone without a valid session or existing login). This
+  // replaces the old "set a password → reset email → device-confirm email"
+  // gauntlet (10+ clicks) with a single "Enter my course" click. Password
+  // becomes optional, set later. Best-effort: if minting fails we fall back to
+  // the password/login CTAs.
+  let courseEntryUrl: string | null = null;
+  if (!signedInEmail && prefillEmail) {
+    try {
+      await ensureAuthUser(prefillEmail);
+      courseEntryUrl = await generateMagicLink(
+        prefillEmail,
+        '/courses/foundation/program',
+      );
+    } catch (err) {
+      console.warn('[purchased] course-entry magic link skip', err);
+    }
+  }
 
   return (
     <main
@@ -189,17 +214,44 @@ export default async function AiBIPurchasedPage({
                 title={
                   step1Done
                     ? `Signed in as ${signedInEmail}`
-                    : 'Set your password to unlock the course'
+                    : courseEntryUrl
+                      ? 'You’re in — open your course'
+                      : 'Set your password to unlock the course'
                 }
                 body={
                   step1Done
                     ? 'Your purchase is bound to this account. You can begin Module 1 below.'
-                    : prefillEmail
-                      ? `Your purchase already created your account for ${prefillEmail} — just set a password. Takes about 30 seconds.`
-                      : 'Your purchase already created your account — just set a password. Takes about 30 seconds.'
+                    : courseEntryUrl
+                      ? 'One click — no password needed. You can set a password later from settings.'
+                      : prefillEmail
+                        ? `Your purchase already created your account for ${prefillEmail} — just set a password. Takes about 30 seconds.`
+                        : 'Your purchase already created your account — just set a password. Takes about 30 seconds.'
                 }
                 action={
-                  step1Done ? null : (
+                  step1Done ? null : courseEntryUrl ? (
+                    // One-click entry: the magic link logs the buyer in and lands
+                    // them in the course. Password is optional, demoted to a quiet
+                    // secondary link.
+                    <div style={{ marginTop: 14 }}>
+                      <PrimaryButton as="a" href={courseEntryUrl}>
+                        ENTER MY COURSE →
+                      </PrimaryButton>
+                      <p style={{ margin: '12px 0 0', fontSize: 13, color: 'var(--slate-600)' }}>
+                        Prefer a password for next time?{' '}
+                        <a
+                          href={`/auth/forgot-password${
+                            prefillEmail ? `?email=${encodeURIComponent(prefillEmail)}` : ''
+                          }`}
+                          style={{ color: 'var(--gold-deep)', textDecoration: 'underline', fontWeight: 600 }}
+                        >
+                          Set one
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  ) : (
+                    // Fallback (magic link couldn't be minted): the account exists
+                    // password-less, so route to "set your password", never signup.
                     <div
                       style={{
                         display: 'flex',
@@ -208,11 +260,6 @@ export default async function AiBIPurchasedPage({
                         marginTop: 14,
                       }}
                     >
-                      {/* Your purchase already created the account (password-less)
-                          server-side. So this is "set your password", NOT "create
-                          an account" — sending buyers to /auth/signup made signUp
-                          silently no-op on the existing email and login then failed
-                          with "invalid credentials" (#465 applied here too). */}
                       <PrimaryButton
                         as="a"
                         href={`/auth/forgot-password${
