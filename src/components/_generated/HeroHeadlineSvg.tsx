@@ -28,7 +28,6 @@ export function HeroHeadlineSvg({ className }: HeroHeadlineSvgProps): JSX.Elemen
         aria-hidden="true"
         className={className}
         style={{ display: 'block', width: '100%' }}
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: SVG_MARKUP }}
       />
     </>
