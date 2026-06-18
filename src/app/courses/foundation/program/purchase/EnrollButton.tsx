@@ -18,6 +18,10 @@ import { trackPurchaseInitiated } from '@/lib/analytics/events';
 interface EnrollButtonProps {
   /** Optional pre-fill for Stripe's customer_email field. */
   userEmail?: string;
+  /** Show the "Stripe collects your email…" helper line. Default true.
+   *  Suppressed when the button is reused in the hero / final CTA so those
+   *  surfaces stay clean (the note already shows once at the pricing block). */
+  showNote?: boolean;
 }
 
 interface CheckoutResponse {
@@ -25,7 +29,7 @@ interface CheckoutResponse {
   error?: string;
 }
 
-export function EnrollButton({ userEmail }: EnrollButtonProps) {
+export function EnrollButton({ userEmail, showNote = true }: EnrollButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,7 +81,7 @@ export function EnrollButton({ userEmail }: EnrollButtonProps) {
         {loading ? 'Redirecting to checkout…' : 'Enroll · $295'}
       </button>
 
-      {!userEmail && (
+      {showNote && !userEmail && (
         <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
           Stripe collects your email at checkout · no account required to enroll
         </p>
