@@ -1,9 +1,15 @@
-import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
-export function PurchaseFinalCTA() {
+interface PurchaseFinalCTAProps {
+  /** The real checkout button — starts Stripe in one click instead of
+   *  scrolling back up to the pricing block. */
+  enrollButton: ReactNode;
+}
+
+export function PurchaseFinalCTA({ enrollButton }: PurchaseFinalCTAProps) {
   return (
     <section
       className="aibi-grid aibi-grid--cta aibi-pad-section"
@@ -46,27 +52,7 @@ export function PurchaseFinalCTA() {
           artifacts, one reviewed final assessment.
         </p>
       </div>
-      <Link
-        href="#enroll"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 10,
-          background: 'var(--gold)',
-          color: 'var(--ink)',
-          padding: '14px 26px',
-          borderRadius: 12,
-          fontFamily: INTER_STACK,
-          fontSize: 13,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          textDecoration: 'none',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        Enroll now →
-      </Link>
+      <div style={{ minWidth: 220 }}>{enrollButton}</div>
     </section>
   );
 }

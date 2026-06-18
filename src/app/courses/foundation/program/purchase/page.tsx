@@ -174,8 +174,14 @@ export default async function PurchasePage(
           </aside>
         )}
 
-        {/* 1. HERO — dark navy. Real artifact on the right. */}
-        <PurchaseHero />
+        {/* 1. HERO — dark navy. Real artifact on the right. The hero CTA now
+            starts Stripe checkout directly (one click), instead of scrolling
+            down to a second Enroll button. */}
+        <PurchaseHero
+          enrollButton={
+            <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
+          }
+        />
 
         {/* 2. SAMPLE WEEK — three columns, real Module 1 content */}
         <SampleWeek />
@@ -195,8 +201,12 @@ export default async function PurchasePage(
         {/* 6. FAQ */}
         <PurchaseFAQ />
 
-        {/* 7. FINAL CTA — dark navy, one paragraph + anchor back to #enroll */}
-        <PurchaseFinalCTA />
+        {/* 7. FINAL CTA — dark navy. CTA starts checkout directly. */}
+        <PurchaseFinalCTA
+          enrollButton={
+            <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
+          }
+        />
       </div>
     </CourseShell>
   );

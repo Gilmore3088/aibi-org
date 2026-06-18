@@ -1,10 +1,18 @@
-import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { SavedPromptCard } from './SavedPromptCard';
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
-export function PurchaseHero() {
+interface PurchaseHeroProps {
+  /** The real checkout button. Rendered directly so the hero CTA starts Stripe
+   *  in ONE click — it previously was an anchor that just scrolled down to a
+   *  second "Enroll" button (the redundant middle click buyers complained
+   *  about). */
+  enrollButton: ReactNode;
+}
+
+export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
   return (
     <section
       className="aibi-grid aibi-grid--2 aibi-pad-section"
@@ -74,26 +82,7 @@ export function PurchaseHero() {
           your reviewed work product are on your desk.
         </p>
 
-        <Link
-          href="#enroll"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 10,
-            background: 'var(--gold)',
-            color: 'var(--ink)',
-            padding: '14px 26px',
-            borderRadius: 12,
-            fontFamily: INTER_STACK,
-            fontSize: 13,
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-          }}
-        >
-          Enroll for $295 →
-        </Link>
+        <div style={{ maxWidth: 320 }}>{enrollButton}</div>
       </div>
 
       <div>
