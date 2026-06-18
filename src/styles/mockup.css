@@ -1905,15 +1905,15 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-take-flow-brand {
   display: flex; flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   text-decoration: none; color: inherit;
   line-height: 1.2;
 }
-.mk-take-flow-brand-name {
-  font-size: 14px; font-weight: 600; color: var(--ink);
-}
 .mk-take-flow-brand-sub {
-  font-size: 11px; font-weight: 500; color: var(--slate-500);
-  letter-spacing: 0.04em;
+  font-size: 10px; font-weight: 700; color: var(--gold-deep);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 .mk-take-flow-meta {
   display: flex; align-items: center; gap: 14px;

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Wordmark } from '@/components/brand';
 import { SiteHeader } from '@/components/mockup';
 import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3';
 import { ProgressBar } from '../_components/ProgressBar';
@@ -221,7 +222,7 @@ function AssessmentFlowHeader({
     <header className="mk-take-flow-header" role="banner">
       <div className="mk-take-flow-header-row">
         <Link href="/" className="mk-take-flow-brand" aria-label="The AI Banking Institute home">
-          <span className="mk-take-flow-brand-name">The AI Banking Institute</span>
+          <Wordmark variant="full" tone="dark" size={22} />
           <span className="mk-take-flow-brand-sub">AI Readiness Assessment</span>
         </Link>
         <div className="mk-take-flow-meta">
