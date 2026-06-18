@@ -472,37 +472,53 @@ export function ResultsViewV3({
         <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
           30 / 60 / 90 plan
         </p>
-        <h2 className="mt-3 text-[34px] md:text-[46px] font-semibold leading-[1.03] text-[color:var(--ink)]">
-          Free shows the path. Paid unlocks the deployment detail.
+        <h2 className="mt-3 max-w-5xl text-[32px] md:text-[42px] font-semibold leading-[1.04] text-[color:var(--ink)]">
+          Start with the first 30 days. Unlock the deployment plan when you need the detail.
         </h2>
-        <div className="mt-7 grid md:grid-cols-3 gap-4">
+        <div className="mt-7 grid items-stretch gap-4 md:grid-cols-3">
           {/* Days 1–30 — fully visible */}
           <div
-            className="bg-white border border-[color:var(--ink-a10)] rounded-[24px] p-6 md:p-7"
+            className="flex h-full flex-col bg-white border border-[color:var(--gold)]/55 rounded-[24px] p-6 md:p-7"
             style={{ boxShadow: 'var(--shadow-soft)' }}
           >
-            <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-              Days 1–30
-            </p>
-            <h3 className="mt-3 text-[23px] font-semibold text-[color:var(--ink)]">
-              Map, educate, select
-            </h3>
-            <ul className="mt-4 pl-5 list-disc text-[16px] md:text-[17px] text-[color:var(--slate-600)] leading-[1.7] space-y-1">
-              <li>Choose one safe internal workflow.</li>
-              <li>Build your reusable AI working brief.</li>
-              <li>Apply Green / Yellow / Red data safety.</li>
-              <li>Name the human reviewer.</li>
-              <li>Run one low-risk test and measure draft time.</li>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                  Days 1–30
+                </p>
+                <h3 className="mt-3 text-[23px] font-semibold text-[color:var(--ink)]">
+                  Map, educate, select
+                </h3>
+              </div>
+              <span className="shrink-0 rounded-full bg-[color:var(--cream)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--gold-deep)]">
+                Included
+              </span>
+            </div>
+            <ul className="mt-5 space-y-3 text-[16px] md:text-[17px] leading-[1.55] text-[color:var(--slate-700)]">
+              {[
+                'Choose one safe internal workflow.',
+                'Build a reusable AI working brief.',
+                'Apply Green / Yellow / Red data safety and name the reviewer.',
+                'Run one low-risk test and measure draft time.',
+              ].map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span
+                    aria-hidden
+                    className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[color:var(--gold)]"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
-            <div className="mt-6 border-t border-[color:var(--ink-a10)] pt-5" data-print-hide="true">
+            <div className="mt-auto border-t border-[color:var(--ink-a10)] pt-5" data-print-hide="true">
               <p className="text-[16px] font-semibold text-[color:var(--ink)]">
                 Keep the first 30 days moving.
               </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <ResultActionLink href={matchedPlaybookPath} variant="ink">
+              <div className="mt-3 grid gap-2">
+                <ResultActionLink href={matchedPlaybookPath} variant="ink" fullWidth>
                   Open your role playbook
                 </ResultActionLink>
-                <ResultActionLink href="/assessment/in-depth" variant="gold">
+                <ResultActionLink href="/assessment/in-depth" variant="gold" fullWidth>
                   Get the 90-day playbook
                 </ResultActionLink>
               </div>
@@ -716,21 +732,23 @@ function QuickActionStrip({
 function ResultActionLink({
   href,
   variant,
+  fullWidth = false,
   children,
 }: {
   readonly href: string;
   readonly variant: 'ink' | 'gold';
+  readonly fullWidth?: boolean;
   readonly children: ReactNode;
 }) {
   const classes =
     variant === 'ink'
-      ? 'bg-[color:var(--ink)] text-white hover:bg-[color:var(--ink)]/90'
-      : 'bg-[color:var(--gold)] text-[color:var(--ink)] hover:bg-[color:var(--gold-2)]';
+      ? 'bg-[color:var(--ink)] !text-white hover:bg-[color:var(--ink)]/90'
+      : 'bg-[color:var(--gold)] !text-[color:var(--ink)] hover:bg-[color:var(--gold-2)]';
 
   return (
     <Link
       href={href}
-      className={`inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-[14px] font-bold no-underline transition-colors ${classes}`}
+      className={`${fullWidth ? 'flex w-full' : 'inline-flex'} min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-center text-[14px] font-bold no-underline transition-colors ${classes}`}
     >
       {children}
     </Link>
@@ -773,32 +791,43 @@ function PartialLockedPhase({
 }) {
   return (
     <div
-      className="bg-white border border-[color:var(--ink-a10)] rounded-[24px] p-6 md:p-7 relative overflow-hidden"
+      className="flex h-full flex-col bg-white border border-[color:var(--ink-a10)] rounded-[24px] p-6 md:p-7"
       style={{ boxShadow: 'var(--shadow-soft)' }}
     >
-      <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-        {label}
-      </p>
-      <h3 className="mt-3 text-[23px] font-semibold text-[color:var(--ink)]">
-        {title}
-      </h3>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            {label}
+          </p>
+          <h3 className="mt-3 text-[23px] font-semibold text-[color:var(--ink)]">
+            {title}
+          </h3>
+        </div>
+        <span className="shrink-0 rounded-full border border-[color:var(--ink-a10)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--slate-500)]">
+          Paid
+        </span>
+      </div>
       <div className="mt-5 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[16px] p-4">
+        <p className="text-[11px] uppercase tracking-[0.16em] font-semibold text-[color:var(--gold-deep)]">
+          Preview
+        </p>
         <p className="text-[16px] md:text-[17px] font-semibold text-[color:var(--ink)] leading-[1.5]">
           {visibleItem}
         </p>
       </div>
-      <ul
-        aria-hidden="true"
-        className="mt-4 pl-5 list-disc text-[16px] text-[color:var(--slate-600)] leading-[1.7] space-y-1 select-none"
-        style={{ filter: 'blur(2.5px)', opacity: 0.5 }}
-      >
+      <ul className="mt-4 space-y-2.5 text-[15px] leading-[1.55] text-[color:var(--slate-600)]">
         {lockedItems.map((item, i) => (
-          <li key={i}>{item}</li>
+          <li key={i} className="flex items-center gap-3 rounded-[14px] border border-[color:var(--ink-a10)] bg-white px-3.5 py-3">
+            <span className="rounded-full bg-[color:var(--cream)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[color:var(--gold-deep)]">
+              Locked
+            </span>
+            <span>{item}</span>
+          </li>
         ))}
       </ul>
-      <div className="mt-4 bg-[color:var(--ink)] text-white rounded-[14px] p-4 text-center">
-        <p className="text-[16px] font-semibold">Detailed in the In-Depth</p>
-        <p className="mt-1.5 text-[14px] text-white/70">The 8-dimension diagnostic carries this through with deployment specifics.</p>
+      <div className="mt-auto bg-[color:var(--ink)] !text-white rounded-[16px] p-4 text-center">
+        <p className="text-[16px] font-semibold !text-white">Detailed in the In-Depth</p>
+        <p className="mt-1.5 text-[14px] !text-white/75">The 8-dimension diagnostic carries this through with deployment specifics.</p>
       </div>
     </div>
   );
