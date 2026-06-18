@@ -65,3 +65,21 @@
 .aibi-mark--mono .si {
   color: inherit;
 }
+
+/* Image-rendered brand lockups. The SVG files in public/brand are the
+   source of truth for the site header and assessment result header. */
+.aibi-wordmark-image {
+  display: inline-flex;
+  align-items: center;
+  height: 1em;
+  line-height: 1;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.aibi-wordmark-image__asset {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}

@@ -55,6 +55,8 @@ export default function AssessmentPage() {
   }
 
   const inQuestionsPhase = state.phase === 'questions';
+  const inResultsPhase = state.phase === 'results';
+  const showAssessmentShellHeader = !inQuestionsPhase && !inResultsPhase;
 
   return (
     <div className="mockup-scope">
@@ -64,15 +66,15 @@ export default function AssessmentPage() {
           questionNumber={state.currentQuestion + 1}
           totalQuestions={QUESTIONS_PER_SESSION}
         />
-      ) : (
+      ) : showAssessmentShellHeader ? (
         <SiteHeader
           activePath="/assessment"
           cta={{ label: 'Restart', href: '#restart' }}
         />
-      )}
+      ) : null}
       <main className="mk-take">
         <h1 className="sr-only">AI Readiness Assessment</h1>
-        {!inQuestionsPhase && (
+        {showAssessmentShellHeader && (
           <ProgressBar progress={1} />
         )}
 
@@ -118,9 +120,22 @@ export default function AssessmentPage() {
           );
         })()}
 
-        <div className="mk-take-inner">
-
-          {state.phase === 'score' && state.tier && (() => {
+        {inResultsPhase && state.tier && capturedEmail ? (
+          <ResultsViewV3
+            score={state.totalScore}
+            tier={state.tier}
+            dimensionBreakdown={state.getDimensionBreakdown()}
+            email={capturedEmail}
+            tierId={state.tier.id}
+            firstName={capturedFirstName}
+            institutionName={capturedInstitution}
+            profileId={capturedProfileId}
+            role={capturedRole}
+            showPersonalEmailNote={usedFreeEmail}
+          />
+        ) : (
+          <div className="mk-take-inner">
+            {state.phase === 'score' && state.tier && (() => {
             const breakdown = state.getDimensionBreakdown();
             return (
               <div
@@ -180,24 +195,8 @@ export default function AssessmentPage() {
               </div>
             );
           })()}
-
-          {state.phase === 'results' && state.tier && capturedEmail && (
-            <>
-              <ResultsViewV3
-                score={state.totalScore}
-                tier={state.tier}
-                dimensionBreakdown={state.getDimensionBreakdown()}
-                email={capturedEmail}
-                tierId={state.tier.id}
-                firstName={capturedFirstName}
-                institutionName={capturedInstitution}
-                profileId={capturedProfileId}
-                role={capturedRole}
-                showPersonalEmailNote={usedFreeEmail}
-              />
-            </>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );

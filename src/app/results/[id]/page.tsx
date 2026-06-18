@@ -49,7 +49,7 @@ export default async function ResultsPage(props: ResultsPageProps) {
   const showPersonalEmailNote = searchParams?.personal === '1';
 
   return (
-    <main className="min-h-screen bg-[color:var(--cream)] py-12 px-4">
+    <main className="min-h-screen bg-[color:var(--cream)]">
       {response.version === 'v3' ? (
         <ResultsViewV3
           score={response.score}

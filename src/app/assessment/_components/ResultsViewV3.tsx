@@ -21,7 +21,7 @@ import type { Dimension } from '@content/assessments/v3/types';
 import type { FreeRole } from '@content/assessments/v3/roles';
 import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
 import { PLAYBOOK_INDEX, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
-import { Wordmark } from '@/components/brand';
+import { SiteHeader } from '@/components/mockup';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
@@ -159,8 +159,14 @@ export function ResultsViewV3({
   return (
     <>
       <ResultPrintStyles />
-      <div className="w-full max-w-7xl mx-auto space-y-12 md:space-y-16 text-[17px] md:text-[18px]">
-      <ResultNav profileId={profileId} />
+      <div className="mockup-scope" data-print-hide="true">
+        <SiteHeader
+          activePath="/assessment"
+          cta={{ label: 'Download report', href: '#download-report' }}
+        />
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto mt-8 space-y-12 px-4 pb-12 md:mt-10 md:space-y-16 md:pb-16 text-[17px] md:text-[18px]">
 
       {showPersonalEmailNote && (
         <aside
@@ -665,43 +671,6 @@ function ResultPrintStyles() {
   );
 }
 
-function ResultNav({ profileId }: { readonly profileId: string | null }) {
-  return (
-    <nav
-      className="sticky top-3 z-20 flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-[color:var(--ink-a10)] bg-white/95 px-4 py-3 md:px-5 md:py-4 shadow-[0_16px_35px_-24px_rgba(7,26,47,0.45)] backdrop-blur"
-      aria-label="Assessment result navigation"
-      data-print-hide="true"
-    >
-      <Link
-        href="/"
-        className="inline-flex items-center text-[color:var(--ink)] no-underline"
-        aria-label="The AI Banking Institute home"
-      >
-        <Wordmark variant="full" tone="dark" size={24} />
-      </Link>
-      <div className="flex flex-wrap items-center gap-2">
-        <Link className="rounded-full px-3.5 py-2 text-[15px] font-semibold text-[color:var(--slate-600)] hover:bg-[color:var(--cream)]" href="/assessment">
-          Assessment
-        </Link>
-        <Link className="rounded-full px-3.5 py-2 text-[15px] font-semibold text-[color:var(--slate-600)] hover:bg-[color:var(--cream)]" href="/resources">
-          Resources
-        </Link>
-        <Link className="hidden rounded-full px-3.5 py-2 text-[15px] font-semibold text-[color:var(--slate-600)] hover:bg-[color:var(--cream)] sm:inline-flex" href="/courses">
-          Courses
-        </Link>
-        {profileId ? (
-          <PdfDownloadButton
-            profileId={profileId}
-            compact
-            label="Download PDF"
-            className="ml-1"
-          />
-        ) : null}
-      </div>
-    </nav>
-  );
-}
-
 function QuickActionStrip({
   matchedPlaybookPath,
   profileId,
@@ -711,6 +680,7 @@ function QuickActionStrip({
 }) {
   return (
     <section
+      id="download-report"
       className="grid gap-4 rounded-[26px] border border-[color:var(--ink-a10)] bg-white p-5 md:grid-cols-[1fr_auto] md:items-center md:p-6"
       style={{ boxShadow: 'var(--shadow-soft)' }}
       data-print-hide="true"

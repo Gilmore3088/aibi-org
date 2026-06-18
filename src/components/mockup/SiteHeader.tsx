@@ -55,9 +55,7 @@ export function SiteHeader({
     <header className="mk-header">
       <div className="mk-container mk-header-inner">
         <Link className="mk-brand" href="/" aria-label="The AI Banking Institute home">
-          {/* Brand v1 (2026-05-28) — bracketed [Ai] mark replaces the
-              retired landmark-seal lockup. See docs/brand/brand-guide-v1.html. */}
-          <Wordmark variant="full" tone="dark" size={22} />
+          <Wordmark variant="full" tone="dark" size={24} />
         </Link>
 
         <nav className="mk-nav" aria-label="Primary">
