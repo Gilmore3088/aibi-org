@@ -29,6 +29,16 @@ export interface SignUpMetadata {
 
 export interface AuthResult {
   readonly error: string | null;
+  /**
+   * Set by signUp when the email already has an account. Supabase's
+   * anti-enumeration behavior returns NO error for a signUp on an existing
+   * confirmed email — but it also does NOT set the new password. Callers must
+   * branch on this and route the user to the password-reset ("set your
+   * password") flow instead of falsely reporting "check your inbox". This was
+   * the cause of paid buyers getting "Invalid login credentials" right after
+   * "creating" an account the Stripe webhook had already provisioned.
+   */
+  readonly alreadyRegistered?: boolean;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -56,7 +66,7 @@ export async function signUp(
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
   const next = sanitizeNext(redirectTo);
-  const { error } = await client().auth.signUp({
+  const { data, error } = await client().auth.signUp({
     email,
     password,
     options: {
@@ -67,7 +77,15 @@ export async function signUp(
       },
     },
   });
-  return { error: error?.message ?? null };
+  if (error) return { error: error.message };
+  // Anti-enumeration: when the email already exists (e.g. the Stripe webhook
+  // pre-created a password-less account at purchase), Supabase returns a user
+  // with an EMPTY identities array and no error — the password the user just
+  // typed is silently discarded. Detect it so the caller routes to the
+  // "set your password" reset flow instead of showing a false success.
+  const identities = data.user?.identities;
+  const alreadyRegistered = Array.isArray(identities) && identities.length === 0;
+  return { error: null, alreadyRegistered };
 }
 
 /**

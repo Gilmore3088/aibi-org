@@ -189,14 +189,14 @@ export default async function AiBIPurchasedPage({
                 title={
                   step1Done
                     ? `Signed in as ${signedInEmail}`
-                    : 'Sign in to bind your enrollment'
+                    : 'Set your password to unlock the course'
                 }
                 body={
                   step1Done
                     ? 'Your purchase is bound to this account. You can begin Module 1 below.'
                     : prefillEmail
-                      ? `We pre-filled ${prefillEmail} from your receipt. Takes about 30 seconds.`
-                      : 'Create or sign into your account. Takes about 30 seconds.'
+                      ? `Your purchase already created your account for ${prefillEmail} — just set a password. Takes about 30 seconds.`
+                      : 'Your purchase already created your account — just set a password. Takes about 30 seconds.'
                 }
                 action={
                   step1Done ? null : (
@@ -208,17 +208,24 @@ export default async function AiBIPurchasedPage({
                         marginTop: 14,
                       }}
                     >
+                      {/* Your purchase already created the account (password-less)
+                          server-side. So this is "set your password", NOT "create
+                          an account" — sending buyers to /auth/signup made signUp
+                          silently no-op on the existing email and login then failed
+                          with "invalid credentials" (#465 applied here too). */}
                       <PrimaryButton
                         as="a"
-                        href={`/auth/signup?next=/courses/foundation/program${emailQs}`}
+                        href={`/auth/forgot-password${
+                          prefillEmail ? `?email=${encodeURIComponent(prefillEmail)}` : ''
+                        }`}
                       >
-                        CREATE MY ACCOUNT
+                        SET MY PASSWORD
                       </PrimaryButton>
                       <GhostButton
                         as="a"
                         href={`/auth/login?next=/courses/foundation/program${emailQs}`}
                       >
-                        I ALREADY HAVE ONE
+                        I ALREADY SET ONE
                       </GhostButton>
                     </div>
                   )
