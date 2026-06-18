@@ -17,6 +17,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Wordmark } from '@/components/brand';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
@@ -43,6 +44,8 @@ export interface PaidReportProps {
   readonly readinessAt: string;
   readonly institutionContext: InstitutionContext | null;
   readonly actionPacketNotes?: string | null;
+  readonly notesEnabled?: boolean;
+  readonly personalizationEnabled?: boolean;
 }
 
 interface PersonalizationPayload {
@@ -71,13 +74,15 @@ export function PaidReport({
   dimensionBreakdown,
   institutionContext,
   actionPacketNotes = null,
+  notesEnabled = true,
+  personalizationEnabled = true,
 }: PaidReportProps): JSX.Element {
   const packet = getActionPacket(role);
   const roleMeta = role ? ROLE_V4_META[role] : null;
   const { protect, use, build } = classifyDimensions(dimensionBreakdown);
   const topGap = protect[0];
   const ctx = institutionContext ?? {};
-  const personalization = usePersonalization(profileId, !!ctx.first_name);
+  const personalization = usePersonalization(profileId, personalizationEnabled && !!ctx.first_name);
 
   // Inline mailto: prefilled with score + role + a placeholder note line.
   const briefingMailto = `mailto:hello@aibankinginstitute.com?subject=${encodeURIComponent(
@@ -89,7 +94,10 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'notes', 'learning', 'score']);
+  const sectionIds = notesEnabled
+    ? ['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'notes', 'learning', 'score']
+    : ['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score'];
+  const activeSection = useActiveSection(sectionIds);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -112,6 +120,7 @@ export function PaidReport({
             topGap={topGap}
             primaryArtifact={packet.primaryArtifact.name}
             activeSection={activeSection}
+            notesEnabled={notesEnabled}
           />
           <main style={{ minWidth: 0 }}>
             {ctx.first_name && (
@@ -143,7 +152,9 @@ export function PaidReport({
             />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
-            <NotesSection profileId={profileId} initialNotes={actionPacketNotes} />
+            {notesEnabled && (
+              <NotesSection profileId={profileId} initialNotes={actionPacketNotes} />
+            )}
             <SectionLearning protect={protect} packet={packet} />
             <Section5ScoreAppendix
               score={score}
@@ -204,6 +215,7 @@ function Sidebar({
   topGap,
   primaryArtifact,
   activeSection,
+  notesEnabled,
 }: {
   readonly score: number;
   readonly band: MaturityBand;
@@ -211,6 +223,7 @@ function Sidebar({
   readonly topGap: { score: number; label: string } | undefined;
   readonly primaryArtifact: string;
   readonly activeSection: string;
+  readonly notesEnabled: boolean;
 }): JSX.Element {
   return (
     <aside
@@ -224,21 +237,8 @@ function Sidebar({
       }}
     >
       <div style={{ padding: 24, borderBottom: '1px solid rgba(255,255,255,.12)' }}>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontWeight: 900 }}>
-          <span style={{ color: GOLD, fontSize: 18, lineHeight: 1 }}>[</span>
-          <span style={{ fontSize: 18, fontWeight: 700, lineHeight: 1 }}>A</span>
-          <span
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontStyle: 'italic',
-              fontSize: 18,
-              lineHeight: 1,
-            }}
-          >
-            i
-          </span>
-          <span style={{ color: GOLD, fontSize: 18, lineHeight: 1 }}>]</span>
-          <span style={{ marginLeft: 4, fontSize: 14, fontWeight: 600 }}>Banking Institute</span>
+        <div style={{ display: 'flex', alignItems: 'center', fontWeight: 900 }}>
+          <Wordmark variant="full" tone="light" size={20} />
         </div>
         <div
           style={{
@@ -268,9 +268,11 @@ function Sidebar({
         <SidebarNav href="#workproducts" label="Work Products" num="05" active={activeSection === 'workproducts'} />
         <SidebarNav href="#timeline" label="Timeline" num="06" active={activeSection === 'timeline'} />
         <SidebarNav href="#packet" label="Reviewer Packet" num="07" active={activeSection === 'packet'} />
-        <SidebarNav href="#notes" label="My Notes" num="08" active={activeSection === 'notes'} />
-        <SidebarNav href="#learning" label="Learning Path" num="09" active={activeSection === 'learning'} />
-        <SidebarNav href="#score" label="Score Appendix" num="10" active={activeSection === 'score'} />
+        {notesEnabled && (
+          <SidebarNav href="#notes" label="My Notes" num="08" active={activeSection === 'notes'} />
+        )}
+        <SidebarNav href="#learning" label="Learning Path" num={notesEnabled ? '09' : '08'} active={activeSection === 'learning'} />
+        <SidebarNav href="#score" label="Score Appendix" num={notesEnabled ? '10' : '09'} active={activeSection === 'score'} />
       </nav>
     </aside>
   );

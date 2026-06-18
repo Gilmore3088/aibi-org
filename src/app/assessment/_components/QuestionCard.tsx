@@ -15,9 +15,10 @@
 import { useEffect, useRef } from "react";
 import type { AssessmentQuestion as V1Question } from "@content/assessments/v1/questions";
 import type { AssessmentQuestion as V2Question } from "@content/assessments/v2/types";
+import type { AssessmentQuestion as V4Question } from "@content/assessments/v4/types";
 import { cn } from "@/lib/utils/cn";
 
-type AnyAssessmentQuestion = V1Question | V2Question;
+type AnyAssessmentQuestion = V1Question | V2Question | V4Question;
 
 interface QuestionCardProps {
   readonly question: AnyAssessmentQuestion;

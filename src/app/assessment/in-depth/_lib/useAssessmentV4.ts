@@ -61,6 +61,7 @@ export interface InDepthV4Actions {
 function readPersisted(
   pool: readonly AssessmentQuestion[],
   expectedCount: number,
+  storageKey: string,
 ): {
   questions: AssessmentQuestion[];
   answers: number[];
@@ -68,7 +69,7 @@ function readPersisted(
 } | null {
   if (typeof window === 'undefined') return null;
   try {
-    const raw = window.sessionStorage.getItem(STORAGE_KEY);
+    const raw = window.sessionStorage.getItem(storageKey);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as PersistedState;
     if (!Array.isArray(parsed.selectedQuestionIds)) return null;
@@ -95,7 +96,7 @@ function readPersisted(
   }
 }
 
-export function useAssessmentV4(): InDepthV4State & InDepthV4Actions {
+export function useAssessmentV4(storageKey = STORAGE_KEY): InDepthV4State & InDepthV4Actions {
   const [selectedQuestions, setSelectedQuestions] = useState<AssessmentQuestion[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -104,7 +105,7 @@ export function useAssessmentV4(): InDepthV4State & InDepthV4Actions {
 
   useEffect(() => {
     const fresh = selectAllQuestions(questionPool);
-    const persisted = readPersisted(questionPool, fresh.length);
+    const persisted = readPersisted(questionPool, fresh.length, storageKey);
     if (persisted) {
       setSelectedQuestions(persisted.questions);
       setAnswers(persisted.answers);
@@ -113,7 +114,7 @@ export function useAssessmentV4(): InDepthV4State & InDepthV4Actions {
       setSelectedQuestions(fresh);
     }
     setHydrated(true);
-  }, []);
+  }, [storageKey]);
 
   const questionCount = selectedQuestions.length;
 
@@ -128,8 +129,8 @@ export function useAssessmentV4(): InDepthV4State & InDepthV4Actions {
       answers,
       currentQuestion,
     };
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  }, [answers, currentQuestion, selectedQuestions, hydrated]);
+    window.sessionStorage.setItem(storageKey, JSON.stringify(payload));
+  }, [answers, currentQuestion, selectedQuestions, hydrated, storageKey]);
 
   const rawScore = answers.reduce((sum, n) => sum + n, 0);
   const maxScore = questionCount * 4;
@@ -167,9 +168,9 @@ export function useAssessmentV4(): InDepthV4State & InDepthV4Actions {
     setPhase('questions');
     setSelectedQuestions(selectAllQuestions(questionPool));
     if (typeof window !== 'undefined') {
-      window.sessionStorage.removeItem(STORAGE_KEY);
+      window.sessionStorage.removeItem(storageKey);
     }
-  }, []);
+  }, [storageKey]);
 
   const advanceToResults = useCallback(() => {
     setPhase('results');

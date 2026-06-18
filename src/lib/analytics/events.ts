@@ -59,7 +59,7 @@ export function trackBriefingBooked(props: {
  * Pairs with purchase_completed on success.
  */
 export function trackPurchaseInitiated(props: {
-  readonly product: 'foundation' | 'in-depth-assessment' | 'aibi-s' | 'aibi-l';
+  readonly product: 'foundation' | 'in-depth-assessment' | 'team-assessment' | 'aibi-s' | 'aibi-l';
   readonly mode?: 'individual' | 'institution';
 }): void {
   track('purchase_initiated', { ...props });
@@ -75,7 +75,7 @@ export function trackPurchaseInitiated(props: {
  * server-side event for client-side dashboards.
  */
 export function trackPurchaseCompleted(props: {
-  readonly product: 'foundation' | 'in-depth-assessment' | 'aibi-s' | 'aibi-l';
+  readonly product: 'foundation' | 'in-depth-assessment' | 'team-assessment' | 'aibi-s' | 'aibi-l';
   readonly amountUsd: number;
 }): void {
   track('purchase_completed', { ...props });

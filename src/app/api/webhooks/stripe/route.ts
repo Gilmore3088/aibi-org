@@ -28,9 +28,17 @@ import {
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
   sendIndepthAssessmentPurchase,
+  sendTeamAssessmentPurchase,
 } from '@/lib/resend';
 
-function nextPathForProduct(product: string | undefined): string {
+function nextPathForProduct(
+  product: string | undefined,
+  result?: { cohortId?: string },
+): string {
+  if (product === 'team-assessment' && result?.cohortId) {
+    return `/assessment/team/admin/${result.cohortId}`;
+  }
+  if (product === 'team-assessment') return '/assessment/team';
   if (product === 'in-depth-assessment') return '/assessment/in-depth/take';
   // Institution leaders land on the same course page as individuals for now;
   // dedicated leader-dashboard surface is tracked in issue #48.
@@ -205,6 +213,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.error('[webhook] charge.refunded institution unlock failed', instErr);
       }
 
+      const { error: teamErr, count: teamCount } = await supabase
+        .from('team_assessment_cohorts')
+        .update({ status: 'refunded' }, { count: 'exact' })
+        .eq('stripe_session_id', sessionId);
+      if (teamErr) {
+        console.error('[webhook] charge.refunded team assessment revoke failed', teamErr);
+      }
+
       // F2 — record the refunded session so a replayed checkout.session.completed
       // cannot re-provision it. provisionEnrollment consults this table (fail-open).
       const { error: rfErr } = await supabase
@@ -218,6 +234,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         sessionId,
         enrollmentsRevoked: count ?? 0,
         institutionDiscountsReleased: instCount ?? 0,
+        teamAssessmentsRefunded: teamCount ?? 0,
       });
       void trackServer('purchase_refunded', {
         stripeSessionId: sessionId,
@@ -276,9 +293,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       // and generateMagicLink both swallow errors and return null, so a
       // failure here doesn't block the rest of the response.
       let magicLinkUrl: string | null = null;
+      const nextPath = nextPathForProduct(product, result);
       try {
         await ensureAuthUser(email);
-        magicLinkUrl = await generateMagicLink(email, nextPathForProduct(product));
+        magicLinkUrl = await generateMagicLink(email, nextPath);
       } catch (err) {
         console.warn('[webhook] auth-admin magic-link skip', err);
       }
@@ -293,7 +311,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com'
         ).replace(/\/+$/, '');
         magicLinkUrl = `${siteUrl}/auth/signup?next=${encodeURIComponent(
-          nextPathForProduct(product),
+          nextPath,
         )}&email=${encodeURIComponent(email)}`;
         console.error(
           '[webhook] magic link unavailable — purchase email sent with signup fallback',
@@ -301,7 +319,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         );
       }
 
-      if (result.type === 'individual') {
+      if (result.type === 'team-assessment') {
+        const siteUrl = (
+          process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com'
+        ).replace(/\/+$/, '');
+        const institutionName = session.metadata?.institution_name ?? 'Your institution';
+        const seatsPurchased = session.metadata?.quantity
+          ? parseInt(session.metadata.quantity, 10)
+          : 0;
+        const participantUrl = result.publicToken
+          ? `${siteUrl}/assessment/team/${result.publicToken}`
+          : `${siteUrl}/assessment/team`;
+        sendTeamAssessmentPurchase({
+          email,
+          institutionName,
+          seatsPurchased,
+          amountPaid,
+          adminUrl: magicLinkUrl ?? `${siteUrl}${nextPath}`,
+          participantUrl,
+        }).catch((err) =>
+          console.warn('[webhook] resend team-assessment skip', err),
+        );
+      } else if (result.type === 'individual') {
         if (product === 'in-depth-assessment') {
           sendIndepthAssessmentPurchase({
             email,

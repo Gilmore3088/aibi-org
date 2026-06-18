@@ -6,10 +6,13 @@ import type Stripe from 'stripe';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import type { CheckoutMetadata } from '@/lib/stripe';
+import { TEAM_ASSESSMENT_MIN_SEATS } from '@/lib/team-assessment/constants';
 
 export interface ProvisionResult {
   action: 'created' | 'skipped';
-  type: 'individual' | 'institution';
+  type: 'individual' | 'institution' | 'team-assessment';
+  cohortId?: string;
+  publicToken?: string;
 }
 
 export interface ProvisionError {
@@ -58,6 +61,70 @@ export async function provisionEnrollment(
   const supabase = createServiceRoleClient();
   const sessionId = session.id;
   const email = session.customer_details?.email ?? user_email ?? null;
+
+  // ---- Team Assessment cohort provisioning ----------------------
+  if (product === 'team-assessment') {
+    const { data: existing, error: existingErr } = await supabase
+      .from('team_assessment_cohorts')
+      .select('id')
+      .eq('stripe_session_id', sessionId)
+      .limit(1);
+
+    if (existingErr) {
+      console.error('[webhook] Failed to check team_assessment_cohorts:', existingErr);
+      return { error: 'Database lookup failed', code: 'db_error' };
+    }
+
+    if (existing && existing.length > 0) {
+      return { action: 'skipped', type: 'team-assessment' };
+    }
+
+    if (await isRefundedSession(supabase, sessionId)) {
+      return { action: 'skipped', type: 'team-assessment' };
+    }
+
+    if (!email) {
+      return { error: 'No email available for team assessment buyer', code: 'missing_metadata' };
+    }
+    if (!institution_name) {
+      return { error: 'Missing institution_name for team assessment', code: 'missing_metadata' };
+    }
+
+    const seatsPurchased = quantity ? parseInt(quantity, 10) : NaN;
+    if (!Number.isFinite(seatsPurchased) || seatsPurchased < TEAM_ASSESSMENT_MIN_SEATS) {
+      return { error: 'Invalid quantity for team assessment', code: 'missing_metadata' };
+    }
+
+    const { userId } = await ensureAuthUser(email);
+    if (!userId) {
+      console.error('[webhook] could not ensure auth user for team assessment', { product });
+      return { error: 'Could not resolve buyer account', code: 'db_error' };
+    }
+
+    const { data: cohort, error: insertErr } = await supabase
+      .from('team_assessment_cohorts')
+      .insert({
+        institution_name,
+        buyer_email: email,
+        buyer_user_id: userId,
+        seats_purchased: seatsPurchased,
+        stripe_session_id: sessionId,
+      })
+      .select('id, public_token')
+      .single();
+
+    if (insertErr) {
+      console.error('[webhook] team_assessment_cohorts insert error:', insertErr);
+      return { error: 'Failed to create team assessment cohort', code: 'db_error' };
+    }
+
+    return {
+      action: 'created',
+      type: 'team-assessment',
+      cohortId: (cohort as { id: string }).id,
+      publicToken: (cohort as { public_token: string }).public_token,
+    };
+  }
 
   // ---- Individual enrollment (PAY-04) ----------------------------
   if (mode === 'individual') {

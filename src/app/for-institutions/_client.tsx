@@ -48,6 +48,13 @@ const XIcon = (p: IconProps) => (
   <svg {...sw(p)}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
 );
 
+const TEAM_ASSESSMENT_PATH = '/assessment/team';
+const PRICING_PATH = '#engagement';
+const BRIEFING_MAILTO =
+  'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions';
+const COURSE_SEATS_MAILTO =
+  'mailto:hello@aibankinginstitute.com?subject=Foundation%20course%20seat%20pricing';
+
 const TIERS = [
   {
     scale: 'Free · diagnostic',
@@ -84,8 +91,8 @@ const TIERS = [
       'Institutional readiness baseline + post-engagement diagnostic',
       'Aggregate dashboard for your champion',
     ],
-    ctaHref: '/for-institutions',
-    ctaLabel: 'Request a pilot',
+    ctaHref: TEAM_ASSESSMENT_PATH,
+    ctaLabel: 'Start team assessment',
     ctaVariant: 'gold' as const,
   },
 ];
@@ -98,7 +105,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Contact us', href: '/for-institutions' }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Team assessment', href: TEAM_ASSESSMENT_PATH }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -126,11 +133,11 @@ export default function ForInstitutionsPage() {
               and leadership visibility.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/for-institutions">
-                Contact us <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href={PRICING_PATH}>
+                See pricing <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#engagement">
-                Enrollment options
+              <Button variant="ghost-dark" size="lg" href={TEAM_ASSESSMENT_PATH}>
+                Team assessment
               </Button>
             </div>
             <p className="mk-hero-foot">No software seats. No vendor lock-in.</p>
@@ -465,8 +472,8 @@ export default function ForInstitutionsPage() {
           </div>
           {/* Mobile-only: link to the live dashboard demo since the grid above
               gets visually compressed to ~80px-tall cards on a phone. */}
-          <Link className="mk-dept-mobile-link" href="/for-institutions">
-            See the full department dashboard →
+          <Link className="mk-dept-mobile-link" href={TEAM_ASSESSMENT_PATH}>
+            Open the paid team assessment →
           </Link>
         </div>
       </Section>
@@ -484,7 +491,7 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions"
+              href={BRIEFING_MAILTO}
             >
               Request a briefing <ArrowR className="mk-ic" />
             </Button>
@@ -514,6 +521,26 @@ export default function ForInstitutionsPage() {
         />
         <div className="mk-contact-grid">
           <div className="mk-ccard">
+            <div className="mk-lab">Paid team diagnostic</div>
+            <h3>Team Assessment</h3>
+            <div className="mk-price">
+              <div className="mk-v">10+</div>
+              <div className="mk-u">seats · secure checkout</div>
+            </div>
+            <p>
+              Buy the 48-question team assessment. Each participant receives a personal
+              report; admins get the aggregate team dashboard after 10 completions.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Shared participant link</li>
+              <li><CheckIcon className="mk-ic" />Department and role breakdowns</li>
+              <li><CheckIcon className="mk-ic" />Print-ready team report</li>
+            </ul>
+            <Button variant="gold" size="lg" href={TEAM_ASSESSMENT_PATH}>
+              Start team assessment <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
             <div className="mk-lab">Self-serve</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
@@ -529,8 +556,8 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
               <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
             </ul>
-            <Button variant="ink" size="lg" href="/for-institutions">
-              Get seat pricing <ArrowR className="mk-ic" />
+            <Button variant="ink" size="lg" href={COURSE_SEATS_MAILTO}>
+              Request course seats <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
@@ -552,7 +579,7 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions"
+              href={BRIEFING_MAILTO}
             >
               Request a briefing <ArrowR className="mk-ic" />
             </Button>
@@ -574,13 +601,13 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
+          { label: 'Team assessment', href: TEAM_ASSESSMENT_PATH, variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
-        label="Contact us"
-        href="/for-institutions"
+        label="Team assessment"
+        href={TEAM_ASSESSMENT_PATH}
         source="institutions-sticky"
       />
     </div>
