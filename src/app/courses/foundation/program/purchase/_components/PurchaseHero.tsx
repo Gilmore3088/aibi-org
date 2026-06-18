@@ -7,6 +7,7 @@ const INTER_STACK =
 export function PurchaseHero() {
   return (
     <section
+      className="aibi-grid aibi-grid--2 aibi-pad-section"
       style={{
         marginBottom: 48,
         background: 'var(--ink)',
@@ -14,8 +15,6 @@ export function PurchaseHero() {
         padding: '48px 44px',
         borderRadius: 32,
         boxShadow: 'var(--shadow-hero)',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
         gap: 36,
         alignItems: 'center',
       }}

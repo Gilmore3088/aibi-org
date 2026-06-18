@@ -6,6 +6,7 @@ const INTER_STACK =
 export function PurchaseFinalCTA() {
   return (
     <section
+      className="aibi-grid aibi-grid--cta aibi-pad-section"
       style={{
         marginTop: 56,
         background: 'var(--ink)',
@@ -13,8 +14,6 @@ export function PurchaseFinalCTA() {
         padding: '40px 44px',
         borderRadius: 28,
         boxShadow: 'var(--shadow-hero)',
-        display: 'grid',
-        gridTemplateColumns: '1.4fr auto',
         gap: 28,
         alignItems: 'center',
       }}

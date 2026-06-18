@@ -27,9 +27,10 @@ import {
   getMaturityBand,
   type DimensionScore,
 } from '@content/assessments/v4/scoring';
-import { emailVariants } from '@/lib/email/canonicalize';
+import { findEnrollmentByEmailOrUserIdWithRetry } from '@/lib/enrollment/findEnrollment';
 import { parseRoleV4 } from '@content/assessments/v4/roles';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { sendAssessmentBreakdown } from '@/lib/resend';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -145,22 +146,18 @@ export async function POST(request: Request): Promise<NextResponse> {
   });
   if (limited) return limited;
 
-  // Variant-aware entitlement lookup — matches the take page + dashboard
-  // patterns so Gmail "+alias" buyers are not locked out.
-  const variants = emailVariants(user.email);
-  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
-  const { data: enrollment, error: enrollErr } = await supabase
-    .from('course_enrollments')
-    .select('id')
-    .eq('product', 'in-depth-assessment')
-    .or(`user_id.eq.${user.id},${emailClause}`)
-    .limit(1)
-    .maybeSingle();
-
-  if (enrollErr) {
-    console.error('[in-depth/submit] enrollment lookup error:', enrollErr);
-    return NextResponse.json({ error: 'Server error.' }, { status: 500 });
-  }
+  // Variant-aware entitlement lookup WITH the same post-payment retry the
+  // take page uses (findEnrollment...WithRetry). The final save is the last
+  // place a paid completion can be lost: a buyer who finishes fast, or whose
+  // checkout webhook lagged, would otherwise get their completed 48-question
+  // assessment 403-rejected here and silently dropped — the "took it right
+  // when I paid, no record of finishing" symptom. Retrying absorbs the
+  // webhook latency window without weakening the gate.
+  const enrollment = await findEnrollmentByEmailOrUserIdWithRetry<{ id: string }>(
+    supabase,
+    { user, products: ['in-depth-assessment'], columns: 'id' },
+    { attempts: 3, delayMs: 1500 },
+  );
   if (!enrollment) {
     return NextResponse.json(
       { error: 'No In-Depth Assessment purchase found for this account.' },
@@ -220,6 +217,32 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (err) {
     console.error('[in-depth/submit] user_profiles upsert error:', err);
     return NextResponse.json({ error: 'Could not save result.' }, { status: 500 });
+  }
+
+  // ── Durable recovery: email the briefing link ─────────────────────────────
+  // The paid flow previously sent NO results email — the only path to the
+  // briefing was the in-browser redirect, so a closed tab or interrupted
+  // redirect stranded a completed assessment with no way back ("the results
+  // were never mailed"). Send the bearer /results/{id} link now. Best-effort:
+  // a mail failure must never fail an already-persisted result. Reuses the
+  // published assessment-results-breakdown template, mapping the v4 maturity
+  // band onto the tier copy fields.
+  if (profileId) {
+    try {
+      await sendAssessmentBreakdown({
+        email: user.email,
+        score: normalizedScore,
+        maxScore: 100,
+        tierId: band.id,
+        tierLabel: band.label,
+        tierHeadline: band.label,
+        tierSummary: band.meaning,
+        dimensionBreakdown,
+        profileId,
+      });
+    } catch (err) {
+      console.warn('[in-depth/submit] results email skipped:', err);
+    }
   }
 
   return NextResponse.json({ ok: true, profileId });

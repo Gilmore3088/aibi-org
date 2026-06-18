@@ -51,13 +51,14 @@ export default function InDepthResultsNotFound() {
             style={{ color: 'var(--slate-600)', lineHeight: 1.55 }}
           >
             The link may be from an old session or the result may have been
-            deleted. If you completed the In-Depth Assessment recently, your
-            most recent briefing was emailed to you — check your inbox for the
-            link.
+            deleted. If you completed the In-Depth Assessment, a link to your
+            briefing was emailed to you — check your inbox. Every briefing
+            you&apos;ve completed also lives on your dashboard; sign in below to
+            open it.
           </p>
           <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/assessment/in-depth"
+              href="/auth/login?next=/dashboard"
               className="inline-block px-8 py-4 text-[11px] uppercase transition-all active:scale-[0.98]"
               style={{
                 background: 'var(--ink)',
@@ -67,10 +68,10 @@ export default function InDepthResultsNotFound() {
                 borderRadius: 12,
               }}
             >
-              About the In-Depth
+              Sign in to your dashboard
             </Link>
             <Link
-              href="/auth/login?next=/dashboard"
+              href="/assessment/in-depth"
               className="inline-block px-8 py-4 text-[11px] uppercase transition-all"
               style={{
                 border: '1px solid var(--ink-a15)',
@@ -80,7 +81,7 @@ export default function InDepthResultsNotFound() {
                 borderRadius: 12,
               }}
             >
-              Sign in to your dashboard
+              About the In-Depth
             </Link>
           </div>
           <p
