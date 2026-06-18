@@ -117,10 +117,16 @@ export default async function AiBIPurchasedPage({
   return (
     <main
       style={{
+        // Chromeless page (no CourseShell), so apply the same soft-slate
+        // override here — otherwise var(--cream)/var(--cream-2) on this success
+        // surface would still render warm cream while the course it leads into
+        // is slate.
+        ['--cream' as string]: '#F1F5F9',
+        ['--cream-2' as string]: '#FFFFFF',
         background: 'var(--cream)',
         minHeight: '70vh',
         padding: '56px 24px 80px',
-      }}
+      } as React.CSSProperties}
     >
       <div style={{ maxWidth: 880, margin: '0 auto' }}>
         {/* Eyebrow strip */}

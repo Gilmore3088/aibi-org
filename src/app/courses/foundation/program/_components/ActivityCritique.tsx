@@ -27,7 +27,7 @@ const GOLD = '#C8A24A';
 const GOLD_DEEP = '#9A7A2F';
 const LINE = 'rgba(7,26,47,.12)';
 const SLATE = '#475569';
-const CREAM_2 = '#EFE7D7';
+const CREAM_2 = 'var(--cream-2)'; // inherits the course soft-slate override (CourseShell)
 
 export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiqueProps) {
   type Status =
