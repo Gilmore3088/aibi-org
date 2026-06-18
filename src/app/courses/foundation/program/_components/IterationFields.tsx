@@ -35,7 +35,7 @@ export function StepHeader({ number, label, description }: StepHeaderProps) {
           Step {number}: {label}
         </p>
       </div>
-      <p className="text-xs font-sans text-[color:var(--slate-600)] leading-relaxed ml-10">
+      <p className="text-sm font-sans text-[color:var(--slate-600)] leading-relaxed ml-10">
         {description}
       </p>
     </div>
@@ -52,10 +52,10 @@ export function ReadOnlyField({ field, value }: ReadOnlyFieldProps) {
     const selectedOption = (field.options ?? []).find((o) => o.value === value);
     return (
       <div className="mb-5">
-        <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
+        <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-1">
           {field.label}
         </p>
-        <div className="w-full border border-[color:var(--ink-a10)] rounded-lg px-3 py-2 text-sm font-sans bg-[color:var(--cream-2)] text-[color:var(--ink)]">
+        <div className="w-full border border-[color:var(--ink-a10)] rounded-lg px-3 py-2 text-base font-sans bg-[color:var(--cream-2)] text-[color:var(--ink)]">
           {selectedOption?.label ?? (
             <span className="text-[color:var(--slate-500)]">No response</span>
           )}
@@ -66,10 +66,10 @@ export function ReadOnlyField({ field, value }: ReadOnlyFieldProps) {
 
   return (
     <div className="mb-5">
-      <p className="font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
+      <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-1">
         {field.label}
       </p>
-      <div className="w-full border border-[color:var(--ink-a10)] rounded-lg px-3 py-2 text-sm font-sans bg-[color:var(--cream-2)] text-[color:var(--ink)] min-h-[80px] whitespace-pre-wrap">
+      <div className="w-full border border-[color:var(--ink-a10)] rounded-lg px-3 py-2 text-base font-sans bg-[color:var(--cream-2)] text-[color:var(--ink)] min-h-[80px] whitespace-pre-wrap">
         {value || <span className="text-[color:var(--slate-500)]">No response</span>}
       </div>
     </div>
@@ -90,7 +90,7 @@ export function InteractiveField({ field, value, error, onChange }: InteractiveF
   const hasError = Boolean(error);
 
   const baseInputClass =
-    'w-full border rounded-lg px-3 py-2 text-sm font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:border-[color:var(--gold)] transition-shadow';
+    'w-full border rounded-lg px-3 py-2 text-base font-sans bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:border-[color:var(--gold)] transition-shadow';
   const borderClass = hasError
     ? 'border-[color:var(--gold-deep)]'
     : 'border-[color:var(--ink-a10)]';
@@ -99,9 +99,9 @@ export function InteractiveField({ field, value, error, onChange }: InteractiveF
     return (
       <div className="mb-5">
         <fieldset>
-          <legend className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1">
+          <legend className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1">
             {field.label}
-            <span className="ml-1 text-[color:var(--gold-deep)] text-xs" aria-label="required">
+            <span className="ml-1 text-[color:var(--gold-deep)] text-sm" aria-label="required">
               *
             </span>
           </legend>
@@ -116,14 +116,14 @@ export function InteractiveField({ field, value, error, onChange }: InteractiveF
                   onChange={() => onChange(field.id, opt.value)}
                   className="w-4 h-4 accent-[color:var(--gold)] focus:ring-2 focus:ring-[color:var(--gold)]"
                 />
-                <span className="text-sm font-sans text-[color:var(--ink)]">{opt.label}</span>
+                <span className="text-base font-sans text-[color:var(--ink)]">{opt.label}</span>
               </label>
             ))}
           </div>
           {hasError && (
             <p
               id={errorId}
-              className="mt-1 text-[color:var(--gold-deep)] font-sans text-xs"
+              className="mt-1 text-[color:var(--gold-deep)] font-sans text-sm"
               role="alert"
             >
               Error: {error}
@@ -138,10 +138,10 @@ export function InteractiveField({ field, value, error, onChange }: InteractiveF
     <div className="mb-5">
       <label
         htmlFor={field.id}
-        className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
+        className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1"
       >
         {field.label}
-        <span className="ml-1 text-[color:var(--gold-deep)] text-xs" aria-label="required">
+        <span className="ml-1 text-[color:var(--gold-deep)] text-sm" aria-label="required">
           *
         </span>
       </label>

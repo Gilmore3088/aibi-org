@@ -49,7 +49,7 @@ export function FullCurriculumAccordion({
           >
             <span
               style={{
-                fontSize: 10.5,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
@@ -72,7 +72,7 @@ export function FullCurriculumAccordion({
           <span
             aria-hidden="true"
             style={{
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

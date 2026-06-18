@@ -48,7 +48,7 @@ interface Attempt {
 
 const eyebrow: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -133,10 +133,10 @@ export function PromptWizard({
     return (
       <div style={card}>
         <div style={eyebrow}>Prompt wizard · complete</div>
-        <p style={{ color: INK, fontSize: 15, fontWeight: 700, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           You built a prompt that gets to the CORE. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 14px' }}>
+        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 14px' }}>
           You watched the answer change as each element clicked into place — Context,
           Objective, Resources, Expectations. That is the whole craft: a complete prompt
           is a usable answer. Module 9 adds the two moves that make it <strong>safe</strong>.
@@ -154,7 +154,7 @@ export function PromptWizard({
       <div style={eyebrow}>Prompt wizard · {activity.title}</div>
 
       {/* How it works — the widget has to explain itself when read cold */}
-      <p style={{ color: SLATE, fontSize: 13.5, lineHeight: 1.6, margin: '8px 0 14px' }}>
+      <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '8px 0 14px' }}>
         Write the prompt you would actually send an AI to handle the task below — using only the
         source provided. Press <strong style={{ color: INK }}>Run the prompt</strong> and the wizard
         scores it on the four <strong style={{ color: INK }}>CORE</strong> parts —{' '}
@@ -172,7 +172,7 @@ export function PromptWizard({
             key={s.id}
             style={{
               fontFamily: INTER,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 700,
               padding: '3px 10px',
               borderRadius: 999,
@@ -194,7 +194,7 @@ export function PromptWizard({
 
       {/* The source */}
       <div style={eyebrow}>Your only source — tell the AI to use this, and nothing else</div>
-      <p style={{ color: INK, fontSize: 13, lineHeight: 1.6, margin: '4px 0 0', background: CREAM, padding: 14, borderRadius: 10, border: `1px solid ${LINE}` }}>
+      <p style={{ color: INK, fontSize: 16, lineHeight: 1.6, margin: '4px 0 0', background: CREAM, padding: 14, borderRadius: 10, border: `1px solid ${LINE}` }}>
         {scenario.sourceMaterial}
       </p>
 
@@ -204,7 +204,7 @@ export function PromptWizard({
         {/* Editor pane */}
         {!done && (
         <div style={{ flex: '1 1 320px', minWidth: 280 }}>
-          <label htmlFor="pw-input" style={{ display: 'block', fontFamily: INTER, fontSize: 12, fontWeight: 700, color: INK, marginBottom: 6 }}>
+          <label htmlFor="pw-input" style={{ display: 'block', fontFamily: INTER, fontSize: 14, fontWeight: 700, color: INK, marginBottom: 6 }}>
             Write your prompt to the AI (attempt {history.length + 1} of {MAX_TRIES})
           </label>
           <textarea
@@ -216,8 +216,8 @@ export function PromptWizard({
             style={{
               width: '100%',
               fontFamily: INTER,
-              fontSize: 14,
-              lineHeight: 1.5,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: INK,
               padding: 12,
               border: `1px solid ${LINE}`,
@@ -232,7 +232,7 @@ export function PromptWizard({
             style={{
               marginTop: 10,
               fontFamily: INTER,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 800,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -266,11 +266,11 @@ export function PromptWizard({
       {done && (
         <div style={{ marginTop: 18, borderTop: `1px solid ${LINE}`, paddingTop: 14 }}>
           {solved ? (
-            <p style={{ color: EMERALD, fontSize: 14, fontWeight: 700, margin: '0 0 12px' }}>
+            <p style={{ color: EMERALD, fontSize: 16, lineHeight: 1.6, fontWeight: 700, margin: '0 0 12px' }}>
               ✓ {scenario.winLine}
             </p>
           ) : (
-            <p style={{ color: SLATE, fontSize: 14, lineHeight: 1.55, margin: '0 0 12px' }}>
+            <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 12px' }}>
               Out of attempts for this one — no penalty. The closest a complete prompt gets:
               name the role, state the exact task, point to the source below and forbid guessing,
               and set the format. Carry that into the next scenario.
@@ -286,7 +286,7 @@ export function PromptWizard({
                 {submitting ? 'Saving…' : 'Save my prompt & complete'}
               </button>
               {serverError && (
-                <p style={{ color: RED, fontSize: 13, marginTop: 10 }}>{serverError}</p>
+                <p style={{ color: RED, fontSize: 14, marginTop: 10 }}>{serverError}</p>
               )}
             </>
           )}
@@ -378,13 +378,13 @@ function Scorecard({
           const ok = attempt.present[el.key];
           return (
             <li key={el.key} style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
-              <span style={{ color: ok ? EMERALD : RED, fontWeight: 800, fontSize: 13 }}>
+              <span style={{ color: ok ? EMERALD : RED, fontWeight: 800, fontSize: 16 }}>
                 {ok ? '✓' : '✗'}
               </span>
-              <span style={{ fontFamily: INTER, fontSize: 13, color: INK }}>
+              <span style={{ fontFamily: INTER, fontSize: 16, lineHeight: 1.6, color: INK }}>
                 <strong>{el.label}.</strong> {el.oneLiner}
                 {!ok && showHints && (
-                  <span style={{ color: GOLD_DEEP, display: 'block', fontSize: 12, marginTop: 2 }}>
+                  <span style={{ color: GOLD_DEEP, display: 'block', fontSize: 13, marginTop: 2 }}>
                     Try: {el.missingHint}
                   </span>
                 )}
@@ -403,7 +403,7 @@ function AnswerPreview({ scenario, attempt }: { scenario: WizardScenario; attemp
     <div style={{ marginTop: 14 }}>
       <div style={{ ...eyebrow, marginBottom: 8 }}>The reply you’d get back</div>
       <div style={{ background: CREAM, borderRadius: 12, padding: 14, borderLeft: `3px solid ${GOLD_DEEP}` }}>
-        <p style={{ margin: 0, fontFamily: INTER, fontSize: 13.5, lineHeight: 1.65 }}>
+        <p style={{ margin: 0, fontFamily: INTER, fontSize: 16, lineHeight: 1.65 }}>
           {scenario.elements.map((el) => {
             const ok = attempt.present[el.key];
             return (
@@ -415,7 +415,7 @@ function AnswerPreview({ scenario, attempt }: { scenario: WizardScenario; attemp
         </p>
       </div>
       {anyBroken && (
-        <p style={{ fontSize: 11.5, color: RED, margin: '6px 0 0', fontFamily: INTER }}>
+        <p style={{ fontSize: 13, color: RED, margin: '6px 0 0', fontFamily: INTER }}>
           Red = where a missing CORE part broke the answer. Fix that part of your prompt and Run again.
         </p>
       )}
@@ -434,7 +434,7 @@ const card: CSSProperties = {
 const downloadLink: CSSProperties = {
   display: 'inline-block',
   fontFamily: INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -447,7 +447,7 @@ const downloadLink: CSSProperties = {
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -460,7 +460,7 @@ const primaryBtn: CSSProperties = {
 };
 const gridHeadCell: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 10,
+  fontSize: 11,
   fontWeight: 700,
   color: SLATE,
   padding: '2px 6px',

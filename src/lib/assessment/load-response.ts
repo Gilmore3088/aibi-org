@@ -94,6 +94,7 @@ export interface AssessmentResponseLoadedV4 {
   readonly bandId: MaturityBand['id'];
   readonly dimensionBreakdown: Record<DimensionV4, DimensionScoreSerializedV4>;
   readonly institutionContext: InstitutionContext | null;
+  readonly actionPacketNotes: string | null;
 }
 
 export type AssessmentResponseLoaded =
@@ -110,7 +111,7 @@ export async function loadAssessmentResponse(
   // The id parameter is user_profiles.id, used as a bearer token.
   const client = createServiceRoleClient();
   const COLUMNS =
-    'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context';
+    'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_version, readiness_at, role, institution_context, action_packet_notes';
   const primary = await client
     .from('user_profiles')
     .select(COLUMNS)
@@ -171,6 +172,8 @@ export async function loadAssessmentResponse(
       >,
       institutionContext:
         (data as { institution_context?: InstitutionContext | null }).institution_context ?? null,
+      actionPacketNotes:
+        (data as { action_packet_notes?: string | null }).action_packet_notes ?? null,
     };
   }
 

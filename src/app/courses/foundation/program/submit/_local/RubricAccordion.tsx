@@ -7,7 +7,7 @@
 import type { CSSProperties } from 'react';
 
 const kicker: CSSProperties = {
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -91,9 +91,9 @@ export function RubricAccordion() {
 
       <p
         style={{
-          fontSize: 14,
+          fontSize: 16,
           color: 'var(--slate-600)',
-          lineHeight: 1.55,
+          lineHeight: 1.6,
           margin: '14px 0 18px',
         }}
       >
@@ -135,7 +135,7 @@ export function RubricAccordion() {
             <div>
               <p
                 style={{
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: 600,
                   color: 'var(--ink)',
                   margin: '0 0 4px',
@@ -146,9 +146,9 @@ export function RubricAccordion() {
               </p>
               <p
                 style={{
-                  fontSize: 13,
+                  fontSize: 16,
                   color: 'var(--slate-600)',
-                  lineHeight: 1.55,
+                  lineHeight: 1.6,
                   margin: 0,
                 }}
               >

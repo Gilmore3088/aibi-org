@@ -21,7 +21,7 @@ export function ModuleArtifactHeader({ meta }: { meta: ArtifactFirstMeta }) {
     <section
       aria-label="What you are building in this module"
       style={{
-        maxWidth: 1180,
+        maxWidth: 1320,
         margin: '0 auto',
         padding: '0 36px',
       }}
@@ -51,7 +51,7 @@ export function ModuleArtifactHeader({ meta }: { meta: ArtifactFirstMeta }) {
             <span
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -63,8 +63,8 @@ export function ModuleArtifactHeader({ meta }: { meta: ArtifactFirstMeta }) {
             <span
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 15,
-                lineHeight: 1.5,
+                fontSize: 16,
+                lineHeight: 1.6,
                 fontWeight: field === 'building' ? 600 : 400,
                 color: field === 'building' ? 'var(--ink)' : 'var(--slate-600)',
               }}

@@ -45,7 +45,7 @@ const kicker = {
   padding: '6px 14px',
   borderRadius: 999,
   background: 'var(--gold-a10)',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase' as const,
@@ -74,7 +74,7 @@ const inlineCtaInk = {
   borderRadius: 12,
   background: 'var(--ink)',
   color: 'var(--cream-2)',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase' as const,
@@ -124,7 +124,7 @@ export default async function SubmitPage() {
                 fontSize: 16,
                 color: 'var(--ink)',
                 margin: '0 0 16px',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Complete all 12 modules before submitting your work product.
@@ -144,7 +144,7 @@ export default async function SubmitPage() {
                 fontSize: 16,
                 color: 'var(--ink)',
                 margin: '0 0 6px',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Typical turnaround is {REVIEW_TURNAROUND_BUSINESS_DAYS} business days.
@@ -152,10 +152,10 @@ export default async function SubmitPage() {
             </p>
             <p
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 color: 'var(--slate-500)',
                 margin: 0,
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Submitted{' '}
@@ -184,7 +184,7 @@ export default async function SubmitPage() {
                 fontSize: 16,
                 color: 'var(--ink)',
                 margin: '0 0 16px',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Your work product has been approved. Your AiBI-Foundation credential has been issued.

@@ -63,7 +63,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
       <header style={{ marginBottom: 28 }}>
         <p
           style={{
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -170,7 +170,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
             display: 'inline-flex',
             alignItems: 'center',
             padding: '12px 18px',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -207,7 +207,7 @@ function MetaPanel({
         <div key={item.label}>
           <p
             style={{
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',

@@ -101,7 +101,7 @@ export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiq
               color: GOLD_DEEP,
               textTransform: 'uppercase',
               letterSpacing: '0.18em',
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 800,
             }}
           >
@@ -109,10 +109,10 @@ export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiq
           </div>
           <p
             style={{
-              fontSize: 14,
+              fontSize: 16,
               color: SLATE,
               margin: '6px 0 0',
-              lineHeight: 1.5,
+              lineHeight: 1.6,
             }}
           >
             Get one round of structured feedback on your response. What worked,
@@ -149,8 +149,8 @@ export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiq
           style={{
             marginTop: 14,
             color: '#912018',
-            fontSize: 14,
-            lineHeight: 1.5,
+            fontSize: 16,
+            lineHeight: 1.6,
           }}
         >
           {state.message}
@@ -186,7 +186,7 @@ export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiq
                 color: GOLD_DEEP,
                 textTransform: 'uppercase',
                 letterSpacing: '0.18em',
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 800,
               }}
             >
@@ -195,7 +195,7 @@ export function ActivityCritique({ moduleNumber, responseValue }: ActivityCritiq
             <p
               style={{
                 margin: '8px 0 0',
-                fontSize: 15,
+                fontSize: 16,
                 color: INK,
                 lineHeight: 1.65,
               }}
@@ -236,7 +236,7 @@ function Block({
           color: kickerColor,
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 800,
         }}
       >
@@ -247,7 +247,7 @@ function Block({
           margin: '8px 0 0',
           paddingLeft: 20,
           color: INK,
-          fontSize: 14,
+          fontSize: 16,
           lineHeight: 1.6,
         }}
       >

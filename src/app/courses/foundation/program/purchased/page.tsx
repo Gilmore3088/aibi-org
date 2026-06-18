@@ -256,6 +256,59 @@ export default async function AiBIPurchasedPage({
           <SavedPromptPreview />
         </div>
 
+        {/* Toolbox card — included with purchase */}
+        <section
+          aria-label="Your Banking AI Toolbox"
+          style={{
+            border: '1px solid var(--ink-a10)',
+            borderLeft: '4px solid var(--gold)',
+            background: '#FFFFFF',
+            borderRadius: 24,
+            padding: 32,
+            marginBottom: 32,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+          }}
+        >
+          <p
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-deep)',
+              marginBottom: 10,
+            }}
+          >
+            Included with your purchase
+          </p>
+          <h2
+            style={{
+              fontSize: 26,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+              color: 'var(--ink)',
+              marginBottom: 10,
+            }}
+          >
+            Your Banking AI Toolbox
+          </h2>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: 'var(--slate-600)',
+              maxWidth: '60ch',
+              marginBottom: 20,
+            }}
+          >
+            The full workbench: Library, Build, Playground, My Toolbox, Cookbook. 12 banker-built prompts shipped today; more land as the kits roll out.
+          </p>
+          <PrimaryButton as="a" href="/dashboard/toolbox">
+            OPEN THE TOOLBOX →
+          </PrimaryButton>
+        </section>
+
         {/* Quiet receipt + access strip */}
         <section
           aria-label="Receipt and access"

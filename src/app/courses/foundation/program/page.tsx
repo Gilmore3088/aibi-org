@@ -84,7 +84,7 @@ export default async function CourseOverviewPage() {
               fontFamily:
                 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
-              fontSize: 11,
+              fontSize: 12,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: 'var(--slate-500)',
@@ -97,9 +97,9 @@ export default async function CourseOverviewPage() {
 
       <div
         style={{
-          maxWidth: 1120,
+          maxWidth: 1320,
           margin: '0 auto',
-          padding: 'clamp(24px, 4vw, 40px) clamp(20px, 4vw, 40px) 96px',
+          padding: 'clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px) 104px',
         }}
       >
         {fetchFailed && (

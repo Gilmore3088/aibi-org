@@ -8,7 +8,7 @@ const FONT_INTER =
 
 const KICKER_STYLE: React.CSSProperties = {
   fontFamily: FONT_INTER,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -25,9 +25,9 @@ const ARTIFACT_TITLE_STYLE: React.CSSProperties = {
 
 const ARTIFACT_BODY_STYLE: React.CSSProperties = {
   fontFamily: FONT_INTER,
-  fontSize: 13,
+  fontSize: 16,
   color: 'var(--slate-600)',
-  lineHeight: 1.55,
+  lineHeight: 1.6,
   marginTop: 2,
 };
 
@@ -77,9 +77,9 @@ export function OutcomesPanel() {
                 display: 'flex',
                 gap: 12,
                 fontFamily: FONT_INTER,
-                fontSize: 14,
+                fontSize: 16,
                 color: 'var(--ink)',
-                lineHeight: 1.5,
+                lineHeight: 1.6,
               }}
             >
               <span

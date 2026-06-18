@@ -39,7 +39,7 @@ function buildDraft(args: {
 }
 
 const kicker: CSSProperties = {
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -97,9 +97,9 @@ export function ShareDelta({
       </h2>
       <p
         style={{
-          fontSize: 14,
+          fontSize: 16,
           color: 'var(--slate-600)',
-          lineHeight: 1.55,
+          lineHeight: 1.6,
           margin: '0 0 16px',
         }}
       >
@@ -118,7 +118,7 @@ export function ShareDelta({
           border: '1px solid var(--ink-a10)',
           borderRadius: 16,
           padding: '16px 18px',
-          fontSize: 14,
+          fontSize: 16,
           lineHeight: 1.6,
           color: 'var(--ink)',
           resize: 'vertical',
@@ -143,7 +143,7 @@ export function ShareDelta({
             padding: '12px 22px',
             background: 'var(--ink)',
             color: 'var(--cream-2)',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',

@@ -23,7 +23,7 @@ const fontStack = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 const eyebrowOnInk: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -32,7 +32,7 @@ const eyebrowOnInk: React.CSSProperties = {
 
 const eyebrowOnCream: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -48,7 +48,7 @@ const badge: React.CSSProperties = {
   background: 'var(--cream)',
   color: 'var(--slate-600)',
   fontFamily: fontStack,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -135,7 +135,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
               <span
                 style={{
                   fontFamily: fontStack,
-                  fontSize: 11,
+                  fontSize: 13,
                   color: 'var(--slate-500)',
                   maxWidth: 320,
                   overflow: 'hidden',
@@ -202,7 +202,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
                       style={{
                         fontFamily: fontStack,
                         fontWeight: 700,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: 'var(--ink)',
                       }}
                     >
@@ -211,7 +211,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
                     <p
                       style={{
                         fontFamily: fontStack,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: 'var(--slate-600)',
                         lineHeight: 1.6,
                         margin: '4px 0 0',
@@ -246,7 +246,7 @@ export function OutputExampleCard({ example }: OutputExampleProps) {
                       alignItems: 'flex-start',
                       gap: 10,
                       fontFamily: fontStack,
-                      fontSize: 14,
+                      fontSize: 16,
                       color: 'var(--ink)',
                       lineHeight: 1.6,
                     }}

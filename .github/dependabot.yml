@@ -28,6 +28,10 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
         update-types: ["version-update:semver-major"]
+      # Tailwind v4 is a breaking major (new PostCSS plugin, CSS-first config,
+      # changed directives). Requires a dedicated migration — not safe to auto-bump.
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   # GitHub Actions used by the CI workflows (e2e, gitleaks, lighthouse, etc.)
   - package-ecosystem: "github-actions"

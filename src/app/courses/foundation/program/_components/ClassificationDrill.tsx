@@ -45,7 +45,7 @@ const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 const eyebrowStyle: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -63,7 +63,7 @@ const ctaButtonStyle: React.CSSProperties = {
   border: '1px solid var(--ink)',
   borderRadius: 12,
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -250,7 +250,7 @@ export function ClassificationDrill({
                 border: '1px solid var(--emerald-700)',
                 borderRadius: 999,
                 fontFamily: INTER_STACK,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -264,7 +264,7 @@ export function ClassificationDrill({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 14,
+            fontSize: 16,
             color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: 0,
@@ -279,7 +279,8 @@ export function ClassificationDrill({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: '0 0 8px 0',
             }}
@@ -289,7 +290,8 @@ export function ClassificationDrill({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: '0 0 16px 0',
             }}
@@ -338,7 +340,8 @@ export function ClassificationDrill({
               style={{
                 marginTop: 16,
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: 16,
+                lineHeight: 1.6,
                 color: '#B91C1C',
                 background: '#FEF2F2',
                 border: '1px solid #FECACA',

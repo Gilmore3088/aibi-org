@@ -12,6 +12,7 @@
 import React, { useState, useCallback, useEffect, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signOutAction } from '@/app/auth/actions';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
 
@@ -100,7 +101,7 @@ function deriveInitialFormState(answers: OnboardingAnswers | null): FormState {
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -130,7 +131,7 @@ const summaryRowStyle: CSSProperties = {
 
 const summaryLabelStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -140,7 +141,7 @@ const summaryLabelStyle: CSSProperties = {
 
 const summaryValueStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 15,
+  fontSize: 16,
   fontWeight: 600,
   color: 'var(--ink)',
   margin: 0,
@@ -149,11 +150,11 @@ const summaryValueStyle: CSSProperties = {
 
 const summaryNoteStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 13,
+  fontSize: 16,
   fontWeight: 400,
   color: 'var(--slate-600)',
   margin: '4px 0 0',
-  lineHeight: 1.55,
+  lineHeight: 1.6,
 };
 
 const editPanelStyle: CSSProperties = {
@@ -198,7 +199,7 @@ const primaryButtonStyle: CSSProperties = {
 
 const backLinkStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -208,7 +209,7 @@ const backLinkStyle: CSSProperties = {
 
 const signOutLinkStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -343,7 +344,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 14,
+            fontSize: 16,
+            lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: 0,
             maxWidth: '60ch',
@@ -381,7 +383,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
               href="#edit"
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -398,7 +400,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: 0,
             }}
@@ -467,7 +470,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: 0,
             }}
@@ -503,7 +507,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
                 border: '1px solid var(--gold-deep)',
                 color: 'var(--gold-deep)',
                 fontFamily: INTER_STACK,
-                fontSize: 13,
+                fontSize: 16,
+                lineHeight: 1.6,
                 fontWeight: 600,
               }}
             >
@@ -522,7 +527,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
                 border: '1px solid var(--emerald-700)',
                 color: 'var(--emerald-800)',
                 fontFamily: INTER_STACK,
-                fontSize: 13,
+                fontSize: 16,
+                lineHeight: 1.6,
                 fontWeight: 600,
                 transition: 'opacity var(--t-med) var(--ease)',
               }}
@@ -571,7 +577,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: 16,
+              lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: '6px 0 0',
             }}
@@ -588,13 +595,14 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           >
             Change email
           </a>
-          <Link
-            href="/auth/signout"
-            style={signOutLinkStyle}
+          <button
+            type="button"
+            onClick={() => { void signOutAction(); }}
+            style={{ ...signOutLinkStyle, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             Sign out
-          </Link>
+          </button>
         </div>
       </section>
     </div>

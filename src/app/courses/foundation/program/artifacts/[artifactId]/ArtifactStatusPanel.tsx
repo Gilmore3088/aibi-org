@@ -53,7 +53,7 @@ export function ArtifactStatusPanel({ artifactId }: ArtifactStatusPanelProps) {
     >
       <p
         style={{
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -65,9 +65,9 @@ export function ArtifactStatusPanel({ artifactId }: ArtifactStatusPanelProps) {
       </p>
       <p
         style={{
-          fontSize: 14,
+          fontSize: 16,
           color: 'var(--slate-600)',
-          lineHeight: 1.55,
+          lineHeight: 1.6,
           margin: 0,
         }}
       >

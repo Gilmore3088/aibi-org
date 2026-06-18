@@ -45,11 +45,11 @@ export function DiagnosisForm({
       <div className="mb-5">
         <label
           htmlFor="missing-components"
-          className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
+          className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1"
         >
           {missingComponentField?.label ??
             'Which component is most critically missing?'}
-          <span className="ml-1 text-red-700 text-xs" aria-label="required">
+          <span className="ml-1 text-red-700 text-sm" aria-label="required">
             *
           </span>
         </label>
@@ -58,7 +58,7 @@ export function DiagnosisForm({
           name="missing-components"
           value={missingComponent}
           onChange={(e) => onMissingComponentChange(e.target.value)}
-          className={`w-full rounded-xl border px-3 py-2 font-sans text-sm bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow ${
+          className={`w-full rounded-xl border px-3 py-2 font-sans text-base bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow ${
             errors['missing-components']
               ? 'border-red-700'
               : 'border-[color:var(--ink-a10)]'
@@ -81,7 +81,7 @@ export function DiagnosisForm({
         {errors['missing-components'] && (
           <p
             id="missing-components-error"
-            className="mt-1 font-sans text-xs text-red-700"
+            className="mt-1 font-sans text-sm text-red-700"
             role="alert"
           >
             Error: {errors['missing-components']}
@@ -93,10 +93,10 @@ export function DiagnosisForm({
       <div className="mb-5">
         <label
           htmlFor="improved-skill"
-          className="block font-sans text-sm font-semibold text-[color:var(--ink)] mb-1"
+          className="block font-sans text-base font-semibold text-[color:var(--ink)] mb-1"
         >
           {improvedSkillField?.label ?? 'Write an improved version of this skill'}
-          <span className="ml-1 text-red-700 text-xs" aria-label="required">
+          <span className="ml-1 text-red-700 text-sm" aria-label="required">
             *
           </span>
         </label>
@@ -110,7 +110,7 @@ export function DiagnosisForm({
             'Start with a Role definition ("You are a...")…'
           }
           onChange={(e) => onImprovedSkillChange(e.target.value)}
-          className={`w-full rounded-xl border px-3 py-2 font-sans text-sm bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow resize-y ${
+          className={`w-full rounded-xl border px-3 py-2 font-sans text-base bg-white text-[color:var(--ink)] placeholder:text-[color:var(--slate-400)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] transition-shadow resize-y ${
             errors['improved-skill']
               ? 'border-red-700'
               : 'border-[color:var(--ink-a10)]'
@@ -127,7 +127,7 @@ export function DiagnosisForm({
         {errors['improved-skill'] && (
           <p
             id="improved-skill-error"
-            className="mt-1 font-sans text-xs text-red-700"
+            className="mt-1 font-sans text-sm text-red-700"
             role="alert"
           >
             Error: {errors['improved-skill']}
@@ -143,7 +143,7 @@ export function DiagnosisForm({
 
       {serverError && (
         <p
-          className="mt-3 mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-sans text-sm text-red-700"
+          className="mt-3 mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-sans text-base text-red-700"
           role="alert"
         >
           {serverError}
@@ -154,7 +154,7 @@ export function DiagnosisForm({
         <button
           type="submit"
           disabled={submitting}
-          className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[11px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+          className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[12px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
           aria-label={submitting ? 'Submitting activity' : 'Submit activity'}
         >
           {submitting ? 'SUBMITTING' : 'SUBMIT ACTIVITY'}

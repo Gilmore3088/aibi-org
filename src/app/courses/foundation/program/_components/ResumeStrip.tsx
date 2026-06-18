@@ -36,7 +36,7 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
         <span
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 10.5,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -48,7 +48,7 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
         <span
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: '0.16em',
             color: 'var(--gold-soft)',
@@ -77,9 +77,9 @@ export function ResumeStrip({ currentModule, completedCount }: ResumeStripProps)
           style={{
             margin: '6px 0 0',
             fontFamily: FONT_INTER,
-            fontSize: 14,
+            fontSize: 16,
             color: 'var(--on-dark-70)',
-            lineHeight: 1.5,
+            lineHeight: 1.6,
             maxWidth: '62ch',
           }}
         >

@@ -69,7 +69,7 @@ export function ToolGuideFilter({ platformTags }: ToolGuideFilterProps) {
     >
       <p
         style={{
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -94,8 +94,8 @@ export function ToolGuideFilter({ platformTags }: ToolGuideFilterProps) {
               aria-checked={isActive}
               onClick={() => onSelect(opt.value)}
               style={{
-                padding: '9px 16px',
-                fontSize: 13,
+                padding: '10px 18px',
+                fontSize: 16,
                 fontWeight: 600,
                 borderRadius: 999,
                 border: '1px solid',

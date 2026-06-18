@@ -50,7 +50,7 @@ export function CollapsibleBoundary({ defaultOpen, children }: Props) {
         <span
           style={{
             fontFamily: MOCKUP_FONT,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',

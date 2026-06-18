@@ -22,7 +22,7 @@ function estimateReadingTime(content: string): number {
 
 const eyebrowStyle: React.CSSProperties = {
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -66,9 +66,9 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                 <span
                   style={{
                     fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                    fontSize: 15,
+                    fontSize: 16,
                     color: 'var(--ink)',
-                    lineHeight: 1.55,
+                    lineHeight: 1.6,
                   }}
                 >
                   {item}
@@ -104,7 +104,7 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                 background: active ? 'var(--gold)' : 'var(--cream)',
                 color: active ? 'var(--ink)' : 'var(--slate-600)',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: active ? 700 : 500,
                 cursor: 'pointer',
                 transition: 'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease)',
@@ -159,7 +159,7 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                   <span
                     style={{
                       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: 700,
                       fontVariantNumeric: 'tabular-nums',
                       color: isOpen ? 'var(--gold-deep)' : 'var(--slate-500)',
@@ -188,7 +188,7 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                   <span
                     style={{
                       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                      fontSize: 10,
+                      fontSize: 11,
                       fontWeight: 600,
                       letterSpacing: '0.16em',
                       textTransform: 'uppercase',
@@ -238,7 +238,7 @@ export function LearnSection({ sections, keyTakeaways }: LearnSectionProps) {
                       <p
                         style={{
                           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                          fontSize: 14,
+                          fontSize: 15,
                           color: 'var(--ink)',
                           lineHeight: 1.6,
                           margin: 0,

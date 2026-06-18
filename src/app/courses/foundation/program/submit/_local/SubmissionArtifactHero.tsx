@@ -17,7 +17,7 @@ const card: CSSProperties = {
 };
 
 const fieldLabel: CSSProperties = {
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -26,8 +26,8 @@ const fieldLabel: CSSProperties = {
 };
 
 const fieldBody: CSSProperties = {
-  fontSize: 13,
-  lineHeight: 1.55,
+  fontSize: 16,
+  lineHeight: 1.6,
   color: 'var(--ink)',
   margin: 0,
 };
@@ -90,7 +90,7 @@ export function SubmissionArtifactHero() {
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -117,7 +117,7 @@ export function SubmissionArtifactHero() {
       <p
         style={{
           fontSize: 16,
-          lineHeight: 1.55,
+          lineHeight: 1.6,
           color: 'var(--gold-soft)',
           margin: '0 0 24px',
           maxWidth: '62ch',
@@ -147,7 +147,7 @@ export function SubmissionArtifactHero() {
 
       <p
         style={{
-          fontSize: 12,
+          fontSize: 13,
           color: 'var(--gold-soft)',
           margin: '20px 0 0',
           letterSpacing: '0.04em',

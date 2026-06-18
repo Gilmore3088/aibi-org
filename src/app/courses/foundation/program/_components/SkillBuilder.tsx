@@ -199,7 +199,7 @@ export function SkillBuilder({
       style={{ borderLeftColor: 'var(--gold)' }}
     >
       <div className="px-6 pt-6 pb-5">
-        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
+        <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
           Activity {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
@@ -207,12 +207,12 @@ export function SkillBuilder({
             {activity.title}
           </h3>
           {state.submitted && (
-            <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
+            <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
               Submitted
             </span>
           )}
         </div>
-        <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)]">
+        <p className="font-sans text-base leading-relaxed text-[color:var(--slate-600)]">
           {activity.description}
         </p>
       </div>
@@ -238,10 +238,10 @@ export function SkillBuilder({
                   onSelect={handleStarterSelect}
                 />
                 <div className="lg:hidden mb-6 rounded-2xl border border-[color:var(--ink-a10)] bg-[color:var(--cream-2)] p-4">
-                  <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-2">
+                  <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-2">
                     RTFC Framework
                   </p>
-                  <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)]">
+                  <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)]">
                     Complete all four components: Role, Task, Format, and Constraints. Each field
                     maps to a component of the RTFC Framework taught in Module 6.
                   </p>
@@ -263,17 +263,17 @@ export function SkillBuilder({
                     value={state.values[FIELD_IDS.constraint] ?? ''} error={state.errors[FIELD_IDS.constraint]}
                     placeholder={placeholders.constraints} minLength={30} onChange={handleChange} />
                   {state.serverError && (
-                    <p className="mt-3 mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-sans text-sm text-red-700" role="alert">
+                    <p className="mt-3 mb-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-sans text-base text-red-700" role="alert">
                       {state.serverError}
                     </p>
                   )}
                   <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
-                    <p className="font-sans text-xs leading-relaxed text-[color:var(--slate-600)] mb-3">
+                    <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)] mb-3">
                       Submitting will save your skill and automatically download a .md file to your
                       device for deployment in your AI platform.
                     </p>
                     <button type="submit" disabled={state.submitting}
-                      className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[11px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+                      className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[12px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
                       aria-label={state.submitting ? 'Building and saving skill' : 'Save skill and download .md file'}>
                       {state.submitting ? 'BUILDING SKILL' : 'SAVE SKILL AND DOWNLOAD'}
                     </button>

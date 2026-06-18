@@ -88,6 +88,10 @@ test.describe('marketing smoke', () => {
 
   test('legacy /courses/aibi-p redirects to /courses/foundation/program', async ({ page }) => {
     const res = await page.goto('/courses/aibi-p');
-    expect(res?.url()).toMatch(/\/courses\/foundation\/program/);
+    // The legacy alias resolves to the program path, which is auth-gated — so a
+    // logged-out visitor lands on /auth/login?next=%2Fcourses%2Ffoundation%2Fprogram.
+    // decodeURIComponent so this matches whether we reach the program directly
+    // (authed) or the login page whose next= points back at it (logged out).
+    expect(decodeURIComponent(res?.url() ?? '')).toMatch(/\/courses\/foundation\/program/);
   });
 });

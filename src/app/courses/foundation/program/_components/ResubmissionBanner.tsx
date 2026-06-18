@@ -24,7 +24,7 @@ export function ResubmissionBanner({ reviewFeedback }: ResubmissionBannerProps) 
           <p
             className="mb-2"
             style={{
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
@@ -36,7 +36,7 @@ export function ResubmissionBanner({ reviewFeedback }: ResubmissionBannerProps) 
           <p
             className="whitespace-pre-wrap"
             style={{
-              fontSize: 14,
+              fontSize: 16,
               lineHeight: 1.6,
               color: 'var(--ink)',
             }}
@@ -47,7 +47,7 @@ export function ResubmissionBanner({ reviewFeedback }: ResubmissionBannerProps) 
       )}
 
       <div className="mb-6">
-        <p style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--slate-600)' }}>
           Address the reviewer&#39;s feedback above, then resubmit your updated work product below.
           You may resubmit once.
         </p>

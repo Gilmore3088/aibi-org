@@ -21,7 +21,7 @@ function formatMinutes(minutes: number): string {
 
 const metaStyle: React.CSSProperties = {
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -45,7 +45,7 @@ export function ModuleMapItem({ module: mod, status }: ModuleMapItemProps) {
       <div
         style={{
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: 700,
           fontVariantNumeric: 'tabular-nums',
           marginTop: 2,

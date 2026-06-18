@@ -83,7 +83,7 @@ function FieldGroup({
     <section style={{ marginTop: 28 }}>
       <p
         style={{
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -102,7 +102,7 @@ function ContentLabel({ children }: { readonly children: React.ReactNode }) {
   return (
     <p
       style={{
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: 600,
         letterSpacing: '0.22em',
         textTransform: 'uppercase',
@@ -124,7 +124,7 @@ const paragraphStyle: React.CSSProperties = {
 
 const monoBlockStyle: React.CSSProperties = {
   fontFamily: MONO_STACK,
-  fontSize: 13.5,
+  fontSize: 16,
   lineHeight: 1.6,
   color: 'var(--ink)',
   background: 'var(--cream)',
@@ -146,7 +146,7 @@ const listStyle: React.CSSProperties = {
 };
 
 const listItemStyle: React.CSSProperties = {
-  fontSize: 15,
+  fontSize: 16,
   lineHeight: 1.6,
   color: 'var(--slate-600)',
 };

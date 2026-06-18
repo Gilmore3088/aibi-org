@@ -50,7 +50,7 @@ export function KnowledgeCheck({ prompt, options, kicker = 'Check yourself' }: K
           color: GOLD_DEEP,
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 800,
         }}
       >
@@ -90,7 +90,7 @@ export function KnowledgeCheck({ prompt, options, kicker = 'Check yourself' }: K
                 border: `1px solid ${border}`,
                 borderRadius: 12,
                 padding: '12px 14px',
-                fontSize: 15,
+                fontSize: 16,
                 fontWeight: 600,
                 color: INK,
                 cursor: pickedId === null ? 'pointer' : 'default',
@@ -136,7 +136,7 @@ export function KnowledgeCheck({ prompt, options, kicker = 'Check yourself' }: K
             borderRadius: 12,
             padding: 14,
             color: SLATE,
-            fontSize: 14,
+            fontSize: 16,
             lineHeight: 1.6,
           }}
           aria-live="polite"

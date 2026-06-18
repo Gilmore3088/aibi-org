@@ -252,7 +252,7 @@ export function ClaimReviewLab({
       >
         Claim Review Lab
       </h2>
-      <p style={{ fontSize: 15, color: 'var(--slate-600)', lineHeight: 1.55, margin: '0 0 20px', maxWidth: '70ch' }}>
+      <p style={{ fontSize: 17, color: 'var(--slate-600)', lineHeight: 1.6, margin: '0 0 20px', maxWidth: '70ch' }}>
         {activity.description} Click any claim that looks fabricated or unsupported. AI sounds
         confident either way — your job is to verify before you trust.
       </p>
@@ -272,19 +272,19 @@ export function ClaimReviewLab({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                   {out.label}
                 </span>
                 {reveal && (
-                  <span style={{ fontSize: 11, fontWeight: 700, color: verdictFor(out.id) === 'flagged' ? 'var(--gold-deep)' : 'var(--slate-500)' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: verdictFor(out.id) === 'flagged' ? 'var(--gold-deep)' : 'var(--slate-500)' }}>
                     You marked: {verdictFor(out.id)}
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', margin: '0 0 10px' }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', margin: '0 0 10px' }}>
                 Q: {out.question}
               </p>
-              <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--ink)', margin: 0 }}>
+              <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--ink)', margin: 0 }}>
                 {out.segments.map((seg, i) =>
                   isClaim(seg) ? (
                     <button
@@ -305,7 +305,7 @@ export function ClaimReviewLab({
               {reveal && (
                 <ul style={{ margin: '12px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 6 }}>
                   {out.segments.filter(isClaim).filter((c) => c.fabricated || flagged.has(c.id)).map((c) => (
-                    <li key={c.id} style={{ fontSize: 12.5, lineHeight: 1.45, color: c.fabricated ? 'var(--ink)' : 'var(--slate-500)' }}>
+                    <li key={c.id} style={{ fontSize: 13, lineHeight: 1.45, color: c.fabricated ? 'var(--ink)' : 'var(--slate-500)' }}>
                       <strong style={{ color: c.fabricated ? 'var(--red, #B42318)' : 'var(--slate-600)' }}>
                         {c.fabricated ? (flagged.has(c.id) ? '✓ Caught' : '✗ Missed') : 'False flag'}:
                       </strong>{' '}
@@ -332,12 +332,12 @@ export function ClaimReviewLab({
           }}
         >
           <div>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-deep)', marginBottom: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold-deep)', marginBottom: 8 }}>
               Verify before you trust
             </div>
             <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 5 }}>
               {(Object.keys(CLAIM_TYPE_LABEL) as ClaimType[]).map((t) => (
-                <li key={t} style={{ fontSize: 13, color: 'var(--slate-600)', display: 'flex', gap: 8 }}>
+                <li key={t} style={{ fontSize: 14, color: 'var(--slate-600)', display: 'flex', gap: 8 }}>
                   <span aria-hidden style={{ color: 'var(--gold-deep)' }}>•</span> {CLAIM_TYPE_LABEL[t]}
                 </li>
               ))}
@@ -345,14 +345,14 @@ export function ClaimReviewLab({
           </div>
 
           <div style={{ borderTop: '1px solid var(--ink-a10)', paddingTop: 12 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--slate-500)', marginBottom: 4 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--slate-500)', marginBottom: 4 }}>
               {reveal ? 'Your score' : 'Flags placed'}
             </div>
             <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--ink)' }}>
               {reveal ? `${score.caught} / ${score.total} fabrications caught` : `${flagged.size} flagged`}
             </div>
             {reveal && score.falsePositives > 0 && (
-              <div style={{ fontSize: 12.5, color: 'var(--red, #B42318)', marginTop: 2 }}>
+              <div style={{ fontSize: 13, color: 'var(--red, #B42318)', marginTop: 2 }}>
                 {score.falsePositives} false flag{score.falsePositives === 1 ? '' : 's'} on clean claims
               </div>
             )}
@@ -360,7 +360,7 @@ export function ClaimReviewLab({
 
           {!reveal && (
             <div style={{ borderTop: '1px solid var(--ink-a10)', paddingTop: 12 }}>
-              <label htmlFor="cr-lesson" style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 6 }}>
+              <label htmlFor="cr-lesson" style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 6 }}>
                 One verification habit you&rsquo;ll use going forward
               </label>
               <textarea
@@ -369,7 +369,7 @@ export function ClaimReviewLab({
                 onChange={(e) => setLesson(e.target.value)}
                 rows={3}
                 placeholder="One sentence, specific to your role."
-                style={{ width: '100%', fontFamily: FONT, fontSize: 14, padding: '8px 10px', borderRadius: 10, border: '1px solid var(--slate-200)', resize: 'vertical' }}
+                style={{ width: '100%', fontFamily: FONT, fontSize: 16, lineHeight: 1.6, padding: '8px 10px', borderRadius: 10, border: '1px solid var(--slate-200)', resize: 'vertical' }}
               />
               <div style={{ fontSize: 11, color: lesson.trim().length >= 20 ? 'var(--emerald-700)' : 'var(--slate-500)', marginTop: 4 }}>
                 {lesson.trim().length >= 20 ? 'Ready to submit' : `${20 - lesson.trim().length} more characters`}
@@ -378,11 +378,11 @@ export function ClaimReviewLab({
           )}
 
           {serverError && (
-            <p role="alert" style={{ fontSize: 13, color: 'var(--red, #B42318)', margin: 0 }}>{serverError}</p>
+            <p role="alert" style={{ fontSize: 14, color: 'var(--red, #B42318)', margin: 0 }}>{serverError}</p>
           )}
 
           {reveal ? (
-            <div style={{ fontSize: 13, color: 'var(--emerald-700)', fontWeight: 600 }}>
+            <div style={{ fontSize: 14, color: 'var(--emerald-700)', fontWeight: 600 }}>
               AI Claim Review saved to your Foundation Packet.
             </div>
           ) : (
@@ -392,7 +392,7 @@ export function ClaimReviewLab({
               disabled={!canSubmit}
               style={{
                 fontFamily: FONT,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',

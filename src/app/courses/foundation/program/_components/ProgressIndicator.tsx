@@ -46,7 +46,7 @@ export function ProgressIndicator({ completedModules, totalModules }: ProgressIn
       <span
         style={{
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',

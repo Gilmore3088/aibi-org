@@ -39,10 +39,10 @@ export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillS
     <div ref={successRef} tabIndex={-1} className="focus:outline-none">
       <div className="mb-5 flex items-start justify-between gap-4 rounded-2xl border border-[color:var(--emerald-700)] bg-white p-4">
         <div>
-          <p className="font-sans text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)] mb-1">
+          <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)] mb-1">
             Skill Saved
           </p>
-          <p className="font-sans text-sm leading-relaxed text-[color:var(--ink)]">
+          <p className="font-sans text-base leading-relaxed text-[color:var(--ink)]">
             Your skill file has been saved and downloaded. Use the button below to re-download at any
             time.
           </p>
@@ -50,7 +50,7 @@ export function SkillSubmittedPanel({ values, successRef, onRedownload }: SkillS
         <button
           type="button"
           onClick={onRedownload}
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--emerald-700)] px-3 py-1.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--emerald-700)] hover:bg-[color:var(--emerald-50)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--emerald-700)] focus:ring-offset-1"
+          className="shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--emerald-700)] px-3 py-1.5 font-sans text-[12px] font-bold uppercase tracking-[0.16em] text-[color:var(--emerald-700)] hover:bg-[color:var(--emerald-50)] transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--emerald-700)] focus:ring-offset-1"
           aria-label="Re-download skill file"
         >
           <DownloadIcon />

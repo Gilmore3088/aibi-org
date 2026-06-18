@@ -16,7 +16,7 @@
 //     5. Score Appendix         (compact eight-dimension scorecard, demoted)
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DIMENSION_LABELS, type Dimension, type MaturityBand } from '@content/assessments/v4/types';
 import { ROLE_V4_META, type RoleV4 } from '@content/assessments/v4/roles';
 import { rootCauseFor } from '@content/assessments/v4/root-causes';
@@ -42,6 +42,7 @@ export interface PaidReportProps {
   readonly dimensionBreakdown: Record<Dimension, DimensionScoreSerializedV4>;
   readonly readinessAt: string;
   readonly institutionContext: InstitutionContext | null;
+  readonly actionPacketNotes?: string | null;
 }
 
 interface PersonalizationPayload {
@@ -69,6 +70,7 @@ export function PaidReport({
   role,
   dimensionBreakdown,
   institutionContext,
+  actionPacketNotes = null,
 }: PaidReportProps): JSX.Element {
   const packet = getActionPacket(role);
   const roleMeta = role ? ROLE_V4_META[role] : null;
@@ -87,7 +89,7 @@ export function PaidReport({
 
   // Anchor highlighting — observe each section, mark its sidebar nav link
   // as active when the section is in view.
-  const activeSection = useActiveSection(['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'learning', 'score']);
+  const activeSection = useActiveSection(['summary', 'rootcause', 'actionplan', 'artifact', 'workproducts', 'timeline', 'packet', 'notes', 'learning', 'score']);
   // Anchor IDs above intentionally match the five remaining sections — vendor
   // and examiner sections were removed because they shipped unsourced claims.
 
@@ -141,6 +143,7 @@ export function PaidReport({
             />
             <Section3Timeline packet={packet} personalization={personalization} />
             <Section4Packet packet={packet} />
+            <NotesSection profileId={profileId} initialNotes={actionPacketNotes} />
             <SectionLearning protect={protect} packet={packet} />
             <Section5ScoreAppendix
               score={score}
@@ -265,8 +268,9 @@ function Sidebar({
         <SidebarNav href="#workproducts" label="Work Products" num="05" active={activeSection === 'workproducts'} />
         <SidebarNav href="#timeline" label="Timeline" num="06" active={activeSection === 'timeline'} />
         <SidebarNav href="#packet" label="Reviewer Packet" num="07" active={activeSection === 'packet'} />
-        <SidebarNav href="#learning" label="Learning Path" num="08" active={activeSection === 'learning'} />
-        <SidebarNav href="#score" label="Score Appendix" num="09" active={activeSection === 'score'} />
+        <SidebarNav href="#notes" label="My Notes" num="08" active={activeSection === 'notes'} />
+        <SidebarNav href="#learning" label="Learning Path" num="09" active={activeSection === 'learning'} />
+        <SidebarNav href="#score" label="Score Appendix" num="10" active={activeSection === 'score'} />
       </nav>
     </aside>
   );
@@ -1530,6 +1534,107 @@ function PlaybookCardEl({
       <h3 style={{ fontSize: 18, margin: '0 0 6px', fontWeight: 800 }}>{label}</h3>
       <p style={{ margin: 0, color: SLATE, fontSize: 14, lineHeight: 1.5 }}>{use}</p>
     </a>
+  );
+}
+
+// ── Notes Section ────────────────────────────────────────────────────────────
+
+function NotesSection({
+  profileId,
+  initialNotes,
+}: {
+  profileId: string;
+  initialNotes: string | null;
+}): JSX.Element {
+  const [notes, setNotes] = useState<string>(initialNotes ?? '');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const persist = useCallback(
+    (text: string) => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      debounceTimer.current = setTimeout(async () => {
+        setSaveStatus('saving');
+        try {
+          const res = await fetch('/api/assessment/in-depth/notes', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profileId, notes: text }),
+          });
+          setSaveStatus(res.ok ? 'saved' : 'error');
+        } catch {
+          setSaveStatus('error');
+        }
+      }, 1500);
+    },
+    [profileId],
+  );
+
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const value = e.target.value;
+    setNotes(value);
+    setSaveStatus('idle');
+    persist(value);
+  }
+
+  const statusLabel =
+    saveStatus === 'saving' ? 'Saving…' :
+    saveStatus === 'saved' ? 'Saved' :
+    saveStatus === 'error' ? 'Could not save — check your connection.' :
+    null;
+
+  return (
+    <section id="notes" style={pageStyle}>
+      <div style={sectionPad}>
+        <Label>My Notes</Label>
+        <h2
+          style={{
+            fontSize: 'clamp(28px, 2.6vw, 38px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.04em',
+            margin: '6px 0 10px',
+            fontWeight: 800,
+          }}
+        >
+          Personal follow-up notes.
+        </h2>
+        <p style={{ color: SLATE, lineHeight: 1.58, marginBottom: 20 }}>
+          Capture your own action items, commitments, and context. Notes auto-save
+          and are private to this link.
+        </p>
+        <textarea
+          value={notes}
+          onChange={handleChange}
+          placeholder="Write your follow-up notes here…"
+          rows={10}
+          style={{
+            width: '100%',
+            boxSizing: 'border-box',
+            border: `1px solid ${LINE}`,
+            borderRadius: 14,
+            padding: '16px 18px',
+            fontSize: 16,
+            lineHeight: 1.6,
+            color: INK,
+            background: 'white',
+            resize: 'vertical',
+            fontFamily: 'inherit',
+            outline: 'none',
+          }}
+        />
+        {statusLabel && (
+          <p
+            style={{
+              marginTop: 8,
+              fontSize: 13,
+              color: saveStatus === 'error' ? '#C0392B' : SLATE,
+            }}
+          >
+            {statusLabel}
+          </p>
+        )}
+      </div>
+    </section>
   );
 }
 
