@@ -442,6 +442,186 @@ section.mk-std { padding: 56px 0; }
   margin-top: 16px; max-width: 36ch;
 }
 .mk-hero .mk-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.mk-kicker-gold-soft {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+.mk-hero-accent { color: var(--gold-soft); }
+
+/* Homepage approved redline hero */
+.mk-home-redline-inner {
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .mk-home-redline-inner {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+  }
+}
+.mk-home-redline-hero h1 {
+  font-size: clamp(34px, 4.8vw, 54px);
+  max-width: 18ch;
+}
+.mk-redline-prompt {
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-hero);
+  overflow: hidden;
+  border: 1px solid var(--on-dark-08);
+}
+.mk-redline-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--slate-200);
+  background: var(--slate-50);
+}
+.mk-redline-head span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-redline-dots {
+  display: inline-flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.mk-redline-dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--slate-200);
+  display: inline-block;
+}
+.mk-redline-head .mk-redline-badge {
+  margin-left: auto;
+  color: #B42318;
+  background: #FEF3F2;
+  border: 1px solid #FECDCA;
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.mk-redline-body {
+  min-height: 132px;
+  padding: 22px 22px 8px;
+  display: flex;
+  align-items: center;
+}
+.mk-redline-body p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.mk-redline-mark {
+  color: inherit;
+  background: linear-gradient(#FEE4E2, #FEE4E2) no-repeat;
+  background-size: 0% 100%;
+  border-radius: 4px;
+  padding: 0 3px;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition:
+    background-size 0.45s ease,
+    color 0.3s ease 0.25s,
+    text-decoration-color 0.3s ease 0.3s;
+}
+.mk-redline-prompt.is-caught .mk-redline-mark {
+  background-size: 100% 100%;
+  color: #912018;
+  text-decoration-color: #D92D20;
+}
+.mk-redline-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  background: var(--ink);
+  animation: mk-redline-blink 1.05s steps(1) infinite;
+}
+@keyframes mk-redline-blink { 50% { opacity: 0; } }
+.mk-redline-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 22px 22px;
+  min-height: 60px;
+}
+.mk-redline-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #B42318;
+  background: #FEF3F2;
+  border: 1px solid #FECDCA;
+  border-radius: var(--r-pill);
+  padding: 5px 11px;
+  opacity: 0;
+  transform: translateY(7px) scale(0.96);
+  transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mk-redline-prompt.is-flagged .mk-redline-flag {
+  opacity: 1;
+  transform: none;
+}
+.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(1) { transition-delay: 0.05s; }
+.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(2) { transition-delay: 0.20s; }
+.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(3) { transition-delay: 0.35s; }
+.mk-redline-flag svg {
+  width: 13px;
+  height: 13px;
+}
+.mk-redline-foot {
+  padding: 12px 22px;
+  border-top: 1px solid var(--slate-200);
+  background: var(--slate-50);
+  font-size: 12.5px;
+  color: var(--slate-500);
+}
+@media (max-width: 640px) {
+  .mk-redline-head {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .mk-redline-body {
+    min-height: 142px;
+    padding: 20px 18px 8px;
+  }
+  .mk-redline-body p {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .mk-redline-flags {
+    padding: 16px 18px 20px;
+  }
+  .mk-redline-foot {
+    padding: 12px 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-redline-mark,
+  .mk-redline-flag {
+    transition: none;
+  }
+  .mk-redline-caret {
+    animation: none;
+  }
+}
 
 /* Hero report card — split dark/light */
 .mk-hreport {
@@ -7090,6 +7270,14 @@ section.mk-std { padding: 56px 0; }
     padding-inline: 8px;
     font-size: 12px;
     letter-spacing: -0.01em;
+  }
+}
+@media (max-width: 640px) {
+  .mk-hero .mk-hero-inner-full .mk-ctas {
+    display: flex;
+  }
+  .mk-hero .mk-hero-inner-full .mk-ctas > * {
+    width: auto;
   }
 }
 

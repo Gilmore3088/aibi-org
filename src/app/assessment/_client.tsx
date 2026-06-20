@@ -74,9 +74,9 @@ const FileIcon = (p: IconProps) => (
 );
 
 const QUESTION_GROUPS = [
-  { title: 'Current AI use', desc: 'How your team is already experimenting.' },
-  { title: 'Data boundaries', desc: 'Whether staff know what cannot go into AI tools.' },
-  { title: 'Review habits', desc: 'Where human review and documentation already exist.' },
+  { title: 'Your AI habits', desc: 'How you are already experimenting.' },
+  { title: 'Data boundaries', desc: 'Whether you know what cannot go into AI tools.' },
+  { title: 'Review habits', desc: 'Where human review and documentation already exist in your work.' },
   { title: 'Next best move', desc: 'Which artifact or training path should come first.' },
 ];
 
@@ -128,54 +128,22 @@ export default function AssessmentLandingPage() {
           <div className="mk-deco-ring" />
           <div className="mk-deco-blur" />
         </div>
-        <div className="mk-container mk-hero-inner">
+        <div className="mk-container mk-hero-inner mk-hero-inner-full">
           <div>
-            <h1>Get your AI readiness snapshot in 3 minutes.</h1>
+            <p className="mk-kicker-gold-soft">AI readiness assessment</p>
+            <h1>Take the free AI readiness assessment.</h1>
             <p className="mk-lede">
-              Answer 12 questions. Get a score, maturity tier, top gap, and starter
-              artifact. Upgrade later for the full 8-dimension diagnostic.
+              Answer 12 questions to get your personal score, top gap, and first
+              starter artifact.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
                 Start free assessment <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#sample">
-                See sample result
-              </Button>
             </div>
             <p className="mk-hero-foot">
-              No credit card. Score visible after you submit your work email.
+              No credit card. About 3 minutes.
             </p>
-          </div>
-
-          {/* Hero result card — free outcome only. The $99 sample lives below. */}
-          <div className="mk-hreport">
-            <div className="mk-hreport-left">
-              <div className="mk-k">Sample free result</div>
-              <div className="mk-v">{SAMPLE.score}</div>
-              <div className="mk-u">/ {SAMPLE.max}</div>
-              <div className="mk-tier">
-                <BadgeIcon size={16} />
-                {SAMPLE.tier}
-              </div>
-            </div>
-            <div className="mk-hreport-right">
-              <div className="mk-k">Your first move</div>
-              <div className="mk-hresult">
-                <div className="mk-hresult-row">
-                  <div className="mk-rk">Top gap</div>
-                  <div className="mk-rv">{SAMPLE.topGap}</div>
-                </div>
-                <div className="mk-hresult-row">
-                  <div className="mk-rk">Starter artifact</div>
-                  <div className="mk-rv">{SAMPLE.artifact}</div>
-                </div>
-                <div className="mk-hresult-row">
-                  <div className="mk-rk">Recommended next step</div>
-                  <div className="mk-rv">{SAMPLE.nextStep}</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
