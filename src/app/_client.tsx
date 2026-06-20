@@ -159,7 +159,7 @@ export default function HomePage() {
               AI use is spreading. <span className="mk-hero-accent">Workflow discipline is not.</span>
             </h1>
             <p className="mk-lede">
-              Find where your team is exposed, then train the roles and workflows that matter first.
+              See where your AI use needs stronger guardrails, then start with the workflow habits your role needs most.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
