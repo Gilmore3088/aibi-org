@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -30,9 +30,11 @@ const sw = (props: IconProps) => ({
   'aria-hidden': true,
 });
 
-const ZapIcon = (p: IconProps) => (
+const AlertIcon = (p: IconProps) => (
   <svg {...sw(p)}>
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
   </svg>
 );
 const CheckSquareIcon = (p: IconProps) => (
@@ -111,6 +113,28 @@ const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [stri
   },
 };
 
+type PromptSegment = { text: string; flagged?: boolean };
+type RedlinePhase = 'typing' | 'caught' | 'flags';
+
+const HOME_PROMPT_SEGMENTS: PromptSegment[] = [
+  { text: 'Draft an overdraft-fee response for ' },
+  {
+    text: 'John Smith using account #0042871, recent deposits, and the complaint notes below',
+    flagged: true,
+  },
+  { text: '. Make it final and email-ready.' },
+];
+
+const HOME_PROMPT_LEN = HOME_PROMPT_SEGMENTS.reduce((total, segment) => total + segment.text.length, 0);
+const HOME_PROMPT_FLAGS = ['Customer data pasted', 'No review step', 'Public tool boundary unknown'];
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+}
+
 // ---------- Page ----------
 
 export default function HomePage() {
@@ -122,39 +146,31 @@ export default function HomePage() {
     <div className="mockup-scope">
       <SiteHeader activePath="/" />
 
-      <section className="mk-hero">
+      <section className="mk-hero mk-home-redline-hero">
         <div className="mk-deco">
           <div className="mk-deco-ring" />
           <div className="mk-deco-blur" />
         </div>
-        <div className="mk-container mk-hero-inner">
+        <div className="mk-container mk-hero-inner mk-home-redline-inner">
+          <HomeRedlinePrompt />
           <div>
-            <p
-              style={{
-                margin: '0 0 14px',
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-soft)',
-              }}
-            >
-              For community banks &amp; credit unions
-            </p>
-            <h1>AI training that becomes real banking work.</h1>
+            <p className="mk-kicker mk-kicker-gold-soft">The hidden AI gap</p>
+            <h1>
+              AI use is spreading. <span className="mk-hero-accent">Workflow discipline is not.</span>
+            </h1>
             <p className="mk-lede">
-              Score your readiness. Train by role. Build workflows your team reuses.
+              See where your AI use needs stronger guardrails, then start with the workflow habits your role needs most.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Get my AI readiness score <ArrowGlyph />
+                Find my readiness gaps <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses">
                 Start learning
               </Button>
             </div>
+            <p className="mk-hero-meta">Free · individual snapshot · 12 questions</p>
           </div>
-          <HeroReportCard />
         </div>
       </section>
 
@@ -246,32 +262,111 @@ export default function HomePage() {
   );
 }
 
-function HeroReportCard() {
+function HomeRedlinePrompt() {
+  const [typed, setTyped] = useState(HOME_PROMPT_LEN);
+  const [phase, setPhase] = useState<RedlinePhase>('flags');
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = setTimeout(resolve, ms);
+      });
+
+    async function play() {
+      while (!cancelled) {
+        setPhase('typing');
+        for (let n = 0; n <= HOME_PROMPT_LEN; n++) {
+          if (cancelled) return;
+          setTyped(n);
+          await wait(26);
+        }
+        await wait(450);
+        if (cancelled) return;
+        setPhase('caught');
+        await wait(900);
+        if (cancelled) return;
+        setPhase('flags');
+        await wait(4400);
+      }
+    }
+
+    const el = rootRef.current;
+    let started = false;
+    const begin = () => {
+      if (started) return;
+      started = true;
+      setTyped(0);
+      setPhase('typing');
+      void play();
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          begin();
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    if (el) io.observe(el);
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+      io.disconnect();
+    };
+  }, []);
+
+  let remaining = typed;
+  const caught = phase !== 'typing';
+
   return (
-    <div className="mk-hreport">
-      <div className="mk-hreport-left">
-        <div className="mk-k">Sample report</div>
-        <div className="mk-v">62</div>
-        <div className="mk-u">/ 100 readiness</div>
-        <div className="mk-tier">
-          <ZapIcon size={16} />
-          Building Momentum
-        </div>
+    <div
+      ref={rootRef}
+      className={`mk-redline-prompt${caught ? ' is-caught' : ''}${phase === 'flags' ? ' is-flagged' : ''}`}
+      aria-label="A banker pastes customer data into a public chatbot; customer data, missing review, and unknown tool boundary are flagged."
+    >
+      <div className="mk-redline-head">
+        <span className="mk-redline-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span>Public chatbot</span>
+        <span className="mk-redline-badge">Untrained use</span>
       </div>
-      <div className="mk-hreport-right">
-        <div className="mk-hr-row">
-          <div className="mk-k">Top gap</div>
-          <div className="mk-hr-v">Workflow documentation</div>
-        </div>
-        <div className="mk-hr-row">
-          <div className="mk-k">Recommended next step</div>
-          <div className="mk-hr-v">Foundation Course</div>
-        </div>
-        <div className="mk-hr-row">
-          <div className="mk-k">Starter artifact</div>
-          <div className="mk-hr-v">Workflow SOP template</div>
-        </div>
+      <div className="mk-redline-body">
+        <p>
+          {HOME_PROMPT_SEGMENTS.map((segment, index) => {
+            const shown = Math.max(0, Math.min(segment.text.length, remaining));
+            remaining -= segment.text.length;
+            const visible = segment.text.slice(0, shown);
+            if (segment.flagged) {
+              return (
+                <mark key={index} className="mk-redline-mark">
+                  {visible}
+                </mark>
+              );
+            }
+            return <span key={index}>{visible}</span>;
+          })}
+          {phase === 'typing' && <span className="mk-redline-caret" />}
+        </p>
       </div>
+      <div className="mk-redline-flags" aria-hidden={!caught}>
+        {HOME_PROMPT_FLAGS.map((label) => (
+          <span key={label} className="mk-redline-flag">
+            <AlertIcon size={13} /> {label}
+          </span>
+        ))}
+      </div>
+      <div className="mk-redline-foot">A real banking task, moved into a tool no one governed.</div>
     </div>
   );
 }
