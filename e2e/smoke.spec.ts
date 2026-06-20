@@ -9,10 +9,10 @@ test.describe('marketing smoke', () => {
   test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // Current hero H1 (2026-05-26 rewrite):
-    // "AI training that becomes real banking work."
+    // Current hero H1 (2026-06 "approved homepage hero" rewrite):
+    // "AI use is spreading. Workflow discipline is not."
     await expect(
-      page.getByRole('heading', { level: 1, name: /AI training that becomes real banking work/i }),
+      page.getByRole('heading', { level: 1, name: /AI use is spreading/i }),
     ).toBeVisible();
   });
 
