@@ -72,6 +72,24 @@ const SparkleIcon = (p: IconProps) => (
   </svg>
 );
 
+/* ---------- Shared CTA: one dominant action + microcopy + quiet link ---------- */
+
+function HeroCta({ secondary = true }: { secondary?: boolean }) {
+  return (
+    <div className="hopt-cta">
+      <Button variant="gold" size="lg" href="/assessment/take">
+        Score my bank <ArrowGlyph />
+      </Button>
+      {secondary && (
+        <a className="hopt-cta-link" href="/courses">
+          or start learning
+        </a>
+      )}
+      <p className="hopt-cta-micro">Free · 12 questions · 3 minutes</p>
+    </div>
+  );
+}
+
 /* ====================================================================
    OPTION A — Split hero: redlined "all-wrong" prompt + need/value/CTA
    ==================================================================== */
@@ -86,21 +104,12 @@ function OptionA() {
       <div className="mk-container hopt-a-inner">
         <PromptCard />
         <div>
-          <p className="mk-kicker hopt-need">This is happening at your bank today</p>
+          <p className="mk-kicker hopt-need">At your bank, today</p>
           <h1>
-            Your team already uses AI. <span className="hopt-need">Most of it is wrong.</span>
+            Your team uses AI. <span className="hopt-need">Most of it is wrong.</span>
           </h1>
-          <p className="mk-lede">
-            Replace risky copy-paste with training that becomes real banking work — score readiness, train by role, and ship reviewed workflows.
-          </p>
-          <div className="mk-ctas">
-            <Button variant="gold" size="lg" href="/assessment/take">
-              Get my AI readiness score <ArrowGlyph />
-            </Button>
-            <Button variant="ghost-dark" size="lg" href="/courses">
-              Start learning
-            </Button>
-          </div>
+          <p className="mk-lede">Train it into workflows they can actually reuse.</p>
+          <HeroCta />
         </div>
       </div>
     </section>
@@ -157,21 +166,11 @@ function OptionB() {
         <div className="mk-container hopt-b-inner">
           <div>
             <p className="mk-kicker">For community banks &amp; credit unions</p>
-            <h1>AI training that becomes real banking work.</h1>
+            <h1>AI that becomes real banking work.</h1>
           </div>
           <div className="hopt-b-right">
-            <p className="mk-lede">
-              Score your readiness. Train by role. Build workflows your team reuses.
-            </p>
-            <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment/take">
-                Get my AI readiness score <ArrowGlyph />
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                Start learning
-              </Button>
-            </div>
-            <p className="hopt-b-trust">Free 12-question baseline. No card required.</p>
+            <p className="mk-lede">Score readiness. Train by role. Ship reusable workflows.</p>
+            <HeroCta />
           </div>
         </div>
       </section>
@@ -244,21 +243,12 @@ function OptionC() {
       </div>
       <div className="mk-container hopt-c-inner">
         <div>
-          <p className="mk-kicker">One platform, four moves</p>
-          <h1>AI training that becomes real banking work.</h1>
-          <p className="mk-lede">
-            Score your readiness, train by role, and leave with reviewed workflows. Spin the dial to see what each step produces.
-          </p>
-          <div className="mk-ctas" style={{ marginTop: 24 }}>
-            <Button variant="gold" size="lg" href="/assessment/take">
-              Get my AI readiness score <ArrowGlyph />
-            </Button>
-            <Button variant="ghost-dark" size="lg" href="/courses">
-              Start learning
-            </Button>
-          </div>
+          <p className="mk-kicker">One assessment, six ways to work</p>
+          <h1>AI that becomes real banking work.</h1>
+          <p className="mk-lede">Spin the dial. See what each step produces.</p>
+          <HeroCta />
           <span className="hopt-c-hint">
-            <SparkleIcon size={15} /> Click a product to explore
+            <SparkleIcon size={15} /> Tap a product to explore
           </span>
         </div>
 
@@ -267,6 +257,7 @@ function OptionC() {
           role="tablist"
           aria-label="Explore platform features"
         >
+          <div className="hopt-dial-aura" aria-hidden />
           <div
             className="hopt-dial-ring"
             style={{ transform: `rotate(${ringRotation}deg)` }}
@@ -276,6 +267,18 @@ function OptionC() {
             className="hopt-dial-orbit"
             style={{ transform: `rotate(${ringRotation}deg)` }}
           >
+            {DIAL_FEATURES.map(({ key }, i) => {
+              const baseAngle = i * step;
+              // Spoke points outward toward its node (node sits at -160 on Y).
+              return (
+                <span
+                  key={`spoke-${key}`}
+                  className={`hopt-spoke${active === i ? ' is-active' : ''}`}
+                  style={{ transform: `rotate(${baseAngle + 180}deg)` }}
+                  aria-hidden
+                />
+              );
+            })}
             {DIAL_FEATURES.map(({ key, label, icon: Icon }, i) => {
               const baseAngle = i * step;
               // Place on the circle, keep upright, then counter the ring spin.

@@ -107,6 +107,33 @@
   color: var(--gold-soft);
 }
 
+/* Shared CTA — one dominant gold action, microcopy, quiet secondary */
+.hopt-cta {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 8px 18px;
+  margin-top: 26px;
+  justify-content: start;
+}
+.hopt-cta .mk-btn { font-size: 17px; padding: 16px 26px; }
+.hopt-cta-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--on-dark-70);
+  text-decoration: none;
+  border-bottom: 1px solid var(--on-dark-20);
+  padding-bottom: 2px;
+}
+.hopt-cta-link:hover { color: #fff; border-color: var(--gold); }
+.hopt-cta-micro {
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--on-dark-50);
+}
+
 /* ====================================================================
    OPTION A — Split hero: redlined "all wrong" prompt + need/value/CTA
    ==================================================================== */
@@ -361,6 +388,34 @@
   border: 1px dashed var(--gold-a30);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* Decorative slow-spinning aura — pure motion, no upright content to fight */
+.hopt-dial-aura {
+  position: absolute;
+  inset: -4%;
+  border-radius: 50%;
+  border: 1px solid var(--gold-a20);
+  background:
+    radial-gradient(circle at 50% 0%, var(--gold-a10), transparent 60%);
+  animation: hopt-spin 90s linear infinite;
+}
+@keyframes hopt-spin { to { transform: rotate(360deg); } }
+/* Spokes — thin lines from hub to each node, brighten for the active one */
+.hopt-spoke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 160px;
+  margin-left: -0.5px;
+  transform-origin: 50% 0;
+  background: linear-gradient(var(--on-dark-20), transparent);
+  pointer-events: none;
+}
+.hopt-spoke.is-active {
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(var(--gold), var(--gold-a20));
+}
 .hopt-dial-orbit {
   position: absolute;
   inset: 0;
@@ -440,5 +495,6 @@
   .hopt-dial-ring,
   .hopt-dial-orbit,
   .hopt-node { transition: none; }
-  .hopt-caret { animation: none; }
+  .hopt-caret,
+  .hopt-dial-aura { animation: none; }
 }
