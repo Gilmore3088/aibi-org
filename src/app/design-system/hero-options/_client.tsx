@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SiteHeader, Button, ArrowGlyph } from '@/components/mockup';
 
 /* ---------- Inline stroke icons ---------- */
@@ -102,7 +102,7 @@ function OptionA() {
         <div className="mk-deco-blur" />
       </div>
       <div className="mk-container hopt-a-inner">
-        <PromptCard />
+        <AnimatedPromptCard />
         <div>
           <p className="mk-kicker hopt-need">At your bank, today</p>
           <h1>
@@ -116,9 +116,99 @@ function OptionA() {
   );
 }
 
-function PromptCard() {
+/* The prompt, split so the customer PII is its own animatable segment. */
+const PROMPT_SEGMENTS: { text: string; pii?: boolean }[] = [
+  { text: 'Write an overdraft letter for ' },
+  { text: 'John Smith, SSN 123-45-6789, acct #0042871', pii: true },
+  { text: ' and email it to him today.' },
+];
+const PROMPT_LEN = PROMPT_SEGMENTS.reduce((n, s) => n + s.text.length, 0);
+
+const PROMPT_FLAGS = ['Customer PII pasted', 'No data boundary', 'Output never reviewed'];
+
+// Animation phases: type the prompt, the AI catches the PII, then the
+// violation flags land. Loops so the hero stays alive for late arrivals.
+type Phase = 'typing' | 'caught' | 'flags';
+
+function prefersReducedMotion(): boolean {
   return (
-    <div className="hopt-prompt" aria-label="Example of unsafe AI use, redlined">
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+}
+
+function AnimatedPromptCard() {
+  // SSR / no-JS / reduced-motion render the meaningful end state.
+  const [typed, setTyped] = useState(PROMPT_LEN);
+  const [phase, setPhase] = useState<Phase>('flags');
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = setTimeout(resolve, ms);
+      });
+
+    async function play() {
+      while (!cancelled) {
+        setPhase('typing');
+        for (let n = 0; n <= PROMPT_LEN; n++) {
+          if (cancelled) return;
+          setTyped(n);
+          await wait(26);
+        }
+        await wait(450);
+        if (cancelled) return;
+        setPhase('caught'); // red highlight wipes across the PII + strike lands
+        await wait(900);
+        if (cancelled) return;
+        setPhase('flags'); // violation flags snap in
+        await wait(4400); // hold long enough to read
+      }
+    }
+
+    // Start once the card is on screen; reset to empty just before play.
+    const el = rootRef.current;
+    let started = false;
+    const begin = () => {
+      if (started) return;
+      started = true;
+      setTyped(0);
+      setPhase('typing');
+      void play();
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          begin();
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    if (el) io.observe(el);
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+      io.disconnect();
+    };
+  }, []);
+
+  let remaining = typed;
+  const caught = phase !== 'typing';
+
+  return (
+    <div
+      ref={rootRef}
+      className={`hopt-prompt${caught ? ' is-caught' : ''}${phase === 'flags' ? ' is-flagged' : ''}`}
+      aria-label="A banker pastes customer data into a public chatbot; the unsafe parts are flagged."
+    >
       <div className="hopt-prompt-head">
         <span className="hopt-prompt-dots">
           <i />
@@ -130,21 +220,28 @@ function PromptCard() {
       </div>
       <div className="hopt-prompt-body">
         <p className="hopt-prompt-line">
-          Write an overdraft letter for{' '}
-          <mark className="hopt-redline">John Smith, SSN 123-45-6789, acct #0042871</mark>{' '}
-          and email it to him today.<span className="hopt-caret" />
+          {PROMPT_SEGMENTS.map((seg, i) => {
+            const shown = Math.max(0, Math.min(seg.text.length, remaining));
+            remaining -= seg.text.length;
+            const visible = seg.text.slice(0, shown);
+            if (seg.pii) {
+              return (
+                <mark key={i} className="hopt-pii">
+                  {visible}
+                </mark>
+              );
+            }
+            return <span key={i}>{visible}</span>;
+          })}
+          {phase === 'typing' && <span className="hopt-caret" />}
         </p>
       </div>
-      <div className="hopt-flags">
-        <span className="hopt-flag">
-          <AlertIcon size={13} /> Customer PII pasted
-        </span>
-        <span className="hopt-flag">
-          <AlertIcon size={13} /> No data boundary
-        </span>
-        <span className="hopt-flag">
-          <AlertIcon size={13} /> Output never reviewed
-        </span>
+      <div className="hopt-flags" aria-hidden={!caught}>
+        {PROMPT_FLAGS.map((label) => (
+          <span key={label} className="hopt-flag">
+            <AlertIcon size={13} /> {label}
+          </span>
+        ))}
       </div>
       <div className="hopt-prompt-foot">Typed into a tool no one trained them to use.</div>
     </div>

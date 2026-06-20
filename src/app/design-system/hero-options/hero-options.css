@@ -185,35 +185,54 @@
   padding: 3px 10px;
   letter-spacing: 0.04em;
 }
-.hopt-prompt-body { padding: 22px 22px 8px; }
+.hopt-prompt-body { padding: 22px 22px 8px; min-height: 92px; }
 .hopt-prompt-line {
   margin: 0;
   font-size: 18px;
   line-height: 1.6;
 }
-.hopt-redline {
-  background: #FEE4E2;
-  color: #912018;
+
+/* Customer PII segment. Renders plain while the prompt types; when the
+   root gains .is-caught the red highlight wipes across it (background-size
+   0 -> 100%), the strikethrough colour fades in, and the text reddens.
+   box-decoration-break keeps the wipe continuous if the PII wraps. */
+.hopt-pii {
+  color: inherit;
+  background: linear-gradient(#FEE4E2, #FEE4E2) no-repeat;
+  background-size: 0% 100%;
   border-radius: 4px;
   padding: 0 3px;
   text-decoration: line-through;
-  text-decoration-color: #D92D20;
   text-decoration-thickness: 2px;
+  text-decoration-color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition:
+    background-size 0.45s ease,
+    color 0.3s ease 0.25s,
+    text-decoration-color 0.3s ease 0.3s;
+}
+.hopt-prompt.is-caught .hopt-pii {
+  background-size: 100% 100%;
+  color: #912018;
+  text-decoration-color: #D92D20;
 }
 .hopt-caret {
   display: inline-block;
   width: 2px; height: 1.05em;
   vertical-align: text-bottom;
-  margin-left: 2px;
+  margin-left: 1px;
   background: var(--ink);
   animation: hopt-blink 1.05s steps(1) infinite;
 }
 @keyframes hopt-blink { 50% { opacity: 0; } }
+
 .hopt-flags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   padding: 18px 22px 22px;
+  min-height: 60px;
 }
 .hopt-flag {
   display: inline-flex;
@@ -226,7 +245,14 @@
   border: 1px solid #FECDCA;
   border-radius: var(--r-pill);
   padding: 5px 11px;
+  opacity: 0;
+  transform: translateY(7px) scale(0.96);
+  transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.hopt-prompt.is-flagged .hopt-flag { opacity: 1; transform: none; }
+.hopt-prompt.is-flagged .hopt-flag:nth-child(1) { transition-delay: 0.05s; }
+.hopt-prompt.is-flagged .hopt-flag:nth-child(2) { transition-delay: 0.20s; }
+.hopt-prompt.is-flagged .hopt-flag:nth-child(3) { transition-delay: 0.35s; }
 .hopt-flag svg { width: 13px; height: 13px; }
 .hopt-prompt-foot {
   display: flex;
@@ -494,7 +520,9 @@
 @media (prefers-reduced-motion: reduce) {
   .hopt-dial-ring,
   .hopt-dial-orbit,
-  .hopt-node { transition: none; }
+  .hopt-node,
+  .hopt-pii,
+  .hopt-flag { transition: none; }
   .hopt-caret,
   .hopt-dial-aura { animation: none; }
 }
