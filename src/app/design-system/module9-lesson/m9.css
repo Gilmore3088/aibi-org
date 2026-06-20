@@ -1,0 +1,95 @@
+/* Module 9 "Safety Lab" lesson content — preview. Chrome is the REAL
+ * CourseShell/LMSTopBar; this styles the lesson body to match the LMS light
+ * theme (--cream = slate canvas, --cream-2 = white).
+ */
+.m9h { background: var(--ink); border-bottom: 1px solid var(--on-dark-10); padding: 22px 28px; }
+.m9h .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--gold-soft); text-transform: uppercase; }
+.m9h h1 { font-size: clamp(20px, 2.4vw, 28px); font-weight: 700; color: var(--cream); margin: 6px 0 0; letter-spacing: -0.01em; }
+.m9h .goal { font-size: 13px; color: var(--on-dark-65); margin: 8px 0 0; max-width: 62ch; }
+
+.m9body { padding: 22px 28px 40px; }
+.m9tabs { display: inline-flex; gap: 4px; padding: 6px; background: var(--cream-2); border: 1px solid var(--ink-a10); border-radius: 999px; margin-bottom: 22px; }
+.m9tab { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: none; border-radius: 999px; background: transparent; color: var(--slate-600); font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.m9tab .num { font-size: 11px; font-weight: 700; color: var(--slate-400); }
+.m9tab.on { background: var(--ink); color: var(--cream); }
+.m9tab.on .num { color: var(--gold-soft); }
+
+.m9lead { font-size: 16px; line-height: 1.6; color: var(--slate-700); max-width: 64ch; }
+.m9lead b { color: var(--ink); font-weight: 700; }
+
+.m9moves { display: grid; gap: 12px; grid-template-columns: 1fr; margin: 18px 0; max-width: 760px; }
+@media (min-width: 640px) { .m9moves { grid-template-columns: 1fr 1fr; } }
+.m9move { background: var(--cream-2); border: 1px solid var(--ink-a10); border-radius: 12px; padding: 15px; }
+.m9move .mh { display: flex; align-items: center; gap: 9px; }
+.m9move .lt { width: 30px; height: 30px; border-radius: 8px; background: var(--ink); color: var(--gold); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+.m9move .mn { font-size: 15px; font-weight: 700; color: var(--ink); }
+.m9move p { font-size: 13px; color: var(--slate-600); margin: 9px 0 0; line-height: 1.5; }
+
+.m9ryg { display: grid; gap: 10px; grid-template-columns: 1fr; max-width: 760px; }
+@media (min-width: 640px) { .m9ryg { grid-template-columns: repeat(3, 1fr); } }
+.m9c { border-radius: 12px; padding: 13px 14px; border: 1px solid; }
+.m9c .ct { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.m9c .cd { font-size: 12px; margin-top: 5px; line-height: 1.45; }
+.m9c.g { background: #F0F8F3; border-color: #BCE3CC; } .m9c.g .ct { color: #2F7D5B; } .m9c.g .cd { color: #356b50; }
+.m9c.y { background: #FFFBF0; border-color: #FCE4A6; } .m9c.y .ct { color: #93631A; } .m9c.y .cd { color: #7a5618; }
+.m9c.r { background: #FEF6F5; border-color: #FECDCA; } .m9c.r .ct { color: #B42318; } .m9c.r .cd { color: #912018; }
+
+.m9act { display: flex; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.m9btn { background: var(--gold); color: var(--ink); font-weight: 700; border: 0; padding: 11px 18px; border-radius: 10px; cursor: pointer; font-size: 14px; font-family: inherit; }
+.m9btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.m9btn-ghost { background: var(--cream-2); border: 1px solid var(--ink-a10); color: var(--ink); font-weight: 600; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-size: 13.5px; font-family: inherit; }
+.m9note { font-size: 12.5px; color: var(--slate-500); }
+
+.m9lab { display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 920px) { .m9lab { grid-template-columns: 280px 1fr; align-items: start; } }
+.m9queue { display: grid; gap: 8px; align-content: start; }
+.m9q { display: flex; gap: 10px; align-items: center; text-align: left; background: var(--cream-2); border: 1px solid var(--ink-a10); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.m9q.on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink-a10); }
+.m9q .qd { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 10px; font-weight: 800; background: var(--slate-200); color: var(--slate-500); }
+.m9q.solved .qd { background: #2F7D5B; color: #fff; }
+.m9q .qt { font-size: 13px; font-weight: 600; color: var(--ink); }
+.m9q .qs { font-size: 11px; color: var(--slate-500); }
+
+.m9card { background: var(--ink); border-radius: 12px; padding: 14px; margin-top: 6px; }
+.m9card .ck { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 10px; }
+.m9card .row { display: flex; align-items: center; gap: 9px; padding: 4px 0; }
+.m9card .mv { width: 20px; height: 20px; border-radius: 6px; flex: none; display: grid; place-items: center; font-size: 10px; font-weight: 800; background: var(--on-dark-10); color: var(--on-dark-50); }
+.m9card .row.done .mv { background: var(--gold); color: var(--ink); }
+.m9card .ml { font-size: 12.5px; color: var(--on-dark-65); }
+.m9card .row.done .ml { color: #fff; }
+
+.m9detail { display: grid; gap: 12px; }
+.m9prompt { background: var(--ink); color: #fff; border-radius: 12px; overflow: hidden; }
+.m9ph { padding: 10px 14px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-soft); border-bottom: 1px solid var(--on-dark-10); }
+.m9pb { padding: 13px 14px; font-size: 13.5px; line-height: 1.55; color: var(--on-dark-80); }
+.m9hl { background: rgba(217,45,32,0.22); color: #ffd9d4; border-radius: 4px; padding: 0 3px; }
+.m9works { font-size: 12px; color: var(--on-dark-50); padding: 0 14px 12px; }
+.m9works b { color: var(--gold-soft); }
+
+.m9spot { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate-500); margin: 2px 0 0; }
+.m9opts { display: grid; gap: 8px; }
+.m9opt { text-align: left; background: var(--cream-2); border: 1px solid var(--ink-a10); border-radius: 10px; padding: 11px 13px; cursor: pointer; font-size: 13px; color: var(--ink); font-family: inherit; }
+.m9opt:hover { border-color: var(--slate-400); }
+.m9opt.right { border-color: #2F7D5B; background: #F0F8F3; color: #25624a; font-weight: 600; }
+.m9opt.wrong { border-color: #FECDCA; background: #FEF6F5; color: #912018; }
+
+.m9fix { border-radius: 12px; border: 1px solid #BCE3CC; overflow: hidden; }
+.m9fix .fh { padding: 9px 13px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: #E3F2EA; color: #2F7D5B; display: flex; align-items: center; gap: 8px; }
+.m9fix .frow { padding: 11px 13px; font-size: 13px; line-height: 1.5; }
+.m9fix .frow .lab { font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-deep); display: block; margin-bottom: 2px; }
+.m9fix .frow.safe { background: #F0F8F3; color: #25624a; border-top: 1px solid #BCE3CC; }
+.m9chipclass { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; }
+.m9chipclass.r { background: #FEECEA; color: #B42318; }
+.m9chipclass.y { background: #FCF2D8; color: #93631A; }
+
+.m9saved { background: var(--cream-2); border: 1px solid var(--ink-a10); border-radius: 14px; padding: 24px; max-width: 600px; }
+.m9saved h4 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+.m9saved h4 .ok { width: 30px; height: 30px; border-radius: 50%; background: #E7F4ED; color: #2F7D5B; display: grid; place-items: center; font-size: 15px; }
+.m9saved p { color: var(--slate-600); margin: 0 0 16px; font-size: 14px; }
+.m9checklist { display: grid; gap: 8px; margin-bottom: 16px; }
+.m9ci { display: flex; gap: 9px; align-items: center; font-size: 13.5px; color: var(--ink); }
+.m9ci .c { width: 18px; height: 18px; border-radius: 5px; background: var(--ink); color: var(--gold); display: grid; place-items: center; font-size: 10px; font-weight: 800; flex: none; }
+.m9chip { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; border-radius: 10px; padding: 10px 14px; }
+.m9chip .ic { width: 26px; height: 26px; border-radius: 7px; background: var(--gold); color: var(--ink); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+.m9chip .tn { font-size: 13px; font-weight: 700; }
+.m9chip .tm { font-size: 11px; color: var(--on-dark-50); }
