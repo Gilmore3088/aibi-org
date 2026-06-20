@@ -1,0 +1,444 @@
+/* Hero option explorations — preview-only styles.
+ *
+ * Three candidate hero treatments for the homepage, modeled on the
+ * reference screenshots the stakeholder supplied:
+ *   A — split hero: a "what people do today" prompt, redlined, beside
+ *       a need / value / CTA column (LogRocket-style split).
+ *   B — simplified two-column: oversized headline + lean CTA, sample
+ *       report demoted to a strip below (Sketch-style minimalism).
+ *   C — interactive dial: orbiting product features the visitor can
+ *       click to drive a center panel (Zoom Workplace-style dial).
+ *
+ * Scoped under .hopt-page so nothing here leaks into shipped pages.
+ */
+
+.hopt-page {
+  background: var(--cream);
+}
+
+/* Preview chrome ------------------------------------------------------ */
+
+.hopt-toc {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px var(--container-pad);
+  background: rgba(247, 243, 234, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--ink-a10);
+}
+.hopt-toc strong {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-right: 6px;
+}
+.hopt-toc a {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a10);
+  background: #fff;
+}
+.hopt-toc a:hover { border-color: var(--gold); }
+
+.hopt-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 40px var(--container-pad) 0;
+}
+.hopt-label .hopt-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--ink);
+  border-radius: var(--r-pill);
+  padding: 5px 12px;
+}
+.hopt-label h2 {
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.hopt-label p {
+  width: 100%;
+  margin: 2px 0 0;
+  color: var(--slate-600);
+  font-size: 14px;
+  max-width: 70ch;
+}
+
+.hopt-frame {
+  max-width: var(--container-max);
+  margin: 16px auto 8px;
+  padding: 0 var(--container-pad);
+}
+.hopt-frame > section {
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  border: 1px solid var(--ink-a10);
+}
+
+/* Shared hero shell tweaks ------------------------------------------- */
+
+.hopt .mk-hero-inner { padding-top: 52px; padding-bottom: 56px; }
+.hopt .mk-kicker {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+/* ====================================================================
+   OPTION A — Split hero: redlined "all wrong" prompt + need/value/CTA
+   ==================================================================== */
+
+.hopt-a-inner {
+  position: relative;
+  display: grid;
+  gap: 44px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: 52px var(--container-pad) 56px;
+}
+@media (min-width: 1024px) {
+  .hopt-a-inner { grid-template-columns: 1.05fr 0.95fr; gap: 56px; }
+}
+
+/* The redlined prompt card */
+.hopt-prompt {
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-hero);
+  overflow: hidden;
+  border: 1px solid var(--on-dark-08);
+}
+.hopt-prompt-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--slate-200);
+  background: var(--slate-50);
+}
+.hopt-prompt-dots { display: inline-flex; gap: 6px; }
+.hopt-prompt-dots i {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--slate-200); display: inline-block;
+}
+.hopt-prompt-head span {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--slate-500);
+}
+.hopt-prompt-head .hopt-prompt-badge {
+  margin-left: auto;
+  color: #B42318;
+  background: #FEF3F2;
+  border: 1px solid #FECDCA;
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  letter-spacing: 0.04em;
+}
+.hopt-prompt-body { padding: 22px 22px 8px; }
+.hopt-prompt-line {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.hopt-redline {
+  background: #FEE4E2;
+  color: #912018;
+  border-radius: 4px;
+  padding: 0 3px;
+  text-decoration: line-through;
+  text-decoration-color: #D92D20;
+  text-decoration-thickness: 2px;
+}
+.hopt-caret {
+  display: inline-block;
+  width: 2px; height: 1.05em;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  background: var(--ink);
+  animation: hopt-blink 1.05s steps(1) infinite;
+}
+@keyframes hopt-blink { 50% { opacity: 0; } }
+.hopt-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 22px 22px;
+}
+.hopt-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #B42318;
+  background: #FEF3F2;
+  border: 1px solid #FECDCA;
+  border-radius: var(--r-pill);
+  padding: 5px 11px;
+}
+.hopt-flag svg { width: 13px; height: 13px; }
+.hopt-prompt-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--slate-200);
+  background: var(--slate-50);
+  font-size: 12.5px;
+  color: var(--slate-500);
+}
+
+.hopt-a h1 {
+  font-size: clamp(34px, 4.8vw, 54px);
+  font-weight: 600; line-height: 1.04;
+  letter-spacing: -0.02em; margin: 0; max-width: 18ch;
+}
+.hopt-a .hopt-need {
+  color: var(--gold-soft);
+}
+.hopt-a .mk-lede {
+  font-size: 17px; line-height: 1.6;
+  color: var(--on-dark-70);
+  margin-top: 16px; max-width: 40ch;
+}
+
+/* ====================================================================
+   OPTION B — Simplified two-column, sample report demoted to a strip
+   ==================================================================== */
+
+.hopt-b-inner {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+  align-items: end;
+  padding: 72px var(--container-pad) 64px;
+}
+@media (min-width: 1024px) {
+  .hopt-b-inner { grid-template-columns: 1.25fr 0.75fr; gap: 56px; }
+}
+.hopt-b h1 {
+  font-size: clamp(40px, 6.4vw, 76px);
+  font-weight: 600; line-height: 0.98;
+  letter-spacing: -0.025em; margin: 0; max-width: 14ch;
+}
+.hopt-b .hopt-b-right { padding-bottom: 6px; }
+.hopt-b .mk-lede {
+  font-size: 17px; line-height: 1.65;
+  color: var(--on-dark-70);
+  margin: 0 0 22px; max-width: 38ch;
+}
+.hopt-b .mk-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.hopt-b-trust {
+  margin: 20px 0 0;
+  font-size: 13px;
+  color: var(--on-dark-50);
+}
+
+/* Sample report strip, now its own band below the hero */
+.hopt-b-sample {
+  background: #fff;
+  border-top: 1px solid var(--ink-a10);
+}
+.hopt-b-sample-inner {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 28px var(--container-pad);
+}
+@media (min-width: 880px) {
+  .hopt-b-sample-inner { grid-template-columns: auto 1fr; }
+}
+.hopt-b-sample-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.hopt-b-sample-tag .hopt-score {
+  font-size: 44px; font-weight: 600; line-height: 1;
+  color: var(--gold-deep);
+}
+.hopt-b-sample-tag .hopt-score small {
+  font-size: 14px; font-weight: 600; color: var(--slate-500);
+}
+.hopt-b-sample-tag .hopt-k {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-deep);
+  display: block;
+}
+.hopt-b-sample-rows {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .hopt-b-sample-rows { grid-template-columns: repeat(3, 1fr); }
+}
+.hopt-b-sample-rows div {
+  background: var(--cream);
+  border: 1px solid var(--ink-a10);
+  border-radius: var(--r-lg);
+  padding: 12px 14px;
+}
+.hopt-b-sample-rows span {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--slate-500);
+  display: block; margin-bottom: 4px;
+}
+.hopt-b-sample-rows strong { font-size: 15px; }
+
+/* ====================================================================
+   OPTION C — Interactive product dial
+   ==================================================================== */
+
+.hopt-c-inner {
+  display: grid;
+  gap: 44px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: 52px var(--container-pad) 60px;
+}
+@media (min-width: 1024px) {
+  .hopt-c-inner { grid-template-columns: 0.95fr 1.05fr; gap: 40px; }
+}
+.hopt-c h1 {
+  font-size: clamp(34px, 4.8vw, 56px);
+  font-weight: 600; line-height: 1.03;
+  letter-spacing: -0.02em; margin: 0; max-width: 16ch;
+}
+.hopt-c .mk-lede {
+  font-size: 17px; line-height: 1.6;
+  color: var(--on-dark-70);
+  margin-top: 16px; max-width: 38ch;
+}
+.hopt-c-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--gold-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Dial */
+.hopt-dial {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+.hopt-dial-ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 1px dashed var(--gold-a30);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hopt-dial-orbit {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hopt-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  border: 1px solid var(--on-dark-20);
+  background: var(--ink-2);
+  color: var(--gold-soft);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.hopt-node svg { width: 26px; height: 26px; }
+.hopt-node:hover { border-color: var(--gold); }
+.hopt-node.is-active {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 6px var(--gold-a20), var(--shadow-feature);
+}
+
+/* Center hub — the live readout the dial drives */
+.hopt-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56%;
+  height: 56%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--on-dark-08);
+  box-shadow: var(--shadow-hero);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 8%;
+}
+.hopt-hub .hopt-k {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold-deep);
+}
+.hopt-hub h3 {
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 600; line-height: 1.12; margin: 6px 0 0;
+  letter-spacing: -0.01em;
+}
+.hopt-hub p {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--slate-600);
+}
+.hopt-hub .hopt-hub-stat {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-deep);
+  background: var(--gold-a10);
+  border: 1px solid var(--gold-a30);
+  border-radius: var(--r-pill);
+  padding: 4px 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hopt-dial-ring,
+  .hopt-dial-orbit,
+  .hopt-node { transition: none; }
+  .hopt-caret { animation: none; }
+}
