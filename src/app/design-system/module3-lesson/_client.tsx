@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { CourseShell, LMSTopBar, type LMSModule } from '@/components/lms';
+import { ModuleTabs } from '@/app/courses/foundation/program/_components/ModuleTabs';
 
-/* Preview — Module 3 lesson inside the REAL course shell. */
+/* Preview — Module 3 lesson inside the REAL course shell + canonical ModuleTabs. */
 
 const MODULES: LMSModule[] = [
   { num: 1, pillar: 'awareness', title: 'Daily wins that build the habit', mins: 18, output: 'Rewritten email starter', goal: 'Low-risk daily AI wins.' },
@@ -37,8 +38,32 @@ function answerFor(on: Set<string>): Ans {
   return { tone: 'good', label: 'Grounded, scoped, usable at the window', text: 'Per the fee-waiver policy, this $12 maintenance fee can be waived once every 12 months if the member kept the minimum balance. This member already used their waiver in March, so it isn’t eligible — offer to set up a balance alert instead. Flag to a supervisor if they want an exception.' };
 }
 
-function PromptWizard({ onSaved }: { onSaved: () => void }) {
+function LearnContent() {
+  return (
+    <div>
+      <p className="m3lead">
+        Length is not quality — <b>structure is.</b> Every prompt that holds up at work hits four marks. Miss one and the
+        answer breaks in a predictable way: skip <b>Resources</b> and the AI invents policy; skip <b>Expectations</b> and
+        the answer buries the point.
+      </p>
+      <div className="m3core">
+        {CORE.map((c) => (
+          <div className="m3core-row" key={c.id}>
+            <span className="lt">{c.letter}</span>
+            <span>
+              <span className="nm">{c.nm}</span> — <span className="ds">{c.ds}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className="m3note">Open <b>Try it</b> to build the prompt and watch the answer change.</p>
+    </div>
+  );
+}
+
+function PromptWizard() {
   const [on, setOn] = useState<Set<string>>(new Set(['c', 'o']));
+  const [saved, setSaved] = useState(false);
   const toggle = (id: string) =>
     setOn((p) => {
       const n = new Set(p);
@@ -67,10 +92,10 @@ function PromptWizard({ onSaved }: { onSaved: () => void }) {
           ))}
         </div>
         <div className="m3act">
-          <button type="button" className="m3btn" disabled={score < 4} onClick={onSaved}>
-            {score < 4 ? 'Add all of CORE to save' : 'Save this prompt →'}
+          <button type="button" className="m3btn" disabled={score < 4} onClick={() => setSaved(true)}>
+            {score < 4 ? 'Add all of CORE to save' : saved ? '✓ Saved to toolbox' : 'Save this prompt →'}
           </button>
-          <span className="m3note">CORE {score}/4</span>
+          <span className="m3note">{saved ? 'Open Use it to see it' : `CORE ${score}/4`}</span>
         </div>
       </div>
 
@@ -107,11 +132,25 @@ function PromptWizard({ onSaved }: { onSaved: () => void }) {
   );
 }
 
-const TABS = ['Learn it', 'Try it', 'Use it'];
+function ApplyContent() {
+  return (
+    <div className="m3saved">
+      <div className="ok">✓</div>
+      <h4>Your CORE prompt, saved.</h4>
+      <p>The fee-waiver prompt you built is now a reusable tool in your toolbox — open it on any fee question, or tune it for your branch.</p>
+      <div className="m3chip">
+        <span className="ic">P</span>
+        <span style={{ textAlign: 'left' }}>
+          <span className="tn">Fee-Waiver Prompt</span>
+          <br />
+          <span className="tm">Prompt · CORE 4/4 · from Module 03</span>
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function Module3LessonClient() {
-  const [tab, setTab] = useState(0);
-
   return (
     <CourseShell modules={MODULES} completed={[1, 2]} current={3} learner={{ name: 'Preview', role: 'Loan officer' }}>
       <LMSTopBar crumbs={['Education', 'AiBI-Foundation', 'Module 03']} />
@@ -123,62 +162,12 @@ export default function Module3LessonClient() {
       </div>
 
       <div className="m3body">
-        <div className="m3tabs" role="tablist">
-          {TABS.map((t, i) => (
-            <button key={t} type="button" role="tab" aria-selected={tab === i} className={`m3tab${tab === i ? ' on' : ''}`} onClick={() => setTab(i)}>
-              <span className="num">{i + 1}</span>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === 0 && (
-          <div>
-            <p className="m3lead">
-              Length is not quality — <b>structure is.</b> Every prompt that holds up at work hits four marks. Miss one and
-              the answer breaks in a predictable way: skip <b>Resources</b> and the AI invents policy; skip{' '}
-              <b>Expectations</b> and the answer buries the point.
-            </p>
-            <div className="m3core">
-              {CORE.map((c) => (
-                <div className="m3core-row" key={c.id}>
-                  <span className="lt">{c.letter}</span>
-                  <span>
-                    <span className="nm">{c.nm}</span> — <span className="ds">{c.ds}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="m3act">
-              <button type="button" className="m3btn" onClick={() => setTab(1)}>
-                Open the Prompt Wizard →
-              </button>
-              <span className="m3note">2 min · live answer updates as you build</span>
-            </div>
-          </div>
-        )}
-
-        {tab === 1 && <PromptWizard onSaved={() => setTab(2)} />}
-
-        {tab === 2 && (
-          <div className="m3saved">
-            <div className="ok">✓</div>
-            <h4>Saved to your toolbox.</h4>
-            <p>Your CORE fee-waiver prompt is now a reusable tool — open it on any fee question, or tune it for your branch.</p>
-            <div className="m3chip">
-              <span className="ic">P</span>
-              <span style={{ textAlign: 'left' }}>
-                <span className="tn">Fee-Waiver Prompt</span>
-                <br />
-                <span className="tm">Prompt · CORE 4/4 · from Module 03</span>
-              </span>
-            </div>
-            <div className="m3act" style={{ justifyContent: 'center', marginTop: 18 }}>
-              <button type="button" className="m3btn-ghost" onClick={() => setTab(1)}>Back to the wizard</button>
-              <button type="button" className="m3btn">Continue to Module 04 →</button>
-            </div>
-          </div>
-        )}
+        <ModuleTabs
+          moduleNumber={3}
+          learnContent={<LearnContent />}
+          practiceContent={<PromptWizard />}
+          applyContent={<ApplyContent />}
+        />
       </div>
     </CourseShell>
   );

@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { CourseShell, LMSTopBar, type LMSModule } from '@/components/lms';
+import { ModuleTabs } from '@/app/courses/foundation/program/_components/ModuleTabs';
 
-/* Preview — Module 9 "Safety Lab" inside the REAL course shell. */
+/* Preview — Module 9 "Safety Lab" inside the REAL course shell + canonical ModuleTabs. */
 
 const MODULES: LMSModule[] = [
   { num: 1, pillar: 'awareness', title: 'Daily wins that build the habit', mins: 18, output: 'Rewritten email starter', goal: 'Low-risk daily AI wins.' },
@@ -189,12 +190,57 @@ function SafetyLab({ solved, onSolve }: { solved: Set<number>; onSolve: (i: numb
   );
 }
 
-const TABS = ['Learn it', 'Try it', 'Use it'];
+function LearnContent() {
+  return (
+    <div>
+      <p className="m9lead">
+        Module 3 made your prompts <b>effective</b> — State, Ground, Constrain. The last two moves make them <b>safe.</b> A
+        prompt can work perfectly and still leak data or decide something it shouldn’t.
+      </p>
+      <div className="m9moves">
+        <div className="m9move">
+          <div className="mh"><span className="lt">C</span><span className="mn">Check</span></div>
+          <p>Never trust an answer the AI wasn’t equipped to give. No source? The number’s a guess. Fed a document? It’s evidence, not instructions.</p>
+        </div>
+        <div className="m9move">
+          <div className="mh"><span className="lt">E</span><span className="mn">Escalate</span></div>
+          <p>Know where the AI stops. Anything touching a member account, money, credit, a dispute, or a fee is red-zone — a person decides and owns it.</p>
+        </div>
+      </div>
+      <div className="m9ryg">
+        <div className="m9c g"><div className="ct">Green</div><div className="cd">No sensitive data, no customer decision. Normal review.</div></div>
+        <div className="m9c y"><div className="ct">Yellow</div><div className="cd">Internal or sanitised. Approved tool, verified source, named reviewer.</div></div>
+        <div className="m9c r"><div className="ct">Red</div><div className="cd">PII/NPI, credit, fraud, disclosures. Does not go in a general AI tool — escalate.</div></div>
+      </div>
+      <p className="m9note">Open <b>Try it</b> to repair four dangerous prompts and complete the 5-move card.</p>
+    </div>
+  );
+}
+
+function ApplyContent() {
+  return (
+    <div className="m9saved">
+      <h4><span className="ok">✓</span> The 5-move card is complete.</h4>
+      <p>State · Ground · Constrain · Check · Escalate. Saved as your Safe AI Use checklist — the difference between a banker who can use AI and one an examiner trusts with it.</p>
+      <div className="m9checklist">
+        {['Did I State the task and Ground it in a real source?', 'Did I Constrain the output and Check what the AI lacked?', 'Is this Red-zone? If so, escalate — don’t decide alone.'].map((c) => (
+          <div className="m9ci" key={c}><span className="c">✓</span>{c}</div>
+        ))}
+      </div>
+      <div className="m9chip">
+        <span className="ic">S</span>
+        <span style={{ textAlign: 'left' }}>
+          <span className="tn">Safe AI Use checklist</span>
+          <br />
+          <span className="tm">Skill · 5-move card · from Module 09</span>
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function Module9LessonClient() {
-  const [tab, setTab] = useState(0);
   const [solved, setSolved] = useState<Set<number>>(new Set([1]));
-  const allSolved = solved.size === LAB.length;
 
   return (
     <CourseShell modules={MODULES} completed={[1, 2, 3, 4, 5, 6, 7, 8]} current={9} learner={{ name: 'Preview', role: 'Loan officer' }}>
@@ -207,73 +253,12 @@ export default function Module9LessonClient() {
       </div>
 
       <div className="m9body">
-        <div className="m9tabs" role="tablist">
-          {TABS.map((t, i) => (
-            <button key={t} type="button" role="tab" aria-selected={tab === i} className={`m9tab${tab === i ? ' on' : ''}`} onClick={() => setTab(i)}>
-              <span className="num">{i + 1}</span>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === 0 && (
-          <div>
-            <p className="m9lead">
-              Module 3 made your prompts <b>effective</b> — State, Ground, Constrain. The last two moves make them{' '}
-              <b>safe.</b> A prompt can work perfectly and still leak data or decide something it shouldn’t.
-            </p>
-            <div className="m9moves">
-              <div className="m9move">
-                <div className="mh"><span className="lt">C</span><span className="mn">Check</span></div>
-                <p>Never trust an answer the AI wasn’t equipped to give. No source? The number’s a guess. Fed a document? It’s evidence, not instructions.</p>
-              </div>
-              <div className="m9move">
-                <div className="mh"><span className="lt">E</span><span className="mn">Escalate</span></div>
-                <p>Know where the AI stops. Anything touching a member account, money, credit, a dispute, or a fee is red-zone — a person decides and owns it.</p>
-              </div>
-            </div>
-            <div className="m9ryg">
-              <div className="m9c g"><div className="ct">Green</div><div className="cd">No sensitive data, no customer decision. Normal review.</div></div>
-              <div className="m9c y"><div className="ct">Yellow</div><div className="cd">Internal or sanitised. Approved tool, verified source, named reviewer.</div></div>
-              <div className="m9c r"><div className="ct">Red</div><div className="cd">PII/NPI, credit, fraud, disclosures. Does not go in a general AI tool — escalate.</div></div>
-            </div>
-            <div className="m9act">
-              <button type="button" className="m9btn" onClick={() => setTab(1)}>Enter the Safety Lab →</button>
-              <span className="m9note">Repair 4 dangerous prompts · ~6 min</span>
-            </div>
-          </div>
-        )}
-
-        {tab === 1 && (
-          <div>
-            <SafetyLab solved={solved} onSolve={(i) => setSolved((p) => new Set(p).add(i))} />
-            <div className="m9act">
-              <button type="button" className="m9btn" disabled={!allSolved} onClick={() => setTab(2)}>
-                {allSolved ? 'Save my Safe AI Use checklist →' : `Repair all four to finish (${solved.size}/4)`}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {tab === 2 && (
-          <div className="m9saved">
-            <h4><span className="ok">✓</span> The 5-move card is complete.</h4>
-            <p>State · Ground · Constrain · Check · Escalate. Saved as your Safe AI Use checklist — the difference between a banker who can use AI and one an examiner trusts with it.</p>
-            <div className="m9checklist">
-              {['Did I State the task and Ground it in a real source?', 'Did I Constrain the output and Check what the AI lacked?', 'Is this Red-zone? If so, escalate — don’t decide alone.'].map((c) => (
-                <div className="m9ci" key={c}><span className="c">✓</span>{c}</div>
-              ))}
-            </div>
-            <div className="m9chip">
-              <span className="ic">S</span>
-              <span style={{ textAlign: 'left' }}>
-                <span className="tn">Safe AI Use checklist</span>
-                <br />
-                <span className="tm">Skill · 5-move card · from Module 09</span>
-              </span>
-            </div>
-          </div>
-        )}
+        <ModuleTabs
+          moduleNumber={9}
+          learnContent={<LearnContent />}
+          practiceContent={<SafetyLab solved={solved} onSolve={(i) => setSolved((p) => new Set(p).add(i))} />}
+          applyContent={<ApplyContent />}
+        />
       </div>
     </CourseShell>
   );
