@@ -1107,6 +1107,270 @@ section.mk-std { padding: 56px 0; }
    Assessment landing — sections specific to /assessment
    ============================================================ */
 
+.mk-assessment-hero-inner {
+  grid-template-columns: minmax(0, 0.9fr) minmax(340px, 0.62fr);
+  align-items: center;
+  max-width: 1180px;
+  padding-top: clamp(44px, 5vw, 68px);
+  padding-bottom: clamp(44px, 5vw, 68px);
+}
+
+.mk-assessment-report {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  justify-self: end;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  padding: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+}
+.mk-assessment-report-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ink-a10);
+}
+.mk-assessment-report-top span,
+.mk-assessment-artifact span {
+  color: var(--gold-deep);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.mk-assessment-report-top strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 1;
+}
+.mk-assessment-score-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px 0;
+}
+.mk-assessment-score-row div {
+  background: var(--cream);
+  border: 1px solid var(--ink-a10);
+  border-radius: 16px;
+  padding: 14px;
+}
+.mk-assessment-score-row p {
+  margin: 0 0 6px;
+  color: var(--slate-500);
+  font-size: 12px;
+  font-weight: 700;
+}
+.mk-assessment-score-row strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.25;
+}
+.mk-assessment-artifact {
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--ink);
+  color: #fff;
+}
+.mk-assessment-artifact strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.25;
+}
+.mk-assessment-path {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  gap: 22px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.mk-assessment-path-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--ink-a10);
+  border-radius: 26px;
+  background: var(--cream);
+}
+.mk-assessment-path-card.is-paid {
+  background: var(--ink);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: var(--shadow-feature);
+}
+.mk-path-eyebrow {
+  color: var(--gold-deep);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.mk-assessment-path-card.is-paid .mk-path-eyebrow {
+  color: var(--gold-soft);
+}
+.mk-assessment-path-card h3 {
+  margin: 12px 0 10px;
+  color: var(--ink);
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+  font-weight: 750;
+}
+.mk-assessment-path-card.is-paid h3 {
+  color: #fff;
+}
+.mk-assessment-path-card p {
+  margin: 0 0 20px;
+  color: var(--slate-600);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.mk-assessment-path-card.is-paid p {
+  color: var(--on-dark-75);
+}
+.mk-assessment-path-card ul {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.mk-assessment-path-card li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.4;
+}
+.mk-assessment-path-card li svg {
+  flex: none;
+  color: var(--gold-deep);
+  margin-top: 2px;
+}
+.mk-assessment-path-card .mk-btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.mk-paid-meter {
+  display: grid;
+  gap: 11px;
+  margin: 2px 0 24px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.07);
+}
+.mk-paid-meter div {
+  display: grid;
+  grid-template-columns: minmax(92px, 0.46fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.mk-paid-meter span {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 750;
+}
+.mk-paid-meter i {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+.mk-paid-meter b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gold);
+}
+
+@media (max-width: 900px) {
+  .mk-assessment-hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .mk-assessment-report {
+    max-width: none;
+    justify-self: stretch;
+  }
+  .mk-assessment-path {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .mk-assessment-hero-inner {
+    gap: 20px;
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+  .mk-assessment-score-row,
+  .mk-paid-meter div {
+    grid-template-columns: 1fr;
+  }
+  .mk-assessment-report {
+    padding: 16px;
+    border-radius: 22px;
+  }
+  .mk-assessment-report-top {
+    padding-bottom: 12px;
+  }
+  .mk-assessment-report-top strong {
+    font-size: 34px;
+  }
+  .mk-assessment-score-row {
+    gap: 8px;
+    padding: 12px 0;
+  }
+  .mk-assessment-score-row div:nth-child(2) {
+    display: none;
+  }
+  .mk-assessment-score-row div,
+  .mk-assessment-artifact {
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .mk-assessment-path-card {
+    padding: 22px;
+  }
+  .mk-assessment-path-card h3 {
+    margin-top: 10px;
+  }
+  .mk-assessment-path-card p {
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+  .mk-assessment-path-card:not(.is-paid) ul {
+    display: none;
+  }
+  .mk-paid-meter {
+    padding: 12px;
+    gap: 9px;
+  }
+  .mk-indepth-dims {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+  }
+  .mk-indepth-dim {
+    padding: 12px;
+  }
+  .mk-indepth-dim .mk-indepth-desc {
+    display: none;
+  }
+  .mk-indepth-num .mk-v {
+    font-size: 44px;
+  }
+}
+
 /* Tier grid (Free Snapshot / In-Depth Assessment). */
 .mk-tier-grid {
   display: grid;

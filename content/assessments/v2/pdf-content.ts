@@ -119,18 +119,18 @@ const FOUNDATION_STEP: PdfNextStep = {
 const IN_DEPTH_STEP: PdfNextStep = {
   number: '02',
   rank: 'secondary',
-  category: 'Institutional diagnostic',
+  category: 'Individual diagnostic',
   title: 'In-Depth Assessment',
   price: '$99 · 30 minutes',
   body:
-    'Eight readiness dimensions across your team, with an anonymized aggregate rollup for leaders and a starting playbook keyed to your weakest dimension. Take it before deciding how to fund the program.',
+    'Eight readiness dimensions for one banking professional, with a personal report, peer-band comparison, and a starting playbook keyed to the weakest dimensions.',
   bullets: [
-    'Eight dimensions of readiness across all participants',
+    'Eight dimensions of individual AI readiness',
     'Peer-band comparison against community-bank cohort',
-    'Starting playbook keyed to your weakest area',
+    'Personal action register keyed to the weakest areas',
   ],
   outcome:
-    'Outcome: a written verdict you can defend with leadership in a one-meeting conversation.',
+    'Outcome: a clear personal readiness readout and next-step plan for the learner’s role.',
 };
 
 const EXEC_BRIEFING_STEP: PdfNextStep = {

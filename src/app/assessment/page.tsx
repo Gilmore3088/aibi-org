@@ -3,7 +3,7 @@ import AssessmentLandingPage from './_client';
 
 const TITLE = 'AI Readiness Assessment';
 const DESCRIPTION =
-  'Get your AI readiness score in three minutes. Score, maturity tier, top gap, and recommended next step — no sales call required.';
+  'Get your AI readiness score in three minutes, including your maturity tier, top gap, starter artifact, and 30-day action path.';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/assessment' },

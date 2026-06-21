@@ -5,10 +5,10 @@
 // comparison that doubles as the buying surface — no duplicate pricing
 // blocks below.
 //
-// Pricing per Plans/aibi-launch-spec-v2.md §1b: $99 individual; $79/seat
-// at 10+ by email request. Self-serve team checkout is deferred — the
-// in-depth checkout route returns 503 for mode='institution' and nudges
-// buyers to email hello@aibankinginstitute.com.
+// Pricing per Plans/aibi-launch-spec-v2.md §1b: $99 individual. Team
+// cohorts now live at /assessment/team so this page must stay clearly
+// positioned as a one-person diagnostic, not an institutional or board
+// report.
 //
 // In-Depth runs on assessment v4 — 48 questions across 8 strategic
 // dimensions, normalized 0-100 score, 5 maturity bands (Unstructured,
@@ -19,11 +19,11 @@
 // The free funnel uses v3 (12 questions, 12 individual-voice signals).
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { SiteHeader } from '@/components/mockup';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
-import { BRAND } from '@content/copy';
 import { PurchaseButton } from './_components/PurchaseButton';
 
 export const dynamic = 'force-dynamic';
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/assessment/in-depth' },
   title: 'In-Depth Assessment | The AI Banking Institute',
   description:
-    'A 48-question, eight-dimension diagnostic for community banks and credit unions. Individual report plus an anonymized aggregate dashboard for institution leaders.',
+    'A 48-question, eight-dimension AI readiness assessment for individual banking professionals. Get a personal report, peer-band comparison, and role-level action plan.',
 };
 
 interface InDepthAssessmentPageProps {
@@ -111,7 +111,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               }}
             >
               <span style={{ ...KICKER_GOLD_ON_DARK, marginBottom: 22 }}>
-                In-Depth Assessment · $99 · Board-ready
+                Individual In-Depth Assessment · $99
               </span>
               <h1
                 style={{
@@ -125,9 +125,8 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '20ch',
                 }}
               >
-                The{' '}
-                <span style={{ color: 'var(--gold)' }}>board-ready</span>{' '}
-                diagnostic for your institution.
+                Know where <span style={{ color: 'var(--gold)' }}>you</span>{' '}
+                are ready to use AI at work.
               </h1>
               <p
                 style={{
@@ -139,8 +138,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '56ch',
                 }}
               >
-                Forty-eight questions. Twenty minutes. Eight readiness dimensions.
-                A written report you can take to your board on Monday.
+                Forty-eight questions. Eight readiness dimensions. A personal
+                report that shows your strengths, gaps, and next moves in your
+                role.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
                 <PurchaseButton
@@ -242,9 +242,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '52ch',
                 }}
               >
-                This page is for teams that need a decision document, not another
-                lightweight scan. Use the free snapshot only if you are not ready
-                for the full diagnostic yet.
+                Use this when one person needs a deeper readout than the free
+                scan. If leaders need department-level evidence, use the Team
+                Assessment instead.
               </p>
             </div>
 
@@ -292,7 +292,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   Recommended
                 </span>
                 <span style={{ ...KICKER_GOLD_ON_LIGHT, marginBottom: 16, alignSelf: 'flex-start' }}>
-                  For decision-makers
+                  For individual professionals
                 </span>
                 <h3
                   style={{
@@ -319,7 +319,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 >
                   Forty-eight questions across eight dimensions. A written
                   report with peer-band comparison and a ninety-day playbook
-                  keyed to your weakest area.
+                  keyed to your weakest areas.
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 24 }}>
@@ -349,7 +349,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     per individual
                     <br />
                     <span style={{ color: 'var(--slate-500)' }}>
-                      $79/seat at 10+ · by request
+                      Need 10+ people? Use Team
                     </span>
                   </p>
                 </div>
@@ -383,9 +383,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   <ul style={{ listStyle: 'none', margin: '14px 0 0', padding: 0, display: 'grid', gap: 12 }}>
                     {[
                       'Forty-eight questions across eight readiness dimensions',
-                      'A full individual report with peer-band comparison',
-                      'A starting playbook keyed to your lowest-scoring dimensions',
-                      'Anonymized aggregate dashboard for institution leaders',
+                      'A personal report with peer-band comparison',
+                      'Role-level strengths, gaps, and review notes',
+                      'A ninety-day action register keyed to your lowest-scoring dimensions',
                     ].map((item) => (
                       <li
                         key={item}
@@ -457,7 +457,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '24ch',
                 }}
               >
-                The in-depth assessment answers leadership questions.
+                The in-depth assessment answers your next-step questions.
               </h2>
             </div>
 
@@ -472,9 +472,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               className="mk-three-ways-grid"
             >
               <NarrativeCard
-                kicker="Board baseline"
-                title="You need a real readiness readout."
-                body="A normalized score, maturity band, and written explanation that leaders can review without unpacking raw survey answers."
+                kicker="Personal baseline"
+                title="You want more than a quick score."
+                body="A normalized score, maturity band, and written explanation of what your answers say about your own AI readiness."
                 ctaLabel="Purchase In-Depth →"
                 ctaHref="/assessment/in-depth#purchase"
               />
@@ -482,16 +482,16 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 featured
                 kicker="Eight dimensions"
                 title="You need to know what is weak."
-                body="Dimension-level gaps turn a generic AI conversation into concrete priorities across governance, data, workflow, documentation, and leadership."
+                body="Dimension-level gaps turn a generic AI conversation into concrete priorities for your role, your workflows, and your next month of practice."
                 ctaLabel="Purchase In-Depth → "
                 ctaHref="/assessment/in-depth#purchase"
               />
               <NarrativeCard
-                kicker="Team rollout · 10+ seats"
-                title="You need department-level evidence."
-                body="Aggregate results reveal where readiness differs by function, so training and governance work can be sequenced by actual gaps."
-                ctaLabel="Contact us →"
-                ctaHref="/for-institutions"
+                kicker="Team assessment"
+                title="Leaders need a cohort view."
+                body="Use the Team Assessment when the institution needs aggregate readiness, department slices, participant completion, and a leadership-ready rollup."
+                ctaLabel="View team assessment →"
+                ctaHref="/assessment/team"
               />
             </div>
 
@@ -506,14 +506,16 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 textAlign: 'center',
               }}
             >
-              Per-seat pricing of $79/seat opens at ten or more.{' '}
-              <a
-                href={`mailto:${BRAND.emails.contact}?subject=In-Depth%20Assessment%20%E2%80%94%2010%2B%20seats`}
+              Need an institutional readout? The Team Assessment starts with a
+              shared cohort link and unlocks aggregate reporting after ten
+              completions.{' '}
+              <Link
+                href="/assessment/team"
                 style={{ color: 'var(--gold-deep)', fontWeight: 600, textDecoration: 'underline' }}
               >
-                Email the Institute
-              </a>{' '}
-              to set it up.
+                View the Team Assessment
+              </Link>
+              .
             </p>
           </div>
         </section>
@@ -573,7 +575,7 @@ function NarrativeCard(props: {
       >
         {props.body}
       </p>
-      <a
+      <Link
         href={props.ctaHref}
         style={{
           fontFamily: INTER_STACK,
@@ -589,7 +591,7 @@ function NarrativeCard(props: {
         }}
       >
         {props.ctaLabel}
-      </a>
+      </Link>
     </article>
   );
 }
