@@ -2,14 +2,15 @@
 
 // CoursePreview with 5 concrete animated demos —
 // replaces the prior abstract-illustration preview (bars/dots/lines).
-// Each module shows real banking content the learner actually produces:
-// Task fit table, prompt rewrite, .skill.md file, SOP draft, agent run log.
+// Each preview mirrors a current Foundation artifact:
+// rewritten email, claim review, prompt builder, workflow map, final lab.
 //
 // Ported from /Users/jgmbp/Downloads/aibi_course_preview_artifact_simulator (2).jsx
 // (the polished JSX the user shared 2026-05-28). No lucide / no shadcn —
 // inline SVG icons + mockup CSS tokens to match the rest of the site.
 
 import { useCallback, useEffect, useState } from 'react';
+import { ARTIFACT_FIRST_BY_MODULE } from '@content/courses/foundation-program/artifact-first';
 
 // ---------- Icons (inline SVG) ----------
 
@@ -49,38 +50,38 @@ interface ModuleData {
 
 const MODULES: readonly ModuleData[] = [
   {
-    title: 'Choose the right task',
-    eyebrow: 'Task fit',
-    lesson: 'Classify the task before prompting.',
-    artifact: 'AI Task Fit Card',
+    title: 'Rewrite a work note',
+    eyebrow: 'Module 01',
+    lesson: 'Turn a rushed internal note into a clear staff bulletin.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[1].saved,
     icon: BookIcon,
   },
   {
-    title: 'Improve a prompt',
-    eyebrow: 'Prompt rewrite',
-    lesson: 'Rewrite a weak prompt into a review-ready prompt.',
-    artifact: 'Prompt Strategy Cheat Sheet',
+    title: 'Catch bad AI claims',
+    eyebrow: 'Module 02',
+    lesson: 'Flag numbers, dates, names, and policy claims before trusting output.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[2].saved,
     icon: ChatIcon,
   },
   {
-    title: 'Save a skill',
-    eyebrow: 'Skill builder',
-    lesson: 'Save a strong prompt as a reusable skill file.',
-    artifact: 'Saved Skill Template',
+    title: 'Build a reusable prompt',
+    eyebrow: 'Module 03',
+    lesson: 'Turn a weak prompt into a reusable strategy with review rules.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[3].saved,
     icon: WorkflowIcon,
   },
   {
-    title: 'Build a workflow',
-    eyebrow: 'Workflow builder',
-    lesson: 'Turn one source document into a reviewed SOP.',
-    artifact: 'AI Workflow SOP',
+    title: 'Map a workflow',
+    eyebrow: 'Module 08',
+    lesson: 'Mark AI steps, human handoffs, and blocked decisions.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[8].saved,
     icon: FileIcon,
   },
   {
-    title: 'See an agent work',
-    eyebrow: 'Agent preview',
-    lesson: 'Watch an agent draft, pause, and wait for approval.',
-    artifact: 'Agent Review Checklist',
+    title: 'Package the final lab',
+    eyebrow: 'Module 12',
+    lesson: 'Show safe prompting, verification, limits, and human judgment.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[12].saved,
     icon: SparklesIcon,
   },
 ];
@@ -91,7 +92,7 @@ const FRAME_COUNT = 4;
 // ---------- Root component ----------
 
 export function CoursePreviewDemos() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [frameIndex, setFrameIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const activeModule = MODULES[activeIndex];
@@ -117,8 +118,8 @@ export function CoursePreviewDemos() {
       {/* Header band */}
       <div className="cpd-head">
         <div>
-          <p className="cpd-kicker cpd-kicker-on-dark">Course preview</p>
-          <h3 className="cpd-head-h">From rough prompt to reviewed artifact.</h3>
+          <p className="cpd-kicker cpd-kicker-on-dark">Prompt Builder preview</p>
+          <h3 className="cpd-head-h">From weak prompt to reusable skill pattern.</h3>
         </div>
         <div className="cpd-controls">
           <div className="cpd-frame-controls" role="group" aria-label="Preview steps">
@@ -185,7 +186,7 @@ function ModuleNav({
 }) {
   return (
     <div className="cpd-nav">
-      <p className="cpd-kicker">Learning path</p>
+      <p className="cpd-kicker">Sample mileposts</p>
       <div className="cpd-nav-list">
         {modules.map((mod, index) => {
           const Icon = mod.icon;
@@ -223,44 +224,66 @@ function ModuleDemo({
   readonly frameIndex: number;
 }) {
   switch (activeModule.title) {
-    case 'Improve a prompt':
+    case 'Catch bad AI claims':
+      return <ClaimReviewDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
+    case 'Build a reusable prompt':
       return <PromptTypingDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
-    case 'Save a skill':
+    case 'Rewrite a work note':
       return <SkillFileDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
-    case 'Build a workflow':
+    case 'Map a workflow':
       return <WorkflowDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
-    case 'See an agent work':
+    case 'Package the final lab':
       return <AgentDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
     default:
-      return <TaskFitDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
+      return <ClaimReviewDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
   }
 }
 
-// ---------- Demo: Task fit ----------
+// ---------- Demo: Claim review ----------
 
-const TASK_FIT_ROWS = [
-  { task: 'Branch huddle notes', fit: 'Good fit', control: 'Manager review', blocked: false },
-  { task: 'Public guidance', fit: 'Good fit', control: 'Source check', blocked: false },
-  { task: 'Credit decision', fit: 'Do not use', control: 'Escalate', blocked: true },
-  { task: 'Team examples', fit: 'Reusable guide', control: 'Approved', blocked: false },
+const CLAIM_REVIEW_ROWS = [
+  {
+    claim: 'Policy effective date: July 1',
+    verdict: 'Verify',
+    evidence: 'Date appears with no cited source.',
+    flagged: true,
+  },
+  {
+    claim: 'Procedure requires manager sign-off',
+    verdict: 'Verified',
+    evidence: 'Matches the supplied source excerpt.',
+    flagged: false,
+  },
+  {
+    claim: 'All community banks are exempt',
+    verdict: 'Wrong',
+    evidence: 'Contradicts the training source.',
+    flagged: true,
+  },
+  {
+    claim: 'Summary is draft-only',
+    verdict: 'Verified',
+    evidence: 'Human review boundary is explicit.',
+    flagged: false,
+  },
 ] as const;
 
-function TaskFitDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
+function ClaimReviewDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
   return (
-    <DemoShell artifact={artifact} label="Classify before prompting">
+    <DemoShell artifact={artifact} label="Flag claims before trusting the output">
       <div className="cpd-demo-card cpd-tf">
-        {TASK_FIT_ROWS.map((row, index) => {
+        {CLAIM_REVIEW_ROWS.map((row, index) => {
           const active = frameIndex >= index;
           return (
             <div
-              key={row.task}
-              className={`cpd-tf-row${active ? ' is-active' : ''}${row.blocked ? ' is-blocked' : ''}`}
+              key={row.claim}
+              className={`cpd-tf-row${active ? ' is-active' : ''}${row.flagged ? ' is-blocked' : ''}`}
             >
               <div>
-                <p className="cpd-tf-task">{row.task}</p>
-                <p className="cpd-tf-control">{row.control}</p>
+                <p className="cpd-tf-task">{row.claim}</p>
+                <p className="cpd-tf-control">{row.evidence}</p>
               </div>
-              <span className={`cpd-tf-pill${row.blocked ? ' is-blocked' : ''}`}>{row.fit}</span>
+              <span className={`cpd-tf-pill${row.flagged ? ' is-blocked' : ''}`}>{row.verdict}</span>
             </div>
           );
         })}
@@ -287,13 +310,13 @@ function PromptTypingDemo({ frameIndex, artifact }: { frameIndex: number; artifa
   const canSend = frameIndex >= 3;
 
   return (
-    <DemoShell artifact={artifact} label="Prompt builder experience">
+    <DemoShell artifact={artifact} label="AiBI Lab prompt practice">
       <div className="cpd-chat-card">
         <div className="cpd-chat-titlebar">
           <span className="cpd-traffic-dot" style={{ background: '#f5a8a8' }} />
           <span className="cpd-traffic-dot" style={{ background: '#f5cf86' }} />
           <span className="cpd-traffic-dot" style={{ background: '#8de2bf' }} />
-          <span className="cpd-chat-tag">Practice chat</span>
+          <span className="cpd-chat-tag">AiBI Lab</span>
         </div>
 
         <div className="cpd-chat-body">
@@ -335,31 +358,31 @@ function PromptTypingDemo({ frameIndex, artifact }: { frameIndex: number; artifa
   );
 }
 
-// ---------- Demo: Skill file ----------
+// ---------- Demo: Rewritten email artifact ----------
 
 const SKILL_FILE_LINES = [
-  '# Skill: Procedure Translator',
+  '# Module 01 Artifact: Rewritten Email',
   '',
-  'Purpose: Convert approved procedure text into a frontline job aid.',
+  'Purpose: Turn a rushed internal note into a clear staff bulletin.',
   '',
-  'Allowed inputs:',
-  '- Approved internal procedure text',
-  '- Role or audience',
-  '- Known escalation rules',
+  'Original note:',
+  '- Kiosk workflow buggy',
+  '- Use iPad workflow for now',
+  '- IT is aware',
   '',
-  'Blocked inputs:',
-  '- Customer PII or NPI',
-  '- Account numbers or balances',
-  '- Examiner correspondence',
+  'Review rules:',
+  '- Strip names and account data',
+  '- Keep facts only',
+  '- Add owner and deadline',
   '',
   'Output:',
-  '- Plain-English staff summary',
-  '- Escalation triggers',
-  '- [VERIFY] items',
+  '- Clear staff bulletin',
+  '- Reusable rewrite prompt',
+  '- Human review note',
   '',
-  'Reviewer: Department owner',
-  'Version: v1.0',
-  'Status: Ready to test',
+  'Saved to: Foundation Packet',
+  'Toolbox: reusable rewrite prompt',
+  'Status: reviewed draft',
 ] as const;
 
 const SKILL_VISIBLE_COUNTS = [4, 9, 17, SKILL_FILE_LINES.length] as const;
@@ -370,25 +393,25 @@ function SkillFileDemo({ frameIndex, artifact }: { frameIndex: number; artifact:
   const saved = frameIndex >= 3;
 
   return (
-    <DemoShell artifact={artifact} label="Save prompt as a skill file">
+    <DemoShell artifact={artifact} label="Practice, review, and save the module artifact">
       <div className="cpd-skill-grid">
         <div className="cpd-skill-prompt">
-          <p className="cpd-kicker">Approved prompt</p>
+          <p className="cpd-kicker">Original staff note</p>
           <div className="cpd-skill-prompt-text">
             <p>
-              Rewrite this procedure for frontline staff. Keep policy meaning intact. Flag
-              unclear items with [VERIFY]. Include escalation triggers. Draft only.
+              Kiosk workflow is buggy. IT knows. Please use the iPad workflow until
+              we confirm the fix. Make the message clear for branch staff.
             </p>
           </div>
           <div className={`cpd-skill-convert${converting ? ' is-active' : ''}`}>
-            {converting ? 'Convert to skill' : 'Prompt ready'}
+            {converting ? 'Review draft' : 'Sample ready'}
           </div>
         </div>
 
         <div className="cpd-skill-file">
           <div className="cpd-skill-file-bar">
             <span className="cpd-skill-file-name">
-              <FileIcon size={14} /> procedure-translator.skill.md
+              <FileIcon size={14} /> module-01-rewritten-email.md
             </span>
             <span className={`cpd-skill-file-status${saved ? ' is-saved' : ''}`}>
               {saved ? 'saved' : 'draft'}
@@ -408,15 +431,15 @@ function SkillFileDemo({ frameIndex, artifact }: { frameIndex: number; artifact:
   );
 }
 
-// ---------- Demo: Workflow ----------
+// ---------- Demo: Workflow map ----------
 
 const WORKFLOW_DRAFT_LINES = [
-  '# AI Workflow SOP',
-  'Purpose: Explain the procedure update to staff.',
-  'Input: Approved procedure-update.pdf',
-  'Output: Draft staff job aid',
-  'Reviewer: Branch operations manager',
-  'Retention: Save reviewed SOP to toolbox',
+  '# Workflow Map',
+  'Use case: Procedure update review',
+  'AI step: summarize permitted source',
+  'Human handoff: branch ops review',
+  'Blocked decision: customer-impacting exception',
+  'Evidence: source note + reviewer sign-off',
 ] as const;
 
 function WorkflowDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
@@ -425,12 +448,12 @@ function WorkflowDemo({ frameIndex, artifact }: { frameIndex: number; artifact: 
   const saved = frameIndex >= 3;
 
   return (
-    <DemoShell artifact={artifact} label="Upload a procedure. Build a reviewed SOP.">
+    <DemoShell artifact={artifact} label="Map AI steps, human handoffs, and blocked decisions">
       <div className="cpd-wf-grid">
         <div className="cpd-wf-source">
           <div className="cpd-wf-source-head">
             <span className="cpd-wf-source-name">
-              <FileIcon size={14} /> procedure-update.pdf
+              <FileIcon size={14} /> approved-source-excerpt.pdf
             </span>
             <span className="cpd-wf-source-status">uploaded</span>
           </div>
@@ -451,7 +474,7 @@ function WorkflowDemo({ frameIndex, artifact }: { frameIndex: number; artifact: 
         <div className="cpd-wf-output">
           <div className="cpd-wf-output-head">
             <span className="cpd-wf-output-name">
-              <WorkflowIcon size={14} /> workflow-sop.md
+              <WorkflowIcon size={14} /> workflow-map.md
             </span>
             <span
               className={`cpd-wf-output-status${
@@ -479,7 +502,7 @@ function WorkflowDemo({ frameIndex, artifact }: { frameIndex: number; artifact: 
             <UserCheckIcon size={18} />
             <div>
               <p className="cpd-kicker">Human review</p>
-              <p className="cpd-wf-review-text">Manager approves before staff can reuse it.</p>
+              <p className="cpd-wf-review-text">Reviewer confirms what AI can support and what stays blocked.</p>
             </div>
           </div>
         </div>
@@ -497,38 +520,38 @@ function SourceHighlight({ label }: { label: string }) {
   );
 }
 
-// ---------- Demo: Agent ----------
+// ---------- Demo: Final lab package ----------
 
 const AGENT_LOG_ITEMS = [
-  { label: 'New file detected', value: 'procedure-update.pdf', icon: FileIcon },
-  { label: 'Reading source', value: 'Finding changes staff need to know', icon: SparklesIcon },
-  { label: 'Writing draft', value: 'Creating a plain-language staff summary', icon: FileIcon },
-  { label: 'Review needed', value: 'One unclear item marked [VERIFY]', icon: UserCheckIcon },
+  { label: 'Scenario loaded', value: 'sample banking task only', icon: FileIcon },
+  { label: 'AiBI Lab run', value: 'Drafting from permitted context', icon: SparklesIcon },
+  { label: 'Evidence captured', value: 'Prompt, output, and review note', icon: FileIcon },
+  { label: 'Review needed', value: 'Human judgment before reuse', icon: UserCheckIcon },
 ] as const;
 
 const AGENT_DRAFT_LINES = [
   {
-    title: 'Draft staff summary',
+    title: 'Prompt used',
     text:
-      'The hold-release procedure has been updated. Staff should use the new exception step before releasing a hold outside the standard process.',
+      'The final package includes the prompt, the sanitized source context, and the reason the task is safe for AI support.',
     verify: false,
   },
   {
-    title: 'New exception step added',
+    title: 'AI-assisted output',
     text:
-      'Before releasing a same-day exception, confirm the reason for the exception and document the customer request in the account notes.',
+      'The draft output is preserved as evidence, not treated as final decisioning or customer-ready language.',
     verify: false,
   },
   {
-    title: 'Escalation required',
+    title: 'Human review note',
     text:
-      'Same-day exceptions must be escalated to the branch operations manager before the final customer response is given.',
+      'The learner names what they changed, what they verified, and what still requires an approved reviewer.',
     verify: false,
   },
   {
-    title: '[VERIFY] unclear policy item',
+    title: '[VERIFY] boundary statement',
     text:
-      'Confirm whether teller overrides are still allowed under the updated rule, or whether all overrides now require manager approval.',
+      'The submission states what data was excluded and which decisions remain outside the AI-assisted workflow.',
     verify: true,
   },
 ] as const;
@@ -538,13 +561,13 @@ function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: str
   const drafting = frameIndex >= 2;
 
   return (
-    <DemoShell artifact={artifact} label="Agent drafts work, then pauses for approval.">
+    <DemoShell artifact={artifact} label="Package the prompt, output, review note, and safety boundary">
       <div className="cpd-agent-grid">
         <div className="cpd-agent-run">
           <div className="cpd-agent-run-head">
             <div>
-              <p className="cpd-kicker cpd-kicker-on-dark">Agent run</p>
-              <h4 className="cpd-agent-run-h">Procedure Aid Agent</h4>
+              <p className="cpd-kicker cpd-kicker-on-dark">Final lab</p>
+              <h4 className="cpd-agent-run-h">Foundation Package</h4>
             </div>
             <span className="cpd-agent-run-badge">
               <SparklesIcon size={26} />
@@ -552,7 +575,7 @@ function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: str
           </div>
           <div className="cpd-agent-log">
             <p className="cpd-kicker cpd-kicker-on-dark cpd-agent-log-label">
-              What the agent is doing
+              What the learner proves
             </p>
             <div className="cpd-agent-log-list">
               {AGENT_LOG_ITEMS.map((item, index) => {
@@ -582,7 +605,7 @@ function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: str
 
         <div className="cpd-agent-out">
           <div className="cpd-agent-out-head">
-            <p className="cpd-kicker">Draft output being created</p>
+            <p className="cpd-kicker">Final package contents</p>
             <span
               className={`cpd-agent-out-status${
                 needsApproval ? ' is-approval' : drafting ? ' is-drafting' : ''
@@ -594,7 +617,7 @@ function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: str
 
           <div className="cpd-agent-out-card">
             <div className="cpd-agent-out-name">
-              <FileIcon size={14} /> draft-staff-summary.md
+              <FileIcon size={14} /> final-foundation-lab.md
             </div>
 
             <div className="cpd-agent-draft-list">

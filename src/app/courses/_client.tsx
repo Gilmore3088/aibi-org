@@ -1,7 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import Link from 'next/link';
 import {
   SiteHeader,
   Section,
@@ -16,6 +14,51 @@ import { CoursePreviewDemos } from './_components/CoursePreviewDemos';
 // ---------- Icons (inline SVG) ----------
 
 type IconProps = { className?: string; size?: number };
+export interface CoursesOverviewFacts {
+  readonly moduleCount: number;
+  readonly artifactCount: number;
+  readonly totalMinutes: number;
+  readonly totalHoursLabel: string;
+  readonly individualPriceLabel: string;
+  readonly teamSeatPriceLabel: string;
+  readonly samplePacketSlots: readonly {
+    readonly moduleNumber: number;
+    readonly label: string;
+  }[];
+}
+
+const DEFAULT_FACTS: CoursesOverviewFacts = {
+  moduleCount: 12,
+  artifactCount: 12,
+  totalMinutes: 400,
+  totalHoursLabel: '6.7',
+  individualPriceLabel: '$295',
+  teamSeatPriceLabel: '$199',
+  samplePacketSlots: [
+    { moduleNumber: 1, label: 'Rewritten Email + a reusable rewrite prompt' },
+    { moduleNumber: 3, label: 'Prompt Strategy Cheat Sheet' },
+    { moduleNumber: 8, label: 'Workflow Map' },
+    { moduleNumber: 12, label: 'Final Foundation Lab Package' },
+  ],
+};
+
+function countWord(count: number) {
+  return count === 12 ? 'Twelve' : String(count);
+}
+
+function buildPricingBullets(facts: CoursesOverviewFacts) {
+  return [
+    `${facts.moduleCount} modules · ${facts.totalMinutes} minutes`,
+    'Onboarding, role context, and work-target selection',
+    'Prompt Builder and Skill Builder practice with sample banking data',
+    `${facts.artifactCount}-piece Foundation Packet`,
+    'Review notes and transfer plans in every module',
+    '5+ certificate practice reps',
+    'Final packet submission + certificate',
+    'Lifetime access and course updates',
+  ];
+}
+
 const sw = (p: IconProps) => ({
   className: p.className,
   width: p.size,
@@ -38,44 +81,64 @@ const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y
 
 const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
-    title: 'Prompt Card',
-    desc: 'A reusable prompt with role, task, context, constraints, output format, and review standard.',
+    title: 'Communication Artifacts',
+    desc: 'Rewrite rushed notes, staff updates, and recurring messages with clear action, owner, and review.',
     icon: ChatIcon,
   },
   {
-    title: 'Saved Skill',
-    desc: 'A tested prompt promoted into a named, tagged, versioned asset for repeat use.',
+    title: 'Reusable Prompts + Skills',
+    desc: 'Build prompt strategies, work profiles, project briefs, and repeatable skills with review rules.',
     icon: WorkflowIcon,
   },
   {
-    title: 'Workflow SOP',
-    desc: 'A reviewable workflow packet covering tool, data, output, reviewer, approval, and retention.',
+    title: 'Workflow Maps',
+    desc: 'Map AI-supported steps, human handoffs, blocked decisions, tool choices, and source checks.',
     icon: FileIcon,
   },
   {
-    title: 'Review Checklist',
-    desc: 'A human approval checklist for accuracy, data handling, escalation, and final use.',
+    title: 'Safety Proof',
+    desc: 'Keep claim reviews, safe-use checklists, role use-case cards, and final work-product evidence.',
     icon: ClipboardIcon,
   },
 ];
 
-const PRICING_BULLETS = [
-  'Self-paced course',
-  'Sandbox practice',
-  'Toolbox assets',
-  'Four reviewed artifacts',
-  'Completion credential',
-  'Lifetime access',
+const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
+  {
+    step: '01',
+    title: 'Set role and work target',
+    desc: 'Onboarding captures role context; each module asks for one safe work target before the learner opens the lab.',
+    icon: ChatIcon,
+  },
+  {
+    step: '02',
+    title: 'See the artifact first',
+    desc: 'Every module begins with what you are building, why it matters, what you will save, and what you must prove.',
+    icon: ClipboardIcon,
+  },
+  {
+    step: '03',
+    title: 'Build prompts and skills',
+    desc: 'AiBI Lab uses non-sensitive sample data, a Prompt Builder, and Skill Builder patterns before the work becomes evidence.',
+    icon: WorkflowIcon,
+  },
+  {
+    step: '04',
+    title: 'Transfer into the packet',
+    desc: 'Learners save a review note and first real use for each artifact, then submit the final Foundation Packet for certificate review.',
+    icon: FileIcon,
+  },
 ];
 
 // ---------- Page ----------
 
-export default function CoursesIndexPage() {
+export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly facts?: CoursesOverviewFacts }) {
+  const pricingBullets = buildPricingBullets(facts);
+
   return (
     <div className="mockup-scope">
       <SiteHeader
         activePath="/courses"
-        cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }}
+        cta={{ label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase' }}
       />
 
       {/* HERO */}
@@ -86,60 +149,81 @@ export default function CoursesIndexPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>Build AI workflows your reviewers can trust.</h1>
+            <p className="mk-kicker-gold-soft">AiBI-Foundation</p>
+            <h1>Build reusable AI prompts and skills.</h1>
             <p className="mk-lede">
-              A self-paced course where bankers create prompt cards, SOPs, and review checklists
-              they can reuse.
+              Turn banking work into reviewed prompts, repeatable skills, and a Foundation Packet.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
-                View curriculum <ArrowR className="mk-ic" />
+                Preview Prompt Builder <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
-                Enroll · $295
+                Enroll · {facts.individualPriceLabel}
               </Button>
             </div>
-            <p className="mk-hero-trust">
-              Lifetime access · Completion certificate
-            </p>
-            <p className="mk-hero-foot">
-              Not sure where to start?{' '}
-              <Link href="/assessment" className="mk-hero-foot-link">
-                Take the free readiness check first
-              </Link>
-              .
-            </p>
           </div>
 
-          <HeroPacketCard />
+          <HeroPacketCard facts={facts} />
         </div>
       </section>
 
-      {/* COURSE PREVIEW — concrete animated demos (replaces prior abstract preview 2026-05-28) */}
+      <Section variant="std" surface="white">
+        <SectionHead
+          kicker="How the course works"
+          heading={<>A builder-first path, not a reading assignment.</>}
+          lede={
+            <>
+              The course centers on reusable prompts, repeatable skills, review notes, transfer
+              plans, My Foundation Packet, and the final certificate submission.
+            </>
+          }
+        />
+        <div className="mk-flow4">
+          {LEARNING_FLOW.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.step} className="mk-flow4-card">
+                <div className="mk-flow4-top">
+                  <span className="mk-pic-ink-gold">
+                    <Icon size={22} />
+                  </span>
+                  <span className="mk-flow4-step">{item.step}</span>
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* COURSE PREVIEW — representative animated demos, not the full curriculum */}
       <Section variant="std" surface="white">
         <div id="curriculum" />
         <SectionHead
-          kicker="5 mileposts of the course"
-          heading={<>From rough prompt to reviewed artifact.</>}
+          kicker={`${facts.moduleCount}-module curriculum · Prompt Builder preview`}
+          heading={<>Preview the Prompt Builder. Build toward reusable skills.</>}
           lede={
             <>
-              Pick a milepost on the left to see what learners actually do at that step. Each
-              demo runs the real banking content the artifact is built from.
+              Start with the reusable prompt preview, then move through workflow, safety, and
+              final packet mileposts. The full course includes {facts.moduleCount} modules and
+              {facts.artifactCount} saved artifacts.
             </>
           }
         />
         <CoursePreviewDemos />
       </Section>
 
-      {/* WHAT LEARNERS BUILD — 4 cards */}
+      {/* WHAT LEARNERS BUILD — 4 work modes across 12 artifacts */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="What learners build"
-          heading={<>Four artifacts. One completion packet.</>}
+          heading={<>{countWord(facts.artifactCount)} artifacts. One Foundation Packet.</>}
           lede={
             <>
-              Every module connects to a practical work product the learner can review, save, and
-              reuse.
+              Every module produces a practical work product the learner can review, save, and
+              reuse. The completed packet is the proof of learning.
             </>
           }
         />
@@ -169,11 +253,11 @@ export default function CoursesIndexPage() {
             </header>
             <div className="mk-pricing-amount">
               <p className="mk-k">Individual enrollment</p>
-              <p className="mk-pricing-value">$295</p>
-              <p>Team pricing available at 10+ seats.</p>
+              <p className="mk-pricing-value">{facts.individualPriceLabel}</p>
+              <p>Team course enrollment available at {facts.teamSeatPriceLabel} per seat for 10+ seats.</p>
             </div>
             <ul className="mk-pricing-bullets">
-              {PRICING_BULLETS.map((item) => (
+              {pricingBullets.map((item) => (
                 <li key={item}>
                   <CheckCircleIcon size={18} />
                   <span>{item}</span>
@@ -199,15 +283,15 @@ export default function CoursesIndexPage() {
         hiddenOnMobile
         kicker="Not sure yet?"
         heading={<>See what a finished artifact looks like before you commit.</>}
-        body={<>The gallery shows real completion work from the course — the exact kind of reviewed artifact you'd take to your next team meeting.</>}
+        body={<>The gallery shows synthetic, anonymized examples in the same structure learners use for saved course artifacts.</>}
         actions={[
           { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
-          { label: 'Enroll · $295', href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
+          { label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
-        label="Enroll · $295"
+        label={`Enroll · ${facts.individualPriceLabel}`}
         href="/courses/foundation/program/purchase"
         source="courses-sticky"
       />
@@ -221,37 +305,27 @@ export default function CoursesIndexPage() {
 // 2026-05-28 hero-system feedback: Course was the biggest visual mismatch
 // because it was text-only while every other primary hero had a right-side
 // proof object.
-function HeroPacketCard() {
+function HeroPacketCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
   return (
     <div className="mk-hreport">
       <div className="mk-hreport-left">
         <div className="mk-k">Learner output packet</div>
-        <div className="mk-v">4</div>
-        <div className="mk-u">reusable artifacts</div>
+        <div className="mk-v">{facts.artifactCount}</div>
+        <div className="mk-u">module artifacts</div>
         <div className="mk-tier">
           <CheckCircleIcon size={16} />
-          $295 · ~7 hrs
+          {facts.individualPriceLabel} · {facts.totalMinutes} min / {facts.totalHoursLabel} hrs
         </div>
       </div>
       <div className="mk-hreport-right">
-        <div className="mk-k">What you keep</div>
+        <div className="mk-k">Sample packet slots</div>
         <div className="mk-hresult">
-          <div className="mk-hresult-row">
-            <div className="mk-rk">01</div>
-            <div className="mk-rv">Prompt Strategy Cheat Sheet</div>
-          </div>
-          <div className="mk-hresult-row">
-            <div className="mk-rk">02</div>
-            <div className="mk-rv">Saved Skill Template</div>
-          </div>
-          <div className="mk-hresult-row">
-            <div className="mk-rk">03</div>
-            <div className="mk-rv">AI Workflow SOP</div>
-          </div>
-          <div className="mk-hresult-row">
-            <div className="mk-rk">04</div>
-            <div className="mk-rv">Agent Review Checklist</div>
-          </div>
+          {facts.samplePacketSlots.map((slot) => (
+            <div key={slot.moduleNumber} className="mk-hresult-row">
+              <div className="mk-rk">{String(slot.moduleNumber).padStart(2, '0')}</div>
+              <div className="mk-rv">{slot.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
