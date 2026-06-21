@@ -7,7 +7,7 @@ type State =
   | { kind: 'ready' }
   | { kind: 'downloading' }
   | { kind: 'done' }
-  | { kind: 'error'; message: string };
+  | { kind: 'fallback' };
 
 interface PdfDownloadButtonProps {
   readonly profileId: string;
@@ -23,7 +23,7 @@ async function warmPdf(profileId: string): Promise<{ ok: true } | { ok: false; m
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ profileId }),
     });
-    const body = await res.json();
+    const body = await res.json().catch(() => ({}));
     if (res.ok && body.status === 'ready') return { ok: true };
     if (body.status === 'skipped')
       return { ok: false, message: 'PDF generation suppressed in this environment.' };
@@ -46,7 +46,7 @@ export function PdfDownloadButton({
     (async () => {
       const result = await warmPdf(profileId);
       if (cancelled) return;
-      setState(result.ok ? { kind: 'ready' } : { kind: 'error', message: result.message });
+      setState(result.ok ? { kind: 'ready' } : { kind: 'fallback' });
     })();
     return () => {
       cancelled = true;
@@ -69,7 +69,7 @@ export function PdfDownloadButton({
         setState({ kind: 'warming' });
         const rewarm = await warmPdf(profileId);
         if (!rewarm.ok) {
-          setState({ kind: 'error', message: rewarm.message });
+          setState({ kind: 'fallback' });
           return;
         }
         setState({ kind: 'downloading' });
@@ -79,7 +79,7 @@ export function PdfDownloadButton({
         body = await res.json();
       }
       if (!res.ok || !body.url) {
-        setState({ kind: 'error', message: body.error ?? 'download-failed' });
+        setState({ kind: 'fallback' });
         return;
       }
 
@@ -91,11 +91,8 @@ export function PdfDownloadButton({
       document.body.removeChild(a);
 
       setState({ kind: 'done' });
-    } catch (err) {
-      setState({
-        kind: 'error',
-        message: err instanceof Error ? err.message : 'download-failed',
-      });
+    } catch {
+      setState({ kind: 'fallback' });
     }
   };
 
@@ -106,6 +103,10 @@ export function PdfDownloadButton({
   const buttonClass = compact
     ? 'inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--gold)] px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]'
     : 'inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--gold)] px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]';
+
+  const fallbackClass = compact
+    ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--ink-a15)] bg-white px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]'
+    : 'inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--ink-a15)] bg-white px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]';
 
   return (
     <>
@@ -139,10 +140,13 @@ export function PdfDownloadButton({
             Downloaded
           </p>
         )}
-        {state.kind === 'error' && (
-          <p className="text-[14px] text-[color:#9b2226]">
-            Could not prepare PDF: {state.message}
-          </p>
+        {state.kind === 'fallback' && (
+          <a
+            href={`/assessment/results/print/${encodeURIComponent(profileId)}`}
+            className={fallbackClass}
+          >
+            Open printable report
+          </a>
         )}
       </div>
     </>

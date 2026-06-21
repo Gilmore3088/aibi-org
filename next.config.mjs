@@ -49,6 +49,9 @@ const nextConfig = {
   // /api/courses/artifacts/skill-templates/[name] can read + log them at
   // runtime (the route falls back to the static asset if this ever misses).
   outputFileTracingIncludes: {
+    '/api/assessment/pdf/warm': [
+      './node_modules/@sparticuz/chromium/bin/**/*',
+    ],
     '/api/courses/artifacts/skill-templates/[name]': [
       './public/artifacts/skill-templates/**',
     ],
