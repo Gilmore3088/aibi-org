@@ -1,9 +1,9 @@
 # Launch checklist — production readiness
 
-Last updated: 2026-06-18.
+Last updated: 2026-06-22.
 
 Green code is necessary but not sufficient. `main` builds, type-checks, passes
-247 unit tests, and deploys to Vercel — but production readiness depends on
+326 unit tests, and deploys to Vercel — but production readiness depends on
 operational state that lives in Vercel / Supabase / Stripe / Resend and cannot
 be verified from the repo. Work this list top to bottom; **the database
 migrations are the #1 launch blocker** (an unapplied migration took down every
@@ -21,12 +21,14 @@ Verify config fast with the health endpoints (no secrets exposed):
 
 All migrations in `supabase/migrations/` must be applied to the **production**
 Supabase database, in order, through the highest number present
-(currently `00045`).
+(currently `00048`).
 
-- [ ] Apply every migration through `00045_institution_context.sql`.
+- [ ] Apply every migration through `00048_paid_toolbox_access_helper.sql`.
 - [ ] Confirm with `GET /api/health/supabase` → `db.columns` shows
       `institution_context: true`, `action_packet_notes: true`,
       `previous_id: true`, and `ok: true`.
+- [ ] Run `npm run check:course-schema:strict` against production-equivalent
+      Supabase credentials before paid promotion.
 
 > **Why this is first.** `loadAssessmentResponse` (free *and* paid results
 > pages) reads `institution_context` (00045) and `action_packet_notes` (00044).
@@ -48,7 +50,8 @@ Payments (Stripe):
 - [ ] `STRIPE_SECRET_KEY` — must be `sk_live_…` for real charges (verify via `/api/health/stripe` → `mode: "live"`)
 - [ ] `STRIPE_WEBHOOK_SECRET`
 - [ ] `STRIPE_FOUNDATION_PRICE_ID`, `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`
-- [ ] `STRIPE_INDEPTH_PRICE_ID`, `STRIPE_INDEPTH_INSTITUTION_PRICE_ID`
+- [ ] `STRIPE_INDEPTH_PRICE_ID`
+- [ ] `STRIPE_TEAM_ASSESSMENT_PRICE_ID` — only if Team Assessment checkout is intentionally enabled
 
 Email (Resend) + nurture (MailerLite):
 - [ ] `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_FROM_NAME` (verify via `/api/health/email`)
@@ -86,7 +89,9 @@ unset or `false` in prod:
 
 - [ ] **Free assessment**: take it → submit email → land on `/results/{id}` (no 404) → receive the results email.
 - [ ] **Paid In-Depth**: buy with a real card → receive purchase email → sign in → take → complete → land on the briefing → receive the briefing email.
-- [ ] **Course purchase**: buy → receive welcome email → reach the program.
+- [ ] **Course purchase**: buy → receive welcome email → reach the program → save at least one artifact to the Toolbox.
+- [ ] **Refund**: issue a full refund for a test purchase and confirm access is revoked or downgraded according to the product policy.
+- [ ] **Team Assessment, if enabled**: buy 10+ seats → receive admin link → participant link works → 10 completions unlock aggregate report → print route renders.
 
 ## 7. Post-deploy sanity
 

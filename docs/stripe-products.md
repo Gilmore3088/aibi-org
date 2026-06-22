@@ -1,7 +1,9 @@
 # Stripe Products & Pricing — The AI Banking Institute
 
-**Status:** Test mode (sk_test_* key registered with Stripe MCP, 2026-05-05).
-**Source of truth for pricing:** `Plans/aibi-foundation-v3.html` (curriculum tiers) + Decisions Log entries 2026-04-15, 2026-04-24, 2026-05-05 in `CLAUDE.md`.
+**Status:** Needs production dashboard verification before paid promotion.
+**Source of truth for live checkout behavior:** `src/app/api/create-checkout/route.ts`,
+`src/app/api/checkout/in-depth/route.ts`, `src/app/api/checkout/team-assessment/route.ts`,
+and `src/app/api/webhooks/stripe/route.ts`.
 **Currency:** USD across the board. **Tax:** Stripe Tax disabled for now — bank/CU buyers are typically tax-exempt and we'll handle exemptions case-by-case until volume justifies enabling it.
 
 ---
@@ -11,8 +13,9 @@
 | Product | Stripe state at launch | Site state at launch |
 |---|---|---|
 | AI Readiness Assessment (free) | **No Stripe object** — it's free. | Live (`/assessment`) |
-| In-Depth Assessment (paid, $99 / $79 at 10+) | **Create product + 2 prices + 2 promo codes.** Active. | Live behind email gate (Phase 1.5 add-on) |
-| AI Banking AiBI Foundations ($295) | **Create product + price + Payment Link.** Active. | Live (`/courses/aibi-p`) |
+| In-Depth Assessment (paid, $99 individual) | **Create product + 1 price + promo codes.** Active for individual purchase. | Live at `/assessment/in-depth`; institution mode returns a contact-us message. |
+| Foundation Course ($295 individual / $199 per seat institution bundle, min 10) | **Create product + individual price + institution price.** Active after live QA. | Live at `/courses/foundation/program/purchase`. |
+| Team Assessment (paid, min 10 seats) | **Create product + per-seat price only if intentionally selling.** | Route exists at `/assessment/team`, but treat as assisted-sales until hardening passes. |
 | AiBI-S Specialist ($1,495 / seat) | Create product + price. **Mark `active: false` until cohort dates set.** | "Request info" form only |
 | AiBI-L Leader ($2,800 individual / $12,000 team of 8) | Create both prices. **Mark `active: false`.** | "Request info" form only |
 | Advisory: Pilot · Program · Leadership Advisory | **Do NOT create in Stripe.** Custom-quoted, invoiced. | "Request info" form only |
@@ -24,37 +27,34 @@ Inactive prices still receive `price_*` IDs you can paste into `.env.local` so t
 ## Product 1 — AI Readiness Assessment (free)
 
 **No Stripe involvement.** Documented here so the funnel is complete:
-- Lives at `/assessment`. Eight questions, scored 8–32. Score and tier visible without email; dimension breakdown + starter artifact gated behind email capture (decision 2026-04-27).
-- This is the lead magnet, not a SKU. Conversion goal: email → Executive Briefing booking → paid product.
+- Lives at `/assessment`. 12 questions, roughly 3 minutes. The free output is a readiness snapshot and 30-day next move.
+- This is the lead magnet, not a SKU. Conversion goal: free result → email capture → $99 In-Depth Assessment or $295 Foundation Course.
 - Future "premium assessment add-ons" (peer benchmarks, etc.) are deferred per 2026-04-15 entry until N≥30 per segment exists.
 
 ---
 
-## Product 2 — In-Depth Assessment ($99 individual / $79 each at 10+)
+## Product 2 — In-Depth Assessment ($99 individual)
 
-Paid follow-up to the free 8-question assessment. **One product, two prices** — the Stripe-native pattern for volume tiers when the line is sharp (1–9 vs. 10+) and you want each as a discrete checkout.
+Paid follow-up to the free 12-question assessment. The current self-serve route is individual purchase only. Institution/bulk mode intentionally returns a contact-us message until seat semantics and fulfillment are hardened.
 
 ### Product
 
 | Field | Value |
 |---|---|
 | `product.name` | `In-Depth AI Readiness Assessment` |
-| `product.description` | `Paid follow-up to the free 8-question assessment. Personalized 20-page report with dimension-level scoring, peer band comparison, recommended starting playbook, and a 30-day action plan keyed to your lowest-scoring dimensions. One-time purchase, lifetime access to the report, includes one update if you retake within 12 months.` |
+| `product.description` | `Paid follow-up to the free 12-question snapshot. Individual 48-question AI readiness diagnostic with dimension-level scoring, personal recommendations, and a practical next-step plan. One-time purchase.` |
 | `product.metadata.tier` | `assessment-plus` |
 | `product.metadata.access_grant` | `assessment-indepth` |
 
-### Prices (two, both on the product above)
+### Price
 
-| Field | Individual | Volume (10+) |
-|---|---|---|
-| `price.unit_amount` | `9900` (cents) | `7900` |
-| `price.currency` | `usd` | `usd` |
-| `price.recurring` | none — one-time | none — one-time |
-| `price.nickname` | `In-Depth Assessment — Individual` | `In-Depth Assessment — Volume (10+ seats)` |
-| `price.metadata.min_quantity` | `1` | `10` |
-| `.env.local` key | `STRIPE_INDEPTH_ASSESSMENT_PRICE_ID` | `STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID` |
-
-The volume price uses Stripe's `transform_quantity` is **not** needed — instead, the checkout link for the volume SKU enforces a minimum of 10 via `adjustable_quantity.minimum: 10` on the line item, with `unit_amount: 7900`. So 10 seats = $790, 25 seats = $1,975, etc. The metadata flag `min_quantity: 10` is for our own routing logic in `/api/create-checkout`, not for Stripe.
+| Field | Individual |
+|---|---|
+| `price.unit_amount` | `9900` (cents) |
+| `price.currency` | `usd` |
+| `price.recurring` | none — one-time |
+| `price.nickname` | `In-Depth Assessment — Individual` |
+| `.env.local` key | `STRIPE_INDEPTH_PRICE_ID` |
 
 ### Free promo codes (2) — for comp / testing
 
@@ -86,14 +86,14 @@ Customer types `AIBI-COMP-01` at checkout → total goes to $0 → `checkout.ses
 
 ---
 
-## Product 3 — AI Banking AiBI Foundations ($295) — first real course
+## Product 3 — Foundation Course ($295 individual / $199 per seat institution bundle)
 
-The flagship Phase 2 product. HTML mockups exist in `public/AiBI Foundations/`; LMS in `src/lib/lms/`; webhook chain documented in `CLAUDE.md` § "Course Provisioning." The **product name in Stripe** is the spelled-out form ("AI Banking AiBI Foundations"), not the credential code — per the 2026-04-15 brand rule that reserves "AiBI Foundations" for credential displays, the seal, and the LinkedIn-credential string. Receipts, hosted invoices, and the Stripe-hosted Checkout page all show the product name to the buyer; "AI Banking AiBI Foundations" reads cleanly to a banker who doesn't know the brand yet. The credential they earn on completion is still rendered as "AiBI Foundations · The AI Banking Institute" in the LMS / certificate.
+The flagship individual course. The current course is 18 bite-sized modules built around bank-safe AI basics, prompt building, reusable skills, workflow artifacts, Toolbox saves, and a certificate.
 
 | Field | Value |
 |---|---|
 | `product.name` | `AI Banking AiBI Foundations` |
-| `product.description` | `Self-paced certification course (≈8 credit hours) for community bank and credit union staff. Covers Pillars A (Accessible AI) and B (Boundary-Safe AI) with an introduction to Pillar C (Capable AI). Includes 9 modules, work-product assessment, and the AiBI Foundations credential ("AiBI Foundations · The AI Banking Institute") on completion. Lifetime access to course materials.` |
+| `product.description` | `Self-paced Foundation course for banking professionals. Includes 18 bite-sized modules, reusable prompts, skills, workflow artifacts, Toolbox saves, and the Foundation certificate.` |
 | `product.metadata.tier` | `aibi-p` |
 | `product.metadata.credential_code` | `AiBI Foundations` |
 | `product.metadata.access_grant` | `course:aibi-p` |
@@ -102,7 +102,7 @@ The flagship Phase 2 product. HTML mockups exist in `public/AiBI Foundations/`; 
 | `price.currency` | `usd` |
 | `price.recurring` | none — one-time |
 | `price.nickname` | `AI Banking AiBI Foundations — Individual` |
-| `.env.local` key | `STRIPE_AIBIP_PRICE_ID` |
+| `.env.local` key | `STRIPE_FOUNDATION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_AIBIP_PRICE_ID`) |
 
 **Volume / institution pricing (added 2026-05-05):** A second price exists on the same product for institution bundles.
 
@@ -111,7 +111,7 @@ The flagship Phase 2 product. HTML mockups exist in `public/AiBI Foundations/`; 
 | `price.unit_amount` | `19900` (= $199/seat) |
 | `price.nickname` | `AI Banking AiBI Foundations — Institution Bundle ($199/seat, min 10)` |
 | `price.metadata.min_quantity` | `10` |
-| `.env.local` key | `STRIPE_AIBIP_INSTITUTION_PRICE_ID` |
+| `.env.local` key | `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, `STRIPE_AIBIP_INSTITUTION_PRICE_ID`) |
 
 The minimum-quantity guard (`>= 10`) is enforced at the API route level in `/api/create-checkout`, not in Stripe. Net effect: 10 seats = $1,990 (~33% off list); 25 seats = $4,975. Single-seat AiBI Foundations remains $295. No customer should ever buy 1–9 institution seats — the route rejects qty < 10 with 400.
 
@@ -131,7 +131,7 @@ Cohort-based, 16-hour live track. Per-track Specialist credentials (AiBI-S/Ops, 
 | `price.nickname` | `AiBI-S — Per Seat` |
 | `.env.local` key | `STRIPE_AIBIS_PRICE_ID` |
 
-Add an institution-volume price (8 seats at $11,960 — 80 seats at $119,600 per the foundation doc's economic example) when first deal closes.
+Add institution pricing only after the first real Specialist deal makes the seat count and delivery model concrete.
 
 ---
 
@@ -163,12 +163,13 @@ Per decision 2026-04-24, these are coaching engagements that pair with cohorts. 
 - Production: `https://aibankinginstitute.com/api/webhooks/stripe`
 
 **Events to subscribe (minimum viable — start narrow, expand on demand):**
-- `checkout.session.completed` — primary signal that triggers `course_enrollments` insert + ConvertKit tag
-- `payment_intent.payment_failed` — for retry/notification
-- `charge.refunded` — for revoking access (Phase 3, not wired yet)
+- `checkout.session.completed` — provisions Foundation, In-Depth, or Team Assessment access from `metadata.product`.
+- `payment_intent.payment_failed` — logs failed purchase analytics.
+- `charge.refunded` — revokes individual access, releases institution discount locks, or marks Team Assessment cohorts refunded.
+- `payment_intent.succeeded` — acknowledged; fulfillment lives on Checkout completion.
 - `customer.subscription.*` — **not subscribed.** No subscription products yet.
 
-**Signing secrets:** one per endpoint. Store as `STRIPE_WEBHOOK_SECRET_STAGING` and `STRIPE_WEBHOOK_SECRET` (production) in `.env.local`. The handler at `src/app/api/webhooks/stripe/route.ts` must call `stripe.webhooks.constructEvent(...)` and let it throw on invalid signatures (per CLAUDE.md § "Stripe Webhook Signature Verification").
+**Signing secrets:** one per endpoint. Store the production signing secret as `STRIPE_WEBHOOK_SECRET`. Optional `STRIPE_WEBHOOK_SECRET_TEST` is also accepted so test-mode Stripe events can be verified against the same deployed path during QA.
 
 ---
 
@@ -178,25 +179,24 @@ Every Checkout Session created from the site sets:
 
 ```typescript
 metadata: {
-  email: <captured email>,
-  product: 'indepth-assessment' | 'aibi-p' | 'aibi-s' | 'aibi-l' | 'aibi-l-team',
-  source_score: <assessment score if applicable>,
-  source_tier: <'starting-point' | 'early-stage' | 'building-momentum' | 'ready-to-scale'>,
-  institution_name: <if collected>,
-  asset_size: <if collected>,
-  utm_source: <if present>,
+  product: 'foundation' | 'in-depth-assessment' | 'team-assessment',
+  mode: 'individual' | 'institution',
+  tier: 'individual' | 'team',
+  user_email: <buyer email if collected>,
+  institution_name: <institution/team buyer name if collected>,
+  quantity: <seat count as string if institution/team purchase>,
 }
 ```
 
-The webhook handler reads `metadata.product` to decide which `course_enrollments.product` value to write and which ConvertKit tag to apply.
+The webhook handler reads `metadata.product` to decide whether to write `course_enrollments`, `institution_enrollments`, or `team_assessment_cohorts`. Current Foundation writes normalize to `foundation`; legacy reads still tolerate older values such as `aibi-p`.
 
 ---
 
 ## Tax, fees, refunds
 
 - **Stripe Tax:** off until US sales-tax exposure is real. Banks/CUs are largely exempt; revisit after 50 transactions or first multi-state pattern.
-- **Processing fees:** absorbed (~2.9% + $0.30 per US card). Net on $295 ≈ $286.45. Net on $99 ≈ $96.18. Net on $79 (volume seat) ≈ $76.39 — at 10 seats that's $790 gross, $766.80 net. Net on $1,495 ≈ $1,451.34. Net on $2,800 ≈ $2,718.50. Comp codes ($0 sessions) incur **no fee** since Stripe charges nothing on a zero-amount payment.
-- **Refund policy:** 7-day money-back on $99 and $295 products if course/report not started. AiBI-S/L: pro-rated only if cohort hasn't begun. Process refunds through the dashboard, not the MCP — refunds touch live money and require ALL-CAPS confirmation per CLAUDE.md.
+- **Processing fees:** absorbed (~2.9% + $0.30 per US card). Net on $295 ≈ $286.15. Net on $99 ≈ $95.83. Net on a 10-seat Foundation institution purchase at $1,990 ≈ $1,931.99. Comp codes ($0 sessions) incur **no fee** since Stripe charges nothing on a zero-amount payment.
+- **Refund policy:** public site currently states 7 days for unused digital purchases: assessment not submitted, fewer than two course modules completed, and no certificate issued. Duplicate purchases and unresolved access failures are also refundable. Process refunds through Stripe dashboard with an explicit access-check follow-up.
 
 ---
 
@@ -216,23 +216,28 @@ The webhook handler reads `metadata.product` to decide which `course_enrollments
 
 Run these in sequence. Stop after each block, paste the returned IDs into `.env.local`, commit (without secrets — only the price IDs, which are not secrets).
 
-**Block 1 — Active products (ship-ready):**
-1. Create product **In-Depth AI Readiness Assessment** with the fields in Product 2 above. Create **two prices** on it: $99 individual and $79 volume (min 10). Capture both → `STRIPE_INDEPTH_ASSESSMENT_PRICE_ID` and `STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID`.
+**Block 1 — Active individual products:**
+1. Create product **In-Depth AI Readiness Assessment** with the fields in Product 2 above. Create one $99 individual price. Capture it as `STRIPE_INDEPTH_PRICE_ID`.
 2. Create the comp coupon (100% off, max 2 redemptions, scoped to the In-Depth Assessment product) and attach two single-use promotion codes: `AIBI-COMP-01` and `AIBI-COMP-02`, each expiring 90 days out.
-3. Create product **AI Banking AiBI Foundations** with the fields in Product 3. Capture `price_id` → `STRIPE_AIBIP_PRICE_ID`.
+3. Create product **AI Banking AiBI Foundations** with the fields in Product 3. Capture the $295 individual price as `STRIPE_FOUNDATION_PRICE_ID`.
+4. Create the Foundation institution price at $199/seat, min 10 in site validation. Capture it as `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`.
 
-**Block 2 — Inactive products (staged, dark):**
-4. Create **AiBI-S Specialist** with `active: false`. Capture `price_id` → `STRIPE_AIBIS_PRICE_ID`.
-5. Create **AiBI-L Leader** with `active: false` and both prices (individual + team of 8). Capture both → `STRIPE_AIBIL_PRICE_ID`, `STRIPE_AIBIL_TEAM_PRICE_ID`.
+**Block 2 — Team Assessment only if intentionally selling:**
+5. Create **Team Assessment** with a per-seat price and capture it as `STRIPE_TEAM_ASSESSMENT_PRICE_ID`. Keep this dark unless the product is being sold as assisted-sales with support coverage.
 
-**Block 3 — Webhook endpoints (staging first):**
-6. Create webhook endpoint at staging URL listening for `checkout.session.completed` + `payment_intent.payment_failed` + `charge.refunded`. Capture signing secret → `STRIPE_WEBHOOK_SECRET_STAGING`.
-7. Repeat for production URL → `STRIPE_WEBHOOK_SECRET`.
+**Block 3 — Inactive/future products (staged, dark):**
+6. Create **AiBI-S Specialist** with `active: false` only when cohort packaging is real. Capture `price_id` → `STRIPE_AIBIS_PRICE_ID`.
+7. Create **AiBI-L Leader** with `active: false` only when workshop packaging is real. Capture individual/team prices only after those offers are defined.
 
-**Block 4 — Verification:**
-8. List all products and prices; confirm metadata + active flags match the table above.
-9. List webhook endpoints; confirm both URLs and event subscriptions.
-10. Test-redeem `AIBI-COMP-01` against the In-Depth Assessment Checkout link; confirm `amount_total: 0` session and that the second code (`AIBI-COMP-02`) still has 1 redemption left.
+**Block 4 — Webhook endpoints (staging first):**
+8. Create webhook endpoint at staging URL listening for `checkout.session.completed` + `payment_intent.payment_failed` + `payment_intent.succeeded` + `charge.refunded`. Capture signing secret for the staging environment.
+9. Repeat for production URL → `STRIPE_WEBHOOK_SECRET`.
+
+**Block 5 — Verification:**
+10. List all products and prices; confirm metadata + active flags match the table above.
+11. List webhook endpoints; confirm URLs and event subscriptions.
+12. Test-redeem `AIBI-COMP-01` against the In-Depth Assessment Checkout link; confirm `amount_total: 0` session and that the webhook still grants access.
+13. Complete one low-risk live purchase for In-Depth and Foundation before promotion.
 
 ---
 
@@ -243,7 +248,7 @@ When ready to flip to live mode:
 2. Replace `sk_test_…` with `sk_live_…` and `pk_test_…` with `pk_live_…` in production env vars only. Staging keeps test keys forever.
 3. Re-register the Stripe MCP server with the live key (or keep the test one and switch via `--api-key` for live operations).
 4. Update webhook endpoints in live mode, get fresh signing secrets.
-5. Add the launch-gate item to `tasks/weekend-env-setup.md`: "Stripe live products created and price IDs in Vercel production env."
+5. Add the launch-gate item to `docs/launch-checklist.md`: "Stripe live products created and price IDs in Vercel production env."
 
 ---
 
@@ -255,18 +260,20 @@ STRIPE_SECRET_KEY=sk_test_...
 NEXT_PUBLIC_STRIPE_KEY=pk_test_...
 
 # Created by Block 1
-STRIPE_INDEPTH_ASSESSMENT_PRICE_ID=price_...          # $99 individual
-STRIPE_INDEPTH_ASSESSMENT_VOLUME_PRICE_ID=price_...   # $79/seat, min 10
-STRIPE_AIBIP_PRICE_ID=price_...                       # AI Banking AiBI Foundations, $295 (1 seat)
-STRIPE_AIBIP_INSTITUTION_PRICE_ID=price_...           # AiBI Foundations institution bundle, $199/seat (min 10)
+STRIPE_INDEPTH_PRICE_ID=price_...                     # $99 individual
+STRIPE_FOUNDATION_PRICE_ID=price_...                  # Foundation Course, $295 (1 seat)
+STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=price_...      # Foundation institution bundle, $199/seat (min 10)
 
-# Created by Block 2 (inactive products)
+# Created by Block 2 only if Team Assessment is intentionally enabled
+STRIPE_TEAM_ASSESSMENT_PRICE_ID=price_...
+
+# Created by Block 3 if future products are intentionally staged
 STRIPE_AIBIS_PRICE_ID=price_...
 STRIPE_AIBIL_PRICE_ID=price_...
 STRIPE_AIBIL_TEAM_PRICE_ID=price_...
 
-# Created by Block 3
-STRIPE_WEBHOOK_SECRET_STAGING=whsec_...
+# Created by Block 4
 STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_WEBHOOK_SECRET_TEST=whsec_...                  # optional
 
 ```
