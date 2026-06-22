@@ -110,8 +110,8 @@ export function PersonalizationStripe({ dimensionBreakdown, role }: Props) {
           </div>
           <p className="recs-deck">
             The Foundation course is eighteen bite-sized modules. Based on your weakest
-            dimension, these three close the gap fastest. Buyers get
-            <em> lifetime access</em> to all eighteen.
+            dimension, these three close the gap fastest. Current enrollment includes
+            <em> ongoing access</em> to all eighteen under the current offer.
           </p>
           <ol className="recs-list">
             {modules.map((mod, idx) => (

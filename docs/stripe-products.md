@@ -263,8 +263,8 @@ and Vercel (price IDs are not secrets).
 Provision none of these at launch. Each gets a Stripe price/product **only** when a real
 buyer or cohort makes the SKU concrete — until then, invoice manually (the Advisory model).
 
-- **Foundation institution bundle** ($199/seat, min 10): assisted-sales. Invoice the first deal via Stripe Invoicing; formalize the `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` price only once seat count + fulfillment are proven.
-- **Team Assessment** (per-seat): assisted-sales until two production-like cohorts pass E2E QA (per the GTM plan). Create `STRIPE_TEAM_ASSESSMENT_PRICE_ID` then, not before.
+- **Foundation institution bundle** (volume seats, min 10): assisted-sales. Invoice the first deal via Stripe Invoicing; formalize the `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` price only once seat count + fulfillment are proven.
+- **Team Assessment** (per-seat): assisted-sales until two production-like cohorts pass E2E QA (per the GTM plan). Create `STRIPE_TEAM_ASSESSMENT_PRICE_ID` then, not before; the public route still requires `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true` before checkout can run.
 - **AiBI-S Specialist** (`active:false`): create only when a cohort date is real → `STRIPE_AIBIS_PRICE_ID`. Full spec in Product 4 below.
 - **AiBI-L Leader** (`active:false`): create only when a workshop date is real → `STRIPE_AIBIL_PRICE_ID` / `STRIPE_AIBIL_TEAM_PRICE_ID`. Full spec in Product 5 below.
 - **Advisory** (Pilot/Program/Leadership): never a Stripe product; one-off Stripe Invoice per deal; formalize a SKU only after three closed deals at the same price.
@@ -299,8 +299,8 @@ STRIPE_WEBHOOK_SECRET_TEST=whsec_...                   # optional, QA only
 
 # --- Deferred (DO NOT create at launch — see Appendix A) ---
 # Create these only when a real buyer/cohort makes the SKU concrete:
-# STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=price_...     # $199/seat bundle (min 10) — assisted-sales
-# STRIPE_TEAM_ASSESSMENT_PRICE_ID=price_...            # Team Assessment — assisted-sales
+# STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=price_...     # volume-seat bundle (min 10) — assisted-sales
+# STRIPE_TEAM_ASSESSMENT_PRICE_ID=price_...            # Team Assessment — assisted-sales; also requires ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true
 # STRIPE_AIBIS_PRICE_ID=price_...                      # AiBI-S — when a cohort date exists
 # STRIPE_AIBIL_PRICE_ID=price_...                      # AiBI-L — when a workshop date exists
 # STRIPE_AIBIL_TEAM_PRICE_ID=price_...

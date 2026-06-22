@@ -80,7 +80,7 @@ export function TeamCheckoutForm(): JSX.Element {
       </label>
       {error && <p role="alert" className="team-checkout-error">{error}</p>}
       <button type="button" disabled={pending} onClick={submit}>
-        {pending ? 'Starting checkout...' : 'Start secure checkout'}
+        {pending ? 'Starting checkout...' : 'Continue to Stripe checkout'}
       </button>
       <p className="team-checkout-note">
         {TEAM_ASSESSMENT_MIN_SEATS}+ seats. Aggregate report unlocks at 10

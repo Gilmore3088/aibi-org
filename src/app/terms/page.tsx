@@ -18,7 +18,7 @@ export default function TermsPage() {
         {
           kicker: 'What you get',
           heading: <>Course access, sandbox access, toolbox artifacts.</>,
-          lede: <>Lifetime access to the version of the course you bought, plus reasonable updates. Sandbox access for the duration of your account. Downloadable Toolbox artifacts are yours to keep and modify internally.</>,
+          lede: <>Current individual enrollment includes ongoing access to the version of the course you bought, plus reasonable updates under the current offer. Sandbox access lasts for the duration of your account. Downloadable Toolbox artifacts are yours to keep and modify internally.</>,
         },
         {
           kicker: 'Refunds',

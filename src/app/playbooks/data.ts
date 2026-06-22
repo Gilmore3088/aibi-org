@@ -266,7 +266,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
       { title: 'Draft an adverse-action letter', desc: 'Generate an ECOA-aligned decline letter from a decision summary.', artifact: 'Adverse-action draft', risk: 'high' },
       { title: 'Run a fair-lending pre-check', desc: 'Test a decision rationale for protected-class signal language.', artifact: 'Fair-lending review notes', risk: 'high' },
       { title: 'Summarize a stipulation list', desc: 'Turn a long stip list into a clean borrower communication.', artifact: 'Stipulation summary', risk: 'med' },
-      { title: 'Document a loan exception', desc: 'Write the exception rationale in the standard format reviewers expect.', artifact: 'Exception memo', risk: 'med' },
+      { title: 'Document a loan exception', desc: 'Write the exception rationale in a standard format risk teams can inspect.', artifact: 'Exception memo', risk: 'med' },
     ],
     opHeading: 'A decision rhythm reviewers can defend.',
     ops: [

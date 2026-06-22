@@ -1,8 +1,11 @@
 // Server-side gate for the entire /admin tree.
 //
 // Internal operator surface. Unlike /dashboard there is deliberately NO
-// preview-auth bypass: admin pages render contact PII and revenue counts, so
-// they must require a real Supabase session AND a FUNNEL_ADMIN_EMAILS match.
+// preview-auth bypass: admin pages render PII, so they require a real Supabase
+// session AND membership in an internal admin allowlist. This top gate admits
+// EITHER a funnel admin (FUNNEL_ADMIN_EMAILS) or a support admin
+// (ADMIN_SUPPORT_EMAILS); each section re-checks its own list below
+// (/admin/funnel → FUNNEL_ADMIN_EMAILS, /admin/support → ADMIN_SUPPORT_EMAILS).
 // Fail-closed at every branch.
 //
 //   not configured        → 404 (admin is unavailable on this deployment)
@@ -16,6 +19,7 @@ import { cookies, headers } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isAdminEmail } from '@/lib/admin/access';
+import { isSupportAdminEmail } from '@/lib/support/admin';
 
 export const metadata: Metadata = {
   title: 'Admin',
@@ -52,7 +56,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     redirect(loginHref);
   }
 
-  if (!isAdminEmail(user.email)) {
+  // Admit any internal admin past the top gate; each section enforces its own
+  // allowlist (see /admin/funnel/layout.tsx and /admin/support/layout.tsx).
+  if (!isAdminEmail(user.email) && !isSupportAdminEmail(user.email)) {
     notFound();
   }
 

@@ -23,6 +23,13 @@ export interface EnsureAuthUserResult {
   readonly skipped?: string;
 }
 
+export function getCanonicalSiteUrl(): string {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com').replace(
+    /\/+$/,
+    '',
+  );
+}
+
 // F5 — page through ALL auth users, not just the first 1000. The GoTrue admin
 // API has no email filter, so we paginate. Bounded at 50 pages (50k users) so a
 // misbehaving API can't loop forever; revisit with a direct email-lookup RPC
@@ -149,8 +156,8 @@ export async function ensureAuthUser(email: string): Promise<EnsureAuthUserResul
  *
  * Returns a URL pointing at our own /auth/callback route with a token_hash
  * query param. The callback handler calls supabase.auth.verifyOtp() to
- * exchange the hash for a session, sets cookies on aibankinginstitute.com,
- * and redirects to nextPath.
+ * exchange the hash for a session, sets cookies on the configured canonical
+ * site host, and redirects to nextPath.
  *
  * We deliberately do NOT use the action_link returned by generateLink —
  * that URL targets Supabase's /auth/v1/verify endpoint and uses the
@@ -192,7 +199,7 @@ export async function generateMagicLink(
   // expects for magic-link verification. The Supabase docs explicitly
   // demonstrate this pattern even when the token came from
   // generateLink({ type: 'magiclink' }).
-  const url = new URL('https://aibankinginstitute.com/auth/callback');
+  const url = new URL('/auth/callback', getCanonicalSiteUrl());
   url.searchParams.set('token_hash', tokenHash);
   url.searchParams.set('type', 'email');
   url.searchParams.set('next', nextPath);

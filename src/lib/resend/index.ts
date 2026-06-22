@@ -470,6 +470,120 @@ export function sendInquiryAck(payload: InquiryAckPayload): Promise<ResendResult
   });
 }
 
+// ── Support ops ─────────────────────────────────────────────────────────────
+
+function escapeInlineHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function supportShell(title: string, body: string): string {
+  return `<!doctype html>
+<html><body style="font-family:system-ui,-apple-system,sans-serif;color:#071A2F;background:#F7F3EA;margin:0;padding:24px">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid rgba(7,26,47,.10);border-radius:12px;padding:28px">
+    <p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9A7A2F;margin:0 0 8px">AI Banking Institute</p>
+    <h1 style="font-size:22px;line-height:1.2;margin:0 0 16px;font-weight:700">${escapeInlineHtml(title)}</h1>
+    ${body}
+  </div>
+</body></html>`;
+}
+
+export interface SupportCaseNotificationPayload {
+  readonly to?: string;
+  readonly caseId: string;
+  readonly buyerEmail: string;
+  readonly category: string;
+  readonly subject: string;
+  readonly summary: string;
+  readonly adminUrl: string;
+}
+
+export function sendSupportCaseNotification(
+  payload: SupportCaseNotificationPayload,
+): Promise<ResendResult> {
+  const body = `
+    <p style="font-size:15px;line-height:1.55;color:#334155;margin:0 0 16px">
+      A support case needs review.
+    </p>
+    <dl style="font-size:14px;line-height:1.6;color:#334155;margin:0 0 20px">
+      <dt style="font-weight:700;color:#071A2F">Buyer</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.buyerEmail)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Category</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.category)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Case</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.caseId)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Summary</dt><dd style="margin:0">${escapeInlineHtml(payload.summary)}</dd>
+    </dl>
+    <p style="margin:24px 0 0">
+      <a href="${payload.adminUrl}" style="display:inline-block;padding:12px 18px;background:#071A2F;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-radius:8px">Open support case</a>
+    </p>`;
+
+  return sendInline({
+    to: payload.to ?? process.env.SUPPORT_INBOX_EMAIL ?? REPLY_TO,
+    subject: `[AiBI support] ${payload.subject}`,
+    html: supportShell('New support case', body),
+    text: [
+      'AI Banking Institute support case',
+      `Case: ${payload.caseId}`,
+      `Buyer: ${payload.buyerEmail}`,
+      `Category: ${payload.category}`,
+      `Subject: ${payload.subject}`,
+      '',
+      payload.summary,
+      '',
+      payload.adminUrl,
+    ].join('\n'),
+    tag: '[resend:support-case-notification]',
+  });
+}
+
+export interface SupportCaseAcknowledgementPayload {
+  readonly email: string;
+}
+
+export function sendSupportCaseAcknowledgement(
+  payload: SupportCaseAcknowledgementPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'We received your AI Banking Institute support request',
+    html: supportShell(
+      'We received your support request',
+      `<p style="font-size:15px;line-height:1.55;color:#334155;margin:0">
+        We received your message. A human will review it from hello@aibankinginstitute.com.
+      </p>`,
+    ),
+    text:
+      'AI Banking Institute\n\nWe received your support request. A human will review it from hello@aibankinginstitute.com.',
+    tag: '[resend:support-case-ack]',
+  });
+}
+
+export interface SupportAccessRescuePayload {
+  readonly email: string;
+  readonly accessUrl: string;
+}
+
+export function sendSupportAccessRescue(
+  payload: SupportAccessRescuePayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'Your AI Banking Institute access link',
+    html: supportShell(
+      'Your access link',
+      `<p style="font-size:15px;line-height:1.55;color:#334155;margin:0 0 18px">
+        Use this one-time link to sign in and continue.
+      </p>
+      <p style="margin:0">
+        <a href="${payload.accessUrl}" style="display:inline-block;padding:12px 18px;background:#071A2F;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-radius:8px">Open my access</a>
+      </p>`,
+    ),
+    text: `AI Banking Institute\n\nUse this one-time link to sign in and continue:\n${payload.accessUrl}`,
+    tag: '[resend:support-access-rescue]',
+  });
+}
+
 // ── Device confirmation (already inline HTML — unchanged) ───────────────────
 
 export interface DeviceConfirmationPayload {

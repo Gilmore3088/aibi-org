@@ -14,7 +14,7 @@ Where the launch actually stands after this session. The detailed gate is §0–
   events, refund/comp, tax trigger, Appendix A; one canonical go/no-go list).
 - **Copy drift fixed (shipped).** `12 → 18` modules across `/faq`, `/for-institutions`,
   post-assessment `NextStepCards`, `/design-system`; banned "AiBI Foundations" plural in the
-  playbook modal + a MailerLite subject. `lint` + `326 tests` + `build` + `tsc` green; pushed.
+  playbook modal + a MailerLite subject. `lint` + `331 tests` + `build` green locally.
 - **GTM revenue model** internal math contradiction fixed + reality-check added.
 - **Reviews produced:** 10-persona E2E + adversarial red-team (`docs/reviews/`).
 - **Repo hygiene:** 776M of stale worktree dirs removed; branches clean (`main` only).
@@ -24,20 +24,21 @@ Where the launch actually stands after this session. The detailed gate is §0–
 - **Enable MailerLite nurture** — dashboard-only (API has no activate); **and content is
   unbuilt** (3 of 4 automations have empty emails) — see §11.
 - **Verify/create LIVE Stripe products** — the MCP/CLI is paired to the **sandbox** account.
-- **Rotate the exposed `sk_live_…` key** — Stripe dashboard (owner).
+- **Rotate the exposed `sk_live_…` key** — Stripe dashboard (owner). `npm run audit:secrets`
+  currently fails because ignored local `.env.local` still contains live-looking secrets.
 - **Vercel env vars** — owner-managed; not touched.
 - **Live E2E purchase/refund smoke tests** — require real cards on the live domain.
 
 ### 🔜 Needs doing before paid promotion (owner)
-1. **Rotate `STRIPE_SECRET_KEY`** (exposed in a transcript this session).
+1. **Rotate `STRIPE_SECRET_KEY`** (exposed in a transcript this session), remove any old live key
+   from local `.env.local`, then rerun `npm run audit:secrets`.
 2. **Build + design the 4 MailerLite nurture flows**, then enable (dashboard).
 3. **Secure one named top-of-funnel channel** — the revenue model's binding constraint.
-4. **Fix the magic-link host bug** (`src/lib/supabase/auth-admin.ts:195`, apex vs `www`) with a test.
-5. **Add one failure alert** (webhook non-2xx / failed purchase email) — failures are silent today.
-6. **Gate `/assessment/team` self-serve in code** (a stray env var would re-arm it).
-7. **Verify live Stripe products**; run the §6 live smoke tests (free / In-Depth / Foundation / refund).
-8. **Add a credibility anchor** (populate `AdvisorsStrip` / founder) + persona P1 conversion fixes
-   (refund line at the $99/$295 CTAs, single `/services` CTA, ROI methodology, claim disambiguation).
+4. **Configure ops alerts** (`OPS_ALERT_WEBHOOK_URL` or `OPS_ALERT_EMAIL`) and verify one
+   test alert reaches the operator using `POST /api/ops/alert-test`. `npm run audit:env:production`
+   now fails until at least one alert destination is configured.
+5. **Verify live Stripe products**; run the §6 live smoke tests (free / In-Depth / Foundation / refund).
+6. **Add named people when approved** (populate `AdvisorsStrip` / founder bio). A factual trust anchor exists, but named people still require owner-provided attribution.
 
 > Full detail + evidence: §0–§12 below, `docs/reviews/persona-e2e-review-2026-06-22.md`,
 > and `docs/reviews/red-team-review-2026-06-22.md`.
@@ -56,6 +57,7 @@ Verify config fast with the health endpoints (no secrets exposed):
 - `GET /api/health/supabase` — env presence + DB connectivity + recent-migration columns
 - `GET /api/health/stripe` — `{ mode: "live" | "test", configured }`
 - `GET /api/health/email` — Resend key presence + `skipResend` + from-address
+- `POST /api/ops/alert-test` — sends a synthetic alert; requires `Authorization: Bearer $CRON_SECRET`
 
 ---
 
@@ -121,7 +123,8 @@ Payments (Stripe):
 
 Email (Resend) + nurture (MailerLite):
 - [ ] `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_FROM_NAME` (verify via `/api/health/email`)
-- [ ] `MAILERLITE_API_KEY` + the `MAILERLITE_GROUP_ID_*` group ids (only if nurture is going live)
+- [ ] `OPS_ALERT_WEBHOOK_URL` or `OPS_ALERT_EMAIL` (verify a webhook failure / test alert reaches the support owner)
+- [ ] `MAILERLITE_API_KEY` + `MAILERLITE_GROUP_ID_ASSESSMENT` / `MAILERLITE_GROUP_ID_PLAYBOOK` (only if nurture is going live)
 
 AI providers (sandbox / toolbox / report generation):
 - [ ] `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY` (whichever features are enabled)
@@ -136,6 +139,15 @@ unset or `false` in prod:
 - [ ] `SKIP_PDF_GENERATION`
 - [ ] `SKIP_ENROLLMENT_GATE` (off → paid content is actually gated)
 - [ ] `SKIP_CRON_AUTH`
+
+Run `npm run audit:env:production` against production-equivalent env before paid promotion.
+It fails on missing required runtime vars, missing ops alert destination, and dangerous
+production skip flags.
+
+Run `npm run audit:secrets` before promotion and before opening a PR. It scans source,
+docs, artifacts, and ignored local env files for live-looking Stripe/Supabase/Resend
+secrets. If it flags `.env.local`, rotate the exposed secret first, then replace local
+live values with non-live test/dev values or remove them.
 
 ## 4. Stripe webhook
 
@@ -179,6 +191,8 @@ unset or `false` in prod:
 - [ ] `/api/health/supabase` → `ok: true`
 - [ ] `/api/health/stripe` → `mode: "live"`
 - [ ] `/api/health/email` → `resendKeyPresent: true`, `skipResend: false`
+- [ ] `POST /api/ops/alert-test` with `Authorization: Bearer $CRON_SECRET` returns
+      `ok:true`, and the configured inbox/channel receives the synthetic alert.
 - [ ] **Mobile (real iPhone, Safari):** `/`, `/assessment`, `/assessment/in-depth`,
       `/courses`, the Foundation purchase page, and one `/results/{id}` render without
       layout breakage and the primary CTA is tappable. Full free assessment completes in
@@ -207,19 +221,19 @@ buying path, not the whole site.
       human clicked every primary CTA on `/`, `/assessment`, `/courses`, `/services` and
       each lands on a real product surface.
 - [ ] **Support**: a named owner, an inbox, a stated first-response SLA (in business
-      hours), and 5 macros (access / failed payment / missing email / refund / certificate).
-      Refund runbook names who verifies eligibility and who clicks refund.
+      hours), and macros/runbook live in `docs/support-runbook.md`. Owner still needs
+      to assign who verifies eligibility and who clicks refund in Stripe.
 - [ ] **Weekly scorecard** exists (a 15-row Friday spreadsheet is fine — start manual; do
       not block launch on automated dashboards) covering the GTM plan's operating metrics.
 - [ ] Dependency/security alerts are empty (`npm audit` clean, Dependabot empty).
-- [ ] **Team Assessment self-serve decision made.** `/assessment/team` currently exposes a
-      live "START SECURE CHECKOUT". The plan mandates assisted-sales only until 2 cohorts
-      pass E2E QA — so either gate/convert that checkout to a "request assisted rollout"
-      form, OR consciously drop the mandate. Site and plan must agree before promotion.
-      (See `docs/reviews/persona-e2e-review-2026-06-22.md` P0.)
-- [ ] **Persona-review P1 items triaged** (refund reversal adjacent to $99/$295 CTAs;
-      `/services` single primary CTA; ROI methodology one click away; credibility/founder
-      anchor). See the persona review.
+- [ ] **Team Assessment self-serve stays off.** `/assessment/team` renders assisted rollout
+      by default and `/api/checkout/team-assessment` returns 403 unless
+      `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true`. Do not set the flag until 2
+      cohorts pass E2E QA and the owner accepts self-serve risk.
+- [ ] **Persona-review P1 items verified on live pages** (refund reversal adjacent to
+      $99/$295 CTAs; `/services` single primary CTA via `/for-institutions`; ROI
+      methodology one click away; credibility trust anchor present). Named founder/advisor
+      content remains owner-provided.
 
 ## 10. Tax trigger (don't forget this one)
 
@@ -249,9 +263,11 @@ These are outward-facing / live-money and were intentionally **not** automated:
       already runs live keys and live `price_*` IDs are configured, so live products likely
       exist — confirm in the live dashboard that In-Depth ($99) and Foundation ($295)
       products + prices match `docs/stripe-products.md` Block 1.
-- [ ] **`STRIPE_TEAM_ASSESSMENT_PRICE_ID`** is absent from local env — if Team Assessment
-      is ever enabled, this must be set in production (ties to the §9 team-checkout decision).
-- [ ] **Rotate `STRIPE_SECRET_KEY`** if it has been exposed in any log/transcript.
+- [ ] **`STRIPE_TEAM_ASSESSMENT_PRICE_ID` can no longer re-arm checkout by itself** — if
+      Team Assessment is ever enabled, set both the price id and
+      `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true` intentionally.
+- [ ] **Rotate `STRIPE_SECRET_KEY`** if it has been exposed in any log/transcript. After
+      rotation, `npm run audit:secrets` must pass with no live-looking secrets.
 
 ## 12. Database hardening (post-launch, from Supabase advisors 2026-06-22)
 

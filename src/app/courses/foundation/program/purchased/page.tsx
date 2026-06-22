@@ -397,7 +397,7 @@ export default async function AiBIPurchasedPage({
             ) : null}
             .
           </span>
-          <span>Lifetime access · 18 bite-sized modules · One credential</span>
+          <span>Ongoing access under current offer · 18 bite-sized modules · One credential</span>
           <span>
             Trouble?{' '}
             <a

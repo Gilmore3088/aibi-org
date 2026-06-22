@@ -1,10 +1,17 @@
 # Environment Variables — authoritative reference
 
-Generated from a full audit of every `process.env.*` reference in `src/`,
-`next.config.mjs`, and `middleware.ts` (launch-checklist §1 item 9, 2026-05-20).
+Generated from a full audit of every runtime `process.env.*` reference in `src/`,
+`next.config.mjs`, and `src/middleware.ts` (excluding tests and local utility scripts).
 Use this to diff against `vercel env ls` for each scope. **This list — not the
 `CLAUDE.md` snippet — is authoritative**; CLAUDE.md's env section is stale (see
 "Discrepancies" below).
+
+Run before promotion:
+
+```bash
+npm run audit:env:production
+npm run audit:secrets
+```
 
 ## Required in Production (server secrets — mark Sensitive)
 
@@ -18,29 +25,51 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 | `ANTHROPIC_API_KEY` | Toolbox playground + practice sandbox |
 | `CRON_SECRET` | auth for `/api/cron/*` and `/api/assessment/pdf/cron-cleanup` |
 | `TOOLBOX_IP_HASH_SALT` | salts hashed IPs for AI rate limiting |
-
-### Admin access (Production)
-
-| Var | Used by |
-|-----|---------|
-| `FUNNEL_ADMIN_EMAILS` | comma-separated allowlist of operator emails allowed to view `/admin/*` (e.g. `/admin/funnel`). Server-only; not a secret but gates PII. Unset → `/admin` is inaccessible (fail-closed). |
+| `ADMIN_SUPPORT_EMAILS` | comma-separated allowlist for `/admin/support`, e.g. `hello@aibankinginstitute.com` |
+| `FUNNEL_ADMIN_EMAILS` | comma-separated allowlist for `/admin/funnel`. Unset → `/admin/funnel` is inaccessible (fail-closed). |
 
 ### Stripe price IDs (Production)
 | Var | Notes |
 |-----|-------|
 | `STRIPE_FOUNDATION_PRICE_ID` | $295 Foundation. Legacy fallbacks still read: `STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_AIBIP_PRICE_ID` |
-| `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` | team/seat price. Fallbacks: `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, `STRIPE_AIBIP_INSTITUTION_PRICE_ID` |
 | `STRIPE_INDEPTH_PRICE_ID` | **note the spelling — `INDEPTH`, not `IN_DEPTH`.** $99 In-Depth Assessment |
 
 ### MailerLite + Resend config (Production)
 | Var | Notes |
 |-----|-------|
 | `MAILERLITE_GROUP_ID_ASSESSMENT` | tier-routing group |
+| `MAILERLITE_GROUP_ID_PLAYBOOK` | playbook lead-capture group |
 | `RESEND_FROM` | verified sender, e.g. `hello@aibankinginstitute.com` |
 | `RESEND_FROM_NAME` | display name |
 
+### Ops alerting
+| Var | Notes |
+|-----|-------|
+| `OPS_ALERT_WEBHOOK_URL` | Slack/Teams-compatible webhook for Stripe webhook failures and failed purchase-email sends |
+| `OPS_ALERT_EMAIL` | Fallback inbox for ops alerts when no webhook is configured; uses Resend |
+| `ADMIN_SUPPORT_EMAILS` | Comma-separated allowlist for `/admin/support`; set to `hello@aibankinginstitute.com` for v1 |
+| `SUPPORT_INBOX_EMAIL` | Optional support notification inbox; defaults to `hello@aibankinginstitute.com` |
+
+At least one of `OPS_ALERT_WEBHOOK_URL` or `OPS_ALERT_EMAIL` is required before paid promotion.
+`npm run audit:env:production` fails until one is configured.
+After configuring it, send a synthetic alert with authenticated
+`POST /api/ops/alert-test` and confirm the operator receives it.
+Set `ADMIN_SUPPORT_EMAILS=hello@aibankinginstitute.com` before using the
+support console.
+
+### Guarded launch flags
+| Var | Notes |
+|-----|-------|
+| `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT` | Only set to `true` after assisted-sales hardening and cohort QA are complete. If absent, `/assessment/team` and `/api/checkout/team-assessment` stay assisted-sales only. |
+
 ### Optional LLM providers (only if enabled in the Toolbox model menu)
 `OPENAI_API_KEY`, `GEMINI_API_KEY`
+
+### Deferred/self-serve-only Stripe vars
+| Var | Notes |
+|-----|-------|
+| `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` | Only if persistent institution seat checkout is intentionally enabled. Legacy fallbacks: `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, `STRIPE_AIBIP_INSTITUTION_PRICE_ID` |
+| `STRIPE_TEAM_ASSESSMENT_PRICE_ID` | Only if Team Assessment self-serve is intentionally enabled along with `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true` |
 
 ## Public (NEXT_PUBLIC_ — shipped to the browser, not secret)
 
@@ -53,7 +82,7 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 |-----|--------|
 | `PREVIEW_AUTH_BYPASS` | unlocks auth-gated layouts on preview (hard-floored off in prod) |
 | `SKIP_MAILERLITE` | suppress live MailerLite calls (next.config throws if `true` in prod) |
-| `SKIP_RESEND` | suppress live email |
+| `SKIP_RESEND` | suppress live email; `npm run audit:env:production` fails if this is `true` |
 | `SKIP_PDF_GENERATION` | skip PDF render |
 | `SKIP_SUPABASE_PROFILES` | skip profile writes |
 | `SKIP_ENROLLMENT_GATE` | bypass course entitlement checks |

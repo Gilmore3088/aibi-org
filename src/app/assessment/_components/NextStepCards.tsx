@@ -31,7 +31,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Train your team',
           title: 'Start the Foundation course',
           description:
-            'Eighteen self-paced modules that build hands-on AI proficiency for every staff member. Lifetime access to modules, artifacts, and the prompt library. Earn the AiBI-Foundation credential on reviewed work.',
+            'Eighteen self-paced modules that build hands-on AI proficiency for every staff member. Current enrollment includes ongoing access to modules, artifacts, and the prompt library under the current offer. Earn the AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
           accent: 'var(--gold)',
@@ -54,7 +54,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Train your team',
           title: 'Earn the Foundation credential',
           description:
-            'Give your early adopters governed, repeatable AI skills. Eighteen self-paced modules with practice reps and artifacts. Lifetime access. AiBI-Foundation credential on reviewed work.',
+            'Give your early adopters governed, repeatable AI skills. Eighteen self-paced modules with practice reps and artifacts. Ongoing access under the current offer. AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
           accent: 'var(--gold)',
@@ -67,7 +67,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Start the AiBI-Foundation course',
           description:
-            'You have traction. Eighteen self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and walk away with documented workflows your examiner can read.',
+            'You have traction. Eighteen self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and walk away with documented workflows reviewers can inspect.',
           href: '/courses/foundation/program/purchase',
           cta: 'Enroll · $295',
           accent: 'var(--ink-2)',
@@ -77,7 +77,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Enroll your team',
           title: 'Run a coached cohort',
           description:
-            'Ten seats over eight weeks. Shared kickoff, group reporting, and institutional pricing at $199/seat. Leave with reviewed AI artifacts your team owns.',
+            'Ten seats over eight weeks. Shared kickoff, group reporting, and volume pricing scoped by request. Leave with reviewed AI artifacts your team owns.',
           href: '/for-institutions',
           cta: 'See enrollment options',
           accent: 'var(--gold)',
@@ -90,7 +90,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Contact us',
           description:
-            'Bring your leadership. The Institute walks your team through what governance, examiner-readiness, and institution-wide rollout actually look like — with the regulatory references named.',
+            'Bring your leadership. The Institute walks your team through what governance, reviewable evidence, and institution-wide rollout actually look like — with the regulatory references named.',
           href: '/for-institutions',
           cta: 'Contact us',
           accent: 'var(--ink-2)',

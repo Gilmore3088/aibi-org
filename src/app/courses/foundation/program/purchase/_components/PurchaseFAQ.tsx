@@ -18,7 +18,7 @@ const COURSE_HOURS = Math.round((FOUNDATION_TOTAL_MINUTES / 60) * 10) / 10;
 const QUESTIONS: readonly FAQ[] = [
   {
     q: 'How long will this take me?',
-    a: `About ${COURSE_HOURS} hours of bite-sized labs across ${FOUNDATION_MODULE_COUNT} modules. Most learners finish in three to six weeks at a comfortable cadence. Access is lifetime — no expiry.`,
+    a: `About ${COURSE_HOURS} hours of bite-sized labs across ${FOUNDATION_MODULE_COUNT} modules. Most learners finish in three to six weeks at a comfortable cadence. Current individual enrollment includes ongoing access to the purchased course materials and published updates.`,
     defaultOpen: true,
   },
   {
@@ -31,15 +31,15 @@ const QUESTIONS: readonly FAQ[] = [
   },
   {
     q: 'What\'s the credential worth?',
-    a: 'A verifiable AiBI-Foundation digital badge issued on completion. The credential is recognised by The AI Banking Institute as proof of reviewed work — not a multiple-choice quiz. Continuing-ed recognition with state banking associations is in progress.',
+    a: 'An AiBI-Foundation digital badge issued on completion with a public authenticity URL. Verification confirms the Institute issued the credential; it is not regulator or third-party endorsement.',
   },
   {
     q: 'My institution wants to send a team.',
-    a: 'Self-serve team pricing is $199 per seat at ten or more seats. For larger cohorts or a sponsor dashboard, email hello@aibankinginstitute.com.',
+    a: 'Volume seats are available by request. Email hello@aibankinginstitute.com with headcount, sponsor, and timing so pricing, assignment, reporting, and support can be scoped before rollout.',
   },
   {
     q: 'What about updates?',
-    a: 'Future updates to modules, artifacts, and the prompt library are included for the life of the program at no additional cost. Lifetime access means lifetime updates.',
+    a: 'Published updates to modules, artifacts, and the prompt library are included for active individual buyers under the current offer.',
   },
   {
     q: 'Is there a refund?',

@@ -23,7 +23,7 @@ export function coursePurchaseInstitutionHtml(v: CoursePurchaseInstitutionVars):
         ${metaRow('Institution', v.institutionName)}
         ${metaRow('Seats', String(v.seatsPurchased))}
         ${metaRow('Amount', v.amountPaid)}
-        ${metaRow('Access', 'Lifetime per seat')}
+        ${metaRow('Access', 'Ongoing under current offer')}
       </tbody>
     </table>
     ${divider()}
@@ -52,7 +52,7 @@ ${v.adminUrl}
 Institution: ${v.institutionName}
 Seats: ${v.seatsPurchased}
 Amount: ${v.amountPaid}
-Access: Lifetime per seat
+Access: Ongoing under current offer
 
 Share the program link with your team:
 ${v.courseUrl}

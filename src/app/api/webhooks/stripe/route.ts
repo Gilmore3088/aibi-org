@@ -25,11 +25,13 @@ import { isFullyRefunded } from '@/lib/stripe/refund';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { createServiceRoleClient } from '@/lib/supabase/client';
 import {
+  type ResendResult,
   sendCoursePurchaseIndividual,
   sendCoursePurchaseInstitution,
   sendIndepthAssessmentPurchase,
   sendTeamAssessmentPurchase,
 } from '@/lib/resend';
+import { notifyOpsAlert } from '@/lib/ops/alerts';
 
 function nextPathForProduct(
   product: string | undefined,
@@ -53,6 +55,56 @@ function formatAmount(amountCents: number | null | undefined, currency: string |
     return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   return `${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${code}`;
+}
+
+function alertWebhookFailure(
+  title: string,
+  message: string,
+  context: Record<string, unknown>,
+): void {
+  void notifyOpsAlert({
+    severity: 'error',
+    title,
+    message,
+    context: { route: '/api/webhooks/stripe', ...context },
+  });
+}
+
+function webhookError(
+  body: { error: string },
+  status: number,
+  alert: { title: string; message: string; context?: Record<string, unknown> },
+): NextResponse {
+  alertWebhookFailure(alert.title, alert.message, { status, ...alert.context });
+  return NextResponse.json(body, { status });
+}
+
+function monitorPurchaseEmail(
+  promise: Promise<ResendResult>,
+  context: Record<string, unknown>,
+): void {
+  void promise
+    .then((result) => {
+      if ('ok' in result && result.ok) return;
+      notifyOpsAlert({
+        severity: 'error',
+        title: 'Purchase email failed',
+        message: 'A buyer was provisioned, but the transactional purchase email did not send.',
+        context: { route: '/api/webhooks/stripe', ...context, resendResult: result },
+      });
+    })
+    .catch((err) => {
+      notifyOpsAlert({
+        severity: 'error',
+        title: 'Purchase email exception',
+        message: 'A buyer was provisioned, but the transactional purchase email threw.',
+        context: {
+          route: '/api/webhooks/stripe',
+          ...context,
+          error: err instanceof Error ? err.message : String(err),
+        },
+      });
+    });
 }
 
 // Webhook needs raw body access; nodejs runtime required.
@@ -83,7 +135,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.error(
       '[webhook] No signing secret configured (STRIPE_WEBHOOK_SECRET / STRIPE_WEBHOOK_SECRET_TEST).',
     );
-    return NextResponse.json({ error: 'Webhook not configured.' }, { status: 503 });
+    return webhookError(
+      { error: 'Webhook not configured.' },
+      503,
+      {
+        title: 'Stripe webhook not configured',
+        message: 'Stripe sent a webhook, but no signing secret is configured.',
+      },
+    );
   }
 
   // Read raw body — signature verification requires the exact bytes received.
@@ -91,7 +150,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const sig = request.headers.get('stripe-signature');
 
   if (!sig) {
-    return NextResponse.json({ error: 'Missing stripe-signature header.' }, { status: 400 });
+    return webhookError(
+      { error: 'Missing stripe-signature header.' },
+      400,
+      {
+        title: 'Stripe webhook missing signature',
+        message: 'A webhook request reached the endpoint without a stripe-signature header.',
+      },
+    );
   }
 
   // Lazy-import to avoid module-level throw at build time when env var not set.
@@ -112,9 +178,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       `[webhook] Signature verification failed against ${webhookSecrets.length} secret(s):`,
       lastErr,
     );
-    return NextResponse.json(
+    return webhookError(
       { error: 'Webhook signature verification failed.' },
-      { status: 400 }
+      400,
+      {
+        title: 'Stripe webhook signature verification failed',
+        message: 'Stripe webhook signature verification failed against configured secret(s).',
+        context: { configuredSecrets: webhookSecrets.length },
+      },
     );
   }
 
@@ -195,7 +266,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         .eq('stripe_session_id', sessionId);
       if (delErr) {
         console.error('[webhook] charge.refunded revoke failed', delErr);
-        return NextResponse.json({ error: 'Revoke failed.' }, { status: 500 });
+        return webhookError(
+          { error: 'Revoke failed.' },
+          500,
+          {
+            title: 'Stripe refund revoke failed',
+            message: 'A full refund could not revoke the matching course enrollment.',
+            context: { sessionId, paymentIntentId, chargeId: charge.id, error: delErr.message },
+          },
+        );
       }
 
       // F4 — institution master purchase: there is no course_enrollments row for
@@ -242,7 +321,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }).catch((err) => console.warn('[webhook] analytics track failed', err));
     } catch (err) {
       console.error('[webhook] charge.refunded handler error', err);
-      return NextResponse.json({ error: 'Revoke handler error.' }, { status: 500 });
+      return webhookError(
+        { error: 'Revoke handler error.' },
+        500,
+        {
+          title: 'Stripe refund handler error',
+          message: 'The refund handler threw while trying to process access revocation.',
+          context: {
+            chargeId: charge.id,
+            error: err instanceof Error ? err.message : String(err),
+          },
+        },
+      );
     }
     return NextResponse.json({ received: true });
   }
@@ -267,7 +357,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Transient failures (db_error) → 500, Stripe retries for up to 3 days.
     const status = result.code === 'missing_metadata' ? 400 : 500;
     console.error(`[webhook] Provisioning failed (${result.code}):`, result.error);
-    return NextResponse.json({ error: result.error }, { status });
+    return webhookError(
+      { error: result.error },
+      status,
+      {
+        title: 'Stripe purchase provisioning failed',
+        message: 'A checkout.session.completed webhook could not provision the buyer.',
+        context: {
+          sessionId: session.id,
+          product: session.metadata?.product ?? null,
+          code: result.code,
+          error: result.error,
+        },
+      },
+    );
   }
 
   // Send transactional email — only on first-time creation, not idempotent dupes.
@@ -330,44 +433,40 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const participantUrl = result.publicToken
           ? `${siteUrl}/assessment/team/${result.publicToken}`
           : `${siteUrl}/assessment/team`;
-        sendTeamAssessmentPurchase({
+        monitorPurchaseEmail(sendTeamAssessmentPurchase({
           email,
           institutionName,
           seatsPurchased,
           amountPaid,
           adminUrl: magicLinkUrl ?? `${siteUrl}${nextPath}`,
           participantUrl,
-        }).catch((err) =>
-          console.warn('[webhook] resend team-assessment skip', err),
-        );
+        }), { product: 'team-assessment', email, stripeSessionId: session.id });
       } else if (result.type === 'individual') {
         if (product === 'in-depth-assessment') {
-          sendIndepthAssessmentPurchase({
+          monitorPurchaseEmail(sendIndepthAssessmentPurchase({
             email,
             amountPaid,
             magicLinkUrl: magicLinkUrl ?? undefined,
-          }).catch((err) =>
-            console.warn('[webhook] resend in-depth-assessment skip', err),
-          );
+          }), { product: 'in-depth-assessment', email, stripeSessionId: session.id });
         } else {
-          sendCoursePurchaseIndividual({
+          monitorPurchaseEmail(sendCoursePurchaseIndividual({
             email,
             amountPaid,
             magicLinkUrl: magicLinkUrl ?? undefined,
-          }).catch((err) => console.warn('[webhook] resend individual skip', err));
+          }), { product: product ?? 'foundation', email, stripeSessionId: session.id });
         }
       } else if (result.type === 'institution') {
         const institutionName = session.metadata?.institution_name ?? 'Your institution';
         const seatsPurchased = session.metadata?.quantity
           ? parseInt(session.metadata.quantity, 10)
           : 0;
-        sendCoursePurchaseInstitution({
+        monitorPurchaseEmail(sendCoursePurchaseInstitution({
           email,
           institutionName,
           seatsPurchased,
           amountPaid,
           magicLinkUrl: magicLinkUrl ?? undefined,
-        }).catch((err) => console.warn('[webhook] resend institution skip', err));
+        }), { product: 'foundation-institution', email, stripeSessionId: session.id });
       }
     }
   }
