@@ -19,8 +19,9 @@ The harsher read: the codebase is production-deployable, but that is not the sam
 > **Gating precondition (before anything else in this plan).** Supabase production
 > migrations must be applied through `00048` and verified via `/api/health/supabase` →
 > `ok: true`. This is the #1 launch blocker: a missing column 404'd **every** assessment
-> result on 2026-06-18. Everything else here is recoverable; this one silently breaks the
-> whole funnel and you won't know until a customer tells you. The binary go/no-go list is
+> result on 2026-06-18. **✅ Resolved 2026-06-22:** `00044`–`00048` applied via MCP;
+> `/api/health/supabase` returns `ok:true`. Re-verify after any further schema change.
+> Everything else here is recoverable. The binary go/no-go list is
 > `docs/launch-checklist.md` — this plan owns strategy and sequencing, that file owns the gate.
 
 ## What Is Currently True

@@ -41,10 +41,15 @@ All migrations in `supabase/migrations/` must be applied to the **production**
 Supabase database, in order, through the highest number present
 (currently `00048`).
 
-- [ ] Apply every migration through `00048_paid_toolbox_access_helper.sql`.
-- [ ] Confirm with `GET /api/health/supabase` → `db.columns` shows
+- [x] Apply every migration through `00048_paid_toolbox_access_helper.sql`.
+      **✅ 2026-06-22: `00044`–`00048` applied to production via Supabase MCP**
+      (`00044` action_packet_notes was the unapplied blocker; `00045`–`00048`
+      reconciled). All additive/idempotent — `ADD COLUMN/TABLE/INDEX IF NOT EXISTS`,
+      `CREATE OR REPLACE FUNCTION`, constraint widened 1→18. No destructive DDL.
+- [x] Confirm with `GET /api/health/supabase` → `db.columns` shows
       `institution_context: true`, `action_packet_notes: true`,
-      `previous_id: true`, and `ok: true`.
+      `previous_id: true`, and `ok: true`. **✅ 2026-06-22: returns `ok:true`,
+      all three columns true, `error:null`.**
 - [ ] Run `npm run check:course-schema:strict` against production-equivalent
       Supabase credentials before paid promotion.
 
@@ -179,3 +184,33 @@ buying path, not the whole site.
 - [ ] Stripe Tax is intentionally **off** at launch (bank/CU buyers largely exempt). Set a
       reminder: at **50 cumulative paid transactions** (the GTM 90-day model crosses this
       inside the window) or the first multi-state pattern, re-evaluate enabling Stripe Tax.
+
+## 11. Go-live actions a human must flip (NOT auto-applied)
+
+These are outward-facing / live-money and were intentionally **not** automated:
+
+- [ ] **Enable MailerLite nurture.** 4 tier automations exist and are **disabled**
+      ("Starting Point / Early Stage / Building Momentum / Ready to Scale", 5 steps each,
+      trigger = subscriber_joins_group). Groups are configured (`MAILERLITE_GROUP_ID_*`).
+      Enable them only when nurture is going live — enabling sends real email to real
+      subscribers. Send a test through each before enabling.
+- [ ] **Verify live Stripe products.** The Stripe MCP/CLI is paired to the **sandbox**
+      account; live products can only be created/verified on the **live** account. The app
+      already runs live keys and live `price_*` IDs are configured, so live products likely
+      exist — confirm in the live dashboard that In-Depth ($99) and Foundation ($295)
+      products + prices match `docs/stripe-products.md` Block 1.
+- [ ] **`STRIPE_TEAM_ASSESSMENT_PRICE_ID`** is absent from local env — if Team Assessment
+      is ever enabled, this must be set in production (ties to the §9 team-checkout decision).
+- [ ] **Rotate `STRIPE_SECRET_KEY`** if it has been exposed in any log/transcript.
+
+## 12. Database hardening (post-launch, from Supabase advisors 2026-06-22)
+
+Non-blocking; all pre-existing or by-design. Track for post-launch:
+- New `team_assessment_*` tables have RLS enabled with **no policies** — intentional
+  (service-role-only access), matches existing tables (certificates, refunded_checkout_sessions).
+- Pre-existing: two `addie` SECURITY DEFINER views (ERROR-level lint), several
+  SECURITY DEFINER functions executable by anon/authenticated (incl. `has_toolbox_access`
+  as defined by migration 00048), `set_updated_at` mutable search_path, `citext` in public,
+  and **leaked-password protection disabled** in Auth. Review before scaling, but none
+  block the individual-funnel launch. Do not alter auth/entitlement functions casually —
+  changing them can break RLS/login.
