@@ -165,6 +165,14 @@ buying path, not the whole site.
 - [ ] **Weekly scorecard** exists (a 15-row Friday spreadsheet is fine — start manual; do
       not block launch on automated dashboards) covering the GTM plan's operating metrics.
 - [ ] Dependency/security alerts are empty (`npm audit` clean, Dependabot empty).
+- [ ] **Team Assessment self-serve decision made.** `/assessment/team` currently exposes a
+      live "START SECURE CHECKOUT". The plan mandates assisted-sales only until 2 cohorts
+      pass E2E QA — so either gate/convert that checkout to a "request assisted rollout"
+      form, OR consciously drop the mandate. Site and plan must agree before promotion.
+      (See `docs/reviews/persona-e2e-review-2026-06-22.md` P0.)
+- [ ] **Persona-review P1 items triaged** (refund reversal adjacent to $99/$295 CTAs;
+      `/services` single primary CTA; ROI methodology one click away; credibility/founder
+      anchor). See the persona review.
 
 ## 10. Tax trigger (don't forget this one)
 

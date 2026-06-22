@@ -235,6 +235,9 @@ weekly scorecard. Maintain it there; do not re-add a copy to this plan.
 | Support process not visible in repo | Medium | Paid buyers need fast resolution. | Assign support owner and macros. |
 | AI usage costs unknown | Medium | Sandbox/toolbox success can create unpredictable COGS. | Add usage caps and weekly cost review. |
 | Proof gap | Medium | Product can look plausible but unproven. | Collect testimonials, before/after artifacts, and learner outcomes. |
+| Team Assessment is live self-serve, contradicting this plan | High | `/assessment/team` shows a full "START SECURE CHECKOUT" (Institution/email/seats) backed by a live `/api/checkout/team-assessment` route, while this plan mandates assisted-sales only. The site and plan disagree. | Before promotion: gate the team checkout behind a flag / convert to "request assisted rollout", OR drop the assisted-sales-only mandate. See persona review (P0). |
+| No credibility / founder anchor in the funnel | Medium | `/about` 308-redirects to `/` (intentional); high-skepticism buyers (CEO, examiner) find no "who builds this". | Add a lightweight trust strip (founder/advisors/named sources). Ties to Proof gap. |
+| Buying-path friction (refund reversal, /services CTA overload, ROI sourcing) | Medium | Refund terms not adjacent to $99/$295 CTAs; `/services` has 5+ co-equal CTAs; ROI number lacks one-click methodology. | Per persona review P1 — fix before scaling traffic. |
 | Comp ($0) access can't be auto-revoked | Low | $0 sessions have no charge, so `charge.refunded` never fires for comps. | Revoke comps by deleting the `course_enrollments` row; documented in stripe-products.md + checklist §6. |
 | Stripe Tax disabled crosses its own threshold | Low | The 90-day model targets >50 paid transactions; the tax-revisit trigger is 50. | Tracked as checklist §10 — re-evaluate Stripe Tax at 50 transactions or first multi-state pattern. |
 
