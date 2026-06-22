@@ -379,7 +379,7 @@
 <h3>The data flow, end to end</h3>
 
 <ol class="step-list">
-  <li><strong>Banker takes the free assessment</strong> at <a href="https://aibankinginstitute.com/assessment/start">/assessment/start</a>. Twelve questions, scored on a 12–48 scale.</li>
+  <li><strong>Banker takes the free assessment</strong> at <a href="https://aibankinginstitute.com/assessment/take">/assessment/take</a>. Twelve questions, scored on a 12–48 scale.</li>
   <li><strong>The result page shows their tier</strong> (Starting Point, Early Stage, Building Momentum, or Ready to Scale).</li>
   <li><strong>Banker enters their email</strong> for the dimension breakdown plus a starter artifact tied to their lowest-scoring dimension.</li>
   <li><strong>The browser POSTs to <span class="mono">/api/capture-email</span></strong> with the score, tier, and (when consent is given) <span class="mono">marketingOptIn: true</span>.</li>
@@ -598,7 +598,7 @@
     <p class="preheader">AiBI Foundations at scale — the bench pattern that protects your AI program.</p>
     <div class="summary">
       <p>The single largest institutional risk in a Ready to Scale program is concentration. Pattern that works: 10–25 credentialed Practitioners, one Specialist per business line, one Leader as accountable executive.</p>
-      <p>Institutional pricing: $199 per seat at 10+ bankers, self-paced over 90 days.</p>
+      <p>Institutional pricing: $199 per seat at 10+ bankers, self-paced with lifetime access.</p>
       <p class="cta">CTA → For Institutions</p>
     </div>
   </div>
@@ -624,7 +624,7 @@
 
 <h3>What every email does</h3>
 <ul>
-  <li>Uses the full name <em>The AI Banking Institute</em> in prose. <span class="mono">AiBI</span> appears only in credential codes (AiBI Foundations, AiBI-S, AiBI-L) and the wordmark.</li>
+  <li>Uses the full name <em>The AI Banking Institute</em> in prose. <span class="mono">AiBI</span> appears only in credential codes (AiBI-Foundation, AiBI-S, AiBI-L) and the wordmark.</li>
   <li>Cites every statistic by source, year, and publication. No unsourced claims.</li>
   <li>Sets numbers in DM Mono so they read with weight. Percentages stay as <span class="mono">55%</span> (brand rule overrides Every's "55 percent").</li>
   <li>Uses italics, never bold, for emphasis in prose. Bold tags are reserved for visual labels (table cells, list lead-ins).</li>
@@ -637,12 +637,12 @@
 <h3>What every CTA looks like</h3>
 <ul>
   <li>Day 0 emails point to the full results page on the site.</li>
-  <li>Mid-sequence (Day 3) emails point to the Executive Briefing (free, 30 minutes) or the Foundations Certificate.</li>
+  <li>Mid-sequence (Day 3) emails point to the Executive Briefing (free, 30 minutes) or the AiBI-Foundation Course.</li>
   <li>End-of-sequence (Day 7) emails point to the credential program or Leadership Advisory, scaled to the band.</li>
 </ul>
 
 <h3>Where the canonical copy lives</h3>
-<p>The version-controlled source of truth is <span class="mono">src/lib/mailerlite/email-content.ts</span>. The MailerLite dashboard editor is downstream. If an operator polishes typography in the dashboard, that change does not propagate back to the repo — to keep both in sync, edit the file first and recreate the automations.</p>
+<p>The version-controlled source of truth is <span class="mono">docs/mailerlite-emails/*.html</span> plus this overview. The MailerLite dashboard editor is downstream. If an operator polishes typography in the dashboard, that change does not propagate back to the repo — to keep both in sync, edit the versioned HTML first and recreate the automations.</p>
 
 <!-- ============================================================== -->
 <h2 id="activation">How to activate (the manual steps)</h2>
@@ -692,7 +692,7 @@
 <h3>Path C — Real assessment, real flow (the full e2e)</h3>
 <ol>
   <li>Activate all five automations.</li>
-  <li>Take the assessment yourself at <a href="https://aibankinginstitute.com/assessment/start">aibankinginstitute.com/assessment/start</a>.</li>
+  <li>Take the assessment yourself at <a href="https://aibankinginstitute.com/assessment/take">aibankinginstitute.com/assessment/take</a>.</li>
   <li>Use a fresh email (<span class="mono">+test</span> aliases work). Tick the marketing-consent checkbox.</li>
   <li>Within 1–2 minutes you receive: the transactional Resend "your assessment results" email AND the Day 0 MailerLite tier email.</li>
   <li>Confirm both arrived. Confirm the right tier sequence fired.</li>
@@ -705,14 +705,14 @@
 <p>Two ways. The dashboard route is fastest for typo fixes; the repo route is the source of truth.</p>
 <ul>
   <li><strong>Dashboard edit (fast):</strong> Open the automation, open the email step, edit in the visual editor, save. Effective immediately for new subscribers; subscribers already mid-sequence receive what was queued at the time they joined.</li>
-  <li><strong>Repo edit (canonical):</strong> Edit <span class="mono">src/lib/mailerlite/email-content.ts</span>, commit, then in the dashboard either edit the email step manually OR delete and recreate the automation via the API.</li>
+  <li><strong>Repo edit (canonical):</strong> Edit the matching <span class="mono">docs/mailerlite-emails/*.html</span> file, commit, then in the dashboard either edit the email step manually or recreate the automation from the versioned HTML.</li>
 </ul>
 
 <h3>How to add a new tier email</h3>
 <p>The current cadence is Day 0, 3, 7. To add a Day 14 follow-up:</p>
 <ol>
-  <li>Add the new email to <span class="mono">email-content.ts</span> as a fourth entry in the tier's <span class="mono">EMAILS</span> array.</li>
-  <li>Add <span class="mono">14</span> to the tier's <span class="mono">delaysDays</span> array.</li>
+  <li>Add the new email as a versioned HTML file in <span class="mono">docs/mailerlite-emails/</span>.</li>
+  <li>Update this overview with the new Day 14 step and any activation notes.</li>
   <li>Either delete and recreate the automation via the MailerLite MCP, or open the automation in the dashboard and add a new email step manually after the Day 7 step.</li>
 </ol>
 
@@ -739,8 +739,8 @@
 </ul>
 
 <p class="footer-note">
-  Generated 2026-05-09 by James &amp; Claude. Source: <span class="mono">~/Projects/aibi-mailerlite</span> on branch <span class="mono">feature/mailerlite-automations</span> at commit <span class="mono">e9c15c5</span>.<br/>
-  Cross-references: <span class="mono">CLAUDE.md</span> (decisions log), <span class="mono">src/lib/mailerlite/email-content.ts</span> (canonical copy), <span class="mono">src/lib/mailerlite/sequences.ts</span> (tier-routing logic), <span class="mono">src/app/api/capture-email/route.ts</span> (the route that fires it all).
+  Generated 2026-05-09 by James &amp; Claude; current versioned source lives in this repository.<br/>
+  Cross-references: <span class="mono">docs/mailerlite-emails/*.html</span> (canonical email copy), <span class="mono">src/lib/mailerlite/sequences.ts</span> (tier-routing logic), <span class="mono">src/app/api/capture-email/route.ts</span> (the route that fires it all).
 </p>
 
 </div>

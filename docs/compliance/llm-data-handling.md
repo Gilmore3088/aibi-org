@@ -2,11 +2,10 @@
 
 **Status:** Filled by Plan D, 2026-05-04.
 
-This document is the audit trail for §5.3a of the AiBI Toolbox design spec
-(`docs/superpowers/specs/2026-04-29-aibi-toolbox-design.md`). It records
-the data-handling stance of each LLM provider used in the AiBI Toolbox
-Playground, on the specific API tier in use, with a verification date and
-link to the provider's published terms.
+This document is the current audit trail for the AiBI Toolbox and course lab
+provider stance. It records the data-handling stance of each LLM provider used
+in learner-facing AI surfaces, on the specific API tier in use, with a
+verification date and link to the provider's published terms.
 
 **Review cadence:** quarterly, by the engineering owner. Each review
 either re-confirms the stance (and updates the "Last verified" date) or

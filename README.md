@@ -10,17 +10,27 @@ The same primitives — assessment, personalized path, short lesson, practice
 rep, useful artifact, progress, certification — are the reference
 implementation for any future course on the platform.
 
+## Current Docs
+
+Start here when you need the latest operating docs:
+
+- [Current docs index](CURRENT_DOCS.md)
+- [90-day GTM launch plan](Plans/90-day-gtm-launch-plan-2026-06-22.md)
+- [Launch checklist](docs/launch-checklist.md)
+- [Stripe products and pricing](docs/stripe-products.md)
+- [Environment variables](docs/env-vars.md)
+
 ## The Three Public Offers
 
 1. **Free AI Readiness Assessment** — `/assessment`
    Twelve questions, three minutes. Score, tier, and a tailored starter
    artifact. Email captured for the dimension breakdown.
 
-2. **In-Depth Assessment** — `/assessment/in-depth` — $99 individual; $79/seat at 10+ by request
+2. **In-Depth Assessment** — `/assessment/in-depth` — $99 individual
    Forty-eight questions across eight readiness dimensions. Consulting-grade
-   report with peer-band comparison plus an anonymized rollup for institution
-   leaders. Self-serve checkout covers individual buyers; teams of 10+ email
-   `hello@aibankinginstitute.com` for the $79/seat price.
+   individual readiness report with dimension-level scoring and a practical
+   next-step plan. Self-serve checkout covers individual buyers; institution
+   and team diagnostics stay assisted-sales until hardening is complete.
 
 3. **AiBI-Foundation Course** — `/courses/foundation/program` — $295,
    $199/seat at 10+. **Lifetime access** to all 18 bite-sized modules, practice
@@ -53,7 +63,7 @@ npm run build
 - `/assessment` — twelve-question free assessment with email-gated detail.
 - `/assessment/in-depth` — paid forty-eight-question diagnostic.
 - `/courses/foundation/program` — AiBI-Foundation course overview.
-- `/courses/foundation/program/[module]` — Learn / Practice / Apply shell.
+- `/courses/foundation/program/[module]` — Understand / Try / Build / Save shell.
 - `/courses/foundation/program/prompt-library` — searchable prompt library.
 - `/dashboard` — learner command center (Ledger redesign 2026-05-17: 7-step activation ladder, today's rep, In-Depth section, Foundation preview).
 - `/admin/reviewer` — work product review queue.
@@ -92,7 +102,7 @@ STRIPE_WEBHOOK_SECRET=
 STRIPE_FOUNDATION_PRICE_ID=             # $295 AiBI-Foundation individual
 STRIPE_FOUNDATION_INSTITUTION_PRICE_ID= # $199/seat at 10+
 STRIPE_INDEPTH_PRICE_ID=                # $99 In-Depth individual
-STRIPE_INDEPTH_INSTITUTION_PRICE_ID=    # $79/seat at 10+ — by-request only; self-serve team checkout deferred
+STRIPE_TEAM_ASSESSMENT_PRICE_ID=        # Team Assessment only if intentionally enabled
 
 NEXT_PUBLIC_CALENDLY_URL=
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN=
@@ -124,7 +134,7 @@ Stripe Checkout provisions both paid offers:
 
 - `/api/checkout/in-depth/route.ts` — In-Depth Assessment
 - `/api/create-checkout/route.ts` — AiBI-Foundation course
-- `/api/webhooks/stripe/route.ts` — signed payment.success handler
+- `/api/webhooks/stripe/route.ts` — signed Stripe webhook handler
 - `/src/lib/stripe/provision-enrollment.ts` — enrollment writer
 
 The Foundation checkout writes Stripe `metadata.product='foundation'` (new
@@ -161,7 +171,7 @@ Minimum viable learning loop:
 2. Take the free assessment.
 3. See score, top gaps, and a tailored next step.
 4. Enter email and access the dimension breakdown and starter artifact.
-5. Optionally upgrade to the In-Depth Assessment for the consulting-grade
+5. Optionally upgrade to the In-Depth Assessment for the individual diagnostic
    report.
 6. Enroll in AiBI-Foundation and confirm lifetime access copy is visible
    before checkout.

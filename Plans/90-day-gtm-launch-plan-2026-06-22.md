@@ -3,7 +3,7 @@
 Last updated: 2026-06-22.
 
 Source-of-truth branch: `main`.
-Current verified commit: `2f6defd0` (`chore(launch): finalize refund and assessment positioning copy`).
+Current docs index: [Current Docs](../CURRENT_DOCS.md).
 
 ## Executive Position
 

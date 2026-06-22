@@ -1,52 +1,45 @@
-# `docs/` — Folder Rules
+# `docs/` Folder Guide
 
-## Purpose
+For the shortest path, start with [Current Docs](../CURRENT_DOCS.md).
 
-This folder holds **operational and reference documentation** — things
-you read while working, not plans or task lists. Think: runbooks,
-reviews, dated handoffs, design system bundles, integration references.
+This folder holds current operational and reference documentation: launch
+runbooks, product integration references, compliance notes, email assets, brand
+references, and reusable templates. Strategic plans belong in
+[Plans/](../Plans/README.md).
 
-## What belongs here
+## Current Docs
 
-- Operational runbooks (`manual-verification-runbook.md`)
-- Integration references (`stripe-products.md`)
-- Curriculum / research notes (`curriculum-notes-*.md`)
-- `handoffs/` — dated session handoffs and status snapshots
-- `reviews/` — code reviews, security audits, UI audits (recent ones)
-- `brand-refresh-2026-05-09/` — the Ledger design system bundle
-- `compliance/`, `mailerlite-emails/`, `superpowers/` — domain bundles
-- `_archive/` — pre-Ledger UI audits, retired references
+| Doc | Use |
+|---|---|
+| [Launch checklist](launch-checklist.md) | Production readiness gates and external-system checks. |
+| [Stripe products](stripe-products.md) | Product pricing, Stripe metadata, webhook setup, and refund notes. |
+| [Environment variables](env-vars.md) | Vercel/local env var reference. |
+| [Manual verification runbook](manual-verification-runbook.md) | Manual QA steps for launch-critical flows. |
+| [Assessment flow and taxonomy](assessment-flow-and-taxonomy.md) | Assessment routing, taxonomy, and flow reference. |
+| [LLM data handling](compliance/llm-data-handling.md) | AI / LLM safety and data-handling guidance. |
+| [MailerLite automations](mailerlite-automations-overview.html) | Email automation overview. |
+| [Email templates](mailerlite-emails/index.html) | MailerLite email HTML templates. |
+| [Brand guide](brand/brand-guide-v1.html) | Brand reference. |
+| [Logo kit](brand/logo-kit.html) | Logo and mark reference. |
+| [Templates](templates/README.md) | Reusable HTML templates. |
 
-## What does NOT belong here
+## Folder Rules
 
-| Wrong location | Right location |
-|----------------|----------------|
-| Strategic plans | `Plans/<slug>.md` |
-| Task checklists | `tasks/<slug>.md` |
-| Binary assets that belong to a plan | `Plans/_assets/` |
+| Content type | Location |
+|---|---|
+| Operational runbooks | `docs/` |
+| Integration references | `docs/` |
+| Compliance references | `docs/compliance/` |
+| Email assets | `docs/mailerlite-emails/` |
+| Brand references | `docs/brand/` |
+| Strategic plans | `Plans/` |
+| New task lists | `tasks/` if needed |
 
-## Subfolders
+## Archive
 
-| Folder | Contents |
-|--------|----------|
-| [`handoffs/`](./handoffs/) | Dated session handoffs, overnight plans, status snapshots — see its README |
-| [`reviews/`](./reviews/) | Security/auth/UI audits with findings still in play |
-| [`_archive/`](./_archive/) | Stale audits (pre-Ledger refresh), retired references |
-| `brand-refresh-2026-05-09/` | Active Ledger design system + merge roadmap |
-| `compliance/` | Regulatory reference (SR 11-7, ECOA, AIEOG) |
-| `mailerlite-emails/` | Email template source |
-| `superpowers/` | Workflow skill notes |
+Old ignored docs and stale local planning clutter were moved out of the repo to:
 
-## Naming
+`/Users/jgmbp/Projects/TheAiBankingInstitute-docs-archive-2026-06-22`
 
-- Dated artifacts: `<slug>-YYYY-MM-DD.md` or move to `handoffs/`
-- Reference docs: `<topic>.md` (kebab-case, no date if living)
-- One topic per file; if a file exceeds ~500 lines, split by sub-topic
-
-## When in doubt
-
-- A *plan*? → `Plans/`
-- A *task list*? → `tasks/`
-- A *snapshot of where I left off*? → `docs/handoffs/`
-- A *review of code I wrote*? → `docs/reviews/`
-- A *thing I read while working*? → here, `docs/`
+Do not reintroduce those archived files unless one is explicitly reviewed and
+promoted back into the current docs set.
