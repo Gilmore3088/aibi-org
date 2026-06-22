@@ -380,7 +380,7 @@ Length: one page. No jargon. No "leveraging" anything.`,
     },
     {
       name: 'Department Readiness Map',
-      desc: 'Where each team sits across the 8 dimensions, board-ready.',
+      desc: 'Where each team sits across the 8 dimensions, ready for manager review.',
     },
     {
       name: 'Quarterly Drift Note',
@@ -1179,7 +1179,7 @@ Tone: practical, role-specific, no AI jargon. Format: 12-week table.
     { name: 'Training Rollout Plan', desc: 'Six weeks, named sources, weekly artifacts, done-state.' },
     {
       name: 'Department Readiness Map',
-      desc: 'Where each team sits across the eight dimensions, board-ready.',
+      desc: 'Where each team sits across the eight dimensions, ready for manager review.',
     },
     {
       name: 'Weekly Check-in Notes',

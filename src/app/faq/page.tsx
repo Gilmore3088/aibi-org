@@ -112,12 +112,14 @@ const GROUPS: readonly FaqGroup[] = [
       {
         q: 'Do you offer refunds, and what is the policy?',
         schemaAnswer:
-          'Refund terms are being finalized ahead of public launch. Email hello@aibankinginstitute.com before purchase for the current policy.',
+          'Yes. Digital purchases are refundable within 7 days if the assessment has not been submitted, fewer than two course modules have been completed, and no certificate has been issued. Duplicate purchases and unresolved access failures are also refundable.',
         a: (
           <>
-            Refund terms are being finalized ahead of public launch.
-            Email <a href="mailto:hello@aibankinginstitute.com" style={{ color: 'var(--gold-deep)', textDecoration: 'underline' }}>hello@aibankinginstitute.com</a> before
-            purchase for the current policy.
+            Yes. Email <a href="mailto:hello@aibankinginstitute.com" style={{ color: 'var(--gold-deep)', textDecoration: 'underline' }}>hello@aibankinginstitute.com</a> within
+            7 days. We refund duplicate purchases, failed-access purchases we
+            cannot resolve, and unused digital seats where the assessment has
+            not been submitted, fewer than two course modules have been
+            completed, and no certificate has been issued.
           </>
         ),
       },

@@ -43,7 +43,7 @@ const QUESTIONS: readonly FAQ[] = [
   },
   {
     q: 'Is there a refund?',
-    a: 'Refund terms are being finalized ahead of public launch. Email hello@aibankinginstitute.com before purchase for the current policy.',
+    a: 'Yes. Email hello@aibankinginstitute.com within 7 days. We refund duplicate purchases, failed-access purchases we cannot resolve, and unused digital seats where fewer than two modules have been completed and no certificate has been issued.',
   },
 ] as const;
 
