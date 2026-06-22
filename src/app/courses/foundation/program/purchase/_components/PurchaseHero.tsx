@@ -45,7 +45,7 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
             marginBottom: 22,
           }}
         >
-          AiBI-Foundation · 12 modules · $295 · Lifetime
+          AiBI-Foundation · 18 bite-sized modules · $295 · Lifetime
         </span>
 
         <h1
@@ -59,9 +59,9 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
             color: '#fff',
           }}
         >
-          Walk away with a saved-prompt library and{' '}
+          Build an 18-piece Foundation Packet with{' '}
           <span style={{ color: 'var(--gold)', fontWeight: 700 }}>
-            documented workflows your examiner can read
+            labs, prompts, and review-ready workflows
           </span>
           .
         </h1>
@@ -76,10 +76,8 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
             maxWidth: '46ch',
           }}
         >
-          Twelve self-paced modules turn the AI conversation into a set
-          of reviewed work products you actually use. By the time you
-          finish, your prompt library, your Acceptable Use card, and
-          your reviewed work product are on your desk.
+          Each module starts with the artifact, runs a contained AiBI Lab, and
+          ends with a saved work product your manager or compliance partner can review.
         </p>
 
         <div style={{ maxWidth: 320 }}>{enrollButton}</div>

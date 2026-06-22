@@ -48,7 +48,7 @@ export function PurchaseFinalCTA({ enrollButton }: PurchaseFinalCTAProps) {
             maxWidth: '52ch',
           }}
         >
-          $295 one-time. Lifetime access. Twelve modules, four required
+          $295 one-time. Lifetime access. Eighteen bite-sized modules, eighteen saved
           artifacts, one reviewed final assessment.
         </p>
       </div>

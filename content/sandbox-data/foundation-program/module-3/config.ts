@@ -1,59 +1,44 @@
 import type { SandboxConfig } from '@/lib/sandbox/types';
 
-const SYSTEM_PROMPT = `You are an AI output auditor specializing in banking and financial regulation. Your role is to help community bank employees critically evaluate AI-generated content for hallucinations, fabrications, and factual errors.
+const SYSTEM_PROMPT = `You are a prompt-card coach for community-bank and credit-union staff. Help the learner turn recurring work into a reusable CORE prompt: Context, Output, Rules, Examples.
 
-When analyzing AI-generated text:
-- Examine each factual claim line by line.
-- Present your findings in a markdown table with columns: Claim | Verdict (Accurate / Hallucinated / Unverifiable) | Correction | How to Verify.
-- For hallucinated claims, explain specifically what is wrong and provide the correct information with a cited source.
-- For unverifiable claims, explain why the claim cannot be confirmed and what source would be needed.
-- For accurate claims, briefly confirm the source.
+Use only the redacted sample data already loaded into the lab. Never ask for customer data, account data, confidential strategy, or real case details.
 
-Reference specific regulatory documents by name:
-- SR 11-7 (Model Risk Management, 2011)
-- Interagency TPRM Guidance (Third-Party Risk Management)
-- ECOA / Regulation B (Fair Lending)
-- BSA/AML (Bank Secrecy Act)
-- GLBA (Gramm-Leach-Bliley Act)
-- FCRA (Fair Credit Reporting Act)
-- GAO-25-107197 (May 2025, AI in banking oversight)
-- AIEOG AI Lexicon (February 2026)
+For each prompt card:
+- Identify the task and audience.
+- Add placeholders for variable inputs.
+- Add a what-not-to-paste rule.
+- Add the human review or escalation rule.
+- Keep the final prompt copy-ready and manager-reviewable.
 
-Teach verification methodology:
-1. Identify the specific claim being made.
-2. Determine the authoritative source (regulation text, FDIC data, official guidance).
-3. Check whether the cited source actually exists and says what is claimed.
-4. Look for red flags: precise-sounding but fabricated section numbers, invented case law, outdated thresholds, misattributed quotes.
-5. Apply the "too convenient" test: if a statistic perfectly supports the narrative, verify it independently.
+Prefer this format:
 
-When presenting summary statistics or distributions, format chart data as a JSON code block:
-\`\`\`chart
-{ "type": "bar" | "pie", "title": "...", "data": [{ "label": "...", "value": 0 }] }
-\`\`\``;
+## Prompt card
+- Name:
+- Use case:
+- Context:
+- Output:
+- Rules:
+- Examples or placeholders:
+- Human review rule:
+- What not to paste:`;
 
 export const module3SandboxConfig: SandboxConfig = {
   systemPrompt: SYSTEM_PROMPT,
 
   sampleData: [
     {
-      id: 'ai-output-with-errors',
-      label: 'AI Compliance Summary (With Errors)',
+      id: 'prompt-card-scenarios',
+      label: 'Prompt Card Scenarios',
       type: 'document',
       description:
-        'An AI-generated community bank compliance summary containing five subtle hallucinations embedded in otherwise accurate regulatory content.',
-    },
-    {
-      id: 'ai-output-clean',
-      label: 'AI Governance Best Practices (Clean)',
-      type: 'document',
-      description:
-        'An AI-generated summary of AI governance best practices for community banks using verified, sourced statistics. Serves as a factually accurate control document.',
+        'Five recurring banking tasks that need reusable CORE prompt cards with placeholders and review boundaries.',
     },
   ],
 
   suggestedPrompts: [
-    'Using the AI compliance summary in the sample data, fact-check it line by line. Identify any claims that appear fabricated or incorrect.',
-    'Compare the two AI outputs in the sample data — the compliance summary and the governance best practices document. Which contains hallucinations and which is factually sound?',
-    'Based on the hallucinations you found in the sample compliance summary, what verification steps should a banker take before sharing AI-generated regulatory content with their board or examiners?',
+    'Using Scenario 1 from the sample data, build a reusable CORE prompt card with placeholders and a what-not-to-paste rule.',
+    'Pick the weakest scenario for safe reuse and explain what Rules or Examples are missing before it becomes a prompt card.',
+    'Create a manager-reviewable prompt card for the operations scenario. Include the review owner and escalation boundary.',
   ],
 } as const;

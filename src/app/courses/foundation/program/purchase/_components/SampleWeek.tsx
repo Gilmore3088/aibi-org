@@ -1,30 +1,35 @@
-// SampleWeek — three-column preview of a typical module.
+// SampleWeek — four-step preview of a typical module.
 //
-// LEARN IT / TRY IT / USE IT. Pulls real Module 1 content (Regulatory
-// Cheatsheet, ECOA practice rule, Rewritten Email key output) so the
-// buyer sees concrete artifacts, not marketing copy.
+// Understand / Try / Build / Save. Pulls real Module 1 content so the buyer
+// sees concrete artifacts, not marketing copy.
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 const COLUMNS = [
   {
-    kicker: 'Learn it',
-    title: 'Five regulatory frameworks, one page',
-    body: 'SR 11-7, TPRM, ECOA/Reg B, BSA/AML, and the AIEOG AI Lexicon — each mapped to a staff-level impact. You leave Module 1 with a one-page Regulatory Cheatsheet personalized to your role.',
+    kicker: 'Understand',
+    title: 'One work product up front',
+    body: 'Module 1 starts with the finished artifact: a before-and-after internal email plus a short judgment note explaining what changed.',
     tag: 'Module 1 · AI for Your Workday',
   },
   {
-    kicker: 'Try it',
-    title: 'Rewrite a customer email with AI',
-    body: 'Run a real prompt against a sample customer email. See what the model gets right, where it overreaches, and how to constrain it so the output is something you would actually send.',
-    tag: 'Scenario · sandbox practice',
+    kicker: 'Try',
+    title: 'Practice with sample bank data',
+    body: 'Use a contained lab to rewrite messy, non-sensitive notes. The model is guided by the module objective and checked against a clear quality bar.',
+    tag: 'Dataset · guided practice',
   },
   {
-    kicker: 'Use it',
-    title: 'Save your Acceptable Use card',
-    body: 'Draft and keep a one-card statement of where AI fits in your daily work and where it does not. Reviewed against the three non-negotiable rules. Kept at your desk.',
-    tag: 'Artifact · Acceptable Use card',
+    kicker: 'Build',
+    title: 'Review the quality bar',
+    body: 'Check the lab output against the module rubric before treating it as reusable work product.',
+    tag: 'Human review · quality check',
+  },
+  {
+    kicker: 'Save',
+    title: 'Save to your Foundation Packet',
+    body: 'Turn the lab output into a manager-ready artifact with the safety boundary, human edit, and next-use note visible.',
+    tag: 'Artifact · Foundation Packet',
   },
 ] as const;
 
@@ -78,13 +83,12 @@ export function SampleWeek() {
             maxWidth: '60ch',
           }}
         >
-          Every module runs the same loop: a clear takeaway, a guided
-          attempt in the sandbox, and a saved artifact you keep. Below is
-          Module 1.
+          Every module runs the same loop: understand the artifact, try a
+          contained lab, build the reviewed asset, and save the proof. Below is Module 1.
         </p>
       </div>
 
-      <div className="aibi-grid aibi-grid--3" style={{ gap: 18 }}>
+      <div className="aibi-grid aibi-grid--4" style={{ gap: 18 }}>
         {COLUMNS.map((col) => (
           <article
             key={col.kicker}

@@ -2,21 +2,28 @@
 // foundation purchase landing.  Uses native <details>/<summary> so it
 // works without JS and stays accessible by default.
 
+import {
+  FOUNDATION_MODULE_COUNT,
+  FOUNDATION_TOTAL_MINUTES,
+} from '@content/courses/foundation-program';
+
 interface FAQ {
   readonly q: string;
   readonly a: string;
   readonly defaultOpen?: boolean;
 }
 
+const COURSE_HOURS = Math.round((FOUNDATION_TOTAL_MINUTES / 60) * 10) / 10;
+
 const QUESTIONS: readonly FAQ[] = [
   {
     q: 'How long will this take me?',
-    a: 'About six to seven hours of reading and exercises across twelve modules. Most learners finish in three to six weeks at one or two modules a week. Access is lifetime — no expiry.',
+    a: `About ${COURSE_HOURS} hours of bite-sized labs across ${FOUNDATION_MODULE_COUNT} modules. Most learners finish in three to six weeks at a comfortable cadence. Access is lifetime — no expiry.`,
     defaultOpen: true,
   },
   {
     q: 'What if my bank\'s policy says no AI tools?',
-    a: 'Module 03 — the privacy line — is built specifically to help you stay inside any reasonable policy. The exercises do not require uploading sensitive data. If your institution wants a custom acceptable-use card, the course teaches you to draft one.',
+    a: 'The course uses sample banking data and teaches the safe-use boundary before learners reuse any prompt or artifact. Module 03 builds CORE prompting without sensitive data; Module 09 turns those habits into a Safe AI Use Checklist.',
   },
   {
     q: 'Is this technical? I\'m not a programmer.',

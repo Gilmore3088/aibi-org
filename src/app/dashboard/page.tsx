@@ -472,7 +472,7 @@ export default function DashboardPage() {
                 <h3>
                   Build with the full <strong>toolkit.</strong>
                 </h3>
-                <p>Twelve modules. Prompt library. Templates. Certificate.</p>
+                <p>{modules.length} bite-sized modules. Prompt library. Templates. Certificate.</p>
                 <div className="cta">
                   <b>{stepEnrolled ? 'Open the curriculum' : 'Preview Foundation'}</b>
                   <span className="arrow">→</span>
@@ -605,7 +605,7 @@ export default function DashboardPage() {
                   Turn the <strong>skill</strong> into operating capability.
                 </h3>
                 <p className="copy">
-                  Twelve modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with the same examiner-aware rigor as our research desk. Aligned with SR 11-7 and TPRM.
+                  {modules.length} bite-sized modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with the same examiner-aware rigor as our research desk. Aligned with SR 11-7 and TPRM.
                 </p>
                 <div className="ctas">
                   <Link href="/courses/foundation/program" className="btn btn-paper">

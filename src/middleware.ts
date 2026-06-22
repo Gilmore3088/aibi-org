@@ -17,9 +17,13 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+  requestHeaders.set('x-search', request.nextUrl.search);
+
   // Start with a mutable response so we can write cookies onto it.
   let response = NextResponse.next({
-    request: { headers: request.headers },
+    request: { headers: requestHeaders },
   });
 
   // Always forward the pathname and search headers regardless of Supabase config.
@@ -44,8 +48,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         // Write each cookie onto the request (so downstream server code sees it)
         // and onto the response (so the browser receives it).
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        const refreshedHeaders = new Headers(request.headers);
+        refreshedHeaders.set('x-pathname', request.nextUrl.pathname);
+        refreshedHeaders.set('x-search', request.nextUrl.search);
         response = NextResponse.next({
-          request: { headers: request.headers },
+          request: { headers: refreshedHeaders },
         });
         response.headers.set('x-pathname', request.nextUrl.pathname);
         response.headers.set('x-search', request.nextUrl.search);

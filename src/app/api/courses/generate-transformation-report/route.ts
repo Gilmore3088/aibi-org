@@ -162,24 +162,39 @@ function buildDimensions(
 function buildSkills(activityResponses: ActivityResponseRow[]): SkillEntry[] {
   const skills: SkillEntry[] = [];
 
-  // Module 7 — first skill
-  const m7 = activityResponses.find((r) => r.activity_id === '7.1');
-  if (m7) {
-    const resp = m7.response;
-    const mdContent = typeof resp['skill-md-content'] === 'string' ? resp['skill-md-content'] : '';
-    const roleContext = typeof resp['skill-role'] === 'string' ? resp['skill-role'] : '';
-    const nameMatch = /^# (.+?) - v1/m.exec(mdContent);
-    const name = nameMatch ? nameMatch[1].trim() : 'Banking AI Skill v1.0';
-    skills.push({ name, role: roleContext.slice(0, 200), annualHoursSaved: 87 });
+  // Module 13 — reusable skill
+  const m13 = activityResponses.find((r) => r.activity_id === '13.1');
+  if (m13) {
+    const resp = m13.response;
+    const skillDraft =
+      typeof resp.artifact_draft === 'string' ? resp.artifact_draft.trim() : '';
+    const reviewNote =
+      typeof resp.review_note === 'string' ? resp.review_note.trim() : '';
+    if (skillDraft) {
+      skills.push({
+        name: skillDraft.slice(0, 120),
+        role: reviewNote.slice(0, 200),
+        annualHoursSaved: 87,
+      });
+    }
   }
 
-  // Module 9 capstone
-  const m9 = activityResponses.find((r) => r.activity_id === '9.capstone');
-  if (m9) {
-    const resp = m9.response;
-    const what = typeof resp['automation-what'] === 'string' ? resp['automation-what'] : '';
-    if (what) {
-      skills.push({ name: what.slice(0, 120), role: 'Capstone workflow — deployed at institution', annualHoursSaved: 0 });
+  // Module 17 — reusable workflow kit
+  const m17 = activityResponses.find((r) => r.activity_id === '17.1');
+  if (m17) {
+    const resp = m17.response;
+    const workflowPurpose =
+      typeof resp.workflow_purpose === 'string' ? resp.workflow_purpose.trim() : '';
+    const reviewGate =
+      typeof resp.checkpoint_and_escalation === 'string'
+        ? resp.checkpoint_and_escalation.trim()
+        : '';
+    if (workflowPurpose) {
+      skills.push({
+        name: workflowPurpose.slice(0, 120),
+        role: reviewGate.slice(0, 200),
+        annualHoursSaved: 0,
+      });
     }
   }
 

@@ -362,7 +362,7 @@ export default async function AiBIPurchasedPage({
               marginBottom: 20,
             }}
           >
-            The full workbench: Library, Build, Playground, My Toolbox, Cookbook. 12 banker-built prompts shipped today; more land as the kits roll out.
+            The full workbench: Library, Build, AiBI Lab, My Toolbox, Cookbook. Your Foundation Packet starts with bite-sized prompts, skills, workflows, and safety artifacts.
           </p>
           <PrimaryButton as="a" href="/dashboard/toolbox">
             OPEN THE TOOLBOX →
@@ -397,7 +397,7 @@ export default async function AiBIPurchasedPage({
             ) : null}
             .
           </span>
-          <span>Lifetime access · 12 modules · One credential</span>
+          <span>Lifetime access · 18 bite-sized modules · One credential</span>
           <span>
             Trouble?{' '}
             <a

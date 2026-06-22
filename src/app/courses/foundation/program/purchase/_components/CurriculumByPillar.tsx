@@ -21,6 +21,8 @@ const PILLAR_BLOCKS: readonly PillarBlock[] = [
   { id: 'application',   num: '04', label: 'Application' },
 ] as const;
 
+const MODULE_COUNT = modules.length;
+
 export function CurriculumByPillar() {
   return (
     <section style={{ margin: '56px 0' }}>
@@ -57,7 +59,7 @@ export function CurriculumByPillar() {
             color: 'var(--ink)',
           }}
         >
-          From cautious to capable in twelve modules.
+          From cautious to capable in {MODULE_COUNT} bite-sized modules.
         </h2>
       </div>
 

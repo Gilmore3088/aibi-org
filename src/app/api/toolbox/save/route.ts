@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 import {
+  courseArtifactToToolboxSkill,
   promptCardToToolboxSkill,
   playgroundMessagesToToolboxSkill,
   libraryEntryToToolboxSkill,
+  type CourseArtifactField,
 } from '@/lib/toolbox/save-mappers';
 import { getPromptById } from '@content/courses/foundation-program/prompt-library';
 import type {
@@ -16,7 +18,19 @@ import type {
 
 interface CoursePayload {
   origin: 'course';
-  payload: { promptId: string; courseSlug: 'aibi-p'; moduleNumber: number };
+  payload:
+    | { promptId: string; courseSlug: 'aibi-p'; moduleNumber: number }
+    | {
+        kind: 'module-artifact';
+        courseSlug: 'aibi-p';
+        moduleNumber: number;
+        activityId: string;
+        artifactName: string;
+        fields: readonly CourseArtifactField[];
+        reviewNote?: string;
+        transferPlan?: string;
+        readiness?: string;
+      };
 }
 interface PlaygroundPayload {
   origin: 'playground';
@@ -54,6 +68,36 @@ function isSaveBody(v: unknown): v is SaveBody {
     o.origin === 'playground' ||
     o.origin === 'library' ||
     o.origin === 'in-depth'
+  );
+}
+
+function isCourseArtifactPayload(
+  payload: CoursePayload['payload'],
+): payload is Extract<CoursePayload['payload'], { kind: 'module-artifact' }> {
+  return (
+    'kind' in payload &&
+    payload.kind === 'module-artifact' &&
+    payload.courseSlug === 'aibi-p' &&
+    typeof payload.moduleNumber === 'number' &&
+    Number.isInteger(payload.moduleNumber) &&
+    payload.moduleNumber > 0 &&
+    typeof payload.activityId === 'string' &&
+    payload.activityId.trim().length > 0 &&
+    typeof payload.artifactName === 'string' &&
+    payload.artifactName.trim().length > 0 &&
+    Array.isArray(payload.fields)
+  );
+}
+
+function isCoursePromptPayload(
+  payload: CoursePayload['payload'],
+): payload is Extract<CoursePayload['payload'], { promptId: string }> {
+  return (
+    'promptId' in payload &&
+    typeof payload.promptId === 'string' &&
+    payload.promptId.trim().length > 0 &&
+    payload.courseSlug === 'aibi-p' &&
+    typeof payload.moduleNumber === 'number'
   );
 }
 
@@ -102,6 +146,14 @@ function libraryRowToEntry(row: LibraryRow): Parameters<typeof libraryEntryToToo
   };
 }
 
+function isLocalPreviewToolboxSave(userId: string): boolean {
+  return (
+    process.env.NODE_ENV !== 'production' &&
+    process.env.SKIP_ENROLLMENT_GATE === 'true' &&
+    userId === 'dev-bypass'
+  );
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) {
@@ -114,12 +166,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json(
       { error: 'Saving requires the AiBI-Foundation tier.' },
       { status: 403 },
-    );
-  }
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json(
-      { error: 'Server-side Toolbox storage is not configured.' },
-      { status: 503 },
     );
   }
 
@@ -136,14 +182,23 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   let skill: ToolboxSkill;
   let sourceRef: string | undefined;
+  let shouldUpsert = false;
 
   if (body.origin === 'course') {
-    const prompt = getPromptById(body.payload.promptId);
-    if (!prompt) {
-      return NextResponse.json({ error: 'Prompt not found.' }, { status: 404 });
+    if (isCourseArtifactPayload(body.payload)) {
+      skill = courseArtifactToToolboxSkill(body.payload, access.userId);
+      sourceRef = skill.sourceRef;
+      shouldUpsert = true;
+    } else if (isCoursePromptPayload(body.payload)) {
+      const prompt = getPromptById(body.payload.promptId);
+      if (!prompt) {
+        return NextResponse.json({ error: 'Prompt not found.' }, { status: 404 });
+      }
+      skill = promptCardToToolboxSkill(prompt, access.userId);
+      sourceRef = skill.sourceRef;
+    } else {
+      return NextResponse.json({ error: 'Invalid course payload.' }, { status: 400 });
     }
-    skill = promptCardToToolboxSkill(prompt, access.userId);
-    sourceRef = skill.sourceRef;
   } else if (body.origin === 'playground') {
     skill = playgroundMessagesToToolboxSkill({
       skill: body.payload.skill,
@@ -155,6 +210,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     skill = inDepthArtifactToToolboxSkill(body.payload, access.userId);
     sourceRef = `in-depth:${body.payload.artifactName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   } else {
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json(
+        { error: 'Server-side Toolbox storage is not configured.' },
+        { status: 503 },
+      );
+    }
     const lookupClient = createServiceRoleClient();
     const { data: entry, error: lookupError } = await lookupClient
       .from('toolbox_library_skills')
@@ -173,6 +234,20 @@ export async function POST(request: Request): Promise<NextResponse> {
     sourceRef = skill.sourceRef;
   }
 
+  if (isLocalPreviewToolboxSave(access.userId)) {
+    return NextResponse.json({
+      id: `dev-${skill.cmd.replace(/^\/+/, '').replace(/[^a-z0-9-]/gi, '-')}`,
+      localPreview: true,
+    });
+  }
+
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json(
+      { error: 'Server-side Toolbox storage is not configured.' },
+      { status: 503 },
+    );
+  }
+
   const client = createServiceRoleClient();
   const insertPayload = {
     user_id: access.userId,
@@ -180,7 +255,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     name: skill.name,
     maturity: skill.maturity,
     kind: skill.kind,
-    system_prompt: skill.kind === 'template' ? skill.systemPrompt : null,
+    system_prompt:
+      skill.kind === 'template'
+        ? skill.systemPrompt
+        : skill.systemPromptOverride ?? null,
     user_prompt_template: skill.kind === 'template' ? skill.userPromptTemplate : null,
     variables: skill.kind === 'template' ? skill.variables : [],
     pillar: skill.pillar ?? null,
@@ -190,11 +268,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     skill,
   };
 
-  const { data, error } = await client
-    .from('toolbox_skills')
-    .insert(insertPayload)
-    .select('id')
-    .single();
+  const write = shouldUpsert
+    ? client
+        .from('toolbox_skills')
+        .upsert(insertPayload, { onConflict: 'user_id,command' })
+    : client.from('toolbox_skills').insert(insertPayload);
+
+  const { data, error } = await write.select('id').single();
 
   if (error || !data) {
     return NextResponse.json(

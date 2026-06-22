@@ -2,54 +2,15 @@
 
 // ActivitySection — client wrapper that manages activity submission state and gates
 // the "Next Module" / "Complete Module" action behind all activity completions.
-// Routes each activity to its correct specialized component:
-//   - Module 2, activity '2.1'  → ClaimReviewLab (spot the AI hallucination)
-//   - Module 6, activity '6.1'  → SkillDiagnosis
-//   - Module 7, activity '7.1'  → SkillBuilder (with learnerRole prop)
-//   - type === 'iteration'       → IterationTracker (M8 Activity 8.1)
-//   - type === 'drill'           → ClassificationDrill (extracts scenarios from m5-drill-scenarios table)
-//   - type === 'builder' && moduleNumber === 5 → AcceptableUseCardForm
-//   - everything else            → ActivityForm (free-text and generic form types)
+// The 18-module course uses one consistent Build step: each activity renders
+// through ActivityForm so every module ends in a compact packet/toolbox asset.
 // Rendered inside the server ModulePage component via ModuleContentClient.
 
-import { useState, useCallback } from 'react';
-import dynamic from 'next/dynamic';
-import type { Activity, ContentTable } from '@content/courses/foundation-program';
-import type { LearnerRole } from '@/types/course';
+import { useState, useCallback, useEffect } from 'react';
+import { getArtifactFirst, type Activity } from '@content/courses/foundation-program';
+import { getFoundationLabBrief } from '@content/courses/foundation-program/lab-first';
 import { ActivityForm } from './ActivityForm';
 import { CompletionCTA } from './CompletionCTA';
-
-// Specialized activity widgets — each module renders at most one. Statically
-// importing all six made the [module] route's First Load JS pay for all of
-// them on every module page. next/dynamic splits each into its own chunk;
-// SSR stays on so initial paint still includes the active widget.
-const ClaimReviewLab = dynamic(
-  () => import('./ClaimReviewLab').then((m) => ({ default: m.ClaimReviewLab })),
-);
-const ClassificationDrill = dynamic(
-  () => import('./ClassificationDrill').then((m) => ({ default: m.ClassificationDrill })),
-);
-const AcceptableUseCardForm = dynamic(
-  () => import('./AcceptableUseCardForm').then((m) => ({ default: m.AcceptableUseCardForm })),
-);
-const SkillDiagnosis = dynamic(
-  () => import('./SkillDiagnosis').then((m) => ({ default: m.SkillDiagnosis })),
-);
-const SkillBuilder = dynamic(
-  () => import('./SkillBuilder').then((m) => ({ default: m.SkillBuilder })),
-);
-const IterationTracker = dynamic(
-  () => import('./IterationTracker').then((m) => ({ default: m.IterationTracker })),
-);
-const StrategyDrill = dynamic(
-  () => import('./StrategyDrill').then((m) => ({ default: m.StrategyDrill })),
-);
-const PromptWizard = dynamic(
-  () => import('./PromptWizard').then((m) => ({ default: m.PromptWizard })),
-);
-const SafetyLab = dynamic(
-  () => import('./SafetyLab').then((m) => ({ default: m.SafetyLab })),
-);
 
 export interface ActivitySectionProps {
   readonly activities: readonly Activity[];
@@ -57,25 +18,282 @@ export interface ActivitySectionProps {
   readonly moduleNumber: number;
   readonly existingResponses: Record<string, Record<string, string>>;
   readonly isLastModule: boolean;
+  readonly isAlreadyCompleted: boolean;
   readonly onAllActivitiesComplete: () => void;
-  readonly tables?: readonly ContentTable[];
-  readonly learnerRole?: LearnerRole;
 }
 
-interface DrillScenario {
-  readonly scenario: string;
-  readonly tier: string;
-  readonly reasoning: string;
+function getSavedTransferPlanFromResponses(
+  responses: Record<string, Record<string, string>>,
+): string {
+  for (const response of Object.values(responses)) {
+    const value = response.__learning_transfer_plan;
+    if (typeof value === 'string' && value.trim().length > 0) {
+      return value;
+    }
+  }
+  return '';
 }
 
-function extractDrillScenarios(tables: readonly ContentTable[] | undefined): DrillScenario[] {
-  const drillTable = tables?.find((t) => t.id === 'm5-drill-scenarios');
-  if (!drillTable) return [];
-  return drillTable.rows.map((row) => ({
-    scenario: row['scenario'] ?? '',
-    tier: row['tier'] ?? '',
-    reasoning: row['reasoning'] ?? '',
-  }));
+interface ModuleHandoffCheckProps {
+  readonly moduleNumber: number;
+  readonly isLastModule: boolean;
+  readonly value: string;
+  readonly transferPlanValue: string;
+  readonly error?: string;
+  readonly transferPlanError?: string;
+  readonly saving?: boolean;
+  readonly onChange: (value: string) => void;
+  readonly onTransferPlanChange: (value: string) => void;
+  readonly onComplete: () => void;
+}
+
+export function ModuleHandoffCheck({
+  moduleNumber,
+  isLastModule,
+  value,
+  transferPlanValue,
+  error,
+  transferPlanError,
+  saving = false,
+  onChange,
+  onTransferPlanChange,
+  onComplete,
+}: ModuleHandoffCheckProps) {
+  const handoffReady = value.trim().length >= 12;
+  const transferReady = transferPlanValue.trim().length >= 12;
+  const ready = handoffReady && transferReady && !saving;
+
+  return (
+    <section
+      aria-labelledby={`module-${moduleNumber}-handoff-heading`}
+      data-testid="foundation-module-handoff"
+      className="foundation-module-handoff"
+      style={{
+        display: 'grid',
+        gap: 14,
+        marginTop: 24,
+        paddingTop: 24,
+        borderTop: '1px solid var(--ink-a10)',
+      }}
+    >
+      <div
+        className="foundation-module-handoff__panel"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 0.36fr) minmax(300px, 0.64fr)',
+          gap: 0,
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 16,
+          background: '#fff',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            padding: 'clamp(18px, 2.4vw, 24px)',
+            background: 'var(--cream)',
+          }}
+        >
+          <p
+            style={{
+              margin: '0 0 8px',
+              color: 'var(--gold-deep)',
+              fontSize: 11,
+              fontWeight: 850,
+              letterSpacing: '0.17em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Module handoff
+          </p>
+          <h3
+            id={`module-${moduleNumber}-handoff-heading`}
+            style={{
+              margin: 0,
+              color: 'var(--ink)',
+              fontSize: 'clamp(20px, 1.8vw, 25px)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.01em',
+              fontWeight: 850,
+            }}
+          >
+            Ready to advance?
+          </h3>
+          <p
+            style={{
+              margin: '10px 0 0',
+              color: 'var(--slate-600)',
+              fontSize: 14,
+              lineHeight: 1.5,
+              fontWeight: 650,
+            }}
+          >
+            Confirm the saved note and first real use, then move to the next small win.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gap: 12,
+            padding: 'clamp(18px, 2.4vw, 24px)',
+            borderLeft: '1px solid var(--ink-a10)',
+          }}
+        >
+          <label style={{ display: 'block' }}>
+            <span
+              style={{
+                display: 'block',
+                marginBottom: 6,
+                color: error ? 'var(--ink)' : 'var(--slate-500)',
+                fontSize: 10,
+                fontWeight: 850,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+              }}
+            >
+              My handoff note
+            </span>
+            <textarea
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+              rows={2}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? `module-${moduleNumber}-handoff-error` : undefined}
+              placeholder="Example: I will reuse this artifact on the next branch update and keep the review note with the packet."
+              style={{
+                width: '100%',
+                resize: 'vertical',
+                border: `1px solid ${error ? 'var(--ink)' : 'var(--ink-a10)'}`,
+                borderRadius: 12,
+                background: '#fff',
+                padding: '11px 12px',
+                color: 'var(--ink)',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                fontSize: 14,
+                lineHeight: 1.45,
+                outlineColor: 'var(--gold-deep)',
+              }}
+            />
+          </label>
+          {error && (
+            <p
+              id={`module-${moduleNumber}-handoff-error`}
+              role="alert"
+              style={{
+                margin: '-4px 0 0',
+                color: 'var(--ink)',
+                fontSize: 12,
+                lineHeight: 1.35,
+                fontWeight: 760,
+              }}
+            >
+              {error}
+            </p>
+          )}
+
+          <label style={{ display: 'block' }}>
+            <span
+              style={{
+                display: 'block',
+                marginBottom: 6,
+                color: transferPlanError ? 'var(--ink)' : 'var(--slate-500)',
+                fontSize: 10,
+                fontWeight: 850,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Next real use
+            </span>
+            <textarea
+              value={transferPlanValue}
+              onChange={(event) => onTransferPlanChange(event.target.value)}
+              rows={2}
+              aria-invalid={Boolean(transferPlanError)}
+              aria-describedby={transferPlanError ? `module-${moduleNumber}-transfer-error` : undefined}
+              placeholder="Example: I will use this on the next branch rollout email before manager review."
+              style={{
+                width: '100%',
+                resize: 'vertical',
+                border: `1px solid ${transferPlanError ? 'var(--ink)' : 'var(--ink-a10)'}`,
+                borderRadius: 12,
+                background: '#fff',
+                padding: '11px 12px',
+                color: 'var(--ink)',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                fontSize: 14,
+                lineHeight: 1.45,
+                outlineColor: 'var(--gold-deep)',
+              }}
+            />
+          </label>
+          {transferPlanError && (
+            <p
+              id={`module-${moduleNumber}-transfer-error`}
+              role="alert"
+              style={{
+                margin: '-4px 0 0',
+                color: 'var(--ink)',
+                fontSize: 12,
+                lineHeight: 1.35,
+                fontWeight: 760,
+              }}
+            >
+              {transferPlanError}
+            </p>
+          )}
+
+          <button
+            type="button"
+            onClick={onComplete}
+            disabled={!ready}
+            style={{
+              minHeight: 44,
+              justifySelf: 'start',
+              border: '1px solid',
+              borderColor: ready ? 'var(--ink)' : 'var(--ink-a10)',
+              borderRadius: 12,
+              background: ready ? 'var(--ink)' : 'var(--slate-100)',
+              color: ready ? 'var(--cream)' : 'var(--slate-500)',
+              padding: '0 18px',
+              fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+              fontSize: 11,
+              fontWeight: 850,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              cursor: ready ? 'pointer' : 'not-allowed',
+            }}
+          >
+            {saving
+              ? 'Saving...'
+              : ready
+                ? isLastModule ? 'Complete course' : 'Complete module'
+                : 'Add review + transfer'}
+          </button>
+        </div>
+      </div>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 780px) {
+              .foundation-module-handoff__panel,
+              .foundation-module-handoff__checks {
+                grid-template-columns: 1fr !important;
+              }
+              .foundation-module-handoff__panel > div:last-child {
+                border-left: none !important;
+                border-top: 1px solid var(--ink-a10) !important;
+              }
+              .foundation-module-handoff button {
+                width: 100% !important;
+              }
+            }
+          `,
+        }}
+      />
+    </section>
+  );
 }
 
 export function ActivitySection({
@@ -84,9 +302,8 @@ export function ActivitySection({
   moduleNumber,
   existingResponses,
   isLastModule,
+  isAlreadyCompleted,
   onAllActivitiesComplete,
-  tables,
-  learnerRole = 'other',
 }: ActivitySectionProps) {
   // Track which activities have been submitted this session
   const [submittedIds, setSubmittedIds] = useState<Set<string>>(() => {
@@ -99,7 +316,75 @@ export function ActivitySection({
     return initial;
   });
 
-  const [progressSaved, setProgressSaved] = useState(false);
+  const [progressSaved, setProgressSaved] = useState(isAlreadyCompleted);
+  const [hasLabDraft, setHasLabDraft] = useState(false);
+  const [handoffNote, setHandoffNote] = useState('');
+  const [transferPlan, setTransferPlan] = useState('');
+  const [handoffError, setHandoffError] = useState<string | null>(null);
+  const [transferPlanError, setTransferPlanError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const moduleId = `aibi-p-module-${moduleNumber}`;
+    const storageKey = `foundation-lab-draft-${moduleId}`;
+
+    function readDraft() {
+      try {
+        setHasLabDraft(Boolean(localStorage.getItem(storageKey)));
+      } catch {
+        setHasLabDraft(false);
+      }
+    }
+
+    function handleDraftUpdate(event: Event) {
+      const custom = event as CustomEvent<unknown>;
+      const detail = custom.detail as { moduleId?: unknown } | undefined;
+      if (!detail || detail.moduleId === moduleId) {
+        readDraft();
+      }
+    }
+
+    readDraft();
+    window.addEventListener('foundation-lab-draft-updated', handleDraftUpdate);
+    window.addEventListener('storage', readDraft);
+    return () => {
+      window.removeEventListener('foundation-lab-draft-updated', handleDraftUpdate);
+      window.removeEventListener('storage', readDraft);
+    };
+  }, [moduleNumber]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      setHandoffNote(window.localStorage.getItem(`foundation-module-handoff-${moduleNumber}`) ?? '');
+    } catch {
+      setHandoffNote('');
+    }
+  }, [moduleNumber]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const savedResponsePlan = getSavedTransferPlanFromResponses(existingResponses);
+    try {
+      const stored = window.localStorage.getItem(`foundation-transfer-plan-${moduleNumber}`);
+      const nextValue = stored ?? savedResponsePlan;
+      setTransferPlan(nextValue);
+      if (!stored && savedResponsePlan) {
+        window.localStorage.setItem(`foundation-transfer-plan-${moduleNumber}`, savedResponsePlan);
+        window.dispatchEvent(
+          new CustomEvent('foundation-learning-signal-updated', {
+            detail: {
+              moduleNumber,
+              signal: 'transfer-plan',
+              active: savedResponsePlan.trim().length >= 12,
+              value: savedResponsePlan,
+            },
+          }),
+        );
+      }
+    } catch {
+      setTransferPlan(savedResponsePlan);
+    }
+  }, [existingResponses, moduleNumber]);
 
   // All activities are now routable — no more shell-only types
   const allSubmitted =
@@ -113,12 +398,65 @@ export function ActivitySection({
     });
   }, []);
 
+  const handleHandoffNoteChange = useCallback((value: string) => {
+    setHandoffNote(value);
+    setHandoffError(null);
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(`foundation-module-handoff-${moduleNumber}`, value);
+    } catch {
+      // Local persistence is helpful but not required to complete the module.
+    }
+    window.dispatchEvent(
+      new CustomEvent('foundation-module-handoff-updated', {
+        detail: { moduleNumber, value },
+      }),
+    );
+  }, [moduleNumber]);
+
+  const handleTransferPlanChange = useCallback((value: string) => {
+    setTransferPlan(value);
+    setTransferPlanError(null);
+    const ready = value.trim().length >= 12;
+    if (typeof window === 'undefined') return;
+    try {
+      if (value.trim()) {
+        window.localStorage.setItem(`foundation-transfer-plan-${moduleNumber}`, value);
+      } else {
+        window.localStorage.removeItem(`foundation-transfer-plan-${moduleNumber}`);
+      }
+    } catch {
+      // Local persistence is helpful but not required to complete the module.
+    }
+    window.dispatchEvent(
+      new CustomEvent('foundation-learning-signal-updated', {
+        detail: { moduleNumber, signal: 'transfer-plan', active: ready, value },
+      }),
+    );
+  }, [moduleNumber]);
+
   const handleSaveProgress = useCallback(async () => {
+    const trimmedHandoffNote = handoffNote.trim();
+    const trimmedTransferPlan = transferPlan.trim();
+    if (trimmedHandoffNote.length < 12) {
+      setHandoffError('Add one sentence about where this module will be used.');
+      return;
+    }
+    if (trimmedTransferPlan.length < 12) {
+      setTransferPlanError('Name the first realistic use before completing the module.');
+      return;
+    }
+
     try {
       const res = await fetch('/api/courses/save-progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enrollmentId, moduleNumber }),
+        body: JSON.stringify({
+          enrollmentId,
+          moduleNumber,
+          moduleHandoffNote: trimmedHandoffNote,
+          moduleTransferPlan: trimmedTransferPlan,
+        }),
       });
 
       if (res.ok) {
@@ -131,162 +469,129 @@ export function ActivitySection({
     } catch {
       // Silently fail — user can retry by clicking the button again
     }
-  }, [enrollmentId, moduleNumber, onAllActivitiesComplete]);
+  }, [enrollmentId, handoffNote, moduleNumber, onAllActivitiesComplete, transferPlan]);
 
   if (activities.length === 0) {
     return null;
   }
 
-  const drillScenarios = extractDrillScenarios(tables);
+  const artifactMeta = getArtifactFirst(moduleNumber);
+  const labBrief = getFoundationLabBrief(moduleNumber);
+  const activityCountLabel = `${activities.length} ${activities.length === 1 ? 'artifact step' : 'artifact steps'}`;
+  const artifactTarget = artifactMeta?.saved ?? 'Module artifact';
+  const proofTarget = labBrief?.qualitySignals[0] ?? artifactMeta?.mustProve ?? 'Evidence of human review';
 
   return (
-    <div className="mt-8">
-      <h2 className="font-sans text-2xl font-bold tracking-tight text-[color:var(--ink)] mb-6">
-        Activities
-      </h2>
+    <section className="mt-8" aria-labelledby={`module-${moduleNumber}-submit-heading`}>
+      <div
+        className="foundation-submit-brief"
+        style={{
+          border: '1px solid var(--ink-a10)',
+          borderRadius: 14,
+          background: '#fff',
+          marginBottom: 12,
+          padding: '12px 14px',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0, 1fr) auto',
+            gap: 12,
+            alignItems: 'center',
+          }}
+          className="foundation-submit-brief__grid"
+        >
+          <div style={{ minWidth: 0 }}>
+            <h2
+              id={`module-${moduleNumber}-submit-heading`}
+              style={{
+                margin: 0,
+                color: 'var(--ink)',
+                fontSize: 'clamp(16px, 1.5vw, 19px)',
+                lineHeight: 1.2,
+                letterSpacing: '-0.015em',
+                fontWeight: 850,
+              }}
+            >
+              Build {artifactTarget}
+            </h2>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              gap: 8,
+              flexWrap: 'wrap',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+            className="foundation-submit-brief__side"
+          >
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                minHeight: 30,
+                borderRadius: 999,
+                background: hasLabDraft ? 'var(--ink)' : 'var(--cream)',
+                color: hasLabDraft ? '#fff' : 'var(--ink)',
+                padding: '0 10px',
+                fontSize: 11,
+                fontWeight: 850,
+              }}
+            >
+              Lab: {hasLabDraft ? 'ready' : 'use sample data'}
+            </span>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                minHeight: 30,
+                borderRadius: 999,
+                background: 'var(--cream)',
+                color: 'var(--ink)',
+                padding: '0 10px',
+                fontSize: 11,
+                fontWeight: 850,
+              }}
+            >
+              {activityCountLabel}
+            </span>
+            {!hasLabDraft && (
+              <a
+                href="#st-sandbox"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  minHeight: 30,
+                  color: 'var(--ink)',
+                  fontSize: 11,
+                  fontWeight: 850,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Open lab
+              </a>
+            )}
+            <span
+              style={{
+                maxWidth: 260,
+                color: 'var(--slate-600)',
+                fontSize: 12,
+                lineHeight: 1.3,
+                fontWeight: 760,
+              }}
+            >
+              Proof: {proofTarget}
+            </span>
+          </div>
+        </div>
+      </div>
 
       {activities.map((activity) => {
         const existing = existingResponses[activity.id] ?? null;
 
-        // M6 Activity 6.1 — Skill Diagnosis
-        if (moduleNumber === 6 && activity.id === '6.1') {
-          return (
-            <SkillDiagnosis
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M7 Activity 7.1 — Skill Builder
-        if (moduleNumber === 7 && activity.id === '7.1') {
-          return (
-            <SkillBuilder
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-              learnerRole={learnerRole}
-            />
-          );
-        }
-
-        // M2 Activity 2.1 — Claim Review Lab (spot the AI hallucination)
-        if (moduleNumber === 2 && activity.id === '2.1') {
-          return (
-            <ClaimReviewLab
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M3 Activity 3.1 — Strategy Drill (match the task to the strategy)
-        if (moduleNumber === 3 && activity.id === '3.1') {
-          return (
-            <StrategyDrill
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M3 Activity 3.2 — Prompt Wizard (build a prompt that gets to the CORE)
-        if (moduleNumber === 3 && activity.id === '3.2') {
-          return (
-            <PromptWizard
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M9 Activity 9.1 — Safety Lab (spot → repair → re-run; completes the 5-move card)
-        if (moduleNumber === 9 && activity.id === '9.1') {
-          return (
-            <SafetyLab
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M8 Activity 8.1 — Iteration Tracker
-        if (activity.type === 'iteration') {
-          return (
-            <IterationTracker
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M5 Activity 5.1 — Classification Drill
-        if (activity.type === 'drill') {
-          // Drill scenarios must be present
-          if (drillScenarios.length === 0) {
-            return (
-              <p key={activity.id} className="text-base text-[color:var(--slate-500)]">
-                Classification drill scenarios not available.
-              </p>
-            );
-          }
-          return (
-            <ClassificationDrill
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              scenarios={drillScenarios}
-              existingResponse={
-                existing ? (existing as unknown as Record<string, unknown>) : null
-              }
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // M5 Activity 5.2 — Acceptable Use Card Builder
-        if (activity.type === 'builder' && moduleNumber === 5) {
-          return (
-            <AcceptableUseCardForm
-              key={activity.id}
-              activity={activity}
-              enrollmentId={enrollmentId}
-              moduleNumber={moduleNumber}
-              existingResponse={existing}
-              onSubmitSuccess={handleActivitySubmitted}
-            />
-          );
-        }
-
-        // All other activities (free-text, form, iteration) — generic ActivityForm
         return (
           <ActivityForm
             key={activity.id}
@@ -301,24 +606,49 @@ export function ActivitySection({
 
       {/* Progress save — only show when all activities are done */}
       {allSubmitted && !progressSaved && (
-        <div className="mt-6 pt-6 border-t border-[color:var(--ink-a10)]">
-          <p className="text-base font-sans text-[color:var(--slate-600)] mb-4">
-            All activities complete. Mark this module as done to continue.
-          </p>
-          <button
-            type="button"
-            onClick={handleSaveProgress}
-            className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] text-[color:var(--cream)] text-[11px] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
-          >
-            {isLastModule ? 'COMPLETE COURSE' : 'COMPLETE MODULE'}
-          </button>
-        </div>
+        <ModuleHandoffCheck
+          moduleNumber={moduleNumber}
+          isLastModule={isLastModule}
+          value={handoffNote}
+          transferPlanValue={transferPlan}
+          error={handoffError ?? undefined}
+          transferPlanError={transferPlanError ?? undefined}
+          onChange={handleHandoffNoteChange}
+          onTransferPlanChange={handleTransferPlanChange}
+          onComplete={handleSaveProgress}
+        />
       )}
 
       {/* CompletionCTA — shown after progress saved, contextual by module number */}
       {progressSaved && (
         <CompletionCTA moduleNumber={moduleNumber} isLastModule={isLastModule} />
       )}
-    </div>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 780px) {
+              .foundation-submit-brief {
+                border-radius: 16px !important;
+              }
+              .foundation-submit-brief__grid {
+                grid-template-columns: 1fr !important;
+              }
+              .foundation-submit-brief__side {
+                justify-items: start !important;
+                align-content: start !important;
+                border-left: none !important;
+                border-top: 1px solid var(--ink-a10) !important;
+                padding-left: 0 !important;
+                padding-top: 12px !important;
+              }
+              .foundation-submit-brief__side p {
+                text-align: left !important;
+                max-width: none !important;
+              }
+            }
+          `,
+        }}
+      />
+    </section>
   );
 }

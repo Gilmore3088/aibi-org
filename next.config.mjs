@@ -49,9 +49,6 @@ const nextConfig = {
   // /api/courses/artifacts/skill-templates/[name] can read + log them at
   // runtime (the route falls back to the static asset if this ever misses).
   outputFileTracingIncludes: {
-    '/api/assessment/pdf/warm': [
-      './node_modules/@sparticuz/chromium/bin/**/*',
-    ],
     '/api/courses/artifacts/skill-templates/[name]': [
       './public/artifacts/skill-templates/**',
     ],
@@ -199,6 +196,14 @@ const nextConfig = {
     // cover-chart animation — silently fail under the enforced CSP). Production
     // builds don't use eval, so it stays OUT of prod CSP. 2026-05-21.
     const devEval = process.env.NODE_ENV === 'production' ? '' : " 'unsafe-eval'";
+    const localSupabaseConnect =
+      process.env.NODE_ENV === 'production'
+        ? ''
+        : ' http://127.0.0.1:54321 http://localhost:54321 ws://127.0.0.1:54321 ws://localhost:54321';
+    const localSupabaseMedia =
+      process.env.NODE_ENV === 'production'
+        ? ''
+        : ' http://127.0.0.1:54321 http://localhost:54321';
     const csp = [
       "default-src 'self'",
       // Next.js inlines hydration scripts; without 'unsafe-inline' the page
@@ -208,9 +213,9 @@ const nextConfig = {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       // data:/blob: for image-resize previews and inline SVGs.
-      "img-src 'self' data: blob: https://*.supabase.co https://*.stripe.com https://q.stripe.com",
+      `img-src 'self' data: blob: https://*.supabase.co${localSupabaseMedia} https://*.stripe.com https://q.stripe.com`,
       "media-src 'self' blob:",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://*.stripe.com https://*.vercel-insights.com https://vitals.vercel-insights.com",
+      `connect-src 'self' https://*.supabase.co wss://*.supabase.co${localSupabaseConnect} https://api.stripe.com https://*.stripe.com https://*.vercel-insights.com https://vitals.vercel-insights.com`,
       "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://*.calendly.com",
       "frame-ancestors 'self'",
       "form-action 'self' https://checkout.stripe.com https://*.calendly.com",
@@ -218,8 +223,8 @@ const nextConfig = {
       "object-src 'none'",
       "manifest-src 'self'",
       "worker-src 'self' blob:",
-      "upgrade-insecure-requests",
-    ].join('; ');
+      process.env.NODE_ENV === 'production' ? 'upgrade-insecure-requests' : '',
+    ].filter(Boolean).join('; ');
 
     return [
       {

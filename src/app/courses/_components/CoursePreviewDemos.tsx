@@ -3,7 +3,7 @@
 // CoursePreview with 5 concrete animated demos —
 // replaces the prior abstract-illustration preview (bars/dots/lines).
 // Each preview mirrors a current Foundation artifact:
-// rewritten email, claim review, prompt builder, workflow map, final lab.
+// rewritten email, claim review, prompt builder, skill builder, workflow map, final packet.
 //
 // Ported from /Users/jgmbp/Downloads/aibi_course_preview_artifact_simulator (2).jsx
 // (the polished JSX the user shared 2026-05-28). No lucide / no shadcn —
@@ -50,38 +50,45 @@ interface ModuleData {
 
 const MODULES: readonly ModuleData[] = [
   {
-    title: 'Rewrite a work note',
+    title: 'Name the safe boundary',
     eyebrow: 'Module 01',
-    lesson: 'Turn a rushed internal note into a clear staff bulletin.',
+    lesson: 'Separate draft support from human-owned banking decisions.',
     artifact: ARTIFACT_FIRST_BY_MODULE[1].saved,
     icon: BookIcon,
   },
   {
     title: 'Catch bad AI claims',
-    eyebrow: 'Module 02',
+    eyebrow: 'Module 03',
     lesson: 'Flag numbers, dates, names, and policy claims before trusting output.',
-    artifact: ARTIFACT_FIRST_BY_MODULE[2].saved,
+    artifact: ARTIFACT_FIRST_BY_MODULE[3].saved,
     icon: ChatIcon,
   },
   {
     title: 'Build a reusable prompt',
-    eyebrow: 'Module 03',
+    eyebrow: 'Module 04',
     lesson: 'Turn a weak prompt into a reusable strategy with review rules.',
-    artifact: ARTIFACT_FIRST_BY_MODULE[3].saved,
+    artifact: ARTIFACT_FIRST_BY_MODULE[4].saved,
+    icon: WorkflowIcon,
+  },
+  {
+    title: 'Build a reusable skill',
+    eyebrow: 'Module 13',
+    lesson: 'Turn a repeated task into a saved skill template.',
+    artifact: ARTIFACT_FIRST_BY_MODULE[13].saved,
     icon: WorkflowIcon,
   },
   {
     title: 'Map a workflow',
-    eyebrow: 'Module 08',
+    eyebrow: 'Module 14',
     lesson: 'Mark AI steps, human handoffs, and blocked decisions.',
-    artifact: ARTIFACT_FIRST_BY_MODULE[8].saved,
+    artifact: ARTIFACT_FIRST_BY_MODULE[14].saved,
     icon: FileIcon,
   },
   {
-    title: 'Package the final lab',
-    eyebrow: 'Module 12',
+    title: 'Review the final packet',
+    eyebrow: 'Module 18',
     lesson: 'Show safe prompting, verification, limits, and human judgment.',
-    artifact: ARTIFACT_FIRST_BY_MODULE[12].saved,
+    artifact: ARTIFACT_FIRST_BY_MODULE[18].saved,
     icon: SparklesIcon,
   },
 ];
@@ -118,8 +125,8 @@ export function CoursePreviewDemos() {
       {/* Header band */}
       <div className="cpd-head">
         <div>
-          <p className="cpd-kicker cpd-kicker-on-dark">Prompt Builder preview</p>
-          <h3 className="cpd-head-h">From weak prompt to reusable skill pattern.</h3>
+          <p className="cpd-kicker cpd-kicker-on-dark">Builder previews</p>
+          <h3 className="cpd-head-h">Use the builder. Save the reusable template.</h3>
         </div>
         <div className="cpd-controls">
           <div className="cpd-frame-controls" role="group" aria-label="Preview steps">
@@ -228,12 +235,14 @@ function ModuleDemo({
       return <ClaimReviewDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
     case 'Build a reusable prompt':
       return <PromptTypingDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
+    case 'Build a reusable skill':
+      return <SkillBuilderDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
     case 'Rewrite a work note':
       return <SkillFileDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
     case 'Map a workflow':
       return <WorkflowDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
-    case 'Package the final lab':
-      return <AgentDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
+    case 'Review the final packet':
+      return <FinalPackageDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
     default:
       return <ClaimReviewDemo frameIndex={frameIndex} artifact={activeModule.artifact} />;
   }
@@ -352,6 +361,92 @@ function PromptTypingDemo({ frameIndex, artifact }: { frameIndex: number; artifa
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    </DemoShell>
+  );
+}
+
+// ---------- Demo: Skill builder ----------
+
+const SKILL_BUILDER_FIELDS = [
+  {
+    label: 'Role',
+    value: 'Branch operations lead',
+    note: 'Who will reuse the skill',
+  },
+  {
+    label: 'Task',
+    value: 'Summarize daily exception notes',
+    note: 'The repeated work pattern',
+  },
+  {
+    label: 'Format',
+    value: 'Action table with owner and deadline',
+    note: 'What the output must look like',
+  },
+  {
+    label: 'Constraint',
+    value: 'Use placeholders. No customer identifiers.',
+    note: 'The safety boundary',
+  },
+] as const;
+
+const SKILL_TEMPLATE_LINES = [
+  '# Reusable Skill Template',
+  'Name: Daily exception-note summary',
+  'Role: Branch operations lead',
+  'Task: Summarize exception notes',
+  'Format: Action table',
+  'Constraints:',
+  '- Replace names with placeholders',
+  '- Flag missing source detail as [VERIFY]',
+  '- Human reviewer owns final use',
+  'Reuse: paste into approved AI tool',
+] as const;
+
+const SKILL_TEMPLATE_VISIBLE_COUNTS = [3, 5, 8, SKILL_TEMPLATE_LINES.length] as const;
+
+function SkillBuilderDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
+  const visibleCount = SKILL_TEMPLATE_VISIBLE_COUNTS[frameIndex];
+  const saved = frameIndex >= 3;
+
+  return (
+    <DemoShell artifact={artifact} label="Skill Builder turns repeated work into a reusable template">
+      <div className="cpd-skill-grid">
+        <div className="cpd-demo-card cpd-tf">
+          {SKILL_BUILDER_FIELDS.map((field, index) => {
+            const active = frameIndex >= Math.min(index, 3);
+            return (
+              <div key={field.label} className={`cpd-tf-row${active ? ' is-active' : ''}`}>
+                <div>
+                  <p className="cpd-kicker">{field.label}</p>
+                  <p className="cpd-tf-task">{field.value}</p>
+                  <p className="cpd-tf-control">{field.note}</p>
+                </div>
+                <span className="cpd-tf-pill">{active ? 'set' : 'draft'}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="cpd-skill-file">
+          <div className="cpd-skill-file-bar">
+            <span className="cpd-skill-file-name">
+              <FileIcon size={14} /> reusable-skill-template.md
+            </span>
+            <span className={`cpd-skill-file-status${saved ? ' is-saved' : ''}`}>
+              {saved ? 'saved' : 'draft'}
+            </span>
+          </div>
+          <pre className="cpd-skill-file-pre">
+            {SKILL_TEMPLATE_LINES.slice(0, visibleCount).map((line, i) => (
+              <div key={`${line}-${i}`} className="cpd-skill-line" style={{ animationDelay: `${i * 0.025}s` }}>
+                {line || ' '}
+              </div>
+            ))}
+            <span className="cpd-cursor cpd-cursor-on-dark" aria-hidden />
+          </pre>
         </div>
       </div>
     </DemoShell>
@@ -556,7 +651,7 @@ const AGENT_DRAFT_LINES = [
   },
 ] as const;
 
-function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
+function FinalPackageDemo({ frameIndex, artifact }: { frameIndex: number; artifact: string }) {
   const needsApproval = frameIndex >= 3;
   const drafting = frameIndex >= 2;
 
@@ -648,7 +743,7 @@ function AgentDemo({ frameIndex, artifact }: { frameIndex: number; artifact: str
               <div>
                 <p className="cpd-kicker cpd-kicker-gold">Manager approval</p>
                 <p className="cpd-agent-approval-text">
-                  The agent waits here. A human reviews the draft before it is saved or shared.
+                  The draft stops here. A human reviews the package before it is saved or shared.
                 </p>
               </div>
             </div>

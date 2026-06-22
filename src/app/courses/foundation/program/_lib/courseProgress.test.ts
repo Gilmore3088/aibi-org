@@ -2,7 +2,12 @@
 // No test framework installed; uses a lightweight assert-and-throw pattern.
 
 import { canAccessModule, getModuleStatus, getPillarStatus } from './courseProgress';
-import type { Module, Pillar } from '@content/courses/foundation-program';
+import {
+  FOUNDATION_FINAL_MODULE_NUMBER,
+  FOUNDATION_MODULE_COUNT,
+  type Module,
+  type Pillar,
+} from '@content/courses/foundation-program';
 
 // ---------------------------------------------------------------------------
 // Minimal test harness
@@ -61,8 +66,16 @@ suite('canAccessModule', () => {
   assert(canAccessModule(3, [2]) === false, 'module 3 locked when module 1 missing (even if 2 present)');
   assert(canAccessModule(5, [1, 2, 3, 4]) === true, 'module 5 accessible when all prior completed');
   assert(canAccessModule(5, [1, 2, 4]) === false, 'module 5 locked when module 3 missing (gap)');
-  assert(canAccessModule(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) === true, 'module 12 accessible when all prior completed');
-  assert(canAccessModule(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) === false, 'module 12 locked when module 11 missing');
+  const priorToFinal = Array.from({ length: FOUNDATION_MODULE_COUNT - 1 }, (_, i) => i + 1);
+  const missingPrevious = priorToFinal.slice(0, -1);
+  assert(
+    canAccessModule(FOUNDATION_FINAL_MODULE_NUMBER, priorToFinal) === true,
+    `module ${FOUNDATION_FINAL_MODULE_NUMBER} accessible when all prior completed`,
+  );
+  assert(
+    canAccessModule(FOUNDATION_FINAL_MODULE_NUMBER, missingPrevious) === false,
+    `module ${FOUNDATION_FINAL_MODULE_NUMBER} locked when the previous module is missing`,
+  );
 });
 
 // ---------------------------------------------------------------------------
@@ -76,7 +89,14 @@ suite('getModuleStatus', () => {
   assert(getModuleStatus(5, [1, 2], 3) === 'locked', 'module beyond current → locked');
   assert(getModuleStatus(1, [], 1) === 'current', 'module 1 is current when nothing completed');
   assert(getModuleStatus(2, [], 1) === 'locked', 'module 2 locked when nothing completed');
-  assert(getModuleStatus(12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 12) === 'completed', 'module 12 completed when in array');
+  assert(
+    getModuleStatus(
+      FOUNDATION_FINAL_MODULE_NUMBER,
+      Array.from({ length: FOUNDATION_MODULE_COUNT }, (_, i) => i + 1),
+      FOUNDATION_FINAL_MODULE_NUMBER,
+    ) === 'completed',
+    `module ${FOUNDATION_FINAL_MODULE_NUMBER} completed when in array`,
+  );
 });
 
 // ---------------------------------------------------------------------------

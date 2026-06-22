@@ -147,7 +147,7 @@ export function IterationTracker({
     >
       <div className="px-6 pt-6 pb-5">
         <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">
-          Activity {activity.id}
+          Artifact step {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-sans text-xl font-bold tracking-tight text-[color:var(--ink)] mb-2">{activity.title}</h3>
@@ -212,7 +212,7 @@ export function IterationTracker({
             )}
             <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
               <p className="text-sm font-sans text-[color:var(--slate-600)] mb-3 leading-relaxed">
-                Submitting will save your iteration notes.{state.originalSkillMd ? ' An updated .md file (v1.1) with your revision notes will also download automatically.' : ''}
+                Saving will add your iteration notes to the packet.{state.originalSkillMd ? ' An updated .md file (v1.1) with your revision notes will also download automatically.' : ''}
               </p>
               <button
                 type="submit"

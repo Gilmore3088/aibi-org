@@ -1,6 +1,7 @@
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
+import { FOUNDATION_MODULE_COUNT } from '@content/courses/foundation-program';
 
 export interface AssessmentGap {
   readonly id: Dimension;
@@ -55,7 +56,7 @@ export function getAssessmentNextStep(tierId: Tier['id']): AssessmentNextStep {
       return {
         title: 'Move from usage to measured wins.',
         description:
-          'Your next step is the AiBI-Foundation course — twelve modules to turn experimentation into documented workflows your examiner can read.',
+          `Your next step is the AiBI-Foundation course — ${FOUNDATION_MODULE_COUNT} bite-sized modules to turn experimentation into documented workflows your examiner can read.`,
         href: '/courses/foundation/program/purchase',
         cta: 'Enroll · $295',
       };

@@ -1,5 +1,5 @@
 /**
- * PII Scanner for the AI Practice Sandbox.
+ * PII scanner for AiBI Lab.
  *
  * Scans free-text input for personally identifiable information (SSNs,
  * account numbers, emails, phone numbers, dates of birth) before the

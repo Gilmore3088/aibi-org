@@ -9,7 +9,7 @@
 //   T-07-01: Auth session validated via getUser(); enrollment.user_id must match authenticated user.
 //   T-07-02: skillFileUrl validated as a path starting with enrollmentId/ (bucket-scoped).
 //   T-07-04: Returns generic 403 for ownership failures — does not reveal other users' data.
-//   T-07-05: Presigned URL generated only for authenticated enrolled users with 12 modules complete.
+//   T-07-05: Presigned URL generated only for authenticated enrolled users with all modules complete.
 //   T-07-06: Only 'failed' submissions may transition to 'resubmitted'; only once.
 
 import { NextResponse } from 'next/server';
@@ -17,8 +17,9 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getPresignedUploadUrl, isValidStoragePath } from '@/lib/supabase/storage';
+import { foundationCourseConfig } from '@content/courses/foundation-program';
 
-const TOTAL_MODULES = 12;
+const TOTAL_MODULES = foundationCourseConfig.modules.length;
 const MIN_INPUT_TEXT = 50;
 const MIN_RAW_OUTPUT_TEXT = 50;
 const MIN_EDITED_OUTPUT_TEXT = 100;
@@ -153,10 +154,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    // T-07-05: Only enrolled users who completed all 12 modules can generate upload URLs
+    // T-07-05: Only enrolled users who completed all modules can generate upload URLs
     if (!allModulesComplete(enrollment.completed_modules)) {
       return NextResponse.json(
-        { error: 'All 12 modules must be complete before uploading a work product.' },
+        { error: `All ${TOTAL_MODULES} modules must be complete before uploading a work product.` },
         { status: 403 },
       );
     }
@@ -210,7 +211,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // Module completion check
   if (!allModulesComplete(enrollment.completed_modules)) {
     return NextResponse.json(
-      { error: 'All 12 modules must be complete before submitting a work product.' },
+      { error: `All ${TOTAL_MODULES} modules must be complete before submitting a work product.` },
       { status: 403 },
     );
   }

@@ -201,9 +201,9 @@ export function OutputGalleryClient() {
         <p style={kickerStyle}>Reference · Exemplary outputs</p>
         <h1 style={headlineStyle}>Output gallery</h1>
         <p style={ledeStyle}>
-          Twelve real outputs across six banking departments — the same quality
-          your capstone submission is evaluated against. Tap a tile to expand
-          its full text, prompt, and the markers that make it effective.
+          Sample banking outputs across six departments — the same quality your
+          final packet is evaluated against. Tap a tile to expand its full text,
+          prompt, and the markers that make it effective.
         </p>
       </header>
 

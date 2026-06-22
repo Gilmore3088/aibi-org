@@ -26,6 +26,8 @@
     "e2e:a11y": "playwright test e2e/a11y.spec.ts",
     "audit:env": "node scripts/audit-env.mjs",
     "audit:env:strict": "node scripts/audit-env.mjs --strict",
+    "check:course-schema": "node scripts/check-course-schema.mjs",
+    "check:course-schema:strict": "node scripts/check-course-schema.mjs --strict",
     "e2e:install": "playwright install --with-deps chromium webkit",
     "hubspot:create-properties": "node scripts/hubspot-create-properties.mjs",
     "hubspot:create-properties:dry": "node scripts/hubspot-create-properties.mjs --dry-run"

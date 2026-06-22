@@ -1,5 +1,5 @@
 /**
- * Prompt injection filter for the AI Practice Sandbox.
+ * Prompt injection filter for AiBI Lab.
  *
  * Scans learner input for common jailbreak and prompt-override patterns.
  * Uses word-boundary matching and contextual exclusions to avoid

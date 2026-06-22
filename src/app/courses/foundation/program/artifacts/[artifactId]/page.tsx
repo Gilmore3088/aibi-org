@@ -17,10 +17,6 @@ interface ArtifactPageProps {
 
 export const dynamic = 'force-dynamic';
 
-export function generateStaticParams() {
-  return FOUNDATION_ARTIFACTS.map((artifact) => ({ artifactId: artifact.id }));
-}
-
 export async function generateMetadata(props: ArtifactPageProps) {
   const params = await props.params;
   const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === params.artifactId);

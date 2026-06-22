@@ -9,13 +9,30 @@ export function Paywall() {
         Toolbox
       </p>
       <h1 className="mt-3 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
-        Included with any paid course
+        Reusable banking AI assets live here.
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-[color:var(--slate-600)]">
-        The Toolbox — Skill Builder, Library, multi-provider Playground, and
-        Cookbook — is bundled with every paid enrollment in AiBI-Foundation.
-        Enroll in the course and your access turns on automatically.
+        The Foundation Packet proves what you built in the course. The Toolbox
+        is where tested prompts, playbooks, and reusable workflows live after
+        you run them through the AiBI Lab. Access is included with every paid
+        AiBI-Foundation enrollment.
       </p>
+      <div className="mt-8 grid gap-3 border-y border-[color:var(--ink-a10)] py-5 sm:grid-cols-3">
+        {[
+          ['Library', 'Start from banker-vetted playbooks.'],
+          ['AiBI Lab', 'Test with sample facts and selected models.'],
+          ['My Toolbox', 'Save trusted, reusable versions.'],
+        ].map(([label, body]) => (
+          <div key={label}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+              {label}
+            </p>
+            <p className="mt-2 text-sm font-semibold leading-snug text-[color:var(--slate-600)]">
+              {body}
+            </p>
+          </div>
+        ))}
+      </div>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">
         <Link
           href="/courses"

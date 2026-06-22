@@ -1,6 +1,6 @@
-// ArtifactThumbnails — the four required outputs rendered as visible
-// artifact cards (not bullet points). Each card shows a recognizable
-// preview of the artifact a learner walks away with.
+// ArtifactThumbnails — representative previews from the 18-piece Foundation
+// Packet. Each card shows a recognizable work product a learner walks away
+// with, without making the section read like another long curriculum list.
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
@@ -95,7 +95,7 @@ const ARTIFACTS: readonly Artifact[] = [
     ),
   },
   {
-    kicker: 'Assessment · Module 12',
+    kicker: 'Assessment · Module 18',
     title: 'Final practical assessment',
     description: 'A reviewed work-product package graded against the rubric. The credential is awarded on a passing score.',
     preview: (
@@ -156,7 +156,7 @@ export function ArtifactThumbnails() {
             color: 'var(--ink)',
           }}
         >
-          Four artifacts you keep.
+          Four previews from the 18-piece Foundation Packet.
         </h2>
       </div>
 

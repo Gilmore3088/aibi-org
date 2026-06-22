@@ -23,7 +23,7 @@ interface Props {
 // over content below the global SiteNav and "never went away" while scrolling
 // (a second mystery hamburger). In normal flow it sits at the top of the
 // course column on mobile, scrolls away with the page, and reads as an
-// intentional "Course menu" control. Hidden on desktop via the md:hidden
+// intentional "Course menu" control. Hidden on desktop via the lg:hidden
 // wrapper (the rail is visible there). The open drawer below stays fixed.
 const buttonStyle: CSSProperties = {
   display: 'inline-flex',
@@ -115,11 +115,11 @@ export function LMSMobileNav({ modules, completed, current, learner }: Props) {
 
   return (
     <>
-      {/* Wrapper carries md:hidden so Tailwind's display:none on desktop
+      {/* Wrapper carries lg:hidden so Tailwind's display:none on desktop
           beats the button's inline display:inline-flex (inline styles
           otherwise win the specificity battle and the button leaks onto
           desktop where the sidebar is already visible). */}
-      <div className="md:hidden">
+      <div className="lms-mobile-nav lg:hidden">
         <button
           type="button"
           style={buttonStyle}
@@ -134,7 +134,7 @@ export function LMSMobileNav({ modules, completed, current, learner }: Props) {
       </div>
 
       {open && (
-        <div className="md:hidden">
+        <div className="lms-mobile-drawer lg:hidden">
           <div
             style={backdropStyle}
             onClick={() => setOpen(false)}

@@ -404,7 +404,7 @@ export function ClaimReviewLab({
                 color: canSubmit ? 'var(--cream)' : 'var(--slate-500)',
               }}
             >
-              {submitting ? 'Submitting…' : 'Submit Claim Review'}
+              {submitting ? 'Saving…' : 'Save claim review'}
             </button>
           )}
         </aside>

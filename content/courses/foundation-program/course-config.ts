@@ -99,7 +99,7 @@ export const foundationCourseConfig: CourseConfig = {
     sectionLabel: 'Pillar',
   },
   promise:
-    'In less than two weeks, every community banking employee can write better, summarize faster, think clearer, and avoid risky AI mistakes — safely and confidently, on the model your institution already trusts.',
+    'In bite-sized labs, community banking employees learn AI from the primitives: safe drafts, reusable prompts, simple skills, workflow checkpoints, and reviewable evidence.',
   audience: 'Community bank and credit union employees',
   sections: FOUNDATION_SECTIONS,
   modules: modules.map((mod) => ({
@@ -126,6 +126,13 @@ export const FOUNDATION_TOTAL_MINUTES = foundationCourseConfig.modules.reduce(
   (total, mod) => total + mod.estimatedMinutes,
   0,
 );
+
+/** Current Foundation course shape. Keep visible copy and completion gates derived from this. */
+export const FOUNDATION_MODULE_COUNT = foundationCourseConfig.modules.length;
+export const FOUNDATION_FINAL_MODULE_NUMBER: number =
+  Number(foundationCourseConfig.modules[foundationCourseConfig.modules.length - 1]?.number) ||
+  FOUNDATION_MODULE_COUNT;
+export const FOUNDATION_PACKET_ARTIFACT_COUNT = FOUNDATION_MODULE_COUNT;
 
 /** Look up Foundation-specific metadata by harness module id. */
 export function getFoundationModuleMeta(moduleId: string): FoundationModuleMeta | null {

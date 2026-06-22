@@ -10,6 +10,7 @@
 // `/api/courses/generate-module-artifact` does the merge.
 
 import type { Activity } from '@content/courses/foundation-program/types';
+import { FOUNDATION_MICRO_MODULES } from './micro-modules';
 
 export interface ModuleActivitySpec {
   readonly moduleNumber: number;
@@ -90,7 +91,7 @@ const MODULE_ACTIVITIES: Record<number, ModuleActivitySpec> = {
 
 ---
 
-This is one of twelve workday wins from the AiBI-Foundation course at
+This is one of the saved work products from the AiBI-Foundation course at
 The AI Banking Institute. Each artifact is the banker's own work product;
 the AI assistance is a tool, the banker's judgment is what makes it safe.
 `,
@@ -889,101 +890,384 @@ language drift faster than you expect.
 
   12: {
     moduleNumber: 12,
-    title: 'Submit your final practitioner lab',
+    title: 'Build your safe-use checklist',
     description:
-      'Package one real workflow you built into a credentialing-grade submission. The artifact is the lab itself — also what the credential reviewer reads.',
+      'Classify what can enter AI before the prompt is written. The artifact is a reusable green/yellow/red checklist for daily work.',
     fields: [
       {
-        id: 'skill_summary',
-        label: '1. The Skill (one sentence)',
+        id: 'green_examples',
+        label: 'Green examples',
         type: 'textarea',
-        placeholder: 'Role + verb + boundary.',
+        placeholder: 'Low-risk drafting, formatting, or summarizing work that uses no sensitive data.',
         minLength: 50,
         required: true,
       },
       {
-        id: 'sample_input',
-        label: '2. Sample Input (sanitized)',
+        id: 'yellow_examples',
+        label: 'Yellow examples',
         type: 'textarea',
+        placeholder: 'Approved-tool or supervisor-reviewed work where source, policy, or internal context matters.',
         minLength: 50,
         required: true,
       },
       {
-        id: 'raw_output',
-        label: '3. Raw AI Output (verbatim)',
+        id: 'red_examples',
+        label: 'Red examples',
         type: 'textarea',
-        minLength: 100,
-        required: true,
-      },
-      {
-        id: 'edited_output',
-        label: '4. Edited Output + Annotations',
-        type: 'textarea',
-        placeholder: 'Inline annotations explaining every correction.',
-        minLength: 100,
-        required: true,
-      },
-      {
-        id: 'reviewer_notes',
-        label: '5. Human Review Notes',
-        type: 'textarea',
+        placeholder: 'Customer NPI, credit decisions, SARs, examiner material, or confidential strategy.',
         minLength: 50,
         required: true,
       },
       {
-        id: 'pledge',
-        label: '6. Safe AI Use Pledge (signed)',
+        id: 'escalation_rule',
+        label: 'Escalation rule',
         type: 'textarea',
-        minLength: 200,
+        placeholder: 'When do you stop, ask a manager, use only an approved tool, or avoid AI entirely?',
+        minLength: 50,
+        required: true,
+      },
+      {
+        id: 'review_note',
+        label: 'Human review note',
+        type: 'textarea',
+        placeholder: 'Who reviews yellow-zone work before the output affects a customer, report, control, or decision?',
+        minLength: 50,
         required: true,
       },
     ],
-    artifactFilename: 'aibi-p-m12-final-lab.md',
-    artifactTemplate: `# AiBI-Foundation Final Foundation Lab
+    artifactFilename: 'aibi-foundation-m12-safe-use-checklist.md',
+    artifactTemplate: `# Module 12 - Safe-Use Checklist
 
 **Banker:** {{name}}
-**Submission date:** {{date}}
+**Date:** {{date}}
 
-## 1. The Skill
+## Green examples
 
-{{skill_summary}}
+{{green_examples}}
 
-## 2. Sample Input
+## Yellow examples
 
-{{sample_input}}
+{{yellow_examples}}
 
-## 3. Raw AI Output
+## Red examples
 
-\`\`\`
-{{raw_output}}
-\`\`\`
+{{red_examples}}
 
-## 4. Edited Output + Annotations
+## Escalation rule
 
-{{edited_output}}
+{{escalation_rule}}
 
-## 5. Human Review Notes
+## Human review note
 
-{{reviewer_notes}}
+{{review_note}}
 
-## 6. Safe AI Use Pledge
+## Banking guardrail
 
-{{pledge}}
+Red-zone data and decisions stay out of unapproved tools. Escalate rather than sanitize when the decision impact is high.
 
 ---
 
-Submitted to The AI Banking Institute for review and credentialing as
-AiBI-Foundation.
+Saved to the AiBI-Foundation Packet.
 `,
   },
 };
 
-export const MODULE_ACTIVITIES_BY_NUMBER = MODULE_ACTIVITIES;
+function buildMicroActivitySpec(
+  module: (typeof FOUNDATION_MICRO_MODULES)[number],
+): ModuleActivitySpec {
+  const slug = module.saveArtifact
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  return {
+    moduleNumber: module.number,
+    title: `Build: ${module.saveArtifact}`,
+    description: module.buildTask,
+    fields: [
+      {
+        id: 'artifact_draft',
+        label: 'What did you build?',
+        type: 'textarea',
+        placeholder: module.saveArtifact,
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'review_note',
+        label: 'What did you check before saving it?',
+        type: 'textarea',
+        placeholder: module.reviewChecklist.join('; '),
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'first_use',
+        label: 'Where will you reuse this at work?',
+        type: 'textarea',
+        placeholder: module.transferMove,
+        minLength: 24,
+        required: true,
+      },
+    ],
+    artifactFilename: `aibi-foundation-m${module.number}-${slug}.md`,
+    artifactTemplate: `# Module ${module.number} - ${module.saveArtifact}
+
+**Banker:** {{name}}
+**Date:** {{date}}
+
+## What I built
+
+{{artifact_draft}}
+
+## Review note
+
+{{review_note}}
+
+## First reuse
+
+{{first_use}}
+
+## Banking guardrail
+
+${module.bankingGuardrail}
+
+---
+
+Saved to the AiBI-Foundation Packet.
+`,
+  };
+}
+
+const GENERATED_MICRO_MODULE_ACTIVITIES_BY_NUMBER = Object.fromEntries(
+  FOUNDATION_MICRO_MODULES.map((module) => [
+    module.number,
+    buildMicroActivitySpec(module),
+  ]),
+) as Record<number, ModuleActivitySpec>;
+
+const MICRO_MODULE_ACTIVITY_OVERRIDES: Partial<Record<number, ModuleActivitySpec>> = {
+  15: {
+    moduleNumber: 15,
+    title: 'Build: Human Review Gate Card',
+    description:
+      'Create a gate card that names the pause, reviewer authority, escalation trigger, and resume condition.',
+    fields: [
+      {
+        id: 'paused_work',
+        label: 'What work pauses at the gate?',
+        type: 'textarea',
+        placeholder: 'Example: AI drafts the staff-facing procedure update, but the draft pauses before distribution.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'reviewer_decision',
+        label: 'Who can approve, edit, block, or escalate?',
+        type: 'textarea',
+        placeholder: 'Name the role and the decision authority they have before the work moves forward.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'escalation_trigger',
+        label: 'What forces escalation?',
+        type: 'textarea',
+        placeholder: 'Example: Stop if the output references customer-specific decisions, unsupported policy claims, or missing source material.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'resume_condition',
+        label: 'What must be true before work resumes?',
+        type: 'textarea',
+        placeholder: 'Example: Reviewer approves the corrected draft, source gaps are resolved, and blocked details are removed.',
+        minLength: 24,
+        required: true,
+      },
+    ],
+    artifactFilename: 'aibi-foundation-m15-human-review-gate-card.md',
+    artifactTemplate: `# Module 15 - Human Review Gate Card
+
+**Banker:** {{name}}
+**Date:** {{date}}
+
+## Work that pauses at the gate
+
+{{paused_work}}
+
+## Reviewer decision authority
+
+{{reviewer_decision}}
+
+## Escalation trigger
+
+{{escalation_trigger}}
+
+## Resume condition
+
+{{resume_condition}}
+
+## Banking guardrail
+
+Human review only counts when the reviewer can approve, edit, block, or escalate before impact.
+
+---
+
+Saved to the AiBI-Foundation Packet.
+`,
+  },
+  16: {
+    moduleNumber: 16,
+    title: 'Build: AI Evidence Note',
+    description:
+      'Write a five-line evidence note for one AI-assisted work product.',
+    fields: [
+      {
+        id: 'prompt_and_source',
+        label: 'What did you ask AI to do?',
+        type: 'textarea',
+        placeholder: 'Summarize the prompt and source used. Do not include sensitive data.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'raw_output_summary',
+        label: 'What did AI draft before review?',
+        type: 'textarea',
+        placeholder: 'What did the AI produce before human review? Name any unsupported claims or weak spots.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'human_edits',
+        label: 'What did you verify or change?',
+        type: 'textarea',
+        placeholder: 'What did you change, remove, verify, or escalate before saving the artifact?',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'final_owner_boundary',
+        label: 'Who owns it, and when can it be reused?',
+        type: 'textarea',
+        placeholder: 'Who owns the final output, and when should this evidence note be reviewed before reuse?',
+        minLength: 24,
+        required: true,
+      },
+    ],
+    artifactFilename: 'aibi-foundation-m16-ai-evidence-note.md',
+    artifactTemplate: `# Module 16 - AI Evidence Note
+
+**Banker:** {{name}}
+**Date:** {{date}}
+
+## Ask and source
+
+{{prompt_and_source}}
+
+## AI draft
+
+{{raw_output_summary}}
+
+## Banker verification and edits
+
+{{human_edits}}
+
+## Owner and reuse boundary
+
+{{final_owner_boundary}}
+
+## Banking guardrail
+
+When AI supports reviewed work, keep enough proof for a manager, auditor, or compliance partner to understand what changed.
+
+---
+
+Saved to the AiBI-Foundation Packet.
+`,
+  },
+  17: {
+    moduleNumber: 17,
+    title: 'Build: Reusable Workflow Kit',
+    description:
+      'Package one tested prompt or skill with allowed inputs, review gate, evidence note, and peer test.',
+    fields: [
+      {
+        id: 'workflow_purpose',
+        label: 'What job and inputs does this kit allow?',
+        type: 'textarea',
+        placeholder: 'What work does this support? What inputs are allowed, and what inputs are blocked?',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'prompt_or_skill',
+        label: 'Paste the reusable prompt or skill card',
+        type: 'textarea',
+        placeholder: 'Paste the reusable prompt, skill steps, or operating pattern with placeholders.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'checkpoint_and_escalation',
+        label: 'Name blocked uses and the review gate',
+        type: 'textarea',
+        placeholder: 'Cite the reviewer, review gate, escalation trigger, and evidence note that travel with the kit.',
+        minLength: 24,
+        required: true,
+      },
+      {
+        id: 'peer_test_plan',
+        label: 'How will a peer test it before reuse?',
+        type: 'textarea',
+        placeholder: 'How will one peer or manager test this package before it becomes a team habit?',
+        minLength: 24,
+        required: true,
+      },
+    ],
+    artifactFilename: 'aibi-foundation-m17-reusable-workflow-kit.md',
+    artifactTemplate: `# Module 17 - Reusable Workflow Kit
+
+**Banker:** {{name}}
+**Date:** {{date}}
+
+## Job and allowed inputs
+
+{{workflow_purpose}}
+
+## Reusable prompt or skill card
+
+{{prompt_or_skill}}
+
+## Blocked uses and review gate
+
+{{checkpoint_and_escalation}}
+
+## Peer test plan before reuse
+
+{{peer_test_plan}}
+
+## Banking guardrail
+
+Do not treat a workflow kit as team-ready until inputs, blocked uses, reviewer, escalation path, evidence, and peer test are explicit.
+
+---
+
+Saved to the AiBI-Foundation Packet.
+`,
+  },
+};
+
+export const MODULE_ACTIVITIES_BY_NUMBER = {
+  ...GENERATED_MICRO_MODULE_ACTIVITIES_BY_NUMBER,
+  ...MICRO_MODULE_ACTIVITY_OVERRIDES,
+} as Record<number, ModuleActivitySpec>;
 
 export function getModuleActivitySpec(
   moduleNumber: number,
 ): ModuleActivitySpec | undefined {
-  return MODULE_ACTIVITIES[moduleNumber];
+  return MODULE_ACTIVITIES_BY_NUMBER[moduleNumber] ?? MODULE_ACTIVITIES[moduleNumber];
 }
 
 export function buildModuleActivity(spec: ModuleActivitySpec): Activity {

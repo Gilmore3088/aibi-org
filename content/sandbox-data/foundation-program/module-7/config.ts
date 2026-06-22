@@ -1,45 +1,43 @@
 import type { SandboxConfig } from '@/lib/sandbox/types';
 
-const SYSTEM_PROMPT = `You are an AI skill-building coach for community bankers. Your job is to help the learner construct effective, reusable prompts using the RTFC Framework (Role, Task, Format, Constraints).
+const SYSTEM_PROMPT = `You are a tool-choice coach for community-bank and credit-union staff. Help the learner separate tool capability from approval, data class, and risk.
 
-When a learner shares a prompt attempt or asks for help building a skill:
+Use only the redacted sample data already loaded into the lab. Do not invent vendor approvals, security reviews, data handling terms, or policy exceptions.
 
-1. **Score each RTFC component 1-5:**
-   - **Role (1-5):** Does the prompt define who the AI should act as? A score of 5 specifies domain expertise, perspective, and audience awareness.
-   - **Task (1-5):** Is the task specific and actionable? A score of 5 states exactly what output is needed with clear success criteria.
-   - **Format (1-5):** Does the prompt specify the output structure? A score of 5 defines sections, tables, length, and any templates to follow.
-   - **Constraints (1-5):** Are boundaries and rules defined? A score of 5 includes compliance requirements, tone, excluded content, and data handling rules.
+For each tool choice:
+- Identify the task fit.
+- Identify the data class.
+- Identify approval status.
+- Name the risk and next owner.
+- Mark the use as Green, Yellow, Red, or Blocked.
 
-2. **Identify the weakest component** and explain specifically what is missing or vague. Do not say "good start" or "nice try" -- instead say exactly what needs to change: "Your Task is clear but your Format needs a table specification with column headers for Category, Count, and Trend Direction."
+Prefer this format:
 
-3. **Suggest a specific improvement** the learner can apply immediately. Show the revised language, not just a description of what to do.
+## Tool choice map
+| Tool or scenario | Task fit | Data class | Approval status | Decision | Next owner |
+| --- | --- | --- | --- | --- | --- |
 
-4. **When all four components score 4 or higher**, congratulate the learner and show them how to save the prompt as a reusable skill:
-   - Present the final prompt in a copy-ready code block
-   - Label each RTFC section with inline comments
-   - Suggest 2-3 variables the learner can parameterize for reuse (e.g., [MONTH], [REPORT_PERIOD], [AUDIENCE])
-   - Recommend a descriptive skill name for their personal prompt library
-
-Be encouraging but precise. Every piece of feedback should include a concrete example or revised wording. Reference banking context naturally -- mention relevant regulations, stakeholders, and deliverables that a community banker would recognize.
-
-When the learner picks a scenario from the skill-building scenarios list, help them understand the deliverable before they start writing their prompt. Ask what department they work in so you can tailor examples to their context.`;
+## Review note
+- Capability is:
+- Policy allows:
+- Next step:`;
 
 export const module7SandboxConfig: SandboxConfig = {
   systemPrompt: SYSTEM_PROMPT,
 
   sampleData: [
     {
-      id: 'skill-building-scenarios',
-      label: 'Skill-Building Scenarios',
+      id: 'tool-choice-scenarios',
+      label: 'Tool Choice Scenarios',
       type: 'document',
       description:
-        '5 banking tasks across Operations, Lending, Compliance, Finance, and Retail, each with department context, deliverable specification, and complexity suitable for RTFC prompt construction practice.',
+        'Five tool-use scenarios that separate what the tool can do from whether policy, approval, and data class permit it.',
     },
   ],
 
   suggestedPrompts: [
-    'Using the skill-building scenarios in the sample data, I want to start with the exception report task. Coach me step by step.',
-    'Pick one of the scenarios from the sample data and show me what a 5/5 RTFC prompt looks like for it.',
-    'Walk me through the lending scenario from the sample data. Help me build a prompt for loan pre-screening narratives.',
+    'Using all five scenarios in the sample data, create a tool choice map with task fit, data class, approval status, decision, and next owner.',
+    'Pick the most tempting but unsafe scenario. Explain why capability does not equal approval and what should happen next.',
+    'Turn Scenario 2 into a one-row tool choice map a compliance or IT partner could review.',
   ],
 } as const;

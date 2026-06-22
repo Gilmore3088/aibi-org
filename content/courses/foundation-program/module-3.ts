@@ -3,7 +3,7 @@
 // Key Output: A prompt that gets to the CORE (built in the Prompt Wizard)
 //
 // Rebuilt 2026-06 around the CORE anatomy + the strategy shelf, with the
-// Prompt Wizard (Activity 3.1) as the interactive capstone. CORE is how you
+// Prompt Wizard (Activity 3.1) as the interactive practice. CORE is how you
 // build any one prompt; the strategy shelf is which kind to reach for. The
 // two safety moves (Check, Escalate) are deliberately deferred to Module 9 —
 // Module 3 lights up the first three moves of the 5-move card.

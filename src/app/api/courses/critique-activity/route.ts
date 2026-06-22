@@ -17,6 +17,7 @@ import { createServerClient } from '@supabase/ssr';
 import Anthropic from '@anthropic-ai/sdk';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import {
+  FOUNDATION_FINAL_MODULE_NUMBER,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   type ExpandedModule,
 } from '@content/courses/foundation-program';
@@ -72,8 +73,15 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const moduleNumber = typeof body.moduleNumber === 'number' ? body.moduleNumber : NaN;
   const response = typeof body.response === 'string' ? body.response.trim() : '';
-  if (!Number.isFinite(moduleNumber) || moduleNumber < 1 || moduleNumber > 12) {
-    return NextResponse.json({ error: 'moduleNumber must be 1-12.' }, { status: 400 });
+  if (
+    !Number.isFinite(moduleNumber) ||
+    moduleNumber < 1 ||
+    moduleNumber > FOUNDATION_FINAL_MODULE_NUMBER
+  ) {
+    return NextResponse.json(
+      { error: `moduleNumber must be 1-${FOUNDATION_FINAL_MODULE_NUMBER}.` },
+      { status: 400 },
+    );
   }
   if (response.length < 20) {
     return NextResponse.json(

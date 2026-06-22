@@ -189,7 +189,7 @@ export const copilotGuide: ToolGuide = {
     },
     {
       number: 5,
-      tip: 'Copilot Studio is worth exploring for repetitive intake processes. If your institution has the M365 Copilot add-on, build custom agents for vendor questionnaire intake, member complaint triage routing, or BSA case narrative drafting. Engage IT early — the agent builder requires Azure permissions that may need admin approval.',
+      tip: 'Copilot Studio is worth exploring for repetitive intake processes. If your institution has the M365 Copilot add-on, plan agent-shaped workflows for vendor questionnaire intake, member complaint triage routing, or BSA case narrative drafting. Engage IT early because Copilot Studio requires Azure permissions that may need admin approval.',
     },
   ],
 };

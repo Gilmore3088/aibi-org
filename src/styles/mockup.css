@@ -675,6 +675,46 @@ section.mk-std { padding: 56px 0; }
 .mk-hreport-sm .mk-hdims { grid-template-columns: 1fr 1fr; gap: 8px; }
 .mk-hreport-sm .mk-hdim { padding: 10px 12px; }
 
+@media (max-width: 719px) {
+  .mk-course-hreport .mk-hreport-left {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    align-items: end;
+    padding: 20px;
+  }
+  .mk-course-hreport .mk-hreport-left .mk-k {
+    grid-column: 1 / -1;
+  }
+  .mk-course-hreport .mk-hreport-left .mk-v {
+    font-size: 64px;
+    margin-top: 8px;
+  }
+  .mk-course-hreport .mk-hreport-left .mk-u {
+    padding-bottom: 8px;
+  }
+  .mk-course-hreport .mk-hreport-left .mk-tier {
+    grid-column: 1 / -1;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 10px 14px;
+  }
+  .mk-course-hreport .mk-hreport-right {
+    padding: 16px;
+  }
+  .mk-course-hreport .mk-hreport-right .mk-hresult {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .mk-course-hreport .mk-hreport-right .mk-hresult-row {
+    padding: 10px;
+  }
+  .mk-course-hreport .mk-hreport-right .mk-hresult-row .mk-rv {
+    font-size: 13px;
+  }
+}
+
 /* Platform Preview */
 .mk-pp { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 720px) { .mk-pp { grid-template-columns: 0.64fr 0.36fr; } }

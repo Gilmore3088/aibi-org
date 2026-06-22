@@ -1,7 +1,7 @@
-// Foundation Packet tracker — the learner's portfolio of the twelve work
+// Foundation Packet tracker — the learner's portfolio of the saved work
 // products the course produces. Each module's artifact (Module.keyOutput) is a
 // packet slot; completion state is derived from the enrollment's
-// completed_modules. This is the "1/12 … 12/12" portfolio view: the course's
+// completed_modules. This is the portfolio view: the course's
 // value made visible.
 //
 // State is keyed off module completion because a module's artifact is saved at
@@ -74,7 +74,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               lineHeight: 1.18,
             }}
           >
-            Twelve modules. Twelve work products.
+            Eighteen modules. Eighteen work products.
           </h2>
           <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--slate-600)' }}>
             {savedCount} of {total} saved

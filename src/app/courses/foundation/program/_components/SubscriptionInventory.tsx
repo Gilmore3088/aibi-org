@@ -382,9 +382,9 @@ export function SubscriptionInventory({
                 cursor: state.submitting ? 'not-allowed' : 'pointer',
                 opacity: state.submitting ? 0.7 : 1,
               }}
-              aria-label={state.submitting ? 'Submitting inventory' : 'Submit inventory'}
+              aria-label={state.submitting ? 'Saving inventory' : 'Save inventory'}
             >
-              {state.submitting ? 'Submitting...' : 'Submit Inventory'}
+              {state.submitting ? 'Saving...' : 'Save Inventory'}
             </button>
           </div>
         </form>

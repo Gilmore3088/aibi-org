@@ -60,7 +60,7 @@ export function StickyResumeBar({
   const lastActivity =
     lastActivityLabel ??
     (isNewLearner
-      ? 'Your work starts in the Takeaway section.'
+      ? 'Your work starts with the module outcome.'
       : 'Pick back up where you left off.');
   const remainingLabel = `About ${currentModule.mins} min in this module`;
 

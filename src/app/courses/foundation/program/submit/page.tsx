@@ -4,14 +4,14 @@
 // Delegates interactive form to WorkProductForm (client component).
 //
 // Layout (audit §9 redesign — 2026-05-27):
-//   1. SubmissionArtifactHero — the four-item package the learner is submitting,
-//      shown as the artifact (not abstract copy). Sets the promise.
+//   1. SubmissionArtifactHero — the reviewed work product the learner is
+//      submitting, shown as concrete evidence (not abstract copy).
 //   2. Status panel — gate, under-review, approved, or "ready to submit" form.
 //   3. RubricAccordion — quiet, opens to the five reviewer checks.
 //
 // Access rules unchanged:
 //   - Unauthenticated / not enrolled → redirect to /courses/foundation/program/purchase
-//   - Enrolled but not all 12 modules complete → show completion gate message
+//   - Enrolled but not all modules complete → show completion gate message
 //   - Submission pending or under re-review → show "under review" message
 //   - Submission approved → show "approved" message with certificate link
 //   - Submission failed (no prior resubmission) → form in resubmission mode
@@ -27,12 +27,13 @@ import { WorkProductForm } from '../_components/WorkProductForm';
 import type { WorkSubmission } from '@/types/course';
 import { SubmissionArtifactHero } from './_local/SubmissionArtifactHero';
 import { RubricAccordion } from './_local/RubricAccordion';
+import { modules } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   title: 'Work Product Submission | AiBI-Foundation',
 };
 
-const ALL_MODULES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const ALL_MODULES = modules.map((module) => module.number);
 const REVIEW_TURNAROUND_BUSINESS_DAYS = 5;
 
 function allModulesComplete(completedModules: readonly number[]): boolean {
@@ -127,7 +128,7 @@ export default async function SubmitPage() {
                 lineHeight: 1.6,
               }}
             >
-              Complete all 12 modules before submitting your work product.
+              Complete all {ALL_MODULES.length} modules before submitting your work product.
             </p>
             <Link href="/courses/foundation/program" style={inlineCtaInk}>
               Return to course

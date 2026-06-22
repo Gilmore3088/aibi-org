@@ -5,6 +5,10 @@
 // gates the Next Module link.
 
 import Link from 'next/link';
+import {
+  getArtifactFirst,
+  modules,
+} from '@content/courses/foundation-program';
 
 export interface ModuleNavigationProps {
   readonly moduleNumber: number;
@@ -22,19 +26,42 @@ const linkStyle: React.CSSProperties = {
   transition: 'color var(--t-fast) var(--ease)',
 };
 
-const ctaBase: React.CSSProperties = {
-  display: 'inline-flex',
+const learningCtaBase: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr) auto',
   alignItems: 'center',
-  gap: 8,
-  padding: '12px 22px',
-  borderRadius: 12,
+  gap: 16,
+  minWidth: 'min(100%, 360px)',
+  maxWidth: 520,
+  padding: '14px 18px',
+  borderRadius: 16,
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 14,
-  fontWeight: 700,
+  textDecoration: 'none',
+};
+
+const learningCtaMeta: React.CSSProperties = {
+  margin: 0,
+  fontSize: 10,
+  fontWeight: 850,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
-  textDecoration: 'none',
-  transition: 'background var(--t-fast) var(--ease), color var(--t-fast) var(--ease)',
+};
+
+const learningCtaTitle: React.CSSProperties = {
+  display: 'block',
+  marginTop: 4,
+  fontSize: 16,
+  fontWeight: 850,
+  letterSpacing: '-0.01em',
+  lineHeight: 1.2,
+};
+
+const learningCtaSub: React.CSSProperties = {
+  display: 'block',
+  marginTop: 4,
+  fontSize: 12,
+  fontWeight: 650,
+  lineHeight: 1.35,
 };
 
 function ArrowIcon() {
@@ -78,6 +105,15 @@ export function ModuleNavigation({
   isLastModule,
   moduleComplete,
 }: ModuleNavigationProps) {
+  const nextModule = modules.find((mod) => mod.number === moduleNumber + 1);
+  const currentArtifact = getArtifactFirst(moduleNumber);
+  const nextModuleLabel = nextModule
+    ? `Module ${String(nextModule.number).padStart(2, '0')} · ${nextModule.title}`
+    : 'Next module';
+  const replayLabel = currentArtifact
+    ? `Recall ${currentArtifact.saved} before the next lab.`
+    : 'Recall the rule before the next lab.';
+
   return (
     <div
       style={{
@@ -111,42 +147,76 @@ export function ModuleNavigation({
           <Link
             href={`/courses/foundation/program/${moduleNumber + 1}`}
             style={{
-              ...ctaBase,
+              ...learningCtaBase,
               background: 'var(--gold)',
               color: 'var(--ink)',
+              boxShadow: 'var(--shadow-soft)',
             }}
+            aria-label={`Continue to ${nextModuleLabel}`}
           >
-            Next module
+            <span>
+              <span style={{ ...learningCtaMeta, color: 'rgba(7,26,47,0.72)' }}>
+                Replay, then continue
+              </span>
+              <span style={learningCtaTitle}>{nextModuleLabel}</span>
+              <span style={{ ...learningCtaSub, color: 'rgba(7,26,47,0.76)' }}>
+                {replayLabel}
+              </span>
+            </span>
             <ArrowIcon />
           </Link>
         ) : (
           <span
             role="button"
             aria-disabled="true"
-            aria-label="Complete all activities to open the next module"
-            title="Complete all activities to open the next module"
+            aria-label="Add the module review note and transfer plan to unlock the next module"
+            title="Add the module review note and transfer plan to unlock the next module"
             style={{
-              ...ctaBase,
+              ...learningCtaBase,
               background: 'var(--cream-2)',
               color: 'var(--slate-500)',
+              border: '1px solid var(--ink-a10)',
               cursor: 'not-allowed',
             }}
           >
-            Next module
+            <span>
+              <span style={{ ...learningCtaMeta, color: 'var(--slate-500)' }}>
+                Finish this module
+              </span>
+              <span style={{ ...learningCtaTitle, color: 'var(--ink)' }}>
+                Add review + transfer
+              </span>
+              <span style={{ ...learningCtaSub, color: 'var(--slate-500)' }}>
+                Save the judgment note and first real use before moving on.
+              </span>
+            </span>
             <LockIcon />
           </span>
         )
       )}
 
       {isLastModule && (
-        <span
+        <Link
+          href="/courses/foundation/program/toolkit"
           style={{
-            ...linkStyle,
-            color: 'var(--slate-500)',
+            ...learningCtaBase,
+            background: 'var(--ink)',
+            color: '#fff',
+            boxShadow: 'var(--shadow-soft)',
           }}
+          aria-label="Open My Foundation Packet"
         >
-          Course complete
-        </span>
+          <span>
+            <span style={{ ...learningCtaMeta, color: 'var(--gold)' }}>
+              Course complete
+            </span>
+            <span style={learningCtaTitle}>Open My Foundation Packet</span>
+            <span style={{ ...learningCtaSub, color: 'rgba(255,255,255,0.72)' }}>
+              Review the artifacts before submission or sharing.
+            </span>
+          </span>
+          <ArrowIcon />
+        </Link>
       )}
     </div>
   );

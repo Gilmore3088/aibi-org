@@ -9,11 +9,11 @@ import {
 const MODULE_COUNT = foundationCourseConfig.modules.length;
 const ARTIFACT_COUNT = Object.keys(ARTIFACT_FIRST_BY_MODULE).length;
 const TOTAL_HOURS_LABEL = formatHours(FOUNDATION_TOTAL_MINUTES);
-const SAMPLE_PACKET_MODULES = [1, 3, 8, 12] as const;
+const SAMPLE_PACKET_MODULES = [1, 4, 13, 18] as const;
 
 function formatHours(minutes: number) {
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? String(hours) : hours.toFixed(1);
+  return Number.isInteger(hours) ? String(hours) : `~${Math.round(hours)}`;
 }
 
 const courseOverviewFacts = {
@@ -31,7 +31,7 @@ const courseOverviewFacts = {
 
 const TITLE = 'AiBI-Foundation Course';
 const DESCRIPTION =
-  `AiBI-Foundation is a ${MODULE_COUNT}-module, ${FOUNDATION_TOTAL_MINUTES}-minute course where bankers build reusable prompts, safe AI skills, and a ${ARTIFACT_COUNT}-piece Foundation Packet through AiBI Lab practice and final work product review.`;
+  `AiBI-Foundation is a ${MODULE_COUNT}-module, ${FOUNDATION_TOTAL_MINUTES}-minute course where bankers build prompt cards, skill templates, workflow maps, and a ${ARTIFACT_COUNT}-piece Foundation Packet.`;
 
 export const metadata: Metadata = {
   alternates: { canonical: '/courses' },

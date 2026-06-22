@@ -11,14 +11,18 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import {
+  FOUNDATION_FINAL_MODULE_NUMBER,
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
+import { buildModuleActivity, getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
 import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
 
-const LAST_MODULE = 12;
+const LAST_MODULE = FOUNDATION_FINAL_MODULE_NUMBER;
+const DEV_COURSE_ENROLLMENT_ID = 'dev-bypass';
 
 // Pattern: N.N (e.g. "1.1", "5.2")
 const ACTIVITY_ID_PATTERN = /^\d+\.\d+$/;
@@ -97,10 +101,6 @@ function validateActivityFields(
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
-  }
-
   // --- Parse body ---
   let body: RequestBody;
   try {
@@ -151,6 +151,17 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
   const response = rawResponse as Record<string, unknown>;
+
+  if (
+    (process.env.NODE_ENV !== 'production' || isPreviewAuthBypassEnabled()) &&
+    enrollmentId === DEV_COURSE_ENROLLMENT_ID
+  ) {
+    return NextResponse.json({ success: true, activityId, localPreview: true }, { status: 201 });
+  }
+
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+  }
 
   // --- Authenticate user (T-05-01) ---
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -219,24 +230,35 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   // --- Server-side minLength validation (T-05-02, CONT-05) ---
-  const v4Activity = getV4Activity(moduleNumber);
-  const mod = getModuleByNumber(moduleNumber);
+  const moduleSpec = getModuleActivitySpec(moduleNumber);
+  const configuredActivity = moduleSpec ? buildModuleActivity(moduleSpec) : undefined;
+  const v4Activity = configuredActivity ? null : getV4Activity(moduleNumber);
+  const mod = configuredActivity ? undefined : getModuleByNumber(moduleNumber);
   let submittedActivity: Activity | undefined =
-    v4Activity?.id === activityId ? v4Activity : undefined;
+    configuredActivity?.id === activityId
+      ? configuredActivity
+      : v4Activity?.id === activityId
+        ? v4Activity
+        : undefined;
 
   if (mod) {
-    const activity = submittedActivity ?? mod.activities.find((a) => a.id === activityId);
-    if (activity) {
-      submittedActivity = activity;
-      const fieldErrors = validateActivityFields(activity.fields, response);
+    submittedActivity = submittedActivity ?? mod.activities.find((a) => a.id === activityId);
+  }
 
-      if (Object.keys(fieldErrors).length > 0) {
-        return NextResponse.json(
-          { error: 'Validation failed.', fieldErrors },
-          { status: 400 }
-        );
-      }
-    }
+  if (!submittedActivity) {
+    return NextResponse.json(
+      { error: 'activityId does not match a configured activity for this module.' },
+      { status: 400 }
+    );
+  }
+
+  const fieldErrors = validateActivityFields(submittedActivity.fields, response);
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return NextResponse.json(
+      { error: 'Validation failed.', fieldErrors },
+      { status: 400 }
+    );
   }
 
   // --- Write to activity_responses ---
@@ -258,7 +280,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   if (submittedActivity?.artifactId) {
     const artifact = FOUNDATION_ARTIFACTS.find((item) => item.id === submittedActivity?.artifactId);
-    await serviceClient.from('user_artifacts').upsert(
+    const { error: artifactError } = await serviceClient.from('user_artifacts').upsert(
       {
         user_id: user.id,
         // Canonical post-rename slug. Existing rows with course_id='aibi-p' get
@@ -277,6 +299,19 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       { onConflict: 'user_id,course_id,artifact_id' },
     );
+
+    if (artifactError) {
+      await serviceClient
+        .from('activity_responses')
+        .delete()
+        .eq('enrollment_id', enrollmentId)
+        .eq('activity_id', activityId);
+
+      return NextResponse.json(
+        { error: 'Activity saved, but the packet artifact could not be updated.' },
+        { status: 500 },
+      );
+    }
   }
 
   return NextResponse.json({ success: true, activityId }, { status: 201 });

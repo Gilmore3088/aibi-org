@@ -1,53 +1,42 @@
 import type { SandboxConfig } from '@/lib/sandbox/types';
 
-const SYSTEM_PROMPT = `You are an AI platform advisor for community banks and credit unions. Your role is to help the learner understand how to use AI platforms effectively for common banking tasks.
+const SYSTEM_PROMPT = `You are an AI claim-review coach for community-bank and credit-union staff. Help the learner mark AI outputs as verified, unsupported, or wrong before the work is reused.
 
-When given a banking task:
+Use only the redacted sample data already loaded into the lab. Do not invent sources, dates, regulation sections, customer facts, or policy requirements.
 
-**Step 1 — Understand the Task**
-Identify what type of work this is (summarization, drafting, analysis, policy review) and what a good outcome looks like.
+For each review:
+- Extract the claims that could mislead a banker if wrong.
+- Classify each claim as Verified, Unsupported, or Wrong.
+- Name the evidence needed before the claim can be reused.
+- Write one habit the learner can apply in their role.
 
-**Step 2 — Demonstrate the Approach**
-Show step-by-step how to accomplish the task using an AI platform. Include the prompt you would use, explain why it is structured that way, and note which platform features are most relevant (e.g., document upload, system instructions, conversation threading, output formatting).
+Prefer this format:
 
-**Step 3 — Show Expected Output**
-Provide a realistic example of what the AI output should look like, formatted appropriately for the banking context (bullet points for briefings, professional tone for member correspondence, structured checklists for policy reviews).
+## Claim review
+| Claim | Verdict | Evidence needed | Reuse decision |
+| --- | --- | --- | --- |
 
-**Step 4 — Flag Considerations**
-Note any risks, limitations, or compliance considerations. Remind the learner what requires human review before use and what should never be entered into an AI tool.
-
-Use clear headings and structured formatting in every response. When reviewing policies or documents, use a checklist format to make gaps easy to identify.`;
+## Habit to save
+- I will verify:
+- I will not reuse:
+- Human reviewer:`;
 
 export const module2SandboxConfig: SandboxConfig = {
   systemPrompt: SYSTEM_PROMPT,
 
   sampleData: [
     {
-      id: 'sample-board-memo',
-      label: 'Q3 Board Performance Memo',
+      id: 'claim-review-packet',
+      label: 'AI Claim Review Packet',
       type: 'document',
       description:
-        'A quarterly performance summary for Valley Community Credit Union covering financials, loan portfolio, membership growth, and key initiatives.',
-    },
-    {
-      id: 'sample-member-complaint',
-      label: 'Member Complaint Email',
-      type: 'document',
-      description:
-        'A member complaint about unexpected NSF fees, including specific dates, amounts, and a request for resolution.',
-    },
-    {
-      id: 'sample-policy-draft',
-      label: 'AI Acceptable Use Policy Draft',
-      type: 'document',
-      description:
-        'A rough draft AI acceptable use policy with intentional gaps in data classification, regulatory references, third-party risk, and incident response.',
+        'Three short AI-generated banking outputs with mixed verified, unsupported, and wrong claims for line-by-line review.',
     },
   ],
 
   suggestedPrompts: [
-    'Using the Q3 board memo in the sample data, summarize it into 5 bullet points for the CEO\'s morning briefing',
-    'Using the member complaint email in the sample data, draft a professional response that acknowledges their concerns about the NSF fees and proposes a resolution',
-    'Using the AI acceptable use policy draft in the sample data, review it and identify all missing sections with specific recommendations for each gap',
+    'Using Output 1 from the sample data, build a claim review table. Mark each claim as Verified, Unsupported, or Wrong and name the evidence needed.',
+    'Compare Outputs 2 and 3. Which claims should not be reused in a board, compliance, or customer-facing context without verification?',
+    'Turn the sample reviews into a personal verification habit for my role. Keep it short enough to save in my Foundation Packet.',
   ],
 } as const;
