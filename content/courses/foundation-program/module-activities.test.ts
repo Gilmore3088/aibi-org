@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { FOUNDATION_MODULE_COUNT } from './course-config';
 import { FOUNDATION_MICRO_MODULES } from './micro-modules';
@@ -31,6 +33,21 @@ describe('late Foundation course activity artifacts', () => {
       expect(spec?.artifactFilename).toMatch(/^aibi-.+\.md$/);
       expect(spec?.artifactTemplate).toContain('Saved to the AiBI-Foundation Packet');
     }
+  });
+
+  it('does not keep stale 12-module activity contracts as a fallback', () => {
+    const source = readFileSync(
+      resolve(process.cwd(), 'content/courses/foundation-program/module-activities.ts'),
+      'utf8',
+    );
+
+    expect(source).not.toContain('const MODULE_ACTIVITIES:');
+    expect(source).not.toContain('Workday wins — rewrite one banker email');
+    expect(source).not.toContain('aibi-p-m1-email-rewrite.md');
+    expect(source).not.toContain('Spot the AI hallucination');
+    expect(source).not.toContain('aibi-foundation-m12-safe-use-checklist.md');
+    expect(getModuleActivitySpec(0)).toBeUndefined();
+    expect(getModuleActivitySpec(19)).toBeUndefined();
   });
 
   it('keeps every micro-module action-led with a distinct saved takeaway', () => {
