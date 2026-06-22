@@ -69,7 +69,7 @@ Create **one coupon, two redeemable promotion codes** so you can hand the codes 
 | `coupon.percent_off` | `100` |
 | `coupon.duration` | `once` |
 | `coupon.max_redemptions` | `2` (hard cap across both codes) |
-| `coupon.applies_to.products` | `[<In-Depth Assessment product id>]` (scope the comp so it can't accidentally zero out an AiBI Foundations sale) |
+| `coupon.applies_to.products` | `[<In-Depth Assessment product id>]` (scope the comp so it can't accidentally zero out a Foundation course sale) |
 | `coupon.metadata.purpose` | `comp-testing` |
 
 Then attach two promotion codes to that coupon:
@@ -107,9 +107,9 @@ The flagship individual course. The current course is 18 bite-sized modules buil
 | `price.currency` | `usd` |
 | `price.recurring` | none — one-time |
 | `price.nickname` | `AiBI-Foundation — Individual` |
+| `.env.local` key | `STRIPE_FOUNDATION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_AIBIP_PRICE_ID`) |
 
 > **Brand:** the canonical credential is `AiBI-Foundation` (hyphenated, singular). The plural "AiBI Foundations" and the old "AI Banking AiBI Foundations" string are banned (see CLAUDE.local brand rules) — buyers see `product.name` on their Stripe receipt, so it must be brand-clean.
-| `.env.local` key | `STRIPE_FOUNDATION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_AIBIP_PRICE_ID`) |
 
 **Volume / institution pricing (added 2026-05-05):** A second price exists on the same product for institution bundles.
 
@@ -120,13 +120,13 @@ The flagship individual course. The current course is 18 bite-sized modules buil
 | `price.metadata.min_quantity` | `10` |
 | `.env.local` key | `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, `STRIPE_AIBIP_INSTITUTION_PRICE_ID`) |
 
-The minimum-quantity guard (`>= 10`) is enforced at the API route level in `/api/create-checkout`, not in Stripe. Net effect: 10 seats = $1,990 (~33% off list); 25 seats = $4,975. Single-seat AiBI Foundations remains $295. No customer should ever buy 1–9 institution seats — the route rejects qty < 10 with 400.
+The minimum-quantity guard (`>= 10`) is enforced at the API route level in `/api/create-checkout`, not in Stripe. Net effect: 10 seats = $1,990 (~33% off list); 25 seats = $4,975. Single-seat AiBI-Foundation remains $295. No customer should ever buy 1–9 institution seats — the route rejects qty < 10 with 400.
 
 ---
 
 ## Product 4 — AiBI-S Specialist ($1,495/seat) — staged dark
 
-Cohort-based, 16-hour live track. Per-track Specialist credentials (AiBI-S/Ops, AiBI-S/Lending, AiBI-S/Compliance). Decision 2026-04-19 in memory: format will eventually shift to self-paced to match AiBI Foundations, but PRD currently says cohort. Create the product anyway so the price ID slot exists in `.env.local`.
+Cohort-based, 16-hour live track. Per-track Specialist credentials (AiBI-S/Ops, AiBI-S/Lending, AiBI-S/Compliance). Decision 2026-04-19 in memory: format will eventually shift to self-paced to match AiBI-Foundation, but PRD currently says cohort. Create this product only when a cohort date is real (see Appendix A) — do not stage a dark price ID at launch.
 
 | Field | Value |
 |---|---|
