@@ -1,6 +1,6 @@
 // Learner certificate page — /courses/foundation/program/certificate
 // Server component. Authenticates the user, looks up their certificate,
-// and renders download + LinkedIn placeholder sections.
+// and renders download + credential-sharing sections.
 // Per CERT-04: learner can download PDF from this page.
 //
 // Ported to the mockup design system 2026-05-27 (Inter, ink/cream/gold).

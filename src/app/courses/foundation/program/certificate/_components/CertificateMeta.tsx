@@ -29,7 +29,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         marginBottom: 32,
       }}
     >
-      {/* LinkedIn placeholder */}
+      {/* Credential sharing */}
       <section
         style={{
           background: '#FFFFFF',
@@ -72,7 +72,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             margin: '0 0 8px',
           }}
         >
-          Add to LinkedIn
+          Share the credential
         </h3>
         <p
           style={{
@@ -83,8 +83,8 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             margin: '0 0 14px',
           }}
         >
-          LinkedIn badge integration is coming. In the meantime,
-          reference your credential as:
+          Use this language on LinkedIn, in an internal profile,
+          or when sharing completion with your manager:
         </p>
         <p
           style={{
@@ -170,8 +170,8 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             flex: 1,
           }}
         >
-          High-resolution vector format, suitable for framing
-          or sharing with your board.
+          High-resolution vector format, suitable for your manager,
+          HR record, or internal training file.
         </p>
         <a
           href={`/api/courses/generate-certificate?enrollmentId=${enrollmentId}`}
