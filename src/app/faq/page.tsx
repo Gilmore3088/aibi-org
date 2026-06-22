@@ -38,11 +38,11 @@ const GROUPS: readonly FaqGroup[] = [
       {
         q: 'How long does the Foundation course take to complete?',
         schemaAnswer:
-          'Twelve self-paced modules, about 25 to 35 minutes each. Most learners finish in three to six weeks at a comfortable cadence. The course is self-paced, not cohort-based.',
+          'Eighteen bite-sized self-paced modules, about 10 to 12 minutes each. Most learners finish in two to four weeks at a comfortable cadence. The course is self-paced, not cohort-based.',
         a: (
           <>
-            Twelve self-paced modules, ~25–35 minutes each. Most learners
-            finish in three to six weeks at a comfortable cadence. The
+            Eighteen bite-sized self-paced modules, ~10–12 minutes each. Most learners
+            finish in two to four weeks at a comfortable cadence. The
             course is self-paced, not cohort-based — there is no fixed
             start or end date.
           </>
@@ -215,7 +215,7 @@ const GROUPS: readonly FaqGroup[] = [
         a: (
           <>
             That&apos;s a decision your examiner makes, not ours. What we
-            ship is documented work product — twelve reviewed artifacts —
+            ship is documented work product — eighteen reviewed artifacts —
             that a compliance officer can put on the table during an exam.
             Whether your examiner counts it depends on their priorities
             and your institution&apos;s overall AI governance posture.

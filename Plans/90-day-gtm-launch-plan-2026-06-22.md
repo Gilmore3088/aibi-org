@@ -113,15 +113,34 @@ Base 90-day model:
 
 | Metric | Target | Notes |
 |---|---:|---|
-| Qualified sessions | 8,000 | Organic, partner, direct, email. |
+| Qualified sessions | 8,000 | Organic, partner, direct, email. **See reality check — this input has no named channel yet.** |
 | Free assessment starts | 1,500 | 18.75% of qualified sessions. |
 | Free assessment completions | 900 | 60% of starts. |
 | Email captures | 450 | 50% of completions. |
-| In-Depth purchases | 90 | 10% of captures. Gross: $8,910. |
-| Foundation purchases | 35 | Primarily from In-Depth/high-intent users. Gross: $10,325. |
+| In-Depth purchases | 90 | **20%** of captures. Gross: $8,910. |
+| Foundation purchases | 35 | ~39% attach off In-Depth buyers. Gross: $10,325. |
 | Total gross revenue | $19,235 | Before Stripe, SaaS, support, and refunds. |
 
-Stretch 90-day model:
+> **Reality check (added 2026-06-22 after red-team review). This table is a planning
+> model, not a forecast — and it is optimistic on two axes:**
+> 1. **Top-of-funnel is unfunded.** "8,000 qualified sessions, organic/$0 paid" has **no
+>    named acquisition channel** — the newsletter was retired, no partner is signed, a new
+>    domain has no SEO runway. Every number below it is a percentage of a figure the plan
+>    cannot yet produce. **Treat securing one real, named channel (a banking-association
+>    placement, a core-provider co-market slot, a conference list, or a rebuilt owned list)
+>    as the binding constraint before any revenue target is credible.** Multiplying a missing
+>    top-of-funnel by a better landing page is still ~$0.
+> 2. **The conversion rates are aggressive for a cold audience.** Capture→In-Depth at 20%
+>    and an In-Depth→Foundation attach of ~39% assume trust this brand hasn't earned yet
+>    (no testimonials, no founder page, a $99 rung that reads as "a longer version of the
+>    free quiz"). A conservative cold-launch scenario (≈1,500 real sessions, 2–3%
+>    capture→$99, 5–15% Foundation attach) lands closer to **$1k–$5k**. The "minimum viable
+>    success" below ($10k) is itself the optimistic floor, not a worst case.
+>
+> Earlier this row read "10% of captures" while listing 90 purchases (= 20%); the rate is
+> now corrected to 20% so the arithmetic is internally consistent.
+
+Stretch 90-day model (only credible once a named top-of-funnel channel exists):
 
 - 150 In-Depth purchases = $14,850.
 - 60 Foundation purchases = $17,700.

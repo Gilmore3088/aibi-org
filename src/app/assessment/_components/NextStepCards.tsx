@@ -31,7 +31,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Train your team',
           title: 'Start the Foundation course',
           description:
-            'Twelve self-paced modules that build hands-on AI proficiency for every staff member. Lifetime access to modules, artifacts, and the prompt library. Earn the AiBI-Foundation credential on reviewed work.',
+            'Eighteen self-paced modules that build hands-on AI proficiency for every staff member. Lifetime access to modules, artifacts, and the prompt library. Earn the AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
           accent: 'var(--gold)',
@@ -54,7 +54,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Train your team',
           title: 'Earn the Foundation credential',
           description:
-            'Give your early adopters governed, repeatable AI skills. Twelve self-paced modules with practice reps and artifacts. Lifetime access. AiBI-Foundation credential on reviewed work.',
+            'Give your early adopters governed, repeatable AI skills. Eighteen self-paced modules with practice reps and artifacts. Lifetime access. AiBI-Foundation credential on reviewed work.',
           href: '/courses/foundation/program',
           cta: 'Explore AiBI-Foundation',
           accent: 'var(--gold)',
@@ -67,7 +67,7 @@ function getStepsForTier(tierId: Tier['id']): readonly NextStep[] {
           label: 'Recommended',
           title: 'Start the AiBI-Foundation course',
           description:
-            'You have traction. Twelve self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and walk away with documented workflows your examiner can read.',
+            'You have traction. Eighteen self-paced modules to build the prompts, agents, and AI workflows your daily banking work demands — and walk away with documented workflows your examiner can read.',
           href: '/courses/foundation/program/purchase',
           cta: 'Enroll · $295',
           accent: 'var(--ink-2)',

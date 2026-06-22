@@ -74,8 +74,8 @@ const TIERS = [
     name: 'AiBI-Foundation course',
     tagline: 'Self-paced, scored on reviewed work.',
     included: [
-      'Twelve self-paced modules',
-      'Three reviewed AI artifacts per practitioner',
+      'Eighteen bite-sized self-paced modules',
+      'Eighteen reviewed AI artifacts per practitioner',
       '$295 individual · $199/seat at 10+ · lifetime access',
     ],
     ctaHref: '/courses',

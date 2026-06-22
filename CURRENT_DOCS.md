@@ -19,6 +19,7 @@ were archived locally outside the repo at:
 | Manual QA / verification steps | [Manual verification runbook](docs/manual-verification-runbook.md) |
 | Assessment flow and taxonomy | [Assessment flow and taxonomy](docs/assessment-flow-and-taxonomy.md) |
 | Site E2E review (10 buyer personas, funnel friction) | [Persona E2E review 2026-06-22](docs/reviews/persona-e2e-review-2026-06-22.md) |
+| Adversarial red-team review (GTM plan + site) | [Red-team review 2026-06-22](docs/reviews/red-team-review-2026-06-22.md) |
 | AI / LLM data handling policy | [LLM data handling](docs/compliance/llm-data-handling.md) |
 | MailerLite automation overview | [MailerLite automations](docs/mailerlite-automations-overview.html) |
 | Brand guide and logo references | [Brand guide](docs/brand/brand-guide-v1.html), [Logo kit](docs/brand/logo-kit.html) |

@@ -280,7 +280,7 @@ export function PlaybookDownloadModal({
               }}
             >
               We&rsquo;ll send occasional follow-ups about the playbook and
-              the AiBI Foundations course. Unsubscribe anytime.
+              the AiBI-Foundation course. Unsubscribe anytime.
             </p>
           </form>
         )}
