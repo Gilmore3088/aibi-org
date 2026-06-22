@@ -135,10 +135,10 @@ abandoned checkouts) lives in Vercel/Plausible and Stripe, not here.
 
 ## Applying the migration
 
-This migration is additive (three views + grants) and reversible. It is **not
-auto-applied** by opening the PR. Apply it the same way as other schema changes
-for this project — e.g. via the Supabase CLI / `supabase-migrate` flow against
-the linked project — after the PR merges:
+This migration is additive (three views + grants) and reversible. It was
+**applied to the linked Supabase project on 2026-06-22** (via the Supabase MCP,
+after validating the exact DDL in a rolled-back transaction). Re-running it is
+idempotent (`CREATE OR REPLACE VIEW`). Rollback if ever needed:
 
 ```sql
 -- rollback, if ever needed:
@@ -147,12 +147,25 @@ drop view if exists funnel_scorecard;
 drop view if exists funnel_contacts;
 ```
 
+## Viewing in the browser — `/admin/funnel`
+
+A read-only operator page at `/admin/funnel` renders all three views (scorecard,
+stage distribution, most-recent contacts). It reads via the service-role client
+and is gated two ways:
+
+- **Auth + allowlist:** `src/app/admin/layout.tsx` requires a Supabase session
+  whose email is on the `FUNNEL_ADMIN_EMAILS` env allowlist (comma-separated).
+  Fail-closed — unset allowlist or a non-matching email returns 404; logged-out
+  returns a login redirect. There is **no** preview-auth bypass on `/admin`.
+- **No indexing:** `robots.txt` disallows `/admin/`, and the route sets
+  `robots: { index: false }`.
+
+To grant access, set `FUNNEL_ADMIN_EMAILS` in Vercel (Production scope) to the
+operator email(s), then sign in normally. Supabase Studio remains the CSV export
+path for the full contact list when the page caps the table (500 rows).
+
 ## Deferred — build only when traffic justifies it
 
-- **A read-only `/admin` page** that renders these views (behind the existing
-  `user_profiles.role` admin check, using the service-role client). Build it
-  only when reading the scorecard in Studio becomes a chore. Until then, Studio
-  *is* the dashboard.
 - **A real `funnel_events` table** with idempotency keys and an atomic
   forward-only stage update. Build it the day there is a behavioral question the
   authoritative tables genuinely cannot answer (e.g. repeated CTA clicks, soft
