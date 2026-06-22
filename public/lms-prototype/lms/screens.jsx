@@ -35,7 +35,7 @@ function OverviewScreen({ navigate, progress }){
             Banking AI <em style={{ color:'var(--terra)', fontStyle:'normal', fontWeight:500 }}>Foundation.</em>
           </h1>
           <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:22, lineHeight:1.4, color:'var(--ink-2)', whiteSpace:'nowrap', margin:'0 0 12px' }}>
-            Learn AI by doing AI — twelve modules, twelve real artifacts.
+            Learn AI by doing AI — eighteen modules, eighteen real artifacts.
           </p>
           <p style={{ color:'var(--slate)', fontSize:15, lineHeight:1.6, maxWidth:'62ch', margin:0 }}>
             In less than two weeks, write better, summarize faster, think clearer, and avoid risky AI mistakes — using the model your institution already trusts.
@@ -123,7 +123,7 @@ function OverviewScreen({ navigate, progress }){
         <section style={{ background:'var(--parch)', padding:'34px 36px', border:'1px solid var(--rule)', borderRadius:3 }}>
           <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:8 }}>
             <h2 style={{ fontFamily:'var(--serif)', fontWeight:500, fontSize:32, letterSpacing:'-0.02em', margin:0 }}>Course structure</h2>
-            <span style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--muted)' }}>4 pillars · 12 modules</span>
+            <span style={{ fontFamily:'var(--mono)', fontSize:10.5, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--muted)' }}>4 pillars · 18 modules</span>
           </div>
           <p style={{ color:'var(--slate)', fontSize:14, maxWidth:'58ch', margin:'0 0 28px' }}>
             Each module is roughly 20–40 minutes of learning, practice, and a single banking artifact you walk away with.
@@ -677,7 +677,7 @@ function CompleteScreen({ navigate }){
           You\u2019re a <em style={{ color:'var(--terra)', fontStyle:'italic', fontWeight:400 }}>Foundation.</em>
         </h1>
         <p style={{ fontFamily:'var(--serif)', fontStyle:'italic', fontSize:22, lineHeight:1.4, color:'var(--ink-2)', whiteSpace:'nowrap', margin:'0 0 36px' }}>
-          {S.learner.name.split(' ')[0]}, twelve modules done. Twelve artifacts in hand.
+          {S.learner.name.split(' ')[0]}, eighteen modules done. Eighteen artifacts in hand.
         </p>
 
         {/* Big stats */}

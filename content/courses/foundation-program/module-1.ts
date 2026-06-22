@@ -4,7 +4,7 @@
 //
 // Metadata + tables + activities only. Learner-facing body content
 // is in v4-expanded-modules.ts. Legacy `sections` arrays were
-// removed 2026-05-17 once all 12 modules had V4 entries.
+// removed 2026-05-17 once the original module set had V4 entries.
 
 import type { Module } from './types';
 

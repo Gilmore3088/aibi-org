@@ -1,4 +1,7 @@
 import type { PracticeRep, Simulation, Artifact, CertificateRequirement } from '@/types/lms';
+import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program/micro-modules';
+
+const FOUNDATION_REQUIRED_MODULE_COUNT = FOUNDATION_MICRO_MODULES.length;
 
 export const FOUNDATION_PRACTICE_REPS: readonly PracticeRep[] = [
   {
@@ -409,32 +412,32 @@ export const FOUNDATION_PRACTICE_REPS: readonly PracticeRep[] = [
     safetyLevel: 'green',
   },
   {
-    id: 'final-practitioner-lab-plan',
+    id: 'foundation-packet-review-plan',
     courseId: 'aibi-p',
-    moduleNumber: 12,
-    title: 'Plan Your Final Lab',
-    skill: 'Final work product preparation',
+    moduleNumber: FOUNDATION_REQUIRED_MODULE_COUNT,
+    title: 'Review Your Foundation Packet',
+    skill: 'Final packet preparation',
     promptStrategy: 'multi-step',
     role: 'all',
     timeEstimateMinutes: 7,
     scenario:
-      'You need to choose one safe, useful workflow for your final practitioner lab.',
+      'You need to turn your saved course work into a manager-ready Foundation Packet.',
     task:
-      'Define the workflow, prompt, source context, output, review step, and artifact evidence.',
+      'Summarize the reusable prompt, skill, workflow, review checkpoint, evidence note, and safety boundary.',
     constraints: [
-      'Choose a low-risk workflow.',
-      'Use sanitized or approved context.',
-      'Document the human review step.',
+      'Use only sanitized or approved examples.',
+      'Name the human review checkpoint.',
+      'Make the next workday use clear.',
     ],
     starterPrompt:
-      'Help me plan a final AI practitioner lab for this workflow. Include prompt, context, output, review step, artifact evidence, and safety boundary: [DESCRIBE WORKFLOW]',
+      'Help me review my Foundation Packet. Summarize the reusable prompt, skill, workflow, review checkpoint, evidence note, and safety boundary for this workflow: [DESCRIBE WORKFLOW]',
     modelAnswer:
-      'A strong final lab package includes sanitized context, a structured prompt, raw AI output, human review notes, final edited output, and the artifact created.',
+      'A strong Foundation Packet names the reusable asset, allowed inputs, blocked inputs, prompt or skill steps, review checkpoint, evidence retained, owner, and first reuse plan.',
     feedback: [
-      'The lab demonstrates judgment, not just prompting.',
-      'The review notes are evidence that the learner stayed accountable.',
+      'The packet demonstrates judgment, not just prompting.',
+      'The review note is evidence that the learner stayed accountable.',
     ],
-    reflectionQuestion: 'What will prove that your final output was reviewed by a human?',
+    reflectionQuestion: 'What will make this packet useful to your manager or a peer next week?',
     safetyLevel: 'yellow',
   },
 ] as const;
@@ -515,7 +518,7 @@ export const FOUNDATION_CERTIFICATE_REQUIREMENTS: readonly CertificateRequiremen
     id: 'modules-complete',
     label: 'Complete all modules',
     description: 'Finish every AiBI-Foundation module in order.',
-    requiredCount: 12,
+    requiredCount: FOUNDATION_REQUIRED_MODULE_COUNT,
   },
   {
     id: 'required-activities',

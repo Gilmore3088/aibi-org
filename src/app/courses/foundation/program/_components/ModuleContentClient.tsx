@@ -4,24 +4,15 @@
 // Owns moduleComplete state shared between ActivitySection (setter) and ModuleNavigation (reader).
 // Rendered by the server ModulePage to bridge server-fetched data to client interactivity.
 //
-// Activity-less modules (e.g. M9): ActivitySection returns null for empty activity arrays,
-// so a "Mark Module Complete" button is rendered here directly, calling save-progress.
-// This prevents learners from being stuck on modules with no activities.
+// Activity-less modules still need the same retrieval/transfer closeout as
+// activity modules, so ModuleContentClient renders the shared handoff panel
+// before calling save-progress.
 
-import { useState, useCallback } from 'react';
-import type { Activity, ContentTable } from '@content/courses/foundation-program';
-import type { LearnerRole } from '@/types/course';
-import { ActivitySection } from './ActivitySection';
+import { useState, useCallback, useEffect } from 'react';
+import type { Activity } from '@content/courses/foundation-program';
+import { ActivitySection, ModuleHandoffCheck } from './ActivitySection';
 import { CompletionCTA } from './CompletionCTA';
 import { ModuleNavigation } from './ModuleNavigation';
-import { KnowledgeCheck } from './KnowledgeCheck';
-import { ModulePractice } from './ModulePractice';
-import { ActivityCritique } from './ActivityCritique';
-import {
-  getKnowledgeCheck,
-  getModulePracticeConfig,
-  moduleHasCritique,
-} from '@content/courses/foundation-program/interactive';
 
 export interface ModuleContentClientProps {
   readonly activities: readonly Activity[];
@@ -30,8 +21,6 @@ export interface ModuleContentClientProps {
   readonly existingResponses: Record<string, Record<string, string>>;
   readonly isLastModule: boolean;
   readonly isAlreadyCompleted: boolean;
-  readonly tables?: readonly ContentTable[];
-  readonly learnerRole?: LearnerRole;
 }
 
 export function ModuleContentClient({
@@ -41,24 +30,97 @@ export function ModuleContentClient({
   existingResponses,
   isLastModule,
   isAlreadyCompleted,
-  tables,
-  learnerRole,
 }: ModuleContentClientProps) {
   const [moduleComplete, setModuleComplete] = useState(isAlreadyCompleted);
   const [saving, setSaving] = useState(false);
+  const [handoffNote, setHandoffNote] = useState('');
+  const [transferPlan, setTransferPlan] = useState('');
+  const [handoffError, setHandoffError] = useState<string | null>(null);
+  const [transferPlanError, setTransferPlanError] = useState<string | null>(null);
 
   const handleAllActivitiesComplete = useCallback(() => {
     setModuleComplete(true);
   }, []);
 
-  // For activity-less modules, provide a direct "Mark Complete" button
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      setHandoffNote(window.localStorage.getItem(`foundation-module-handoff-${moduleNumber}`) ?? '');
+    } catch {
+      setHandoffNote('');
+    }
+  }, [moduleNumber]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      setTransferPlan(window.localStorage.getItem(`foundation-transfer-plan-${moduleNumber}`) ?? '');
+    } catch {
+      setTransferPlan('');
+    }
+  }, [moduleNumber]);
+
+  const handleHandoffNoteChange = useCallback((value: string) => {
+    setHandoffNote(value);
+    setHandoffError(null);
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(`foundation-module-handoff-${moduleNumber}`, value);
+    } catch {
+      // Local persistence is helpful but not required to complete the module.
+    }
+    window.dispatchEvent(
+      new CustomEvent('foundation-module-handoff-updated', {
+        detail: { moduleNumber, value },
+      }),
+    );
+  }, [moduleNumber]);
+
+  const handleTransferPlanChange = useCallback((value: string) => {
+    setTransferPlan(value);
+    setTransferPlanError(null);
+    const ready = value.trim().length >= 12;
+    if (typeof window === 'undefined') return;
+    try {
+      if (value.trim()) {
+        window.localStorage.setItem(`foundation-transfer-plan-${moduleNumber}`, value);
+      } else {
+        window.localStorage.removeItem(`foundation-transfer-plan-${moduleNumber}`);
+      }
+    } catch {
+      // Local persistence is helpful but not required to complete the module.
+    }
+    window.dispatchEvent(
+      new CustomEvent('foundation-learning-signal-updated', {
+        detail: { moduleNumber, signal: 'transfer-plan', active: ready, value },
+      }),
+    );
+  }, [moduleNumber]);
+
+  // For activity-less modules, still require a transfer/retrieval handoff.
   const handleMarkComplete = useCallback(async () => {
+    const trimmedHandoffNote = handoffNote.trim();
+    const trimmedTransferPlan = transferPlan.trim();
+    if (trimmedHandoffNote.length < 12) {
+      setHandoffError('Add one sentence about where this module will be used.');
+      return;
+    }
+    if (trimmedTransferPlan.length < 12) {
+      setTransferPlanError('Name the first realistic use before completing the module.');
+      return;
+    }
+
     setSaving(true);
     try {
       const res = await fetch('/api/courses/save-progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enrollmentId, moduleNumber }),
+        body: JSON.stringify({
+          enrollmentId,
+          moduleNumber,
+          moduleHandoffNote: trimmedHandoffNote,
+          moduleTransferPlan: trimmedTransferPlan,
+        }),
       });
       if (res.ok) {
         setModuleComplete(true);
@@ -71,31 +133,11 @@ export function ModuleContentClient({
     } finally {
       setSaving(false);
     }
-  }, [enrollmentId, moduleNumber]);
+  }, [enrollmentId, handoffNote, moduleNumber, transferPlan]);
 
   const hasNoActivities = activities.length === 0;
-  const knowledgeCheck = getKnowledgeCheck(moduleNumber);
-  const practiceConfig = getModulePracticeConfig(moduleNumber);
-  // Critique panel is gated by the learner's textarea content. We let the
-  // learner copy their submission into the critique area themselves so the
-  // ActivitySection stays self-contained.
-  const [critiqueDraft, setCritiqueDraft] = useState('');
-
   return (
     <>
-      {knowledgeCheck && (
-        <KnowledgeCheck prompt={knowledgeCheck.prompt} options={knowledgeCheck.options} />
-      )}
-
-      {practiceConfig && (
-        <ModulePractice
-          moduleNumber={moduleNumber}
-          moduleTitle={`Module ${moduleNumber} practice`}
-          systemPrompt={practiceConfig.systemPrompt}
-          scenarios={practiceConfig.scenarios}
-        />
-      )}
-
       {activities.length > 0 && (
         <ActivitySection
           activities={activities}
@@ -103,62 +145,24 @@ export function ModuleContentClient({
           moduleNumber={moduleNumber}
           existingResponses={existingResponses}
           isLastModule={isLastModule}
+          isAlreadyCompleted={isAlreadyCompleted}
           onAllActivitiesComplete={handleAllActivitiesComplete}
-          tables={tables}
-          learnerRole={learnerRole}
         />
       )}
 
-      {activities.length > 0 && moduleHasCritique(moduleNumber) && (
-        <div style={{ marginTop: 24 }}>
-          <label
-            style={{
-              display: 'block',
-              fontSize: 13,
-              fontWeight: 700,
-              color: '#9A7A2F',
-              textTransform: 'uppercase',
-              letterSpacing: '0.18em',
-              marginBottom: 8,
-            }}
-          >
-            Paste your response below to get AI critique
-          </label>
-          <textarea
-            value={critiqueDraft}
-            onChange={(e) => setCritiqueDraft(e.target.value)}
-            placeholder="Paste your activity response here for a structured AI critique. The Apply submit above saves your work; this is optional feedback that doesn't affect completion."
-            rows={4}
-            style={{
-              width: '100%',
-              padding: 12,
-              fontSize: 16,
-              fontFamily: 'inherit',
-              border: '1px solid rgba(7,26,47,.12)',
-              borderRadius: 12,
-              resize: 'vertical',
-              lineHeight: 1.6,
-            }}
-          />
-          <ActivityCritique moduleNumber={moduleNumber} responseValue={critiqueDraft} />
-        </div>
-      )}
-
-      {/* Activity-less module completion (e.g. M9) */}
       {hasNoActivities && !moduleComplete && (
-        <div className="mt-8 pt-6 border-t border-[color:var(--ink-a10)]">
-          <p className="text-base text-[color:var(--slate-600)] mb-4 leading-relaxed">
-            You have reviewed all content in this module. Mark it complete to continue.
-          </p>
-          <button
-            type="button"
-            onClick={handleMarkComplete}
-            disabled={saving}
-            className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[11px] font-semibold uppercase tracking-[0.16em] rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--cream)]"
-          >
-            {saving ? 'SAVING…' : isLastModule ? 'COMPLETE COURSE' : 'MARK MODULE COMPLETE'}
-          </button>
-        </div>
+        <ModuleHandoffCheck
+          moduleNumber={moduleNumber}
+          isLastModule={isLastModule}
+          value={handoffNote}
+          transferPlanValue={transferPlan}
+          error={handoffError ?? undefined}
+          transferPlanError={transferPlanError ?? undefined}
+          saving={saving}
+          onChange={handleHandoffNoteChange}
+          onTransferPlanChange={handleTransferPlanChange}
+          onComplete={handleMarkComplete}
+        />
       )}
 
       {/* CompletionCTA for activity-less modules after marking complete */}

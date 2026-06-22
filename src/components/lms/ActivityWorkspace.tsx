@@ -3,8 +3,12 @@
 import { useState, type ReactNode } from 'react';
 import { ModelPicker, type LMSModelId } from './ModelPicker';
 
+const INTER_STACK =
+  'var(--font-inter, Inter), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+const MONO_STACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+
 interface Props {
-  /** "Activity 7.1" style identifier shown in the kicker. */
+  /** "7.1" style identifier shown in the artifact-step kicker. */
   readonly activityId: string;
   readonly title: string;
   /** Optional italic lede paragraph rendered above the body. */
@@ -17,18 +21,9 @@ interface Props {
 }
 
 /**
- * Ledger-styled activity workspace shell — matches the prototype's
- * ActivityWorkspace pattern. The shell renders:
- *
- *   ┌────────────────────────────────────────────────────────────┐
- *   │ ACTIVITY 7.1   Title                       [Model picker]  │
- *   ├────────────────────────────────────────────────────────────┤
- *   │ <italic lede>                                              │
- *   │ <children — form fields, results, action row, etc.>        │
- *   └────────────────────────────────────────────────────────────┘
- *
- * The selected model is local state — it does not yet drive the actual
- * submission API. Wiring a real provider switch is a separate task.
+ * Artifact workspace shell for the Submit step. The selected model is local
+ * state for legacy practice contexts. Artifact submissions normally hide it
+ * because the real model work happens in AiBI Lab.
  */
 export function ActivityWorkspace({
   activityId,
@@ -39,94 +34,149 @@ export function ActivityWorkspace({
   children,
 }: Props) {
   const [model, setModel] = useState<LMSModelId>('claude');
+  const headingId = `activity-workspace-${activityId.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
   return (
-    <div
+    <section
+      aria-labelledby={headingId}
+      className="activity-workspace"
       style={{
-        background: 'var(--cream-2)',
+        background: '#fff',
         border: '1px solid var(--ink-a10)',
-        borderRadius: 3,
+        borderRadius: 18,
         overflow: 'hidden',
         marginBottom: 28,
+        boxShadow: 'var(--shadow-soft)',
       }}
     >
-      {/* Workspace header */}
       <div
+        className="activity-workspace__header"
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '12px 18px',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) auto',
+          gap: 18,
+          alignItems: 'start',
+          padding: 'clamp(18px, 2.4vw, 24px)',
           borderBottom: '1px solid var(--ink-a10)',
           background: 'var(--cream-2)',
-          flexWrap: 'wrap',
         }}
       >
-        <span
-          style={{
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-            fontSize: 12,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--gold)',
-          }}
-        >
-          Activity {activityId}
-        </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-            fontSize: 16,
-            color: 'var(--ink)',
-            fontWeight: 500,
-          }}
-        >
-          {title}
-        </span>
-        {submitted && (
-          <span
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '3px 9px',
-              borderRadius: 2,
-              border: '1px solid var(--ink-2)',
-              background: 'rgba(30,58,95,0.08)',
-              color: 'var(--ink-2)',
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: 12,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              fontWeight: 600,
-            }}
-          >
-            Submitted
-          </span>
-        )}
-        <span style={{ flex: 1 }} />
-        {!hideModelPicker && (
-          <ModelPicker value={model} onChange={setModel} compact />
-        )}
-      </div>
-
-      {/* Workspace body */}
-      <div style={{ padding: '22px 22px 20px' }}>
-        {lead && (
+        <div style={{ minWidth: 0 }}>
           <p
             style={{
-              margin: '0 0 18px',
-              fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                            fontSize: 17,
-              color: 'var(--ink-2)',
-              lineHeight: 1.6,
+              margin: '0 0 8px',
+              fontFamily: MONO_STACK,
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-deep)',
             }}
           >
-            {lead}
+            Artifact step {activityId}
           </p>
-        )}
+          <h3
+            id={headingId}
+            style={{
+              margin: 0,
+              fontFamily: INTER_STACK,
+              fontSize: 'clamp(20px, 2vw, 28px)',
+              lineHeight: 1.12,
+              letterSpacing: '-0.015em',
+              color: 'var(--ink)',
+              fontWeight: 850,
+            }}
+          >
+            {title}
+          </h3>
+          {lead && (
+            <p
+              className="activity-workspace__lead"
+              style={{
+                margin: '10px 0 0',
+                maxWidth: 760,
+                fontFamily: INTER_STACK,
+                fontSize: 15,
+                color: 'var(--slate-600)',
+                lineHeight: 1.5,
+                fontWeight: 600,
+              }}
+            >
+              {lead}
+            </p>
+          )}
+        </div>
+
+        <div
+          className="activity-workspace__status"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: 10,
+            flexWrap: 'wrap',
+          }}
+        >
+          {submitted && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '7px 10px',
+                borderRadius: 999,
+                border: '1px solid var(--gold-a40)',
+                background: 'var(--gold-a20)',
+                color: 'var(--ink)',
+                fontFamily: MONO_STACK,
+                fontSize: 11,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                fontWeight: 800,
+              }}
+            >
+              Saved
+            </span>
+          )}
+          {!hideModelPicker && <ModelPicker value={model} onChange={setModel} compact />}
+        </div>
+      </div>
+
+      <div className="activity-workspace__body" style={{ padding: 'clamp(18px, 2.4vw, 24px)' }}>
         {children}
       </div>
-    </div>
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 700px) {
+              .activity-workspace {
+                border-radius: 16px !important;
+                box-shadow: none !important;
+              }
+              .activity-workspace__header {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+                padding: 16px !important;
+              }
+              .activity-workspace__lead {
+                display: -webkit-box !important;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-size: 14px !important;
+                line-height: 1.42 !important;
+              }
+              .activity-workspace__status {
+                justify-content: flex-start !important;
+              }
+              .activity-workspace__body {
+                padding: 16px !important;
+              }
+            }
+          `,
+        }}
+      />
+    </section>
   );
 }

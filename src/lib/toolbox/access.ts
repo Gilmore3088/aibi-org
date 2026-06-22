@@ -32,9 +32,9 @@ export interface PaidAccess {
 // src/lib/products/normalize.ts). A paying Foundation user whose entitlement
 // row was created under either slug should still pass the toolbox gate.
 //
-// 'in-depth-assessment' joins the set per #219 — those rows are Starter tier
-// and grant read-only Library + Cookbook access. Write/run gating happens
-// in canBuildOrRun() at the API layer (and in the UI for cosmetics).
+// 'in-depth-assessment' joins the set per #219. Those rows remain Starter tier
+// for entitlement reporting, but paid In-Depth buyers can still build/run via
+// canBuildOrRun().
 const PAID_PRODUCTS = [
   'foundation',
   'foundations',

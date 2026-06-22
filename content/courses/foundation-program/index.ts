@@ -18,6 +18,8 @@ export { module12 } from './module-12';
 export * from './course-config';
 export * from './v4-expanded-modules';
 export * from './artifact-first';
+export * from './lab-first';
+export * from './micro-modules';
 export * from './prompt-library';
 export * from './output-examples';
 export * from './role-paths';

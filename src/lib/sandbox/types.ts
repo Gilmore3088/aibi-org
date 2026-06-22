@@ -2,6 +2,7 @@ export interface SandboxConfig {
   readonly systemPrompt: string;
   readonly sampleData: readonly SampleDataFile[];
   readonly suggestedPrompts: readonly string[];
+  readonly roleStarts?: readonly SandboxRoleStart[];
 }
 
 export interface SampleDataFile {
@@ -10,6 +11,13 @@ export interface SampleDataFile {
   readonly type: 'csv' | 'document';
   readonly description: string;
   readonly roleTrack?: string;
+  readonly sourceModuleNumber?: number;
+}
+
+export interface SandboxRoleStart {
+  readonly id: string;
+  readonly label: string;
+  readonly prompt: string;
 }
 
 export interface SandboxMessage {

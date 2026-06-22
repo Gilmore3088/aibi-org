@@ -8,6 +8,8 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import type { CourseEnrollment } from '@/types/course';
 import { dbReadValues } from '@/lib/products/normalize';
 import { emailVariants } from '@/lib/email/canonicalize';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { foundationCourseConfig } from '@content/courses/foundation-program';
 
 // NOTE (2026-05-17, #106): getEnrollment retains its inline supabase query
 // rather than delegating to findEnrollmentByEmailOrUserId because it needs
@@ -31,11 +33,52 @@ export type EnrollmentData = Pick<
  * Uses getAll/setAll cookie pattern (recommended by @supabase/ssr 0.5+).
  */
 export type EnrollmentResult = EnrollmentData | { error: 'fetch_failed' } | null;
+export const DEV_COURSE_ENROLLMENT_ID = 'dev-bypass';
+const DEV_UNLOCKED_MODULES = Array.from(
+  { length: foundationCourseConfig.modules.length },
+  (_, index) => index + 1,
+);
+
+export function isDevCourseEnrollmentBypassEnabled(): boolean {
+  return (
+    process.env.NODE_ENV !== 'production' &&
+    process.env.SKIP_ENROLLMENT_GATE === 'true'
+  );
+}
 
 export function isFetchError(
   result: EnrollmentResult,
 ): result is { error: 'fetch_failed' } {
   return result !== null && 'error' in result && result.error === 'fetch_failed';
+}
+
+function createDevEnrollment(): EnrollmentData {
+  return {
+    id: DEV_COURSE_ENROLLMENT_ID,
+    user_id: DEV_COURSE_ENROLLMENT_ID,
+    completed_modules: DEV_UNLOCKED_MODULES,
+    current_module: DEV_UNLOCKED_MODULES.length,
+    enrolled_at: new Date().toISOString(),
+    onboarding_answers: {
+      role: 'other',
+      department: 'local-preview',
+      tools: [],
+      weekly_ai_usage: 'testing',
+    },
+  } as unknown as EnrollmentData;
+}
+
+function isLocalMissingCourseSchema(error: {
+  readonly code?: string;
+  readonly message?: string;
+}): boolean {
+  if (process.env.NODE_ENV === 'production') return false;
+  const message = error.message ?? '';
+  return (
+    error.code === 'PGRST205' ||
+    message.includes("Could not find the table 'public.course_enrollments'") ||
+    message.includes('course_enrollments') && message.includes('schema cache')
+  );
 }
 
 // Variant that exposes the fetch_failed branch for callers that want to render
@@ -48,18 +91,12 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
   // Returns a synthetic enrolled record so testers can access course content
   // without a real Supabase enrollment row. Never fires in production — the
   // NODE_ENV guard is hard-coded and cannot be overridden by env vars.
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    process.env.SKIP_ENROLLMENT_GATE === 'true'
-  ) {
-    return {
-      id: 'dev-bypass',
-      user_id: 'dev-bypass',
-      completed_modules: [],
-      current_module: 1,
-      enrolled_at: new Date().toISOString(),
-      onboarding_answers: null,
-    };
+  if (isDevCourseEnrollmentBypassEnabled()) {
+    return createDevEnrollment();
+  }
+
+  if (isPreviewAuthBypassEnabled()) {
+    return createDevEnrollment();
   }
 
   if (!isSupabaseConfigured()) {
@@ -110,7 +147,16 @@ export async function getEnrollmentResult(): Promise<EnrollmentResult> {
   // so the page can show "Couldn't load progress" instead of pretending the
   // user has no enrollment.
   if (error && error.code !== 'PGRST116') {
-    console.error('[getEnrollment] supabase error:', error);
+    if (isLocalMissingCourseSchema(error)) {
+      console.warn('[getEnrollment] using local course preview:', error.message);
+      return createDevEnrollment();
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[getEnrollment] supabase error:', error);
+    } else {
+      console.warn('[getEnrollment] supabase lookup skipped:', error.message);
+    }
     return { error: 'fetch_failed' } as const;
   }
   if (!data) {

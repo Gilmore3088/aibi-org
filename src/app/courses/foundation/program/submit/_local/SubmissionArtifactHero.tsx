@@ -1,7 +1,6 @@
 // SubmissionArtifactHero — leads the /submit page with a preview of the
-// four-item work package the learner is about to put under review. Replaces
-// the abstract "Submit your four-item package" lede with the actual shape
-// of the artifact (prompt → raw output → edited output → annotation).
+// reviewed work product the learner is about to put under review. Shows the
+// four scored parts: prompt → raw output → edited output → annotation.
 //
 // Server component. Pure presentation. No props — the structure is fixed by
 // the work-product spec.
@@ -111,7 +110,7 @@ export function SubmissionArtifactHero() {
           color: 'var(--cream-2)',
         }}
       >
-        You are submitting four items. A reviewer scores all four.
+        Submit one reviewed work product. We score four parts.
       </h1>
 
       <p
@@ -123,9 +122,9 @@ export function SubmissionArtifactHero() {
           maxWidth: '62ch',
         }}
       >
-        The package below is the shape we are looking for — a prompt, the raw
-        output, your edited output, and a short annotation explaining why you
-        edited what you edited. The sample is from a previous cohort.
+        Your final submission should show the prompt, the raw output, your
+        edited output, and a short annotation explaining why you changed it.
+        The sample below uses synthetic banking data.
       </p>
 
       <div

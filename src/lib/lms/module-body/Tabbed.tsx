@@ -1,11 +1,9 @@
 'use client';
 
-// Tabbed module body template — Foundation pattern.
+// Tabbed module body template — legacy three-panel pattern.
 //
-// Wraps the existing <CourseTabs> primitive (Learn / Practice / Apply)
-// with the harness contract. The page is responsible for the module
-// header (title, breadcrumb, status); this component owns only the
-// tabbed body region.
+// Wraps the existing <CourseTabs> primitive with the harness contract. The
+// current Foundation course uses its own four-step ModuleTabs component.
 
 import type { ReactNode } from 'react';
 import { CourseTabs } from '@/components/CourseTabs';

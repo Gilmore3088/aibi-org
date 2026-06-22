@@ -12,7 +12,7 @@ export function coursePurchaseIndividualHtml(v: CoursePurchaseIndividualVars): s
   const bodyContent = `
     ${kicker('Purchase confirmed')}
     ${heading(`Welcome to ${v.courseName}.`)}
-    ${body('Your enrollment is active. The program is self-paced — work through the 12 modules whenever it fits your schedule.')}
+    ${body('Your enrollment is active. The program is self-paced - work through the bite-sized modules whenever it fits your schedule.')}
     ${ctaButton('Open the program →', v.courseUrl)}
     ${divider()}
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -38,7 +38,7 @@ export function coursePurchaseIndividualHtml(v: CoursePurchaseIndividualVars): s
 export function coursePurchaseIndividualText(v: CoursePurchaseIndividualVars): string {
   return `Purchase confirmed — ${v.courseName}
 
-Welcome. Your enrollment is active. The program is self-paced — work through the 12 modules whenever it fits your schedule.
+Welcome. Your enrollment is active. The program is self-paced - work through the bite-sized modules whenever it fits your schedule.
 
 Open the program:
 ${v.courseUrl}

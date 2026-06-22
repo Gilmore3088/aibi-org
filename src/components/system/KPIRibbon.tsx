@@ -6,7 +6,7 @@
  * hairline cell dividers.
  *
  *   <KPIRibbon items={[
- *     { label: "Curriculum", value: "12 modules", delta: "~12 hrs", desc: "From AI literacy to a working portfolio" },
+ *     { label: "Curriculum", value: "18 modules", delta: "~3 hrs", desc: "From AI literacy to a working portfolio" },
  *     { label: "Foundations output", value: "3 artifacts", delta: "peer-reviewed", desc: "Real workflows shipped during the program" },
  *   ]} />
  *

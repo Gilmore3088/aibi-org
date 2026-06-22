@@ -95,7 +95,8 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          provider: 'claude',
+          provider: 'anthropic',
+          model: 'claude-haiku-4-5-20251001',
           systemPrompt: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: USER_PROMPT_PREFIX + SAMPLE_INPUT }],
           // Use a stable moduleId so the per-session rate-limit map keys
@@ -174,10 +175,64 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
           }}
         >
           Below is a real internal email a community banker might write in a
-          hurry. Run it through the AI sandbox. The cleaned-up version is yours
-          to copy, tweak, and send. This is the shape of every workflow you
-          finish in the course.
+          hurry. Run it through the AiBI Lab, review the output, and carry the
+          useful version into your first course artifact. This is the loop you
+          repeat in every module.
         </p>
+
+        <div
+          className="foundation-welcome-loop"
+          aria-label="Course learning loop"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            gap: 8,
+            marginBottom: 28,
+          }}
+        >
+          {[
+            ['Understand', 'See what you will build'],
+            ['Try', 'Practice on sample data'],
+            ['Build', 'Review the quality bar'],
+            ['Save', 'Keep proof or reuse'],
+          ].map(([label, body]) => (
+            <div
+              key={label}
+              style={{
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 12,
+                background: '#FFFFFF',
+                padding: '10px 12px',
+              }}
+            >
+              <p
+                style={{
+                  margin: '0 0 5px',
+                  fontFamily: INTER_STACK,
+                  fontSize: 10,
+                  fontWeight: 850,
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-deep)',
+                }}
+              >
+                {label}
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: INTER_STACK,
+                  fontSize: 13,
+                  lineHeight: 1.32,
+                  fontWeight: 750,
+                  color: 'var(--ink)',
+                }}
+              >
+                {body}
+              </p>
+            </div>
+          ))}
+        </div>
 
         <section
           style={{
@@ -332,6 +387,23 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             </button>
           </p>
         )}
+
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @media (max-width: 720px) {
+                .foundation-welcome-loop {
+                  grid-template-columns: 1fr 1fr !important;
+                }
+              }
+              @media (max-width: 440px) {
+                .foundation-welcome-loop {
+                  grid-template-columns: 1fr !important;
+                }
+              }
+            `,
+          }}
+        />
       </div>
     </main>
   );

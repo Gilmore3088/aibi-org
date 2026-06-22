@@ -10,7 +10,15 @@ import type { CSSProperties } from 'react';
 import { DownloadSkillButton } from '../DownloadSkillButton';
 import { DownloadReportButton } from '../DownloadReportButton';
 
-export type ArtifactType = 'prompt' | 'work-product' | 'card' | 'report' | 'inventory';
+export type ArtifactType =
+  | 'prompt'
+  | 'skill'
+  | 'workflow'
+  | 'evidence'
+  | 'work-product'
+  | 'card'
+  | 'report'
+  | 'inventory';
 
 export interface ToolkitArtifact {
   readonly id: string;
@@ -22,6 +30,9 @@ export interface ToolkitArtifact {
   readonly moduleHref: string;
   readonly lastEditedISO: string | null;
   readonly available: boolean;
+  readonly qualitySignals?: readonly string[];
+  readonly readinessLabel?: string;
+  readonly transferMove?: string;
   readonly action:
     | { readonly kind: 'download-md'; readonly md: string; readonly filename: string }
     | { readonly kind: 'download-report'; readonly enrollmentId: string }
@@ -84,9 +95,12 @@ const selectStyle: CSSProperties = {
 
 const TYPE_LABELS: Record<ArtifactType, string> = {
   prompt: 'Saved prompt',
+  skill: 'Reusable skill',
+  workflow: 'Workflow map',
+  evidence: 'Evidence note',
   'work-product': 'Reviewed work product',
   card: 'Acceptable Use card',
-  report: 'Transformation report',
+  report: 'Foundation packet',
   inventory: 'Subscription inventory',
 };
 
@@ -200,6 +214,67 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
           >
             {artifact.description}
           </p>
+          {artifact.qualitySignals && artifact.qualitySignals.length > 0 && (
+            <div
+              aria-label="Artifact quality signals"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 6,
+                margin: '0 0 10px',
+              }}
+            >
+              {artifact.qualitySignals.slice(0, 3).map((signal) => (
+                <span
+                  key={signal}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    border: '1px solid var(--ink-a10)',
+                    borderRadius: 999,
+                    padding: '4px 9px',
+                    background: artifact.available ? 'var(--cream-2)' : 'var(--slate-100)',
+                    color: 'var(--slate-600)',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {signal}
+                </span>
+              ))}
+            </div>
+          )}
+          {artifact.transferMove && (
+            <p
+              aria-label="Use this artifact at work"
+              style={{
+                margin: '0 0 10px',
+                padding: '10px 12px',
+                border: '1px solid var(--ink-a10)',
+                borderRadius: 12,
+                background: artifact.available ? '#fff' : 'var(--cream-2)',
+                color: 'var(--ink)',
+                fontSize: 13,
+                lineHeight: 1.42,
+                fontWeight: 650,
+              }}
+            >
+              <span
+                style={{
+                  color: 'var(--gold-deep)',
+                  fontSize: 10,
+                  fontWeight: 850,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  marginRight: 8,
+                }}
+              >
+                Use at work
+              </span>
+              {artifact.transferMove}
+            </p>
+          )}
           <p
             style={{
               fontSize: 13,
@@ -208,6 +283,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
               fontWeight: 500,
             }}
           >
+            {artifact.readinessLabel ? `${artifact.readinessLabel} · ` : ''}
             {formatRelative(artifact.lastEditedISO)}
           </p>
         </div>

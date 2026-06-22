@@ -59,6 +59,9 @@ export function SkillBuilder({
   const isReadOnly = existingResponse != null;
   const placeholders = getRolePlaceholders(learnerRole);
   const starters = getRoleSkillStarters(learnerRole);
+  const builderTitle = 'Build a reusable skill template';
+  const builderDescription =
+    'Choose a role starter or fill the five fields yourself. Saving adds the skill to your Foundation Packet and downloads a reusable .md template for your approved AI platform.';
 
   const [state, setState] = useState<BuilderState>({
     values: {
@@ -200,11 +203,11 @@ export function SkillBuilder({
     >
       <div className="px-6 pt-6 pb-5">
         <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
-          Activity {activity.id}
+          Artifact step {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-sans text-xl font-bold text-[color:var(--ink)] mb-2">
-            {activity.title}
+            {builderTitle}
           </h3>
           {state.submitted && (
             <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[color:var(--emerald-700)] bg-white px-2.5 py-0.5 font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--emerald-700)]">
@@ -213,7 +216,7 @@ export function SkillBuilder({
           )}
         </div>
         <p className="font-sans text-base leading-relaxed text-[color:var(--slate-600)]">
-          {activity.description}
+          {builderDescription}
         </p>
       </div>
 
@@ -243,7 +246,7 @@ export function SkillBuilder({
                   </p>
                   <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)]">
                     Complete all four components: Role, Task, Format, and Constraints. Each field
-                    maps to a component of the RTFC Framework taught in Module 6.
+                    maps to a component of the Skill Builder pattern.
                   </p>
                 </div>
                 <form onSubmit={handleSubmit} noValidate aria-label="Skill builder form">
@@ -269,7 +272,7 @@ export function SkillBuilder({
                   )}
                   <div className="mt-4 pt-4 border-t border-[color:var(--ink-a10)]">
                     <p className="font-sans text-sm leading-relaxed text-[color:var(--slate-600)] mb-3">
-                      Submitting will save your skill and automatically download a .md file to your
+                      Saving will add your skill to the packet and automatically download a .md file to your
                       device for deployment in your AI platform.
                     </p>
                     <button type="submit" disabled={state.submitting}

@@ -47,10 +47,10 @@ function isProviderName(value: unknown): value is ProviderName {
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
-  // Starter-tier guard (#219): running a skill requires the Foundation tier.
+  // Paid-run guard: all paid Toolbox users can run skills.
   if (!canBuildOrRun(access)) {
     return NextResponse.json(
-      { error: 'Running a skill requires the AiBI-Foundation tier.' },
+      { error: 'Running a skill requires paid Toolbox access.' },
       { status: 403 },
     );
   }

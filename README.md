@@ -23,7 +23,7 @@ implementation for any future course on the platform.
    `hello@aibankinginstitute.com` for the $79/seat price.
 
 3. **AiBI-Foundation Course** — `/courses/foundation/program` — $295,
-   $199/seat at 10+. **Lifetime access** to all twelve modules, practice
+   $199/seat at 10+. **Lifetime access** to all 18 bite-sized modules, practice
    reps, artifact templates, the prompt library, learner dashboard, and
    the AiBI-Foundation credential issued on reviewed work.
 

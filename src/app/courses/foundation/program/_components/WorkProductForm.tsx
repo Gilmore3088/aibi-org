@@ -1,6 +1,6 @@
 'use client';
 
-// WorkProductForm — Four-item work product submission form.
+// WorkProductForm — one reviewed work product with four scored parts.
 //
 // Upload pattern (avoids Vercel 4.5MB body limit):
 //   1. On file select → POST ?action=presign to get a Supabase presigned URL.

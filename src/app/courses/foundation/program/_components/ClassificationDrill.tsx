@@ -219,10 +219,10 @@ export function ClassificationDrill({
         marginBottom: 32,
       }}
     >
-      {/* Activity header */}
+      {/* Artifact-step header */}
       <div style={{ marginBottom: 20 }}>
         <p style={{ ...eyebrowStyle, marginBottom: 6 }}>
-          Activity {activity.id}
+          Artifact step {activity.id}
         </p>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
           <h3
@@ -373,7 +373,7 @@ export function ClassificationDrill({
               onMouseEnter={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--ink-2)'; }}
               onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = 'var(--ink)'; }}
             >
-              {submitting ? 'SUBMITTING…' : 'SUBMIT RESULTS'}
+              {submitting ? 'SAVING…' : 'SAVE RESULTS'}
             </button>
           </div>
         </div>

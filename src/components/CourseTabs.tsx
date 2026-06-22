@@ -1,7 +1,7 @@
 'use client';
 
-// CourseTabs — shared three-tab layout for course content: Learn / Practice / Apply.
-// Used by AiBI-Foundation modules, AiBI-S weeks, and AiBI-L sessions.
+// CourseTabs — shared three-tab layout for legacy course content.
+// Current AiBI-Foundation modules use ModuleTabs (Understand / Try / Build / Save).
 // Tab state persists in sessionStorage so refreshing keeps the learner's place.
 
 import { useState, useEffect, type ReactNode } from 'react';
@@ -13,16 +13,12 @@ interface Tab {
   readonly sublabel: string;
 }
 
-// Sublabels say the canonical loop out loud — "Learn it. Try it. Use it.
-// Save it." (issue #104 §6). Apply carries both "Use it." and "Save it."
-// because the save-artifact step happens at the end of the Apply tab,
-// not as a fourth tab — keeping it on Apply avoids a fourth nav target
-// that would dilute the loop. The full four-step loop is also surfaced
-// as a visual indicator above the tabs in the module header.
+// This older primitive only has three panels, so the final panel carries both
+// the build and save work. New Foundation surfaces should prefer ModuleTabs.
 const TABS: readonly Tab[] = [
-  { id: 'learn', label: 'Learn', sublabel: 'Learn it.' },
-  { id: 'practice', label: 'Practice', sublabel: 'Try it.' },
-  { id: 'apply', label: 'Apply', sublabel: 'Use it. Save it.' },
+  { id: 'learn', label: 'Understand', sublabel: 'Goal + guardrail' },
+  { id: 'practice', label: 'Try', sublabel: 'One small rep' },
+  { id: 'apply', label: 'Build', sublabel: 'Create + save' },
 ] as const;
 
 interface CourseTabsProps {

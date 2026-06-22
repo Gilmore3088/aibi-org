@@ -5,8 +5,8 @@
 // fetches sample data at runtime from `/sandbox-data/<product>/<module>/<id>.<ext>`,
 // which Next.js serves from `public/`. The canonical content, however, lives
 // in `content/sandbox-data/` alongside its TypeScript config. Without this
-// sync every module of the paid course shows "Error loading sample data."
-// (the foundation-cx audit found this 404 on all 12 modules).
+// sync paid course labs can show "Error loading sample data." The sync keeps
+// learner-facing lab files aligned with the canonical content source.
 //
 // This script copies ONLY the learner-facing data files (.md / .csv) into
 // public/, leaving the .ts config/index files behind. It is idempotent and

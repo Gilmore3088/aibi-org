@@ -313,12 +313,13 @@ export default function FoundationGalleryClient() {
         ]}
         ctaBand={{
           kicker: 'See yours next',
-          heading: <>Walk away with eight artifacts of your own.</>,
+          heading: <>Walk away with eighteen artifacts of your own.</>,
           body: (
             <>
-              Twelve modules, each ending in a reviewable artifact you keep.
-              These examples are what week-three to week-eight of the course
-              looks like. Lifetime access; one $295 enrollment.
+              Eighteen bite-sized modules, each ending in a reviewable artifact
+              you keep. These examples show how the course moves from AI basics
+              into reusable prompts, skills, and workflows. Lifetime access; one
+              $295 enrollment.
             </>
           ),
           actions: [

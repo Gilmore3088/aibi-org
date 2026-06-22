@@ -32,9 +32,13 @@ export function LMSTopBar({ crumbs, right }: Props) {
         }}
       >
         {crumbs.map((c, i) => (
-          <span key={`${c}-${i}`}>
+          <span
+            key={`${c}-${i}`}
+            className={`lms-topbar__crumb${i === crumbs.length - 1 ? ' lms-topbar__crumb--current' : ''}`}
+          >
             {i > 0 && (
               <span
+                className="lms-topbar__separator"
                 style={{
                   margin: '0 10px',
                   color: 'rgba(14,27,45,0.2)',
@@ -60,7 +64,7 @@ export function LMSTopBar({ crumbs, right }: Props) {
       <div className="lms-topbar__right" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         {right}
       </div>
-      {/* Sticky positioning is desktop-only. On mobile (< 768px) the bar
+      {/* Sticky positioning is desktop-only. On tablet/mobile (< 1024px) the bar
           scrolls with the page so its breadcrumb + right-slot content
           doesn't multi-line and occlude content below. The bar is also
           slightly tighter on mobile padding-wise to keep the height
@@ -76,20 +80,24 @@ export function LMSTopBar({ crumbs, right }: Props) {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           .lms-topbar {
             position: sticky;
             top: 0;
             z-index: 5;
           }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 1023px) {
           .lms-topbar {
             padding: 12px 16px !important;
             gap: 12px !important;
           }
           .lms-topbar nav {
             font-size: 11px !important;
+          }
+          .lms-topbar__crumb:not(.lms-topbar__crumb--current),
+          .lms-topbar__separator {
+            display: none !important;
           }
           /* Hide the right slot on mobile so the breadcrumb stays one line. */
           .lms-topbar__right {

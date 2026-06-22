@@ -28,29 +28,30 @@ export interface CoursesOverviewFacts {
 }
 
 const DEFAULT_FACTS: CoursesOverviewFacts = {
-  moduleCount: 12,
-  artifactCount: 12,
-  totalMinutes: 400,
-  totalHoursLabel: '6.7',
+  moduleCount: 18,
+  artifactCount: 18,
+  totalMinutes: 182,
+  totalHoursLabel: '3',
   individualPriceLabel: '$295',
   teamSeatPriceLabel: '$199',
   samplePacketSlots: [
-    { moduleNumber: 1, label: 'Rewritten Email + a reusable rewrite prompt' },
-    { moduleNumber: 3, label: 'Prompt Strategy Cheat Sheet' },
-    { moduleNumber: 8, label: 'Workflow Map' },
-    { moduleNumber: 12, label: 'Final Foundation Lab Package' },
+    { moduleNumber: 1, label: 'AI Limits Card' },
+    { moduleNumber: 4, label: 'First Prompt Card' },
+    { moduleNumber: 13, label: 'Skill Template' },
+    { moduleNumber: 18, label: 'Foundation Packet Summary' },
   ],
 };
 
 function countWord(count: number) {
-  return count === 12 ? 'Twelve' : String(count);
+  if (count === 18) return 'Eighteen';
+  return String(count);
 }
 
 function buildPricingBullets(facts: CoursesOverviewFacts) {
   return [
-    `${facts.moduleCount} modules · ${facts.totalMinutes} minutes`,
+    `${facts.moduleCount} bite-sized modules · ${facts.totalMinutes} minutes`,
     'Onboarding, role context, and work-target selection',
-    'Prompt Builder and Skill Builder practice with sample banking data',
+    'Prompt Builder, Skill Builder, and workflow-map practice',
     `${facts.artifactCount}-piece Foundation Packet`,
     'Review notes and transfer plans in every module',
     '5+ certificate practice reps',
@@ -87,7 +88,7 @@ const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Elem
   },
   {
     title: 'Reusable Prompts + Skills',
-    desc: 'Build prompt strategies, work profiles, project briefs, and repeatable skills with review rules.',
+    desc: 'Use the Prompt Builder and Skill Builder to save templates with placeholders and review rules.',
     icon: WorkflowIcon,
   },
   {
@@ -117,14 +118,14 @@ const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: Icon
   },
   {
     step: '03',
-    title: 'Build prompts and skills',
-    desc: 'AiBI Lab uses non-sensitive sample data, a Prompt Builder, and Skill Builder patterns before the work becomes evidence.',
+    title: 'Use the builders',
+    desc: 'Prompt Builder, Skill Builder, and workflow-map tools turn sample banking tasks into structured drafts.',
     icon: WorkflowIcon,
   },
   {
     step: '04',
-    title: 'Transfer into the packet',
-    desc: 'Learners save a review note and first real use for each artifact, then submit the final Foundation Packet for certificate review.',
+    title: 'Save reusable templates',
+    desc: 'Each output is saved with placeholders, a review note, and a first-use plan in My Foundation Packet.',
     icon: FileIcon,
   },
 ];
@@ -152,14 +153,14 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
             <p className="mk-kicker-gold-soft">Learn</p>
             <h1>Build reusable AI skills.</h1>
             <p className="mk-lede">
-              Turn banking work into reviewed prompts, repeatable skills, and a Foundation Packet.
+              18 short labs. Prompts, skills, workflows, and safety proof save to your packet.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
                 Preview builders <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
-                Enroll · {facts.individualPriceLabel}
+                Enroll {facts.individualPriceLabel}
               </Button>
             </div>
           </div>
@@ -171,11 +172,10 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
       <Section variant="std" surface="white">
         <SectionHead
           kicker="How the course works"
-          heading={<>A builder-first path, not a reading assignment.</>}
+          heading={<>Start small. Save real work.</>}
           lede={
             <>
-              The course centers on reusable prompts, repeatable skills, review notes, transfer
-              plans, My Foundation Packet, and the final certificate submission.
+              Understand the concept, try it in the lab, build the artifact, then save it to your packet.
             </>
           }
         />
@@ -202,20 +202,19 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
       <Section variant="std" surface="white">
         <div id="curriculum" />
         <SectionHead
-          kicker={`${facts.moduleCount}-module curriculum · Prompt Builder preview`}
-          heading={<>Preview the Prompt Builder. Build toward reusable skills.</>}
+          kicker={`${facts.moduleCount}-module curriculum · Builder preview`}
+          heading={<>Preview the builders. Save the outputs.</>}
           lede={
             <>
-              Start with the reusable prompt preview, then move through workflow, safety, and
-              final packet mileposts. The full course includes {facts.moduleCount} modules and
-              {facts.artifactCount} saved artifacts.
+              Prompt Builder and Skill Builder are working course tools. Workflow mapping shows
+              human checkpoints for agent-shaped work without implying a technical agent build.
             </>
           }
         />
         <CoursePreviewDemos />
       </Section>
 
-      {/* WHAT LEARNERS BUILD — 4 work modes across 12 artifacts */}
+      {/* WHAT LEARNERS BUILD — 4 work modes across the Foundation Packet */}
       <Section variant="std" surface="white">
         <SectionHead
           kicker="What learners build"
@@ -307,18 +306,18 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
 // proof object.
 function HeroPacketCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
   return (
-    <div className="mk-hreport">
+    <div className="mk-hreport mk-course-hreport">
       <div className="mk-hreport-left">
-        <div className="mk-k">Learner output packet</div>
+        <div className="mk-k">Foundation Packet</div>
         <div className="mk-v">{facts.artifactCount}</div>
-        <div className="mk-u">module artifacts</div>
+        <div className="mk-u">saved artifacts</div>
         <div className="mk-tier">
           <CheckCircleIcon size={16} />
-          {facts.individualPriceLabel} · {facts.totalMinutes} min / {facts.totalHoursLabel} hrs
+          {facts.individualPriceLabel} · {facts.totalHoursLabel} hrs
         </div>
       </div>
       <div className="mk-hreport-right">
-        <div className="mk-k">Sample packet slots</div>
+        <div className="mk-k">Includes</div>
         <div className="mk-hresult">
           {facts.samplePacketSlots.map((slot) => (
             <div key={slot.moduleNumber} className="mk-hresult-row">

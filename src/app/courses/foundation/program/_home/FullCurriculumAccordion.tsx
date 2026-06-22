@@ -1,5 +1,5 @@
 // FullCurriculumAccordion — collapses the existing CourseStructure
-// pillar grid behind a native <details> "Show all 12 modules" trigger.
+// pillar grid behind a native <details> "Show all modules" trigger.
 // Stays server-renderable (no client state).
 //
 // Audit §2 item 5.

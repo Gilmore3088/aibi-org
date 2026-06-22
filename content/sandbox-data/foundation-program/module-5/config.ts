@@ -1,51 +1,45 @@
 import type { SandboxConfig } from '@/lib/sandbox/types';
 
-const SYSTEM_PROMPT = `You are a banking data classification expert advising a community bank or credit union on data governance. Your role is to help the learner classify data into four tiers:
+const SYSTEM_PROMPT = `You are a project-brief coach for community-bank and credit-union staff. Help the learner turn a messy workstream into a safe reusable brief AI can use across approved sessions.
 
-**Tier 1 — Public:** Information already publicly available or that would cause no harm if disclosed (e.g., branch hours, published rate sheets, press releases).
+Use only the redacted sample data already loaded into the lab. Do not invent metrics, owners, deadlines, systems, approvals, or risks.
 
-**Tier 2 — Internal:** Non-public information that does not directly identify customers or contain regulated data (e.g., internal memos, staff schedules, process maps, training records).
+For each brief:
+- Clarify goal, audience, source material, constraints, and format.
+- Name what is out of scope.
+- Add success metric, risk owner, and human reviewer.
+- Add a sanitization note before any AI use.
 
-**Tier 3 — Confidential:** Sensitive institutional information whose disclosure could cause competitive or reputational harm (e.g., board minutes, strategic plans, vendor evaluations, M&A materials).
+Prefer this format:
 
-**Tier 4 — Restricted:** Personally identifiable information (PII), customer financial data, account numbers, credit reports, SARs, and any data subject to specific regulatory protection under GLBA, FCRA, BSA/AML, or ECOA/Reg B.
-
-When classifying data:
-- Present results in a markdown table with columns: Scenario ID, Data Description, Assigned Tier, Regulatory Basis, Recommended Handling.
-- Explain your reasoning for each classification.
-- Flag any scenarios where the classification depends on context or where the current handling is inadequate for the assigned tier.
-- Apply the "classify up" rule: when uncertain between two tiers, assign the higher (more restrictive) tier.
-
-When presenting distributions or summaries, format chart data as a JSON code block:
-\`\`\`chart
-{ "type": "bar" | "pie", "title": "...", "data": [{ "label": "...", "value": 0 }] }
-\`\`\`
-
-Reference applicable regulations by name (GLBA, FCRA, BSA/AML, ECOA/Reg B, Interagency TPRM Guidance, FFIEC IT Handbook) when justifying classifications.`;
+## Project brief
+- Goal:
+- Audience:
+- Source material:
+- Constraints:
+- Output format:
+- Out of scope:
+- Success metric:
+- Risk owner:
+- Human reviewer:
+- Sanitization note:`;
 
 export const module5SandboxConfig: SandboxConfig = {
   systemPrompt: SYSTEM_PROMPT,
 
   sampleData: [
     {
-      id: 'data-classification-scenarios',
-      label: 'Data Classification Scenarios',
-      type: 'csv',
-      description:
-        '20 realistic banking data scenarios across seven departments, each with regulatory references and current handling practices.',
-    },
-    {
-      id: 'sample-vendor-agreement',
-      label: 'AI Vendor Services Agreement',
+      id: 'project-brief-scenario',
+      label: 'Project Brief Scenario',
       type: 'document',
       description:
-        'A sample AI document processing agreement between First Community Bank and NovusAI Solutions with intentional gaps in data handling, liability, and compliance clauses.',
+        'A messy internal AI rollout workstream with partial details, missing scope, and review questions to turn into a safe project brief.',
     },
   ],
 
   suggestedPrompts: [
-    'Using the data classification scenarios in the sample data, classify each row by data tier and explain your reasoning. Flag any rows where the current handling is inadequate for the assigned tier.',
-    'Review the NovusAI vendor agreement in the sample data for data handling risks. Identify clauses that would concern a compliance officer at a community bank, and suggest specific language improvements.',
-    'Based on the classification scenarios and the vendor agreement in the sample data, create a data classification policy recommendation that includes handling procedures for each tier and a decision tree for borderline cases.',
+    'Using the messy workstream notes in the sample data, draft a safe reusable project brief with goal, audience, source, constraints, format, and reviewer.',
+    'Find the missing or unsafe parts of the sample workstream before it can be used as AI context. Mark anything that should be [VERIFY].',
+    'Turn the sample workstream into a one-page brief a manager and compliance partner could review before AI-assisted work begins.',
   ],
 } as const;

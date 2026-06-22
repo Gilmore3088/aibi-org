@@ -155,9 +155,9 @@ export function DiagnosisForm({
           type="submit"
           disabled={submitting}
           className="px-6 py-2.5 rounded-xl bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--gold-soft)] hover:text-[color:var(--gold)] text-[12px] font-sans font-bold uppercase tracking-[0.22em] transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
-          aria-label={submitting ? 'Submitting activity' : 'Submit activity'}
+          aria-label={submitting ? 'Saving artifact step' : 'Save artifact step'}
         >
-          {submitting ? 'SUBMITTING' : 'SUBMIT ACTIVITY'}
+          {submitting ? 'SAVING' : 'SAVE ARTIFACT STEP'}
         </button>
       </div>
     </form>

@@ -11,8 +11,11 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
+import { FOUNDATION_FINAL_MODULE_NUMBER } from '@content/courses/foundation-program';
 
-const LAST_MODULE = 12;
+const LAST_MODULE = FOUNDATION_FINAL_MODULE_NUMBER;
+const DEV_COURSE_ENROLLMENT_ID = 'dev-bypass';
 
 interface RequestBody {
   enrollmentId?: unknown;
@@ -27,10 +30,6 @@ interface EnrollmentRow {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
-  }
-
   // --- Parse body ---
   let body: RequestBody;
   try {
@@ -51,6 +50,21 @@ export async function POST(request: Request): Promise<NextResponse> {
       { error: `moduleNumber must be an integer between 1 and ${LAST_MODULE}.` },
       { status: 400 }
     );
+  }
+
+  if (
+    (process.env.NODE_ENV !== 'production' || isPreviewAuthBypassEnabled()) &&
+    enrollmentId === DEV_COURSE_ENROLLMENT_ID
+  ) {
+    return NextResponse.json({
+      success: true,
+      nextModule: moduleNumber === LAST_MODULE ? LAST_MODULE : moduleNumber + 1,
+      localPreview: true,
+    });
+  }
+
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
 
   // --- Authenticate user (T-04-05) ---

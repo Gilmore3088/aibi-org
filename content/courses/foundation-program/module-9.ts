@@ -3,8 +3,9 @@
 // Key Output: Safe AI Use Checklist
 //
 // Pillar moved from Understanding to Creation (2026-05-17) so the sidebar
-// renders modules in clean sequential order per pillar: Awareness 1,2 /
-// Understanding 3,4,5 / Creation 6,7,8,9 / Application 10,11,12. The
+// renders modules in clean sequential order per pillar. The 18-module
+// micro-course now carries the canonical module map; this legacy named export
+// stays for compatibility with older imports. The
 // module's content is daily-workflow / safe-use guidance, which fits
 // Creation more naturally than the conceptual Understanding pillar.
 

@@ -29,7 +29,7 @@ import { PurchaseFinalCTA } from './_components/PurchaseFinalCTA';
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
   description:
-    'Enroll in the AiBI-Foundation course. Twelve modules, practical artifacts, and a credential aligned with SR 11-7, Interagency TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
+    'Enroll in the AiBI-Foundation course. Eighteen bite-sized modules, practical artifacts, and a credential aligned with SR 11-7, Interagency TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
 };
 
 const INTER_STACK =
@@ -186,7 +186,7 @@ export default async function PurchasePage(
         {/* 2. SAMPLE WEEK — three columns, real Module 1 content */}
         <SampleWeek />
 
-        {/* 3. WHAT YOU LEAVE WITH — four artifact thumbnails */}
+        {/* 3. WHAT YOU LEAVE WITH — representative packet previews */}
         <ArtifactThumbnails />
 
         {/* 4. PRICING + PROOF — quote + stat + EnrollButton */}

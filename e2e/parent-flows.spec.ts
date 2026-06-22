@@ -94,11 +94,11 @@ test.describe('parent flows — desktop', () => {
     expect(href).toMatch(/\/courses\/foundation\/program\/purchase/);
   });
 
-  test('/courses — curriculum lists 12 modules (#350)', async ({ page }) => {
+  test('/courses — curriculum lists 18 modules', async ({ page }) => {
     await gotoStable(page, '/courses');
     const body = await page.locator('body').innerText();
-    // Post-#350 the page lists all 12 modules, not 5.
-    expect(body).toMatch(/12-module|twelve module|all 12/i);
+    expect(body).toMatch(/18 short labs|18 bite-sized modules|18-module curriculum|eighteen/i);
+    expect(body).not.toMatch(/12-module|twelve module|all 12/i);
   });
 
   test('/courses — back-link to free assessment (#354)', async ({ page }) => {

@@ -61,7 +61,7 @@ export function PostAssessmentQuestions({
             margin: '0 0 24px',
           }}
         >
-          You finished all 12 modules. Answer the same 12 questions you
+          You finished the course. Answer the same 12 questions you
           started with &mdash; honestly, the way you did on day one &mdash; and
           we&rsquo;ll show you exactly what changed, dimension by dimension.
         </p>

@@ -138,10 +138,10 @@ export function AcceptableUseCardForm({
       className="border border-[color:var(--ink-a10)] border-l-4 rounded-2xl p-6 bg-[color:var(--cream)] mb-8 shadow-[var(--shadow-soft)]"
       style={{ borderLeftColor: 'var(--gold)' }}
     >
-      {/* Activity header */}
+      {/* Artifact-step header */}
       <div className="mb-5">
         <p className="font-sans text-[12px] font-bold uppercase tracking-widest text-[color:var(--gold-deep)] mb-1">
-          Activity {activity.id}
+          Artifact step {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-sans text-xl font-bold tracking-tight text-[color:var(--ink)] mb-2">
@@ -220,9 +220,9 @@ export function AcceptableUseCardForm({
               type="submit"
               disabled={state.submitting}
               className="px-6 py-2.5 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[12px] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
-              aria-label={state.submitting ? 'Submitting card…' : 'Submit and build card'}
+              aria-label={state.submitting ? 'Saving card…' : 'Save and build card'}
             >
-              {state.submitting ? 'SUBMITTING…' : 'SUBMIT AND BUILD CARD'}
+              {state.submitting ? 'SAVING…' : 'SAVE AND BUILD CARD'}
             </button>
           </div>
         </form>

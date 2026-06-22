@@ -6,6 +6,10 @@ import {
   generateOpaqueToken,
   hashToken,
 } from '../../src/lib/auth/trusted-device';
+import {
+  FOUNDATION_FINAL_MODULE_NUMBER,
+  FOUNDATION_MODULE_COUNT,
+} from '../../content/courses/foundation-program/course-config';
 import type { OnboardingAnswers } from '../../src/types/course';
 
 // There is no staging Supabase project. By design — for a pre-launch
@@ -42,6 +46,43 @@ export interface SeededUser {
   id: string;
   email: string;
   password: string;
+}
+
+export interface CourseE2ESchemaStatus {
+  readonly available: boolean;
+  readonly missingTables: readonly string[];
+  readonly errors: readonly string[];
+}
+
+/**
+ * Lightweight preflight for auth-gated course tests. This avoids creating a
+ * seeded auth user when the configured Supabase project is missing the public
+ * course tables needed to enroll, submit work, and save Toolbox artifacts.
+ */
+export async function getCourseE2ESchemaStatus(): Promise<CourseE2ESchemaStatus> {
+  const supabase = getServiceRoleClient();
+  const requiredTables = [
+    'course_enrollments',
+    'entitlements',
+    'activity_responses',
+    'toolbox_skills',
+    'user_artifacts',
+  ] as const;
+  const missingTables: string[] = [];
+  const errors: string[] = [];
+
+  for (const table of requiredTables) {
+    const { error } = await supabase.from(table).select('*').limit(1);
+    if (!error) continue;
+    missingTables.push(table);
+    errors.push(`${table}: ${error.message}`);
+  }
+
+  return {
+    available: missingTables.length === 0,
+    missingTables,
+    errors,
+  };
 }
 
 /**
@@ -127,6 +168,51 @@ export async function setOnboardingAnswers(
   }
 }
 
+export interface FoundationEnrollmentState {
+  readonly id: string;
+  readonly current_module: number;
+  readonly completed_modules: readonly number[];
+}
+
+export async function getFoundationEnrollment(
+  userId: string,
+): Promise<FoundationEnrollmentState> {
+  const supabase = getServiceRoleClient();
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .select('id, current_module, completed_modules')
+    .eq('user_id', userId)
+    .eq('product', 'foundation')
+    .single();
+  if (error || !data) {
+    throw new Error(`getFoundationEnrollment failed: ${error?.message ?? 'no enrollment found'}`);
+  }
+  return data as FoundationEnrollmentState;
+}
+
+export async function setFoundationProgress({
+  userId,
+  currentModule,
+  completedModules,
+}: {
+  readonly userId: string;
+  readonly currentModule: number;
+  readonly completedModules: readonly number[];
+}): Promise<void> {
+  const supabase = getServiceRoleClient();
+  const { error } = await supabase
+    .from('course_enrollments')
+    .update({
+      current_module: currentModule,
+      completed_modules: [...completedModules],
+    })
+    .eq('user_id', userId)
+    .eq('product', 'foundation');
+  if (error) {
+    throw new Error(`setFoundationProgress failed: ${error.message}`);
+  }
+}
+
 /**
  * Issue a trusted-device row directly and return the plaintext cookie token
  * the caller should set on the Playwright browser context. Mirrors
@@ -159,16 +245,16 @@ export async function grantTrustedDevice(
 }
 
 /**
- * Mark a learner's foundation enrollment as fully complete (modules 1-12
+ * Mark a learner's foundation enrollment as fully complete (all configured modules
  * in completed_modules). Used by the CX audit so the harness can visit
  * every module without being blocked by canAccessModule().
  */
 export async function markAllModulesComplete(userId: string): Promise<void> {
   const supabase = getServiceRoleClient();
-  const allModules = Array.from({ length: 12 }, (_, i) => i + 1);
+  const allModules = Array.from({ length: FOUNDATION_MODULE_COUNT }, (_, i) => i + 1);
   const { error } = await supabase
     .from('course_enrollments')
-    .update({ completed_modules: allModules, current_module: 12 })
+    .update({ completed_modules: allModules, current_module: FOUNDATION_FINAL_MODULE_NUMBER })
     .eq('user_id', userId);
   if (error) {
     throw new Error(`markAllModulesComplete failed: ${error.message}`);

@@ -1,4 +1,4 @@
-// CurriculumByArtifact — flat ordered list of all 12 modules keyed by
+// CurriculumByArtifact — flat ordered list of all Foundation modules keyed by
 // the artifact each one produces. Replaces the pillar-grouped view.
 // Uses <details> for native expand/collapse so the component stays a
 // server component with no client JS.
@@ -39,7 +39,7 @@ export function CurriculumByArtifact() {
             color: 'var(--ink)',
           }}
         >
-          Twelve modules, twelve artifacts.
+          Eighteen bite-sized modules, eighteen saved artifacts.
         </h2>
         <p
           style={{

@@ -17,10 +17,10 @@ interface Props {
 /**
  * Layout wrapper for the Ledger-style LMS surfaces.
  *
- * Desktop (≥768px): 280px sidebar + flexible main column. The sidebar is
+ * Desktop (≥1024px): 280px sidebar + flexible main column. The sidebar is
  * sticky to the viewport top.
  *
- * Mobile (<768px): the sidebar is hidden and replaced by a hamburger
+ * Tablet/mobile (<1024px): the sidebar is hidden and replaced by a hamburger
  * button (fixed top-left) that opens a slide-in drawer with the same
  * sidebar content. The main column expands to full width.
  *
@@ -74,20 +74,35 @@ export function CourseShell({ modules, completed, current, learner, children }: 
         .lms-shell {
           grid-template-columns: minmax(0, 1fr);
         }
+        .lms-shell > main {
+          grid-column: 1;
+          min-width: 0;
+        }
+        .lms-shell > .lms-mobile-drawer {
+          display: contents;
+        }
         /* The desktop sidebar <aside> carries inline display:flex, which beats
            its own Tailwind "hidden md:flex" class (inline wins specificity) —
            so it leaked onto mobile, stacking the full module tree above the
            content next to the hamburger. Hide the direct-child aside below md
            with !important to beat the inline style; the mobile drawer's
            sidebar is nested (not a direct child) and is unaffected. */
-        @media (max-width: 767px) {
+        @media (max-width: 1023px) {
           .lms-shell > aside {
             display: none !important;
           }
         }
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           .lms-shell {
             grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+          }
+          .lms-shell > .lms-mobile-nav,
+          .lms-shell > .lms-mobile-drawer {
+            display: none !important;
+          }
+          .lms-shell > main {
+            grid-column: 2;
+            grid-row: 1;
           }
         }
       `,

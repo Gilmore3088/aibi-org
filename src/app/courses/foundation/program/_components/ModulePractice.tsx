@@ -1,7 +1,7 @@
 'use client';
 
 // Embedded practice panel inside a module page. The learner picks a
-// scenario, hits Run, and Claude streams a response right under the
+// scenario, hits Run, and the default AiBI Lab model streams a response under the
 // module body — no toolbox round-trip required. This is the "C" piece
 // of robust interactive course steps: every module has an inline LLM
 // loop tied to its own outcome.
@@ -51,7 +51,8 @@ export function ModulePractice({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          provider: 'claude',
+          provider: 'anthropic',
+          model: 'claude-haiku-4-5-20251001',
           product: 'foundation',
           moduleId: `m${moduleNumber}`,
           systemPrompt,

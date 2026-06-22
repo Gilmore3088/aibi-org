@@ -83,8 +83,8 @@ export function CourseStructure({
           margin: '0 0 28px',
         }}
       >
-        Each module is roughly 20–40 minutes of learning, practice, and a
-        single banking artifact you walk away with.
+        Each module is a bite-sized lab: understand the idea, try it, build the
+        artifact, and save the reusable version to your packet.
       </p>
 
       {LMS_PILLARS.map((pillar) => {

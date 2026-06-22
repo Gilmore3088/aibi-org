@@ -11,18 +11,24 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
-import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
+import {
+  DEV_COURSE_ENROLLMENT_ID,
+  getEnrollment,
+} from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
+import { FOUNDATION_FINAL_MODULE_NUMBER } from '@content/courses/foundation-program';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+
+const LAST_MODULE = FOUNDATION_FINAL_MODULE_NUMBER;
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const moduleParam = url.searchParams.get('module');
   const moduleNum = moduleParam ? Number.parseInt(moduleParam, 10) : NaN;
 
-  if (!Number.isInteger(moduleNum) || moduleNum < 1 || moduleNum > 12) {
+  if (!Number.isInteger(moduleNum) || moduleNum < 1 || moduleNum > LAST_MODULE) {
     return NextResponse.json(
-      { error: 'Invalid or missing module parameter (expected 1-12).' },
+      { error: `Invalid or missing module parameter (expected 1-${LAST_MODULE}).` },
       { status: 400 },
     );
   }
@@ -39,7 +45,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Enrollment required.' }, { status: 401 });
   }
 
-  // Per-user rate limit — 60/hour covers 12 modules × multiple legit
+  // Per-user rate limit — 60/hour covers course modules × multiple legit
   // re-downloads each; throttles a cost-abuse loop on the markdown render.
   if (enrollment.user_id) {
     const limited = await rateLimitOrFail({
@@ -50,6 +56,16 @@ export async function GET(request: NextRequest) {
       windowSeconds: 3600,
     });
     if (limited) return limited;
+  }
+
+  if (enrollment.id === DEV_COURSE_ENROLLMENT_ID) {
+    return NextResponse.json(
+      {
+        error:
+          'No saved response yet. Complete and save the Apply activity before downloading the artifact.',
+      },
+      { status: 404 },
+    );
   }
 
   if (!isSupabaseConfigured()) {

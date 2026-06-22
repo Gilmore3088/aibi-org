@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LMS_PILLARS, type LMSModule, getModuleStatus } from './types';
 import { ProgressDot } from './ProgressDot';
+import { Wordmark } from '@/components/brand';
 
 interface Props {
   readonly modules: readonly LMSModule[];
@@ -14,7 +15,7 @@ interface Props {
     readonly role: string;
   };
   /**
-   * When true, render without the `hidden md:flex` class and without
+   * When true, render without the `hidden lg:flex` class and without
    * sticky positioning. Used by the mobile drawer overlay so the same
    * sidebar markup serves both the desktop rail and the mobile drawer.
    */
@@ -30,7 +31,7 @@ const NAV_SECTIONS = [
 ] as const;
 
 // NOTE: `display` is intentionally NOT set here. The `hidden md:flex`
-// className on the <aside> owns it so the rail hides on mobile (<768px)
+// className on the <aside> owns it so the rail hides below desktop (<1024px)
 // and the off-canvas drawer takes over. An inline `display:flex` would
 // beat the `hidden` utility (inline styles win the specificity battle)
 // and leak the full desktop rail onto every course page on mobile — the
@@ -46,17 +47,8 @@ const shellStyle: React.CSSProperties = {
 };
 
 const brandWrap: React.CSSProperties = {
-  padding: '24px 22px 20px',
+  padding: '22px 22px 18px',
   borderBottom: '1px solid var(--ink-a10)',
-};
-
-const brandLine: React.CSSProperties = {
-  fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-  fontWeight: 700,
-  fontSize: 20,
-  letterSpacing: '-0.005em',
-  textTransform: 'uppercase',
-  lineHeight: 1,
 };
 
 export function LMSSidebar({ modules, completed, current, learner, mobile, onNavigate }: Props) {
@@ -77,13 +69,36 @@ export function LMSSidebar({ modules, completed, current, learner, mobile, onNav
   return (
     <aside
       style={asideStyle}
-      className={mobile ? 'flex' : 'hidden md:flex'}
+      className={mobile ? 'flex' : 'hidden lg:flex'}
       data-testid="lms-sidebar"
     >
       <div style={brandWrap}>
-        <div style={{ ...brandLine, color: 'var(--ink)' }}>The AI Banking</div>
-        <div style={{ ...brandLine, color: 'var(--slate-600)', marginTop: 2 }}>
-          Institute
+        <Link
+          href="/"
+          onClick={onNavigate}
+          aria-label="The AI Banking Institute home"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            maxWidth: '100%',
+          }}
+        >
+          <Wordmark variant="full" tone="dark" size={22} />
+        </Link>
+        <div
+          style={{
+            marginTop: 12,
+            fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
+            color: 'var(--slate-600)',
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            lineHeight: 1,
+          }}
+        >
+          Foundation course
         </div>
       </div>
 

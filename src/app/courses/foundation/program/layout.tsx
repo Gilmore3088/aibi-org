@@ -21,11 +21,13 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { isPreviewAuthBypassEnabled } from '@/lib/auth/previewBypass';
 import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
-import { getEnrollment } from './_lib/getEnrollment';
+import { getEnrollment, isDevCourseEnrollmentBypassEnabled } from './_lib/getEnrollment';
 
 interface CourseLayoutProps {
   readonly children: ReactNode;
 }
+
+export const dynamic = 'force-dynamic';
 
 // Paths that must never trigger the auth or onboarding redirects.
 //   /purchase   — public buy funnel; account creation happens after Stripe
@@ -42,8 +44,8 @@ const ONBOARDING_EXEMPT_SUFFIXES = ['/onboarding', '/settings', '/purchase', '/p
 
 export default async function CourseLayout({ children }: CourseLayoutProps) {
   // Preview/local bypass — skip auth + onboarding gates entirely when
-  // PREVIEW_AUTH_BYPASS=true on a non-production environment.
-  if (isPreviewAuthBypassEnabled()) {
+  // PREVIEW_AUTH_BYPASS=true or the local course enrollment bypass is active.
+  if (isPreviewAuthBypassEnabled() || isDevCourseEnrollmentBypassEnabled()) {
     return (
       <div className="mockup-scope">
         {children}

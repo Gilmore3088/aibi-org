@@ -159,10 +159,10 @@ export function SkillDiagnosis({
       className="mb-8 rounded-3xl border border-[color:var(--ink-a10)] border-l-4 bg-[color:var(--cream)] p-6 shadow-[var(--shadow-soft)]"
       style={{ borderLeftColor: 'var(--gold)' }}
     >
-      {/* Activity header */}
+      {/* Artifact-step header */}
       <div className="mb-5">
         <p className="font-sans text-[12px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)] mb-1">
-          Activity {activity.id}
+          Artifact step {activity.id}
         </p>
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-sans text-xl font-bold text-[color:var(--ink)] mb-2">

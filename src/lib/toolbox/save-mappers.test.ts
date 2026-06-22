@@ -1,9 +1,144 @@
 import { describe, expect, it } from 'vitest';
+import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program/micro-modules';
 import {
+  courseArtifactToToolboxSkill,
   promptCardToToolboxSkill,
   playgroundMessagesToToolboxSkill,
   libraryEntryToToolboxSkill,
 } from './save-mappers';
+
+describe('courseArtifactToToolboxSkill', () => {
+  const promptTemplateModules = new Set([2, 4, 5, 6, 8, 9, 10]);
+
+  it('turns a completed workflow module artifact into a workflow skill with course provenance', () => {
+    const skill = courseArtifactToToolboxSkill(
+      {
+        moduleNumber: 15,
+        activityId: '15.1',
+        artifactName: 'Human Review Gate Card',
+        readiness: 'reuse',
+        reviewNote: 'Reviewer can stop the output before it reaches a customer.',
+        transferPlan: 'Use this on the next AI-assisted branch procedure update.',
+        fields: [
+          {
+            id: 'paused_work',
+            label: 'Paused work',
+            value: 'AI drafts the first branch procedure update.',
+          },
+          {
+            id: 'escalation_trigger',
+            label: 'Escalation trigger',
+            value: 'Stop if the draft includes unsupported policy claims.',
+          },
+        ],
+      },
+      'user-1',
+    );
+
+    expect(skill.kind).toBe('workflow');
+    if (skill.kind !== 'workflow') throw new Error('expected workflow');
+    expect(skill.cmd).toBe('/foundation-m15-human-review-gate-card');
+    expect(skill.name).toBe('M15: Human Review Gate Card');
+    expect(skill.source).toBe('course');
+    expect(skill.sourceRef).toBe('aibi-p/module-15/15.1');
+    expect(skill.owner).toBe('user-1');
+    expect(skill.maturity).toBe('pilot');
+    expect(skill.steps.join('\n')).toContain('Paused work');
+    expect(skill.guardrails.join('\n')).toContain('human review');
+    expect(skill.samples[0]?.prompt).toContain('AI drafts the first branch procedure update');
+  });
+
+  it('turns a prompt-builder module artifact into a reusable template skill', () => {
+    const skill = courseArtifactToToolboxSkill(
+      {
+        moduleNumber: 9,
+        activityId: '9.1',
+        artifactName: 'Reusable Prompt Template',
+        readiness: 'reuse',
+        reviewNote: 'Human verifies source claims before the template is reused.',
+        transferPlan: 'Use this for the weekly branch operations handoff.',
+        fields: [
+          {
+            id: 'prompt_body',
+            label: 'Prompt body',
+            value:
+              'Turn redacted branch notes into five staff handoff bullets. Do not add facts. Flag missing owner or deadline.',
+          },
+          {
+            id: 'safety_note',
+            label: 'Safety note',
+            value: 'Use redacted notes only. No customer identifiers, account data, or confidential strategy.',
+          },
+        ],
+      },
+      'user-1',
+    );
+
+    expect(skill.kind).toBe('template');
+    if (skill.kind !== 'template') throw new Error('expected template');
+    expect(skill.cmd).toBe('/foundation-m9-reusable-prompt-template');
+    expect(skill.name).toBe('M9: Reusable Prompt Template');
+    expect(skill.sourceRef).toBe('aibi-p/module-9/9.1');
+    expect(skill.maturity).toBe('pilot');
+    expect(skill.systemPrompt).toContain('saved AiBI-Foundation prompt asset');
+    expect(skill.userPromptTemplate).toContain('{{prompt_body}}');
+    expect(skill.userPromptTemplate).toContain('{{safety_note}}');
+    expect(skill.variables.map((variable) => variable.name)).toEqual([
+      'prompt_body',
+      'safety_note',
+    ]);
+    expect(skill.example?.input.prompt_body).toContain('redacted branch notes');
+  });
+
+  it('maps every Foundation module artifact into a toolbox-ready saved asset', () => {
+    for (const microModule of FOUNDATION_MICRO_MODULES) {
+      const reviewBoundary = microModule.reviewChecklist.join('; ');
+      const transferPlan = microModule.transferMove;
+      const skill = courseArtifactToToolboxSkill(
+        {
+          moduleNumber: microModule.number,
+          activityId: `${microModule.number}.1`,
+          artifactName: microModule.saveArtifact,
+          reviewNote: reviewBoundary,
+          transferPlan,
+          fields: [
+            {
+              id: 'artifact_draft',
+              label: 'Artifact draft',
+              value: microModule.proofToSave,
+            },
+            {
+              id: 'banking_guardrail',
+              label: 'Banking guardrail',
+              value: microModule.bankingGuardrail,
+            },
+          ],
+        },
+        'user-1',
+      );
+
+      expect(skill.name).toBe(`M${microModule.number}: ${microModule.saveArtifact}`);
+      expect(skill.source).toBe('course');
+      expect(skill.sourceRef).toBe(`aibi-p/module-${microModule.number}/${microModule.number}.1`);
+      expect(skill.desc).toContain('Saved from AiBI-Foundation');
+      expect(skill.desc).toContain(transferPlan.slice(0, 40));
+      expect(skill.kind).toBe(promptTemplateModules.has(microModule.number) ? 'template' : 'workflow');
+
+      if (skill.kind === 'template') {
+        expect(skill.userPromptTemplate).toContain('{{artifact_draft}}');
+        expect(skill.userPromptTemplate).toContain(reviewBoundary);
+        expect(skill.userPromptTemplate).toContain(transferPlan);
+        expect(skill.variables.length).toBeGreaterThan(0);
+      } else {
+        expect(skill.purpose).toBe(transferPlan);
+        expect(skill.success).toBe(reviewBoundary);
+        expect(skill.guardrails.join('\n')).toContain('human review');
+        expect(skill.guardrails.join('\n')).toContain(reviewBoundary);
+        expect(skill.samples[0]?.prompt).toContain(microModule.proofToSave);
+      }
+    }
+  });
+});
 
 describe('promptCardToToolboxSkill', () => {
   const prompt = {

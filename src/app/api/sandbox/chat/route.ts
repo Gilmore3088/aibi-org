@@ -5,7 +5,9 @@
 import { NextResponse } from 'next/server';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
-import { streamClaude } from '@/lib/sandbox/providers/claude';
+import { createLLMClient } from '@/lib/ai-harness/client';
+import type { ProviderName } from '@/lib/ai-harness/types';
+import { isAllowedModel } from '@/lib/toolbox/playground-models';
 import { getAuthUser } from '@/lib/api/auth';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
@@ -15,12 +17,11 @@ import { rateLimitOrFail } from '@/lib/api/rate-limit';
 
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_MESSAGES = 20;
-const VALID_PROVIDERS = ['claude'] as const;
+const VALID_PROVIDERS = ['anthropic', 'openai', 'gemini'] as const;
 // 'aibi-p' kept for legacy clients that have not refreshed; new clients send
 // 'foundation'. Both are accepted by the sandbox API.
 const VALID_PRODUCTS = ['aibi-p', 'foundation', 'aibi-s', 'aibi-l'] as const;
 
-type Provider = (typeof VALID_PROVIDERS)[number];
 type Product = (typeof VALID_PRODUCTS)[number];
 
 interface ChatMessage {
@@ -30,6 +31,7 @@ interface ChatMessage {
 
 interface ChatRequestBody {
   provider?: unknown;
+  model?: unknown;
   messages?: unknown;
   moduleId?: unknown;
   product?: unknown;
@@ -47,8 +49,8 @@ const RATE_LIMIT_PER_USER_PER_HOUR = 50;
 // Validation helpers
 // ---------------------------------------------------------------------------
 
-function isValidProvider(v: unknown): v is Provider {
-  return typeof v === 'string' && VALID_PROVIDERS.includes(v as Provider);
+function isValidProvider(v: unknown): v is ProviderName {
+  return typeof v === 'string' && VALID_PROVIDERS.includes(v as ProviderName);
 }
 
 function isValidProduct(v: unknown): v is Product {
@@ -73,7 +75,7 @@ function isValidMessages(v: unknown): v is ChatMessage[] {
 
 export async function POST(request: Request) {
   // 0. Require an authenticated session. The sandbox is an AI proxy
-  // that bills the Anthropic API on every call — anonymous access
+  // that bills third-party model APIs on every call — anonymous access
   // turns this endpoint into an unbounded cost surface. Practice
   // tabs only render inside enrolled course modules, so requiring a
   // session here doesn't block any legitimate UX.
@@ -99,20 +101,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const { provider, messages, moduleId, product, systemPrompt } = body;
+  const { provider, model, messages, moduleId, product, systemPrompt } = body;
 
   // 2a. Required fields
-  if (!provider || !messages || !moduleId || !product || !systemPrompt) {
+  if (!provider || !model || !messages || !moduleId || !product || !systemPrompt) {
     return NextResponse.json(
-      { error: 'Missing required fields: provider, messages, moduleId, product, systemPrompt.' },
+      { error: 'Missing required fields: provider, model, messages, moduleId, product, systemPrompt.' },
       { status: 400 },
     );
   }
 
-  // 2b. Provider check (Phase 1: Claude only)
+  // 2b. Provider/model check. The menu is shared with the Toolbox so the
+  // course lab cannot call arbitrary models even if a request is forged.
   if (!isValidProvider(provider)) {
     return NextResponse.json(
-      { error: "Invalid provider. Phase 1 supports 'claude' only." },
+      { error: 'Invalid provider.' },
+      { status: 400 },
+    );
+  }
+
+  if (typeof model !== 'string' || !isAllowedModel(provider, model)) {
+    return NextResponse.json(
+      { error: 'Invalid model for provider.' },
       { status: 400 },
     );
   }
@@ -186,7 +196,28 @@ export async function POST(request: Request) {
 
   // 9. Call provider
   try {
-    const stream = await streamClaude(systemPrompt as string, messages);
+    const client = createLLMClient(provider);
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of client.stream({
+          model,
+          system: systemPrompt as string,
+          messages,
+          maxTokens: 900,
+          temperature: 0.2,
+        })) {
+          if (chunk.type === 'text' && chunk.text) {
+            controller.enqueue(encoder.encode(chunk.text));
+          }
+          if (chunk.type === 'error') {
+            controller.error(chunk.error ?? new Error('AI provider error'));
+            return;
+          }
+        }
+        controller.close();
+      },
+    });
     return new Response(stream, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',

@@ -19,7 +19,7 @@ export const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
   creation:
     'Building skills that make AI output institutional-grade. Covers the anatomy of a repeatable skill, the five-component Skill Builder, and writing your first skill with real banking language.',
   application:
-    'Real-world automation and the assessed work product. Covers testing and iterating a skill, building a complete automation workflow, and the capstone submission that earns your certification.',
+    'Real-world automation and the assessed work product. Covers reusable workflow packaging, evidence notes, final packet review, and the submission that earns your certification.',
 } as const;
 
 export type ActivityType = 'free-text' | 'form' | 'drill' | 'builder' | 'iteration';

@@ -9,54 +9,58 @@ const kickerStyle: CSSProperties = {
   margin: 0,
 };
 
-const SHARING_LABELS: Record<string, string> = {
-  personal: 'Personal sandbox',
-  team: 'Ready for team review',
-  institution: 'Institution-wide',
-  'not-sure': 'Needs one more iteration',
-};
-
 interface ToolkitCapstoneSummaryProps {
-  readonly m7Title: string;
-  readonly m8Response: Record<string, string>;
+  readonly skillResponse?: Record<string, string>;
+  readonly workflowResponse?: Record<string, string>;
 }
 
-export function ToolkitCapstoneSummary({ m7Title, m8Response }: ToolkitCapstoneSummaryProps) {
+export function ToolkitCapstoneSummary({
+  skillResponse,
+  workflowResponse,
+}: ToolkitCapstoneSummaryProps) {
+  const skillDraft = skillResponse?.artifact_draft?.trim();
+  const skillReview = skillResponse?.review_note?.trim();
+  const skillReuse = skillResponse?.first_use?.trim();
+  const workflowPurpose = workflowResponse?.workflow_purpose?.trim();
+  const workflowKit = workflowResponse?.prompt_or_skill?.trim();
+  const workflowGate = workflowResponse?.checkpoint_and_escalation?.trim();
+  const workflowTest = workflowResponse?.peer_test_plan?.trim();
+
   return (
     <div style={{ display: 'grid', gap: 16 }}>
       <p style={{ fontSize: 16, color: 'var(--slate-500)', lineHeight: 1.6, margin: 0 }}>
-        Summary of your Module 9 capstone: the workflow you automated, the quality
-        standard your work product was built to meet, and the iteration path that
-        got you there.
+        Summary of your reusable skill and workflow evidence: what you tested,
+        how you improved it, and the quality standard your final packet should meet.
       </p>
 
-      <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
-        <p style={{ ...kickerStyle, marginBottom: 4 }}>Skill used for capstone</p>
-        <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
-          {m7Title}{' '}
-          {m8Response['sharing-ladder-level'] ? (
-            <span style={{ color: 'var(--slate-500)' }}>
-              — Sharing level:{' '}
-              {SHARING_LABELS[m8Response['sharing-ladder-level']] ?? m8Response['sharing-ladder-level']}
-            </span>
-          ) : null}
-        </p>
-      </div>
-
-      {m8Response['test-input-1'] && (
+      {skillDraft && (
         <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
-          <p style={{ ...kickerStyle, marginBottom: 4 }}>Tested against</p>
+          <p style={{ ...kickerStyle, marginBottom: 4 }}>Reusable skill</p>
           <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
-            {m8Response['test-input-1']}
+            {skillDraft}
+            {skillReuse ? (
+              <span style={{ color: 'var(--slate-500)' }}> — First reuse: {skillReuse}</span>
+            ) : null}
           </p>
         </div>
       )}
 
-      {m8Response['revision-notes'] && (
+      {workflowPurpose && (
         <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
-          <p style={{ ...kickerStyle, marginBottom: 4 }}>Iteration improvements</p>
+          <p style={{ ...kickerStyle, marginBottom: 4 }}>Workflow kit</p>
           <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
-            {m8Response['revision-notes']}
+            {workflowPurpose}
+          </p>
+        </div>
+      )}
+
+      {(workflowGate || workflowTest || skillReview || workflowKit) && (
+        <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
+          <p style={{ ...kickerStyle, marginBottom: 4 }}>Review evidence</p>
+          <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+            {[workflowGate, workflowTest, skillReview, workflowKit]
+              .filter(Boolean)
+              .join(' ')}
           </p>
         </div>
       )}

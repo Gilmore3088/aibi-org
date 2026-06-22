@@ -18,7 +18,8 @@ const BASE_URL =
 
 // `webServer` only starts when running against localhost. Against a preview
 // URL we assume the deployment is already up.
-const useLocalServer = BASE_URL.startsWith('http://localhost');
+const useLocalServer =
+  BASE_URL.startsWith('http://localhost') && process.env.PLAYWRIGHT_SKIP_WEB_SERVER !== 'true';
 
 export default defineConfig({
   testDir: './e2e',
@@ -48,11 +49,12 @@ export default defineConfig({
 
   webServer: useLocalServer
     ? {
-        // The e2e workflow (.github/workflows/e2e.yml) starts a production
-        // server BEFORE the playwright step in CI, so we always reuse that
-        // existing server. Local dev still auto-spins a dev server when
-        // nothing is on the port.
-        command: 'npm run dev',
+      // The e2e workflow (.github/workflows/e2e.yml) starts a production
+      // server BEFORE the playwright step in CI, so we always reuse that
+      // existing server. Local dev still auto-spins a dev server when
+      // nothing is on the port. SKIP_ENROLLMENT_GATE is dev-only and lets
+      // local E2E inspect the paid course UI without production auth state.
+      command: 'SKIP_ENROLLMENT_GATE=true npm run dev',
         url: 'http://localhost:3000',
         reuseExistingServer: true,
         timeout: 120_000,

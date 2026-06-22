@@ -32,9 +32,8 @@ export const metadata: Metadata = {
 };
 
 // Minimum completed modules required before the exam unlocks. The exam is
-// the capstone for AiBI-Foundation, so by default we require all 12 modules.
-// Lower this if the operator wants to allow earlier access for review.
-const REQUIRED_COMPLETED_MODULES = 12;
+// the capstone for AiBI-Foundation, so by default we require every module.
+const REQUIRED_COMPLETED_MODULES = foundationCourseConfig.modules.length;
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -143,7 +142,7 @@ function NotEligibleYetNotice({
         }}
       >
         The AiBI-Foundation final exam draws across every topic covered in
-        the twelve modules. Complete the remaining modules and return here
+        the {REQUIRED_COMPLETED_MODULES} modules. Complete the remaining modules and return here
         to begin.
       </p>
       <div

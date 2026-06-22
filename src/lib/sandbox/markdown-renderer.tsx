@@ -1,5 +1,5 @@
 /**
- * Lightweight inline markdown renderer for the AI Practice Sandbox.
+ * Lightweight inline markdown renderer for AiBI Lab.
  *
  * Handles: headings, bold, italic, inline code, fenced code blocks,
  * unordered/ordered lists, and pipe tables. Numeric table cells get

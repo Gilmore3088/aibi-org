@@ -55,15 +55,15 @@ const ROUTES = [
     title: 'Courses',
     problems: [
       'Hero is a single course preview — works, but desktop has space to also show a 1-line "for whom" + outcome statement that the buyer needs before deciding',
-      '12-module list as a vertical stack on desktop is a wall of titles — no module visibly differentiates itself, no module shows "this is where it gets interesting"',
+      '18-module list as a vertical stack on desktop can still become a wall of titles unless the modules visibly differentiate the prompt, skill, workflow, and packet outcomes',
       'Module 1 expanded by default is good for desktop; module thumbnail/screenshot would be better than module summary text',
       'Pricing strip is below the fold and below the curriculum — buyer evaluating fit doesn\'t see $295 until they\'ve already committed scroll time',
       'Bottom enrollment CtaBand restates the hero — same problem as Home',
       'Page is 4.7 fold-screens — fine; the curriculum section alone is doing too much of the work to convince the buyer',
     ],
     fixes: [
-      'Hero right column: pricing ($295 · 12 modules · self-paced · certificate) instead of repeating the course-name lockup',
-      'Render the 12-module list as a horizontal stepper (1→12) with the current/active module visually anchored — desktop has the width for it',
+      'Hero right column: pricing ($295 · 18 bite-sized modules · self-paced · certificate) instead of repeating the course-name lockup',
+      'Render the 18-module list as a horizontal stepper (1→18) with the current/active module visually anchored — desktop has the width for it',
       'Surface 2-3 "marquee modules" with screenshots inline (M3, M4, M9) — let the buyer see the interactive sandbox and prompt library before scrolling further',
       'Move the pricing strip into the hero, not below the fold',
       'Replace bottom CtaBand with a per-module footer: "Module 1 unlocks immediately on enroll →"',

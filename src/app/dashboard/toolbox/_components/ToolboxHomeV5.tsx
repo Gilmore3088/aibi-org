@@ -10,8 +10,7 @@
  * layout, the pin state, the type filter, search, kit cards, and
  * the side drawer.
  *
- * Scope: Foundation-tier port only. See #183 scope comment for why
- * the Starter-tier (read-only) variant lives in #219 instead.
+ * Scope: paid Toolbox port for both In-Depth and Foundation access.
  *
  * What's NOT here yet, by design:
  * - Server-backed pin persistence (uses localStorage; TODO #219).
@@ -25,9 +24,11 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
   isWorkflowSkill,
+  type ToolboxMaturity,
   type ToolboxSkill,
 } from '@/lib/toolbox/types';
 import { SourceBacklink } from './SourceBacklink';
+import { ToolboxQualityLadder } from './ToolboxQualityLadder';
 
 // Pin state is NOT user-scoped today. On a shared browser, user B will
 // see user A's pin set on first load. There is no data leakage — the
@@ -88,6 +89,25 @@ const STARTER_KITS: readonly KitCard[] = [
     shipped: false,
   },
 ];
+
+const TOOLBOX_WORKFLOW = [
+  {
+    label: 'Library',
+    body: 'Choose a banking-safe starter.',
+  },
+  {
+    label: 'AiBI Lab',
+    body: 'Run it with fabricated data.',
+  },
+  {
+    label: 'Review',
+    body: 'Check facts, gaps, and guardrails.',
+  },
+  {
+    label: 'Save',
+    body: 'Keep the reusable version.',
+  },
+] as const;
 
 function inferTileType(skill: ToolboxSkill): TileType {
   if (!isWorkflowSkill(skill)) return 'prompt';
@@ -230,13 +250,19 @@ export function ToolboxHomeV5({
     let newCount = 0;
     let staleCount = 0;
     let productionCount = 0;
+    const maturityCounts: Record<ToolboxMaturity, number> = {
+      draft: 0,
+      pilot: 0,
+      production: 0,
+    };
     for (const s of skills) {
       if (s.created && Date.parse(s.created) >= weekAgo) newCount += 1;
       if (s.modified && Date.parse(s.modified) < monthAgo) staleCount += 1;
+      maturityCounts[s.maturity] += 1;
       if (s.maturity === 'production') productionCount += 1;
     }
     const keptPct = total > 0 ? Math.round((productionCount / total) * 100) : null;
-    return { total, newCount, staleCount, keptPct };
+    return { total, newCount, staleCount, keptPct, maturityCounts };
   }, [skills]);
 
   const drawerSkill = useMemo(
@@ -253,12 +279,22 @@ export function ToolboxHomeV5({
         <header className="pb-6">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)]">
             <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--gold-deep)] align-middle" />
-            Your desk · Foundation tier
+            Your desk · Paid Toolbox
           </p>
           <h1 className="mt-4 text-[64px] leading-[0.95] tracking-[-0.035em] text-[color:var(--ink)] md:text-[88px]">
             Your <em className="text-[color:var(--gold-deep)]">toolbox.</em>
           </h1>
         </header>
+
+        <ToolboxWorkflowMap />
+
+        {!empty && (
+          <ToolboxQualityLadder
+            counts={stats.maturityCounts}
+            total={stats.total}
+            className="mt-4"
+          />
+        )}
 
         {/* STATS RIBBON — suppressed when empty so a new desk doesn't open
             on a bare 0 / 0 / 0 / — band (the editorial empty state speaks instead). */}
@@ -404,9 +440,52 @@ export function ToolboxHomeV5({
 
 /* ============== Subcomponents ============== */
 
+function ToolboxWorkflowMap(): JSX.Element {
+  return (
+    <section
+      aria-label="How the toolbox works"
+      className="border-y border-[color:var(--ink-a15)] py-4"
+    >
+      <div className="grid gap-3 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-stretch">
+        <div className="bg-[color:var(--ink)] px-5 py-4 text-[color:var(--cream)]">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--gold)]">
+            Workflow
+          </p>
+          <p className="mt-2 text-xl font-black leading-tight tracking-[-0.02em]">
+            Tested work becomes reusable.
+          </p>
+        </div>
+        <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {TOOLBOX_WORKFLOW.map((step, index) => (
+            <li
+              key={step.label}
+              className="grid min-h-[96px] grid-cols-[34px_minmax(0,1fr)] gap-3 border border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-4 py-3"
+            >
+              <span
+                aria-hidden="true"
+                className="grid h-8 w-8 place-items-center rounded-full bg-white text-[11px] font-black tabular-nums text-[color:var(--gold-deep)]"
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span>
+                <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                  {step.label}
+                </span>
+                <span className="mt-2 block text-sm font-bold leading-snug text-[color:var(--ink)]">
+                  {step.body}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 function Stats({ stats }: { readonly stats: { total: number; newCount: number; staleCount: number; keptPct: number | null } }): JSX.Element {
   return (
-    <div className="grid grid-cols-2 border border-[color:var(--ink-a15)] bg-[color:var(--cream)] sm:grid-cols-4">
+    <div className="mt-3 grid grid-cols-2 border border-[color:var(--ink-a15)] bg-[color:var(--cream)] sm:grid-cols-4">
       <StatCell value={String(stats.total)} label="In your toolbox" />
       <StatCell value={String(stats.newCount)} label="New this week" tone={stats.newCount > 0 ? 'good' : 'neutral'} />
       <StatCell value={String(stats.staleCount)} label="Stale (30d+)" tone={stats.staleCount > 0 ? 'weak' : 'neutral'} />
@@ -758,7 +837,7 @@ function Drawer({
               onClick={onRun}
               className="flex flex-1 items-center justify-center gap-2 bg-[color:var(--ink)] px-5 py-3.5 text-[10.5px] font-bold uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
             >
-              ▶ Run in Playground
+              ▶ Run in AiBI Lab
             </button>
             <button
               type="button"
@@ -802,30 +881,61 @@ function Drawer({
   );
 }
 
-function EmptyState({ onBrowse, onBuild: _onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
+function EmptyState({ onBrowse, onBuild }: { readonly onBrowse: () => void; readonly onBuild: () => void }): JSX.Element {
+  const steps = [
+    ['Choose', 'Open a banking starter.'],
+    ['Run', 'Test sample facts.'],
+    ['Save', 'Keep the version you trust.'],
+  ] as const;
+
   return (
-    <section className="mx-auto mt-16 max-w-2xl border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-8 py-16 text-center">
-      <h2 className="text-4xl tracking-[-0.025em] text-[color:var(--ink)]">
-        Your toolbox is <em className="text-[color:var(--gold-deep)]">empty.</em>
-      </h2>
-      <p className="mt-3 text-base leading-relaxed text-[color:var(--slate-500)]">
-        Pick up any prompt from the Library — your saved copies live here,
-        ready to re-run.
+    <section
+      aria-label="First toolbox asset mission"
+      className="mx-auto mt-12 max-w-3xl border border-[color:var(--ink-a15)] bg-[color:var(--cream)] px-6 py-8 text-[color:var(--ink)] sm:px-8"
+    >
+      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
+        First asset mission
       </p>
-      <div className="mt-6 flex justify-center gap-3">
+      <h2 className="mt-3 text-4xl leading-tight tracking-[-0.035em] text-[color:var(--ink)]">
+        Your toolbox is empty. Save one inspected workflow.
+      </h2>
+      <p className="mt-3 max-w-2xl text-base font-semibold leading-relaxed text-[color:var(--slate-600)]">
+        Start from a Library playbook, run it against sample facts, then save the version you would trust yourself to reuse.
+      </p>
+      <ol className="mt-6 grid gap-2 sm:grid-cols-3" aria-label="First toolbox asset steps">
+        {steps.map(([label, body], index) => (
+          <li
+            key={label}
+            className="grid grid-cols-[36px_minmax(0,1fr)] gap-3 border border-[color:var(--ink-a10)] bg-white px-3 py-3"
+          >
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-[color:var(--cream)] text-[11px] font-black tabular-nums text-[color:var(--gold-deep)]">
+              {index + 1}
+            </span>
+            <span>
+              <span className="block text-[10px] font-black uppercase tracking-[0.16em] text-[color:var(--gold-deep)]">
+                {label}
+              </span>
+              <span className="mt-1 block text-sm font-bold leading-snug text-[color:var(--ink)]">
+                {body}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-6 flex flex-wrap gap-3">
         <button
           type="button"
           onClick={onBrowse}
-          className="bg-[color:var(--ink)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
+          className="min-h-[44px] bg-[color:var(--ink)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-deep)]"
         >
-          Browse Library →
+          Browse Library
         </button>
         <button
           type="button"
-          onClick={onBrowse}
-          className="border border-[color:var(--ink-a15)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+          onClick={onBuild}
+          className="min-h-[44px] border border-[color:var(--ink-a15)] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
-          Open the BSA kit →
+          Build from scratch
         </button>
       </div>
     </section>

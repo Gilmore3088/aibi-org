@@ -7,7 +7,7 @@
  *
  *   <DefinitionList items={[
  *     { label: "Format", value: "Self-paced, online" },
- *     { label: "Effort", value: "12 modules · ~12 hours", mono: true },
+ *     { label: "Effort", value: "18 modules · ~3 hours", mono: true },
  *     { label: "Tuition", value: "$295", mono: true },
  *   ]} />
  */

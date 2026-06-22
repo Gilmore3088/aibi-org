@@ -20,23 +20,24 @@ import { KindPicker } from './_components/KindPicker';
 import { ModelPicker, type ModelSelection } from './_components/ModelPicker';
 import { TemplateBuilder } from './_components/TemplateBuilder';
 import { ToolboxHomeV5 } from './_components/ToolboxHomeV5';
+import { ToolboxQualityLadder } from './_components/ToolboxQualityLadder';
 import { WelcomeOverlay, readOnboarded } from './_components/WelcomeOverlay';
 import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
 
-// All tabs in canonical order. Per #219, Starter-tier (In-Depth Assessment
-// buyers) only sees the read-only tabs — Build + Playground are hidden.
-const ALL_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier[] }[] = [
+// All tabs in canonical order. Every paid Toolbox buyer can build, run, and
+// save; the starter/full tier only preserves the entitlement source.
+export const TOOLBOX_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier[] }[] = [
   { id: 'guide', label: 'Start Here', tiers: ['full', 'starter'] },
   { id: 'library', label: 'Library', tiers: ['full', 'starter'] },
-  { id: 'build', label: 'Build', tiers: ['full'] },
-  { id: 'playground', label: 'Playground', tiers: ['full'] },
+  { id: 'build', label: 'Build', tiers: ['full', 'starter'] },
+  { id: 'playground', label: 'AiBI Lab', tiers: ['full', 'starter'] },
   { id: 'toolbox', label: 'My Toolbox', tiers: ['full', 'starter'] },
 ];
 
-function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
-  return ALL_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
+export function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
+  return TOOLBOX_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
 }
 
 const EMPTY_WORKFLOW_SKILL: ToolboxWorkflowSkill = {
@@ -122,11 +123,8 @@ function slugFromCommand(cmd: string): string {
 
 interface ToolboxAppProps {
   /**
-   * Entitlement tier resolved on the server (#219). Defaults to 'starter'
-   * (fail-closed): if a caller forgets to pass the prop, the UI will hide
-   * Build + Playground rather than silently un-gate them for a free user.
-   * Mutating API endpoints are gated server-side regardless, so this is
-   * defense-in-depth, not the only barrier.
+   * Entitlement tier resolved on the server. The page only renders this app
+   * after paid access is confirmed; API endpoints remain the write/run gate.
    */
   readonly tier?: ToolboxTier;
 }
@@ -137,9 +135,8 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get('tab') as TabId | null) ?? 'guide';
   const tabsForActiveTier = tabsForTier(tier);
-  // If the URL points at a tab this tier can't see (e.g. ?tab=playground
-  // on a Starter user), collapse back to 'guide' rather than rendering a
-  // tab the user shouldn't reach.
+  // If a future tier removes a tab, collapse the URL back to 'guide' rather
+  // than rendering a surface the entitlement should not reach.
   const safeTab = tabsForActiveTier.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
 
   const [showWelcome, setShowWelcome] = useState(false);
@@ -202,7 +199,9 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
         setSkills(data.skills ?? []);
         setLibrarySlugMap(data.librarySlugMap ?? {});
       })
-      .catch(() => setNotice('Saved Toolbox skills could not be loaded.'));
+      .catch(() => setNotice(
+        'Saved assets are unavailable right now. Library and AiBI Lab still work; your saved items will reappear when the connection is restored.',
+      ));
   }, []);
 
   useEffect(() => {
@@ -269,6 +268,10 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
     const difficultyMatch = difficultyFilter === 'all' || template.difficulty === difficultyFilter;
     return roleMatch && difficultyMatch;
   }), [difficultyFilter, roleFilter]);
+  const recommendedStarter = useMemo(
+    () => TOOLBOX_TEMPLATES.find((template) => template.id === RECOMMENDED_STARTER_ID) ?? TOOLBOX_TEMPLATES[0] ?? null,
+    [],
+  );
 
   function loadSkill(skill: ToolboxSkill, tab: TabId = 'playground') {
     setActiveSkill(skill);
@@ -474,14 +477,41 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
         <button
           type="button"
           onClick={() => setNotice(null)}
-          className="mb-6 w-full border border-[color:var(--gold-deep)]/25 bg-[color:var(--cream)] px-4 py-3 text-left text-sm text-[color:var(--ink)]"
+          role="status"
+          aria-live="polite"
+          className="mb-6 grid w-full gap-1 border border-[color:var(--gold-deep)]/25 bg-white px-4 py-3 text-left text-sm text-[color:var(--ink)] shadow-sm transition-colors hover:border-[color:var(--gold-deep)]/50"
         >
-          {notice}
+          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+            Toolbox note
+          </span>
+          <span className="max-w-4xl font-semibold leading-relaxed text-[color:var(--slate-600)]">
+            {notice}
+          </span>
         </button>
       )}
 
+      <WorkbenchPath
+        activeTab={safeTab}
+        savedCount={skills.length}
+        activeSkillName={activeSkill?.name ?? null}
+        onOpenLibrary={() => setTab('library')}
+        onOpenPlayground={() => setTab('playground')}
+        onOpenToolbox={() => setTab('toolbox')}
+      />
+
       {safeTab === 'guide' && (
-        <GuidePanel savedCount={skills.length} setTab={setTab} />
+        <GuidePanel
+          savedCount={skills.length}
+          starter={recommendedStarter}
+          setTab={setTab}
+          onStartMission={() => {
+            if (recommendedStarter) {
+              loadSkill(toSkill(recommendedStarter), 'playground');
+              return;
+            }
+            setTab('library');
+          }}
+        />
       )}
 
       {safeTab === 'library' && (
@@ -500,7 +530,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
                 Pre-built playbooks for common banking AI tasks.
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-500)]">
-                Pick one, run it as-is in the Playground, or edit it for your institution.
+                Pick one, run it as-is in the AiBI Lab, or edit it for your institution.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -660,7 +690,11 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
       )}
 
       {showWelcome && (
-        <WelcomeOverlay tier={tier} onDismiss={() => setShowWelcome(false)} />
+        <WelcomeOverlay
+          tier={tier}
+          onDismiss={() => setShowWelcome(false)}
+          onOpenLibrary={() => setTab('library')}
+        />
       )}
     </div>
   );
@@ -668,6 +702,134 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
 
 const FIRST_RUN_DISMISSED_KEY = 'aibi-toolbox-first-run-hint-dismissed';
 const RECOMMENDED_STARTER_ID = 'exam-prep';
+
+function WorkbenchPath({
+  activeTab,
+  savedCount,
+  activeSkillName,
+  onOpenLibrary,
+  onOpenPlayground,
+  onOpenToolbox,
+}: {
+  readonly activeTab: TabId;
+  readonly savedCount: number;
+  readonly activeSkillName: string | null;
+  readonly onOpenLibrary: () => void;
+  readonly onOpenPlayground: () => void;
+  readonly onOpenToolbox: () => void;
+}) {
+  const activeStep =
+    activeTab === 'playground' && activeSkillName
+      ? 'run'
+      : activeTab === 'toolbox'
+        ? 'save'
+        : 'choose';
+  const nextMove =
+    activeTab === 'library'
+      ? 'Run one starter with sample facts.'
+      : activeTab === 'playground'
+        ? activeSkillName
+          ? 'Review the output, then save the trusted version.'
+          : 'Choose a Library playbook first.'
+        : activeTab === 'toolbox'
+          ? savedCount > 0
+            ? 'Re-run, export, or improve a saved asset.'
+            : 'Start from the Library to save your first asset.'
+          : 'Start in the Library.';
+
+  const steps = [
+    {
+      id: 'choose',
+      label: 'Choose',
+      title: 'Library playbook',
+      detail: 'Pick a banking-safe starter.',
+      active: activeStep === 'choose',
+      action: onOpenLibrary,
+      disabled: false,
+    },
+    {
+      id: 'run',
+      label: 'Run',
+      title: 'AiBI Lab',
+      detail: activeSkillName
+        ? `Testing: ${activeSkillName}`
+        : 'Use sample facts only.',
+      active: activeStep === 'run',
+      action: onOpenPlayground,
+      disabled: false,
+    },
+    {
+      id: 'save',
+      label: 'Save',
+      title: 'My Toolbox',
+      detail: savedCount > 0 ? `${savedCount} reusable asset${savedCount === 1 ? '' : 's'}` : 'Keep the trusted version.',
+      active: activeStep === 'save',
+      action: onOpenToolbox,
+      disabled: false,
+    },
+  ] as const;
+
+  return (
+    <section
+      aria-label="Toolbox workflow"
+      className="mb-8 border-y border-[color:var(--ink-a10)] bg-white/55 py-4"
+    >
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+            Current workflow
+          </p>
+          <p className="mt-1 text-lg font-bold leading-snug text-[color:var(--ink)]">
+            {nextMove}
+          </p>
+        </div>
+        <ol className="grid min-w-0 flex-1 gap-2 sm:grid-cols-3 lg:max-w-3xl">
+          {steps.map((step, index) => (
+            <li key={step.id}>
+              <button
+                type="button"
+                onClick={step.action}
+                disabled={step.disabled}
+                aria-current={step.active ? 'step' : undefined}
+                className={`grid h-full w-full grid-cols-[34px_minmax(0,1fr)] items-center gap-3 border px-3 py-3 text-left transition-colors ${
+                  step.active
+                    ? 'border-[color:var(--ink)] bg-[color:var(--ink)] text-white'
+                    : 'border-[color:var(--ink-a10)] bg-[color:var(--cream)] text-[color:var(--ink)] hover:border-[color:var(--gold-deep)]'
+                } ${step.disabled ? 'cursor-not-allowed opacity-55 hover:border-[color:var(--ink-a10)]' : ''}`}
+              >
+                <span
+                  className={`grid h-8 w-8 place-items-center rounded-full text-[11px] font-black tabular-nums ${
+                    step.active
+                      ? 'bg-[color:var(--gold)] text-[color:var(--ink)]'
+                      : 'bg-white text-[color:var(--gold-deep)]'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[10px] font-black uppercase tracking-[0.16em]">
+                    {step.label}
+                  </span>
+                  <span className="mt-1 block truncate text-sm font-bold">
+                    {step.title}
+                  </span>
+                  <span
+                    className={`mt-0.5 block truncate text-xs font-semibold ${
+                      step.active ? 'text-white/70' : 'text-[color:var(--slate-500)]'
+                    }`}
+                  >
+                    {step.detail}
+                  </span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
 
 function FirstRunHint({
   skills,
@@ -709,7 +871,7 @@ function FirstRunHint({
             {starter.name}
           </h3>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-500)]">
-            {starter.desc} It runs in the Playground in under a minute against a
+            {starter.desc} It runs in the AiBI Lab in under a minute against a
             fabricated scenario — no real data needed.
           </p>
           <button
@@ -736,72 +898,160 @@ function FirstRunHint({
   );
 }
 
-function GuidePanel({ setTab }: { readonly savedCount: number; readonly setTab: (tab: TabId) => void }) {
+function GuidePanel({
+  savedCount,
+  starter,
+  setTab,
+  onStartMission,
+}: {
+  readonly savedCount: number;
+  readonly starter: ToolboxSkillTemplate | null;
+  readonly setTab: (tab: TabId) => void;
+  readonly onStartMission: () => void;
+}) {
+  const missionSteps = [
+    ['Load', starter?.name ?? 'Regulatory Exam Preparation'],
+    ['Run', 'Use the built-in exam sample.'],
+    ['Review', 'Mark one evidence gap or edit.'],
+    ['Save', 'Keep the trusted version.'],
+  ] as const;
+  const proofPoints = [
+    ['Library', 'Banking-safe starters'],
+    ['AiBI Lab', 'Sample facts only'],
+    ['My Toolbox', 'Reusable version'],
+  ] as const;
+  const workDestinations = [
+    ['Foundation Packet', 'Module artifacts you submit as proof of learning.'],
+    ['My Toolbox', 'Reusable prompts and playbooks after you test them.'],
+  ] as const;
+
   return (
-    <section className="py-6">
-      <h2 className="text-5xl leading-tight text-[color:var(--ink)]">
-        Your space to experiment with banking AI.
-      </h2>
-      <p className="mt-5 text-base leading-relaxed text-[color:var(--slate-500)]">
-        A safe sandbox to try AI on real banking work — without putting member data,
-        regulator findings, or institutional decisions at risk. Run pre-built playbooks
-        against fabricated scenarios, customize them for your institution, and save the
-        ones you trust.
-      </p>
+    <section className="py-6 text-[color:var(--ink)]" aria-labelledby="toolbox-guide-heading">
+      <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
+            Start here · First 10 minutes
+          </p>
+          <h1
+            id="toolbox-guide-heading"
+            className="mt-3 max-w-2xl text-4xl leading-[0.98] tracking-[-0.035em] text-[color:var(--ink)] md:text-6xl"
+          >
+            Run one workflow. Save one reusable asset.
+          </h1>
+          <p className="mt-5 max-w-xl text-base font-semibold leading-relaxed text-[color:var(--slate-600)]">
+            The course builds judgment. The Toolbox turns inspected prompts and playbooks into assets you can run again.
+          </p>
+          <div className="mt-5 grid max-w-xl grid-cols-2 gap-2">
+            {workDestinations.map(([label, body]) => (
+              <div
+                key={label}
+                className="border border-[color:var(--ink-a10)] bg-white px-3 py-3 sm:px-4"
+              >
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                  {label}
+                </p>
+                <p className="mt-1 text-xs font-bold leading-snug text-[color:var(--ink)] sm:text-sm">
+                  {body}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={onStartMission}
+              className="min-h-[44px] bg-[color:var(--gold-deep)] px-6 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink)]"
+            >
+              Start guided run
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab('toolbox')}
+              className="min-h-[44px] border border-[color:var(--ink-a15)] px-6 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+            >
+              My Toolbox {savedCount > 0 ? `(${savedCount})` : ''}
+            </button>
+          </div>
+        </div>
 
-      <dl className="mt-10 grid gap-6 border-t border-[color:var(--ink)]/10 pt-8 sm:grid-cols-2">
-        <div>
-          <dt className="text-xl text-[color:var(--ink)]">Library</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--slate-500)]">
-            Fifteen pre-built playbooks for exam prep, SAR drafting, board memos, member complaints, and more.
-          </dd>
+        <div className="border border-[color:var(--ink)] bg-white">
+          <div className="grid gap-5 border-b border-[color:var(--ink-a10)] p-5 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+                Guided mission
+              </p>
+              <h2 className="mt-2 text-3xl leading-tight tracking-[-0.03em] text-[color:var(--ink)]">
+                {starter?.name ?? 'Regulatory Exam Preparation'}
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed text-[color:var(--slate-600)]">
+                Start with a fabricated exam scenario, inspect the output, and save a reusable version.
+              </p>
+            </div>
+            <div className="bg-[color:var(--ink)] px-4 py-3 text-[color:var(--cream)]">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold)]">
+                Current proof
+              </p>
+              <p className="mt-1 text-3xl font-black leading-none tracking-[-0.03em]">
+                {savedCount}
+              </p>
+              <p className="mt-1 text-xs font-bold text-white/70">
+                saved asset{savedCount === 1 ? '' : 's'}
+              </p>
+            </div>
+          </div>
+          <ol className="grid grid-cols-2 gap-0 md:grid-cols-4">
+            {missionSteps.map(([label, body], index) => (
+              <li
+                key={label}
+                className="grid min-h-[104px] gap-2 border-b border-r border-[color:var(--ink-a10)] p-3 even:border-r-0 md:block md:min-h-[132px] md:border-b-0 md:border-r md:p-4 md:last:border-r-0"
+              >
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-[color:var(--cream)] text-[11px] font-black tabular-nums text-[color:var(--gold-deep)] md:mb-4 md:h-9 md:w-9 md:text-xs">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>
+                  <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                    {label}
+                  </span>
+                  <span className="mt-1 block text-xs font-bold leading-snug text-[color:var(--ink)] md:mt-2 md:text-sm">
+                    {body}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
-        <div>
-          <dt className="text-xl text-[color:var(--ink)]">Playground</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--slate-500)]">
-            Run any playbook against a fabricated scenario. Pick your model, watch the response stream, see the cost.
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xl text-[color:var(--ink)]">Build</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--slate-500)]">
-            Adapt a starter playbook for your workflow, or write a new one from scratch with versioning and guardrails built in.
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xl text-[color:var(--ink)]">My Toolbox</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-[color:var(--slate-500)]">
-            Your saved playbooks. Re-run, edit, or download as Markdown to share with your team.
-          </dd>
-        </div>
-      </dl>
-
-      <div className="mt-10 flex flex-wrap items-center gap-6">
-        <button
-          type="button"
-          onClick={() => setTab('library')}
-          className="bg-[color:var(--gold-deep)] px-6 py-3 text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
-        >
-          Browse playbooks
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab('build')}
-          className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]"
-        >
-          Or build your own →
-        </button>
       </div>
 
-      <aside className="mt-12 border-t border-[color:var(--ink)]/10 pt-8">
+      <ToolboxQualityLadder className="mt-8" />
+
+      <div className="mt-8 grid grid-cols-3 gap-2 border-y border-[color:var(--ink-a10)] py-5 md:gap-3">
+        {proofPoints.map(([label, body]) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => {
+              if (label === 'Library') setTab('library');
+              if (label === 'AiBI Lab') setTab('playground');
+              if (label === 'My Toolbox') setTab('toolbox');
+            }}
+            className="min-h-[68px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-3 py-3 text-left transition-colors hover:border-[color:var(--gold-deep)] md:min-h-[88px] md:px-4"
+          >
+            <span className="block text-[9px] font-black uppercase tracking-[0.14em] text-[color:var(--gold-deep)] md:text-[10px] md:tracking-[0.18em]">
+              {label}
+            </span>
+            <span className="mt-1 block text-xs font-bold leading-snug text-[color:var(--slate-600)] md:mt-2 md:text-sm md:leading-relaxed">
+              {body}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <aside className="mt-6 border-l-4 border-[color:var(--gold)] bg-[color:var(--cream)] px-5 py-4">
         <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-          New to this?
-        </p>
-        <p className="mt-3 text-2xl text-[color:var(--ink)]">
-          See a worked example end-to-end.
+          Need an example?
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-500)]">
-          The Cookbook walks through how a real banker uses these tools on a real workflow — start to finish, with the prompts, the outputs, and the gotchas.
+          The Cookbook shows one complete workflow with the prompt, model output, review notes, and gotchas.
         </p>
         <Link
           href="/dashboard/toolbox/cookbook"
@@ -930,14 +1180,14 @@ function PlaygroundPanel(props: {
 }) {
   if (!props.activeSkill) {
     // Empty state still gets layer 4 (the persistent disclaimer banner)
-    // — the warning has to ride along with the Playground tab even before
+    // — the warning has to ride along with the AiBI Lab tab even before
     // a playbook is loaded, otherwise the banner only appears once the
     // user has already engaged and the surface is no longer "blank."
     return (
       <section className="space-y-4">
         <div
           role="note"
-          aria-label="Playground data-handling notice"
+          aria-label="AiBI Lab data-handling notice"
           className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--ink)]/30 bg-[color:var(--cream)] px-4 py-3"
         >
           <p className="text-[11px] uppercase tracking-widest text-[color:var(--ink)]">
@@ -949,13 +1199,13 @@ function PlaygroundPanel(props: {
         </div>
         <div className="mx-auto max-w-2xl py-20 text-center">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
-            Playground
+            AiBI Lab
           </p>
           <h2 className="mt-3 text-4xl text-[color:var(--ink)]">
             Try a playbook against a fabricated scenario.
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-[color:var(--slate-500)]">
-            The Playground runs any playbook through your selected model
+            The AiBI Lab runs any playbook through your selected model
             (Claude, GPT, or Gemini) against test data you supply.{' '}
             <span className="text-[color:var(--ink)]">Never enter real member data here</span> — these
             requests leave our servers.
@@ -995,13 +1245,13 @@ function PlaygroundPanel(props: {
     <section className="space-y-4">
       {/*
         #8 layer 4 — persistent disclaimer banner. Always visible at the top
-        of the Playground tab, regardless of which playbook is active. Uses
+        of the AiBI Lab tab, regardless of which playbook is active. Uses
         oxblood-on-parchment so it reads as a regulatory notice, not a
         marketing badge.
       */}
       <div
         role="note"
-        aria-label="Playground data-handling notice"
+        aria-label="AiBI Lab data-handling notice"
         className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--ink)]/30 bg-[color:var(--cream)] px-4 py-3"
       >
         <p className="text-[11px] uppercase tracking-widest text-[color:var(--ink)]">
@@ -1196,7 +1446,7 @@ function TypedConfirmGate(props: {
           Before your first run this session
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-[color:var(--slate-500)]">
-          The Playground sends your input to a third-party model provider.
+          The AiBI Lab sends your input to a third-party model provider.
           Real member data, account numbers, or institution-confidential
           material must never leave your institution this way. Confirm you
           are using fabricated data by typing the phrase below.
