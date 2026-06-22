@@ -1854,7 +1854,7 @@ function SaveToToolboxButton({
     | 'saving'
     | 'saved'
     | 'auth-required'
-    | 'foundation-required'
+    | 'paid-access-required'
     | 'error';
   const [status, setStatus] = useState<SaveStatus>('idle');
   const label =
@@ -1864,18 +1864,17 @@ function SaveToToolboxButton({
         ? 'Saved'
         : status === 'auth-required'
           ? 'Sign in to save'
-          : status === 'foundation-required'
-            ? 'Upgrade to save'
+          : status === 'paid-access-required'
+            ? 'Unlock Toolbox'
             : status === 'error'
               ? 'Try again'
               : 'Save to toolbox';
   const icon = status === 'saved' ? <CheckIcon /> : <BookmarkIcon />;
-  // foundation-required: turn the button into a link to the Foundation
-  // purchase page — In-Depth-only buyers cannot save until they upgrade.
-  if (status === 'foundation-required') {
+  // paid-access-required: signed in but missing a paid Toolbox entitlement.
+  if (status === 'paid-access-required') {
     return (
       <Link
-        href="/courses/foundation/program/purchase"
+        href="/assessment/in-depth"
         style={{
           ...btnOutline,
           border: `1px solid ${LINE}`,
@@ -1912,8 +1911,8 @@ function SaveToToolboxButton({
             return;
           }
           if (res.status === 403) {
-            // Signed in but lacks Foundation tier — surface as upgrade path.
-            setStatus('foundation-required');
+            // Signed in but lacks paid Toolbox access — surface as upgrade path.
+            setStatus('paid-access-required');
             return;
           }
           if (!res.ok) {

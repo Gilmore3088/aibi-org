@@ -192,7 +192,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={isFoundation ? 'Welcome to your workbench' : 'Your AI Starter Toolkit is unlocked'}
+        aria-label={isFoundation ? 'Welcome to your workbench' : 'Your paid Toolbox is unlocked'}
         onClick={(e) => e.stopPropagation()}
         style={{
           background: 'var(--cream)',
@@ -240,7 +240,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
             marginBottom: 12,
           }}
         >
-          {isFoundation ? 'Welcome to your workbench' : 'Toolkit unlocked'}
+          {isFoundation ? 'Welcome to your workbench' : 'Paid Toolbox unlocked'}
         </p>
 
         {/* Heading */}
@@ -256,7 +256,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         >
           {isFoundation
             ? 'Turn a course artifact into a reusable playbook.'
-            : 'Your AI Starter Toolkit is unlocked.'}
+            : 'Build one reusable banking asset.'}
         </h2>
 
         <ToolboxMiniMap />
@@ -316,9 +316,9 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
             }}
           >
             {[
-              'Browse the BSA-officer kit (12 prompts live)',
-              'Copy any prompt\'s body to your clipboard',
-              'Paste into Claude, ChatGPT, or Gemini — the prompt is the artifact.',
+              'Start from a pre-built banking playbook in the Library.',
+              'Run it in the AiBI Lab against sample facts.',
+              'Save the version you trust to My Toolbox.',
             ].map((step, i) => (
               <li
                 key={i}
@@ -357,7 +357,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
               marginBottom: 20,
             }}
           >
-            Build + AiBI Lab unlock with the AiBI-Foundation course. We don&rsquo;t nag you about it from here.
+            Your In-Depth purchase includes Build, AiBI Lab, and saved Toolbox assets. Use sample facts until your institution approves live data.
           </p>
         )}
 

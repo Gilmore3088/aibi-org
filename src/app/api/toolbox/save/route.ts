@@ -159,12 +159,11 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!access) {
     return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
   }
-  // Starter-tier guard (#219): In-Depth buyers get read-only Library +
-  // Cookbook. Save requires the Foundation tier. Reject BEFORE the DB
-  // call so a Starter user can't bypass the UI via a direct fetch.
+  // Paid-write guard: reject before the DB call so non-entitled users cannot
+  // bypass the UI via a direct fetch.
   if (!canBuildOrRun(access)) {
     return NextResponse.json(
-      { error: 'Saving requires the AiBI-Foundation tier.' },
+      { error: 'Saving requires paid Toolbox access.' },
       { status: 403 },
     );
   }

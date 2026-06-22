@@ -26,18 +26,18 @@ import { useUsage } from './_components/UsageMeter';
 
 type TabId = 'guide' | 'library' | 'build' | 'playground' | 'toolbox';
 
-// All tabs in canonical order. Per #219, Starter-tier (In-Depth Assessment
-// buyers) only sees the read-only tabs — Build + AiBI Lab are hidden.
-const ALL_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier[] }[] = [
+// All tabs in canonical order. Every paid Toolbox buyer can build, run, and
+// save; the starter/full tier only preserves the entitlement source.
+export const TOOLBOX_TABS: readonly { id: TabId; label: string; tiers: readonly ToolboxTier[] }[] = [
   { id: 'guide', label: 'Start Here', tiers: ['full', 'starter'] },
   { id: 'library', label: 'Library', tiers: ['full', 'starter'] },
-  { id: 'build', label: 'Build', tiers: ['full'] },
-  { id: 'playground', label: 'AiBI Lab', tiers: ['full'] },
+  { id: 'build', label: 'Build', tiers: ['full', 'starter'] },
+  { id: 'playground', label: 'AiBI Lab', tiers: ['full', 'starter'] },
   { id: 'toolbox', label: 'My Toolbox', tiers: ['full', 'starter'] },
 ];
 
-function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
-  return ALL_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
+export function tabsForTier(tier: ToolboxTier): readonly { id: TabId; label: string }[] {
+  return TOOLBOX_TABS.filter((t) => t.tiers.includes(tier)).map(({ id, label }) => ({ id, label }));
 }
 
 const EMPTY_WORKFLOW_SKILL: ToolboxWorkflowSkill = {
@@ -123,11 +123,8 @@ function slugFromCommand(cmd: string): string {
 
 interface ToolboxAppProps {
   /**
-   * Entitlement tier resolved on the server (#219). Defaults to 'starter'
-   * (fail-closed): if a caller forgets to pass the prop, the UI will hide
-   * Build + AiBI Lab rather than silently un-gate them for a free user.
-   * Mutating API endpoints are gated server-side regardless, so this is
-   * defense-in-depth, not the only barrier.
+   * Entitlement tier resolved on the server. The page only renders this app
+   * after paid access is confirmed; API endpoints remain the write/run gate.
    */
   readonly tier?: ToolboxTier;
 }
@@ -138,9 +135,8 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
   const searchParams = useSearchParams();
   const currentTab = (searchParams.get('tab') as TabId | null) ?? 'guide';
   const tabsForActiveTier = tabsForTier(tier);
-  // If the URL points at a tab this tier can't see (e.g. ?tab=playground
-  // on a Starter user), collapse back to 'guide' rather than rendering a
-  // tab the user shouldn't reach.
+  // If a future tier removes a tab, collapse the URL back to 'guide' rather
+  // than rendering a surface the entitlement should not reach.
   const safeTab = tabsForActiveTier.some((tab) => tab.id === currentTab) ? currentTab : 'guide';
 
   const [showWelcome, setShowWelcome] = useState(false);
@@ -496,7 +492,6 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
 
       <WorkbenchPath
         activeTab={safeTab}
-        tier={tier}
         savedCount={skills.length}
         activeSkillName={activeSkill?.name ?? null}
         onOpenLibrary={() => setTab('library')}
@@ -508,10 +503,9 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
         <GuidePanel
           savedCount={skills.length}
           starter={recommendedStarter}
-          tier={tier}
           setTab={setTab}
           onStartMission={() => {
-            if (recommendedStarter && tier === 'full') {
+            if (recommendedStarter) {
               loadSkill(toSkill(recommendedStarter), 'playground');
               return;
             }
@@ -711,7 +705,6 @@ const RECOMMENDED_STARTER_ID = 'exam-prep';
 
 function WorkbenchPath({
   activeTab,
-  tier,
   savedCount,
   activeSkillName,
   onOpenLibrary,
@@ -719,14 +712,12 @@ function WorkbenchPath({
   onOpenToolbox,
 }: {
   readonly activeTab: TabId;
-  readonly tier: ToolboxTier;
   readonly savedCount: number;
   readonly activeSkillName: string | null;
   readonly onOpenLibrary: () => void;
   readonly onOpenPlayground: () => void;
   readonly onOpenToolbox: () => void;
 }) {
-  const canRun = tier === 'full';
   const activeStep =
     activeTab === 'playground' && activeSkillName
       ? 'run'
@@ -759,15 +750,13 @@ function WorkbenchPath({
     {
       id: 'run',
       label: 'Run',
-      title: canRun ? 'AiBI Lab' : 'Preview only',
-      detail: canRun
-        ? activeSkillName
-          ? `Testing: ${activeSkillName}`
-          : 'Use sample facts only.'
-        : 'Unlocks with Foundation.',
+      title: 'AiBI Lab',
+      detail: activeSkillName
+        ? `Testing: ${activeSkillName}`
+        : 'Use sample facts only.',
       active: activeStep === 'run',
       action: onOpenPlayground,
-      disabled: !canRun,
+      disabled: false,
     },
     {
       id: 'save',
@@ -912,17 +901,14 @@ function FirstRunHint({
 function GuidePanel({
   savedCount,
   starter,
-  tier,
   setTab,
   onStartMission,
 }: {
   readonly savedCount: number;
   readonly starter: ToolboxSkillTemplate | null;
-  readonly tier: ToolboxTier;
   readonly setTab: (tab: TabId) => void;
   readonly onStartMission: () => void;
 }) {
-  const canRun = tier === 'full';
   const missionSteps = [
     ['Load', starter?.name ?? 'Regulatory Exam Preparation'],
     ['Run', 'Use the built-in exam sample.'],
@@ -976,7 +962,7 @@ function GuidePanel({
               onClick={onStartMission}
               className="min-h-[44px] bg-[color:var(--gold-deep)] px-6 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink)]"
             >
-              {canRun ? 'Start guided run' : 'Browse starters'}
+              Start guided run
             </button>
             <button
               type="button"
@@ -1045,7 +1031,7 @@ function GuidePanel({
             type="button"
             onClick={() => {
               if (label === 'Library') setTab('library');
-              if (label === 'AiBI Lab') setTab(canRun ? 'playground' : 'library');
+              if (label === 'AiBI Lab') setTab('playground');
               if (label === 'My Toolbox') setTab('toolbox');
             }}
             className="min-h-[68px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-3 py-3 text-left transition-colors hover:border-[color:var(--gold-deep)] md:min-h-[88px] md:px-4"

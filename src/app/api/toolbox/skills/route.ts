@@ -69,10 +69,10 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: Request): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
   if (!access) return NextResponse.json({ error: 'Paid access required.' }, { status: 403 });
-  // Starter-tier guard (#219): creating a skill requires the Foundation tier.
+  // Paid-write guard: all paid Toolbox users can create saved skills.
   if (!canBuildOrRun(access)) {
     return NextResponse.json(
-      { error: 'Creating a skill requires the AiBI-Foundation tier.' },
+      { error: 'Creating a skill requires paid Toolbox access.' },
       { status: 403 },
     );
   }

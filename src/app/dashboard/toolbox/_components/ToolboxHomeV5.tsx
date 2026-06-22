@@ -10,8 +10,7 @@
  * layout, the pin state, the type filter, search, kit cards, and
  * the side drawer.
  *
- * Scope: Foundation-tier port only. See #183 scope comment for why
- * the Starter-tier (read-only) variant lives in #219 instead.
+ * Scope: paid Toolbox port for both In-Depth and Foundation access.
  *
  * What's NOT here yet, by design:
  * - Server-backed pin persistence (uses localStorage; TODO #219).
@@ -280,7 +279,7 @@ export function ToolboxHomeV5({
         <header className="pb-6">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--slate-500)]">
             <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--gold-deep)] align-middle" />
-            Your desk · Foundation tier
+            Your desk · Paid Toolbox
           </p>
           <h1 className="mt-4 text-[64px] leading-[0.95] tracking-[-0.035em] text-[color:var(--ink)] md:text-[88px]">
             Your <em className="text-[color:var(--gold-deep)]">toolbox.</em>

@@ -354,7 +354,7 @@ export default async function InDepthPurchasedPage({
               marginBottom: 10,
             }}
           >
-            Your AI Starter Toolkit
+            Your paid Toolbox
           </h2>
           <p
             className="mb-5"
@@ -365,9 +365,9 @@ export default async function InDepthPurchasedPage({
               maxWidth: '60ch',
             }}
           >
-            Read-only access to the Library and Cookbook — banker-vetted
-            prompts you can copy into Claude, ChatGPT, or Gemini. Build and
-            Playground access with the AiBI-Foundation course.
+            Access to the Library, Cookbook, Build, AiBI Lab, and saved assets
+            is included with the In-Depth Assessment. Start from banker-vetted
+            prompts, test with sample facts, and save trusted versions.
           </p>
           <div className="flex flex-wrap gap-4">
             {/* Was /dashboard/toolbox/library — auth-walled, so a just-paid
