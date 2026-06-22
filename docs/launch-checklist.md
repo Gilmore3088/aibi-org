@@ -2,6 +2,48 @@
 
 Last updated: 2026-06-22.
 
+## Status snapshot — 2026-06-22
+
+Where the launch actually stands after this session. The detailed gate is §0–§12 below.
+
+### ✅ Done
+- **Supabase #1 blocker cleared.** Migrations `00044–00048` applied to production via MCP;
+  `/api/health/supabase` → `ok:true` (was `ok:false` / results pages degraded).
+- **Launch docs hardened + consolidated.** Stripe doc, this checklist, and the GTM plan
+  corrected (phantom staging, dead `NEXT_PUBLIC_STRIPE_KEY`, HubSpot, brand naming, webhook
+  events, refund/comp, tax trigger, Appendix A; one canonical go/no-go list).
+- **Copy drift fixed (shipped).** `12 → 18` modules across `/faq`, `/for-institutions`,
+  post-assessment `NextStepCards`, `/design-system`; banned "AiBI Foundations" plural in the
+  playbook modal + a MailerLite subject. `lint` + `326 tests` + `build` + `tsc` green; pushed.
+- **GTM revenue model** internal math contradiction fixed + reality-check added.
+- **Reviews produced:** 10-persona E2E + adversarial red-team (`docs/reviews/`).
+- **Repo hygiene:** 776M of stale worktree dirs removed; branches clean (`main` only).
+- **MailerLite inspected via MCP**; one banned-plural subject fixed.
+
+### ❌ Not done (cannot be done from here / by the agent)
+- **Enable MailerLite nurture** — dashboard-only (API has no activate); **and content is
+  unbuilt** (3 of 4 automations have empty emails) — see §11.
+- **Verify/create LIVE Stripe products** — the MCP/CLI is paired to the **sandbox** account.
+- **Rotate the exposed `sk_live_…` key** — Stripe dashboard (owner).
+- **Vercel env vars** — owner-managed; not touched.
+- **Live E2E purchase/refund smoke tests** — require real cards on the live domain.
+
+### 🔜 Needs doing before paid promotion (owner)
+1. **Rotate `STRIPE_SECRET_KEY`** (exposed in a transcript this session).
+2. **Build + design the 4 MailerLite nurture flows**, then enable (dashboard).
+3. **Secure one named top-of-funnel channel** — the revenue model's binding constraint.
+4. **Fix the magic-link host bug** (`src/lib/supabase/auth-admin.ts:195`, apex vs `www`) with a test.
+5. **Add one failure alert** (webhook non-2xx / failed purchase email) — failures are silent today.
+6. **Gate `/assessment/team` self-serve in code** (a stray env var would re-arm it).
+7. **Verify live Stripe products**; run the §6 live smoke tests (free / In-Depth / Foundation / refund).
+8. **Add a credibility anchor** (populate `AdvisorsStrip` / founder) + persona P1 conversion fixes
+   (refund line at the $99/$295 CTAs, single `/services` CTA, ROI methodology, claim disambiguation).
+
+> Full detail + evidence: §0–§12 below, `docs/reviews/persona-e2e-review-2026-06-22.md`,
+> and `docs/reviews/red-team-review-2026-06-22.md`.
+
+---
+
 Green code is necessary but not sufficient. `main` builds, type-checks, passes
 326 unit tests, and deploys to Vercel — but production readiness depends on
 operational state that lives in Vercel / Supabase / Stripe / Resend and cannot
