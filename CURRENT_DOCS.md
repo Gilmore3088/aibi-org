@@ -14,6 +14,7 @@ were archived locally outside the repo at:
 |---|---|
 | Launch strategy, risks, revenue plan, and manual launch gates | [90-day GTM launch plan](Plans/90-day-gtm-launch-plan-2026-06-22.md) |
 | Production readiness checklist | [Launch checklist](docs/launch-checklist.md) |
+| Remaining go-live steps (funnel + nurture) + branch/segmentation plan | [Launch finalization](docs/launch-finalization.md) |
 | Stripe products, prices, metadata, webhook setup, and refund notes | [Stripe products](docs/stripe-products.md) |
 | Required environment variables | [Environment variables](docs/env-vars.md) |
 | Manual QA / verification steps | [Manual verification runbook](docs/manual-verification-runbook.md) |

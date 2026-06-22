@@ -12,6 +12,7 @@ references, and reusable templates. Strategic plans belong in
 | Doc | Use |
 |---|---|
 | [Launch checklist](launch-checklist.md) | Production readiness gates and external-system checks. |
+| [Launch finalization](launch-finalization.md) | Remaining manual go-live steps (MailerLite/Vercel) + drafted nurture branch/segmentation plan. |
 | [Stripe products](stripe-products.md) | Product pricing, Stripe metadata, webhook setup, and refund notes. |
 | [Environment variables](env-vars.md) | Vercel/local env var reference. |
 | [Manual verification runbook](manual-verification-runbook.md) | Manual QA steps for launch-critical flows. |
