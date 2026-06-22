@@ -15,7 +15,8 @@ references, and reusable templates. Strategic plans belong in
 | [Stripe products](stripe-products.md) | Product pricing, Stripe metadata, webhook setup, and refund notes. |
 | [Environment variables](env-vars.md) | Vercel/local env var reference. |
 | [Manual verification runbook](manual-verification-runbook.md) | Manual QA steps for launch-critical flows. |
-| [Funnel reporting](funnel-reporting.md) | Launch funnel visibility via derived Supabase views (scorecard, stage distribution, contacts). |
+| [Funnel reporting](funnel-reporting.md) | Launch funnel visibility via derived Supabase views (scorecard, stage distribution, contacts) + the `/admin/funnel` page. |
+| [Paid buyer support runbook](paid-buyer-support-runbook.md) | Stripe/Supabase/Resend support flow, macros, and ops-alert checks for paid launch. |
 | [Assessment flow and taxonomy](assessment-flow-and-taxonomy.md) | Assessment routing, taxonomy, and flow reference. |
 | [LLM data handling](compliance/llm-data-handling.md) | AI / LLM safety and data-handling guidance. |
 | [MailerLite automations](mailerlite-automations-overview.html) | Email automation overview. |

@@ -19,6 +19,12 @@ Use this to diff against `vercel env ls` for each scope. **This list — not the
 | `CRON_SECRET` | auth for `/api/cron/*` and `/api/assessment/pdf/cron-cleanup` |
 | `TOOLBOX_IP_HASH_SALT` | salts hashed IPs for AI rate limiting |
 
+### Admin access (Production)
+
+| Var | Used by |
+|-----|---------|
+| `FUNNEL_ADMIN_EMAILS` | comma-separated allowlist of operator emails allowed to view `/admin/*` (e.g. `/admin/funnel`). Server-only; not a secret but gates PII. Unset → `/admin` is inaccessible (fail-closed). |
+
 ### Stripe price IDs (Production)
 | Var | Notes |
 |-----|-------|

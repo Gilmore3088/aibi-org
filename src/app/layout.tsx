@@ -46,6 +46,7 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/privacy',
   '/terms',
   '/ai-use-disclaimer',
+  '/admin',
 
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/design-system',
