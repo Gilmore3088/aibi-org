@@ -189,11 +189,19 @@ buying path, not the whole site.
 
 These are outward-facing / live-money and were intentionally **not** automated:
 
-- [ ] **Enable MailerLite nurture.** 4 tier automations exist and are **disabled**
-      ("Starting Point / Early Stage / Building Momentum / Ready to Scale", 5 steps each,
-      trigger = subscriber_joins_group). Groups are configured (`MAILERLITE_GROUP_ID_*`).
-      Enable them only when nurture is going live — enabling sends real email to real
-      subscribers. Send a test through each before enabling.
+- [ ] **Build + enable MailerLite nurture (NOT just "enable").** Inspected via MCP 2026-06-22:
+      the 4 tier automations ("Starting Point / Early Stage / Building Momentum / Ready to
+      Scale", trigger = subscriber_joins_group, groups wired correctly) exist but are
+      **empty skeletons** — `complete_workflow: false` on all four:
+        - Starting Point: 3 email steps, only 2 have content and both are `is_designed:false`
+          (would send the generic "can't display HTML" fallback); one subject had the banned
+          "AiBI Foundations" plural (fixed via MCP 2026-06-22).
+        - Early Stage / Building Momentum / Ready to Scale: every email step is empty
+          (`subject: null`, no body).
+      **The email content must be written + designed in the MailerLite visual editor**
+      (the API/MCP cannot author email HTML or enable an automation — both are dashboard-only).
+      Do NOT enable until each email is designed and a test send is verified. Subjects +
+      plain-text can be drafted via MCP `update_automation_email` as a starting point.
 - [ ] **Verify live Stripe products.** The Stripe MCP/CLI is paired to the **sandbox**
       account; live products can only be created/verified on the **live** account. The app
       already runs live keys and live `price_*` IDs are configured, so live products likely
