@@ -17,6 +17,7 @@ were archived locally outside the repo at:
 | Stripe products, prices, metadata, webhook setup, and refund notes | [Stripe products](docs/stripe-products.md) |
 | Required environment variables | [Environment variables](docs/env-vars.md) |
 | Manual QA / verification steps | [Manual verification runbook](docs/manual-verification-runbook.md) |
+| Launch funnel visibility (leads → assessments → purchases → certificates) | [Funnel reporting](docs/funnel-reporting.md) |
 | Assessment flow and taxonomy | [Assessment flow and taxonomy](docs/assessment-flow-and-taxonomy.md) |
 | Site E2E review (10 buyer personas, funnel friction) | [Persona E2E review 2026-06-22](docs/reviews/persona-e2e-review-2026-06-22.md) |
 | Adversarial red-team review (GTM plan + site) | [Red-team review 2026-06-22](docs/reviews/red-team-review-2026-06-22.md) |
