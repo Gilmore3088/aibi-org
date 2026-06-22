@@ -29,6 +29,20 @@ were archived locally outside the repo at:
 | [docs/](docs/README.md) | Current operational, integration, compliance, brand, and email reference docs. |
 | [Plans/](Plans/README.md) | Current strategic plans and launch planning docs. |
 
+## Local Tracking Docs
+
+These files are intentionally local/ignored, but they are the operator tracking
+layer for this workspace:
+
+| Local file | Use |
+|---|---|
+| `DECISIONS.local.md` | Decision overrides and direction changes. |
+| `CHRONOLOGY.local.md` | Chronological history of plans, tasks, reviews, and handoffs. |
+| `CLAUDE.local.md` | Local project intelligence / operating context. |
+| `tasks/MASTER.md` | Local current-work registry. |
+| `tasks/PATH-FORWARD.md` | Prioritized next-action list. |
+| `tasks/todo.md` | Persistent backlog / parking lot. |
+
 ## Current Product Facts
 
 - Production work should come from `main`.
@@ -37,4 +51,3 @@ were archived locally outside the repo at:
 - Foundation Course: $295 individual course with 18 bite-sized modules, Toolbox saves, and certificate.
 - Foundation institution bundle: $199 per seat, minimum 10 seats.
 - Team Assessment: route and infrastructure exist, but keep it assisted-sales until hardening is complete.
-

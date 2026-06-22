@@ -13,14 +13,17 @@ and `src/app/api/webhooks/stripe/route.ts`.
 | Product | Stripe state at launch | Site state at launch |
 |---|---|---|
 | AI Readiness Assessment (free) | **No Stripe object** — it's free. | Live (`/assessment`) |
-| In-Depth Assessment (paid, $99 individual) | **Create product + 1 price + promo codes.** Active for individual purchase. | Live at `/assessment/in-depth`; institution mode returns a contact-us message. |
-| Foundation Course ($295 individual / $199 per seat institution bundle, min 10) | **Create product + individual price + institution price.** Active after live QA. | Live at `/courses/foundation/program/purchase`. |
-| Team Assessment (paid, min 10 seats) | **Create product + per-seat price only if intentionally selling.** | Route exists at `/assessment/team`, but treat as assisted-sales until hardening passes. |
-| AiBI-S Specialist ($1,495 / seat) | Create product + price. **Mark `active: false` until cohort dates set.** | "Request info" form only |
-| AiBI-L Leader ($2,800 individual / $12,000 team of 8) | Create both prices. **Mark `active: false`.** | "Request info" form only |
-| Advisory: Pilot · Program · Leadership Advisory | **Do NOT create in Stripe.** Custom-quoted, invoiced. | "Request info" form only |
+| In-Depth Assessment (paid, $99 individual) | **Block 1 — create product + 1 price + (optional) comp codes.** Active for individual purchase. | Live at `/assessment/in-depth`; institution mode returns a contact-us message. |
+| Foundation Course ($295 individual) | **Block 1 — create product + individual price.** Active after live QA. | Live at `/courses/foundation/program/purchase`. |
+| Foundation institution bundle ($199/seat, min 10) | **Appendix A — defer.** Assisted-sales; invoice the first deal. | Contact-us / assisted rollout |
+| Team Assessment (paid, min 10 seats) | **Appendix A — defer.** Assisted-sales until 2 cohorts pass E2E QA. | Route exists at `/assessment/team`; treat as assisted-sales until hardening passes. |
+| AiBI-S Specialist ($1,495 / seat) | **Appendix A — defer.** Create only when a cohort date is real. | "Request info" form only |
+| AiBI-L Leader ($2,800 individual / $12,000 team of 8) | **Appendix A — defer.** Create only when a workshop date is real. | "Request info" form only |
+| Advisory: Pilot · Program · Leadership Advisory | **Never in Stripe.** Custom-quoted, invoiced. | "Request info" form only |
 
-Inactive prices still receive `price_*` IDs you can paste into `.env.local` so the code paths exist; they just can't be used in a Checkout Session until flipped to `active: true`.
+Deferred products should not receive launch-time `price_*` IDs. Create those
+Stripe prices only when the offer is intentionally enabled or a real
+assisted-sales buyer makes the SKU concrete.
 
 ---
 
@@ -76,7 +79,9 @@ Then attach two promotion codes to that coupon:
 | 1 | `AIBI-COMP-01` | `1` | 90 days from creation |
 | 2 | `AIBI-COMP-02` | `1` | 90 days from creation |
 
-Result: each code is a one-shot 100%-off, scoped to the In-Depth Assessment only, expiring in 90 days. If both burn, mint two more — don't widen the cap on the existing coupon (that's how comps leak). Track who you gave them to in HubSpot under contact notes.
+Result: each code is a one-shot 100%-off, scoped to the In-Depth Assessment only, expiring in 90 days. If both burn, mint two more — don't widen the cap on the existing coupon (that's how comps leak). Track who you gave them to in a tracked spreadsheet or in the promotion code's own Stripe `metadata` (there is no CRM — HubSpot was removed 2026-05).
+
+> **Comp revocation caveat.** A 100%-off session has `amount_total: 0`, **no PaymentIntent, and no charge** — so the `charge.refunded` revocation path (see Webhook setup) can never fire for a comp. To pull access from a comped account you must **manually delete its `course_enrollments` row** in Supabase (the `entitlements` sync trigger then flips access off). Before relying on comps, confirm in test mode that a $0 session actually fires `checkout.session.completed`; do not assume it.
 
 **Apply at checkout:** Stripe Checkout has the "Allow promotion codes" toggle. Enable it on this product's Checkout Sessions:
 ```typescript
@@ -92,16 +97,18 @@ The flagship individual course. The current course is 18 bite-sized modules buil
 
 | Field | Value |
 |---|---|
-| `product.name` | `AI Banking AiBI Foundations` |
+| `product.name` | `AiBI-Foundation · The AI Banking Institute` |
 | `product.description` | `Self-paced Foundation course for banking professionals. Includes 18 bite-sized modules, reusable prompts, skills, workflow artifacts, Toolbox saves, and the Foundation certificate.` |
-| `product.metadata.tier` | `aibi-p` |
-| `product.metadata.credential_code` | `AiBI Foundations` |
-| `product.metadata.access_grant` | `course:aibi-p` |
+| `product.metadata.tier` | `aibi-p` *(legacy value — keep; webhook/entitlement reads still tolerate `aibi-p`. Do not "fix" this without updating the read path.)* |
+| `product.metadata.credential_code` | `AiBI-Foundation` |
+| `product.metadata.access_grant` | `course:aibi-p` *(legacy — same reason as `tier`)* |
 | `product.metadata.format` | `self-paced` |
 | `price.unit_amount` | `29500` |
 | `price.currency` | `usd` |
 | `price.recurring` | none — one-time |
-| `price.nickname` | `AI Banking AiBI Foundations — Individual` |
+| `price.nickname` | `AiBI-Foundation — Individual` |
+
+> **Brand:** the canonical credential is `AiBI-Foundation` (hyphenated, singular). The plural "AiBI Foundations" and the old "AI Banking AiBI Foundations" string are banned (see CLAUDE.local brand rules) — buyers see `product.name` on their Stripe receipt, so it must be brand-clean.
 | `.env.local` key | `STRIPE_FOUNDATION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_PRICE_ID`, `STRIPE_AIBIP_PRICE_ID`) |
 
 **Volume / institution pricing (added 2026-05-05):** A second price exists on the same product for institution bundles.
@@ -109,7 +116,7 @@ The flagship individual course. The current course is 18 bite-sized modules buil
 | Field | Value |
 |---|---|
 | `price.unit_amount` | `19900` (= $199/seat) |
-| `price.nickname` | `AI Banking AiBI Foundations — Institution Bundle ($199/seat, min 10)` |
+| `price.nickname` | `AiBI-Foundation — Institution Bundle ($199/seat, min 10)` |
 | `price.metadata.min_quantity` | `10` |
 | `.env.local` key | `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` (legacy fallbacks: `STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID`, `STRIPE_AIBIP_INSTITUTION_PRICE_ID`) |
 
@@ -158,18 +165,35 @@ Per decision 2026-04-24, these are coaching engagements that pair with cohorts. 
 
 ## Webhook setup
 
-**Endpoint URL (staging first, then production):**
-- Staging: `https://staging.aibankinginstitute.com/api/webhooks/stripe`
-- Production: `https://aibankinginstitute.com/api/webhooks/stripe`
+**There is no staging environment.** The two environments are Vercel **preview URLs**
+(test-mode QA) and **production** (live). Stripe is **two separate accounts**, not one
+account with test/live modes — the sandbox account (CLI-paired) and the live account
+(production fulfillment). Signing secrets are **per-endpoint, per-account**.
 
-**Events to subscribe (minimum viable — start narrow, expand on demand):**
-- `checkout.session.completed` — provisions Foundation, In-Depth, or Team Assessment access from `metadata.product`.
-- `payment_intent.payment_failed` — logs failed purchase analytics.
-- `charge.refunded` — revokes individual access, releases institution discount locks, or marks Team Assessment cohorts refunded.
+**Canonical endpoint path (both accounts):** `/api/webhooks/stripe`
+- QA / test mode: register a sandbox-account endpoint at a Vercel **preview URL**
+  (`https://aibi-<hash>-…vercel.app/api/webhooks/stripe`), **or** run the Stripe CLI
+  `stripe listen --forward-to localhost:3000/api/webhooks/stripe` against local dev.
+- Production: register a **live-account, live-mode** endpoint at
+  `https://www.aibankinginstitute.com/api/webhooks/stripe`.
+
+**Events to subscribe (the handler consumes all four — subscribe all four):**
+- `checkout.session.completed` — **load-bearing.** Provisions Foundation / In-Depth / Team Assessment access from `metadata.product` (writes `course_enrollments`).
+- `charge.refunded` — **load-bearing.** Automatically revokes access (full refund → entitlement off; partial → retained). If you skip this, refunds will *silently* fail to revoke and the §6 refund smoke test will fail with no obvious cause.
+- `payment_intent.payment_failed` — logs failed-purchase analytics.
 - `payment_intent.succeeded` — acknowledged; fulfillment lives on Checkout completion.
 - `customer.subscription.*` — **not subscribed.** No subscription products yet.
 
-**Signing secrets:** one per endpoint. Store the production signing secret as `STRIPE_WEBHOOK_SECRET`. Optional `STRIPE_WEBHOOK_SECRET_TEST` is also accepted so test-mode Stripe events can be verified against the same deployed path during QA.
+> This list must stay identical to `docs/launch-checklist.md §4`. If they ever
+> disagree, the handler in `src/app/api/webhooks/stripe/route.ts` is the source of truth.
+
+**Signing secrets:** one per endpoint, per account. Store the **live-account, live-mode**
+endpoint's secret as `STRIPE_WEBHOOK_SECRET` (Production scope). Optional
+`STRIPE_WEBHOOK_SECRET_TEST` is also read by the route (`route.ts`) so sandbox-account
+test-mode events can be verified against a deployed preview during QA. A sandbox-triggered
+event will **never** verify against the production `STRIPE_WEBHOOK_SECRET` — a 400
+`signature verification failed` from a sandbox trigger proves the route is reachable but
+expected to mismatch.
 
 ---
 
@@ -214,66 +238,64 @@ The webhook handler reads `metadata.product` to decide whether to write `course_
 
 ## Order of operations (what to ask the MCP)
 
-Run these in sequence. Stop after each block, paste the returned IDs into `.env.local`, commit (without secrets — only the price IDs, which are not secrets).
+**The launch needs exactly two products and one webhook.** Everything else lives in
+Appendix A and is created only when a real buyer/cohort makes the SKU concrete — do not
+provision dark inventory at launch (it just has to be maintained twice across the
+test→live split). Run Block 1 in sequence; paste returned price IDs into `.env.local`
+and Vercel (price IDs are not secrets).
 
-**Block 1 — Active individual products:**
-1. Create product **In-Depth AI Readiness Assessment** with the fields in Product 2 above. Create one $99 individual price. Capture it as `STRIPE_INDEPTH_PRICE_ID`.
-2. Create the comp coupon (100% off, max 2 redemptions, scoped to the In-Depth Assessment product) and attach two single-use promotion codes: `AIBI-COMP-01` and `AIBI-COMP-02`, each expiring 90 days out.
-3. Create product **AI Banking AiBI Foundations** with the fields in Product 3. Capture the $295 individual price as `STRIPE_FOUNDATION_PRICE_ID`.
-4. Create the Foundation institution price at $199/seat, min 10 in site validation. Capture it as `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID`.
+**Block 1 — The launch (two products, comp codes, webhook):**
+1. Create product **In-Depth AI Readiness Assessment** (Product 2 fields). Create one $99 individual price → `STRIPE_INDEPTH_PRICE_ID`.
+2. Create product **AiBI-Foundation** (Product 3 fields). Create the $295 individual price → `STRIPE_FOUNDATION_PRICE_ID`.
+3. *(Optional, comp/testing only.)* Create the comp coupon (100% off, max 2 redemptions, scoped to the In-Depth product) and attach two single-use promotion codes `AIBI-COMP-01` / `AIBI-COMP-02`, each expiring 90 days out. Remember comps can't be refund-revoked (see the comp caveat under Product 2) — to pull a comp, delete its `course_enrollments` row.
+4. Create **one live-account, live-mode** webhook endpoint at `https://www.aibankinginstitute.com/api/webhooks/stripe`, subscribed to all four events listed under **Webhook setup**. Capture its signing secret → `STRIPE_WEBHOOK_SECRET`.
 
-**Block 2 — Team Assessment only if intentionally selling:**
-5. Create **Team Assessment** with a per-seat price and capture it as `STRIPE_TEAM_ASSESSMENT_PRICE_ID`. Keep this dark unless the product is being sold as assisted-sales with support coverage.
+**Block 2 — Verification (then hand off to `docs/launch-checklist.md`):**
+5. List products + prices; confirm metadata, brand-clean names, and active flags.
+6. List webhook endpoints; confirm the URL and that all four events are subscribed.
+7. In **test mode**, redeem `AIBI-COMP-01` against the In-Depth Checkout link; confirm `amount_total: 0`, that `checkout.session.completed` fires, and that access is granted.
+8. Run the live purchase + refund + idempotency smoke tests in **`docs/launch-checklist.md` §6** — that file is the single launch gate; do not duplicate its checklist here.
 
-**Block 3 — Inactive/future products (staged, dark):**
-6. Create **AiBI-S Specialist** with `active: false` only when cohort packaging is real. Capture `price_id` → `STRIPE_AIBIS_PRICE_ID`.
-7. Create **AiBI-L Leader** with `active: false` only when workshop packaging is real. Capture individual/team prices only after those offers are defined.
-
-**Block 4 — Webhook endpoints (staging first):**
-8. Create webhook endpoint at staging URL listening for `checkout.session.completed` + `payment_intent.payment_failed` + `payment_intent.succeeded` + `charge.refunded`. Capture signing secret for the staging environment.
-9. Repeat for production URL → `STRIPE_WEBHOOK_SECRET`.
-
-**Block 5 — Verification:**
-10. List all products and prices; confirm metadata + active flags match the table above.
-11. List webhook endpoints; confirm URLs and event subscriptions.
-12. Test-redeem `AIBI-COMP-01` against the In-Depth Assessment Checkout link; confirm `amount_total: 0` session and that the webhook still grants access.
-13. Complete one low-risk live purchase for In-Depth and Foundation before promotion.
+> **Appendix A — When a real buyer appears (do NOT run at launch):**
+> - **Foundation institution bundle** ($199/seat, min 10): assisted-sales. Invoice the first deal via Stripe Invoicing; formalize the `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` price only once seat count + fulfillment are proven.
+> - **Team Assessment** (per-seat): assisted-sales until two production-like cohorts pass E2E QA (per the GTM plan). Create `STRIPE_TEAM_ASSESSMENT_PRICE_ID` then, not before.
+> - **AiBI-S Specialist** (`active:false`): create only when a cohort date is real → `STRIPE_AIBIS_PRICE_ID`.
+> - **AiBI-L Leader** (`active:false`): create only when a workshop date is real → `STRIPE_AIBIL_PRICE_ID` / `STRIPE_AIBIL_TEAM_PRICE_ID`.
+> - **Advisory** (Pilot/Program/Leadership): never a Stripe product; one-off Stripe Invoice per deal; formalize a SKU only after three closed deals at the same price.
 
 ---
 
 ## What changes for go-live (test → live)
 
-When ready to flip to live mode:
-1. Create live mode product/price set (Stripe doesn't promote test objects to live; they're separate worlds). Easiest: re-run Block 1+2 against the live key.
-2. Replace `sk_test_…` with `sk_live_…` and `pk_test_…` with `pk_live_…` in production env vars only. Staging keeps test keys forever.
-3. Re-register the Stripe MCP server with the live key (or keep the test one and switch via `--api-key` for live operations).
-4. Update webhook endpoints in live mode, get fresh signing secrets.
-5. Add the launch-gate item to `docs/launch-checklist.md`: "Stripe live products created and price IDs in Vercel production env."
+When ready to flip to live mode (this is the **live Stripe account**, not the sandbox):
+1. Create the live product/price set in the live account (Stripe doesn't promote test objects to live, and the two accounts are separate worlds). Easiest: re-run **Block 1** against the live key.
+2. Set `STRIPE_SECRET_KEY=sk_live_…` in the **Production** scope only. There is **no** client-side Stripe key — checkout is a server-side redirect (`stripe.checkout.sessions.create`), so do not set any `pk_*` / `NEXT_PUBLIC_STRIPE_KEY`. Preview keeps test keys.
+3. Point the Stripe CLI / MCP at the live account for live operations (`stripe login --interactive` → select the non-sandbox account). The CLI is paired to the sandbox by default.
+4. Register the live-mode webhook endpoint, capture its fresh signing secret into `STRIPE_WEBHOOK_SECRET` (Production scope).
+5. The launch gate already lives in `docs/launch-checklist.md` — confirm "Stripe live products created and price IDs in Vercel production env" there rather than duplicating a checklist here.
 
 ---
 
 ## Reference: env vars this doc creates
 
 ```bash
-# Already in .env.local (test mode)
-STRIPE_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_STRIPE_KEY=pk_test_...
+# --- Launch-critical (the only Stripe vars first-dollar needs) ---
+STRIPE_SECRET_KEY=sk_live_...                          # sk_test_... on preview
+STRIPE_INDEPTH_PRICE_ID=price_...                      # $99 individual In-Depth
+STRIPE_FOUNDATION_PRICE_ID=price_...                   # Foundation course, $295 (1 seat)
+STRIPE_WEBHOOK_SECRET=whsec_...                        # live-account, live-mode endpoint secret
 
-# Created by Block 1
-STRIPE_INDEPTH_PRICE_ID=price_...                     # $99 individual
-STRIPE_FOUNDATION_PRICE_ID=price_...                  # Foundation Course, $295 (1 seat)
-STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=price_...      # Foundation institution bundle, $199/seat (min 10)
+# There is NO client-side Stripe key. Checkout is a server-side redirect, so
+# NEXT_PUBLIC_STRIPE_KEY / pk_* is NOT used anywhere and must not be set.
 
-# Created by Block 2 only if Team Assessment is intentionally enabled
-STRIPE_TEAM_ASSESSMENT_PRICE_ID=price_...
+# Optional — sandbox test-mode verification against a deployed preview
+STRIPE_WEBHOOK_SECRET_TEST=whsec_...                   # optional, QA only
 
-# Created by Block 3 if future products are intentionally staged
-STRIPE_AIBIS_PRICE_ID=price_...
-STRIPE_AIBIL_PRICE_ID=price_...
-STRIPE_AIBIL_TEAM_PRICE_ID=price_...
-
-# Created by Block 4
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_WEBHOOK_SECRET_TEST=whsec_...                  # optional
-
+# --- Deferred (DO NOT create at launch — see Appendix A) ---
+# Create these only when a real buyer/cohort makes the SKU concrete:
+# STRIPE_FOUNDATION_INSTITUTION_PRICE_ID=price_...     # $199/seat bundle (min 10) — assisted-sales
+# STRIPE_TEAM_ASSESSMENT_PRICE_ID=price_...            # Team Assessment — assisted-sales
+# STRIPE_AIBIS_PRICE_ID=price_...                      # AiBI-S — when a cohort date exists
+# STRIPE_AIBIL_PRICE_ID=price_...                      # AiBI-L — when a workshop date exists
+# STRIPE_AIBIL_TEAM_PRICE_ID=price_...
 ```

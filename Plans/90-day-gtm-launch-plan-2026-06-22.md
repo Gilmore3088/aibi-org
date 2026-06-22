@@ -16,6 +16,13 @@ Launch the AI Banking Institute around the individual buyer funnel first:
 
 The harsher read: the codebase is production-deployable, but that is not the same as being revenue-safe. The individual funnel can be promoted after live transaction QA. The team/institution funnel should stay assisted-sales until fulfillment, reporting, support, privacy, and buyer handoff have been manually proven with real production-like cohorts.
 
+> **Gating precondition (before anything else in this plan).** Supabase production
+> migrations must be applied through `00048` and verified via `/api/health/supabase` →
+> `ok: true`. This is the #1 launch blocker: a missing column 404'd **every** assessment
+> result on 2026-06-18. Everything else here is recoverable; this one silently breaks the
+> whole funnel and you won't know until a customer tells you. The binary go/no-go list is
+> `docs/launch-checklist.md` — this plan owns strategy and sequencing, that file owns the gate.
+
 ## What Is Currently True
 
 | Area | Current Evidence | Launch Meaning |
@@ -170,17 +177,14 @@ Decision rules:
 
 ## Phase 1: Readiness Lock, Week 1
 
-| Task | Internal Check |
-|---|---|
-| Apply Supabase migrations through `00048`. | Confirm `/api/health/supabase` and `npm run check:course-schema:strict` against production-equivalent env. |
-| Verify live Free Assessment. | Complete assessment, capture email, receive email, open result, attempt PDF. |
-| Verify live In-Depth purchase. | Real or low-dollar live checkout, webhook, entitlement, magic link, assessment submit, report email. |
-| Verify live Foundation purchase. | Checkout, webhook, entitlement, course access, Toolbox access, saved artifact, receipt email. |
-| Verify refund behavior. | Full refund revokes correct access and does not break unrelated access. |
-| Verify Stripe product copy. | Stripe dashboard must match current 12-question / 48-question / 18-module language. |
-| Verify emails. | No stale 9-module, 12-module, or board-ready-individual copy. |
-| Verify analytics. | Confirm events can be read weekly. If not, use manual scorecard. |
-| Verify support. | Owner, inbox, SLA, macros, refund process, and escalation path are assigned. |
+**Phase 1 = pass every item in [`docs/launch-checklist.md`](../docs/launch-checklist.md).**
+That file is the single binary go/no-go gate (SPOF preflight, env vars, SKIP flags,
+webhook events, live smoke tests, refund full/partial/comp, copy audit, support,
+tax trigger). Do not maintain a second copy of it here — a duplicated checklist drifts.
+
+Phase 1 is complete when the launch checklist is fully green and a human has personally
+completed the live purchase + refund flows for Free Assessment, In-Depth, and Foundation.
+No paid traffic, no announcement, until then.
 
 ## Phase 2: Organic Funnel Push, Weeks 2-4
 
@@ -214,27 +218,11 @@ Decision rules:
 
 ## All-Systems-Go Manual Launch List
 
-Do not start serious paid promotion until each item is reviewed manually:
-
-- Production deployment is green from `main`.
-- Remote branch list is only `origin/main`.
-- Supabase production migrations are applied through `00048`.
-- `/api/health/supabase`, `/api/health/stripe`, and `/api/health/email` pass.
-- Free Assessment live flow passes.
-- In-Depth live purchase and fulfillment pass.
-- Foundation live purchase and fulfillment pass.
-- Refund and access revocation pass.
-- Buyer emails arrive and contain current copy.
-- Stripe dashboard product descriptions are current.
-- No public copy says Foundation has 9 or 12 modules.
-- No public copy describes individual In-Depth as board-ready or institution-wide.
-- Team Assessment copy does not imply fully self-serve institutional rollout unless hardening is complete.
-- Paid user can access real dashboard/toolbox surfaces.
-- Public CTAs avoid mockup-only routes unless clearly labeled.
-- Weekly scorecard is ready.
-- Support owner and macros are ready.
-- Mobile QA passes for `/`, `/assessment`, `/assessment/in-depth`, `/courses`, purchase pages, and results pages.
-- Dependency/security alerts are empty.
+**Moved.** The manual go/no-go list now lives in one place:
+[`docs/launch-checklist.md`](../docs/launch-checklist.md) (§0 SPOF preflight through §10
+tax trigger). It absorbed every item that used to be duplicated here — branch hygiene,
+mobile QA routes, "no mockup-only CTAs", copy-audit counts, support readiness, and the
+weekly scorecard. Maintain it there; do not re-add a copy to this plan.
 
 ## Known Defects And Unknowns
 
@@ -247,6 +235,8 @@ Do not start serious paid promotion until each item is reviewed manually:
 | Support process not visible in repo | Medium | Paid buyers need fast resolution. | Assign support owner and macros. |
 | AI usage costs unknown | Medium | Sandbox/toolbox success can create unpredictable COGS. | Add usage caps and weekly cost review. |
 | Proof gap | Medium | Product can look plausible but unproven. | Collect testimonials, before/after artifacts, and learner outcomes. |
+| Comp ($0) access can't be auto-revoked | Low | $0 sessions have no charge, so `charge.refunded` never fires for comps. | Revoke comps by deleting the `course_enrollments` row; documented in stripe-products.md + checklist §6. |
+| Stripe Tax disabled crosses its own threshold | Low | The 90-day model targets >50 paid transactions; the tax-revisit trigger is 50. | Tracked as checklist §10 — re-evaluate Stripe Tax at 50 transactions or first multi-state pattern. |
 
 ## Bottom-Line Recommendation
 
