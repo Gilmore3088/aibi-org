@@ -125,22 +125,20 @@ export default function ForInstitutionsPage() {
                 color: 'var(--gold-soft)',
               }}
             >
-              Capability, not a platform
+              For institutions
             </p>
-            <h1>Show AI readiness by role, not by guesswork.</h1>
+            <h1>Find the gaps. Train the team.</h1>
             <p className="mk-lede">
-              A coached training engagement with staff artifacts, readiness scores,
-              and leadership visibility.
+              Cohort assessment, department dashboard, and Foundation seats for banks and credit unions.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href={PRICING_PATH}>
-                See pricing <ArrowR className="mk-ic" />
+                See team options <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href={TEAM_ASSESSMENT_PATH}>
                 Team assessment
               </Button>
             </div>
-            <p className="mk-hero-foot">No software seats. No vendor lock-in.</p>
           </div>
 
           {/* Mobile-only: compact metric summary */}

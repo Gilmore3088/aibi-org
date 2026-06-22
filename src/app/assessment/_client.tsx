@@ -82,17 +82,18 @@ export default function AssessmentLandingPage() {
         </div>
         <div className="mk-container mk-hero-inner mk-assessment-hero-inner">
           <div>
-            <p className="mk-kicker-gold-soft">AI readiness assessment</p>
-            <h1>Find your AI readiness gap.</h1>
+            <p className="mk-kicker-gold-soft">Assessment</p>
+            <h1>Find your AI starting point.</h1>
             <p className="mk-lede">
-              Twelve questions. Three minutes. Score, gap, and 30-day path.
+              12 questions give you a score, top gap, and 30-day starter move.
+              The paid assessment adds deeper diagnostic detail.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Start free assessment <ArrowR className="mk-ic" />
+                Start free snapshot <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-light" size="lg" href="/assessment/in-depth">
-                View In-Depth · $99
+                See paid assessment
               </Button>
             </div>
           </div>

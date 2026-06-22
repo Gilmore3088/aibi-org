@@ -149,14 +149,14 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <p className="mk-kicker-gold-soft">AiBI-Foundation</p>
-            <h1>Build reusable AI prompts and skills.</h1>
+            <p className="mk-kicker-gold-soft">Learn</p>
+            <h1>Build reusable AI skills.</h1>
             <p className="mk-lede">
               Turn banking work into reviewed prompts, repeatable skills, and a Foundation Packet.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#curriculum">
-                Preview Prompt Builder <ArrowR className="mk-ic" />
+                Preview builders <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
                 Enroll · {facts.individualPriceLabel}
