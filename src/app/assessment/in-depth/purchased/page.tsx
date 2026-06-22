@@ -29,7 +29,7 @@ const HIGHLIGHTS = [
   '48 questions across all eight readiness dimensions',
   'Personalized Briefing with peer-band comparison and dimension deep-dives',
   '90-day action register keyed to your lowest-scoring dimensions',
-  'One free retake within 12 months',
+  'Retake by request within 12 months',
 ] as const;
 
 interface InDepthPurchasedPageProps {

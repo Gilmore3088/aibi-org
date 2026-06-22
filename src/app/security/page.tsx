@@ -36,10 +36,16 @@ const GUIDE_CHAPTERS = [
       'A structured method for identifying the AI tools your staff are already using without your knowledge, and bringing them inside a governance perimeter without killing adoption.',
   },
   {
-    title: 'Examiner readiness',
+    title: 'Review packet readiness',
     body:
-      'What to have on the table when an examiner walks in. Based on the AIEOG AI Lexicon vocabulary (US Treasury, FBIIC, FSSCC, February 2026).',
+      'What to keep in the packet before an audit, risk review, or exam conversation. Based on the AIEOG AI Lexicon vocabulary (US Treasury, FBIIC, FSSCC, February 2026).',
   },
+] as const;
+
+const DATA_HANDLING_RULES = [
+  'Practice scenarios use synthetic or sanitized banking examples. They are designed to teach the workflow without requiring customer records.',
+  'Learners are told not to paste customer PII, account numbers, confidential member data, or non-public examination material into prompts.',
+  'AI output is a draft. A banker owns fact-checking, policy fit, escalation, and any customer-facing or regulated decision.',
 ] as const;
 
 const REGULATORY_REFERENCES = [
@@ -58,7 +64,7 @@ export default function SecurityPage() {
       lede={
         <>
           A practical guide to approved tools, restricted data, human review,
-          and evidence your examiners can understand.
+          and evidence your compliance, risk, and IT teams can inspect.
         </>
       }
       heroAside={
@@ -135,7 +141,7 @@ export default function SecurityPage() {
         },
         {
           kicker: '§02 · Regulatory alignment',
-          heading: <>The guide uses the vocabulary your reviewers expect.</>,
+          heading: <>The guide maps staff practice to public source vocabulary.</>,
           body: (
             <div className="mk-reg-ref-grid">
               {REGULATORY_REFERENCES.map((reference) => (
@@ -146,7 +152,19 @@ export default function SecurityPage() {
           surface: 'cream',
         },
         {
-          kicker: '§03 · Not just a PDF',
+          kicker: '§03 · Data handling',
+          heading: <>Practice with synthetic data. Keep customer data out of prompts.</>,
+          body: (
+            <div className="mk-reg-ref-grid">
+              {DATA_HANDLING_RULES.map((rule) => (
+                <div key={rule}>{rule}</div>
+              ))}
+            </div>
+          ),
+          surface: 'white',
+        },
+        {
+          kicker: '§04 · Not just a PDF',
           heading: (
             <>The guide is the starting point. The engagement is how it gets operationalized.</>
           ),
@@ -154,11 +172,11 @@ export default function SecurityPage() {
             <>
               A governance guide is not the same as a governance framework. An engagement with
               the Institute installs the framework inside your institution — with named owners, a
-              review cadence, and documented alignment to every applicable regulatory reference.
+              review cadence, and documented mapping to applicable regulatory references.
               No software seats. No vendor lock-in.
             </>
           ),
-          surface: 'white',
+          surface: 'cream',
         },
       ]}
       ctaBand={{

@@ -61,13 +61,14 @@ const GROUPS: readonly FaqGroup[] = [
         ),
       },
       {
-        q: 'Do I get lifetime access?',
+        q: 'How long do I keep access?',
         schemaAnswer:
-          'Yes. Learners get lifetime access to the modules, Toolbox, and curriculum updates. There is no annual renewal.',
+          'Current individual enrollment includes ongoing access to purchased course materials and published curriculum updates. There is no annual renewal on the current offer.',
         a: (
           <>
-            Yes — lifetime access to the modules, the Toolbox, and any
-            updates we ship to the curriculum. There is no annual renewal.
+            Current individual enrollment includes ongoing access to the
+            purchased modules, Toolbox materials, and published curriculum
+            updates. There is no annual renewal on the current offer.
           </>
         ),
       },
@@ -92,13 +93,13 @@ const GROUPS: readonly FaqGroup[] = [
       {
         q: 'Can I retake the In-Depth Assessment?',
         schemaAnswer:
-          'Yes. Buyers get one free retake within twelve months of the initial purchase, using the same 48-question pool and producing a fresh report.',
+          'Retakes are available by request within twelve months of purchase when the original report has not already been used for an institutional review package.',
         a: (
           <>
-            Yes — one free retake within twelve months of your initial
-            purchase. Same 48-question pool, fresh report. Useful when your
-            governance posture has shifted (new policy, new staff training,
-            new examiner letter).
+            Retakes are available by request within twelve months of purchase
+            when the original report has not already been used for an
+            institutional review package. Email us with the purchase address
+            and the reason for the retake.
           </>
         ),
       },
@@ -126,31 +127,33 @@ const GROUPS: readonly FaqGroup[] = [
       {
         q: 'Can my institution buy seats in bulk?',
         schemaAnswer:
-          'Yes. Volume pricing is $199 per seat at 10 or more seats. Institutional buyers can request one invoice and a per-seat enrollment dashboard. SSO is available at 25 or more seats.',
+          'Yes. Volume seats are available by request. Pricing, invoicing, enrollment handoff, SSO, and reporting are scoped before rollout.',
         a: (
           <>
-            Yes. Volume pricing is $199/seat at 10+ seats. Email{' '}
+            Yes. Volume seats are available by request. Email{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
               style={{ color: 'var(--gold-deep)', textDecoration: 'underline' }}
             >
               hello@aibankinginstitute.com
             </a>{' '}
-            with your headcount and we&apos;ll send a single invoice and
-            a per-seat enrollment dashboard. SSO is available at 25+ seats.
+            with your headcount, sponsor, and desired timing. Pricing,
+            invoicing, enrollment handoff, SSO, and reporting are scoped
+            before rollout.
           </>
         ),
       },
       {
         q: 'Can I pay by invoice instead of card?',
         schemaAnswer:
-          'Institutional purchases of 10 or more seats can pay by invoice with net-30 terms. Single-seat individual enrollments use Stripe Checkout.',
+          'Invoice payment is available by request for institutional purchases. Terms are confirmed before rollout. Single-seat individual enrollments use Stripe Checkout.',
         a: (
           <>
-            For institutional purchases (10+ seats), yes — we invoice in
-            net-30 terms. For single-seat individual enrollments, Stripe
-            Checkout is the only path. The receipt includes the institution
-            name and seat count for expense reimbursement.
+            Invoice payment is available by request for institutional
+            purchases. Terms are confirmed before rollout. For single-seat
+            individual enrollments, Stripe Checkout is the only path. The
+            receipt includes the course title and price for expense
+            reimbursement.
           </>
         ),
       },

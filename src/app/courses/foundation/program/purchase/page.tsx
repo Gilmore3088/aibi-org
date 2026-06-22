@@ -142,7 +142,10 @@ export default async function PurchasePage(
         }
       />
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}>
+      <div
+        className="foundation-purchase-content"
+        style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}
+      >
         {/* #327D — role-aware banner */}
         {roleBanner && (
           <aside
@@ -208,6 +211,63 @@ export default async function PurchasePage(
           }
         />
       </div>
+      <div className="foundation-mobile-purchase-bar" aria-label="Enroll in AiBI-Foundation">
+        <div>
+          <p>AiBI-Foundation</p>
+          <strong>$295 · 7-day refund if unused</strong>
+        </div>
+        <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
+      </div>
+      <style>{`
+        .foundation-mobile-purchase-bar {
+          display: none;
+        }
+        @media (max-width: 760px) {
+          .foundation-purchase-content {
+            padding-bottom: 168px !important;
+          }
+          .foundation-mobile-purchase-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
+            display: grid;
+            grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+            gap: 12px;
+            align-items: center;
+            padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+            background: rgba(255, 253, 246, 0.96);
+            border-top: 1px solid rgba(7, 26, 47, 0.14);
+            box-shadow: 0 -16px 40px rgba(7, 26, 47, 0.12);
+            backdrop-filter: blur(14px);
+          }
+          .foundation-mobile-purchase-bar p,
+          .foundation-mobile-purchase-bar strong {
+            display: block;
+            margin: 0;
+            color: var(--ink);
+            font-family: ${INTER_STACK};
+            letter-spacing: 0;
+          }
+          .foundation-mobile-purchase-bar p {
+            font-size: 12px;
+            font-weight: 700;
+          }
+          .foundation-mobile-purchase-bar strong {
+            margin-top: 2px;
+            font-size: 13px;
+            font-weight: 800;
+          }
+          .foundation-mobile-purchase-bar button {
+            min-height: 48px;
+            padding: 0 14px;
+          }
+          .foundation-mobile-purchase-bar button + p {
+            display: none;
+          }
+        }
+      `}</style>
     </CourseShell>
   );
 }

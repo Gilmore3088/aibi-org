@@ -605,7 +605,7 @@ export default function DashboardPage() {
                   Turn the <strong>skill</strong> into operating capability.
                 </h3>
                 <p className="copy">
-                  {modules.length} bite-sized modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with the same examiner-aware rigor as our research desk. Aligned with SR 11-7 and TPRM.
+                  {modules.length} bite-sized modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with source-aware rigor and reviewable evidence. Aligned with SR 11-7 and TPRM.
                 </p>
                 <div className="ctas">
                   <Link href="/courses/foundation/program" className="btn btn-paper">
@@ -620,8 +620,8 @@ export default function DashboardPage() {
                 <div className="price">
                   <div className="n">$295</div>
                   <div className="l">
-                    <b>Per seat · Lifetime access</b>
-                    Institutional pricing from $199/seat for 10+.
+                    <b>Individual enrollment · Ongoing access under current offer</b>
+                    Volume seats are scoped by request before rollout.
                   </div>
                 </div>
               </div>
@@ -634,7 +634,7 @@ export default function DashboardPage() {
                     <line x1="6" y1="14" x2="26" y2="14" />
                     <line x1="10" y1="20" x2="22" y2="20" opacity="0.5" />
                   </svg>
-                } name={<>12 structured <strong>modules</strong></>} meta="Self-paced" />
+                } name={<>{modules.length} structured <strong>modules</strong></>} meta="Self-paced" />
                 <FeatureRow svg={
                   <svg viewBox="0 0 32 32" fill="none" stroke="var(--gold-deep)" strokeWidth="1.4" strokeLinejoin="round">
                     <path d="M8 8 L24 8 L24 28 L8 28 Z" fill="var(--gold-a20)" />

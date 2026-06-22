@@ -81,8 +81,12 @@ export function EnrollButton({ userEmail, showNote = true }: EnrollButtonProps) 
         {loading ? 'Redirecting to checkout…' : 'Enroll · $295'}
       </button>
 
+      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
+        7-day refund if unused · fewer than two modules completed
+      </p>
+
       {showNote && !userEmail && (
-        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
+        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
           Stripe collects your email at checkout · no account required to enroll
         </p>
       )}

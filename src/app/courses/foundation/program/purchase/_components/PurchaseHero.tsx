@@ -45,7 +45,7 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
             marginBottom: 22,
           }}
         >
-          AiBI-Foundation · 18 bite-sized modules · $295 · Lifetime
+          AiBI-Foundation · 18 bite-sized modules · $295
         </span>
 
         <h1

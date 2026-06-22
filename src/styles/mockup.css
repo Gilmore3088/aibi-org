@@ -5219,6 +5219,95 @@ section.mk-std { padding: 56px 0; }
   }
 }
 
+/* Trust anchor */
+.mk-trust-anchor {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  padding: clamp(52px, 7vw, 84px) max(24px, calc((100vw - 1180px) / 2));
+  background: var(--cream-2);
+  border-top: 1px solid var(--ink-a10);
+  border-bottom: 1px solid var(--ink-a10);
+}
+.mk-trust-anchor-k,
+.mk-trust-anchor-panel-k {
+  margin: 0 0 14px;
+  color: var(--gold-deep);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.mk-trust-anchor h2 {
+  max-width: 12ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 0.98;
+}
+.mk-trust-anchor p {
+  max-width: 54ch;
+  margin: 18px 0 0;
+  color: var(--slate-600);
+  font-size: 16px;
+  line-height: 1.58;
+}
+.mk-trust-anchor-panel {
+  display: grid;
+  gap: 20px;
+}
+.mk-trust-anchor-panel ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--ink-a10);
+  border: 1px solid var(--ink-a10);
+}
+.mk-trust-anchor-panel li {
+  display: grid;
+  gap: 6px;
+  min-height: 108px;
+  align-content: center;
+  background: var(--cream);
+  padding: 18px;
+}
+.mk-trust-anchor-panel strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+.mk-trust-anchor-panel span {
+  color: var(--slate-600);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.mk-trust-anchor-rules {
+  display: grid;
+  gap: 10px;
+}
+.mk-trust-anchor-rules p {
+  max-width: none;
+  margin: 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--gold);
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .mk-trust-anchor {
+    grid-template-columns: 1fr;
+    padding-inline: 22px;
+  }
+  .mk-trust-anchor h2 {
+    max-width: 11ch;
+  }
+  .mk-trust-anchor-panel ul {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ROI section wrapper + branded calculator surface */
 .mk-roi-wrap {
   width: 100%;
@@ -5306,6 +5395,19 @@ section.mk-std { padding: 56px 0; }
   font-size: 12px;
   line-height: 1.55;
   color: var(--slate-600);
+}
+.mk-roi-methodology {
+  margin: 14px 0 0;
+  max-width: 46ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--slate-600);
+}
+.mk-roi-methodology a {
+  color: var(--gold-deep);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .mk-roi-result-cta {
   display: inline-flex;

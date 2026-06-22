@@ -9,6 +9,7 @@ import {
 } from '@/lib/stripe/checkout-defaults';
 import { TEAM_ASSESSMENT_MIN_SEATS } from '@/lib/team-assessment/constants';
 import { getTeamAssessmentOrigin } from '@/lib/team-assessment/db';
+import { isTeamAssessmentSelfServeEnabled } from '@/lib/team-assessment/self-serve';
 
 async function getStripe() {
   const { stripe } = await import('@/lib/stripe');
@@ -24,6 +25,13 @@ interface CheckoutBody {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  if (!isTeamAssessmentSelfServeEnabled()) {
+    return NextResponse.json(
+      { error: 'Team Assessment checkout is assisted-sales only right now.' },
+      { status: 403 },
+    );
+  }
+
   const limited = await rateLimitOrFail({
     key: 'checkout-team-assessment',
     scope: 'ip',

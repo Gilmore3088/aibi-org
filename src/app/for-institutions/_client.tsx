@@ -12,6 +12,7 @@ import {
   StickyMobileCta,
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
+import { TrustAnchor } from '@/components/sections/TrustAnchor';
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -48,10 +49,12 @@ const XIcon = (p: IconProps) => (
   <svg {...sw(p)}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
 );
 
+const PRIMARY_ENTRY_PATH = '/assessment/take';
 const TEAM_ASSESSMENT_PATH = '/assessment/team';
-const PRICING_PATH = '#engagement';
 const BRIEFING_MAILTO =
   'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions';
+const ASSISTED_ROLLOUT_MAILTO =
+  'mailto:hello@aibankinginstitute.com?subject=Assisted%20AI%20rollout%20request';
 const COURSE_SEATS_MAILTO =
   'mailto:hello@aibankinginstitute.com?subject=Foundation%20course%20seat%20pricing';
 
@@ -65,9 +68,9 @@ const TIERS = [
       'The dimension dragging you down',
       'A starter artifact you can take to your team this week',
     ],
-    ctaHref: '/assessment',
+    ctaHref: PRIMARY_ENTRY_PATH,
     ctaLabel: 'Take the assessment',
-    ctaVariant: 'ink' as const,
+    ctaVariant: 'gold' as const,
   },
   {
     scale: 'Per-banker',
@@ -76,7 +79,7 @@ const TIERS = [
     included: [
       'Eighteen bite-sized self-paced modules',
       'Eighteen reviewed AI artifacts per practitioner',
-      '$295 individual · $199/seat at 10+ · lifetime access',
+      '$295 individual · volume seats by request',
     ],
     ctaHref: '/courses',
     ctaLabel: 'View the curriculum',
@@ -87,13 +90,13 @@ const TIERS = [
     name: 'Organizational Rollout',
     tagline: 'A coached cohort, an aggregate dashboard, a defensible posture.',
     included: [
-      '10-seat coached cohort over eight weeks',
+      '10+ seat assisted cohort planning',
       'Institutional readiness baseline + post-engagement diagnostic',
-      'Aggregate dashboard for your champion',
+      'Aggregate dashboard after privacy thresholds are confirmed',
     ],
-    ctaHref: TEAM_ASSESSMENT_PATH,
-    ctaLabel: 'Start team assessment',
-    ctaVariant: 'gold' as const,
+    ctaHref: ASSISTED_ROLLOUT_MAILTO,
+    ctaLabel: 'Request rollout',
+    ctaVariant: 'ink' as const,
   },
 ];
 
@@ -105,7 +108,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Team assessment', href: TEAM_ASSESSMENT_PATH }} />
+      <SiteHeader activePath="/for-institutions" cta={{ label: 'Take assessment', href: PRIMARY_ENTRY_PATH }} />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -129,14 +132,15 @@ export default function ForInstitutionsPage() {
             </p>
             <h1>Find the gaps. Train the team.</h1>
             <p className="mk-lede">
-              Cohort assessment, department dashboard, and Foundation seats for banks and credit unions.
+              Start with a readiness baseline, then decide whether your team needs Foundation seats,
+              an assisted cohort, or a scoped briefing.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href={PRICING_PATH}>
-                See team options <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
+                Take the free assessment <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href={TEAM_ASSESSMENT_PATH}>
-                Team assessment
+              <Button variant="ghost-dark" size="lg" href={BRIEFING_MAILTO}>
+                Request briefing
               </Button>
             </div>
           </div>
@@ -257,8 +261,8 @@ export default function ForInstitutionsPage() {
           heading={<>Three ways to build.</>}
           lede={
             <>
-              Free diagnostic, per-banker enrollment, or institution-wide rollout. Each
-              ends with reviewed work product — not a policy doc nobody reads.
+              Start with the free diagnostic. Use the result to decide whether the next
+              move is individual enrollment, volume seats, or an assisted rollout.
             </>
           }
         />
@@ -413,8 +417,8 @@ export default function ForInstitutionsPage() {
       <Section variant="std">
         <SectionHead
           kicker="How institutions work with us"
-          heading={<>Assess. Train. Document. Govern. Consult.</>}
-          lede={<>Five steps, in order. We don't do the policy doc. We do the work that lets you write a credible policy doc later.</>}
+          heading={<>Assess. Train. Document. Govern. Operate.</>}
+          lede={<>Five steps, in order. We don't sell a policy shortcut. We help the team produce reviewable work before you scale it.</>}
         />
         <div className="mk-chain">
           {[
@@ -422,7 +426,7 @@ export default function ForInstitutionsPage() {
             { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
             { icon: FileIcon, num: '03 · Document', h: 'Build your AI use-case record', p: 'Workbench Packs and Toolbox artifacts become your AI use-case inventory — review-ready from day one.' },
             { icon: LockIcon, num: '04 · Govern', h: 'Establish approval and data rules', p: 'Approval rituals and data rules reinforced through the same artifacts staff already use day to day.' },
-            { icon: NetworkIcon, num: '05 · Consult', h: 'Engage ongoing advisory', p: 'Optional Leadership Advisory — a fractional Chief AI Officer for institutions running real cohorts.' },
+            { icon: NetworkIcon, num: '05 · Operate', h: 'Move through assisted rollout', p: 'When the cohort is ready, we agree on admin handoff, support path, and reporting cadence before launch.' },
           ].map(({ icon: Icon, num, h, p }) => (
             <div key={num} className="mk-step">
               <span className="mk-pic">
@@ -471,7 +475,7 @@ export default function ForInstitutionsPage() {
           {/* Mobile-only: link to the live dashboard demo since the grid above
               gets visually compressed to ~80px-tall cards on a phone. */}
           <Link className="mk-dept-mobile-link" href={TEAM_ASSESSMENT_PATH}>
-            Open the paid team assessment →
+            View the assisted team assessment →
           </Link>
         </div>
       </Section>
@@ -483,8 +487,8 @@ export default function ForInstitutionsPage() {
             <div className="mk-k">Free · 30 minutes</div>
             <h3>Start with an Executive Briefing.</h3>
             <p>
-              Bring your leadership team. We walk through the assessment, the dashboard, and what
-              a 90-day rollout looks like at an institution your size. No slides, no sales pitch.
+              Bring your leadership team. We walk through the assessment, the dashboard preview,
+              and what a 90-day rollout would require at an institution your size.
             </p>
             <Button
               variant="gold"
@@ -495,8 +499,8 @@ export default function ForInstitutionsPage() {
             </Button>
           </div>
           <ul>
-            <li><CheckIcon className="mk-ic" />Demo on real institution data (yours or comparable)</li>
-            <li><CheckIcon className="mk-ic" />FDIC peer comparison for your asset class</li>
+            <li><CheckIcon className="mk-ic" />Demo using your sanitized inputs or comparable public examples</li>
+            <li><CheckIcon className="mk-ic" />Peer-context discussion for your asset class</li>
             <li><CheckIcon className="mk-ic" />90-day rollout plan tailored to your shape</li>
             <li><CheckIcon className="mk-ic" />Pricing for your headcount & departments</li>
           </ul>
@@ -508,71 +512,71 @@ export default function ForInstitutionsPage() {
       <Section id="engagement" variant="std" surface="white">
         <SectionHead
           kicker="How to engage"
-          heading={<>Enrollment &amp; advisory.</>}
+          heading={<>Enrollment &amp; assisted rollout.</>}
           lede={
             <>
-              Self-serve seat blocks for institutions buying in volume, and a hands-on Leadership
-              Advisory for institutions running a coached cohort. Organizational Rollout pricing is
-              discussed in your Executive Briefing.
+              Individual enrollment is self-serve. Volume seats, dashboards, and Team Assessment
+              rollouts are scoped with us first so reporting, support, and privacy thresholds are
+              agreed before purchase.
             </>
           }
         />
         <div className="mk-contact-grid">
           <div className="mk-ccard">
-            <div className="mk-lab">Paid team diagnostic</div>
+            <div className="mk-lab">Assisted team diagnostic</div>
             <h3>Team Assessment</h3>
             <div className="mk-price">
               <div className="mk-v">10+</div>
-              <div className="mk-u">seats · secure checkout</div>
+              <div className="mk-u">seats · scoped before checkout</div>
             </div>
             <p>
-              Buy the 48-question team assessment. Each participant receives a personal
-              report; admins get the aggregate team dashboard after 10 completions.
+              Run the 48-question team assessment after we confirm cohort setup,
+              privacy thresholds, reporting owner, and support path.
             </p>
             <ul>
               <li><CheckIcon className="mk-ic" />Shared participant link</li>
               <li><CheckIcon className="mk-ic" />Department and role breakdowns</li>
               <li><CheckIcon className="mk-ic" />Print-ready team report</li>
             </ul>
-            <Button variant="gold" size="lg" href={TEAM_ASSESSMENT_PATH}>
-              Start team assessment <ArrowR className="mk-ic" />
+            <Button variant="ink" size="lg" href={ASSISTED_ROLLOUT_MAILTO}>
+              Request assisted rollout <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
-            <div className="mk-lab">Self-serve</div>
+            <div className="mk-lab">By request</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
-              <div className="mk-v">$199</div>
-              <div className="mk-u">/ seat at 10+ · volume pricing</div>
+              <div className="mk-v">10+</div>
+              <div className="mk-u">seats · quote by cohort</div>
             </div>
             <p>
-              Buy Foundation Course seats in bulk. Admin dashboard. Assessment aggregated to org
-              level. Toolbox shared across staff.
+              Request Foundation Course seats in bulk. We confirm assignment, reporting,
+              invoicing, and support before quoting the cohort.
             </p>
             <ul>
-              <li><CheckIcon className="mk-ic" />Volume discount from 10 seats</li>
-              <li><CheckIcon className="mk-ic" />Admin assigns & tracks training</li>
-              <li><CheckIcon className="mk-ic" />SSO available at 25+ seats</li>
+              <li><CheckIcon className="mk-ic" />Volume pricing available by request</li>
+              <li><CheckIcon className="mk-ic" />Enrollment handoff scoped up front</li>
+              <li><CheckIcon className="mk-ic" />SSO and invoicing discussed before rollout</li>
             </ul>
             <Button variant="ink" size="lg" href={COURSE_SEATS_MAILTO}>
               Request course seats <ArrowR className="mk-ic" />
             </Button>
           </div>
           <div className="mk-ccard">
-            <div className="mk-lab">Hands-on</div>
-            <h3>Leadership Advisory</h3>
+            <div className="mk-lab">Briefing</div>
+            <h3>Executive Briefing</h3>
             <div className="mk-price">
               <div className="mk-v">Custom</div>
               <div className="mk-u">/ contact for engagement</div>
             </div>
             <p>
-              Fractional Chief AI Officer. Quarterly working sessions with leadership, monthly
-              cohort reviews, review-ready documentation throughout.
+              A short leadership session to pressure-test readiness, data boundaries,
+              and the first credible rollout path.
             </p>
             <ul>
-              <li><CheckIcon className="mk-ic" />Includes all course + toolbox access</li>
-              <li><CheckIcon className="mk-ic" />Custom playbooks for your institution</li>
-              <li><CheckIcon className="mk-ic" />Direct line to founder</li>
+              <li><CheckIcon className="mk-ic" />Assessment and course path review</li>
+              <li><CheckIcon className="mk-ic" />Data handling and support questions</li>
+              <li><CheckIcon className="mk-ic" />Next-step recommendation by cohort size</li>
             </ul>
             <Button
               variant="gold"
@@ -585,6 +589,7 @@ export default function ForInstitutionsPage() {
         </div>
       </Section>
 
+      <TrustAnchor />
       <AdvisorsStrip />
 
       <CtaBand
@@ -599,13 +604,13 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Team assessment', href: TEAM_ASSESSMENT_PATH, variant: 'ghost-dark' },
+          { label: 'Request briefing', href: BRIEFING_MAILTO, variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
-        label="Team assessment"
-        href={TEAM_ASSESSMENT_PATH}
+        label="Take the free assessment"
+        href={PRIMARY_ENTRY_PATH}
         source="institutions-sticky"
       />
     </div>

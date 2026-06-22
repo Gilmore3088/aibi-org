@@ -20,7 +20,6 @@ export interface CoursesOverviewFacts {
   readonly totalMinutes: number;
   readonly totalHoursLabel: string;
   readonly individualPriceLabel: string;
-  readonly teamSeatPriceLabel: string;
   readonly samplePacketSlots: readonly {
     readonly moduleNumber: number;
     readonly label: string;
@@ -33,7 +32,6 @@ const DEFAULT_FACTS: CoursesOverviewFacts = {
   totalMinutes: 182,
   totalHoursLabel: '3',
   individualPriceLabel: '$295',
-  teamSeatPriceLabel: '$199',
   samplePacketSlots: [
     { moduleNumber: 1, label: 'AI Limits Card' },
     { moduleNumber: 4, label: 'First Prompt Card' },
@@ -56,7 +54,7 @@ function buildPricingBullets(facts: CoursesOverviewFacts) {
     'Review notes and transfer plans in every module',
     '5+ certificate practice reps',
     'Final packet submission + certificate',
-    'Lifetime access and course updates',
+    'Ongoing access to purchased materials under current offer',
   ];
 }
 
@@ -253,7 +251,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
             <div className="mk-pricing-amount">
               <p className="mk-k">Individual enrollment</p>
               <p className="mk-pricing-value">{facts.individualPriceLabel}</p>
-              <p>Team course enrollment available at {facts.teamSeatPriceLabel} per seat for 10+ seats.</p>
+              <p>Volume seat pricing is scoped by request before rollout.</p>
             </div>
             <ul className="mk-pricing-bullets">
               {pricingBullets.map((item) => (

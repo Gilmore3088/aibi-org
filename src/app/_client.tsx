@@ -12,6 +12,7 @@ import {
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
+import { TrustAnchor } from '@/components/sections/TrustAnchor';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -225,6 +226,7 @@ export default function HomePage() {
         </div>
       </Section>
 
+      <TrustAnchor />
       <AdvisorsStrip />
 
       <PriceStrip />

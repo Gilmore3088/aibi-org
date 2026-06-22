@@ -34,6 +34,11 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  // The default Next.js dev indicator renders as a small floating "N" in
+  // local builds. It confused first-time mobile assessment QA as an unlabeled
+  // product control, so keep the dev overlay available through errors while
+  // removing the persistent indicator chrome.
+  devIndicators: false,
   // Native-binary packages that must not be bundled by webpack.
   //   @react-pdf/renderer  — uses native canvas modules
   //   @sparticuz/chromium  — bundles Chromium binary for Vercel serverless

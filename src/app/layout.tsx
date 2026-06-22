@@ -224,6 +224,7 @@ const FOOTERLESS_PATHS: readonly string[] = [
   '/courses/foundation/program',
   '/assessment/take',
   '/assessment/in-depth/take',
+  '/admin',
 ];
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

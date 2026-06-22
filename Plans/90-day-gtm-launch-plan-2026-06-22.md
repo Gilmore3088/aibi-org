@@ -101,7 +101,7 @@ Offer ladder:
 | Step | Offer | Value | CTA |
 |---|---|---|---|
 | Free | 12-question readiness snapshot | Baseline score, top gap, 30-day next move | Start free assessment |
-| Paid entry | $99 In-Depth Assessment | 48-question individual diagnostic and personal report | Get the full diagnostic |
+| Paid entry | $99 In-Depth Assessment | Individual report, peer-band comparison, and 90-day action register | Get the full report |
 | Course | $295 Foundation Course | 18 bite-sized modules, saved prompts, skills, workflows, Toolbox, certificate | Build the Foundation packet |
 | Assisted sales | Foundation seats / Team Assessment | Bulk capability building or cohort view | Talk to us / assisted rollout |
 
@@ -118,11 +118,11 @@ Base 90-day model:
 | Free assessment completions | 900 | 60% of starts. |
 | Email captures | 450 | 50% of completions. |
 | In-Depth purchases | 90 | **20%** of captures. Gross: $8,910. |
-| Foundation purchases | 35 | ~39% attach off In-Depth buyers. Gross: $10,325. |
-| Total gross revenue | $19,235 | Before Stripe, SaaS, support, and refunds. |
+| Foundation purchases | 10 | ~11% attach off In-Depth buyers. Gross: $2,950. |
+| Total gross revenue | $11,860 | Before Stripe, SaaS, support, and refunds. |
 
 > **Reality check (added 2026-06-22 after red-team review). This table is a planning
-> model, not a forecast — and it is optimistic on two axes:**
+> model, not a forecast — and it is optimistic on one unresolved axis:**
 > 1. **Top-of-funnel is unfunded.** "8,000 qualified sessions, organic/$0 paid" has **no
 >    named acquisition channel** — the newsletter was retired, no partner is signed, a new
 >    domain has no SEO runway. Every number below it is a percentage of a figure the plan
@@ -130,12 +130,12 @@ Base 90-day model:
 >    placement, a core-provider co-market slot, a conference list, or a rebuilt owned list)
 >    as the binding constraint before any revenue target is credible.** Multiplying a missing
 >    top-of-funnel by a better landing page is still ~$0.
-> 2. **The conversion rates are aggressive for a cold audience.** Capture→In-Depth at 20%
->    and an In-Depth→Foundation attach of ~39% assume trust this brand hasn't earned yet
->    (no testimonials, no founder page, a $99 rung that reads as "a longer version of the
->    free quiz"). A conservative cold-launch scenario (≈1,500 real sessions, 2–3%
->    capture→$99, 5–15% Foundation attach) lands closer to **$1k–$5k**. The "minimum viable
->    success" below ($10k) is itself the optimistic floor, not a worst case.
+> 2. **Capture→In-Depth at 20% is still aggressive for a cold audience,** but the
+>    previous base case's ~39% In-Depth→Foundation attach has been lowered to ~11% so
+>    Foundation revenue no longer carries the model. A conservative cold-launch scenario
+>    (≈1,500 real sessions, 2–3% capture→$99, 5–15% Foundation attach) lands closer to
+>    **$1k–$5k**. The "minimum viable success" below ($10k) is itself the optimistic
+>    floor, not a worst case.
 >
 > Earlier this row read "10% of captures" while listing 90 purchases (= 20%); the rate is
 > now corrected to 20% so the arithmetic is internally consistent.
@@ -252,12 +252,12 @@ weekly scorecard. Maintain it there; do not re-add a copy to this plan.
 | Product copy drift history | High | Buyers lose trust when pages, emails, docs, and receipts disagree. | Run copy audit across public pages, emails, Stripe, and PDFs. |
 | Team Assessment hardening gap | High | Institutional buyers expect robust aggregate reporting and support. | Keep assisted-sales; run seeded and real cohort QA before scaling. |
 | Analytics dashboard not proven | Medium | No reliable operating cadence means optimization becomes guesswork. | Manual weekly scorecard first. |
-| Support process not visible in repo | Medium | Paid buyers need fast resolution. | Assign support owner and macros. |
+| Support owner still unassigned | Medium | Paid buyers need fast resolution. `docs/support-runbook.md` now has the dashboards and macros, but ownership is external. | Assign support owner, inbox, SLA, and refund authority before promotion. |
 | AI usage costs unknown | Medium | Sandbox/toolbox success can create unpredictable COGS. | Add usage caps and weekly cost review. |
 | Proof gap | Medium | Product can look plausible but unproven. | Collect testimonials, before/after artifacts, and learner outcomes. |
-| Team Assessment is live self-serve, contradicting this plan | High | `/assessment/team` shows a full "START SECURE CHECKOUT" (Institution/email/seats) backed by a live `/api/checkout/team-assessment` route, while this plan mandates assisted-sales only. The site and plan disagree. | Before promotion: gate the team checkout behind a flag / convert to "request assisted rollout", OR drop the assisted-sales-only mandate. See persona review (P0). |
-| No credibility / founder anchor in the funnel | Medium | `/about` 308-redirects to `/` (intentional); high-skepticism buyers (CEO, examiner) find no "who builds this". | Add a lightweight trust strip (founder/advisors/named sources). Ties to Proof gap. |
-| Buying-path friction (refund reversal, /services CTA overload, ROI sourcing) | Medium | Refund terms not adjacent to $99/$295 CTAs; `/services` has 5+ co-equal CTAs; ROI number lacks one-click methodology. | Per persona review P1 — fix before scaling traffic. |
+| Team Assessment self-serve must remain gated | High | Code now keeps `/assessment/team` assisted-sales by default and `/api/checkout/team-assessment` returns 403 unless `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true`. | Do not set the flag until two production-like cohorts pass E2E QA and owner accepts self-serve risk. |
+| No named founder/advisor content in the funnel | Medium | A factual trust anchor now names public references and claim boundaries, but `AdvisorsStrip` remains empty until real people approve attribution. | Owner supplies founder/advisor content; keep placeholders out of production. Ties to Proof gap. |
+| Buying-path friction needs live verification | Medium | Code now adds refund terms near $99/$295 CTAs, makes `/for-institutions` assessment-first, and links ROI methodology from the calculator. | Verify on the live build before scaling traffic. |
 | Comp ($0) access can't be auto-revoked | Low | $0 sessions have no charge, so `charge.refunded` never fires for comps. | Revoke comps by deleting the `course_enrollments` row; documented in stripe-products.md + checklist §6. |
 | Stripe Tax disabled crosses its own threshold | Low | The 90-day model targets >50 paid transactions; the tax-revisit trigger is 50. | Tracked as checklist §10 — re-evaluate Stripe Tax at 50 transactions or first multi-state pattern. |
 

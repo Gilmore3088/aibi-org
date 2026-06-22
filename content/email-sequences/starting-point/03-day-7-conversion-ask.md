@@ -3,7 +3,7 @@ tier: starting-point
 sequence_position: 3
 delay: 7 days
 subject: AiBI-Foundation starts when you're ready
-preheader: Twelve short modules. SAFE framework. Built for community banks.
+preheader: Eighteen short modules. SAFE framework. Built for community banks.
 tags:
   - aibi-assessment-startingpoint
 ---
@@ -14,7 +14,7 @@ A week ago you completed the readiness assessment and scored in the Starting Poi
 
 The AiBI-Foundation certification is the answer:
 
-- **Twelve modules**, designed to fit a banker's calendar — most learners finish in 2–3 weeks of focused work.
+- **Eighteen modules**, designed to fit a banker's calendar — most learners finish in three to six weeks of focused work.
 - **SAFE framework** baked into every exercise. Your team learns prompt patterns alongside the policy guardrails to use them safely.
 - **Built for community banks specifically.** No retail-only examples, no Silicon Valley jargon. Lending, deposits, compliance, member service — the actual surfaces your team works with.
 - **Practice sandbox** with sample data. Your team works on realistic scenarios, never on real member data.

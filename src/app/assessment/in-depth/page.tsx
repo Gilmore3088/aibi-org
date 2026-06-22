@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/assessment/in-depth' },
   title: 'In-Depth Assessment | The AI Banking Institute',
   description:
-    'A 48-question, eight-dimension AI readiness assessment for individual banking professionals. Get a personal report, peer-band comparison, and role-level action plan.',
+    'An individual AI readiness report for banking professionals with peer-band comparison, eight-dimension scoring, and a role-level action plan.',
 };
 
 interface InDepthAssessmentPageProps {
@@ -138,9 +138,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '56ch',
                 }}
               >
-                Forty-eight questions. Eight readiness dimensions. A personal
-                report that shows your strengths, gaps, and next moves in your
-                role.
+                Get a written personal report, peer-band comparison, and
+                90-day action register keyed to your role. The 48-question
+                diagnostic is the engine behind the report, not the product.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
                 <PurchaseButton
@@ -229,8 +229,8 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '24ch',
                 }}
               >
-                Forty-eight questions.{' '}
-                <span style={{ color: 'var(--gold-deep)' }}>Eight dimensions.</span>
+                Your report, peer band, and{' '}
+                <span style={{ color: 'var(--gold-deep)' }}>90-day action register.</span>
               </h2>
               <p
                 style={{
@@ -243,7 +243,8 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 }}
               >
                 Use this when one person needs a deeper readout than the free
-                scan. If leaders need department-level evidence, use the Team
+                scan: what is strong, what is weak, and what to do next. If
+                leaders need department-level evidence, request a scoped Team
                 Assessment instead.
               </p>
             </div>
@@ -317,9 +318,9 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     maxWidth: '42ch',
                   }}
                 >
-                  Forty-eight questions across eight dimensions. A written
-                  report with peer-band comparison and a ninety-day playbook
-                  keyed to your weakest areas.
+                  A written report with peer-band comparison, eight-dimension
+                  scoring, and a ninety-day playbook keyed to your weakest
+                  areas.
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginBottom: 24 }}>
@@ -349,7 +350,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     per individual
                     <br />
                     <span style={{ color: 'var(--slate-500)' }}>
-                      Need 10+ people? Use Team
+                      Need 10+ people? Request Team
                     </span>
                   </p>
                 </div>
@@ -367,7 +368,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     margin: '14px 0 0',
                   }}
                 >
-                  Pay once · Report in 20 min · One free retake within 12 months
+                  Pay once · Report in 20 min · Retake by request within 12 months
                 </p>
 
                 <div
@@ -489,8 +490,8 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               <NarrativeCard
                 kicker="Team assessment"
                 title="Leaders need a cohort view."
-                body="Use the Team Assessment when the institution needs aggregate readiness, department slices, participant completion, and a leadership-ready rollup."
-                ctaLabel="View team assessment →"
+                body="Request the Team Assessment when the institution needs aggregate readiness, department slices, participant completion, and a leadership-ready rollup."
+                ctaLabel="Request team assessment →"
                 ctaHref="/assessment/team"
               />
             </div>
@@ -506,14 +507,14 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 textAlign: 'center',
               }}
             >
-              Need an institutional readout? The Team Assessment starts with a
-              shared cohort link and unlocks aggregate reporting after ten
-              completions.{' '}
+              Need an institutional readout? The Team Assessment is scoped
+              with your sponsor first, then uses a shared cohort link and
+              unlocks aggregate reporting after ten completions.{' '}
               <Link
                 href="/assessment/team"
                 style={{ color: 'var(--gold-deep)', fontWeight: 600, textDecoration: 'underline' }}
               >
-                View the Team Assessment
+                View the assisted Team Assessment
               </Link>
               .
             </p>

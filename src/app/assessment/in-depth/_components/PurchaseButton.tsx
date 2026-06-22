@@ -124,6 +124,18 @@ export function PurchaseButton({
       >
         {pending ? pendingLabel : label}
       </button>
+      <p
+        style={{
+          fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+          fontSize: 12,
+          lineHeight: 1.4,
+          color: 'var(--slate-500)',
+          margin: 0,
+          maxWidth: 320,
+        }}
+      >
+        7-day refund if unused: assessment not submitted and no report generated.
+      </p>
       {error && (
         <p
           role="alert"

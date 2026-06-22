@@ -1,16 +1,23 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
+import { TEAM_ASSESSMENT_MIN_SEATS } from '@/lib/team-assessment/constants';
+import { isTeamAssessmentSelfServeEnabled } from '@/lib/team-assessment/self-serve';
 import { TeamCheckoutForm } from './_components/TeamCheckoutForm';
 
 export const metadata: Metadata = {
   title: 'Team AI Readiness Assessment | The AI Banking Institute',
   description:
-    'A paid 48-question AI readiness assessment for teams, departments, and institution-wide rollout planning.',
+    'An assisted 48-question AI readiness assessment for teams, departments, and institution-wide rollout planning.',
   alternates: { canonical: '/assessment/team' },
 };
 
+const ASSISTED_ROLLOUT_MAILTO =
+  'mailto:hello@aibankinginstitute.com?subject=Assisted%20Team%20Assessment%20rollout';
+
 export default function TeamAssessmentPage(): JSX.Element {
+  const selfServeEnabled = isTeamAssessmentSelfServeEnabled();
+
   return (
     <div className="mockup-scope" style={{ minHeight: '100vh', background: 'var(--cream)' }}>
       <SiteHeader activePath="/assessment" />
@@ -42,14 +49,14 @@ export default function TeamAssessmentPage(): JSX.Element {
               ))}
             </div>
           </div>
-          <TeamCheckoutForm />
+          {selfServeEnabled ? <TeamCheckoutForm /> : <TeamAssistedRolloutCard />}
         </section>
 
         <section className="team-detail" aria-label="How it works">
           {[
-            ['Buy the cohort', 'Stripe creates the team assessment, admin dashboard, and shared participant link.'],
+            ['Scope the cohort', 'We confirm sponsor, departments, seat count, privacy thresholds, and support path before any checkout link is issued.'],
             ['Share one link', 'Each participant enters work email, department, and role before the 48-question assessment.'],
-            ['Unlock the report', 'At 10 completions, the aggregate report opens with every department and role slice; smaller samples are marked directional.'],
+            ['Unlock the report', 'At 10 completions, the aggregate report opens with department and role slices; smaller samples are marked directional.'],
           ].map(([title, body], index) => (
             <article key={title}>
               <span>{String(index + 1).padStart(2, '0')}</span>
@@ -108,6 +115,72 @@ export default function TeamAssessmentPage(): JSX.Element {
           border-radius: 18px;
           padding: 18px;
           box-shadow: 0 18px 60px rgba(7, 26, 47, 0.07);
+        }
+        .team-assisted {
+          display: grid;
+          gap: 18px;
+          background: #fff;
+          border: 1px solid var(--ink-a10);
+          border-radius: 18px;
+          padding: 26px;
+          box-shadow: 0 24px 70px rgba(7, 26, 47, 0.1);
+        }
+        .team-assisted-k {
+          margin: 0;
+          color: var(--gold-deep);
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+        }
+        .team-assisted h2 {
+          margin: 0;
+          color: var(--ink);
+          font-size: 30px;
+          line-height: 1.08;
+        }
+        .team-assisted p {
+          margin: 0;
+          color: var(--slate-600);
+          font-size: 15px;
+          line-height: 1.55;
+        }
+        .team-assisted ul {
+          display: grid;
+          gap: 10px;
+          margin: 0;
+          padding: 16px 0;
+          border-top: 1px solid var(--ink-a10);
+          border-bottom: 1px solid var(--ink-a10);
+          list-style: none;
+        }
+        .team-assisted li {
+          display: grid;
+          grid-template-columns: 16px 1fr;
+          gap: 10px;
+          color: var(--ink);
+          font-size: 14px;
+          line-height: 1.45;
+        }
+        .team-assisted li::before {
+          content: "—";
+          color: var(--gold-deep);
+          font-weight: 900;
+        }
+        .team-assisted a {
+          display: inline-flex;
+          min-height: 52px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          background: var(--ink);
+          color: var(--cream);
+          padding: 0 20px;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          text-decoration: none;
         }
         .team-proof-head,
         .team-proof-row {
@@ -224,5 +297,25 @@ export default function TeamAssessmentPage(): JSX.Element {
         }
       `}</style>
     </div>
+  );
+}
+
+function TeamAssistedRolloutCard(): JSX.Element {
+  return (
+    <aside className="team-assisted" aria-label="Request assisted team assessment rollout">
+      <p className="team-assisted-k">Assisted rollout only</p>
+      <h2>Start with a scoped team rollout.</h2>
+      <p>
+        Team Assessment checkout is intentionally gated until two production-like
+        cohorts pass end-to-end QA. We set up the cohort with you instead of
+        opening public self-serve payment.
+      </p>
+      <ul>
+        <li>{TEAM_ASSESSMENT_MIN_SEATS}+ seat cohort planning</li>
+        <li>Privacy threshold and department slices confirmed before launch</li>
+        <li>Admin handoff, support owner, and report timing agreed up front</li>
+      </ul>
+      <a href={ASSISTED_ROLLOUT_MAILTO}>Request assisted rollout</a>
+    </aside>
   );
 }

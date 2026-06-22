@@ -12,7 +12,7 @@ interface PricingProofProps {
   enrollButton: ReactNode;
   /** When true, the buyer's institution has a locked team rate that
    *  create-checkout applies automatically (PAY-03). Surfaced as a note so
-   *  the lower price at checkout doesn't read as inconsistent. */
+   *  the adjusted price at checkout doesn't read as inconsistent. */
   institutionRateApplies?: boolean;
 }
 
@@ -78,7 +78,7 @@ export function PricingProof({
               letterSpacing: '0.04em',
             }}
           >
-            $199 per seat at 10+
+            volume seats by request
           </span>
         </div>
 
@@ -98,8 +98,7 @@ export function PricingProof({
               lineHeight: 1.45,
             }}
           >
-            Your institution&rsquo;s team rate is applied &mdash; checkout will
-            charge $199, not $295.
+            Your institution&rsquo;s team rate is applied at checkout.
           </p>
         )}
 
@@ -113,8 +112,8 @@ export function PricingProof({
             maxWidth: '46ch',
           }}
         >
-          One-time payment. Lifetime access. Stripe checkout — no account
-          required to enroll.
+          One-time individual payment. Stripe checkout — no account required
+          to enroll. Volume seats are scoped by request.
         </p>
 
         <div>{enrollButton}</div>

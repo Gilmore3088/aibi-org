@@ -22,7 +22,7 @@ export function inDepthAssessmentPurchaseHtml(v: InDepthAssessmentPurchaseVars):
       <li>Personalized Action Packet with peer-band comparison</li>
       <li>90-day action register keyed to your lowest-scoring areas</li>
       <li>Reviewer packet for board and executive presentations</li>
-      <li>One free retake within 12 months</li>
+      <li>Retake by request within 12 months</li>
     </ul>
     ${divider()}
     <p style="margin:0;font-size:13px;line-height:1.6;color:#637083">
@@ -51,7 +51,7 @@ What you get:
 - Personalized Action Packet with peer-band comparison
 - 90-day action register keyed to your lowest-scoring areas
 - Reviewer packet for board and executive presentations
-- One free retake within 12 months
+- Retake by request within 12 months
 
 Amount paid: ${v.amountPaid}. A Stripe receipt is on its way separately.
 Questions? Reply to this email or write to hello@aibankinginstitute.com.

@@ -127,6 +127,14 @@ export function ROICalculatorBody({
           {formatNumber(result.hoursPerYear)} hours/year &middot;{' '}
           ~{result.payrollRecaptured}% of payroll
         </p>
+        <p className="mk-roi-methodology">
+          Illustrative estimate from your inputs. Math: FTE × weekly hours × loaded
+          hourly cost × 50 working weeks.{' '}
+          <a href="/for-institutions/samples/efficiency-ratio-workbook">
+            See assumptions and sources
+          </a>
+          .
+        </p>
         <a
           href={ctaHref}
           target={ctaHref.startsWith('http') ? '_blank' : undefined}

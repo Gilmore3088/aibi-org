@@ -318,8 +318,8 @@ export default function FoundationGalleryClient() {
             <>
               Eighteen bite-sized modules, each ending in a reviewable artifact
               you keep. These examples show how the course moves from AI basics
-              into reusable prompts, skills, and workflows. Lifetime access; one
-              $295 enrollment.
+              into reusable prompts, skills, and workflows. Current individual
+              enrollment is one $295 purchase.
             </>
           ),
           actions: [

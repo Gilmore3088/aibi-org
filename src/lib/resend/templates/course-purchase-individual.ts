@@ -19,7 +19,7 @@ export function coursePurchaseIndividualHtml(v: CoursePurchaseIndividualVars): s
       <tbody>
         ${metaRow('Program', v.courseName)}
         ${metaRow('Amount', v.amountPaid)}
-        ${metaRow('Access', 'Lifetime')}
+        ${metaRow('Access', 'Ongoing under current offer')}
       </tbody>
     </table>
     ${divider()}
@@ -45,7 +45,7 @@ ${v.courseUrl}
 
 Program: ${v.courseName}
 Amount: ${v.amountPaid}
-Access: Lifetime
+Access: Ongoing under current offer
 
 A Stripe receipt is on its way separately. Questions? Reply to this email or write to hello@aibankinginstitute.com.
 
