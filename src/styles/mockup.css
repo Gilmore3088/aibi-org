@@ -4615,7 +4615,7 @@ section.mk-std { padding: 56px 0; }
    ============================================================ */
 
 /* Course-hero metadata strip — sits between H1 and lede, surfaces
-   "12 modules · self-paced · ~7 hours · $295" so the buyer can size
+   "18 bite-sized modules · self-paced · ~3 hours · $295" so the buyer can size
    the offer without scrolling. */
 .mk-hero-meta {
   display: flex; flex-wrap: wrap; gap: 8px 12px;

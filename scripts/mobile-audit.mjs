@@ -60,13 +60,13 @@ const ROUTES = [
     commentary: {
       whatChanged: 'StickyMobileCta carries "Enroll · $295" → purchase page. The price is now visible at every scroll position on mobile, which solves the audit\'s "$295 not visible until late" complaint.',
       stillBroken: [
-        '12-module list still renders as 12 vertical accordion-like rows',
+        '18-module list can still read as stacked rows unless the mobile view groups modules by outcome and current next action',
         'CoursePreview interactive (5-module learning path + animated illustrations) is brilliant on desktop but renders as two stacked panels on mobile — the left rail of module buttons is buried under the right detail panel',
         'Bottom enrollment CtaBand restates the sticky — same action, two surfaces',
       ],
       nextFixes: [
         'CoursePreview on mobile: render only the active module detail by default with a "5 modules →" disclosure that opens the picker as a bottom sheet',
-        '12-module list: render as 2-col grid of mini cards on mobile (saves ~50% scroll)',
+        '18-module list: render as compact grouped mini cards on mobile so the added modules do not add scroll burden',
         'Drop the bottom CtaBand on mobile (sticky already covers it)',
       ],
     },

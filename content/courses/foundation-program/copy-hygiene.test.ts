@@ -4,7 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 const ROOTS = [
   'content/courses/foundation-program',
+  'content/assessments/v2',
   'src/app/courses',
+  'src/app/assessment/in-depth',
   'src/app/api/courses',
   'src/lib/lms',
   'src/lib/toolbox',

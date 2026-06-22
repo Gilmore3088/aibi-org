@@ -109,9 +109,9 @@ export function PersonalizationStripe({ dimensionBreakdown, role }: Props) {
             <span className="recs-rule" />
           </div>
           <p className="recs-deck">
-            The Foundation course is twelve modules. Based on your weakest
+            The Foundation course is eighteen bite-sized modules. Based on your weakest
             dimension, these three close the gap fastest. Buyers get
-            <em> lifetime access</em> to all twelve.
+            <em> lifetime access</em> to all eighteen.
           </p>
           <ol className="recs-list">
             {modules.map((mod, idx) => (
