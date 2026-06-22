@@ -68,9 +68,9 @@ Payments (Stripe):
 - [ ] `STRIPE_SECRET_KEY` — must be `sk_live_…` for real charges (verify via `/api/health/stripe` → `mode: "live"`)
 - [ ] `STRIPE_WEBHOOK_SECRET`
 - [ ] `STRIPE_FOUNDATION_PRICE_ID`
-- [ ] `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` — only if Foundation institution bundle self-serve or persistent institution discounting is intentionally enabled
 - [ ] `STRIPE_INDEPTH_PRICE_ID`
-- [ ] `STRIPE_TEAM_ASSESSMENT_PRICE_ID` — only if Team Assessment checkout is intentionally enabled
+- [ ] `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` — **deferred (Appendix A); not a launch var.** Only if the Foundation institution bundle / persistent institution discounting is intentionally enabled.
+- [ ] `STRIPE_TEAM_ASSESSMENT_PRICE_ID` — **deferred (Appendix A); not a launch var.** Only if Team Assessment checkout is intentionally enabled.
 
 Email (Resend) + nurture (MailerLite):
 - [ ] `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_FROM_NAME` (verify via `/api/health/email`)

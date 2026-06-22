@@ -256,12 +256,18 @@ and Vercel (price IDs are not secrets).
 7. In **test mode**, redeem `AIBI-COMP-01` against the In-Depth Checkout link; confirm `amount_total: 0`, that `checkout.session.completed` fires, and that access is granted.
 8. Run the live purchase + refund + idempotency smoke tests in **`docs/launch-checklist.md` §6** — that file is the single launch gate; do not duplicate its checklist here.
 
-> **Appendix A — When a real buyer appears (do NOT run at launch):**
-> - **Foundation institution bundle** ($199/seat, min 10): assisted-sales. Invoice the first deal via Stripe Invoicing; formalize the `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` price only once seat count + fulfillment are proven.
-> - **Team Assessment** (per-seat): assisted-sales until two production-like cohorts pass E2E QA (per the GTM plan). Create `STRIPE_TEAM_ASSESSMENT_PRICE_ID` then, not before.
-> - **AiBI-S Specialist** (`active:false`): create only when a cohort date is real → `STRIPE_AIBIS_PRICE_ID`.
-> - **AiBI-L Leader** (`active:false`): create only when a workshop date is real → `STRIPE_AIBIL_PRICE_ID` / `STRIPE_AIBIL_TEAM_PRICE_ID`.
-> - **Advisory** (Pilot/Program/Leadership): never a Stripe product; one-off Stripe Invoice per deal; formalize a SKU only after three closed deals at the same price.
+---
+
+## Appendix A — When a real buyer appears (do NOT run at launch)
+
+Provision none of these at launch. Each gets a Stripe price/product **only** when a real
+buyer or cohort makes the SKU concrete — until then, invoice manually (the Advisory model).
+
+- **Foundation institution bundle** ($199/seat, min 10): assisted-sales. Invoice the first deal via Stripe Invoicing; formalize the `STRIPE_FOUNDATION_INSTITUTION_PRICE_ID` price only once seat count + fulfillment are proven.
+- **Team Assessment** (per-seat): assisted-sales until two production-like cohorts pass E2E QA (per the GTM plan). Create `STRIPE_TEAM_ASSESSMENT_PRICE_ID` then, not before.
+- **AiBI-S Specialist** (`active:false`): create only when a cohort date is real → `STRIPE_AIBIS_PRICE_ID`. Full spec in Product 4 below.
+- **AiBI-L Leader** (`active:false`): create only when a workshop date is real → `STRIPE_AIBIL_PRICE_ID` / `STRIPE_AIBIL_TEAM_PRICE_ID`. Full spec in Product 5 below.
+- **Advisory** (Pilot/Program/Leadership): never a Stripe product; one-off Stripe Invoice per deal; formalize a SKU only after three closed deals at the same price.
 
 ---
 
