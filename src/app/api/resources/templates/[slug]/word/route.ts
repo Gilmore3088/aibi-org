@@ -37,15 +37,17 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
   <title>${escapeHtml(template.title)}</title>
   <style>
     body { font-family: Arial, sans-serif; color: #071a2f; line-height: 1.45; }
-    h1 { font-size: 24pt; margin: 0 0 10pt; }
-    h2 { font-size: 15pt; margin: 22pt 0 8pt; }
+    .eyebrow { color: #9a7a2f; font-size: 9pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 4pt; }
+    h1 { font-size: 24pt; margin: 0 0 10pt; padding-bottom: 10pt; border-bottom: 2pt solid #c8a24a; }
+    h2 { font-size: 15pt; margin: 22pt 0 8pt; color: #071a2f; }
     p { margin: 0 0 10pt; }
     li { margin: 0 0 6pt; }
     .meta { color: #54627a; font-size: 10pt; margin-bottom: 18pt; }
-    .footer { color: #54627a; font-size: 9pt; margin-top: 26pt; border-top: 1pt solid #d8c28c; padding-top: 10pt; }
+    .footer { color: #54627a; font-size: 9pt; margin-top: 26pt; border-top: 1pt solid #c8a24a; padding-top: 10pt; }
   </style>
 </head>
 <body>
+  <p class="eyebrow">The AI Banking Institute</p>
   <h1>${escapeHtml(template.title)}</h1>
   <p>${escapeHtml(template.dek)}</p>
   <p class="meta">For: ${escapeHtml(template.audience)} · ${template.readMinutes} min starter</p>
@@ -69,7 +71,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
           .join('')}</ul>`
       : ''
   }
-  <p class="footer">Starter template from The AI Banking Institute. Adapt before adoption.</p>
+  <p class="footer">Starter template from The AI Banking Institute · AIBankingInstitute.com · Adapt before adoption.</p>
 </body>
 </html>`;
 

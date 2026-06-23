@@ -1,16 +1,17 @@
 import type { Tier } from '@content/assessments/v2/scoring';
-import { PERSONAS, FINANCIAL_IMPLICATIONS } from '@content/assessments/v2/personalization';
+import type { PrintPack } from '../_content/print-pack';
 
 interface ExecSummaryProps {
+  readonly pack: PrintPack;
   readonly tier: Tier;
   readonly tierId: Tier['id'];
   readonly score: number;
   readonly maxScore: number;
 }
 
-export function ExecSummary({ tier, tierId, score, maxScore }: ExecSummaryProps) {
-  const persona = PERSONAS[tierId];
-  const impl = FINANCIAL_IMPLICATIONS[tierId];
+export function ExecSummary({ pack, tier, tierId, score, maxScore }: ExecSummaryProps) {
+  const persona = pack.PERSONAS[tierId];
+  const impl = pack.FINANCIAL_IMPLICATIONS[tierId];
 
   return (
     <article className="pdf-page" data-pdf-page="exec-summary">

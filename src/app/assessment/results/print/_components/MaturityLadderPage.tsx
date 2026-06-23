@@ -1,7 +1,8 @@
 import type { Tier } from '@content/assessments/v2/scoring';
-import { MATURITY_LADDER, TIER_TO_RUNG } from '@content/assessments/v2/personalization';
+import type { PrintPack } from '../_content/print-pack';
 
 interface MaturityLadderPageProps {
+  readonly pack: PrintPack;
   readonly tierId: Tier['id'];
 }
 
@@ -11,8 +12,8 @@ interface MaturityLadderPageProps {
  * so the reader has just seen what's weakest and now sees where the
  * arc leads.
  */
-export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
-  const currentRung = TIER_TO_RUNG[tierId];
+export function MaturityLadderPage({ pack, tierId }: MaturityLadderPageProps) {
+  const currentRung = pack.TIER_TO_RUNG[tierId];
 
   return (
     <article className="pdf-page" data-pdf-page="maturity-ladder">
@@ -40,7 +41,7 @@ export function MaturityLadderPage({ tierId }: MaturityLadderPageProps) {
           gap: '0.22in',
         }}
       >
-        {MATURITY_LADDER.map((rung, idx) => {
+        {pack.MATURITY_LADDER.map((rung, idx) => {
           const isCurrent = idx === currentRung;
           const isBelow = idx < currentRung;
           return (

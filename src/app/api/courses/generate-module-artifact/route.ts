@@ -18,6 +18,7 @@ import {
 import { getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
 import { FOUNDATION_FINAL_MODULE_NUMBER } from '@content/courses/foundation-program';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { brandMarkdownArtifact } from '@/lib/markdown/brandArtifact';
 
 const LAST_MODULE = FOUNDATION_FINAL_MODULE_NUMBER;
 
@@ -125,7 +126,7 @@ export async function GET(request: NextRequest) {
         : `[${fieldId} not provided]`;
     });
 
-  return new NextResponse(merged, {
+  return new NextResponse(brandMarkdownArtifact(merged), {
     status: 200,
     headers: {
       'Content-Type': 'text/markdown; charset=utf-8',

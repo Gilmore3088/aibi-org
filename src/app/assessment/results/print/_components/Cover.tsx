@@ -1,11 +1,10 @@
 import type { Tier } from '@content/assessments/v2/scoring';
 import type { DimensionScore } from '@content/assessments/v2/scoring';
-import { DIMENSION_LABELS } from '@content/assessments/v2/types';
-import type { Dimension } from '@content/assessments/v2/types';
 import { PDF_COVER_SUBHEAD } from '@content/assessments/v2/pdf-content';
-import { MATURITY_LADDER, TIER_TO_RUNG } from '@content/assessments/v2/personalization';
+import type { PrintPack } from '../_content/print-pack';
 
 interface CoverProps {
+  readonly pack: PrintPack;
   readonly tier: Tier;
   readonly tierId: Tier['id'];
   readonly score: number;
@@ -13,11 +12,11 @@ interface CoverProps {
   readonly firstName: string | null;
   readonly institutionName: string | null;
   readonly generatedAt: Date;
-  readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
+  readonly dimensionBreakdown: Record<string, DimensionScore>;
 }
 
 interface RankedRow {
-  readonly id: Dimension;
+  readonly id: string;
   readonly label: string;
   readonly score: number;
   readonly maxScore: number;
@@ -25,13 +24,14 @@ interface RankedRow {
 }
 
 function rankWeakest(
-  breakdown: Record<Dimension, DimensionScore>,
+  breakdown: Record<string, DimensionScore>,
+  labels: Readonly<Record<string, string>>,
 ): ReadonlyArray<RankedRow> {
-  return (Object.entries(breakdown) as [Dimension, DimensionScore][])
+  return Object.entries(breakdown)
     .filter(([, d]) => d.maxScore > 0)
     .map(([id, d]) => ({
       id,
-      label: DIMENSION_LABELS[id],
+      label: labels[id],
       score: d.score,
       maxScore: d.maxScore,
       pct: d.score / d.maxScore,
@@ -40,6 +40,7 @@ function rankWeakest(
 }
 
 export function Cover({
+  pack,
   tier,
   tierId,
   score,
@@ -55,9 +56,9 @@ export function Cover({
     year: 'numeric',
   });
   const subjectName = institutionName?.trim() || 'Your institution';
-  const rungIndex = TIER_TO_RUNG[tierId];
-  const rungLabel = MATURITY_LADDER[rungIndex]?.label ?? tier.label;
-  const top3Weakest = rankWeakest(dimensionBreakdown).slice(0, 3);
+  const rungIndex = pack.TIER_TO_RUNG[tierId];
+  const rungLabel = pack.MATURITY_LADDER[rungIndex]?.label ?? tier.label;
+  const top3Weakest = rankWeakest(dimensionBreakdown, pack.DIMENSION_LABELS).slice(0, 3);
 
   return (
     <article className="pdf-page" data-pdf-page="cover">

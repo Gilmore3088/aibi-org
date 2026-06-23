@@ -1,13 +1,13 @@
 import type { DimensionScore } from '@content/assessments/v2/scoring';
-import { DIMENSION_LABELS } from '@content/assessments/v2/types';
-import type { Dimension } from '@content/assessments/v2/types';
+import type { PrintPack } from '../_content/print-pack';
 
 interface StrengthsAndGapsProps {
-  readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
+  readonly pack: PrintPack;
+  readonly dimensionBreakdown: Record<string, DimensionScore>;
 }
 
 interface RankedDim {
-  readonly id: Dimension;
+  readonly id: string;
   readonly label: string;
   readonly score: number;
   readonly maxScore: number;
@@ -15,13 +15,14 @@ interface RankedDim {
 }
 
 function rankDimensions(
-  breakdown: Record<Dimension, DimensionScore>,
+  breakdown: Record<string, DimensionScore>,
+  labels: Readonly<Record<string, string>>,
 ): ReadonlyArray<RankedDim> {
-  return (Object.entries(breakdown) as [Dimension, DimensionScore][])
+  return Object.entries(breakdown)
     .filter(([, d]) => d.maxScore > 0)
     .map(([id, d]) => ({
       id,
-      label: DIMENSION_LABELS[id],
+      label: labels[id],
       score: d.score,
       maxScore: d.maxScore,
       pct: d.score / d.maxScore,
@@ -35,8 +36,8 @@ function bandColor(pct: number): string {
   return 'var(--ink)';
 }
 
-export function StrengthsAndGaps({ dimensionBreakdown }: StrengthsAndGapsProps) {
-  const dims = rankDimensions(dimensionBreakdown);
+export function StrengthsAndGaps({ pack, dimensionBreakdown }: StrengthsAndGapsProps) {
+  const dims = rankDimensions(dimensionBreakdown, pack.DIMENSION_LABELS);
 
   return (
     <article className="pdf-page" data-pdf-page="strengths-and-gaps">

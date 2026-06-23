@@ -1,12 +1,13 @@
 import type { Tier } from '@content/assessments/v2/scoring';
-import { FINANCIAL_IMPLICATIONS } from '@content/assessments/v2/personalization';
+import type { PrintPack } from '../_content/print-pack';
 
 interface LensedImplicationsProps {
+  readonly pack: PrintPack;
   readonly tierId: Tier['id'];
 }
 
-export function LensedImplications({ tierId }: LensedImplicationsProps) {
-  const impl = FINANCIAL_IMPLICATIONS[tierId];
+export function LensedImplications({ pack, tierId }: LensedImplicationsProps) {
+  const impl = pack.FINANCIAL_IMPLICATIONS[tierId];
 
   const lenses: ReadonlyArray<{ readonly label: string; readonly body: string }> = [
     { label: 'Operational efficiency', body: impl.operational },

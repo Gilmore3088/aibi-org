@@ -1,21 +1,6 @@
-import { notFound } from 'next/navigation';
-import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
-import type { DimensionScore } from '@content/assessments/v2/scoring';
-import type { Dimension } from '@content/assessments/v2/types';
-import { Cover } from '../_components/Cover';
-import { ExecSummary } from '../_components/ExecSummary';
-import { PracticePicturePage } from '../_components/PracticePicturePage';
-import { LensedImplications } from '../_components/LensedImplications';
-import { StrengthsAndGaps } from '../_components/StrengthsAndGaps';
-import { GapDetail } from '../_components/GapDetail';
-import { MaturityLadderPage } from '../_components/MaturityLadderPage';
-import { FirstMove } from '../_components/FirstMove';
-import { StarterPromptAndPlan } from '../_components/StarterPromptAndPlan';
-import { FutureVisionPage } from '../_components/FutureVisionPage';
-import { NextStepsTrio } from '../_components/NextStepsTrio';
-import { GovernanceCitations } from '../_components/GovernanceCitations';
-import { BackCover } from '../_components/BackCover';
+import { notFound, redirect } from 'next/navigation';
+import { loadAssessmentResponse } from '@/lib/assessment/load-response';
+import { PrintReport } from '../_components/PrintReport';
 import '../print.css';
 
 export const dynamic = 'force-dynamic';
@@ -25,98 +10,38 @@ interface PrintPageProps {
   readonly params: Promise<{ readonly id: string }>;
 }
 
-interface RankedDim {
-  readonly id: Dimension;
-  readonly score: number;
-  readonly maxScore: number;
-  readonly pct: number;
-}
-
-function rankWeakest(
-  breakdown: Record<Dimension, DimensionScore>,
-): ReadonlyArray<RankedDim> {
-  return (Object.entries(breakdown) as [Dimension, DimensionScore][])
-    .filter(([, d]) => d.maxScore > 0)
-    .map(([id, d]) => ({
-      id,
-      score: d.score,
-      maxScore: d.maxScore,
-      pct: d.score / d.maxScore,
-    }))
-    .sort((a, b) => a.pct - b.pct);
-}
-
 export default async function PrintPage(props: PrintPageProps) {
   const params = await props.params;
-  if (!isSupabaseConfigured()) notFound();
 
-  const client = createServiceRoleClient();
-  const { data: profile, error } = await client
-    .from('user_profiles')
-    .select(
-      'id, email, readiness_score, readiness_max_score, readiness_tier_id, readiness_dimension_breakdown, readiness_at',
-    )
-    .eq('id', params.id)
-    .single();
+  // Reuse the same loader the on-screen /results/[id] page uses: it does
+  // version detection (v2/v3/v4), the previous_id fallback for re-keyed
+  // profiles, and the fail-open column retry. This is what the print route
+  // was missing — it hard-assumed v2 scoring + v2 dimension keys and threw on
+  // the v3 data the free funnel has stored since 2026-05-27.
+  const response = await loadAssessmentResponse(params.id);
+  if (!response) notFound();
 
-  if (error || !profile) notFound();
-  if (!profile.readiness_tier_id) notFound();
-  if (!profile.readiness_dimension_breakdown) notFound();
-
-  // Free flow stores max=48 (12–48 range); In-Depth stores max=192
-  // (48–192 range). Pick the matching tier function.
-  const storedMax = (profile.readiness_max_score as number | null) ?? 48;
-  const tier =
-    storedMax > 48
-      ? getTierInDepth(profile.readiness_score ?? 0, storedMax)
-      : getTierV2(profile.readiness_score ?? 0);
-  const generatedAt = new Date();
-  const breakdown = profile.readiness_dimension_breakdown as Record<Dimension, DimensionScore>;
-  const ranked = rankWeakest(breakdown);
-  const topTwoCriticalGaps = ranked.slice(0, 2);
-  const focusGapId = ranked[0]?.id;
+  // The paid In-Depth (v4) renders on its own results surface (5-band
+  // maturity, v4 dimension keys) and is never emitted through this v2/v3 print
+  // route. A profile can flip free→paid (user_profiles is keyed by email and
+  // upsertReadinessResult overwrites), which orphans old free /print links.
+  // Mirror /results/[id]: send those to the in-depth surface instead of
+  // crashing on the v4 shape or 404-ing a converted user.
+  if (response.version === 'v4') {
+    redirect(`/assessment/in-depth/results/${params.id}`);
+  }
 
   return (
-    <main>
-      <Cover
-        tier={tier}
-        tierId={profile.readiness_tier_id}
-        score={profile.readiness_score ?? 0}
-        maxScore={profile.readiness_max_score ?? 48}
-        firstName={null}
-        institutionName={null}
-        generatedAt={generatedAt}
-        dimensionBreakdown={breakdown}
-      />
-      <ExecSummary
-        tier={tier}
-        tierId={profile.readiness_tier_id}
-        score={profile.readiness_score ?? 0}
-        maxScore={profile.readiness_max_score ?? 48}
-      />
-      <PracticePicturePage tierId={profile.readiness_tier_id} />
-      <LensedImplications tierId={profile.readiness_tier_id} />
-      <StrengthsAndGaps dimensionBreakdown={breakdown} />
-      {topTwoCriticalGaps.map((dim, idx) => (
-        <GapDetail
-          key={dim.id}
-          dimensionId={dim.id}
-          score={dim.score}
-          maxScore={dim.maxScore}
-          pageNumber={6 + idx}
-        />
-      ))}
-      <MaturityLadderPage tierId={profile.readiness_tier_id} />
-      {focusGapId ? (
-        <>
-          <FirstMove focusGapId={focusGapId} />
-          <StarterPromptAndPlan focusGapId={focusGapId} />
-        </>
-      ) : null}
-      <FutureVisionPage />
-      <NextStepsTrio tierId={profile.readiness_tier_id} />
-      <GovernanceCitations />
-      <BackCover />
-    </main>
+    <PrintReport
+      version={response.version === 'v3' ? 'v3' : 'v2'}
+      tier={response.tier}
+      tierId={response.tierId}
+      score={response.score}
+      maxScore={response.maxScore}
+      breakdown={response.dimensionBreakdown}
+      generatedAt={new Date()}
+      firstName={null}
+      institutionName={null}
+    />
   );
 }

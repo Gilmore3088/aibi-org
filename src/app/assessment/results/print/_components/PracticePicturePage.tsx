@@ -1,7 +1,8 @@
 import type { Tier } from '@content/assessments/v2/scoring';
-import { PRACTICE_PICTURE, SIGNATURE_INSIGHT } from '@content/assessments/v2/personalization';
+import type { PrintPack } from '../_content/print-pack';
 
 interface PracticePicturePageProps {
+  readonly pack: PrintPack;
   readonly tierId: Tier['id'];
 }
 
@@ -11,8 +12,8 @@ interface PracticePicturePageProps {
  * role — operations, compliance/risk, managers, executives — so a
  * banker scanning the page meets their own role first.
  */
-export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
-  const rows = PRACTICE_PICTURE[tierId];
+export function PracticePicturePage({ pack, tierId }: PracticePicturePageProps) {
+  const rows = pack.PRACTICE_PICTURE[tierId];
 
   return (
     <article className="pdf-page" data-pdf-page="practice-picture">
@@ -37,7 +38,7 @@ export function PracticePicturePage({ tierId }: PracticePicturePageProps) {
             maxWidth: '6in',
           }}
         >
-          {SIGNATURE_INSIGHT}
+          {pack.SIGNATURE_INSIGHT}
         </p>
       </figure>
 

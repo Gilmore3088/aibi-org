@@ -1,17 +1,16 @@
-import { GAP_CONTENT } from '@content/assessments/v2/personalization';
-import { DIMENSION_LABELS } from '@content/assessments/v2/types';
-import type { Dimension } from '@content/assessments/v2/types';
+import type { PrintPack } from '../_content/print-pack';
 
 interface GapDetailProps {
-  readonly dimensionId: Dimension;
+  readonly pack: PrintPack;
+  readonly dimensionId: string;
   readonly score: number;
   readonly maxScore: number;
   readonly pageNumber: number;
 }
 
-export function GapDetail({ dimensionId, score, maxScore, pageNumber }: GapDetailProps) {
-  const content = GAP_CONTENT[dimensionId];
-  const label = DIMENSION_LABELS[dimensionId];
+export function GapDetail({ pack, dimensionId, score, maxScore, pageNumber }: GapDetailProps) {
+  const content = pack.GAP_CONTENT[dimensionId];
+  const label = pack.DIMENSION_LABELS[dimensionId];
 
   return (
     <article className="pdf-page" data-pdf-page={`gap-${dimensionId}`}>

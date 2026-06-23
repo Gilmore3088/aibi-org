@@ -1,14 +1,13 @@
-import { RECOMMENDATIONS } from '@content/assessments/v2/personalization';
-import { DIMENSION_LABELS } from '@content/assessments/v2/types';
-import type { Dimension } from '@content/assessments/v2/types';
+import type { PrintPack } from '../_content/print-pack';
 
 interface FirstMoveProps {
-  readonly focusGapId: Dimension;
+  readonly pack: PrintPack;
+  readonly focusGapId: string;
 }
 
-export function FirstMove({ focusGapId }: FirstMoveProps) {
-  const rec = RECOMMENDATIONS[focusGapId];
-  const focusLabel = DIMENSION_LABELS[focusGapId];
+export function FirstMove({ pack, focusGapId }: FirstMoveProps) {
+  const rec = pack.RECOMMENDATIONS[focusGapId];
+  const focusLabel = pack.DIMENSION_LABELS[focusGapId];
 
   return (
     <article className="pdf-page" data-pdf-page="first-move">

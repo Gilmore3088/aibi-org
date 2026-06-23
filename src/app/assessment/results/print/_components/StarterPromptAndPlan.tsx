@@ -1,12 +1,12 @@
-import { STARTER_PROMPTS, SEVEN_DAY_PLAN } from '@content/assessments/v2/personalization';
-import type { Dimension } from '@content/assessments/v2/types';
+import type { PrintPack } from '../_content/print-pack';
 
 interface StarterPromptAndPlanProps {
-  readonly focusGapId: Dimension;
+  readonly pack: PrintPack;
+  readonly focusGapId: string;
 }
 
-export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) {
-  const prompt = STARTER_PROMPTS[focusGapId];
+export function StarterPromptAndPlan({ pack, focusGapId }: StarterPromptAndPlanProps) {
+  const prompt = pack.STARTER_PROMPTS[focusGapId];
 
   return (
     <>
@@ -61,7 +61,7 @@ export function StarterPromptAndPlan({ focusGapId }: StarterPromptAndPlanProps) 
             gap: '0.25in',
           }}
         >
-          {SEVEN_DAY_PLAN.map(({ day, action }) => (
+          {pack.SEVEN_DAY_PLAN.map(({ day, action }) => (
             <li key={day} style={{ position: 'relative' }}>
               <p
                 style={{
