@@ -165,7 +165,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.log(`[auth/callback] verifyOtp success userId=${user?.id ?? 'unknown'} cookies=${cookiesToWrite.length}`);
 
     if (type === 'recovery') {
-      return buildResponse(`${origin}/auth/reset-password`);
+      return buildResponse(`${origin}/auth/reset-password?next=${encodeURIComponent(safeNext)}`);
     }
     if (user?.email) {
       try {

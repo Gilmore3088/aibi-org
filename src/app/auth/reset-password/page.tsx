@@ -2,9 +2,9 @@
 
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { updatePassword } from '@/lib/supabase/auth';
+import { sanitizeNext, updatePassword } from '@/lib/supabase/auth';
 import { MIN_PASSWORD_LENGTH, PASSWORD_HINT, validatePassword } from '@/lib/auth/password-policy';
 
 const cardStyle: CSSProperties = {
@@ -117,6 +117,8 @@ function Field({
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = sanitizeNext(searchParams.get('next'));
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -139,15 +141,28 @@ export default function ResetPasswordPage() {
     }
 
     setPending(true);
-    const result = await updatePassword(password);
-    setPending(false);
+    try {
+      const result = await updatePassword(password);
 
-    if (result.error) {
-      setError(result.error);
-      return;
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+
+      const res = await fetch('/api/auth/check-device', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ redirectTo }),
+      });
+      const json = (await res.json().catch(() => ({}))) as { dest?: string };
+      router.push(typeof json.dest === 'string' ? json.dest : redirectTo);
+      router.refresh();
+    } catch {
+      router.push(redirectTo);
+      router.refresh();
+    } finally {
+      setPending(false);
     }
-    router.push('/dashboard');
-    router.refresh();
   }
 
   return (

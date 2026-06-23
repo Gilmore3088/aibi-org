@@ -25,9 +25,12 @@ const ARTIFACT_DOWNLOADS = [
   '/api/resources/artifact-fair-lending-ai-review-checklist/download',
   '/api/resources/prompt-strategy-cheat-sheet/download',
   '/api/resources/regulatory-cheatsheet/download',
+  '/api/resources/compliance-playbook/download',
   '/api/resources/retail-playbook/download',
   '/api/resources/lending-playbook/download',
   '/api/resources/marketing-playbook/download',
+  '/api/resources/bsa-aml-playbook/download',
+  '/api/resources/infosec-playbook/download',
   '/api/resources/in-depth-playbook/download',
   '/api/resources/sample-readiness-report/download',
 ] as const;
@@ -41,9 +44,12 @@ const BUNDLE_DOWNLOADS = [
 
 // Playbook PDF routes (served from the same download API)
 const PLAYBOOK_PDFS = [
+  '/api/resources/compliance-playbook/download',
   '/api/resources/retail-playbook/download',
   '/api/resources/lending-playbook/download',
   '/api/resources/marketing-playbook/download',
+  '/api/resources/bsa-aml-playbook/download',
+  '/api/resources/infosec-playbook/download',
 ] as const;
 
 // ── Static template pages (in-app HTML, not Supabase Storage) ─────────────
@@ -138,6 +144,8 @@ test.describe('Resource delivery — playbook HTML pages', () => {
     '/playbooks/compliance',
     '/playbooks/marketing',
     '/playbooks/lending',
+    '/playbooks/bsa-aml',
+    '/playbooks/infosec',
   ];
 
   for (const path of PLAYBOOK_PAGES) {

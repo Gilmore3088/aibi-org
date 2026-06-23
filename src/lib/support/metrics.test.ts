@@ -16,6 +16,7 @@ describe('support metrics', () => {
       cases: [
         {
           id: 'case-1',
+          buyer_email: 'buyer@example.com',
           category: 'refund_request',
           status: 'new',
           priority: 'high',
@@ -25,6 +26,7 @@ describe('support metrics', () => {
         },
         {
           id: 'case-2',
+          buyer_email: 'buyer@example.com',
           category: 'email_failure',
           status: 'resolved',
           priority: 'normal',
@@ -34,13 +36,15 @@ describe('support metrics', () => {
         },
       ],
       events: [
-        { event_type: 'access_rescue_sent', created_at: '2026-06-20T15:00:00.000Z' },
-        { event_type: 'refund_approved', created_at: '2026-06-21T15:00:00.000Z' },
+        { case_id: 'case-1', event_type: 'access_rescue_sent', created_at: '2026-06-20T15:00:00.000Z' },
+        { case_id: 'case-1', event_type: 'refund_approved', created_at: '2026-06-21T15:00:00.000Z' },
       ],
       paidEnrollments: 8,
+      paidEnrollmentsInRange: 8,
       activeEntitlements: 7,
       certificatesIssued: 2,
       teamCohortsCreated: 2,
+      activeTeamCohorts: 2,
     });
 
     expect(metrics.queue.openCases).toBe(1);

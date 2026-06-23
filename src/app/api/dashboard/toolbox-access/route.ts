@@ -3,5 +3,8 @@ import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 
 export async function GET(): Promise<NextResponse> {
   const access = await getPaidToolboxAccess();
-  return NextResponse.json({ entitled: Boolean(access) });
+  return NextResponse.json({
+    entitled: Boolean(access),
+    tier: access?.tier ?? null,
+  });
 }

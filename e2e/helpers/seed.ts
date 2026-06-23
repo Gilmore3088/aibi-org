@@ -131,21 +131,76 @@ export async function seedUnconfirmedUser(): Promise<SeededUser> {
   return { id: data.user.id, email, password };
 }
 
+async function ensureEnrollmentEntitlement({
+  supabase,
+  userId,
+  product,
+  enrollmentId,
+  tier,
+}: {
+  readonly supabase: SupabaseClient;
+  readonly userId: string;
+  readonly product: string;
+  readonly enrollmentId: string;
+  readonly tier: 'starter' | 'full';
+}): Promise<void> {
+  const { data: existing, error: existingError } = await supabase
+    .from('entitlements')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('product', product)
+    .eq('source', 'course_enrollment')
+    .eq('source_ref', enrollmentId)
+    .maybeSingle();
+
+  if (existingError) {
+    throw new Error(`ensureEnrollmentEntitlement lookup failed: ${existingError.message}`);
+  }
+
+  if (existing) return;
+
+  const { error } = await supabase.from('entitlements').insert({
+    user_id: userId,
+    product,
+    source: 'course_enrollment',
+    source_ref: enrollmentId,
+    tier,
+    active: true,
+    granted_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    throw new Error(`ensureEnrollmentEntitlement insert failed: ${error.message}`);
+  }
+}
+
 /**
  * Insert a foundation course enrollment for a seeded user. Use this
  * after seedConfirmedUser when a test needs an enrolled learner.
  */
 export async function grantFoundationEnrollment(userId: string, email: string): Promise<void> {
   const supabase = getServiceRoleClient();
-  const { error } = await supabase.from('course_enrollments').insert({
-    email,
-    product: 'foundation',
-    user_id: userId,
-    stripe_session_id: `e2e_seed_${randomBytes(6).toString('hex')}`,
-  });
-  if (error) {
-    throw new Error(`grantFoundationEnrollment failed: ${error.message}`);
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .insert({
+      email,
+      product: 'foundation',
+      user_id: userId,
+      stripe_session_id: `e2e_seed_${randomBytes(6).toString('hex')}`,
+    })
+    .select('id')
+    .single();
+  if (error || !data) {
+    throw new Error(`grantFoundationEnrollment failed: ${error?.message ?? 'no enrollment returned'}`);
   }
+
+  await ensureEnrollmentEntitlement({
+    supabase,
+    userId,
+    product: 'foundation',
+    enrollmentId: (data as { id: string }).id,
+    tier: 'full',
+  });
 }
 
 /**
@@ -172,6 +227,14 @@ export interface FoundationEnrollmentState {
   readonly id: string;
   readonly current_module: number;
   readonly completed_modules: readonly number[];
+}
+
+export type SeedReadinessKind = 'free' | 'in-depth';
+
+export interface SeedArtifactState {
+  readonly artifactId: string;
+  readonly status: 'available' | 'in-progress' | 'completed' | 'locked';
+  readonly sourceActivityId?: string | null;
 }
 
 export async function getFoundationEnrollment(
@@ -210,6 +273,159 @@ export async function setFoundationProgress({
     .eq('product', 'foundation');
   if (error) {
     throw new Error(`setFoundationProgress failed: ${error.message}`);
+  }
+}
+
+/**
+ * Seed a user_profiles readiness row for dashboard persona tests. The
+ * dashboard detects In-Depth completion by 48 answers or maxScore=192, so this
+ * helper intentionally uses those persisted facts rather than any test-only
+ * flags.
+ */
+export async function seedReadinessProfile({
+  userId,
+  email,
+  kind,
+  role = 'other',
+}: {
+  readonly userId: string;
+  readonly email: string;
+  readonly kind: SeedReadinessKind;
+  readonly role?: string;
+}): Promise<string> {
+  const supabase = getServiceRoleClient();
+  const isInDepth = kind === 'in-depth';
+  const answers = Array.from({ length: isInDepth ? 48 : 12 }, (_, index) =>
+    isInDepth ? ((index % 4) + 1) : ((index % 4) + 1),
+  );
+  const score = isInDepth ? 144 : 34;
+  const maxScore = isInDepth ? 192 : 48;
+  const tierId = isInDepth ? 'building-momentum' : 'ready-to-scale';
+  const tierLabel = isInDepth ? 'Building Momentum' : 'Ready to Scale';
+
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .upsert(
+      {
+        email,
+        user_id: userId,
+        readiness_score: score,
+        readiness_max_score: maxScore,
+        readiness_tier_id: tierId,
+        readiness_tier_label: tierLabel,
+        readiness_answers: answers,
+        readiness_at: new Date().toISOString(),
+        readiness_dimension_breakdown: {
+          governance: { score: Math.round(score * 0.22), maxScore: Math.round(maxScore * 0.25), label: 'Governance' },
+          data: { score: Math.round(score * 0.2), maxScore: Math.round(maxScore * 0.25), label: 'Data handling' },
+          review: { score: Math.round(score * 0.25), maxScore: Math.round(maxScore * 0.25), label: 'Human review' },
+          workflow: { score: Math.round(score * 0.23), maxScore: Math.round(maxScore * 0.25), label: 'Workflow discipline' },
+        },
+        role,
+      },
+      { onConflict: 'email' },
+    )
+    .select('id')
+    .single();
+
+  if (error || !data) {
+    throw new Error(`seedReadinessProfile failed: ${error?.message ?? 'no profile returned'}`);
+  }
+  return (data as { id: string }).id;
+}
+
+/**
+ * Grant paid In-Depth access. We insert the enrollment row and then ensure the
+ * entitlement exists directly, so tests do not depend on the database trigger
+ * being present in every configured environment.
+ */
+export async function grantInDepthAccess(userId: string, email: string): Promise<string> {
+  const supabase = getServiceRoleClient();
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .insert({
+      email,
+      product: 'in-depth-assessment',
+      user_id: userId,
+      stripe_session_id: `e2e_indepth_${randomBytes(6).toString('hex')}`,
+    })
+    .select('id')
+    .single();
+
+  if (error || !data) {
+    throw new Error(`grantInDepthAccess failed: ${error?.message ?? 'no enrollment returned'}`);
+  }
+
+  const enrollmentId = (data as { id: string }).id;
+  await ensureEnrollmentEntitlement({
+    supabase,
+    userId,
+    product: 'in-depth-assessment',
+    enrollmentId,
+    tier: 'starter',
+  });
+
+  return enrollmentId;
+}
+
+export async function seedPracticeCompletions(
+  userId: string,
+  repIds: readonly string[],
+): Promise<void> {
+  if (repIds.length === 0) return;
+  const supabase = getServiceRoleClient();
+  const { error } = await supabase.from('practice_rep_completions').upsert(
+    repIds.map((repId) => ({
+      user_id: userId,
+      course_id: 'foundation',
+      rep_id: repId,
+      response: { seeded_by: 'e2e' },
+    })),
+    { onConflict: 'user_id,course_id,rep_id' },
+  );
+  if (error) {
+    throw new Error(`seedPracticeCompletions failed: ${error.message}`);
+  }
+}
+
+export async function seedSavedPrompts(
+  userId: string,
+  promptIds: readonly string[],
+): Promise<void> {
+  if (promptIds.length === 0) return;
+  const supabase = getServiceRoleClient();
+  const { error } = await supabase.from('saved_prompts').upsert(
+    promptIds.map((promptId) => ({
+      user_id: userId,
+      course_id: 'foundation',
+      prompt_id: promptId,
+    })),
+    { onConflict: 'user_id,course_id,prompt_id' },
+  );
+  if (error) {
+    throw new Error(`seedSavedPrompts failed: ${error.message}`);
+  }
+}
+
+export async function seedUserArtifacts(
+  userId: string,
+  artifacts: readonly SeedArtifactState[],
+): Promise<void> {
+  if (artifacts.length === 0) return;
+  const supabase = getServiceRoleClient();
+  const { error } = await supabase.from('user_artifacts').upsert(
+    artifacts.map((artifact) => ({
+      user_id: userId,
+      course_id: 'foundation',
+      artifact_id: artifact.artifactId,
+      status: artifact.status,
+      source_activity_id: artifact.sourceActivityId ?? null,
+      metadata: { seeded_by: 'e2e' },
+    })),
+    { onConflict: 'user_id,course_id,artifact_id' },
+  );
+  if (error) {
+    throw new Error(`seedUserArtifacts failed: ${error.message}`);
   }
 }
 

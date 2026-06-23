@@ -20,7 +20,7 @@ export const certifications: readonly Certification[] = [
     name: 'AiBI-Foundation',
     fullName: 'AiBI-Foundation',
     credentialDisplay: 'AiBI-Foundation · The AI Banking Institute',
-    price: '$99',
+    price: '$295',
     audience: 'All staff',
     learn: [
       'What Gen AI is and why it fails in banking contexts',

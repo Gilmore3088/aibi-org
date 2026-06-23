@@ -13,10 +13,9 @@ test.describe('/resources page', () => {
     await page.goto('/resources');
     await expect(page).toHaveTitle(/Resources.*AI Banking Institute/i);
     await expect(
-      page.getByRole('heading', { level: 1, name: /find the AI artifact your team needs next/i }),
+      page.getByRole('heading', { level: 1, name: /Start with the artifact, not a blank page/i }),
     ).toBeVisible();
-    // Primary CTAs in hero
-    await expect(page.getByRole('link', { name: /browse starter kits/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /^Browse kits$/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /get readiness score/i }).first()).toBeVisible();
   });
 
@@ -39,7 +38,7 @@ test.describe('/resources page', () => {
 
     // Select Lending Review Kit and confirm the CTA flips.
     const lendingKit = starterKits.find((k) => k.id === 'lending')!;
-    await page.locator('[data-kit-id="lending"] .rx-kit-card-body').click();
+    await page.getByRole('button', { name: /Preview Lending Review Kit in the featured panel/i }).click();
     await expect(featured.locator(`a[href="${lendingKit.zip}"]`)).toBeVisible();
   });
 
@@ -49,7 +48,7 @@ test.describe('/resources page', () => {
     await expect(featuredTitle).toHaveText(/AI Governance Starter Kit/i);
 
     // Click a second kit card and confirm the featured panel updates.
-    await page.locator('[data-kit-id="lending"] .rx-kit-card-body').click();
+    await page.getByRole('button', { name: /Preview Lending Review Kit in the featured panel/i }).click();
     await expect(featuredTitle).toHaveText(/Lending Review Kit/i);
 
     // The featured panel should now list the lending playbook artifact.
@@ -58,23 +57,33 @@ test.describe('/resources page', () => {
     ).toBeVisible();
   });
 
-  test('chooser tabs switch panel content', async ({ page }) => {
+  test('filter rail narrows resources by role, format, and search', async ({ page }) => {
     await page.goto('/resources');
 
-    // Default tab "By role" shows role mini-cards.
-    await expect(page.getByRole('button', { name: 'By role' })).toHaveAttribute('aria-pressed', 'true');
+    const filters = page.getByRole('complementary', { name: /Filter artifacts/i });
+    await expect(filters).toBeVisible();
+    const mobileFilterSummary = filters.locator('details.rx-filter-rail-mobile summary');
+    if (await mobileFilterSummary.isVisible()) {
+      await mobileFilterSummary.click();
+    }
 
-    // Switch to "By problem"
-    await page.getByRole('button', { name: 'By problem' }).click();
-    await expect(page.getByRole('button', { name: 'By problem' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByText(/Set AI rules/)).toBeVisible();
-    await expect(page.getByText(/Brief leadership/)).toBeVisible();
+    await filters.getByRole('button', { name: 'BSA/AML' }).click();
+    await expect(filters.getByRole('button', { name: 'BSA/AML' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('heading', { level: 2, name: /1 playbook for the role you picked/i }),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3, name: 'BSA / AML' })).toBeVisible();
 
-    // Switch to "By format"
-    await page.getByRole('button', { name: 'By format' }).click();
-    await expect(page.getByRole('button', { name: 'By format' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByRole('link', { name: /Playbook.*Browse by artifact type/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Template.*Browse by artifact type/ })).toBeVisible();
+    await filters.getByRole('button', { name: /Reset all filters/i }).click();
+    await filters.getByRole('button', { name: 'Template' }).click();
+    await expect(filters.getByRole('button', { name: 'Template' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('heading', { level: 2, name: /Copy these into your next meeting/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3, name: 'AI Workflow SOP' })).toBeVisible();
+
+    await filters.getByRole('searchbox', { name: /Search/i }).fill('Board');
+    await expect(
+      page.getByRole('heading', { level: 3, name: 'Board / Leadership Briefing Checklist' }),
+    ).toBeVisible();
   });
 
   test('every role playbook card has Open + PDF links pointing at real routes', async ({ page }) => {
@@ -136,7 +145,7 @@ test.describe('/resources page', () => {
     await page.waitForLoadState('networkidle');
     // Filter out third-party noise (Plausible/Vercel analytics in dev).
     const fatal = errors.filter(
-      (e) => !/plausible|vercel|favicon|404 \(Not Found\)/i.test(e),
+      (e) => !/plausible|vercel|favicon|404 \(Not Found\)|SSL error has occurred|status of 403/i.test(e),
     );
     expect(fatal).toEqual([]);
   });

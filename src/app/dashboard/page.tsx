@@ -32,11 +32,13 @@ interface AssessmentsState {
 }
 
 interface LearnerDashboardState {
+  readonly email: string | null;
   readonly enrollment: {
     readonly id: string;
     readonly completedModules: readonly number[];
     readonly currentModule: number;
     readonly enrolledAt: string;
+    readonly onboardingAnswers?: unknown;
   } | null;
   readonly practice: {
     readonly completedRepIds: readonly string[];
@@ -46,6 +48,31 @@ interface LearnerDashboardState {
     readonly savedPromptIds: readonly string[];
     readonly savedCount: number;
   };
+  readonly artifacts: readonly DashboardArtifact[];
+}
+
+interface DashboardArtifact {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly moduleNumber?: number;
+  readonly status: 'available' | 'in-progress' | 'completed' | 'locked';
+  readonly updatedAt: string | null;
+}
+
+interface ToolboxAccessState {
+  readonly entitled: boolean;
+  readonly tier: 'starter' | 'full' | null;
+}
+
+type LoadArea = 'learner' | 'assessments' | 'toolbox';
+
+interface DashboardResource {
+  readonly href: string;
+  readonly tag: string;
+  readonly title: React.ReactNode;
+  readonly meta: string;
+  readonly icon: 'brief' | 'failures' | 'governance' | 'library';
 }
 
 // Greeting name resolution.
@@ -73,25 +100,41 @@ export default function DashboardPage() {
   const [dashboard, setDashboard] = useState<LearnerDashboardState | null>(null);
   const [localCompletedRepIds, setLocalCompletedRepIds] = useState<readonly string[]>([]);
   const [assessments, setAssessments] = useState<AssessmentsState | null>(null);
+  const [toolboxAccess, setToolboxAccess] = useState<ToolboxAccessState | null>(null);
+  const [loadWarnings, setLoadWarnings] = useState<readonly LoadArea[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserDataWithSupabaseFallback()
       .then(async (loadedUser) => {
         setUser(loadedUser);
+        const warnings: LoadArea[] = [];
         try {
-          const [learnerRes, assessmentsRes] = await Promise.all([
+          const [learnerRes, assessmentsRes, toolboxRes] = await Promise.all([
             fetch('/api/dashboard/learner', { cache: 'no-store' }),
             fetch('/api/dashboard/assessments', { cache: 'no-store' }),
+            fetch('/api/dashboard/toolbox-access', { cache: 'no-store' }),
           ]);
           if (learnerRes.ok) {
             setDashboard((await learnerRes.json()) as LearnerDashboardState);
+          } else {
+            warnings.push('learner');
           }
           if (assessmentsRes.ok) {
             setAssessments((await assessmentsRes.json()) as AssessmentsState);
+          } else {
+            warnings.push('assessments');
+          }
+          if (toolboxRes.ok) {
+            setToolboxAccess((await toolboxRes.json()) as ToolboxAccessState);
+          } else {
+            warnings.push('toolbox');
           }
         } catch {
           // Local assessment-only users still get a useful dashboard fallback.
+          warnings.push('learner', 'assessments', 'toolbox');
+        } finally {
+          setLoadWarnings(Array.from(new Set(warnings)));
         }
       })
       .finally(() => {
@@ -111,10 +154,11 @@ export default function DashboardPage() {
     });
   }, []);
 
-  if (loading) return null;
+  if (loading) return <DashboardLoading />;
 
-  const name = resolveGreetingName(assessments?.displayName ?? '', user?.email);
-  const snapshot = assessments?.snapshot ?? null;
+  const accountEmail = dashboard?.email ?? user?.email ?? null;
+  const name = resolveGreetingName(assessments?.displayName ?? '', accountEmail ?? undefined);
+  const snapshot = assessments?.snapshot ?? localReadinessToSnapshot(user?.readiness);
   const completedRepIds = Array.from(new Set([
     ...(dashboard?.practice.completedRepIds ?? []),
     ...localCompletedRepIds,
@@ -126,8 +170,8 @@ export default function DashboardPage() {
   // Activation ladder — derived from the user's actual state. Seven rungs,
   // each tied to real evidence in the data. The "now" badge is computed
   // separately so only the next un-done step lights up.
-  const stepAccount = Boolean(user?.email);
-  const stepAssessment = Boolean(user?.readiness);
+  const stepAccount = Boolean(accountEmail);
+  const stepAssessment = Boolean(snapshot);
   const stepRep = completedRepIds.length > 0;
   const stepInDepth = Boolean(assessments?.inDepth?.hasCompleted);
   const stepEnrolled = Boolean(dashboard?.enrollment);
@@ -136,6 +180,30 @@ export default function DashboardPage() {
   const totalModules = modules.length;
   const completedModuleCount = dashboard?.enrollment?.completedModules.length ?? 0;
   const stepCertificate = stepEnrolled && completedModuleCount >= totalModules;
+  const savedPromptCount = dashboard?.prompts.savedCount ?? 0;
+  const artifacts = dashboard?.artifacts ?? [];
+  const completedArtifactCount = artifacts.filter((artifact) => artifact.status === 'completed').length;
+  const nextArtifact =
+    artifacts.find((artifact) => artifact.status === 'in-progress') ??
+    artifacts.find((artifact) => artifact.status === 'available') ??
+    null;
+  const currentModuleNumber = dashboard?.enrollment?.currentModule ?? 1;
+  const toolboxEntitled = Boolean(toolboxAccess?.entitled);
+  const toolboxLabel = toolboxAccess?.tier === 'starter'
+    ? 'In-Depth access'
+    : toolboxAccess?.tier === 'full'
+      ? 'Foundation access'
+      : 'Paid access';
+  const workPrimaryHref = stepEnrolled
+    ? `/courses/foundation/program/${currentModuleNumber}`
+    : toolboxEntitled
+      ? '/dashboard/toolbox'
+      : '/resources';
+  const workPrimaryLabel = stepEnrolled
+    ? `Continue Module ${currentModuleNumber}`
+    : toolboxEntitled
+      ? 'Open Toolbox'
+      : 'Browse resources';
 
   const stepsDone = [
     stepAccount,
@@ -194,6 +262,7 @@ export default function DashboardPage() {
 
   const tabs: ReadonlyArray<{ label: string; href: string; active?: boolean; lock?: string }> = [
     { label: 'Dashboard', href: '/dashboard', active: true },
+    { label: 'Assessments', href: '/dashboard/assessments' },
     { label: 'The Brief', href: '/resources' },
     {
       label: 'Curriculum',
@@ -203,7 +272,7 @@ export default function DashboardPage() {
     {
       label: 'Toolbox',
       href: '/dashboard/toolbox',
-      lock: stepEnrolled ? undefined : '— with Foundation',
+      lock: toolboxEntitled ? `— ${toolboxLabel}` : '— with paid access',
     },
   ];
 
@@ -215,21 +284,26 @@ export default function DashboardPage() {
       <main className="mockup-dash">
         {/* TABS */}
         <div className="tabs">
-          <div className="tabs-inner" role="tablist" aria-label="My account">
+          <nav className="tabs-inner" aria-label="My account">
             {tabs.map((t) => (
               <Link
                 key={t.label}
                 href={t.href}
-                role="tab"
-                aria-selected={t.active ? true : false}
+                aria-current={t.active ? 'page' : undefined}
                 className={`tab${t.active ? ' active' : ''}`}
               >
                 {t.label}
                 {t.lock && <span className="lock"> {t.lock}</span>}
               </Link>
             ))}
-          </div>
+          </nav>
         </div>
+
+        {loadWarnings.length > 0 && (
+          <div className="dash-alert" role="status">
+            Some dashboard details could not be refreshed. The page is showing the latest available state.
+          </div>
+        )}
 
         {/* WELCOME */}
         <section className="welcome">
@@ -354,6 +428,60 @@ export default function DashboardPage() {
                   />
                 </div>
               </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* YOUR WORK */}
+        <section className="sec work-sec">
+          <div className="container">
+            <header className="sec-head compact">
+              <h2>
+                Your <strong>work.</strong>
+              </h2>
+              <Link href={workPrimaryHref} className="more">
+                {workPrimaryLabel} →
+              </Link>
+            </header>
+            <div className="work-grid">
+              <WorkCard
+                kicker="Course"
+                value={stepEnrolled ? `Module ${currentModuleNumber}` : 'Not enrolled'}
+                label={
+                  stepEnrolled
+                    ? `${completedModuleCount} of ${totalModules} modules complete`
+                    : 'Foundation preview is available before enrollment'
+                }
+                href={stepEnrolled ? `/courses/foundation/program/${currentModuleNumber}` : '/courses/foundation/program'}
+                action={stepEnrolled ? 'Continue course' : 'Preview course'}
+              />
+              <WorkCard
+                kicker="Practice"
+                value={`${completedRepIds.length}`}
+                label={`${completedRepIds.length === 1 ? 'rep' : 'reps'} completed · next: ${currentRep.title}`}
+                href={`/practice/${currentRep.id}`}
+                action="Start next rep"
+              />
+              <WorkCard
+                kicker="Toolbox"
+                value={`${savedPromptCount}`}
+                label={`${savedPromptCount === 1 ? 'saved prompt' : 'saved prompts'} · ${toolboxEntitled ? toolboxLabel : 'unlock with paid access'}`}
+                href={toolboxEntitled ? '/dashboard/toolbox' : '/assessment/in-depth'}
+                action={toolboxEntitled ? 'Open Toolbox' : 'Unlock Toolbox'}
+              />
+              <WorkCard
+                kicker="Artifacts"
+                value={artifacts.length > 0 ? `${completedArtifactCount}/${artifacts.length}` : '0'}
+                label={
+                  nextArtifact
+                    ? `Next: ${nextArtifact.title}`
+                    : stepEnrolled
+                      ? 'All tracked artifacts are complete'
+                      : 'Artifacts appear after course enrollment'
+                }
+                href={nextArtifact ? `/courses/foundation/program/artifacts/${nextArtifact.id}` : '/resources'}
+                action={nextArtifact ? 'Open artifact' : 'Browse resources'}
+              />
             </div>
           </div>
         </section>
@@ -675,73 +803,14 @@ export default function DashboardPage() {
                 Free <strong>resources.</strong>
               </h2>
               <Link href="/resources" className="more">
-                All research →
+                All resources →
               </Link>
             </header>
 
             <div className="res-grid">
-              <ResourceCard
-                href="/resources/the-skill-not-the-prompt"
-                tag="Briefing"
-                title={<>The <strong>skill</strong>, not the prompt.</>}
-                meta="Briefing · 8 min read"
-                svg={
-                  <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="10" y="6" width="28" height="36" fill="var(--gold-a10)" />
-                    <line x1="14" y1="14" x2="34" y2="14" />
-                    <line x1="14" y1="20" x2="28" y2="20" opacity="0.6" />
-                    <line x1="14" y1="26" x2="32" y2="26" opacity="0.6" />
-                  </svg>
-                }
-              />
-              <ResourceCard
-                href="/resources/six-ways-ai-fails-in-banking"
-                tag="Briefing"
-                title={<>Six ways AI <strong>fails</strong> in banking.</>}
-                meta="Briefing · 10 min read"
-                svg={
-                  <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="6" y="10" width="36" height="28" fill="var(--gold-a10)" />
-                    <line x1="6" y1="18" x2="42" y2="18" />
-                    <line x1="18" y1="10" x2="18" y2="38" />
-                    <line x1="30" y1="10" x2="30" y2="38" />
-                    <rect x="9" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
-                    <rect x="21" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
-                    <rect x="33" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
-                  </svg>
-                }
-              />
-              <ResourceCard
-                href="/resources/ai-governance-without-the-jargon"
-                tag="Briefing"
-                title={<>AI governance, <strong>without</strong> the jargon.</>}
-                meta="Briefing · 12 min read"
-                svg={
-                  <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
-                    <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="var(--gold-a10)" />
-                    <line x1="14" y1="18" x2="34" y2="18" opacity="0.6" />
-                    <line x1="14" y1="24" x2="28" y2="24" opacity="0.6" />
-                    <circle cx="14" cy="14" r="1.5" fill="var(--gold-deep)" stroke="none" />
-                    <circle cx="20" cy="14" r="1.5" fill="var(--gold-deep)" stroke="none" />
-                  </svg>
-                }
-              />
-              <ResourceCard
-                href="/resources"
-                tag="All research"
-                title={<>The AI Banking <strong>Brief.</strong></>}
-                meta="Six briefings + more"
-                svg={
-                  <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
-                    <rect x="8" y="6" width="32" height="36" fill="var(--gold-a10)" />
-                    <line x1="14" y1="14" x2="34" y2="14" strokeWidth="2" />
-                    <line x1="14" y1="20" x2="34" y2="20" opacity="0.6" />
-                    <line x1="14" y1="24" x2="34" y2="24" opacity="0.6" />
-                    <line x1="14" y1="28" x2="28" y2="28" opacity="0.6" />
-                    <rect x="14" y="33" width="20" height="5" fill="var(--gold-deep)" stroke="none" />
-                  </svg>
-                }
-              />
+              {DASHBOARD_RESOURCES.map((resource) => (
+                <ResourceCard key={resource.href} resource={resource} />
+              ))}
             </div>
           </div>
         </section>
@@ -778,6 +847,39 @@ export default function DashboardPage() {
       </main>
     </div>
   );
+}
+
+function DashboardLoading() {
+  return (
+    <div className="mockup-scope">
+      <SiteHeader activePath="/dashboard" cta={{ label: 'Start a Lesson', href: '/courses/foundation/program' }} />
+      <style jsx global>{dashboardStyles}</style>
+      <main className="mockup-dash">
+        <section className="welcome">
+          <div className="container">
+            <div className="loading-card" role="status" aria-label="Loading dashboard">
+              <span className="eyebrow">Dashboard</span>
+              <div className="loading-line loading-title" />
+              <div className="loading-line loading-copy" />
+              <div className="loading-line loading-copy short" />
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+function localReadinessToSnapshot(readiness: UserData['readiness']): ReadinessSnapshot | null {
+  if (!readiness) return null;
+  return {
+    score: readiness.score,
+    maxScore: readiness.maxScore ?? (readiness.answers.length === 48 ? 192 : 48),
+    tierId: readiness.tierId,
+    tierLabel: readiness.tierLabel,
+    isInDepth: readiness.answers.length === 48 || readiness.maxScore === 192,
+    takenAt: readiness.completedAt,
+  };
 }
 
 function SnapshotPanel({
@@ -824,6 +926,31 @@ function SnapshotPanel({
         </p>
       )}
     </div>
+  );
+}
+
+function WorkCard({
+  kicker,
+  value,
+  label,
+  href,
+  action,
+}: {
+  readonly kicker: string;
+  readonly value: string;
+  readonly label: string;
+  readonly href: string;
+  readonly action: string;
+}) {
+  return (
+    <Link href={href} className="work-card">
+      <span className="work-kicker">{kicker}</span>
+      <span className="work-value">{value}</span>
+      <span className="work-label">{label}</span>
+      <span className="work-action">
+        {action} <span className="arrow">→</span>
+      </span>
+    </Link>
   );
 }
 
@@ -879,28 +1006,69 @@ function FeatureRow({
 }
 
 function ResourceCard({
-  href,
-  tag,
-  title,
-  meta,
-  svg,
+  resource,
 }: {
-  readonly href: string;
-  readonly tag: string;
-  readonly title: React.ReactNode;
-  readonly meta: string;
-  readonly svg: React.ReactNode;
+  readonly resource: DashboardResource;
 }) {
   return (
-    <Link className="res-card" href={href}>
-      <div className="ricon" aria-hidden="true">{svg}</div>
-      <span className="tag">{tag}</span>
-      <h4>{title}</h4>
+    <Link className="res-card" href={resource.href}>
+      <div className="ricon" aria-hidden="true">
+        <ResourceIcon icon={resource.icon} />
+      </div>
+      <span className="tag">{resource.tag}</span>
+      <h4>{resource.title}</h4>
       <div className="fmeta">
-        <span>{meta}</span>
+        <span>{resource.meta}</span>
         <span className="arrow">→</span>
       </div>
     </Link>
+  );
+}
+
+function ResourceIcon({ icon }: { readonly icon: DashboardResource['icon'] }) {
+  if (icon === 'failures') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
+        <rect x="6" y="10" width="36" height="28" fill="var(--gold-a10)" />
+        <line x1="6" y1="18" x2="42" y2="18" />
+        <line x1="18" y1="10" x2="18" y2="38" />
+        <line x1="30" y1="10" x2="30" y2="38" />
+        <rect x="9" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
+        <rect x="21" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
+        <rect x="33" y="22" width="6" height="3" fill="var(--gold-deep)" stroke="none" />
+      </svg>
+    );
+  }
+  if (icon === 'governance') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
+        <path d="M8 10 L40 10 L40 32 L26 32 L18 38 L18 32 L8 32 Z" fill="var(--gold-a10)" />
+        <line x1="14" y1="18" x2="34" y2="18" opacity="0.6" />
+        <line x1="14" y1="24" x2="28" y2="24" opacity="0.6" />
+        <circle cx="14" cy="14" r="1.5" fill="var(--gold-deep)" stroke="none" />
+        <circle cx="20" cy="14" r="1.5" fill="var(--gold-deep)" stroke="none" />
+      </svg>
+    );
+  }
+  if (icon === 'library') {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
+        <rect x="8" y="6" width="32" height="36" fill="var(--gold-a10)" />
+        <line x1="14" y1="14" x2="34" y2="14" strokeWidth="2" />
+        <line x1="14" y1="20" x2="34" y2="20" opacity="0.6" />
+        <line x1="14" y1="24" x2="34" y2="24" opacity="0.6" />
+        <line x1="14" y1="28" x2="28" y2="28" opacity="0.6" />
+        <rect x="14" y="33" width="20" height="5" fill="var(--gold-deep)" stroke="none" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round">
+      <rect x="10" y="6" width="28" height="36" fill="var(--gold-a10)" />
+      <line x1="14" y1="14" x2="34" y2="14" />
+      <line x1="14" y1="20" x2="28" y2="20" opacity="0.6" />
+      <line x1="14" y1="26" x2="32" y2="26" opacity="0.6" />
+    </svg>
   );
 }
 
@@ -909,6 +1077,37 @@ const SAFE_CELLS: ReadonlyArray<{ letter: string; word: string; desc: string }> 
   { letter: 'A', word: 'Ask clearly', desc: 'Specific prompt, specific output. Vague prompts are how you get hallucinations.' },
   { letter: 'F', word: 'Fact-check', desc: 'Treat AI output as a draft. Verify any number, name, or rule before it leaves your desk.' },
   { letter: 'E', word: 'Escalate', desc: 'Member decisions, adverse actions, or examiner-facing outputs always need a human.' },
+];
+
+const DASHBOARD_RESOURCES: readonly DashboardResource[] = [
+  {
+    href: '/resources/the-skill-not-the-prompt',
+    tag: 'Briefing',
+    title: <>The <strong>skill</strong>, not the prompt.</>,
+    meta: 'Briefing · 8 min read',
+    icon: 'brief',
+  },
+  {
+    href: '/resources/six-ways-ai-fails-in-banking',
+    tag: 'Briefing',
+    title: <>Six ways AI <strong>fails</strong> in banking.</>,
+    meta: 'Briefing · 10 min read',
+    icon: 'failures',
+  },
+  {
+    href: '/resources/ai-governance-without-the-jargon',
+    tag: 'Briefing',
+    title: <>AI governance, <strong>without</strong> the jargon.</>,
+    meta: 'Briefing · 12 min read',
+    icon: 'governance',
+  },
+  {
+    href: '/resources',
+    tag: 'All resources',
+    title: <>The AI Banking <strong>Resource Library.</strong></>,
+    meta: 'Playbooks, templates, cards',
+    icon: 'library',
+  },
 ];
 
 function readLocalCompletedRepIds(): readonly string[] {
@@ -972,6 +1171,7 @@ const dashboardStyles = `
   .mockup-dash .tab:hover{ color:var(--ink) }
   .mockup-dash .tab.active{ color:var(--ink); border-bottom-color:var(--gold) }
   .mockup-dash .tab .lock{ font-size:10px; color:var(--gold-deep); text-transform:none; letter-spacing:0.04em; font-weight:600 }
+  .mockup-dash .dash-alert{ max-width:var(--maxw); margin:18px auto 0; padding:12px 32px; color:var(--slate-600); font-size:13px; font-weight:600 }
 
   .mockup-dash .welcome{ padding:72px 0 60px; border-bottom:1px solid var(--rule); position:relative; overflow:hidden }
   .mockup-dash .welcome .wgrid{ display:grid; grid-template-columns:1.35fr 1fr; gap:64px; align-items:center }
@@ -980,6 +1180,12 @@ const dashboardStyles = `
   .mockup-dash .welcome h1 strong{ color:var(--gold-deep); font-weight:700 }
   .mockup-dash .welcome .lede{ font-size:19px; line-height:1.55; color:var(--slate-600); max-width:46ch; margin:0 0 30px; font-weight:400 }
   .mockup-dash .welcome .ctas{ display:flex; gap:12px; flex-wrap:wrap }
+  .mockup-dash .loading-card{ background:#fff; border:1px solid var(--rule-strong); border-radius:20px; padding:32px; max-width:680px; box-shadow:var(--shadow-card) }
+  .mockup-dash .loading-line{ display:block; border-radius:999px; background:linear-gradient(90deg,var(--cream-2),#fff,var(--cream-2)); background-size:200% 100%; animation:dash-pulse 1.4s ease-in-out infinite; height:18px; margin-top:18px }
+  .mockup-dash .loading-title{ height:58px; max-width:520px; border-radius:18px }
+  .mockup-dash .loading-copy{ max-width:560px }
+  .mockup-dash .loading-copy.short{ max-width:360px }
+  @keyframes dash-pulse{ 0%{ background-position:0 0 } 100%{ background-position:-200% 0 } }
 
   /* Snapshot panel */
   .mockup-dash .welcome .snap{ background:#fff; border:1px solid var(--rule-strong); padding:22px 24px; margin:0 0 26px; max-width:560px; border-radius:16px; box-shadow:var(--shadow-card) }
@@ -1033,6 +1239,18 @@ const dashboardStyles = `
   .mockup-dash .sec-head .more{ margin-left:auto; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-deep); font-weight:700; text-decoration:none }
   .mockup-dash .sec-head .more:hover{ color:var(--ink) }
   .mockup-dash .sec.dark .sec-head .more{ color:var(--gold-soft) }
+  .mockup-dash .sec-head.compact{ margin-bottom:22px }
+
+  /* Your work */
+  .mockup-dash .work-sec{ padding-top:48px; padding-bottom:48px; background:var(--cream) }
+  .mockup-dash .work-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px }
+  .mockup-dash .work-card{ background:#fff; border:1px solid var(--rule); border-radius:18px; padding:20px; min-height:190px; display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit; box-shadow:var(--shadow-card); transition:transform .15s,border-color .15s,box-shadow .15s }
+  .mockup-dash .work-card:hover{ transform:translateY(-3px); border-color:var(--gold); box-shadow:var(--shadow-hover) }
+  .mockup-dash .work-kicker{ font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-deep); font-weight:700 }
+  .mockup-dash .work-value{ font-size:34px; line-height:1; color:var(--ink); font-weight:700; letter-spacing:-0.02em; font-variant-numeric:tabular-nums }
+  .mockup-dash .work-label{ font-size:14px; line-height:1.45; color:var(--slate-600); font-weight:500 }
+  .mockup-dash .work-action{ margin-top:auto; padding-top:12px; border-top:1px solid var(--rule); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); font-weight:700 }
+  .mockup-dash .work-action .arrow{ font-size:14px; letter-spacing:0; text-transform:none }
 
   /* Trio cards */
   .mockup-dash .trio-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px }
@@ -1135,6 +1353,7 @@ const dashboardStyles = `
   @media (max-width:1080px){
     .mockup-dash .welcome .wgrid{ grid-template-columns:1fr; gap:32px }
     .mockup-dash .trio-grid{ grid-template-columns:1fr }
+    .mockup-dash .work-grid{ grid-template-columns:repeat(2,1fr) }
     .mockup-dash .rep-card{ grid-template-columns:1fr }
     .mockup-dash .rep-card .demo{ border-left:none; border-top:1px solid var(--rule) }
     .mockup-dash .found-card{ grid-template-columns:1fr }
@@ -1146,6 +1365,7 @@ const dashboardStyles = `
   }
   @media (max-width:640px){
     .mockup-dash .res-grid{ grid-template-columns:1fr }
+    .mockup-dash .work-grid{ grid-template-columns:1fr }
     .mockup-dash .safe-card .grid{ grid-template-columns:1fr }
     .mockup-dash .safe-card .cell{ border-right:none; border-bottom:1px solid var(--rule); min-height:auto }
     .mockup-dash .welcome{ padding:48px 0 40px }

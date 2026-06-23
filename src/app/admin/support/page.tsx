@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { listSupportCases } from '@/lib/support/cases';
 import { getSupportMetrics } from '@/lib/support/metrics';
+import { SUPPORT_CASE_CATEGORIES, SUPPORT_CASE_PRIORITIES } from '@/lib/support/types';
 
 interface PageProps {
   readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -16,20 +17,27 @@ function metricValue(value: number | null): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
+function label(value: string): string {
+  return value.replaceAll('_', ' ');
+}
+
 export default async function SupportAdminPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const range = value(params, 'range') === '7d' ? '7d' : value(params, 'range') === '90d' ? '90d' : '30d';
   const status = value(params, 'status') ?? 'all';
+  const category = value(params, 'category') ?? 'all';
+  const priority = value(params, 'priority') ?? 'all';
   const q = value(params, 'q') ?? '';
   const [metrics, cases] = await Promise.all([
     getSupportMetrics(range),
-    listSupportCases({ status, q, limit: 100 }),
+    listSupportCases({ status, category, priority, q, limit: 100 }),
   ]);
 
   return (
     <main className="support-admin__main">
       <section className="support-toolbar">
         <form className="support-search" action="/admin/support">
+          <input type="hidden" name="range" value={range} />
           <input type="search" name="q" placeholder="Search email, session, subject" defaultValue={q} />
           <select name="status" defaultValue={status}>
             <option value="all">All statuses</option>
@@ -40,6 +48,18 @@ export default async function SupportAdminPage({ searchParams }: PageProps) {
             <option value="resolved">Resolved</option>
             <option value="refunded">Refunded</option>
             <option value="closed_no_action">Closed no action</option>
+          </select>
+          <select name="category" defaultValue={category}>
+            <option value="all">All categories</option>
+            {SUPPORT_CASE_CATEGORIES.map((option) => (
+              <option key={option} value={option}>{label(option)}</option>
+            ))}
+          </select>
+          <select name="priority" defaultValue={priority}>
+            <option value="all">All priorities</option>
+            {SUPPORT_CASE_PRIORITIES.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
           </select>
           <button type="submit">Filter</button>
         </form>
@@ -68,7 +88,7 @@ export default async function SupportAdminPage({ searchParams }: PageProps) {
           <strong>{metricValue(metrics.queue.medianResolutionHours)}h</strong>
         </div>
         <div>
-          <span>Paid enrollments</span>
+          <span>Paid total</span>
           <strong>{metrics.launchHealth.paidEnrollments}</strong>
         </div>
         <div>
@@ -134,9 +154,11 @@ export default async function SupportAdminPage({ searchParams }: PageProps) {
             <div><dt>Provisioning failures</dt><dd>{metrics.opsHealth.provisioningFailures}</dd></div>
             <div><dt>Email failures</dt><dd>{metrics.opsHealth.emailFailures}</dd></div>
             <div><dt>Webhook failures</dt><dd>{metrics.opsHealth.webhookFailures}</dd></div>
+            <div><dt>Paid enrollments in range</dt><dd>{metrics.launchHealth.paidEnrollmentsInRange}</dd></div>
             <div><dt>Active entitlements</dt><dd>{metrics.launchHealth.activeEntitlements}</dd></div>
             <div><dt>Certificates issued</dt><dd>{metrics.launchHealth.certificatesIssued}</dd></div>
-            <div><dt>Team cohorts</dt><dd>{metrics.launchHealth.teamCohortsCreated}</dd></div>
+            <div><dt>Team cohorts in range</dt><dd>{metrics.launchHealth.teamCohortsCreated}</dd></div>
+            <div><dt>Excluded test enrollments</dt><dd>{metrics.dataQuality.excludedPaidEnrollments}</dd></div>
           </dl>
         </aside>
       </section>

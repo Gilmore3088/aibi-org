@@ -1,4 +1,5 @@
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { filterMetricRowsByEmail, isExcludedMetricEmail } from '@/lib/admin/metric-exclusions';
 import {
   SUPPORT_CASE_CATEGORIES,
   type SupportCaseCategory,
@@ -38,15 +39,23 @@ export interface SupportMetrics {
   };
   readonly launchHealth: {
     readonly paidEnrollments: number;
+    readonly paidEnrollmentsInRange: number;
     readonly activeEntitlements: number;
     readonly certificatesIssued: number;
     readonly teamCohortsCreated: number;
+    readonly activeTeamCohorts: number;
     readonly supportCasesPer10PaidPurchases: number | null;
+  };
+  readonly dataQuality: {
+    readonly excludedSupportCases: number;
+    readonly excludedPaidEnrollments: number;
+    readonly excludedTeamCohorts: number;
   };
 }
 
 interface CaseMetricRow {
   id: string;
+  buyer_email: string;
   category: string;
   status: string;
   priority: string;
@@ -56,7 +65,35 @@ interface CaseMetricRow {
 }
 
 interface EventMetricRow {
+  case_id: string;
   event_type: string;
+  created_at: string;
+}
+
+interface EnrollmentMetricRow {
+  id: string;
+  email: string;
+  user_id: string | null;
+  enrolled_at: string | null;
+  created_at: string;
+}
+
+interface EntitlementMetricRow {
+  id: string;
+  user_id: string;
+  active: boolean;
+}
+
+interface CertificateMetricRow {
+  id: string;
+  enrollment_id: string;
+  issued_at: string;
+}
+
+interface TeamCohortMetricRow {
+  id: string;
+  buyer_email: string;
+  status: string;
   created_at: string;
 }
 
@@ -107,16 +144,25 @@ export function calculateSupportMetrics(args: {
   readonly range: SupportMetricsRange;
   readonly startIso: string;
   readonly nowIso: string;
-  readonly cases: readonly CaseMetricRow[];
+  readonly cases?: readonly CaseMetricRow[];
+  readonly allCases?: readonly CaseMetricRow[];
+  readonly rangeCases?: readonly CaseMetricRow[];
   readonly events: readonly EventMetricRow[];
   readonly paidEnrollments: number;
+  readonly paidEnrollmentsInRange?: number;
   readonly activeEntitlements: number;
   readonly certificatesIssued: number;
   readonly teamCohortsCreated: number;
+  readonly activeTeamCohorts?: number;
+  readonly excludedSupportCases?: number;
+  readonly excludedPaidEnrollments?: number;
+  readonly excludedTeamCohorts?: number;
 }): SupportMetrics {
   const categories = zeroCategoryCounts();
   const priorities = zeroPriorityCounts();
   const nowTime = Date.parse(args.nowIso);
+  const allCases = args.allCases ?? args.cases ?? [];
+  const rangeCases = args.rangeCases ?? args.cases ?? [];
   let openCases = 0;
   let newCases = 0;
   let slaBreaches = 0;
@@ -128,18 +174,12 @@ export function calculateSupportMetrics(args: {
   const firstResponseHours: number[] = [];
   const resolutionHours: number[] = [];
 
-  for (const supportCase of args.cases) {
+  for (const supportCase of rangeCases) {
     if (supportCase.category in categories) {
       categories[supportCase.category as SupportCaseCategory] += 1;
     }
     if (supportCase.priority in priorities) {
       priorities[supportCase.priority as SupportCasePriority] += 1;
-    }
-    if (supportCase.status === 'new') newCases += 1;
-    if (isOpenStatus(supportCase.status)) {
-      openCases += 1;
-      const ageHours = Math.max(0, (nowTime - Date.parse(supportCase.created_at)) / (60 * 60 * 1000));
-      if (ageHours > 24) slaBreaches += 1;
     }
     if (supportCase.first_response_at) {
       firstResponseHours.push(hoursBetween(supportCase.created_at, supportCase.first_response_at));
@@ -149,11 +189,22 @@ export function calculateSupportMetrics(args: {
     }
     if (supportCase.category === 'refund_request') {
       refundRequestsTotal += 1;
-      if (isOpenStatus(supportCase.status)) refundPending += 1;
     }
     if (supportCase.category === 'provisioning_failure') provisioningFailures += 1;
     if (supportCase.category === 'email_failure') emailFailures += 1;
     if (supportCase.category === 'webhook_error') webhookFailures += 1;
+  }
+
+  for (const supportCase of allCases) {
+    if (supportCase.status === 'new') newCases += 1;
+    if (isOpenStatus(supportCase.status)) {
+      openCases += 1;
+      const ageHours = Math.max(0, (nowTime - Date.parse(supportCase.created_at)) / (60 * 60 * 1000));
+      if (ageHours > 24) slaBreaches += 1;
+    }
+    if (supportCase.category === 'refund_request' && isOpenStatus(supportCase.status)) {
+      refundPending += 1;
+    }
   }
 
   const refundApproved = args.events.filter((event) => event.event_type === 'refund_approved').length;
@@ -162,7 +213,7 @@ export function calculateSupportMetrics(args: {
     (event) => event.event_type === 'refund_manually_issued' || event.event_type === 'refund_issued_manual',
   ).length;
   const accessRescuesSent = args.events.filter((event) => event.event_type === 'access_rescue_sent').length;
-  const purchaseCount = args.paidEnrollments + args.teamCohortsCreated;
+  const rangePurchaseCount = (args.paidEnrollmentsInRange ?? args.paidEnrollments) + args.teamCohortsCreated;
 
   return {
     range: args.range,
@@ -192,25 +243,36 @@ export function calculateSupportMetrics(args: {
     },
     launchHealth: {
       paidEnrollments: args.paidEnrollments,
+      paidEnrollmentsInRange: args.paidEnrollmentsInRange ?? args.paidEnrollments,
       activeEntitlements: args.activeEntitlements,
       certificatesIssued: args.certificatesIssued,
       teamCohortsCreated: args.teamCohortsCreated,
+      activeTeamCohorts: args.activeTeamCohorts ?? args.teamCohortsCreated,
       supportCasesPer10PaidPurchases:
-        purchaseCount > 0 ? Number(((args.cases.length / purchaseCount) * 10).toFixed(1)) : null,
+        rangePurchaseCount > 0 ? Number(((rangeCases.length / rangePurchaseCount) * 10).toFixed(1)) : null,
+    },
+    dataQuality: {
+      excludedSupportCases: args.excludedSupportCases ?? 0,
+      excludedPaidEnrollments: args.excludedPaidEnrollments ?? 0,
+      excludedTeamCohorts: args.excludedTeamCohorts ?? 0,
     },
   };
 }
 
-async function countRows(
+async function selectRows<T>(
   label: string,
-  query: PromiseLike<{ count: number | null; error: { message: string } | null }>,
-): Promise<number> {
-  const { count, error } = await query;
+  query: PromiseLike<{ data: unknown[] | null; error: { message: string } | null }>,
+): Promise<T[]> {
+  const { data, error } = await query;
   if (error) {
-    console.warn(`[support/metrics] ${label} count failed:`, error.message);
-    return 0;
+    console.warn(`[support/metrics] ${label} read failed:`, error.message);
+    return [];
   }
-  return count ?? 0;
+  return (data ?? []) as T[];
+}
+
+function inRange(iso: string | null | undefined, startIso: string): boolean {
+  return !!iso && Date.parse(iso) >= Date.parse(startIso);
 }
 
 export async function getSupportMetrics(
@@ -225,55 +287,69 @@ export async function getSupportMetrics(
   const startIso = rangeStart(range, now).toISOString();
   const nowIso = now.toISOString();
 
-  const [caseResult, eventResult, paidEnrollments, activeEntitlements, certificatesIssued, teamCohortsCreated] =
-    await Promise.all([
-      client
-        .from('support_cases')
-        .select('id, category, status, priority, created_at, first_response_at, resolved_at')
-        .gte('created_at', startIso),
-      client.from('support_case_events').select('event_type, created_at').gte('created_at', startIso),
-      countRows(
-        'course_enrollments',
-        client
-          .from('course_enrollments')
-          .select('id', { count: 'exact', head: true })
-          .gte('enrolled_at', startIso),
-      ),
-      countRows(
-        'entitlements',
-        client
-          .from('entitlements')
-          .select('id', { count: 'exact', head: true })
-          .eq('active', true),
-      ),
-      countRows(
-        'certificates',
-        client
-          .from('certificates')
-          .select('id', { count: 'exact', head: true })
-          .gte('issued_at', startIso),
-      ),
-      countRows(
-        'team_assessment_cohorts',
-        client
-          .from('team_assessment_cohorts')
-          .select('id', { count: 'exact', head: true })
-          .gte('created_at', startIso),
-      ),
-    ]);
+  const [caseResult, eventRows, enrollmentRows, entitlementRows, certificateRows, teamCohortRows] = await Promise.all([
+    client
+      .from('support_cases')
+      .select('id, buyer_email, category, status, priority, created_at, first_response_at, resolved_at'),
+    selectRows<EventMetricRow>(
+      'support_case_events',
+      client.from('support_case_events').select('case_id, event_type, created_at').gte('created_at', startIso),
+    ),
+    selectRows<EnrollmentMetricRow>(
+      'course_enrollments',
+      client.from('course_enrollments').select('id, email, user_id, enrolled_at, created_at'),
+    ),
+    selectRows<EntitlementMetricRow>(
+      'entitlements',
+      client.from('entitlements').select('id, user_id, active').eq('active', true),
+    ),
+    selectRows<CertificateMetricRow>(
+      'certificates',
+      client.from('certificates').select('id, enrollment_id, issued_at').gte('issued_at', startIso),
+    ),
+    selectRows<TeamCohortMetricRow>(
+      'team_assessment_cohorts',
+      client.from('team_assessment_cohorts').select('id, buyer_email, status, created_at'),
+    ),
+  ]);
 
   if (caseResult.error) throw new Error(caseResult.error.message);
-  if (eventResult.error) throw new Error(eventResult.error.message);
+
+  const rawCases = (caseResult.data ?? []) as CaseMetricRow[];
+  const cases = filterMetricRowsByEmail(rawCases, (row) => row.buyer_email);
+  const caseIds = new Set(cases.map((row) => row.id));
+  const allCases = cases;
+  const rangeCases = cases.filter((row) => inRange(row.created_at, startIso));
+  const events = eventRows.filter((row) => caseIds.has(row.case_id));
+
+  const enrollments = filterMetricRowsByEmail(enrollmentRows, (row) => row.email);
+  const includedEnrollmentIds = new Set(enrollments.map((row) => row.id));
+  const excludedUserIds = new Set(
+    enrollmentRows.filter((row) => isExcludedMetricEmail(row.email) && row.user_id).map((row) => row.user_id!),
+  );
+  const activeEntitlements = entitlementRows.filter((row) => !excludedUserIds.has(row.user_id)).length;
+
+  const teamCohorts = filterMetricRowsByEmail(teamCohortRows, (row) => row.buyer_email);
+  const paidEnrollmentsInRange = enrollments.filter((row) => inRange(row.enrolled_at ?? row.created_at, startIso)).length;
+  const certificatesIssued = certificateRows.filter((row) => includedEnrollmentIds.has(row.enrollment_id)).length;
+  const teamCohortsCreated = teamCohorts.filter((row) => inRange(row.created_at, startIso)).length;
+  const activeTeamCohorts = teamCohorts.filter((row) => row.status !== 'refunded').length;
 
   return calculateSupportMetrics({
     range,
     startIso,
     nowIso,
-    cases: (caseResult.data ?? []) as CaseMetricRow[],
-    events: (eventResult.data ?? []) as EventMetricRow[],
-    paidEnrollments,
+    allCases,
+    rangeCases,
+    events,
+    paidEnrollments: enrollments.length,
+    paidEnrollmentsInRange,
     activeEntitlements,
     certificatesIssued,
     teamCohortsCreated,
+    activeTeamCohorts,
+    excludedSupportCases: rawCases.length - cases.length,
+    excludedPaidEnrollments: enrollmentRows.length - enrollments.length,
+    excludedTeamCohorts: teamCohortRows.length - teamCohorts.length,
   });
 }

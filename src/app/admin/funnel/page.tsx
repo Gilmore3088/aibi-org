@@ -6,6 +6,7 @@
 // data and PII is never cached at the edge.
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import {
   getFunnelScorecard,
   getFunnelStageDistribution,
@@ -55,6 +56,30 @@ const page: React.CSSProperties = {
   fontFamily: 'var(--font-sans)',
 };
 const container: React.CSSProperties = { maxWidth: 1120, margin: '0 auto' };
+const header: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: 20,
+};
+const nav: React.CSSProperties = {
+  display: 'flex',
+  gap: 8,
+  flexWrap: 'wrap',
+};
+const navLink: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: 38,
+  border: '1px solid var(--slate-200)',
+  borderRadius: 8,
+  padding: '0 13px',
+  background: '#fff',
+  color: 'var(--ink)',
+  fontSize: 13,
+  fontWeight: 700,
+  textDecoration: 'none',
+};
 const sectionTitle: React.CSSProperties = {
   fontSize: 13,
   fontWeight: 600,
@@ -218,12 +243,20 @@ export default async function AdminFunnelPage() {
   return (
     <main style={page}>
       <div style={container}>
-        <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>Funnel</h1>
-        <p style={{ color: 'var(--slate-600)', fontSize: 14, marginTop: 6, maxWidth: 720 }}>
-          Live known-contact funnel from Supabase. Revenue and refund dollars live in Stripe;
-          anonymous traffic lives in Vercel/Plausible. Counts include any seed/test rows still in
-          the database.
-        </p>
+        <div style={header}>
+          <div>
+            <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>Funnel</h1>
+            <p style={{ color: 'var(--slate-600)', fontSize: 14, marginTop: 6, maxWidth: 720 }}>
+              Live known-contact funnel from Supabase. Revenue and refund dollars live in Stripe;
+              anonymous traffic lives in Vercel/Plausible. Counts include any seed/test rows still in
+              the database.
+            </p>
+          </div>
+          <nav style={nav} aria-label="Admin">
+            <Link href="/admin" style={navLink}>Overview</Link>
+            <Link href="/admin/support" style={navLink}>Support</Link>
+          </nav>
+        </div>
 
         {loadError ? (
           <div

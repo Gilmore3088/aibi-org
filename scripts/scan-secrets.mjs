@@ -5,7 +5,7 @@
 // outside the repo. It is a cheap pre-promotion/CI guard against committing
 // live Stripe/Supabase/Resend-style secrets into source, docs, or artifacts.
 
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { lstatSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const ROOT = process.cwd();
@@ -49,6 +49,14 @@ function walk(dir) {
     if (EXCLUDE_DIRS.has(entry)) continue;
     if (EXCLUDE_FILES.has(entry)) continue;
     const full = join(dir, entry);
+    let linkStat;
+    try {
+      linkStat = lstatSync(full);
+    } catch {
+      continue;
+    }
+    if (linkStat.isSymbolicLink()) continue;
+
     const stat = statSync(full);
     if (stat.isDirectory()) {
       files.push(...walk(full));

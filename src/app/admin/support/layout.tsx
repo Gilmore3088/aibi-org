@@ -40,8 +40,10 @@ export default async function SupportAdminLayout({ children }: { children: React
         </div>
       </header>
       <nav className="support-admin__nav" aria-label="Support admin">
+        <Link href="/admin">Overview</Link>
         <Link href="/admin/support">Queue</Link>
         <Link href="/admin/support/search">Search</Link>
+        <Link href="/admin/funnel">Funnel</Link>
         <a href="/api/admin/support/export.csv?range=30d">Export CSV</a>
       </nav>
       {children}
