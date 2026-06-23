@@ -121,6 +121,12 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
         </div>
       ) : null}
 
+      <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '0 0 12px', maxWidth: 760 }}>
+        Raw download events — includes anonymous and repeat downloads. The
+        scorecard&rsquo;s &ldquo;Resource downloaders (known email)&rdquo; counts
+        unique known-email people instead, so it is much lower.
+      </p>
+
       <div style={{ ...card, overflowX: 'auto' }}>
         <table style={table}>
           <thead>
