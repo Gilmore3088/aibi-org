@@ -122,9 +122,11 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
       ) : null}
 
       <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '0 0 12px', maxWidth: 760 }}>
-        Raw download events — includes anonymous and repeat downloads. The
-        scorecard&rsquo;s &ldquo;Resource downloaders (known email)&rdquo; counts
-        unique known-email people instead, so it is much lower.
+        Raw download events — includes anonymous, repeat, and test/seed traffic
+        (not de-duplicated, not test-filtered). The scorecard&rsquo;s
+        &ldquo;Resource downloaders (known email)&rdquo; counts unique
+        known-email people with test emails excluded, so it is much lower. Treat
+        these as relative popularity, not absolute demand.
       </p>
 
       <div style={{ ...card, overflowX: 'auto' }}>
@@ -143,7 +145,7 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
             {categories.map((cat) => (
               <Fragment key={cat}>
                 <tr>
-                  <th scope="colgroup" colSpan={6} style={catHeader}>
+                  <th scope="rowgroup" colSpan={6} style={catHeader}>
                     {cat}
                   </th>
                 </tr>
