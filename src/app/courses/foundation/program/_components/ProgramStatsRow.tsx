@@ -30,7 +30,7 @@ export function ProgramStatsRow({
     {
       k: 'Per seat',
       v: '$295',
-      sub: '$199 at 10+ seats',
+      sub: 'Institutional rollout by request',
     },
     {
       k: 'Format',

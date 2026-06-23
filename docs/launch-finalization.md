@@ -4,7 +4,7 @@ The single actionable list of what remains to take the funnel + nurture work
 fully live. Code/content work is done and merged (see "Shipped"); everything
 below either requires a dashboard, an env var, or a business decision.
 
-Last updated: 2026-06-22.
+Last updated: 2026-06-23.
 
 ## Shipped (merged to `main`)
 
@@ -13,6 +13,9 @@ Last updated: 2026-06-22.
 | #509 | Derived funnel reporting views (`funnel_scorecard`, `funnel_stage_distribution`, `funnel_contacts`) — applied to the DB. See [funnel reporting](funnel-reporting.md). |
 | #510 | Gated `/admin/funnel` dashboard + [paid buyer support runbook](paid-buyer-support-runbook.md). |
 | #511 | 12 assessment nurture emails rebranded to brand v1 + marketing-review fixes. |
+| #512 | Launch-finalization checklist + nurture branch/segmentation plan. |
+| #513 | Final email launch blockers cleared: canonical score bands, responsive HTML width, valid markup, encoded links, softened claims, CTA alignment, and one-screen QA index. |
+| #514 | Support console, purchase-help intake, ops alerts, and team self-serve guardrails. |
 
 MailerLite automation **subjects** for all 12 steps were also set via API.
 
@@ -20,15 +23,17 @@ MailerLite automation **subjects** for all 12 steps were also set via API.
 
 ### MailerLite dashboard — operator (~30–40 min)
 The API cannot author automation email HTML, so the bodies are pasted by hand.
-Run a local preview to copy each one: `python3 -m http.server 8791 --directory .`
-from the repo root, then open `http://localhost:8791/docs/mailerlite-emails/index.html`.
+From an up-to-date `main`, run a local preview to copy each one:
+`python3 -m http.server 8791 --directory .` from the repo root, then open
+`http://localhost:8791/docs/mailerlite-emails/index.html`.
 
 - [ ] For each of the 4 tier automations (Starting Point, Early Stage, Building Momentum, Ready to Scale), paste the 3 matching email bodies (Design email → Use HTML editor → paste → save).
-- [ ] Set each step's **Preview text** field to the hidden preheader line at the top of its HTML.
+- [ ] Leave each step's **Preview text** field blank. The pasted HTML already includes a hidden preheader and filler; setting the dashboard field duplicates preview text.
 - [ ] Authenticate the sending domain (MailerLite → Settings → Domains) — 9 of 12 steps reported `needs_domain_auth`.
 - [ ] Verify the cadence is day 0 / 3 / 7 on each automation.
-- [ ] Enable all 4 automations.
 - [ ] Send a test of each tier to confirm `{$score}` / `{$profile_id}` resolve and the result link works.
+- [ ] Confirm MailerLite appended or preserved the required unsubscribe/address footer in the sent seed email.
+- [ ] Enable all 4 automations.
 
 ### Vercel env — owner (never set by the agent)
 - [ ] `FUNNEL_ADMIN_EMAILS` = operator email(s), Production scope. Until set, `/admin/funnel` is inaccessible (fail-closed).

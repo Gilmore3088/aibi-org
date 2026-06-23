@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 <title>MailerLite Email HTML — Copy-Paste Index</title>
 <style>
-  :root { --ink:#071A2F; --gold:#C8A24A; --gold-deep:#9A7A2F; --cream:#F7F3EA; --slate:#64748B; --border:#E2E8F0; }
+  :root { --ink:#071A2F; --gold:#C8A24A; --gold-deep:#7C5F1D; --cream:#F7F3EA; --slate:#64748B; --border:#E2E8F0; }
   body { font-family:Helvetica,Arial,sans-serif; background:var(--cream); color:var(--ink); max-width:920px; margin:0 auto; padding:48px 24px; line-height:1.6; }
   h1 { font-size:30px; margin:0 0 6px; }
   h2 { font-size:18px; margin:36px 0 12px; border-top:1px solid var(--border); padding-top:20px; }
@@ -20,6 +20,10 @@
   .actions a, .actions button { font-size:12px; padding:7px 14px; background:#fff; border:1px solid var(--border); color:var(--ink); cursor:pointer; text-decoration:none; border-radius:6px; font-weight:600; }
   .actions a:hover, .actions button:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
   .copied { background:var(--gold) !important; color:var(--ink) !important; border-color:var(--gold) !important; }
+  .manual-copy { background:#fff; border:2px solid var(--gold); padding:16px; margin:20px 0; border-radius:8px; }
+  .manual-copy p { margin:6px 0 10px; color:var(--slate); }
+  .manual-copy textarea { width:100%; min-height:220px; box-sizing:border-box; font-family:monospace; font-size:12px; line-height:1.4; border:1px solid var(--border); border-radius:6px; padding:10px; color:var(--ink); }
+  .manual-copy button { margin-top:10px; font-size:12px; padding:7px 14px; background:#fff; border:1px solid var(--border); color:var(--ink); cursor:pointer; border-radius:6px; font-weight:600; }
   code { background:#fff; padding:2px 6px; border:1px solid var(--border); border-radius:4px; font-family:monospace; font-size:13px; }
 </style>
 </head>
@@ -34,7 +38,7 @@
     <li>Design email → <strong>Use HTML editor</strong> (confirm the switch if prompted).</li>
     <li>Click <strong>Copy HTML</strong> on the matching card below, paste, and save.</li>
   </ol>
-  Subjects are already set on every step via API. Each email carries its own hidden preheader, so <strong>leave MailerLite's "Preview text" field blank</strong> to avoid duplicate preview text.
+  Subjects are already set on every step via API. Each email carries its own hidden preheader, so <strong>leave MailerLite's "Preview text" field blank</strong> to avoid duplicate preview text. After pasting, send one seed test per tier and confirm <code>{$score}</code> and <code>{$profile_id}</code> resolve.
 </div>
 <h2>Tier · Starting Point (3 emails) — score 12&ndash;22</h2>
   <div class="card">
@@ -51,7 +55,7 @@
   </div>
   <div class="card">
     <div class="day">Day 7</div>
-    <div class="subject">How most community banks plan to fund AI in 2026</div>
+    <div class="subject">Three board-ready AI numbers</div>
     <div class="pre">Preheader: Three board-ready numbers, and the most direct path to a credentialed AI plan.</div>
     <div class="actions"><a href="03-starting-point-day7.html" target="_blank">Preview</a><button data-file="03-starting-point-day7.html" onclick="copyFile('03-starting-point-day7.html', this)">Copy HTML</button></div>
   </div>
@@ -115,6 +119,31 @@
 
 <script>
 function flash(btn, msg, ms){ const o = btn.dataset.label || btn.textContent; btn.dataset.label = o; btn.textContent = msg; setTimeout(() => { btn.textContent = o; btn.classList.remove('copied'); }, ms); }
+function showManualCopy(html, filename, btn){
+  let panel = document.getElementById('manual-copy-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'manual-copy-panel';
+    panel.className = 'manual-copy';
+    document.querySelector('.instructions').after(panel);
+  }
+  panel.textContent = '';
+  const title = document.createElement('strong');
+  title.textContent = 'Manual raw HTML copy: ' + filename;
+  const help = document.createElement('p');
+  help.textContent = 'Clipboard access was blocked. The raw HTML is selected below; copy this text and paste it into MailerLite. Do not copy from the rendered Preview page.';
+  const ta = document.createElement('textarea');
+  ta.value = html;
+  ta.setAttribute('aria-label', 'Raw HTML for ' + filename);
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.textContent = 'Close';
+  close.onclick = () => panel.remove();
+  panel.append(title, help, ta, close);
+  ta.focus();
+  ta.select();
+  flash(btn, 'Select raw HTML below', 3000);
+}
 async function copyFile(filename, btn){
   let html;
   try {
@@ -139,7 +168,7 @@ async function copyFile(filename, btn){
     try { ok = document.execCommand('copy'); } catch (e2) {}
     document.body.removeChild(ta);
     if (ok) { btn.classList.add('copied'); flash(btn, '✓ Copied', 1500); }
-    else { flash(btn, 'Open Preview, then Select All → Copy', 3000); window.open(filename, '_blank'); }
+    else { showManualCopy(html, filename, btn); }
   }
 }
 </script>
