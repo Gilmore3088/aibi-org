@@ -106,7 +106,7 @@ const FOUNDATION_STEP: PdfNextStep = {
   title: 'AiBI-Foundation',
   price: '$295 · self-paced',
   body:
-    'Twelve self-paced modules built for banking professionals. Every learner finishes with a safe-use checklist, a prompt builder, and reusable workflows they can run in real work the same week.',
+    'Eighteen bite-sized modules built for banking professionals. Every learner finishes with a safe-use checklist, a prompt builder, and reusable workflows they can run in real work the same week.',
   bullets: [
     'AI safe-use checklist + prompt builder',
     'Copilot, ChatGPT, Claude, Perplexity workflows',
@@ -169,7 +169,7 @@ const FOUNDATION_STEP_SECONDARY: PdfNextStep = {
   number: '02',
   rank: 'secondary',
   body:
-    'Use AiBI-Foundation as the onboarding path for every new hire. Twelve self-paced modules give each new staff member the same safe-use habits and workflow patterns as the rest of your team.',
+    'Use AiBI-Foundation as the onboarding path for every new hire. Eighteen bite-sized modules give each new staff member the same safe-use habits and workflow patterns as the rest of your team.',
   outcome:
     'Outcome: a single, reliable onboarding path that compounds your existing AI advantage.',
 };

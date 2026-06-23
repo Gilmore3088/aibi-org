@@ -1,8 +1,8 @@
 # Launch checklist — production readiness
 
-Last updated: 2026-06-22.
+Last updated: 2026-06-23.
 
-## Status snapshot — 2026-06-22
+## Status snapshot — 2026-06-23
 
 Where the launch actually stands after this session. The detailed gate is §0–§12 below.
 
@@ -13,16 +13,18 @@ Where the launch actually stands after this session. The detailed gate is §0–
   corrected (phantom staging, dead `NEXT_PUBLIC_STRIPE_KEY`, HubSpot, brand naming, webhook
   events, refund/comp, tax trigger, Appendix A; one canonical go/no-go list).
 - **Copy drift fixed (shipped).** `12 → 18` modules across `/faq`, `/for-institutions`,
-  post-assessment `NextStepCards`, `/design-system`; banned "AiBI Foundations" plural in the
-  playbook modal + a MailerLite subject. `lint` + `331 tests` + `build` green locally.
+  assessment results CTAs, post-assessment `NextStepCards`, `/design-system`; banned
+  "AiBI Foundations" plural in the playbook modal + MailerLite surfaces. `lint` + `360 tests`
+  + `build` green locally.
 - **GTM revenue model** internal math contradiction fixed + reality-check added.
 - **Reviews produced:** 10-persona E2E + adversarial red-team (`docs/reviews/`).
-- **Repo hygiene:** 776M of stale worktree dirs removed; branches clean (`main` only).
+- **Repo hygiene:** 776M of stale worktree dirs removed in the prior pass.
 - **MailerLite inspected via MCP**; one banned-plural subject fixed.
 
 ### ❌ Not done (cannot be done from here / by the agent)
-- **Enable MailerLite nurture** — dashboard-only (API has no activate); **and content is
-  unbuilt** (3 of 4 automations have empty emails) — see §11.
+- **Paste/test/enable MailerLite nurture** — dashboard-only (API has no activate). The 12
+  versioned email HTML files are ready in `docs/mailerlite-emails/`; the operator still has to
+  paste them into MailerLite, seed-test merge fields, authenticate the domain, and enable — see §11.
 - **Verify/create LIVE Stripe products** — the MCP/CLI is paired to the **sandbox** account.
 - **Rotate the exposed `sk_live_…` key** — Stripe dashboard (owner). `npm run audit:secrets`
   currently fails because ignored local `.env.local` still contains live-looking secrets.
@@ -32,7 +34,7 @@ Where the launch actually stands after this session. The detailed gate is §0–
 ### 🔜 Needs doing before paid promotion (owner)
 1. **Rotate `STRIPE_SECRET_KEY`** (exposed in a transcript this session), remove any old live key
    from local `.env.local`, then rerun `npm run audit:secrets`.
-2. **Build + design the 4 MailerLite nurture flows**, then enable (dashboard).
+2. **Paste + test the 4 MailerLite nurture flows**, then enable (dashboard).
 3. **Secure one named top-of-funnel channel** — the revenue model's binding constraint.
 4. **Configure ops alerts** (`OPS_ALERT_WEBHOOK_URL` or `OPS_ALERT_EMAIL`) and verify one
    test alert reaches the operator using `POST /api/ops/alert-test`. `npm run audit:env:production`
@@ -245,19 +247,15 @@ buying path, not the whole site.
 
 These are outward-facing / live-money and were intentionally **not** automated:
 
-- [ ] **Build + enable MailerLite nurture (NOT just "enable").** Inspected via MCP 2026-06-22:
-      the 4 tier automations ("Starting Point / Early Stage / Building Momentum / Ready to
-      Scale", trigger = subscriber_joins_group, groups wired correctly) exist but are
-      **empty skeletons** — `complete_workflow: false` on all four:
-        - Starting Point: 3 email steps, only 2 have content and both are `is_designed:false`
-          (would send the generic "can't display HTML" fallback); one subject had the banned
-          "AiBI Foundations" plural (fixed via MCP 2026-06-22).
-        - Early Stage / Building Momentum / Ready to Scale: every email step is empty
-          (`subject: null`, no body).
-      **The email content must be written + designed in the MailerLite visual editor**
-      (the API/MCP cannot author email HTML or enable an automation — both are dashboard-only).
-      Do NOT enable until each email is designed and a test send is verified. Subjects +
-      plain-text can be drafted via MCP `update_automation_email` as a starting point.
+- [ ] **Paste + enable MailerLite nurture (NOT just "enable").** The 4 tier automations
+      ("Starting Point / Early Stage / Building Momentum / Ready to Scale", trigger =
+      subscriber_joins_group, groups wired correctly) exist in MailerLite. The API/MCP cannot
+      author automation email HTML or enable an automation, so the 12 versioned bodies in
+      `docs/mailerlite-emails/*.html` must be pasted by hand through the dashboard HTML editor.
+      Use `docs/mailerlite-emails/index.html` as the copy source, leave each dashboard
+      **Preview text** field blank, then send one seed test per tier before enabling. The seed
+      test must confirm `{$score}`, `{$profile_id}`, result links, unsubscribe, and sender-domain
+      authentication.
 - [ ] **Verify live Stripe products.** The Stripe MCP/CLI is paired to the **sandbox**
       account; live products can only be created/verified on the **live** account. The app
       already runs live keys and live `price_*` IDs are configured, so live products likely

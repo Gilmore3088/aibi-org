@@ -300,10 +300,10 @@
 <div class="wrap">
 
 <header class="title">
-  <p class="designation">MailerLite Operations Brief · 2026-05-09</p>
-  <h1>Five automations, <em>thirteen emails</em>, one funnel</h1>
-  <p class="subtitle">A complete reference for what is wired, what is sent, and what still needs you to flip a switch.</p>
-  <p class="meta">Account 2331976 · Sender <a href="mailto:hello@aibankinginstitute.com">hello@aibankinginstitute.com</a> · Verified 2026-05-09</p>
+  <p class="designation">MailerLite Assessment Nurture Brief · 2026-06-23</p>
+  <h1>Four assessment automations, <em>twelve emails</em>, one funnel</h1>
+  <p class="subtitle">A reference for the tiered assessment nurture. The copy-paste source of truth is <span class="mono">docs/mailerlite-emails/index.html</span>.</p>
+  <p class="meta">Account 2331976 · Sender <a href="mailto:hello@aibankinginstitute.com">hello@aibankinginstitute.com</a></p>
 </header>
 
 <div class="toc">
@@ -311,11 +311,10 @@
   <ol>
     <li><a href="#overview">The big picture</a></li>
     <li><a href="#architecture">How it is wired</a></li>
-    <li><a href="#newsletter">Automation 1 · Newsletter</a></li>
-    <li><a href="#starting-point">Automation 2 · Starting Point</a></li>
-    <li><a href="#early-stage">Automation 3 · Early Stage</a></li>
-    <li><a href="#building-momentum">Automation 4 · Building Momentum</a></li>
-    <li><a href="#ready-to-scale">Automation 5 · Ready to Scale</a></li>
+    <li><a href="#starting-point">Automation 1 · Starting Point</a></li>
+    <li><a href="#early-stage">Automation 2 · Early Stage</a></li>
+    <li><a href="#building-momentum">Automation 3 · Building Momentum</a></li>
+    <li><a href="#ready-to-scale">Automation 4 · Ready to Scale</a></li>
     <li><a href="#voice">Voice and content rules</a></li>
     <li><a href="#activation">How to activate (the manual steps)</a></li>
     <li><a href="#testing">How to test</a></li>
@@ -326,9 +325,9 @@
 <!-- ============================================================== -->
 <h2 id="overview">The big picture</h2>
 
-<p>Every banker who completes the AI readiness assessment, and every visitor who signs up to the AI Banking Brief, lands in MailerLite. From there, one of five automations fires automatically, based on which group the subscriber joined.</p>
+<p>Every opted-in banker who completes the AI readiness assessment lands in MailerLite. From there, one of four tier automations fires automatically, based on which group the subscriber joined.</p>
 
-<p>The five automations are:</p>
+<p>The four assessment automations are:</p>
 
 <table>
   <thead><tr>
@@ -339,34 +338,28 @@
   </tr></thead>
   <tbody>
     <tr>
-      <td><strong>AiBI Newsletter — Welcome</strong></td>
-      <td>AI Banking Brief Newsletter</td>
-      <td>1</td>
-      <td>One welcome email confirming subscription, setting expectation of one issue every two weeks.</td>
-    </tr>
-    <tr>
       <td><strong>AiBI Assessment — Starting Point</strong></td>
       <td>Tier · Starting Point</td>
       <td>3 (Day 0, 3, 7)</td>
-      <td>Banker scored 12–20. Sequence orients them, gives one cheap pilot, and ends with the funding-conversation email.</td>
+      <td>Banker scored 12–22. Sequence orients them, gives one cheap pilot, and ends with three board-ready AI numbers.</td>
     </tr>
     <tr>
       <td><strong>AiBI Assessment — Early Stage</strong></td>
       <td>Tier · Early Stage</td>
       <td>3 (Day 0, 3, 7)</td>
-      <td>Banker scored 21–29. Sequence pushes convergence on one tool, a one-page governance memo, and a 90-day arc.</td>
+      <td>Banker scored 23–32. Sequence pushes convergence on one tool, a one-page governance memo, and a 90-day arc.</td>
     </tr>
     <tr>
       <td><strong>AiBI Assessment — Building Momentum</strong></td>
       <td>Tier · Building Momentum</td>
       <td>3 (Day 0, 3, 7)</td>
-      <td>Banker scored 30–38. Sequence frames the capability ladder and the habits of the next maturity band.</td>
+      <td>Banker scored 33–40. Sequence frames the capability ladder and the habits of the next maturity band.</td>
     </tr>
     <tr>
       <td><strong>AiBI Assessment — Ready to Scale</strong></td>
       <td>Tier · Ready to Scale</td>
       <td>3 (Day 0, 3, 7)</td>
-      <td>Banker scored 39–48. Sequence positions them as peer leaders and surfaces the institution-wide credential program plus Leadership Advisory.</td>
+      <td>Banker scored 41–48. Sequence positions them as peer leaders and surfaces institutional rollout plus Leadership Advisory.</td>
     </tr>
   </tbody>
 </table>
@@ -397,7 +390,6 @@
 <table>
   <thead><tr><th>Group</th><th>Id</th></tr></thead>
   <tbody>
-    <tr><td>AI Banking Brief Newsletter</td><td class="mono-cell">186962925939853044</td></tr>
     <tr><td>AI Readiness Assessment (master)</td><td class="mono-cell">186962926400177174</td></tr>
     <tr><td>Tier · Starting Point</td><td class="mono-cell">186962926730478712</td></tr>
     <tr><td>Tier · Early Stage</td><td class="mono-cell">186962927090140351</td></tr>
@@ -407,33 +399,12 @@
 </table>
 
 <!-- ============================================================== -->
-<h2 id="newsletter">Automation 1 · AiBI Newsletter — Welcome</h2>
-<div class="card newsletter">
-  <p class="designation">Trigger group · AI Banking Brief Newsletter · ID 186965438418126829</p>
-  <h3>One welcome email. That is the entire automation.</h3>
-  <p>Anyone who signs up for the AI Banking Brief from any newsletter form on the site lands in this group, fires this automation, and receives the welcome email immediately.</p>
-  <p>The newsletter itself (the recurring "one regulatory update, one practical lever, one peer signal" issue) is a separate Campaign workflow, sent on a schedule by you. This automation is only the welcome.</p>
-
-  <h4>The email</h4>
-  <div class="email-block">
-    <span class="day-tag">Day 0 · Welcome</span>
-    <p class="subject">Welcome to the AI Banking Brief</p>
-    <p class="preheader">Practitioner-grade AI insight for community banks and credit unions.</p>
-    <div class="summary">
-      <p>Sets the format of the recurring brief: one regulatory update, one practical lever, one peer signal. No vendor pitches. No "AI-powered" headlines. No unsourced statistics.</p>
-      <p>Closes by inviting subscribers who have not yet taken the assessment to do so.</p>
-      <p class="cta">CTA → Take the 12-question assessment</p>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================== -->
-<h2 id="starting-point">Automation 2 · Assessment — Starting Point</h2>
+<h2 id="starting-point">Automation 1 · Assessment — Starting Point</h2>
 <div class="card tier-starting">
   <p class="designation">Trigger group · Tier · Starting Point · ID 186965478342657970</p>
-  <h3>Score 12–20 · Posture: orientation, not catch-up</h3>
+  <h3>Score 12–22 · Posture: orientation, not catch-up</h3>
 
-  <p>Most community banks and credit unions land in this band today. The voice is deliberately reassuring: <em>"You are not late. You are early."</em> The CTAs progress from a free 30-minute Executive Briefing toward the AiBI Foundations credential.</p>
+  <p>Most community banks and credit unions land in this band today. The voice is deliberately reassuring: <em>"You are not late. You are early."</em> The CTAs progress from the full results page toward the AiBI-Foundation course.</p>
 
   <div class="grid-2">
     <div class="stat"><div class="num">55%</div><div class="label">of FIs have no AI governance framework yet (Gartner via Jack Henry, 2025)</div></div>
@@ -444,8 +415,8 @@
 
   <div class="email-block">
     <span class="day-tag">Day 0</span>
-    <p class="subject">Your assessment result: Starting Point — and what to do this week</p>
-    <p class="preheader">You are not behind. You are at a starting line that 4 in 10 community banks share.</p>
+    <p class="subject">Your assessment result: Starting Point</p>
+    <p class="preheader">Your Starting Point result, full report, and the cheapest move you can make this week.</p>
     <div class="summary">
       <p>Frames Starting Point as the median position, not a failure. Cites three Gartner statistics. Recommends a single move: build a one-page AI use-case registry by sending one question to every department head.</p>
       <p>Anchors to the AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC, February 2026) which names "AI use case inventory" as a baseline expectation.</p>
@@ -470,21 +441,21 @@
 
   <div class="email-block">
     <span class="day-tag">Day 7</span>
-    <p class="subject">How most community banks plan to fund AI in 2026</p>
-    <p class="preheader">Bank Director 2024 Tech Survey, Gartner Peer Community, FDIC data.</p>
+    <p class="subject">Three board-ready AI numbers</p>
+    <p class="preheader">Three board-ready numbers, and the most direct path to a credentialed AI plan.</p>
     <div class="summary">
       <p>Three sourced statistics worth memorizing: 66% of banks discussing AI budget (Bank Director 2024), ~65% community-bank median efficiency ratio (FDIC CEIC), ~55.7% industry-wide (FDIC Q4 2024).</p>
-      <p>The gap between those last two is the prize. Closing it does not require a moonshot.</p>
-      <p class="cta">CTA → AiBI Foundations credential ($295)</p>
+      <p>The efficiency-ratio spread is a useful board conversation starter, not a promise that AI training closes the gap by itself.</p>
+      <p class="cta">CTA → AiBI-Foundation Course ($295)</p>
     </div>
   </div>
 </div>
 
 <!-- ============================================================== -->
-<h2 id="early-stage">Automation 3 · Assessment — Early Stage</h2>
+<h2 id="early-stage">Automation 2 · Assessment — Early Stage</h2>
 <div class="card tier-early">
   <p class="designation">Trigger group · Tier · Early Stage · ID 186965527420208336</p>
-  <h3>Score 21–29 · Posture: focus, not more activity</h3>
+  <h3>Score 23–32 · Posture: focus, not more activity</h3>
 
   <p>Early Stage means experimentation is happening, often informally, sometimes without governance. The risk is sprawl: ten people using ten different tools. The voice is decisive: pick one tool, write a one-page memo, run a 90-day arc.</p>
 
@@ -492,8 +463,8 @@
 
   <div class="email-block">
     <span class="day-tag">Day 0</span>
-    <p class="subject">Your assessment result: Early Stage — and the one decision that matters</p>
-    <p class="preheader">You have started. The next move is choosing one tool to standardize on.</p>
+    <p class="subject">Your assessment result: Early Stage</p>
+    <p class="preheader">Your Early Stage result — and the one decision that prevents AI sprawl.</p>
     <div class="summary">
       <p>Names the risk (tool sprawl) and the single decision: pick one general-purpose AI tool and standardize across the institution. Three evaluation criteria, in order: data residency and training opt-out, SSO and audit log, integration with existing workflow.</p>
       <p class="cta">CTA → View your full results</p>
@@ -504,10 +475,10 @@
 
   <div class="email-block">
     <span class="day-tag">Day 3</span>
-    <p class="subject">The governance memo every Early Stage bank needs (one page)</p>
-    <p class="preheader">A template you can adapt in 60 minutes, not 60 days.</p>
+    <p class="subject">The one-page AI governance memo</p>
+    <p class="preheader">The one-page AI governance memo your board can read and your compliance officer can defend.</p>
     <div class="summary">
-      <p>A one-page memo, not a 40-page policy. Four sections: what is allowed, who owns oversight, how exceptions get approved, what gets logged. Maps to SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.</p>
+      <p>A one-page memo as the starting point, not a replacement for policy. Four sections: what is allowed, who owns oversight, how exceptions get approved, what gets logged. Maps to SR 11-7, Interagency TPRM Guidance, ECOA/Reg B, and the AIEOG AI Lexicon.</p>
       <p class="cta">CTA → Book an Executive Briefing</p>
     </div>
   </div>
@@ -520,16 +491,16 @@
     <p class="preheader">Three milestones that move the needle and a credential that codifies them.</p>
     <div class="summary">
       <p>Day 30 — inventory complete, tool selected, memo signed. Day 60 — two pilot use cases live in back-office. Day 90 — first impact metric reported to leadership.</p>
-      <p class="cta">CTA → AiBI Foundations credential ($295 / $199 at 10+)</p>
+      <p class="cta">CTA → AiBI-Foundation Course ($295; institutional rollout by request)</p>
     </div>
   </div>
 </div>
 
 <!-- ============================================================== -->
-<h2 id="building-momentum">Automation 4 · Assessment — Building Momentum</h2>
+<h2 id="building-momentum">Automation 3 · Assessment — Building Momentum</h2>
 <div class="card tier-momentum">
   <p class="designation">Trigger group · Tier · Building Momentum · ID 186965564883732340</p>
-  <h3>Score 30–38 · Posture: scale, not just activity</h3>
+  <h3>Score 33–40 · Posture: scale, not just activity</h3>
 
   <p>This band has moved past "should we use AI?" to "how do we scale it responsibly?" The voice is institutional. The CTA is the credential program at scale and the institution-wide capability ladder.</p>
 
@@ -537,8 +508,8 @@
 
   <div class="email-block">
     <span class="day-tag">Day 0</span>
-    <p class="subject">Your assessment result: Building Momentum — what the next band requires</p>
-    <p class="preheader">You are in the top quartile. Here is what separates Building Momentum from Ready to Scale.</p>
+    <p class="subject">Your assessment result: Building Momentum</p>
+    <p class="preheader">Your Building Momentum result, and the three patterns that separate you from Ready to Scale.</p>
     <div class="summary">
       <p>Three patterns separate Building Momentum from Ready to Scale: a documented capability ladder, an impact ledger with measured outcomes, and live governance with monthly reviews.</p>
       <p class="cta">CTA → View your full results</p>
@@ -552,8 +523,8 @@
     <p class="subject">A capability ladder that maps to your institution</p>
     <p class="preheader">Foundations, Specialist, Leader — what each role does.</p>
     <div class="summary">
-      <p>Three rungs: Practitioner (target: 1 in 5 of your team), Specialist (1 per major function), Leader (1 per institution). The credential program (AiBI Foundations, AiBI-S, AiBI-L) maps directly to this.</p>
-      <p class="cta">CTA → AiBI Foundations credential</p>
+      <p>Three rungs: Foundation, Specialist, Leader. Foundation is live; Specialist and Leader remain roadmap/cohort paths until demand is concrete.</p>
+      <p class="cta">CTA → AiBI-Foundation Course</p>
     </div>
   </div>
 
@@ -564,17 +535,17 @@
     <p class="subject">What "Ready to Scale" institutions do that Building Momentum institutions do not</p>
     <p class="preheader">Three operating habits, observed across the cohort.</p>
     <div class="summary">
-      <p>Quarterly impact-ledger review at the board level. A bench of two named successors per credentialed leader. Active customer-facing AI with explicit explainability (84% of consumers would switch FIs for AI-driven insights, Personetics 2025 via Apiture).</p>
+      <p>Quarterly impact-ledger review at the board level. A bench of two named successors per credentialed leader. Customer-facing AI only where explainability, adverse-action discipline, and human review are explicit.</p>
       <p class="cta">CTA → Book an Executive Briefing</p>
     </div>
   </div>
 </div>
 
 <!-- ============================================================== -->
-<h2 id="ready-to-scale">Automation 5 · Assessment — Ready to Scale</h2>
+<h2 id="ready-to-scale">Automation 4 · Assessment — Ready to Scale</h2>
 <div class="card tier-ready">
   <p class="designation">Trigger group · Tier · Ready to Scale · ID 186965601924679393</p>
-  <h3>Score 39–48 · Posture: peer leadership, not catch-up</h3>
+  <h3>Score 41–48 · Posture: peer leadership, not catch-up</h3>
 
   <p>The top band. Most of the community banking sector will not reach this maturity for another 24 months. The voice is collegial. The CTA progression moves from credentialing the bench to the Leadership Advisory engagement (the Institute's fractional Chief AI Officer offering).</p>
 
@@ -582,8 +553,8 @@
 
   <div class="email-block">
     <span class="day-tag">Day 0</span>
-    <p class="subject">Your assessment result: Ready to Scale — you are in the top band</p>
-    <p class="preheader">You scored in the top quartile. The conversation now is leadership, not catch-up.</p>
+    <p class="subject">Your assessment result: Ready to Scale</p>
+    <p class="preheader">Your Ready to Scale result — and how to lead the AI conversation in your market.</p>
     <div class="summary">
       <p>Three things to consider in the next quarter: peer leadership (your story benefits the sector), talent pipeline (your bench is your moat), and customer experience leverage (76% of consumers would switch FIs for a better digital experience, Motley Fool via Apiture 2025).</p>
       <p class="cta">CTA → View your full results</p>
@@ -595,7 +566,7 @@
   <div class="email-block">
     <span class="day-tag">Day 3</span>
     <p class="subject">The institution-wide credential program (and why it matters)</p>
-    <p class="preheader">AiBI Foundations at scale — the bench pattern that protects your AI program.</p>
+    <p class="preheader">Credential the bench: the concentration risk in a mature AI program, and the fix.</p>
     <div class="summary">
       <p>The single largest institutional risk in a Ready to Scale program is concentration. Pattern that works: 10–25 credentialed Practitioners, one Specialist per business line, one Leader as accountable executive.</p>
       <p>Institutional seats: volume pricing scoped by request before rollout; self-paced with ongoing access under the current offer.</p>
@@ -620,7 +591,7 @@
 <!-- ============================================================== -->
 <h2 id="voice">Voice and content rules</h2>
 
-<p>Every email follows the same content rules, derived from the brand brief and the design system. These are non-negotiable across all 13 emails.</p>
+<p>Every email follows the same content rules, derived from the brand brief and the design system. These are non-negotiable across all 12 assessment nurture emails.</p>
 
 <h3>What every email does</h3>
 <ul>
@@ -638,32 +609,37 @@
 <ul>
   <li>Day 0 emails point to the full results page on the site.</li>
   <li>Mid-sequence (Day 3) emails point to the Executive Briefing (free, 30 minutes) or the AiBI-Foundation Course.</li>
-  <li>End-of-sequence (Day 7) emails point to the credential program or Leadership Advisory, scaled to the band.</li>
+  <li>End-of-sequence (Day 7) emails point to AiBI-Foundation, institutional rollout, an Executive Briefing, or Leadership Advisory, scaled to the band.</li>
 </ul>
 
 <h3>Where the canonical copy lives</h3>
-<p>The version-controlled source of truth is <span class="mono">docs/mailerlite-emails/*.html</span> plus this overview. The MailerLite dashboard editor is downstream. If an operator polishes typography in the dashboard, that change does not propagate back to the repo — to keep both in sync, edit the versioned HTML first and recreate the automations.</p>
+<p>The version-controlled source of truth is <span class="mono">docs/mailerlite-emails/*.html</span> and the copy-paste index at <span class="mono">docs/mailerlite-emails/index.html</span>. This overview is a reference only. The MailerLite dashboard editor is downstream. If an operator polishes typography in the dashboard, that change does not propagate back to the repo — to keep both in sync, edit the versioned HTML first and repaste the affected email body.</p>
 
 <!-- ============================================================== -->
 <h2 id="activation">How to activate (the manual steps)</h2>
 
-<p>The five automations are created via API, but MailerLite requires each email step to be opened in the visual editor and saved at least once before the automation can flip from Draft to Active. This is a one-time setup pass.</p>
+<p>The four tier automations are created in MailerLite, but the API cannot author automation email HTML or enable automations. Paste the 12 versioned HTML bodies by hand, test, then activate.</p>
 
 <ol class="step-list">
   <li><strong>Open the automation list</strong> at <a href="https://dashboard.mailerlite.com/automations" target="_blank">dashboard.mailerlite.com/automations</a>. Click the <em>Drafts</em> tab.</li>
-  <li><strong>Click "Edit" on one automation</strong> (recommend starting with the Newsletter — it has only one email step).</li>
+  <li><strong>Click "Edit" on one tier automation</strong> (Starting Point, Early Stage, Building Momentum, or Ready to Scale).</li>
   <li><strong>Click on the first email block</strong> in the workflow editor. The right-hand panel shows From name, From email, Subject, and a "Design email" button.</li>
   <li><strong>Set the From fields</strong> if not already filled: From name <span class="mono">James Gilmore</span>, From email <span class="mono">hello@aibankinginstitute.com</span> (the verified sender).</li>
-  <li><strong>Click "Design email"</strong>. The visual editor loads the HTML I generated. Click "Done editing" or "Save and exit" — no changes required.</li>
-  <li><strong>Repeat for each email step in that automation.</strong> Tier sequences have three; the Newsletter has one.</li>
-  <li><strong>Click "Activate"</strong> at the top of the workflow. The automation moves from Drafts to Workflows.</li>
-  <li><strong>Repeat for the remaining four automations.</strong></li>
+  <li><strong>Click "Design email" → "Use HTML editor"</strong>, then paste the matching raw HTML copied from <span class="mono">docs/mailerlite-emails/index.html</span>.</li>
+  <li><strong>Leave MailerLite's Preview text field blank.</strong> The pasted HTML already contains the hidden preheader and preview filler.</li>
+  <li><strong>Repeat for each email step in that automation.</strong> Each tier sequence has three emails: Day 0, Day 3, Day 7.</li>
+  <li><strong>Send one seed test per tier</strong> before activation. Confirm <span class="mono">{$score}</span>, <span class="mono">{$profile_id}</span>, result links, unsubscribe, and sender-domain authentication.</li>
+  <li><strong>Click "Activate"</strong> at the top of the workflow after the seed test passes. The automation moves from Drafts to Workflows.</li>
+  <li><strong>Repeat for the remaining three automations.</strong></li>
 </ol>
 
 <h3>Activation checklist</h3>
 <ul class="checklist">
-  <li class="done">Sender domain <span class="mono">aibankinginstitute.com</span> verified</li>
-  <li>Newsletter automation activated</li>
+  <li>Sender domain <span class="mono">aibankinginstitute.com</span> authenticated in MailerLite</li>
+  <li>Starting Point seed test passed</li>
+  <li>Early Stage seed test passed</li>
+  <li>Building Momentum seed test passed</li>
+  <li>Ready to Scale seed test passed</li>
   <li>Starting Point automation activated</li>
   <li>Early Stage automation activated</li>
   <li>Building Momentum automation activated</li>
@@ -691,7 +667,7 @@
 
 <h3>Path C — Real assessment, real flow (the full e2e)</h3>
 <ol>
-  <li>Activate all five automations.</li>
+  <li>Activate all four assessment automations.</li>
   <li>Take the assessment yourself at <a href="https://aibankinginstitute.com/assessment/take">aibankinginstitute.com/assessment/take</a>.</li>
   <li>Use a fresh email (<span class="mono">+test</span> aliases work). Tick the marketing-consent checkbox.</li>
   <li>Within 1–2 minutes you receive: the transactional Resend "your assessment results" email AND the Day 0 MailerLite tier email.</li>
@@ -723,17 +699,17 @@
 <ul>
   <li><strong>The Resend transactional emails</strong> (results breakdown, course purchase, certificate, inquiry ack). Those run through five Resend Templates, separate from MailerLite. See the 2026-05-06 entry in CLAUDE.md.</li>
   <li><strong>Supabase Auth emails</strong> (signup confirm, password reset, magic link). Those run through Supabase Custom SMTP using Resend as transport.</li>
-  <li><strong>The recurring AI Banking Brief newsletter issues</strong>. Those will be Campaigns in MailerLite, sent on your schedule. The automation here is only the welcome.</li>
+  <li><strong>The recurring AI Banking Brief newsletter issues</strong>. Those will be Campaigns in MailerLite, sent on your schedule. They are separate from this assessment nurture.</li>
 </ul>
 
 <h3>What still needs you (open items)</h3>
 <ul class="checklist">
   <li class="done">MailerLite MCP installed and authenticated</li>
-  <li class="done">5 Automations created with style-corrected copy</li>
-  <li class="done">Sender domain <span class="mono">aibankinginstitute.com</span> verified in MailerLite</li>
+  <li class="done">4 assessment automations created with style-corrected subjects</li>
+  <li>Sender domain <span class="mono">aibankinginstitute.com</span> authenticated in MailerLite</li>
   <li class="done">End-to-end wiring confirmed (test subscriber landed in Tier · Starting Point + Master groups via <span class="mono">/api/capture-email</span>)</li>
-  <li>Each of the 5 automations completed in the visual editor and activated</li>
-  <li>Test subscribe to confirm a real Day 0 email arrives</li>
+  <li>Each of the 4 automations pasted in the HTML editor, seed-tested, and activated</li>
+  <li>Test subscribe to confirm a real Day 0 email arrives with resolved merge fields</li>
   <li>Author the recurring AI Banking Brief Campaign workflow (separate from these automations)</li>
   <li>Clean up test subscribers (<span class="mono">+mltest</span>, <span class="mono">+e2e1</span>, <span class="mono">+e2e2</span>) after activation</li>
 </ul>

@@ -110,7 +110,7 @@ export const TIER_CLOSING_CTA: Record<Tier['id'], TierClosingCta> = {
     eyebrow: 'Your next move',
     headline: 'Start with AiBI-Foundation.',
     body:
-      "Your score says AI is already being used inside your organization without consistent training or guardrails. The fastest way to fix that is to build internal capability — one workflow owner, one safe-use habit, one repeatable workflow at a time. AiBI-Foundation is twelve self-paced modules built for banking professionals.",
+      "Your score says AI is already being used inside your organization without consistent training or guardrails. The fastest way to fix that is to build internal capability — one workflow owner, one safe-use habit, one repeatable workflow at a time. AiBI-Foundation is 18 bite-sized modules built for banking professionals.",
     primary: {
       label: 'Enroll in AiBI-Foundation · $295',
       href: '/courses/foundation/program',

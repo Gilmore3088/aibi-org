@@ -2,8 +2,11 @@
 // Creates a Stripe Checkout Session for AiBI-Foundation course purchase.
 //
 // Individual mode: $295/seat (STRIPE_FOUNDATION_PRICE_ID, fallback STRIPE_AIBIP_PRICE_ID)
-// Institution/team mode: $199/seat x quantity (STRIPE_FOUNDATION_INSTITUTION_PRICE_ID,
-// fallback STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats
+// Institution/team mode is supported only when intentionally configured:
+// $199/seat x quantity (STRIPE_FOUNDATION_INSTITUTION_PRICE_ID,
+// fallback STRIPE_AIBIP_INSTITUTION_PRICE_ID), min 10 seats. This is
+// launch-deferred per docs/stripe-products.md unless an assisted-sales buyer
+// makes the SKU concrete.
 //
 // Persistent discount: if an individual buyer's email is associated with an institution
 // that has discount_locked=true, they get the institution price automatically (PAY-03).
