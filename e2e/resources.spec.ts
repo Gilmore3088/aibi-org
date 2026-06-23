@@ -112,19 +112,19 @@ test.describe('/resources page', () => {
     await expect(cta).toHaveAttribute('href', '/assessment');
   });
 
-  test('every download href referenced on the page returns HTTP 200 or 302', async ({ request }) => {
+  test('every download href referenced on the page resolves to a wired route', async ({ request }) => {
     // Iterate the data model used by the page so any new artifact
     // automatically gets coverage without editing this test.
     // Accepts 302 because /api/resources/.../download redirects to a
-    // short-lived signed URL. In envs without Supabase (local/preview)
-    // the route returns 404/503; those are not counted as failures here
-    // because file availability is tested separately from link correctness.
+    // short-lived signed URL. 401/403 are acceptable for auth-gated downloads.
+    // In envs without Supabase (local/preview), the route can return 503. A
+    // 404 means the known slug is missing or unpublished and should fail.
     const hrefs = allDownloadHrefs().filter((h) => h.startsWith('/api/'));
     expect(hrefs.length).toBeGreaterThan(0);
     for (const href of hrefs) {
       const res = await request.get(href);
       expect(
-        [200, 302, 404, 503].includes(res.status()),
+        [200, 302, 401, 403, 503].includes(res.status()),
         `${href} returned unexpected ${res.status()}`,
       ).toBe(true);
     }

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
 import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
+import { dashboardSessionErrorResponse, getDashboardSession } from '@/lib/dashboard/session';
 import { dbReadValues } from '@/lib/products/normalize';
 
 interface EnrollmentRow {
@@ -28,20 +27,13 @@ interface UserArtifactRow {
 }
 
 export async function GET(): Promise<NextResponse> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+  const session = await getDashboardSession();
+  if (!session.ok) {
+    return dashboardSessionErrorResponse(session);
   }
 
-  const supabase = createServerClientWithCookies(await cookies());
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
-  }
-
+  const { supabase, user } = session;
+  const foundationProducts = dbReadValues('foundation');
   const [
     enrollmentResult,
     practiceResult,
@@ -52,27 +44,46 @@ export async function GET(): Promise<NextResponse> {
       .from('course_enrollments')
       .select('id, completed_modules, current_module, enrolled_at, onboarding_answers')
       .eq('user_id', user.id)
-      .in('product', dbReadValues('foundation'))
+      .in('product', foundationProducts)
+      .order('enrolled_at', { ascending: false, nullsFirst: false })
+      .limit(1)
       .maybeSingle(),
     supabase
       .from('practice_rep_completions')
       .select('rep_id, completed_at')
       .eq('user_id', user.id)
-      .in('course_id', dbReadValues('foundation')),
+      .in('course_id', foundationProducts),
     supabase
       .from('saved_prompts')
       .select('prompt_id')
       .eq('user_id', user.id)
-      .in('course_id', dbReadValues('foundation')),
+      .in('course_id', foundationProducts),
     supabase
       .from('user_artifacts')
       .select('artifact_id, status, updated_at')
       .eq('user_id', user.id)
-      .in('course_id', dbReadValues('foundation')),
+      .in('course_id', foundationProducts),
   ]);
 
-  if (enrollmentResult.error) {
-    return NextResponse.json({ error: 'Failed to load enrollment.' }, { status: 500 });
+  const queryErrors = [
+    { area: 'enrollment', error: enrollmentResult.error },
+    { area: 'practice', error: practiceResult.error },
+    { area: 'prompts', error: promptsResult.error },
+    { area: 'artifacts', error: artifactsResult.error },
+  ].filter((item) => item.error);
+
+  if (queryErrors.length > 0) {
+    console.error(
+      '[dashboard/learner] query errors:',
+      queryErrors.map((item) => `${item.area}: ${item.error?.message ?? 'unknown error'}`).join('; '),
+    );
+    return NextResponse.json(
+      {
+        error: 'Failed to load learner dashboard.',
+        failed: queryErrors.map((item) => item.area),
+      },
+      { status: 500 },
+    );
   }
 
   const enrollment = enrollmentResult.data as EnrollmentRow | null;

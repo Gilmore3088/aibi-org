@@ -9,9 +9,12 @@
 // Gated resources require a matching entitlements row.
 
 import { NextResponse } from 'next/server';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { cookies, headers } from 'next/headers';
 import { createServerClientWithCookies, createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
+import { getDownloadResource, type DownloadResource } from '@/lib/resources/downloadCatalog';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -19,7 +22,7 @@ export const runtime = 'nodejs';
 const SIGNED_URL_TTL_SECONDS = 300; // 5 minutes
 
 interface ResourceRow {
-  readonly id: string;
+  readonly id: string | null;
   readonly slug: string;
   readonly file_path: string;
   readonly tier_required: 'free' | 'foundation' | 'aibi-s' | 'aibi-l' | 'in-depth-assessment';
@@ -38,7 +41,28 @@ const TIER_TO_PRODUCTS: Record<ResourceRow['tier_required'], readonly string[]> 
   'in-depth-assessment': ['in-depth-assessment'],
 };
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function staticDownloadResponse(
+  resource: Pick<ResourceRow, 'file_path'> & { readonly file_type?: 'pdf' | 'zip' },
+): Promise<Response> {
+  try {
+    const file = await readFile(join(process.cwd(), 'public', 'downloads', resource.file_path));
+    const filename = resource.file_path.split('/').pop() ?? resource.file_path;
+    const contentType = resource.file_type === 'zip' ? 'application/zip' : 'application/pdf';
+    return new NextResponse(file, {
+      status: 200,
+      headers: {
+        'Content-Type': contentType,
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Cache-Control': 'public, max-age=300',
+      },
+    });
+  } catch (error) {
+    console.error(`[resources:download] static fallback missing for ${resource.file_path}:`, error);
+    return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });
+  }
+}
+
+export async function GET(_request: Request, context: RouteContext): Promise<Response> {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
@@ -48,15 +72,34 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
   }
 
-  const service = createServiceRoleClient();
+  const staticResource = getDownloadResource(slug);
+  let service: ReturnType<typeof createServiceRoleClient>;
+  try {
+    service = createServiceRoleClient();
+  } catch {
+    if (staticResource?.tier_required === 'free') {
+      return staticDownloadResponse(staticResource);
+    }
+    return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });
+  }
 
-  const { data: resource, error } = await service
+  const { data: persistedResource, error } = await service
     .from('resources')
     .select('id, slug, file_path, tier_required, published')
     .eq('slug', slug)
     .maybeSingle<ResourceRow>();
 
-  if (error || !resource || !resource.published) {
+  if (persistedResource && !persistedResource.published) {
+    return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
+  }
+
+  if (error && !staticResource) {
+    console.warn(`[resources:download] resource catalog lookup failed for ${slug}:`, error.message);
+  }
+
+  const resource: ResourceRow | DownloadResource | null = persistedResource ?? staticResource;
+
+  if (!resource) {
     return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
   }
 
@@ -119,18 +162,12 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
 
   if (signedErr || !signed?.signedUrl) {
     // Storage failed (bucket not seeded or not created yet). For free-tier
-    // resources the file is also served as a static asset from /public/downloads/,
-    // so fall back there rather than erroring. Gated resources have no public
-    // fallback — return 503 instead of 500 so the caller knows it's transient.
+    // resources the file is also committed under /public/downloads, so stream it
+    // directly rather than relying on legacy /downloads redirects. Gated
+    // resources have no public fallback — return 503 instead of 500 so the
+    // caller knows it's transient.
     if (resource.tier_required === 'free') {
-      console.warn(
-        `[resources:download] storage unavailable for ${slug} — falling back to static /downloads/${resource.file_path}`,
-        signedErr?.message,
-      );
-      return NextResponse.redirect(
-        new URL(`/downloads/${resource.file_path}`, request.url).toString(),
-        { status: 302 },
-      );
+      return staticDownloadResponse(resource);
     }
     console.error(`[resources:download] storage error for ${slug}:`, signedErr?.message);
     return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });

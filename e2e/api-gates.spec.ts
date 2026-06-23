@@ -7,7 +7,9 @@ import { test, expect } from '@playwright/test';
 // they depend on cumulative call history.
 
 const PROTECTED_GET: ReadonlyArray<{ path: string; expectedStatus: number[] }> = [
-  { path: '/api/dashboard/learner', expectedStatus: [401, 403, 404] },
+  { path: '/api/dashboard/learner', expectedStatus: [401, 403, 503] },
+  { path: '/api/dashboard/assessments', expectedStatus: [401, 403, 503] },
+  { path: '/api/dashboard/toolbox-access', expectedStatus: [401, 403, 503] },
   { path: '/api/assessment/pdf/download', expectedStatus: [400, 401, 403] },
 ];
 

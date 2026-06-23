@@ -5,11 +5,11 @@
 //   - has a reachable route (does not 404)
 //   - does not crash (does not 500)
 //   - returns either a redirect (302 to signed URL) or a usable
-//     response (200) or a graceful not-found/unavailable (404/503)
+//     response (200), an auth gate (401/403), or unavailable service (503)
 //
-// In environments without Supabase, download routes return 404 or 503;
-// that is accepted here. What is NOT accepted: 500 (internal crash) or
-// 404 on a route that doesn't exist at all (vs a file that isn't in storage).
+// In environments without Supabase, download routes return 503; that is
+// accepted here. What is NOT accepted: 404 for a known resource slug or any
+// 5xx other than 503.
 //
 // Static template pages (/resources/templates/*) are also checked via GET.
 
@@ -61,36 +61,37 @@ const TEMPLATE_PAGES = [
   '/resources/templates/gtm-plan',
 ] as const;
 
+const WIRED_DOWNLOAD_STATUSES = [200, 302, 401, 403, 503] as const;
+
 // ── Tests ──────────────────────────────────────────────────────────────────
 
 test.describe('Resource delivery — artifact download routes', () => {
   for (const path of ARTIFACT_DOWNLOADS) {
-    test(`GET ${path} does not crash or 404-as-missing-route`, async ({ request }) => {
+    test(`GET ${path} resolves to a wired download route`, async ({ request }) => {
       const res = await request.get(path);
       const status = res.status();
       // 200 = file served directly
       // 302 = signed-URL redirect (Supabase)
       // 401/403 = auth-gated (acceptable)
-      // 404 = file not in storage (acceptable in envs without real Supabase)
       // 503 = Supabase not configured (acceptable in preview/local)
-      // NOT acceptable: 500 (crash) or any 5xx other than 503
+      // NOT acceptable: 404 for a known slug or any 5xx other than 503
       expect(
-        status < 500 || status === 503,
-        `${path} returned unexpected ${status} — this is an internal error`,
-      ).toBe(true);
+        WIRED_DOWNLOAD_STATUSES,
+        `${path} returned unexpected ${status}`,
+      ).toContain(status);
     });
   }
 });
 
 test.describe('Resource delivery — bundle (ZIP) download routes', () => {
   for (const path of BUNDLE_DOWNLOADS) {
-    test(`GET ${path} does not crash`, async ({ request }) => {
+    test(`GET ${path} resolves to a wired download route`, async ({ request }) => {
       const res = await request.get(path);
       const status = res.status();
       expect(
-        status < 500 || status === 503,
+        WIRED_DOWNLOAD_STATUSES,
         `${path} returned unexpected ${status}`,
-      ).toBe(true);
+      ).toContain(status);
     });
   }
 });

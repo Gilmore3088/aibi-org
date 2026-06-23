@@ -8,8 +8,7 @@
 // is what users cannot easily find without a logged-in entry point).
 
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
+import { dashboardSessionErrorResponse, getDashboardSession } from '@/lib/dashboard/session';
 import { emailVariants } from '@/lib/email/canonicalize';
 
 export const runtime = 'nodejs';
@@ -40,42 +39,34 @@ interface AssessmentsResponse {
 }
 
 export async function GET(): Promise<NextResponse> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+  const session = await getDashboardSession();
+  if (!session.ok) {
+    return dashboardSessionErrorResponse(session);
   }
 
-  const supabase = createServerClientWithCookies(await cookies());
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { supabase, user } = session;
+  const variants = user.email ? emailVariants(user.email) : [];
 
-  if (authError || !user || !user.email) {
-    return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
-  }
-
-  // Entitlement check: course_enrollments row keyed on user_id OR any
-  // canonical/alias variant of the auth email. Without variant expansion,
-  // a Gmail "+alias" buyer who later signs in as the plain address falls
-  // through the dashboard gate even though /assessment/in-depth/take
-  // recognizes them. Matches the variant-aware pattern used in
-  // src/app/assessment/in-depth/take/page.tsx.
-  const variants = emailVariants(user.email);
-  const emailClause = variants.map((e) => `email.eq.${e}`).join(',');
-  const { data: enrollments, error: enrollErr } = await supabase
-    .from('course_enrollments')
-    .select('id, created_at')
+  // Entitlements are the canonical paid-access source for Toolbox and the
+  // dashboard. A manual In-Depth grant should unlock the dashboard state even
+  // if no legacy course_enrollments row exists.
+  const { data: entitlementRows, error: entitlementErr } = await supabase
+    .from('entitlements')
+    .select('id, granted_at')
+    .eq('user_id', user.id)
     .eq('product', 'in-depth-assessment')
-    .or(`user_id.eq.${user.id},${emailClause}`)
-    .order('created_at', { ascending: true });
+    .eq('active', true)
+    .order('granted_at', { ascending: true, nullsFirst: false });
 
-  if (enrollErr) {
-    console.error('[dashboard/assessments] enrollment query error:', enrollErr);
+  if (entitlementErr) {
+    console.error('[dashboard/assessments] entitlement query error:', entitlementErr);
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }
 
-  const entitled = (enrollments ?? []).length > 0;
-  const purchasedAt = entitled ? (enrollments![0].created_at as string) : null;
+  const entitled = (entitlementRows ?? []).length > 0;
+  const purchasedAt = entitled
+    ? ((entitlementRows?.[0]?.granted_at as string | null | undefined) ?? null)
+    : null;
 
   // Profile + completion check. Run UNCONDITIONALLY (was previously gated on
   // entitled) — completion is a property of the profile data, not of
@@ -93,12 +84,16 @@ export async function GET(): Promise<NextResponse> {
   // readiness_at alone produced the regression where a user who took
   // In-Depth then retook the free scan saw 'Take your purchased
   // assessment' on their dashboard because the free row was newer.
+  const profileClauses = [
+    `user_id.eq.${user.id}`,
+    ...variants.map((e) => `email.eq.${e}`),
+  ];
   const { data: profileRows, error: profileErr } = await supabase
     .from('user_profiles')
     .select(
       'id, readiness_answers, readiness_score, readiness_tier_id, readiness_tier_label, readiness_max_score, readiness_at',
     )
-    .or(variants.map((e) => `email.eq.${e}`).join(','))
+    .or(profileClauses.join(','))
     .order('readiness_at', { ascending: false, nullsFirst: false })
     .limit(10);
 

@@ -166,6 +166,9 @@ export async function POST(request: Request): Promise<Response> {
   }
   const enrollmentId = rawEnrollmentId.trim();
 
+  const authResult = await authenticate();
+  if (authResult.error) return authResult.error;
+
   const serviceClient = createServiceRoleClient();
 
   // T-08-01: Re-read review_status from DB — do not trust caller's claim of approval

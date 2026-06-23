@@ -1,5 +1,5 @@
 import { test, expect, type BrowserContext, type Page, type APIRequestContext } from '@playwright/test';
-import { loginViaUI } from './helpers/auth';
+import { isConfirmDevicePending, loginViaUI } from './helpers/auth';
 import {
   cleanupSeededUser,
   grantFoundationEnrollment,
@@ -15,6 +15,8 @@ import {
   type SeededUser,
 } from './helpers/seed';
 import type { OnboardingAnswers } from '@/types/course';
+
+const WIRED_DOWNLOAD_STATUSES = [200, 302, 401, 403, 503] as const;
 
 const ONBOARDING_BY_ROLE: Record<string, OnboardingAnswers> = {
   account: {
@@ -95,11 +97,16 @@ async function expectDashboardResourceLinksHealthy(
   for (const href of hrefs) {
     const res = await request.get(href!);
     const status = res.status();
-    expect(
-      status < 500 || status === 503,
-      `${href} returned ${status}; dashboard resource links must not crash`,
-    ).toBe(true);
-    if (!href!.startsWith('/api/')) {
+    if (href!.startsWith('/api/resources/')) {
+      expect(
+        WIRED_DOWNLOAD_STATUSES,
+        `${href} returned ${status}; dashboard resource download links must be wired`,
+      ).toContain(status);
+    } else {
+      expect(
+        status < 500 || status === 503,
+        `${href} returned ${status}; dashboard resource links must not crash`,
+      ).toBe(true);
       expect(status, `${href} should not be a missing page route`).not.toBe(404);
     }
   }
@@ -116,6 +123,29 @@ test.describe('dashboard lifecycle personas', () => {
       process.env.E2E_ALLOW_PRODUCTION_SUPABASE !== 'true',
       'Requires explicit Supabase seed opt-in: E2E_ALLOW_PRODUCTION_SUPABASE=true',
     );
+
+  test('signed-in but untrusted devices cannot read dashboard APIs directly', async ({
+    page,
+  }) => {
+    const user = await seedConfirmedUser();
+    try {
+      await loginViaUI(page, user);
+      expect(isConfirmDevicePending(page)).toBe(true);
+
+      for (const path of [
+        '/api/dashboard/learner',
+        '/api/dashboard/assessments',
+        '/api/dashboard/toolbox-access',
+      ]) {
+        const res = await page.request.get(path);
+        expect(res.status(), `${path} should require trusted device`).toBe(401);
+        const body = await res.json();
+        expect(body).toMatchObject({ reason: 'untrusted_device' });
+      }
+    } finally {
+      await cleanupSeededUser(user.id);
+    }
+  });
 
   test('persona 1: account-only user sees first-step dashboard', async ({
     page,

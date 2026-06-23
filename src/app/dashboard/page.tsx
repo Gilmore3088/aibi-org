@@ -10,60 +10,14 @@ import {
   getDailyPracticeRep,
 } from '@content/practice-reps/foundation-program';
 import { migrateStorageKey } from '@/lib/storage/migrate';
-
-interface ReadinessSnapshot {
-  readonly score: number;
-  readonly maxScore: number;
-  readonly tierId: string;
-  readonly tierLabel: string;
-  readonly isInDepth: boolean;
-  readonly takenAt: string | null;
-}
-
-interface AssessmentsState {
-  readonly displayName: string;
-  readonly snapshot: ReadinessSnapshot | null;
-  readonly inDepth: {
-    readonly entitled: boolean;
-    readonly profileId: string | null;
-    readonly hasCompleted: boolean;
-    readonly purchasedAt: string | null;
-  } | null;
-}
-
-interface LearnerDashboardState {
-  readonly email: string | null;
-  readonly enrollment: {
-    readonly id: string;
-    readonly completedModules: readonly number[];
-    readonly currentModule: number;
-    readonly enrolledAt: string;
-    readonly onboardingAnswers?: unknown;
-  } | null;
-  readonly practice: {
-    readonly completedRepIds: readonly string[];
-    readonly completedCount: number;
-  };
-  readonly prompts: {
-    readonly savedPromptIds: readonly string[];
-    readonly savedCount: number;
-  };
-  readonly artifacts: readonly DashboardArtifact[];
-}
-
-interface DashboardArtifact {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly moduleNumber?: number;
-  readonly status: 'available' | 'in-progress' | 'completed' | 'locked';
-  readonly updatedAt: string | null;
-}
-
-interface ToolboxAccessState {
-  readonly entitled: boolean;
-  readonly tier: 'starter' | 'full' | null;
-}
+import {
+  deriveDashboardViewModel,
+  resolveGreetingName,
+  type AssessmentsState,
+  type LearnerDashboardState,
+  type ReadinessSnapshot,
+  type ToolboxAccessState,
+} from './deriveDashboardViewModel';
 
 type LoadArea = 'learner' | 'assessments' | 'toolbox';
 
@@ -73,26 +27,6 @@ interface DashboardResource {
   readonly title: React.ReactNode;
   readonly meta: string;
   readonly icon: 'brief' | 'failures' | 'governance' | 'library';
-}
-
-// Greeting name resolution.
-// 1. Prefer the user's full_name from Supabase auth metadata (passed in via
-//    the /api/dashboard/assessments response as displayName).
-// 2. Fall back to the email local-part ONLY when it reads like a real name
-//    (alpha characters, no digits) — never turn "jlgilmore2" into
-//    "Jlgilmore2", which looks like a username, not a salutation.
-// 3. Last resort: empty string. Callers should render "Welcome back" with
-//    no name attached rather than guessing.
-function resolveGreetingName(apiName: string, email: string | undefined): string {
-  if (apiName.trim().length > 0) return apiName.trim();
-  if (!email) return '';
-  const local = email.split('@')[0] ?? '';
-  const first = local.split(/[._-]/)[0] ?? local;
-  // Treat it as a real first name only if it's purely alpha and short-ish.
-  if (first.length === 0 || first.length > 24 || !/^[a-zA-Z]+$/.test(first)) {
-    return '';
-  }
-  return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
 export default function DashboardPage() {
@@ -167,98 +101,41 @@ export default function DashboardPage() {
     ? FOUNDATION_PRACTICE_REPS.find((rep) => !completedRepIds.includes(rep.id)) ?? dailyRep
     : dailyRep;
 
-  // Activation ladder — derived from the user's actual state. Seven rungs,
-  // each tied to real evidence in the data. The "now" badge is computed
-  // separately so only the next un-done step lights up.
-  const stepAccount = Boolean(accountEmail);
-  const stepAssessment = Boolean(snapshot);
-  const stepRep = completedRepIds.length > 0;
-  const stepInDepth = Boolean(assessments?.inDepth?.hasCompleted);
-  const stepEnrolled = Boolean(dashboard?.enrollment);
-  const stepFirstModule =
-    (dashboard?.enrollment?.completedModules.length ?? 0) > 0;
-  const totalModules = modules.length;
-  const completedModuleCount = dashboard?.enrollment?.completedModules.length ?? 0;
-  const stepCertificate = stepEnrolled && completedModuleCount >= totalModules;
-  const savedPromptCount = dashboard?.prompts.savedCount ?? 0;
-  const artifacts = dashboard?.artifacts ?? [];
-  const completedArtifactCount = artifacts.filter((artifact) => artifact.status === 'completed').length;
-  const nextArtifact =
-    artifacts.find((artifact) => artifact.status === 'in-progress') ??
-    artifacts.find((artifact) => artifact.status === 'available') ??
-    null;
-  const currentModuleNumber = dashboard?.enrollment?.currentModule ?? 1;
-  const toolboxEntitled = Boolean(toolboxAccess?.entitled);
-  const toolboxLabel = toolboxAccess?.tier === 'starter'
-    ? 'In-Depth access'
-    : toolboxAccess?.tier === 'full'
-      ? 'Foundation access'
-      : 'Paid access';
-  const workPrimaryHref = stepEnrolled
-    ? `/courses/foundation/program/${currentModuleNumber}`
-    : toolboxEntitled
-      ? '/dashboard/toolbox'
-      : '/resources';
-  const workPrimaryLabel = stepEnrolled
-    ? `Continue Module ${currentModuleNumber}`
-    : toolboxEntitled
-      ? 'Open Toolbox'
-      : 'Browse resources';
-
-  const stepsDone = [
+  const dashboardView = deriveDashboardViewModel({
+    accountEmail,
+    assessments,
+    completedRepIds,
+    currentRep,
+    dashboard,
+    snapshot,
+    toolboxAccess,
+  });
+  const {
+    artifacts,
+    completedArtifactCount,
+    completedModuleCount,
+    currentModuleNumber,
+    heroLede,
+    heroPrimary,
+    heroSecondary,
+    nextArtifact,
+    nowIndex,
+    savedPromptCount,
     stepAccount,
     stepAssessment,
-    stepRep,
-    stepInDepth,
+    stepCertificate,
     stepEnrolled,
     stepFirstModule,
-    stepCertificate,
-  ];
-  const stepsComplete = stepsDone.filter(Boolean).length;
-  const totalSteps = stepsDone.length;
-  // Index of the first un-done step — that one renders as "now".
-  const nowIndex = stepsDone.findIndex((d) => !d);
-
-  // Hero CTA pair adapts to what's most actionable next.
-  // Order matters — most-progressed states first so we never push a user
-  // backwards (e.g. don't show "take in-depth" to someone who took it).
-  let heroPrimary: { href: string; label: string };
-  let heroSecondary: { href: string; label: string };
-  let heroLede: string;
-  const profileIdForBriefing = assessments?.inDepth?.profileId;
-  if (stepEnrolled) {
-    const cur = modules.find((m) => m.number === (dashboard?.enrollment?.currentModule ?? 1)) ?? modules[0]!;
-    heroPrimary = { href: `/courses/foundation/program/${cur.number}`, label: `Continue Module ${cur.number}` };
-    heroSecondary = { href: `/practice/${currentRep.id}`, label: "Today's rep" };
-    heroLede =
-      `Pick up where you left off in ${cur.title}. Practice reps are your shortest path between modules — six minutes, banker-safe.`;
-  } else if (stepInDepth) {
-    // Took the In-Depth — push them to the Briefing and to Foundation.
-    heroPrimary = profileIdForBriefing
-      ? { href: `/assessment/in-depth/results/${profileIdForBriefing}`, label: 'View your Briefing' }
-      : { href: '/courses/foundation/program/purchase', label: 'Enroll · $295' };
-    heroSecondary = { href: '/courses/foundation/program/purchase', label: 'Enroll · $295' };
-    heroLede =
-      'Your In-Depth Briefing is filed. The next move is to turn the diagnosis into operating capability — Foundation is the course that does that.';
-  } else if (assessments?.inDepth?.entitled) {
-    // Paid but hasn't taken it yet.
-    heroPrimary = { href: '/assessment/in-depth/take', label: 'Take your In-Depth assessment' };
-    heroSecondary = { href: `/practice/${currentRep.id}`, label: "Try today's rep" };
-    heroLede =
-      'Your In-Depth Assessment is ready. Forty-eight questions across eight dimensions — about twelve minutes — for a personalized Briefing and ninety-day action register.';
-  } else if (stepAssessment) {
-    // Free assessment only — sell the In-Depth.
-    heroPrimary = { href: '/assessment/in-depth', label: 'Take In-Depth · $99' };
-    heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
-    heroLede = snapshot
-      ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with peer-band comparison and a ninety-day playbook.`
-      : 'Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.';
-  } else {
-    heroPrimary = { href: '/assessment/take', label: 'Take the free assessment' };
-    heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
-    heroLede =
-      "Start with a three-minute readiness check. You'll get your score, your strongest area, your weakest area, and the recommended next step.";
-  }
+    stepInDepth,
+    stepRep,
+    stepsComplete,
+    toolboxEntitled,
+    toolboxLabel,
+    totalModules,
+    totalSteps,
+    workPrimaryHref,
+    workPrimaryLabel,
+  } = dashboardView;
 
   const tabs: ReadonlyArray<{ label: string; href: string; active?: boolean; lock?: string }> = [
     { label: 'Dashboard', href: '/dashboard', active: true },
