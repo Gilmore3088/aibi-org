@@ -1157,7 +1157,7 @@ function PlaygroundPanel(props: {
   readonly setInput: (value: string) => void;
   readonly messages: readonly ToolboxMessage[];
   readonly running: boolean;
-  readonly threadRef: RefObject<HTMLDivElement>;
+  readonly threadRef: RefObject<HTMLDivElement | null>;
   readonly modelSelection: ModelSelection;
   readonly setModelSelection: (next: ModelSelection) => void;
   readonly usage: { todayCents: number; dailyCapCents: number } | null;

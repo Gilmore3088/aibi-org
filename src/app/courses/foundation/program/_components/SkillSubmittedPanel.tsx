@@ -30,7 +30,7 @@ function DownloadIcon() {
 
 interface SkillSubmittedPanelProps {
   readonly values: Record<string, string>;
-  readonly successRef: RefObject<HTMLDivElement>;
+  readonly successRef: RefObject<HTMLDivElement | null>;
   readonly onRedownload: () => void;
 }
 
