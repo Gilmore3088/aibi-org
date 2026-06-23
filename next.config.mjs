@@ -57,6 +57,15 @@ const nextConfig = {
     '/api/courses/artifacts/skill-templates/[name]': [
       './public/artifacts/skill-templates/**',
     ],
+    // @sparticuz/chromium ships the (brotli-compressed) Chromium binary under
+    // its bin/. Because the package is externalized (above), Next must be told
+    // to trace those files into the warm function — otherwise Vercel reports
+    // "input directory .../@sparticuz/chromium/bin does not exist" and free
+    // assessment PDF generation fails. Regressed when Dependabot bumped
+    // @sparticuz/chromium 121 -> 149 / puppeteer-core 21 -> 25.
+    '/api/assessment/pdf/warm': [
+      './node_modules/@sparticuz/chromium/bin/**',
+    ],
   },
   // Decision log: 2026-04-17 — /courses and /certifications merged into /education
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:
