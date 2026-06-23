@@ -10,10 +10,15 @@ import {
   getFunnelScorecard,
   getFunnelStageDistribution,
   getFunnelContacts,
+  getResourceDownloadMetrics,
+  getResourceDownloadTotals,
   type FunnelScorecardRow,
   type FunnelStageRow,
   type FunnelContactRow,
+  type ResourceDownloadMetricRow,
+  type ResourceDownloadTotalsRow,
 } from '@/lib/funnel/queries';
+import { ResourceDownloads } from './_components/ResourceDownloads';
 
 export const dynamic = 'force-dynamic';
 
@@ -185,6 +190,10 @@ export default async function AdminFunnelPage() {
   let contacts: FunnelContactRow[] = [];
   let loadError: string | null = null;
 
+  let resourceMetrics: ResourceDownloadMetricRow[] = [];
+  let resourceTotals: ResourceDownloadTotalsRow | null = null;
+  let resourceError: string | null = null;
+
   try {
     [scorecard, stages, contacts] = await Promise.all([
       getFunnelScorecard(),
@@ -193,6 +202,17 @@ export default async function AdminFunnelPage() {
     ]);
   } catch (err) {
     loadError = err instanceof Error ? err.message : 'Failed to load funnel data';
+  }
+
+  // Resource KPIs read separate views — keep their failure independent so a
+  // funnel-view error doesn't blank the resource section (and vice versa).
+  try {
+    [resourceMetrics, resourceTotals] = await Promise.all([
+      getResourceDownloadMetrics(),
+      getResourceDownloadTotals(),
+    ]);
+  } catch (err) {
+    resourceError = err instanceof Error ? err.message : 'Failed to load resource downloads';
   }
 
   return (
@@ -235,6 +255,28 @@ export default async function AdminFunnelPage() {
             </h2>
             <ContactsTable rows={contacts} />
           </>
+        )}
+
+        <h2 style={sectionTitle}>
+          Resource downloads{' '}
+          <span style={{ color: 'var(--slate-400)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+            — per-resource, incl. anonymous (unique counts are by hashed IP)
+          </span>
+        </h2>
+        {resourceError ? (
+          <div
+            style={{
+              ...card,
+              borderColor: 'var(--gold)',
+              background: 'var(--gold-a10)',
+              padding: 16,
+              fontSize: 14,
+            }}
+          >
+            Could not load resource downloads: {resourceError}
+          </div>
+        ) : (
+          <ResourceDownloads totals={resourceTotals} rows={resourceMetrics} />
         )}
       </div>
     </main>

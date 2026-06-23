@@ -77,3 +77,52 @@ export async function getFunnelContacts(limit = 500): Promise<FunnelContactRow[]
   if (error) throw new Error(`funnel_contacts read failed: ${error.message}`);
   return (data ?? []) as FunnelContactRow[];
 }
+
+export interface ResourceDownloadMetricRow {
+  resource_slug: string;
+  downloads: number;
+  last_7d: number;
+  last_24h: number;
+  /** Distinct hashed-IP count — an approximate unique-visitor estimate. */
+  unique_visitors: number;
+  last_download: string | null;
+}
+
+/**
+ * Per-resource download counts (all-time / 7d / 24h) with a unique-visitor
+ * estimate and last-download date, from the resource_download_metrics view
+ * (migration 00052). Service-role only. Ordered most-downloaded first; the
+ * admin page regroups by category via resourceMeta().
+ */
+export async function getResourceDownloadMetrics(): Promise<ResourceDownloadMetricRow[]> {
+  const client = createServiceRoleClient();
+  const { data, error } = await client
+    .from('resource_download_metrics')
+    .select('resource_slug, downloads, last_7d, last_24h, unique_visitors, last_download')
+    .order('downloads', { ascending: false });
+  if (error) throw new Error(`resource_download_metrics read failed: ${error.message}`);
+  return (data ?? []) as ResourceDownloadMetricRow[];
+}
+
+export interface ResourceDownloadTotalsRow {
+  downloads: number;
+  last_7d: number;
+  last_24h: number;
+  /** Distinct hashed-IP across ALL downloads (true unique, not a per-slug sum). */
+  unique_visitors: number;
+  resources_tracked: number;
+}
+
+/**
+ * Single-row roll-up for the dashboard headline tiles, from the
+ * resource_download_totals view (migration 00052). Service-role only.
+ */
+export async function getResourceDownloadTotals(): Promise<ResourceDownloadTotalsRow | null> {
+  const client = createServiceRoleClient();
+  const { data, error } = await client
+    .from('resource_download_totals')
+    .select('downloads, last_7d, last_24h, unique_visitors, resources_tracked')
+    .maybeSingle();
+  if (error) throw new Error(`resource_download_totals read failed: ${error.message}`);
+  return (data as ResourceDownloadTotalsRow | null) ?? null;
+}
