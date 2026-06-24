@@ -42,6 +42,19 @@ const sampleReadinessStaleTokens = [
   /same eight dimensions/i,
   /Readiness Assessment v2/i,
 ];
+const regulatoryCheatsheetRequiredTokens = [
+  /SR 26-2/i,
+  /OCC Bulletin 2026-13/i,
+  /FDIC FIL-15-2026/i,
+  /Do not label every AI workflow as a/i,
+  /First determine whether the/i,
+  /over \$30B in assets/i,
+];
+const regulatoryCheatsheetStaleTokens = [
+  /Any AI used in credit underwriting, fraud detection, or risk scoring qualifies as a ["']model["']/i,
+  /SR 11-7,\s*Interagency TPRM Guidance,\s*ECOA \/ Reg B,\s*and BSA\/AML are the current examination frameworks/i,
+  /SR 11-7 requires conceptual soundness/i,
+];
 const manifestByFile = new Map();
 const slugs = new Set();
 const sourceHtmlSlugs = new Set(
@@ -107,6 +120,9 @@ function scanPdfArtifact(path, slug) {
   if (slug === 'sample-readiness-report') {
     scanSampleReadinessReportText(text, `${slug} PDF text`);
   }
+  if (slug.startsWith('regulatory-cheatsheet')) {
+    scanRegulatoryCheatsheetText(text, `${slug} PDF text`);
+  }
 }
 
 function scanSourceHtml(path, slug) {
@@ -120,6 +136,9 @@ function scanSourceHtml(path, slug) {
   if (slug === 'sample-readiness-report') {
     scanSampleReadinessReportText(html, `${slug} source HTML`);
   }
+  if (slug === 'regulatory-cheatsheet') {
+    scanRegulatoryCheatsheetText(html, `${slug} source HTML`);
+  }
 }
 
 function scanSampleReadinessReportText(text, label) {
@@ -128,6 +147,15 @@ function scanSampleReadinessReportText(text, label) {
   }
   for (const token of sampleReadinessStaleTokens) {
     if (token.test(text)) error(`${label} still contains stale readiness-report language ${token}`);
+  }
+}
+
+function scanRegulatoryCheatsheetText(text, label) {
+  for (const token of regulatoryCheatsheetRequiredTokens) {
+    if (!token.test(text)) error(`${label} is missing current model-risk source language ${token}`);
+  }
+  for (const token of regulatoryCheatsheetStaleTokens) {
+    if (token.test(text)) error(`${label} still contains stale SR 11-7-only framing ${token}`);
   }
 }
 

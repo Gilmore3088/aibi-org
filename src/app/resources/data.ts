@@ -333,7 +333,7 @@ const DESK_CARD_PRESENTATION: Record<string, { readonly type: string; readonly d
   },
   'regulatory-cheatsheet': {
     type: 'Reference',
-    desc: 'SR 11-7, ECOA / Reg B, TPRM, and AI lexicon basics.',
+    desc: 'SR 26-2, ECOA / Reg B, TPRM, BSA/AML, and AI lexicon basics.',
     icon: BookOpen,
   },
   'platform-feature-reference-card': {
