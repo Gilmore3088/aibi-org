@@ -102,6 +102,14 @@ This branch implements the first guardrail pass from the content resource review
 - Added `npm run generate:large-print-resources`, which reflows dense source tables into stacked large-print cards instead of preserving clipped comparison grids.
 - Added `/api/resources/[slug]/large-print`, visible `/resources` large-print actions, focused route tests, Playwright coverage, and audit checks for committed large-print PDFs.
 - Updated starter-kit item rows and problem paths so manifest-declared large-print PDFs are included in the `/resources` link inventory and remain email-gated before download.
+- Converted `e2e/resource-delivery.spec.ts` from hardcoded download arrays to manifest-derived route coverage for:
+  - every public download route
+  - starter-kit ZIP routes
+  - all nine playbook pages and playbook PDF routes
+  - every Word-compatible route
+  - every readable HTML route
+  - every large-print PDF route
+  - every template page in the template index
 - Rebuilt `prompt-strategy-cheat-sheet.pdf` from a 20-page mini-manual into a 4-page quick card aligned to the original resource promise:
   - RCFC + R prompt pattern
   - Green/yellow/red safety lane
@@ -133,6 +141,7 @@ This branch implements the first guardrail pass from the content resource review
 - `npx playwright test e2e/resources.spec.ts --project=chromium` (`15` tests)
 - `npx playwright test e2e/resource-delivery.spec.ts --project=chromium -g "playbook HTML pages" --workers=1`
 - `npx playwright test e2e/resources.spec.ts e2e/resource-delivery.spec.ts --project=chromium`
+- `npx playwright test e2e/resource-delivery.spec.ts --project=chromium` (`112` manifest-derived route checks)
 - `npx playwright test e2e/parent-flows.spec.ts e2e/resources.spec.ts --project=chromium`
 - `npx vitest run src/app/prompt-cards/PromptCardsExperience.test.tsx src/lib/resources/freeResourceCapture.test.ts`
 - `npx vitest run src/components/resources/FreeResourceDownloadGate.test.tsx src/app/resources/ResourcesExperience.test.tsx src/app/prompt-cards/PromptCardsExperience.test.tsx src/lib/resources/freeResourceCapture.test.ts`
@@ -160,7 +169,7 @@ Env audit note: `npm run audit:env` completed and now treats `NEXT_PUBLIC_EXECUT
 These items remain separate from this implementation:
 
 - Rebase after the massive persona branch lands and verify overlapping persona fixes.
-- Replace remaining hardcoded `/resources`, assessment-output, playbook, and template lists with manifest-derived rendering where practical. Starter kits, role playbook cards, problem paths, desk cards, and paid previews now derive from the manifest; template cards now derive from the lightweight template index and the manifest.
+- Replace remaining hardcoded `/resources`, assessment-output, playbook, and template lists with manifest-derived rendering where practical. Starter kits, role playbook cards, problem paths, desk cards, and paid previews now derive from the manifest; template cards now derive from the lightweight template index and the manifest; resource-delivery E2E now derives route coverage from the manifest and public indexes.
 - The raw download log now captures known email, source surface, assessment role, assessment tier, assessment top gap, HTTP referrer, and hashed IP for generic resources, large-print resources, Prompt Cards, and the Safe AI Use Guide; `/admin/funnel` now shows attribution segment tables. Remaining analytics work is deeper campaign/source analysis once real traffic exists.
 - Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card plus starter-kit artifact PDFs now have reflowed large-print PDFs. Remaining artifact work is deeper official source refresh, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
 - Continue deeper source refresh and accessibility QA for dynamic Word/template outputs. The dynamic Word template route is now branded, source-boxed, and directly tested.
