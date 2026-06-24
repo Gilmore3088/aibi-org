@@ -1,10 +1,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { rememberFreeResourceCapture } from '@/lib/resources/freeResourceCapture';
 import { PromptCardsExperience } from './PromptCardsExperience';
 
 describe('PromptCardsExperience', () => {
   beforeEach(() => {
     window.localStorage.clear();
+    window.sessionStorage.clear();
     vi.stubGlobal('fetch', vi.fn());
     vi.spyOn(window.URL, 'createObjectURL').mockReturnValue('blob:prompt-cards');
     vi.spyOn(window.URL, 'revokeObjectURL').mockImplementation(() => undefined);
@@ -15,6 +17,31 @@ describe('PromptCardsExperience', () => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
     window.localStorage.clear();
+    window.sessionStorage.clear();
+  });
+
+  it('honors a remembered free-resource email capture session', async () => {
+    rememberFreeResourceCapture({
+      email: 'ops@bank.test',
+      source: 'assessment-email-gate',
+      role: 'operations',
+      tier: 'early-stage',
+      tierLabel: 'Early Stage',
+      topGap: 'prompt-quality',
+      capturedAt: '2026-06-23T12:00:00.000Z',
+    });
+
+    render(<PromptCardsExperience />);
+
+    expect(await screen.findByRole('heading', { name: /all 20 workflow cards/i })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /unlock full library/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /get the aibi prompt cards/i })).toBeNull();
+    expect(fetch).not.toHaveBeenCalled();
+
+    const downloadLinks = screen.getAllByRole('link', { name: /download pdf/i });
+    expect(downloadLinks[0]?.getAttribute('href')).toBe(
+      '/api/prompt-cards/download?source_surface=prompt-cards-library&assessment_role=operations&assessment_tier_id=early-stage&assessment_tier_label=Early+Stage&assessment_top_gap=prompt-quality',
+    );
   });
 
   it('unlocks the prompt card library only after the static PDF streams', async () => {
@@ -49,6 +76,7 @@ describe('PromptCardsExperience', () => {
     expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/prompt-cards/download', { cache: 'no-store' });
     expect(screen.getByRole('heading', { name: /all 20 workflow cards/i })).toBeTruthy();
     expect(window.localStorage.getItem('aibi-prompt-cards-unlocked')).toBe('true');
+    expect(window.sessionStorage.getItem('aibi.freeResource.email')).toBe('marketing@communitybank.test');
   });
 
   it('keeps the library locked when the PDF download fails', async () => {
