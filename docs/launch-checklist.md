@@ -1,8 +1,8 @@
 # Launch checklist — production readiness
 
-Last updated: 2026-06-23.
+Last updated: 2026-06-24.
 
-## Status snapshot — 2026-06-23
+## Status snapshot — 2026-06-24
 
 Where the launch actually stands after this session. The detailed gate is §0–§12 below.
 
@@ -40,6 +40,14 @@ Where the launch actually stands after this session. The detailed gate is §0–
   the server allowlist. The Safe AI Use Guide form now waits for a successful PDF fetch
   before showing success. Local checks returned valid 5-page and 11-page PDFs.
   Production Vercel proof is still required.
+- **Free-resource lead-gate consistency verified in PR #517.** Static template pages no
+  longer expose pre-capture "Copy text" actions; the AI Workflow SOP copy and Markdown
+  download actions run through the shared email gate. Prompt Cards and the Safe AI Use
+  Guide now honor/write the shared free-resource session unlock after successful PDF
+  delivery, and their special static PDF endpoints log `resource_downloads` rows with
+  source attribution and known-email capture when available. PR #517 has green Vercel,
+  smoke, axe, Lighthouse, mobile viewport, and secret-scan checks. Production deployment
+  and live download proof are still required.
 - **Static course/resource PDF render risk reduced locally.** Skill Template Library,
   both course cards, and all eight assessment starter artifacts now serve committed
   static PDFs instead of calling React PDF at request time. The personalized
@@ -64,7 +72,8 @@ Where the launch actually stands after this session. The detailed gate is §0–
   to purchase help with the checkout email prefilled. Device confirmation now has a cross-device fallback into a
   fresh one-time auth link. `/api/cron/stranded-buyers` now checks paid enrollments
   whose auth user has never signed in after the alert window, opens deduped access
-  support cases, and sends a summary ops alert when new cases are created. Magic links
+  support cases, and sends a summary ops alert when new cases are created. The Vercel
+  schedule is daily to fit the current Hobby account cron limits. Magic links
   are built from `NEXT_PUBLIC_SITE_URL` instead of the apex host, and the Foundation
   purchase-link resend path has focused route-test coverage. Production cron/support-case/email
   proof is still required.
@@ -512,7 +521,8 @@ evidence log.
       `ok:true`, and the configured inbox/channel receives the synthetic alert.
 - [ ] `GET /api/cron/assessment-abandoned`, `GET /api/cron/paid-reengagement`,
       and `GET /api/cron/stranded-buyers` reject without `CRON_SECRET` and return
-      JSON with checked/sent/failed counts when called with it.
+      JSON with checked/sent/failed counts when called with it. Current Vercel cron
+      schedules are daily so preview/production deploys pass on the active Hobby plan.
 - [ ] **Mobile (real iPhone, Safari):** `/`, `/assessment`, `/assessment/in-depth`,
       `/courses`, the Foundation purchase page, and one `/results/{id}` render without
       layout breakage and the primary CTA is tappable. Full free assessment completes in
