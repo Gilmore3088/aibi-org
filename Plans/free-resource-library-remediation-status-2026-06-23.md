@@ -1,7 +1,7 @@
 # Free Resource Library Remediation Status
 
-Date: 2026-06-23
-Branch: `codex/resource-library-remediation`
+Date: 2026-06-24
+Branch: `codex/resource-library-remediation`; continued in `codex/resource-review-after-persona` / PR #517
 
 ## What This Branch Completes
 
@@ -80,8 +80,12 @@ This branch implements the first guardrail pass from the content resource review
 - Updated assessment email capture to unlock free-resource downloads for the current browser session.
 - Updated `/api/capture-email` to set a short-lived first-party resource capture cookie.
 - Updated `/api/resources/[slug]/download` to use that capture cookie for known-email attribution in `resource_downloads.email` when the visitor is not logged in.
+- Updated Prompt Cards to honor the shared free-resource session unlock, so an assessment/resource-captured visitor can open the full prompt-card library without a second email gate.
+- Updated the Safe AI Use Guide form to remember the shared free-resource session after the committed PDF fetch succeeds.
 - Added `resource_downloads` attribution columns for source surface, assessment role, assessment tier id/label, and assessment top gap.
 - Updated the shared free-resource gate so downloads carry non-PII attribution query parameters from the clicked surface and remembered assessment context.
+- Removed pre-capture copy/download CTAs from free template surfaces: static templates expose gated Word downloads, and the AI Workflow SOP copy / Markdown download actions run only after email capture.
+- Added best-effort `resource_downloads` logging for the special static Prompt Cards and Safe AI Guide PDF endpoints, including source-surface attribution and known-email capture from the first-party resource cookie.
 - Added a service-role-only `resource_download_attribution_metrics` view and surfaced attribution segment tables in `/admin/funnel`.
 - Added source-backed readable HTML variants at `/resources/access/[slug]` for every public PDF resource that already has committed source HTML and a source-backed Word route.
 - Surfaced "Read HTML" links on `/resources` role playbooks, desk cards, paid previews, problem paths, and starter-kit item rows when a readable route exists.
@@ -125,12 +129,20 @@ This branch implements the first guardrail pass from the content resource review
 - `npx playwright test e2e/resource-delivery.spec.ts --project=chromium -g "playbook HTML pages" --workers=1`
 - `npx playwright test e2e/resources.spec.ts e2e/resource-delivery.spec.ts --project=chromium`
 - `npx playwright test e2e/parent-flows.spec.ts e2e/resources.spec.ts --project=chromium`
+- `npx vitest run src/app/prompt-cards/PromptCardsExperience.test.tsx src/lib/resources/freeResourceCapture.test.ts`
+- `npx vitest run src/components/resources/FreeResourceDownloadGate.test.tsx src/app/resources/ResourcesExperience.test.tsx src/app/prompt-cards/PromptCardsExperience.test.tsx src/lib/resources/freeResourceCapture.test.ts`
+- `npx vitest run src/lib/resources/downloadLogging.test.ts src/app/api/prompt-cards/download/route.test.ts src/app/api/prompt-cards/lead/route.test.ts src/app/api/guides/safe-ai-use/route.test.ts src/app/api/inquiry/route.test.ts src/app/prompt-cards/PromptCardsExperience.test.tsx src/app/security/_components/GuideRequestForm.test.tsx`
+- `npx vitest run src/app/security/_components/GuideRequestForm.test.tsx src/lib/resources/freeResourceCapture.test.ts src/lib/resources/downloadLogging.test.ts`
+- `npx playwright test e2e/resources-workflow-sop.spec.ts e2e/resources.spec.ts --project=chromium`
+- `npx playwright test e2e/marketing-extended.spec.ts --project=chromium -g "security renders"`
+- `npx playwright test e2e/smoke.spec.ts --project=chromium`
+- PR #517 remote checks: Vercel preview, smoke, axe, Lighthouse, mobile viewport, and secret scan all passed.
 - Visual PDF check after prompt-card rebuild:
   - Standard prompt card: 4 pages, rendered pages inspected, no clipping.
   - Large-print prompt card: 8 pages, rendered pages inspected, no clipping; card breaks favor complete sections over dense fit.
   - Platform large-print matrix: 12 pages, rendered table pages inspected, no clipped comparison rows.
 
-Latest resource audit result: `27 manifest rows, 27 public downloads`.
+Latest resource audit result: `31 manifest rows, 31 public downloads`.
 
 The latest audit now includes route/manifest coverage, dev-token checks, ZIP drift checks, PDF extraction checks, browser/error chrome checks, and source/adaptation-language gates for source-backed resources.
 
@@ -142,7 +154,7 @@ These items remain separate from this implementation:
 
 - Rebase after the massive persona branch lands and verify overlapping persona fixes.
 - Replace remaining hardcoded `/resources`, assessment-output, playbook, and template lists with manifest-derived rendering where practical. Starter kits, role playbook cards, problem paths, desk cards, and paid previews now derive from the manifest; template cards now derive from the lightweight template index and the manifest.
-- The raw download log now captures known email, source surface, assessment role, assessment tier, assessment top gap, HTTP referrer, and hashed IP; `/admin/funnel` now shows attribution segment tables. Remaining analytics work is deeper campaign/source analysis once real traffic exists.
+- The raw download log now captures known email, source surface, assessment role, assessment tier, assessment top gap, HTTP referrer, and hashed IP for generic resources, large-print resources, Prompt Cards, and the Safe AI Use Guide; `/admin/funnel` now shows attribution segment tables. Remaining analytics work is deeper campaign/source analysis once real traffic exists.
 - Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card PDFs now have reflowed large-print PDFs. Remaining artifact work is deeper official source refresh, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
 - Continue deeper source refresh and accessibility QA for dynamic Word/template outputs. The dynamic Word template route is now branded, source-boxed, and directly tested.
 - The sample readiness report now matches current v3 free-assessment scoring and is guarded by source/PDF text audit checks.
