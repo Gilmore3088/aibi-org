@@ -227,17 +227,6 @@ test.describe('/resources page', () => {
     }
   });
 
-  test('readable HTML resource route renders source-backed artifacts', async ({ page }) => {
-    await page.goto('/resources/access/safe-ai-use-checklist');
-    await expect(page).toHaveTitle(/Safe AI Use Checklist.*Readable HTML/i);
-    await expect(
-      page.getByRole('heading', { level: 1, name: /The Safe AI Use Checklist/i }),
-    ).toBeVisible();
-    await expect(page.getByRole('link', { name: /Back to library/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Get PDF for Safe AI Use Checklist/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Get Word for Safe AI Use Checklist/i })).toBeVisible();
-  });
-
   test('assessment CTA card routes to /assessment', async ({ page }) => {
     await page.goto('/resources');
     const cta = page.getByRole('link', { name: /Get readiness score/i }).last();

@@ -552,11 +552,6 @@ function FeaturedKit({
                       <span>{item.label}</span>
                     </a>
                   )}
-                  {item.readHref && (
-                    <a className="rx-featured-item-read" href={item.readHref}>
-                      Read HTML
-                    </a>
-                  )}
                   {item.largePrint && (
                     <FreeResourceDownloadGate
                       title={`${item.label} large-print PDF`}
@@ -673,11 +668,6 @@ function ProblemPathCard({ path }: { path: ProblemPathData }) {
             Open <ArrowRight size={16} />
           </Button>
         )}
-        {path.readHref && (
-          <Button variant="ghost-light" href={path.readHref}>
-            Read HTML
-          </Button>
-        )}
         {path.largePrint && (
           <FreeResourceDownloadGate
             title={`${path.artifact} large-print PDF`}
@@ -735,11 +725,6 @@ function RolePlaybookCard({ playbook }: { playbook: RolePlaybook }) {
         <Button variant="ink" href={`/playbooks/${playbook.slug}`}>
           Open
         </Button>
-        {playbook.readHref && (
-          <Button variant="ghost-light" href={playbook.readHref}>
-            Read HTML
-          </Button>
-        )}
         <FreeResourceDownloadGate
           title={`${playbook.title} Playbook`}
           href={playbook.pdf}
@@ -839,11 +824,6 @@ function DeskCard({ card }: { card: DeskCardData }) {
             containerClassName="fr-download-gate-desk"
           />
         )}
-        {card.readHref && (
-          <a className="mk-download-gate-trigger rx-readable-card-link" href={card.readHref}>
-            Read HTML
-          </a>
-        )}
         {card.largePrint && (
           <FreeResourceDownloadGate
             title={`${card.title} large-print PDF`}
@@ -881,11 +861,6 @@ function PaidPreviewCard({ preview }: { preview: PaidPreviewData }) {
         >
           {preview.actionLabel} <ArrowRight size={16} />
         </FreeResourceDownloadGate>
-        {preview.readHref && (
-          <Button variant="ghost-light" href={preview.readHref}>
-            Read HTML
-          </Button>
-        )}
         {preview.word && (
           <FreeResourceDownloadGate
             title={preview.title}
