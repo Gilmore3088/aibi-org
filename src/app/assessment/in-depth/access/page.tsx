@@ -50,7 +50,13 @@ export default async function InDepthDashboardPage() {
     }
     const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
     if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
-      redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
+      // Forward the paid destination so device confirmation lands the buyer on
+      // the assessment itself (check-device honors next via sanitizeNext)
+      // rather than the generic dashboard.
+      redirect(
+        `/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}` +
+          `&next=${encodeURIComponent('/assessment/in-depth/take')}`,
+      );
     }
   }
 

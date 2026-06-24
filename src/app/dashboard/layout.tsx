@@ -78,7 +78,13 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   // by any other route (browser session import, cookie theft, etc.).
   const trustedCookie = cookieStore.get(TRUSTED_DEVICE_COOKIE)?.value;
   if (!(await isDeviceTrusted({ userId: user.id, cookieToken: trustedCookie }))) {
-    redirect(`/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`);
+    // Forward the originally-requested path so device confirmation routes the
+    // buyer back to the page they tried to reach (check-device honors next
+    // via sanitizeNext) instead of dead-ending on the top-level dashboard.
+    redirect(
+      `/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}` +
+        `&next=${encodeURIComponent(nextPath)}`,
+    );
   }
 
   return <>{children}</>;
