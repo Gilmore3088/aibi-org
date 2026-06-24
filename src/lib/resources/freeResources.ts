@@ -98,14 +98,16 @@ export function expectedLargePrintRoute(slug: string): string {
   return `/api/resources/${slug}/large-print`;
 }
 
-export function isReadableFreeResource(resource: FreeResource | null): resource is ReadableFreeResource {
-  return Boolean(
-    resource &&
-      resource.status === 'public' &&
-      resource.download &&
-      resource.download.fileType === 'pdf' &&
-      resource.variants.word === expectedSourceBackedWordRoute(resource.slug),
-  );
+// Readable HTML versions are intentionally disabled. These are gated lead-gen
+// artifacts: a visitor gives an email and we deliver the file (emailed + direct
+// download). The public, ungated /resources/access/<slug> page rendered the
+// FULL document inline, so anyone could read the entire playbook/guide without
+// ever giving an email — defeating the gate. This predicate is the single
+// off-switch: returning false collapses every "Read HTML" link (via
+// readableResourceHref) and empties readableFreeResources, and the
+// /resources/access route has been removed.
+export function isReadableFreeResource(_resource: FreeResource | null): _resource is ReadableFreeResource {
+  return false;
 }
 
 export function readableResourceHref(resource: FreeResource | null): string | null {
