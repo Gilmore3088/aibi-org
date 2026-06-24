@@ -28,6 +28,9 @@ const PUBLIC_BUT_VALIDATED: ReadonlyArray<{ path: string; body: unknown; expecte
   { path: '/api/inquiry', body: {}, expectedStatus: [400] },
   { path: '/api/checkout/in-depth', body: { mode: 'invalid' }, expectedStatus: [400] },
   { path: '/api/create-checkout', body: { mode: 'invalid' }, expectedStatus: [400] },
+  // Public playground demo: empty body fails required-field validation before
+  // any model call.
+  { path: '/api/playground/run', body: {}, expectedStatus: [400] },
 ];
 
 test.describe('API gates — authentication required', () => {
@@ -58,6 +61,27 @@ test.describe('API gates — public input validation', () => {
       expect(expectedStatus, `${path} returned ${res.status()}`).toContain(res.status());
     });
   }
+});
+
+test.describe('API gates — public playground demo', () => {
+  // A well-formed request that carries a fake SSN must never reach the model.
+  // The PII scanner blocks it (422); if the budget check fronts the request
+  // first it returns 429 (rate/budget) or 503 (budget check unavailable).
+  // None of these expose an internal 500.
+  test('/api/playground/run blocks PII before calling the model', async ({ request }) => {
+    const res = await request.post('/api/playground/run', {
+      data: {
+        scenarioTitle: 'Procedure Cleanup · Compliance',
+        sampleData: 'Customer SSN 123-45-6789 needs a KYC refresh review.',
+        prompt: 'Create a frontline job aid. Use the sample data only.',
+      },
+      headers: { 'Content-Type': 'application/json' },
+    });
+    expect(
+      [422, 429, 503],
+      `/api/playground/run returned ${res.status()}`,
+    ).toContain(res.status());
+  });
 });
 
 test.describe('API gates — webhook signature', () => {

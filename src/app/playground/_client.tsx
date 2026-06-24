@@ -87,29 +87,23 @@ const StarIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 3l1.9 5.8L20 10
 
 type WBKey = 'procedure' | 'complaint' | 'campaign';
 
-const WB: Record<WBKey, { title: string; input: string; output: string; outLabel: string }> = {
+const WB: Record<WBKey, { title: string; input: string; outLabel: string }> = {
   procedure: {
     title: 'Procedure Cleanup · Compliance',
     input:
       'All KYC refresh requests for accounts opened prior to 2022 shall undergo a documentation review per BSA §1020.220, including but not limited to government-issued ID, secondary address verification, and any updated beneficial ownership disclosures for legal entity customers as required under FinCEN\'s CDD rule...',
-    output:
-      "**KYC Refresh: Quick Guide**\n\nFor accounts opened before 2022, collect three items:\n  1. Government-issued ID\n  2. Secondary address proof\n  3. For business accounts, updated beneficial-ownership info\n\n**If unsure:** route to Compliance review before continuing.",
     outLabel: 'Output · frontline job aid',
   },
   complaint: {
     title: 'Complaint Summary · Compliance',
     input:
       "Member called 03/14 — frustrated about a 5-day hold on a $4,200 mobile deposit. Says she was told 'just a couple days' at the branch. Hold released on 03/19 but she missed a car payment. Wants the late fee reimbursed and an explanation of when holds apply.",
-    output:
-      '**Member Complaint — Summary**\n\n• Issue: 5-day hold on $4,200 mobile deposit caused a missed car payment.\n• Member expectation: ~2 days, as stated at branch.\n• Resolution requested: late-fee reimbursement + clear hold policy explanation.\n\n**Next steps:** verify late fee, document branch-script gap for retraining, route to Member Services for outreach.',
     outLabel: 'Output · summary + next steps',
   },
   campaign: {
     title: 'Campaign Draft · Marketing',
     input:
       'New 4.5% APY high-yield savings account, FDIC insured, no minimum balance, limited-time intro rate for 6 months then 3.8% APY. Target: existing checking customers.',
-    output:
-      '**Subject:** Earn 4.5% on your savings — start in two minutes\n\nYou already trust us with your checking. Now put your savings to work at **4.5% APY** for the first 6 months — no minimums, no hidden fees, FDIC insured.\n\n→ Open in two minutes\n\nDisclosure: Intro rate of 4.5% APY for first 6 months. Standard rate (currently 3.8% APY) applies thereafter. FDIC insured to applicable limits.',
     outLabel: 'Output · email + disclosure flag',
   },
 };

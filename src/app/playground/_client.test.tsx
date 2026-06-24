@@ -42,4 +42,13 @@ describe('PlaygroundPage', () => {
     expect(await screen.findByText(/Draft job aid/i)).toBeTruthy();
     expect(screen.getByText(/Keep the banker as final reviewer/i)).toBeTruthy();
   });
+
+  it('does not render the retired canned demo output', () => {
+    render(<PlaygroundPage />);
+
+    // The dead `output` field (e.g. "KYC Refresh: Quick Guide") was deleted in
+    // favor of the live model response; nothing canned should ship anymore.
+    expect(screen.queryByText(/KYC Refresh: Quick Guide/i)).toBeNull();
+    expect(screen.getByText(/Click/i)).toBeTruthy();
+  });
 });
