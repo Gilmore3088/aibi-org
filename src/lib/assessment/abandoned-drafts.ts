@@ -22,6 +22,7 @@ export interface AssessmentDraftReminderRow {
   readonly phase: string;
   readonly updated_at: string;
   readonly expires_at: string;
+  readonly last_sent_at: string | null;
   readonly last_resumed_at: string | null;
   readonly reminder_sent_at: string | null;
   readonly reminder_count: number | null;
@@ -110,6 +111,11 @@ export function isAbandonedAssessmentDraftCandidate(
 ): boolean {
   if (draft.phase !== 'questions') return false;
   if (draft.reminder_sent_at || draft.last_resumed_at) return false;
+  // A link was already emailed by the POST flow. The cron mints a NEW token
+  // and overwrites token_hash, which would silently invalidate the first link
+  // the user already received. Treat these as already-served and let the cron
+  // be a pure backstop for drafts written WITHOUT an emailed link.
+  if (draft.last_sent_at) return false;
   if (!draft.email || !draft.selected_question_ids?.length) return false;
   if (timestampMs(draft.expires_at) !== null && timestampMs(draft.expires_at)! <= now.getTime()) {
     return false;
@@ -140,6 +146,7 @@ async function fetchAbandonedDrafts(
         'phase',
         'updated_at',
         'expires_at',
+        'last_sent_at',
         'last_resumed_at',
         'reminder_sent_at',
         'reminder_count',
@@ -148,6 +155,7 @@ async function fetchAbandonedDrafts(
     .eq('phase', 'questions')
     .is('reminder_sent_at', null)
     .is('last_resumed_at', null)
+    .is('last_sent_at', null)
     .gte('updated_at', earliestIso)
     .lte('updated_at', latestIso)
     .gt('expires_at', now.toISOString())

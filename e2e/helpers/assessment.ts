@@ -1,9 +1,12 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createHash, randomBytes } from 'node:crypto';
 import {
   DIMENSION_LABELS,
   type Dimension,
 } from '@content/assessments/v2/types';
+import { questions as v3Questions } from '@content/assessments/v3/questions';
 
 // Helpers for driving the free 12-question v2 assessment from e2e tests.
 //
@@ -150,4 +153,115 @@ export async function readAnalyticsEvents(
 /** Human-readable label for a dimension key, as the report renders it. */
 export function dimensionLabel(dim: Dimension): string {
   return DIMENSION_LABELS[dim];
+}
+
+// ---------------------------------------------------------------------------
+// Cross-device resume round-trip helpers.
+//
+// These exercise the REAL assessment_drafts table (migrations 00054/00058)
+// via the service-role client, so an e2e test can write a draft, learn its
+// resume token, and reopen it on a "second device" (a fresh browser context).
+// They mirror src/lib/assessment/drafts.ts token derivation exactly so the
+// committed GET /api/assessment/drafts/[token] route resolves the same hash.
+// ---------------------------------------------------------------------------
+
+/** True when a real Supabase project is wired in (e2e draft tests need it). */
+export function isSupabaseConfiguredForE2E(): boolean {
+  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  return Boolean(url && process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
+
+function draftServiceRoleClient(): SupabaseClient {
+  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceRole) {
+    throw new Error(
+      'Assessment draft helpers require SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY. ' +
+        'Set them in .env.local before running the resume round-trip test.',
+    );
+  }
+  return createClient(url, serviceRole, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
+/** The first 12 v3 question ids — a valid, deterministic resume question set. */
+export function sampleResumeQuestionIds(): string[] {
+  return v3Questions.slice(0, 12).map((question) => question.id);
+}
+
+/** Mirror of createAssessmentResumeToken in src/lib/assessment/drafts.ts. */
+function createResumeToken(): string {
+  return randomBytes(32).toString('base64url');
+}
+
+/** Mirror of hashAssessmentResumeToken in src/lib/assessment/drafts.ts. */
+function hashResumeToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
+
+export interface SeededAssessmentDraft {
+  readonly id: string;
+  readonly token: string;
+  readonly email: string;
+  readonly answers: readonly number[];
+  readonly currentQuestion: number;
+  readonly selectedQuestionIds: readonly string[];
+}
+
+/**
+ * Insert an assessment_drafts row directly and return the plaintext resume
+ * token (only its sha256 hash is persisted, so the test must capture it here).
+ * Defaults model an abandon mid-flow: 5 answered, currently on question 6.
+ */
+export async function seedAssessmentDraft(
+  overrides: {
+    email?: string;
+    answers?: readonly number[];
+    currentQuestion?: number;
+    selectedQuestionIds?: readonly string[];
+    lastSentAt?: string | null;
+  } = {},
+): Promise<SeededAssessmentDraft> {
+  const supabase = draftServiceRoleClient();
+  const token = createResumeToken();
+  const email = overrides.email ?? `e2e+${randomBytes(4).toString('hex')}@aibankinginstitute.test`;
+  const selectedQuestionIds = overrides.selectedQuestionIds ?? sampleResumeQuestionIds();
+  const answers = overrides.answers ?? [2, 3, 1, 4, 2];
+  const currentQuestion = overrides.currentQuestion ?? answers.length;
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from('assessment_drafts')
+    .insert({
+      email,
+      token_hash: hashResumeToken(token),
+      selected_question_ids: [...selectedQuestionIds],
+      answers: [...answers],
+      current_question: currentQuestion,
+      phase: 'questions',
+      last_sent_at: overrides.lastSentAt ?? null,
+      expires_at: expiresAt,
+    })
+    .select('id')
+    .single();
+
+  if (error || !data) {
+    throw new Error(`seedAssessmentDraft failed: ${error?.message ?? 'no row returned'}`);
+  }
+
+  return {
+    id: (data as { id: string }).id,
+    token,
+    email,
+    answers,
+    currentQuestion,
+    selectedQuestionIds,
+  };
+}
+
+/** Delete a seeded draft row by id. Call from afterEach/afterAll cleanup. */
+export async function cleanupAssessmentDraft(id: string): Promise<void> {
+  const supabase = draftServiceRoleClient();
+  await supabase.from('assessment_drafts').delete().eq('id', id);
 }
