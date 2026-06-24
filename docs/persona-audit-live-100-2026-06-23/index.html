@@ -1,0 +1,1331 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live 100-Persona Audit — The AI Banking Institute</title>
+<style>
+  :root{--ink:#071A2F;--ink2:#0B2745;--gold:#C8A24A;--gold-deep:#9A7A2F;--cream:#F7F3EA;--cream2:#EFE7D7;
+    --s2:#E2E8F0;--s4:#94A3B8;--s5:#64748B;--s6:#475569;--emer:#047857;--crit:#9A1B2F;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  header{background:var(--ink);color:var(--cream);padding:48px 0 40px}
+  header .kick{color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+  header h1{margin:.3em 0 .2em;font-size:34px;line-height:1.1}
+  header .meta{color:#cdd7e2;font-size:14px}
+  .verdict{background:var(--ink2);border-left:4px solid var(--gold);padding:18px 20px;border-radius:10px;margin-top:24px;color:#eef3f8}
+  .verdict strong{color:var(--gold)}
+  .kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin:-28px 0 0;position:relative}
+  .kpi{background:#fff;border:1px solid var(--s2);border-radius:14px;padding:16px 12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .kpi-v{font-size:26px;font-weight:800}.kpi-k{font-size:11px;color:var(--s5);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+  section{padding:38px 0 8px}
+  h2{font-size:22px;margin:0 0 6px}
+  h2 .sub{font-weight:400;color:var(--s5);font-size:14px}
+  .lead{color:var(--s6);max-width:75ch;margin:0 0 18px}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--s2);border-radius:12px;overflow:hidden;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--s2);vertical-align:top}
+  th{background:var(--cream2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--s6)}
+  tr:last-child td{border-bottom:none}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  .muted{color:var(--s5);font-size:12px}
+  .sev{display:inline-block;background:#fbeaec;color:var(--crit);font-weight:700;border-radius:6px;padding:1px 8px;font-size:12px}
+  .badge{display:inline-block;color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap}
+  .tag{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
+  .tag.new{background:#e7f6ef;color:var(--emer)}
+  .tag.holdover{background:var(--cream2);color:var(--gold-deep)}
+  .prio-h{display:flex;align-items:center;gap:10px;margin:26px 0 8px}
+  .prio-dot{width:12px;height:12px;border-radius:50%}
+  .prio-h h3{margin:0;font-size:16px}
+  .conf table th{background:#e7f6ef;color:#0a5c41}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .card{background:#fff;border:1px solid var(--s2);border-radius:12px;padding:16px}
+  .path{max-width:420px;white-space:normal;word-break:break-word}
+  .shot{max-width:100%;border:1px solid var(--s2);border-radius:10px;margin-top:10px}
+  .note{background:var(--cream2);border-radius:10px;padding:14px 16px;color:var(--s6);font-size:13px}
+  footer{color:var(--s5);font-size:12px;padding:30px 0 50px;text-align:center}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}.twocol{grid-template-columns:1fr}.path{max-width:none}}
+</style></head><body>
+<header><div class="wrap">
+  <div class="kick">Live persona simulation · read-only production sweep</div>
+  <h1>100-Persona Live Site Audit</h1>
+  <div class="meta">https://www.aibankinginstitute.com · run 2026-06-24T06:14:31.386Z · concurrency 5 · 6–9 steps/persona</div>
+  <div class="verdict">The building is largely done; the proving is not. <strong>100 personas walked 750 steps with 0 broken links, 0 dead-ends, and 1 JS-error page.</strong> Top- and mid-funnel navigation is healthy and several prior "deploy-pending" fixes are confirmed live. The open risk is entirely <strong>below the nav layer</strong> — forms, gated downloads, auth, fulfillment — which a safe read-only sweep cannot reach and which therefore needs targeted production verification.</div>
+</div></header>
+<div class="wrap">
+  <div class="kpis"><div class="kpi"><div class="kpi-v">100</div><div class="kpi-k">Personas</div></div><div class="kpi"><div class="kpi-v">750</div><div class="kpi-k">Steps walked</div></div><div class="kpi"><div class="kpi-v">47</div><div class="kpi-k">Unique pages</div></div><div class="kpi"><div class="kpi-v">1/100</div><div class="kpi-k">Personas w/ issue</div></div><div class="kpi"><div class="kpi-v">0</div><div class="kpi-k">Broken / 4xx</div></div><div class="kpi"><div class="kpi-v">1</div><div class="kpi-k">JS-error pages</div></div><div class="kpi"><div class="kpi-v">0</div><div class="kpi-k">Dead-ends</div></div></div>
+
+  <section class="conf">
+    <h2>What the live sweep confirmed <span class="sub">prior gaps now proven in production</span></h2>
+    <p class="lead">These items were flagged "missing" or "deploy-pending" in earlier audits. The live walk reached them on the production site — they are done.</p>
+    <table><thead><tr><th>Confirmed live</th><th>Evidence (this run)</th><th>Closes prior finding</th></tr></thead><tbody><tr><td><strong>Foundation purchase page no longer a dead-end</strong></td><td>0 dead-ends across 750 steps; the 20-persona sweep had 3 here</td><td class="muted">20-persona P2/P17</td></tr>
+<tr><td><strong>/pricing page exists &amp; is linked</strong></td><td>reached 29× via real links</td><td class="muted">100-persona P1 ("no /pricing page")</td></tr>
+<tr><td><strong>/security/data-handling deployed</strong></td><td>reached 19×</td><td class="muted">20-persona P6 (was "deploy pending")</td></tr>
+<tr><td><strong>/security/it-approval deployed</strong></td><td>reached 18×</td><td class="muted">20-persona P16 (was "deploy pending")</td></tr>
+<tr><td><strong>/about restored &amp; live</strong></td><td>reached 39×</td><td class="muted">20-persona P5 (was "deploy pending")</td></tr>
+<tr><td><strong>Certificate verify surface live</strong></td><td>/verify 19×, /certifications 16×</td><td class="muted">100-persona GAP1 (verify half)</td></tr>
+<tr><td><strong>$99 In-Depth reachable in prod</strong></td><td>/assessment/in-depth reached 25×</td><td class="muted">20-persona P12 / 100-persona</td></tr>
+<tr><td><strong>Top/mid-funnel navigation integrity</strong></td><td>0 broken links, 0 4xx across 100 personas</td><td class="muted">—</td></tr></tbody></table>
+  </section>
+
+  <section>
+    <h2>Prioritized findings <span class="sub">grouped by priority &amp; severity · 18 holdover, 1 new</span></h2>
+    <p class="lead">Impact and status for every open item, deduped across the 20/50/100 audits and this live run. <span class="tag holdover">Holdover</span> = recurs from a prior audit (named). <span class="tag new">NEW</span> = first surfaced by this live sweep.</p>
+    
+    <div class="prio-h"><span class="prio-dot" style="background:#9A1B2F"></span><h3>P0 — Critical / launch-blocking</h3></div>
+    <table><thead><tr><th>ID</th><th>Finding</th><th>Sev</th><th>Impact</th><th>Status</th><th>Repeat?</th><th>Live-sweep evidence</th></tr></thead><tbody><tr>
+      <td class="mono">P0-1</td>
+      <td><strong>Certificate unreachable + cert PDF</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>A paying $295 completer cannot obtain the credential — the entire course payoff fails. Drives refunds and reputational damage with the exact buyers most likely to refer.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP1</span></td>
+      <td class="muted">/verify is live (19 visits) but issuance + PDF sit behind auth/api — not testable by a nav sweep. Overlaps a known production @react-pdf 500. Needs a targeted prod issuance + PDF download test.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-2</td>
+      <td><strong>Paid buyers stranded at login</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>Buyers who pay cannot get in: passwordless account + a single magic-link that bank email gateways filter. Silent revenue loss and support load right after the sale.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP2</span></td>
+      <td class="muted">/auth/login (3), /auth/signup (6), /auth/forgot-password (3) all reachable; actual email delivery + device-trust flow not testable by nav sweep.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-3</td>
+      <td><strong>Live-money smoke tests never run</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>The entire paid funnel — checkout → webhook → entitlement → refund — is unproven end-to-end with real money. A single broken link in that chain means paid customers get nothing.</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P15 + 50-persona F4</span></td>
+      <td class="muted">Checkout/Stripe paths are deliberately skipped by the safe sweep. Owner-run task.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-4</td>
+      <td><strong>MailerLite nurture not activated</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>Every captured email gets zero follow-up. The core conversion mechanism (assessment → nurture → $99 → $295) is dead on arrival; the funnel leaks at its most valuable point.</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P0-3 + 50-persona + 100-persona GAP3</span></td>
+      <td class="muted">Owner dashboard task (paste/seed/domain-auth/enable automations). Not code.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-5</td>
+      <td><strong>Exposed STRIPE_SECRET_KEY not rotated</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>A live Stripe secret key was exposed and not rotated — direct financial and security risk.</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona (remaining gates)</span></td>
+      <td class="muted">Security/ops task; out of scope for a nav sweep.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-6</td>
+      <td><strong>Email-gated downloads 500</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>Lead magnets (Prompt Cards, Safe-AI Guide) fail after the visitor gives their email — a broken promise at the exact moment of trust, losing both the lead and the credibility.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP6</span></td>
+      <td class="muted">Downloads sit behind /api (skipped). /prompt-cards (6) and /resources/access/* pages reachable. Local fix moves to static PDFs; overlaps known prod @react-pdf 500 — needs a prod download test.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-7</td>
+      <td><strong>No retention / recovery loop</strong></td>
+      <td><span class="sev">Critical</span></td>
+      <td>Abandoners, idle buyers, and quitters are never re-contacted, and the free assessment will not resume cross-device. The roster’s many "abandons mid-assessment" / "buys, never starts" personas are permanently lost.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP3</span></td>
+      <td class="muted">Re-engagement crons + drafts coded; migrations 00054/00056 are live but cron + email send are unverified in prod.</td>
+    </tr>
+<tr>
+      <td class="mono">P0-8</td>
+      <td><strong>Team checkout is a mailto (self-serve dark)</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>Institutional buyers — the highest-LTV segment — have no self-serve path and must email. Intentional for now, but it caps the team funnel until hardened.</td>
+      <td><span class="badge" style="background:#475569">Deferred (owner)</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP4 + 20-persona P10 + 50-persona</span></td>
+      <td class="muted">/assessment/team reachable (11); /for-institutions heavily reached (56). Assisted inquiry path exists; self-serve flag intentionally off.</td>
+    </tr></tbody></table>
+
+    <div class="prio-h"><span class="prio-dot" style="background:#9A7A2F"></span><h3>P1 — High</h3></div>
+    <table><thead><tr><th>ID</th><th>Finding</th><th>Sev</th><th>Impact</th><th>Status</th><th>Repeat?</th><th>Live-sweep evidence</th></tr></thead><tbody><tr>
+      <td class="mono">P1-1</td>
+      <td><strong>Interactive demos are canned mockups</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>High-intent evaluators who open /playground or /practice see fake output; /practice is mislabeled "Enrolled-only". Erodes credibility with the personas most likely to buy.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona GAP5</span></td>
+      <td class="muted">/playground (12) and /practice (3) load with no JS error, but a nav sweep cannot verify whether output is real. Local fix wires a real endpoint; model-key prod path unverified.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-2</td>
+      <td><strong>/resources hydration error (React #418)</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>Intermittent client/server hydration mismatch on the resources hub — a primary lead-gen page reached 31× in this run. Can cause content flicker or broken interactivity for a slice of visitors.</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag new">NEW</span></td>
+      <td class="muted">Surfaced live for persona P005 on /resources (React minified error #418). Screenshot captured. 1 of 31 visits errored — intermittent.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-3</td>
+      <td><strong>Physical iPhone/Safari QA not run</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>Mobile is the primary assessment surface; real-device CTA reachability is still unproven (emulation only).</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P9/P18 + 50-persona F3</span></td>
+      <td class="muted">Mobile-emulated personas in this sweep walked clean, but emulation ≠ a real device.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-4</td>
+      <td><strong>Thin public proof / no named advisors</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>A credentialing organization with no named people, quotes, or logos has a trust gap with skeptical buyers (a large share of the roster).</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P5/P19 + 50-persona F2</span></td>
+      <td class="muted">/about reachable (39) but content/proof not assessed by a nav sweep. Gated on owner-approved proof.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-5</td>
+      <td><strong>Legal / counsel signoff on privacy &amp; terms</strong></td>
+      <td><span class="sev">High</span></td>
+      <td>Privacy and terms have not had counsel review — legal exposure at launch.</td>
+      <td><span class="badge" style="background:#9A1B2F">Outstanding</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">50-persona (#21/#40)</span></td>
+      <td class="muted">/privacy (14) and /terms (10) reachable and render; content not legally reviewed.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-6</td>
+      <td><strong>$99 discoverability / offer ladder</strong></td>
+      <td><span class="sev">Medium</span></td>
+      <td>The $99 In-Depth is the funnel’s mid-step; weak nav discoverability throttles the climb from free to $295.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P12 + 100-persona</span></td>
+      <td class="muted">/assessment/in-depth IS reachable in prod (25 visits) — improved; remaining work is a nav entry + MailerLite ladder copy.</td>
+    </tr>
+<tr>
+      <td class="mono">P1-7</td>
+      <td><strong>Support ops SLA / refund authority</strong></td>
+      <td><span class="sev">Medium</span></td>
+      <td>Paid-buyer issues lack a defined resolution path, SLA, and refund authority — slow recovery for stranded buyers.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">20-persona P20 + 50-persona F1</span></td>
+      <td class="muted">/support/purchase-help reachable (5); operator runbook coded, live operation unverified.</td>
+    </tr></tbody></table>
+
+    <div class="prio-h"><span class="prio-dot" style="background:#475569"></span><h3>P2 — Medium / Low</h3></div>
+    <table><thead><tr><th>ID</th><th>Finding</th><th>Sev</th><th>Impact</th><th>Status</th><th>Repeat?</th><th>Live-sweep evidence</th></tr></thead><tbody><tr>
+      <td class="mono">P2-1</td>
+      <td><strong>Two nav systems / dead legacy chrome</strong></td>
+      <td><span class="sev">Medium</span></td>
+      <td>Divergent navigation and a dead "About" link in legacy chrome create inconsistent wayfinding.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona P1</span></td>
+      <td class="muted">Flagged routes patched locally; full legacy deletion is future work.</td>
+    </tr>
+<tr>
+      <td class="mono">P2-2</td>
+      <td><strong>Module 3 difficulty cliff</strong></td>
+      <td><span class="sev">Medium</span></td>
+      <td>A 60-char gate in Module 3 is where course personas quit; hurts completion (and thus certificate revenue).</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona P1</span></td>
+      <td class="muted">Behind enrollment; not reachable by nav sweep.</td>
+    </tr>
+<tr>
+      <td class="mono">P2-3</td>
+      <td><strong>Forced marketing opt-in / no "no-thanks" lane</strong></td>
+      <td><span class="sev">Low</span></td>
+      <td>EmailGate forces marketingOptIn:true — a consent/trust smell for privacy-skeptic personas.</td>
+      <td><span class="badge" style="background:#9A7A2F">Local — prod unverified</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona P1</span></td>
+      <td class="muted">Form behavior; not exercised by nav sweep.</td>
+    </tr>
+<tr>
+      <td class="mono">P2-4</td>
+      <td><strong>Hygiene fixes (raw-email logs, signOut cookie, dead code)</strong></td>
+      <td><span class="sev">Low</span></td>
+      <td>PII in logs, a trusted-device cookie surviving signOut, and dead modules — small but real.</td>
+      <td><span class="badge" style="background:#047857">Done</span></td>
+      <td><span class="tag holdover">Holdover</span><br><span class="muted">100-persona P2</span></td>
+      <td class="muted">Implemented &amp; regression-tested locally.</td>
+    </tr></tbody></table>
+  </section>
+
+  <section>
+    <h2>The one live defect <span class="sub">surfaced by the browser run</span></h2>
+    <div class="twocol">
+      <div class="card">
+        <p><strong>React #418 hydration mismatch on <span class="mono">/resources</span></strong></p>
+        <p class="muted">Persona P005-overwhelmed-compliance-chief — Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&amp;args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.</p>
+        <p>Intermittent (1 of 31 visits to <span class="mono">/resources</span>). Hydration mismatches cause content flicker or broken client interactivity for the affected slice of visitors on a primary lead-gen page. <strong>Status: NEW</strong> — not present in any prior audit.</p>
+      </div>
+      <div class="card"><div class="muted">Captured screenshot</div>
+        <img class="shot" src="../handoffs/persona-sweep-100-2026-06-23/shots/P005-overwhelmed-compliance-chief-step1-ISSUE.png" alt="resources hydration error" onerror="this.style.display='none'">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Page coverage <span class="sub">47 unique pages reached by intent-biased walks</span></h2>
+    <table><thead><tr><th>Route</th><th>Visits</th></tr></thead><tbody><tr><td class="mono">/</td><td>74</td></tr>
+<tr><td class="mono">/for-institutions</td><td>56</td></tr>
+<tr><td class="mono">/courses</td><td>42</td></tr>
+<tr><td class="mono">/about</td><td>39</td></tr>
+<tr><td class="mono">/assessment/take</td><td>38</td></tr>
+<tr><td class="mono">/for-institutions/samples/efficiency-ratio-workbook</td><td>38</td></tr>
+<tr><td class="mono">/assessment</td><td>37</td></tr>
+<tr><td class="mono">/resources</td><td>31</td></tr>
+<tr><td class="mono">/resources/templates/ai-use-policy-starter</td><td>30</td></tr>
+<tr><td class="mono">/pricing</td><td>29</td></tr>
+<tr><td class="mono">/assessment/in-depth</td><td>25</td></tr>
+<tr><td class="mono">/security</td><td>25</td></tr>
+<tr><td class="mono">/courses/foundation/program/purchase</td><td>20</td></tr>
+<tr><td class="mono">/security/data-handling</td><td>19</td></tr>
+<tr><td class="mono">/verify</td><td>19</td></tr>
+<tr><td class="mono">/security/it-approval</td><td>18</td></tr>
+<tr><td class="mono">/certifications</td><td>16</td></tr>
+<tr><td class="mono">/privacy</td><td>14</td></tr>
+<tr><td class="mono">/faq</td><td>12</td></tr>
+<tr><td class="mono">/playground</td><td>12</td></tr>
+<tr><td class="mono">/assessment/team</td><td>11</td></tr>
+<tr><td class="mono">/terms</td><td>10</td></tr>
+<tr><td class="mono">/courses/foundation/gallery</td><td>9</td></tr>
+<tr><td class="mono">/ai-use-disclaimer</td><td>8</td></tr>
+<tr><td class="mono">/courses/foundation</td><td>8</td></tr>
+<tr><td class="mono">/playbooks</td><td>6</td></tr>
+<tr><td class="mono">/prompt-cards</td><td>6</td></tr>
+<tr><td class="mono">/auth/signup</td><td>6</td></tr>
+<tr><td class="mono">/support/purchase-help</td><td>5</td></tr>
+<tr><td class="mono">/courses/foundation/program</td><td>5</td></tr>
+<tr><td class="mono">/auth/login</td><td>3</td></tr>
+<tr><td class="mono">/auth/forgot-password</td><td>3</td></tr>
+<tr><td class="mono">/practice</td><td>3</td></tr>
+<tr><td class="mono">/resources/templates/ai-workflow-sop</td><td>2</td></tr>
+<tr><td class="mono">/resources/access/executive-playbook</td><td>2</td></tr>
+<tr><td class="mono">/resources/access/safe-ai-use-checklist</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/lending-playbook</td><td>1</td></tr>
+<tr><td class="mono">/my-toolbox</td><td>1</td></tr>
+<tr><td class="mono">/resources/templates/board-briefing-checklist</td><td>1</td></tr>
+<tr><td class="mono">/playbooks/bsa-aml/sar-narrative-template</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/regulatory-cheatsheet</td><td>1</td></tr>
+<tr><td class="mono">/playbooks/operations</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/red-yellow-green-use-card</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/prompt-strategy-cheat-sheet</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/compliance-playbook</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/in-depth-playbook</td><td>1</td></tr>
+<tr><td class="mono">/resources/access/bsa-aml-playbook</td><td>1</td></tr></tbody></table>
+  </section>
+
+  <section>
+    <h2>100 persona paths <span class="sub">what each persona actually walked</span></h2>
+    <p class="lead">Each persona started on the page their intended journey implies, then took a seeded, intent-biased walk through real on-page links. "Intended behavior" is from the roster; "path walked" is what the live site actually allowed (nav layer only).</p>
+    <table><thead><tr><th>ID</th><th>Role</th><th>FI type</th><th>Device</th><th>Intended behavior</th><th>Steps</th><th>Issues</th><th>Path walked</th></tr></thead><tbody><tr>
+      <td class="mono">P001-curious-ceo</td>
+      <td>CEO</td>
+      <td class="muted">Community bank &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads report</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /pricing → /pricing → /for-institutions → /faq → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P002-board-pressured-president</td>
+      <td>President</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /security/data-handling → /for-institutions → /verify → /assessment → /assessment/in-depth → /playbooks</td>
+    </tr>
+<tr>
+      <td class="mono">P003-skeptical-cfo</td>
+      <td>CFO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /pricing → /courses/foundation/program/purchase → /support/purchase-help → /privacy → /assessment/take → / → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P004-eager-innovation-officer</td>
+      <td>Innovation officer</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /for-institutions → /resources → /resources/access/safe-ai-use-checklist → /for-institutions/samples/efficiency-ratio-workbook → /certifications → /security/data-handling → /security/it-approval → /ai-use-disclaimer</td>
+    </tr>
+<tr>
+      <td class="mono">P005-overwhelmed-compliance-chief</td>
+      <td>CCO</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>6</td>
+      <td><span class="sev">1</span></td>
+      <td class="mono path">/resources → /resources/templates/ai-workflow-sop → /ai-use-disclaimer → /resources/templates/ai-use-policy-starter → /security → /pricing</td>
+    </tr>
+<tr>
+      <td class="mono">P006-detail-driven-bsa-officer</td>
+      <td>BSA/AML</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/resources → /resources/templates/ai-use-policy-starter → /security → /pricing → /courses → /security/data-handling → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P007-burned-by-vendors-cio</td>
+      <td>CIO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/security → /privacy → /security/it-approval → /for-institutions/samples/efficiency-ratio-workbook → /faq → /faq → /prompt-cards → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P008-time-starved-cro</td>
+      <td>CRO</td>
+      <td class="muted">CU large</td>
+      <td>mobile</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /resources → /resources/access/lending-playbook → /assessment/take → / → /courses → /prompt-cards → /for-institutions → /security/it-approval</td>
+    </tr>
+<tr>
+      <td class="mono">P009-self-learning-lender</td>
+      <td>Commercial lender</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after playground</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /playground → /my-toolbox → /auth/signup → /auth/login → /auth/forgot-password</td>
+    </tr>
+<tr>
+      <td class="mono">P010-required-to-certify-analyst</td>
+      <td>Data analyst</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation → /courses → /verify → /about → /for-institutions/samples/efficiency-ratio-workbook → /pricing</td>
+    </tr>
+<tr>
+      <td class="mono">P011-refund-seeker</td>
+      <td>COO</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Refund-seeker</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment/in-depth → /about → /verify → /resources/templates/ai-use-policy-starter → /for-institutions → /pricing → /support/purchase-help → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P012-de-novo-founder</td>
+      <td>CEO/Founder</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, abandons M3</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /resources/templates/ai-use-policy-starter → /courses → /for-institutions → /about → /for-institutions/samples/efficiency-ratio-workbook → /ai-use-disclaimer → /verify → /resources</td>
+    </tr>
+<tr>
+      <td class="mono">P013-mdi-mission-officer</td>
+      <td>Community dev lead</td>
+      <td class="muted">MDI CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /faq → /pricing → /assessment/take → / → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P014-cdfi-grant-writer</td>
+      <td>Grants manager</td>
+      <td class="muted">CDFI &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/resources → /resources/templates/ai-use-policy-starter → / → /playground → /for-institutions/samples/efficiency-ratio-workbook → /pricing → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P015-thrift-traditionalist</td>
+      <td>President</td>
+      <td class="muted">Mutual/thrift $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /for-institutions → /courses → /faq → /assessment/take → / → /faq → /security/it-approval</td>
+    </tr>
+<tr>
+      <td class="mono">P016-trust-company-counsel</td>
+      <td>General counsel</td>
+      <td class="muted">Trust co $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/resources → /security → /security/it-approval → /privacy → /resources/templates/ai-use-policy-starter → /security/data-handling → /pricing → / → /courses</td>
+    </tr>
+<tr>
+      <td class="mono">P017-bankers-bank-strategist</td>
+      <td>SVP strategy</td>
+      <td class="muted">Bankers' bank</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /about → /for-institutions → /security → /for-institutions/samples/efficiency-ratio-workbook → /faq</td>
+    </tr>
+<tr>
+      <td class="mono">P018-fintech-vendor-scout</td>
+      <td>Partnerships</td>
+      <td class="muted">Fintech vendor</td>
+      <td>desktop</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /pricing → /courses → /courses/foundation/program/purchase → /courses/foundation/program → /auth/signup → /</td>
+    </tr>
+<tr>
+      <td class="mono">P019-state-examiner</td>
+      <td>Bank examiner</td>
+      <td class="muted">Regulator</td>
+      <td>desktop</td>
+      <td class="muted">Certificate-verifier</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/certifications → /terms → /resources → /security/data-handling → /security → /verify → /resources → /prompt-cards</td>
+    </tr>
+<tr>
+      <td class="mono">P020-independent-consultant</td>
+      <td>AI advisory</td>
+      <td class="muted">Consultant</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, completes it</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /terms → /assessment/in-depth → / → /certifications → /assessment/take → / → /resources → /resources/templates/board-briefing-checklist</td>
+    </tr>
+<tr>
+      <td class="mono">P021-grad-student</td>
+      <td>MBA candidate</td>
+      <td class="muted">Student</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /about → /for-institutions → /resources/templates/ai-use-policy-starter → /resources → /security/data-handling</td>
+    </tr>
+<tr>
+      <td class="mono">P022-trade-journalist</td>
+      <td>Banking reporter</td>
+      <td class="muted">Journalist</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after about</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /about → /assessment/take → / → /pricing → /resources/templates/ai-use-policy-starter → /resources</td>
+    </tr>
+<tr>
+      <td class="mono">P023-frontline-teller</td>
+      <td>Teller/CSR</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, abandons M3</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation → /assessment/take → / → /courses → /resources/templates/ai-use-policy-starter → /playbooks → /terms</td>
+    </tr>
+<tr>
+      <td class="mono">P024-l-d-director</td>
+      <td>HR/L&amp;D</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /for-institutions → /assessment/in-depth → /assessment/take → / → / → /courses → / → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P025-branch-ops-manager</td>
+      <td>Retail/branch ops</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /about → /assessment → /resources/templates/ai-use-policy-starter</td>
+    </tr>
+<tr>
+      <td class="mono">P026-ciso-gatekeeper</td>
+      <td>CISO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after security</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/security → /security/data-handling → /security/it-approval → /faq → /for-institutions → /assessment/take → /</td>
+    </tr>
+<tr>
+      <td class="mono">P027-digital-banking-lead</td>
+      <td>Digital banking</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, never takes it</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /playground → /pricing → / → /terms → /terms → /courses → /courses/foundation/program/purchase</td>
+    </tr>
+<tr>
+      <td class="mono">P028-marketing-cmo</td>
+      <td>CMO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/in-depth → /for-institutions → /about → /verify → /for-institutions/samples/efficiency-ratio-workbook → /security/data-handling → /playbooks → /resources</td>
+    </tr>
+<tr>
+      <td class="mono">P029-internal-auditor</td>
+      <td>Internal audit</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/resources → /verify → /certifications → /for-institutions → /resources/templates/ai-use-policy-starter → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P030-board-director</td>
+      <td>Board director</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Completes free, won't email</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /privacy → /ai-use-disclaimer → /for-institutions → / → /courses → /assessment/in-depth</td>
+    </tr>
+<tr>
+      <td class="mono">P031-project-manager</td>
+      <td>PMO lead</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /for-institutions → / → /security/it-approval → /for-institutions/samples/efficiency-ratio-workbook → /assessment/take → / → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P032-chief-credit-officer</td>
+      <td>CCO (credit)</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, completes it</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /playground → /security/it-approval → /security → / → /courses → / → /for-institutions → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P033-vendor-mgmt-officer</td>
+      <td>Vendor mgmt</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/security → /privacy → /security/it-approval → /security/data-handling → /pricing → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P034-operations-clerk</td>
+      <td>Ops clerk</td>
+      <td class="muted">Mutual/thrift &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, abandons M3</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation/program → / → /verify → /courses → /courses/foundation/gallery → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P035-returning-mobile-user</td>
+      <td>Lending officer</td>
+      <td class="muted">CU mid</td>
+      <td>mobile</td>
+      <td class="muted">Returns weeks later, diff device</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /about → /certifications → / → /for-institutions/samples/efficiency-ratio-workbook → /faq → /for-institutions → /</td>
+    </tr>
+<tr>
+      <td class="mono">P036-accidental-clicker</td>
+      <td>Teller/CSR</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/take → / → /assessment/in-depth → /assessment/team → /assessment → /for-institutions/samples/efficiency-ratio-workbook → /resources/templates/ai-use-policy-starter → /resources</td>
+    </tr>
+<tr>
+      <td class="mono">P037-eager-early-adopter</td>
+      <td>Chief Digital Officer</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /for-institutions → /security → /for-institutions/samples/efficiency-ratio-workbook → /courses → /courses/foundation/gallery</td>
+    </tr>
+<tr>
+      <td class="mono">P038-budget-hawk-cfo</td>
+      <td>CFO</td>
+      <td class="muted">CU small</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after pricing</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/take → / → /for-institutions → /assessment/take → / → /assessment/in-depth</td>
+    </tr>
+<tr>
+      <td class="mono">P039-compliance-box-checker</td>
+      <td>Compliance analyst</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/resources → /playbooks/bsa-aml/sar-narrative-template → /for-institutions → /resources/templates/ai-use-policy-starter → /assessment/take → / → /resources/templates/ai-use-policy-starter → /security</td>
+    </tr>
+<tr>
+      <td class="mono">P040-3rd-party-cert-verifier</td>
+      <td>HR recruiter</td>
+      <td class="muted">CB (hiring)</td>
+      <td>desktop</td>
+      <td class="muted">Certificate-verifier</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/certifications → /courses → /verify → /about → /certifications → /security/it-approval → /for-institutions → / → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P041-curious-director</td>
+      <td>Board director</td>
+      <td class="muted">Bankers' bank</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/in-depth → /assessment/in-depth → /resources → /courses → /</td>
+    </tr>
+<tr>
+      <td class="mono">P042-overwhelmed-ceo</td>
+      <td>CEO</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/in-depth → /for-institutions → /assessment/take → / → /about → /verify</td>
+    </tr>
+<tr>
+      <td class="mono">P043-risk-averse-cro</td>
+      <td>CRO</td>
+      <td class="muted">Trust co $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, never takes it</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/security → /for-institutions → /security/data-handling → /about → /assessment/take → / → /privacy → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P044-cuna-newsletter-reader</td>
+      <td>COO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/take → / → /for-institutions/samples/efficiency-ratio-workbook → /playground → /assessment/in-depth → /courses → /for-institutions → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P045-it-generalist</td>
+      <td>IT manager</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after playground</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/ → /prompt-cards → /playground → /practice → /courses → /verify</td>
+    </tr>
+<tr>
+      <td class="mono">P046-lending-team-lead</td>
+      <td>Commercial lending lead</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → / → /for-institutions → /for-institutions/samples/efficiency-ratio-workbook → /security/data-handling → /security → /playbooks</td>
+    </tr>
+<tr>
+      <td class="mono">P047-skeptical-examiner-whisperer</td>
+      <td>CCO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/resources → /resources/access/executive-playbook → /security/it-approval → /security/data-handling → /security → /resources/templates/ai-use-policy-starter → /resources → /resources/access/regulatory-cheatsheet</td>
+    </tr>
+<tr>
+      <td class="mono">P048-first-time-founder</td>
+      <td>Founder/CEO</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /support/purchase-help → /courses → /for-institutions → / → /assessment → /about → /for-institutions/samples/efficiency-ratio-workbook → /courses</td>
+    </tr>
+<tr>
+      <td class="mono">P049-mdi-ceo</td>
+      <td>CEO</td>
+      <td class="muted">MDI CU small</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /certifications → /about → /assessment → /assessment/take → /</td>
+    </tr>
+<tr>
+      <td class="mono">P050-cdfi-ops-lead</td>
+      <td>COO</td>
+      <td class="muted">CDFI $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/resources → /security/it-approval → /for-institutions → /about → /security/data-handling → /resources/templates/ai-use-policy-starter → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P051-half-hearted-buyer</td>
+      <td>Branch manager</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation → /courses → /verify → /certifications → / → /assessment/take → /</td>
+    </tr>
+<tr>
+      <td class="mono">P052-diligent-in-depth-buyer</td>
+      <td>CRO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, completes it</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /for-institutions → /for-institutions/samples/efficiency-ratio-workbook → /about → /assessment/in-depth → /terms → /privacy</td>
+    </tr>
+<tr>
+      <td class="mono">P053-won-t-give-email-skeptic</td>
+      <td>CEO</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Completes free, won't email</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /resources/templates/ai-use-policy-starter → / → /pricing → /assessment/take → /</td>
+    </tr>
+<tr>
+      <td class="mono">P054-mid-assessment-bailer</td>
+      <td>CFO</td>
+      <td class="muted">Mutual/thrift $250M-$1B</td>
+      <td>mobile</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /certifications → /courses → /assessment/in-depth → /assessment/team</td>
+    </tr>
+<tr>
+      <td class="mono">P055-cohort-champion</td>
+      <td>CHRO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /assessment → /for-institutions/samples/efficiency-ratio-workbook → /courses → /resources/templates/ai-use-policy-starter → /about → /courses/foundation/gallery → /security/data-handling</td>
+    </tr>
+<tr>
+      <td class="mono">P056-prompt-card-collector</td>
+      <td>Innovation officer</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/resources → /playbooks/operations → /assessment/take → / → /assessment/take → / → /ai-use-disclaimer → /resources/templates/ai-use-policy-starter → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P057-module-3-quitter</td>
+      <td>Ops manager</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, abandons M3</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation → /courses → /courses/foundation/gallery → /pricing → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P058-recommending-coo</td>
+      <td>COO</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /verify → /about → /about → /terms</td>
+    </tr>
+<tr>
+      <td class="mono">P059-returning-desktop-finisher</td>
+      <td>Lender</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Returns weeks later, diff device</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/in-depth → /resources → / → /privacy → /security/data-handling → /pricing → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P060-cert-completer</td>
+      <td>Digital banking lead</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /assessment/take → / → /courses → /pricing → /verify → /ai-use-disclaimer → /courses/foundation → /courses/foundation/program/purchase</td>
+    </tr>
+<tr>
+      <td class="mono">P061-refund-regretter</td>
+      <td>CFO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Refund-seeker</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment/in-depth → /pricing → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /security → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P062-quick-bounce-director</td>
+      <td>Board director</td>
+      <td class="muted">Trust co $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /for-institutions/samples/efficiency-ratio-workbook → /security/data-handling → /prompt-cards → /courses → /for-institutions → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P063-security-guide-hunter</td>
+      <td>CISO</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/security → /courses → /security/data-handling → /resources/templates/ai-use-policy-starter → /security/it-approval → /for-institutions → /faq → /privacy</td>
+    </tr>
+<tr>
+      <td class="mono">P064-playground-tinkerer</td>
+      <td>IT lead</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after playground</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /playground → /ai-use-disclaimer → /pricing → /support/purchase-help → /about → /certifications → /resources/templates/ai-use-policy-starter → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P065-board-asked-cro</td>
+      <td>CRO</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /assessment/take → / → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P066-won-t-pay-browser</td>
+      <td>Marketing manager</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after pricing</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/take → / → /resources → /resources/access/red-yellow-green-use-card → / → /pricing</td>
+    </tr>
+<tr>
+      <td class="mono">P067-detail-auditor</td>
+      <td>Internal audit lead</td>
+      <td class="muted">Bankers' bank</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/resources → /resources/access/prompt-strategy-cheat-sheet → /pricing → /ai-use-disclaimer → /resources/templates/ai-use-policy-starter → /security → / → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P068-eager-new-lender</td>
+      <td>Consumer lender</td>
+      <td class="muted">CU small</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, completes it</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /about → /pricing → /courses/foundation/program/purchase → /for-institutions → / → /courses → /resources → /resources/templates/ai-workflow-sop</td>
+    </tr>
+<tr>
+      <td class="mono">P069-sleeper-buyer</td>
+      <td>COO</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /for-institutions → /playground → /courses → /about → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P070-mobile-first-timer</td>
+      <td>Teller/CSR</td>
+      <td class="muted">MDI CB &lt;$250M</td>
+      <td>mobile</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /for-institutions/samples/efficiency-ratio-workbook → /assessment/in-depth → /playground → /assessment/take → / → /verify</td>
+    </tr>
+<tr>
+      <td class="mono">P071-email-only-reader</td>
+      <td>CMO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /for-institutions → / → /about → /courses → /playbooks → /certifications → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P072-stubborn-non-emailer</td>
+      <td>CCO (credit)</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Completes free, won't email</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /for-institutions → /security → /pricing → /assessment/in-depth → /assessment/team → /security/it-approval</td>
+    </tr>
+<tr>
+      <td class="mono">P073-team-pilot-buyer</td>
+      <td>L&amp;D manager</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /courses → /for-institutions/samples/efficiency-ratio-workbook → / → /certifications → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P074-certificate-auditor</td>
+      <td>Credential verifier</td>
+      <td class="muted">Consultant</td>
+      <td>desktop</td>
+      <td class="muted">Certificate-verifier</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/certifications → /faq → /verify → /courses → /privacy → /assessment → /resources/templates/ai-use-policy-starter</td>
+    </tr>
+<tr>
+      <td class="mono">P075-idle-99-owner</td>
+      <td>Risk analyst</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, never takes it</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment/in-depth → /security → /faq → / → /resources → /resources/access/compliance-playbook → /courses → /pricing</td>
+    </tr>
+<tr>
+      <td class="mono">P076-strategist-ceo</td>
+      <td>CEO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /about → /pricing → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /assessment → /assessment/take → / → /courses</td>
+    </tr>
+<tr>
+      <td class="mono">P077-anxious-exam-prep-cco</td>
+      <td>CCO</td>
+      <td class="muted">Mutual/thrift $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/resources → /resources/access/in-depth-playbook → /security → /for-institutions → /resources/templates/ai-use-policy-starter → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P078-self-directed-completer</td>
+      <td>Ops manager</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation/program → /auth/signup → /privacy → /courses → /courses/foundation/program/purchase → /courses/foundation</td>
+    </tr>
+<tr>
+      <td class="mono">P079-comparison-shopper</td>
+      <td>CIO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after pricing</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /certifications → /pricing → /for-institutions → /for-institutions/samples/efficiency-ratio-workbook → /faq → /about → /resources/templates/ai-use-policy-starter</td>
+    </tr>
+<tr>
+      <td class="mono">P080-accidental-mobile-tap</td>
+      <td>Frontline CSR</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>mobile</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /assessment/in-depth → /assessment/team → /resources/templates/ai-use-policy-starter → /security/it-approval → /certifications → /verify → /terms → /resources</td>
+    </tr>
+<tr>
+      <td class="mono">P081-whole-team-buyer</td>
+      <td>CHRO</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /for-institutions → /courses → /courses/foundation/gallery → /about → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P082-module-3-abandoner</td>
+      <td>Founder</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, abandons M3</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation → /courses/foundation/program/purchase → /courses/foundation/program → /auth/signup → /auth/login → /auth/forgot-password</td>
+    </tr>
+<tr>
+      <td class="mono">P083-curious-regulator</td>
+      <td>Policy analyst</td>
+      <td class="muted">Regulator</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /resources → /resources/access/executive-playbook → /resources/templates/ai-use-policy-starter → / → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /courses</td>
+    </tr>
+<tr>
+      <td class="mono">P084-roi-calc-obsessive</td>
+      <td>CFO</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Gives email, reads only</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → /for-institutions → /assessment/take → / → /security → /terms → /assessment → /assessment/in-depth → /pricing</td>
+    </tr>
+<tr>
+      <td class="mono">P085-in-depth-finisher</td>
+      <td>CRO</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, completes it</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /assessment/in-depth → /for-institutions/samples/efficiency-ratio-workbook → /resources/templates/ai-use-policy-starter</td>
+    </tr>
+<tr>
+      <td class="mono">P086-returning-cert-chaser</td>
+      <td>Lender</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Returns weeks later, diff device</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /courses/foundation/program → /auth/signup → /terms → /courses → /about → /courses/foundation/gallery</td>
+    </tr>
+<tr>
+      <td class="mono">P087-reluctant-refunder</td>
+      <td>COO</td>
+      <td class="muted">Trust co $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Refund-seeker</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /for-institutions → /resources → /about → /for-institutions/samples/efficiency-ratio-workbook → /security/data-handling → /playground → /practice</td>
+    </tr>
+<tr>
+      <td class="mono">P088-template-snatcher</td>
+      <td>Compliance officer</td>
+      <td class="muted">CDFI &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/resources → /privacy → /resources/templates/ai-use-policy-starter → /security → /terms → /playground → /about → /pricing → /assessment</td>
+    </tr>
+<tr>
+      <td class="mono">P089-skeptical-it-auditor</td>
+      <td>IT/security auditor</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after security</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/security → / → /security/data-handling → /security/it-approval → /privacy → /for-institutions/samples/efficiency-ratio-workbook</td>
+    </tr>
+<tr>
+      <td class="mono">P090-won-t-email-director</td>
+      <td>Board director</td>
+      <td class="muted">Bankers' bank</td>
+      <td>desktop</td>
+      <td class="muted">Completes free, won't email</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/in-depth → /assessment/in-depth → / → /assessment/take → / → /for-institutions</td>
+    </tr>
+<tr>
+      <td class="mono">P091-eager-cohort-lead</td>
+      <td>Training manager</td>
+      <td class="muted">CU large</td>
+      <td>desktop</td>
+      <td class="muted">Team/cohort buyer</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/assessment/team → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → / → /courses → /courses/foundation/program/purchase → /courses/foundation → /courses/foundation/gallery</td>
+    </tr>
+<tr>
+      <td class="mono">P092-mobile-mid-quit</td>
+      <td>CFO</td>
+      <td class="muted">CB &lt;$250M</td>
+      <td>mobile</td>
+      <td class="muted">Abandons mid-assessment</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /assessment/take → / → /for-institutions → /assessment/take → / → /assessment/in-depth → /playbooks → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P093-idle-course-owner</td>
+      <td>Digital lead</td>
+      <td class="muted">CU mid</td>
+      <td>desktop</td>
+      <td class="muted">Buys $295, never starts</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /for-institutions → / → /courses → /courses → /assessment/take</td>
+    </tr>
+<tr>
+      <td class="mono">P094-diligent-self-learner</td>
+      <td>Ops analyst</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/courses/foundation/program/purchase → /for-institutions → / → /verify → /courses → /courses/foundation/gallery → /faq</td>
+    </tr>
+<tr>
+      <td class="mono">P095-quick-glance-ceo</td>
+      <td>CEO</td>
+      <td class="muted">MDI CB &lt;$250M</td>
+      <td>desktop</td>
+      <td class="muted">Bounces in 10s</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /courses → /about → /for-institutions/samples/efficiency-ratio-workbook → /for-institutions → /assessment/take → / → /security/it-approval</td>
+    </tr>
+<tr>
+      <td class="mono">P096-practice-sandbox-tester</td>
+      <td>Innovation lead</td>
+      <td class="muted">De novo bank</td>
+      <td>desktop</td>
+      <td class="muted">Bounces after playground</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/ → / → /playground → /practice → /auth/login → /auth/signup → /auth/login → /auth/forgot-password → /</td>
+    </tr>
+<tr>
+      <td class="mono">P097-cert-verifying-examiner</td>
+      <td>Field examiner</td>
+      <td class="muted">Regulator</td>
+      <td>desktop</td>
+      <td class="muted">Certificate-verifier</td>
+      <td>6</td>
+      <td>0</td>
+      <td class="mono path">/certifications → /security → /security/it-approval → /resources/templates/ai-use-policy-starter → /resources → /resources/templates/ai-use-policy-starter</td>
+    </tr>
+<tr>
+      <td class="mono">P098-99-buyer-who-vanishes</td>
+      <td>CCO (credit)</td>
+      <td class="muted">CB $1B-$10B</td>
+      <td>desktop</td>
+      <td class="muted">Buys $99, never takes it</td>
+      <td>7</td>
+      <td>0</td>
+      <td class="mono path">/assessment/in-depth → /security → /privacy → /assessment/take → / → /pricing → /support/purchase-help</td>
+    </tr>
+<tr>
+      <td class="mono">P099-resource-only-grazer</td>
+      <td>Marketing coordinator</td>
+      <td class="muted">CU small</td>
+      <td>desktop</td>
+      <td class="muted">Downloads one, leaves</td>
+      <td>8</td>
+      <td>0</td>
+      <td class="mono path">/ → /for-institutions/samples/efficiency-ratio-workbook → /resources/templates/ai-use-policy-starter → /resources → /resources/access/bsa-aml-playbook → /for-institutions → /prompt-cards → /about</td>
+    </tr>
+<tr>
+      <td class="mono">P100-full-funnel-champion</td>
+      <td>COO</td>
+      <td class="muted">CB $250M-$1B</td>
+      <td>desktop</td>
+      <td class="muted">Completes $295 + cert</td>
+      <td>9</td>
+      <td>0</td>
+      <td class="mono path">/assessment → /courses → /assessment/in-depth → / → /verify → /for-institutions → /for-institutions/samples/efficiency-ratio-workbook → /about → /courses/foundation/gallery</td>
+    </tr></tbody></table>
+  </section>
+
+  <section>
+    <h2>Scope &amp; limitations</h2>
+    <div class="note">This is a <strong>read-only navigation sweep</strong>: GET requests only, same-origin links only, no form submits, no checkout, no auth, no <span class="mono">/api</span>. It is the honest empirical complement to the reasoning audits — it proves navigation health and page reachability, but it <strong>cannot</strong> exercise the six bottom-of-funnel P0s (certificate issuance, stranded-buyer recovery, gated PDF downloads, retention crons, team checkout, demo realness). A clean sweep here must not be read as "everything works" — it means the parts a visitor can reach without committing are healthy.</div>
+  </section>
+
+  <section>
+    <h2>Start position for the next round</h2>
+    <p class="lead">In priority order: (1) <strong>owner gates</strong> — run the live-money smoke tests, activate MailerLite, rotate the Stripe key; (2) <strong>deploy + verify the six bottom-of-funnel P0s in production</strong> (cert issuance + PDF, gated downloads, stranded-buyer recovery, retention crons, demo endpoints); (3) fix the new <span class="mono">/resources</span> hydration error; (4) physical-device QA + legal signoff + proof. The code exists for most of #2 — the work is proving it on the live site, not building it.</p>
+  </section>
+</div>
+<footer>Generated from <span class="mono">persona-sweep-100.mjs</span> live run · The AI Banking Institute · 2026-06-23</footer>
+</body></html>
