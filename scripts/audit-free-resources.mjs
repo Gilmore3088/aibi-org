@@ -101,7 +101,36 @@ function commandOutput(command, args, options = {}) {
   }
 }
 
+// Detect page-print / screenshot PDFs without poppler: a PDF that was made by
+// printing a web page embeds one large raster image per page. Real branded
+// documents (React-PDF or source-HTML) are vector text with at most a couple of
+// small decorative images. Counting big image XObjects cleanly separates them.
+function countBigRasterImages(path) {
+  const data = readFileSync(path).toString('latin1');
+  const re = /\/Subtype\s*\/Image\b/g;
+  let count = 0;
+  let m;
+  while ((m = re.exec(data))) {
+    const seg = data.slice(Math.max(0, m.index - 60), m.index + 400);
+    const w = seg.match(/\/Width\s+(\d+)/);
+    const h = seg.match(/\/Height\s+(\d+)/);
+    if (w && h && Number(w[1]) * Number(h[1]) > 200_000) count += 1;
+  }
+  return count;
+}
+
 function scanPdfArtifact(path, slug) {
+  // Hard gate: never ship a page-print/screenshot PDF again. The real branded
+  // playbooks top out at ~3 decorative/chart images; a printed web page has
+  // one full-page raster per page (15-30+).
+  const bigRasters = countBigRasterImages(path);
+  if (bigRasters > 3) {
+    error(
+      `${slug} PDF looks like a page-print/screenshot (${bigRasters} full-page raster images). ` +
+      'Render it from source (React-PDF or source HTML), not by printing a web page.',
+    );
+  }
+
   const info = commandOutput('pdfinfo', [path]);
   const text = commandOutput('pdftotext', ['-layout', path, '-']);
   const pagesMatch = info.match(/^Pages:\s+(\d+)/m);
