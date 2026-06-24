@@ -277,33 +277,60 @@ export const TEMPLATES: readonly Template[] = [
     ],
     sections: [
       {
-        heading: 'Before the briefing — context',
-        intro: 'Four items the board needs to understand the room you’re in.',
+        heading: 'The board’s job, in one sentence',
+        intro:
+          'The board does not need an AI tutorial. It needs to approve four things — scope, the data line, an accountable owner, and one funded pilot — and then see evidence next quarter. Run the briefing as four decisions, not a status update.',
+      },
+      {
+        heading: 'Open with where you stand (2 minutes)',
+        intro: 'Ground the room before asking for decisions. Four facts, one sentence each:',
         items: [
-          'Where the institution stands on AI readiness today (named score or qualitative read).',
-          'How peer institutions are positioned (sourced — FDIC bank-find, peer-cohort data).',
-          'Which regulators apply (SR 11-7, ECOA / Reg B, Interagency TPRM, BSA/AML, applicable state guidance).',
-          'What the board has already approved that may touch AI (tech budget, vendor list, risk appetite statement).',
+          'Readiness — name a number: “Our AI readiness score is [X/48]; the biggest gap is [governance / data handling].” A named baseline makes next quarter’s progress measurable.',
+          'Peers — one sourced comparison: “Most institutions our size still have no AI governance framework (Jack Henry / Gartner, 2025) — moving now is a lead, not a risk.”',
+          'Regulators — name who applies: SR 11-7 (model risk), Interagency TPRM (vendors), ECOA / Reg B (lending), BSA/AML, and the AIEOG AI Lexicon vocabulary (Feb 2026).',
+          'Already approved — what the board has signed that touches AI: tech budget, vendor list, risk-appetite statement. Build on the record; don’t reopen it.',
         ],
       },
       {
-        heading: 'During the briefing — the decisions',
-        intro: 'Four items framed as decisions, not status updates.',
+        heading: 'The four motions to approve (with recommended defaults)',
+        intro:
+          'Bring these as motions with a recommended position, not open questions. The defaults are the lowest-risk, examiner-defensible starting envelope — adjust to your institution.',
         items: [
-          'Scope: what use cases are in (named) and what use cases are explicitly out.',
-          'Risk tolerance: what classes of data are allowed through AI tools, signed off by the board.',
-          'Governance: who owns the AI use case inventory, who chairs the AI review forum, what cadence.',
-          'Investment: what is being funded this cycle, what is being deferred.',
+          'Scope — Recommended: approve AI for internal drafting, research, and summarization bank-wide; keep customer-facing and credit-decision use cases explicitly out of scope pending dedicated review. Why: highest value, lowest regulatory exposure to start.',
+          'Data line — Recommended motion (adopt verbatim): “No customer NPI, account, or examination data may be entered into any public AI tool. Confidential institution data is permitted only in [approved enterprise tool] under the signed data-processing agreement.”',
+          'Owner — Recommended: designate one accountable executive (typically CISO or COO) to own the AI use-case inventory and report to the board quarterly. Why: a single named owner is the first thing examiners look for — “the committee” is not an owner.',
+          'Investment — Recommended: fund one pilot — one department, one use case, one success metric — this cycle; defer broad rollout until the pilot clears human review. Why: structured pilots beat bank-wide licenses with no training.',
         ],
       },
       {
-        heading: 'After the briefing — evidence',
-        intro: 'Four items the board should expect to see at the next briefing.',
+        heading: 'Copy-paste: the one-page board memo',
+        intro:
+          'Drop this into your board packet and fill the brackets. Five lines is enough for most community-institution boards.',
+        steps: [
+          'Position: “[Institution] is adopting AI deliberately. Today we use it for [internal drafting / research]; we do not use it for [credit decisions / customer messaging].”',
+          'Decision requested: approve the four motions above — scope, data line, owner, investment.',
+          'Risk posture: “All AI output is draft work; a named human reviews anything that reaches a customer, examiner, or regulated process (human-in-the-loop).”',
+          'Oversight: “[Owner] maintains the AI use-case inventory and reports quarterly — tools in use, incidents, training completion, and progress against our readiness baseline.”',
+          'The ask: a motion to adopt the AI Use Policy and authorize the funded pilot.',
+        ],
+      },
+      {
+        heading: 'What to bring back next quarter (evidence)',
+        intro: 'Tell the board now what you will show them next time, so oversight is a habit, not a fire drill.',
         items: [
-          'The AI use case inventory — what we are running, who owns each, what tier of risk.',
-          'Incident log — anything flagged since the last briefing.',
-          'Compliance review readiness — what we can show an examiner today.',
-          'A scorecard against the AI readiness baseline — what moved, what didn’t.',
+          'The AI use-case inventory — what we run, who owns each, its risk tier. Example row: “Loan-memo drafting · Owner: VP Lending · Tool: [enterprise] · Data: internal only · Tier: medium · HITL: yes.”',
+          'Incident log — anything flagged since the last briefing (even “none” demonstrates you are watching).',
+          'Exam readiness — what we could show an examiner today: policy, inventory, vendor reviews, training records.',
+          'Scorecard vs. the readiness baseline — what moved, what didn’t, and why.',
+        ],
+      },
+      {
+        heading: 'What good looks like — and the three mistakes to avoid',
+        intro: 'A strong AI board decision is specific. Watch for these failure patterns:',
+        items: [
+          'Don’t approve “explore AI” with no scope — that is the decision examiners read as “no governance.”',
+          'Don’t leave the owner as a committee — name a person, with quarterly reporting.',
+          'Don’t skip the data line — staff pasting customer data into public tools is the highest-risk gap; the board should prohibit it in writing.',
         ],
       },
     ],
