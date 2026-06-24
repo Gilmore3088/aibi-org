@@ -13,7 +13,7 @@ export default function TermsPage() {
       activePath="/"
       eyebrow="Legal · Terms of Service"
       title={<>The shortest possible terms.</>}
-      lede="You buy a seat, you get the course and toolbox. Digital purchases are refundable within 7 days if the assessment has not been submitted, fewer than two course modules have been completed, and no certificate has been issued. We do not use your data to train models. You do not redistribute course content. That is most of it."
+      lede="You buy a seat, you get the course and toolbox. Digital purchases are refundable within 7 days if the assessment has not been submitted, fewer than two course modules have been completed, and no certificate has been issued. We do not use your data or our course content to train AiBI-owned models. You do not redistribute course content. That is most of it."
       sections={[
         {
           kicker: 'What you get',
@@ -29,7 +29,7 @@ export default function TermsPage() {
         {
           kicker: 'What we expect',
           heading: <>No redistribution. No model training on our content.</>,
-          lede: <>You may not redistribute the course or Toolbox to non-purchasers. You may not use our content to train a model. Both rules exist to keep prices low for individual bankers.</>,
+          lede: <>You may not redistribute the course or Toolbox to non-purchasers. You may not use our content to train a model. When you run AI features, your prompt is handled under the selected provider path described in the LLM data-handling summary. These rules keep prices low and boundaries clear for individual bankers.</>,
         },
       ]}
       ctaBand={{
@@ -37,6 +37,7 @@ export default function TermsPage() {
         body: <>Email hello@aibankinginstitute.com — short answers, no legalese.</>,
         actions: [
           { label: 'Email us', href: 'mailto:hello@aibankinginstitute.com', variant: 'gold' },
+          { label: 'LLM data handling', href: '/security/data-handling', variant: 'ghost-dark' },
         ],
       }}
     />

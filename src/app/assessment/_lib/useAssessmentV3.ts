@@ -19,6 +19,7 @@ interface PersistedState {
   readonly selectedQuestionIds: readonly string[];
   readonly answers: readonly number[];
   readonly currentQuestion: number;
+  readonly phase?: AssessmentPhase;
 }
 
 export interface AssessmentState {
@@ -36,6 +37,7 @@ export interface AssessmentActions {
   answer: (points: number) => void;
   goBack: () => void;
   restart: () => void;
+  restoreDraft: (draft: PersistedState) => boolean;
   advanceToResults: () => void;
   getDimensionBreakdown: () => Record<Dimension, DimensionScore>;
 }
@@ -44,6 +46,7 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
   questions: AssessmentQuestion[];
   answers: number[];
   currentQuestion: number;
+  phase: AssessmentPhase;
 } | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -53,6 +56,12 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
     if (!Array.isArray(parsed.selectedQuestionIds)) return null;
     if (!Array.isArray(parsed.answers)) return null;
     if (typeof parsed.currentQuestion !== 'number') return null;
+    const phase =
+      parsed.phase === 'score' || parsed.phase === 'results' || parsed.phase === 'questions'
+        ? parsed.phase
+        : parsed.answers.length >= QUESTIONS_PER_SESSION
+          ? 'score'
+          : 'questions';
 
     // Rebuild selected questions from IDs to preserve order
     const poolById = new Map(pool.map((q) => [q.id, q]));
@@ -69,6 +78,7 @@ function readPersisted(pool: readonly AssessmentQuestion[]): {
         Math.max(parsed.currentQuestion, 0),
         QUESTIONS_PER_SESSION - 1
       ),
+      phase,
     };
   } catch {
     return null;
@@ -91,6 +101,7 @@ export function useAssessmentV3(): AssessmentState & AssessmentActions {
       setSelectedQuestions(persisted.questions);
       setAnswers(persisted.answers);
       setCurrentQuestion(persisted.currentQuestion);
+      setPhase(persisted.phase);
     } else {
       setSelectedQuestions(selectQuestions(questionPool));
     }
@@ -108,15 +119,15 @@ export function useAssessmentV3(): AssessmentState & AssessmentActions {
     if (!hydrated) return;
     if (typeof window === 'undefined') return;
     if (selectedQuestions.length === 0) return;
-    if (answers.length === 0 && currentQuestion === 0) return;
 
     const payload: PersistedState = {
       selectedQuestionIds: selectedQuestions.map((q) => q.id),
       answers,
       currentQuestion,
+      phase,
     };
     window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  }, [answers, currentQuestion, selectedQuestions, hydrated]);
+  }, [answers, currentQuestion, phase, selectedQuestions, hydrated]);
 
   const totalScore = answers.reduce((sum, n) => sum + n, 0);
   const isComplete = answers.length === QUESTIONS_PER_SESSION;
@@ -158,19 +169,41 @@ export function useAssessmentV3(): AssessmentState & AssessmentActions {
   );
 
   // goBack: step to the previous question without losing the answer for that question.
-  // Available only on the questions phase; ignored if already at the first question.
+  // From the score phase, return to Q12 so the user can review/edit instead
+  // of being forced into Start over.
   const goBack = useCallback(() => {
-    setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : prev));
-  }, []);
+    if (phase === 'score') {
+      setCurrentQuestion(QUESTIONS_PER_SESSION - 1);
+      setPhase('questions');
+      return;
+    }
+    setCurrentQuestion((prev) => (phase === 'questions' && prev > 0 ? prev - 1 : prev));
+  }, [phase]);
 
   const restart = useCallback(() => {
     setAnswers([]);
     setCurrentQuestion(0);
     setPhase('questions');
-    setSelectedQuestions(selectQuestions(questionPool));
-    if (typeof window !== 'undefined') {
-      window.sessionStorage.removeItem(STORAGE_KEY);
-    }
+    setSelectedQuestions((prev) =>
+      prev.length === QUESTIONS_PER_SESSION ? prev : selectQuestions(questionPool),
+    );
+  }, []);
+
+  const restoreDraft = useCallback((draft: PersistedState): boolean => {
+    const restored = draft.selectedQuestionIds
+      .map((id) => questionPool.find((q) => q.id === id))
+      .filter((q): q is AssessmentQuestion => q !== undefined);
+    if (restored.length !== QUESTIONS_PER_SESSION) return false;
+
+    setSelectedQuestions(restored);
+    setAnswers(draft.answers.slice(0, QUESTIONS_PER_SESSION));
+    setCurrentQuestion(Math.min(Math.max(draft.currentQuestion, 0), QUESTIONS_PER_SESSION - 1));
+    setPhase(
+      draft.phase === 'score' || draft.phase === 'results' || draft.phase === 'questions'
+        ? draft.phase
+        : 'questions',
+    );
+    return true;
   }, []);
 
   const advanceToResults = useCallback(() => {
@@ -193,6 +226,7 @@ export function useAssessmentV3(): AssessmentState & AssessmentActions {
     answer,
     goBack,
     restart,
+    restoreDraft,
     advanceToResults,
     getDimensionBreakdown,
   };

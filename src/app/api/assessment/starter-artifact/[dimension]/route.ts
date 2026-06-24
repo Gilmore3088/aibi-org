@@ -1,7 +1,6 @@
 // /api/assessment/starter-artifact/[dimension]
 //
-// Renders a banker's post-assessment starter artifact as a branded PDF on the
-// fly (via @react-pdf/renderer, the same path as the Skill Template Library)
+// Serves a banker's post-assessment starter artifact as a static branded PDF
 // and logs the download into resource_downloads. Replaces the old unbranded,
 // unlogged client-side .md blob download.
 //
@@ -10,10 +9,8 @@
 // assessment. Logging is best-effort and never blocks the download.
 
 import { headers } from 'next/headers';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import { StarterArtifactDocument } from '@/lib/pdf/StarterArtifactDocument';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import { DIMENSION_LABELS } from '@content/assessments/v2/types';
 import type { Dimension } from '@content/assessments/v2/types';
@@ -43,13 +40,9 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
   const artifact = getStarterArtifact(dimension);
 
   try {
-    const element = React.createElement(StarterArtifactDocument, {
-      title: artifact.title,
-      subtitle: artifact.subtitle,
-      body: artifact.body,
-    }) as React.ReactElement<DocumentProps>;
-    const buffer = await renderToBuffer(element);
-    const pdf = new Uint8Array(buffer);
+    const file = await readFile(
+      join(process.cwd(), 'public', 'downloads', 'starter-artifacts', `${dimension}.pdf`),
+    );
 
     // Best-effort download log — never blocks the response.
     if (isSupabaseConfigured()) {
@@ -72,17 +65,17 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     }
 
     const filename = artifact.filename.replace(/\.md$/, '.pdf');
-    return new Response(pdf, {
+    return new Response(new Uint8Array(file), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': String(pdf.length),
+        'Content-Length': String(file.length),
         'Cache-Control': 'private, max-age=3600',
       },
     });
   } catch (err) {
-    console.error('[starter-artifact] PDF generation error:', err);
+    console.error('[starter-artifact] static PDF read failed:', err);
     return new Response(JSON.stringify({ error: 'PDF generation failed. Please try again.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

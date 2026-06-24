@@ -10,6 +10,8 @@ import { useState, type CSSProperties, type FormEvent } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const GUIDE_DOWNLOAD_PATH = '/api/guides/safe-ai-use';
+const GUIDE_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -101,22 +103,42 @@ export function GuideRequestForm() {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(data.error ?? 'Something went wrong.');
       }
+      await triggerPdfDownload();
       setStatus('success');
-      // Trigger PDF download immediately after successful email capture
-      triggerPdfDownload();
     } catch (err) {
       setStatus('error');
       setMessage(err instanceof Error ? err.message : 'Unexpected error.');
     }
   }
 
-  function triggerPdfDownload() {
+  async function triggerPdfDownload() {
+    const response = await fetch(GUIDE_DOWNLOAD_PATH);
+    if (!response.ok) {
+      const data = (await response.json().catch(() => ({}))) as { error?: string };
+      throw new Error(data.error ?? 'Guide download unavailable. Please try again.');
+    }
+
+    const blob = await response.blob();
+    if (blob.size === 0) {
+      throw new Error('Guide download unavailable. Please try again.');
+    }
+
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.href = '/api/guides/safe-ai-use';
-    link.download = 'AiBI-Safe-AI-Use-Guide.pdf';
+    link.href = url;
+    link.download = GUIDE_FILENAME;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+
+  function retryPdfDownload() {
+    setMessage(null);
+    triggerPdfDownload().catch((err) => {
+      setStatus('error');
+      setMessage(err instanceof Error ? err.message : 'Guide download unavailable. Please try again.');
+    });
   }
 
   if (status === 'success') {
@@ -130,7 +152,7 @@ export function GuideRequestForm() {
           textAlign: 'center',
         }}
       >
-        <p style={{ ...kickerStyle, margin: '0 0 12px' }}>Downloading now</p>
+        <p style={{ ...kickerStyle, margin: '0 0 12px' }}>Opening download</p>
         <h3
           style={{
             fontFamily: INTER_STACK,
@@ -153,12 +175,12 @@ export function GuideRequestForm() {
             margin: '0 0 18px',
           }}
         >
-          The Safe AI Use Guide should be downloading now. If it did not
-          start automatically, use the button below.
+          Your request was received. The Safe AI Use Guide should open as a
+          browser download or tab. If it does not start, use the button below.
         </p>
         <button
           type="button"
-          onClick={triggerPdfDownload}
+          onClick={retryPdfDownload}
           style={{ ...submitButtonStyle, width: 'auto', padding: '12px 22px' }}
         >
           DOWNLOAD GUIDE

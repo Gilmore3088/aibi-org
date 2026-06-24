@@ -100,6 +100,11 @@ export async function POST(request: Request): Promise<Response> {
       { status: 422 },
     );
   }
+  const piiAudit = {
+    piiFlagged: !pii.safe,
+    piiOverride: !pii.safe && confirmedFabricated,
+    piiKind: pii.safe ? undefined : pii.kind,
+  };
   // Injection filter cannot be overridden — it protects the model, not the user.
   const injection = scanForInjection(latestUser.content);
   if (!injection.safe) {
@@ -119,6 +124,7 @@ export async function POST(request: Request): Promise<Response> {
     await logUsage({
       userId: access.userId, courseSlug: 'toolbox', featureId: 'toolbox-playground',
       provider, model, status: 'rate-limited', ipHash,
+      ...piiAudit,
     });
     return NextResponse.json({ error: 'Daily Toolbox AI limit reached.' }, { status: 429 });
   }
@@ -157,19 +163,13 @@ export async function POST(request: Request): Promise<Response> {
         errored = true;
         write({ type: 'error', message: err instanceof LLMError ? err.kind : 'unknown' });
       } finally {
-        // #8 layer 3 telemetry — server logs only succeeded/errored status.
-        // The "pii override accepted" leading signal fires from the client
-        // via Plausible (`playground_pii_override_send`) so we can compute
-        // the override click-through rate without a schema change. If we
-        // later need server-side audit of overrides, extend logUsage with
-        // a featureNote column and write it here from `confirmedFabricated`.
-        void confirmedFabricated;
         await logUsage({
           userId, courseSlug: 'toolbox', featureId: 'toolbox-playground',
           provider, model,
           inputTokens, outputTokens,
           status: errored ? 'errored' : 'succeeded',
           ipHash,
+          ...piiAudit,
         });
         controller.close();
       }

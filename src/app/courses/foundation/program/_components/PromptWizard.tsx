@@ -1,6 +1,6 @@
 'use client';
 
-// PromptWizard — Module 3 Activity 3.1.
+// PromptWizard — Module 3 Activity 3.2.
 //
 // The learner writes a freeform prompt for a banking task and runs it. The
 // "AI answer" is assembled from authored fragments keyed to the four CORE
@@ -19,6 +19,7 @@ import {
   WIZARD_SCENARIOS,
   gradePrompt,
   MAX_TRIES,
+  MIN_FINAL_PROMPT_LENGTH,
   type CoreKey,
   type WizardScenario,
 } from '../_lib/promptWizardData';
@@ -94,6 +95,11 @@ export function PromptWizard({
     setHistory((h) => [...h, { prompt, present, score }]);
   }, [prompt, scenario, done]);
 
+  const useStarterPrompt = useCallback(() => {
+    setPrompt(scenario.starterPrompt);
+    setServerError(null);
+  }, [scenario.starterPrompt]);
+
   const nextScenario = useCallback(() => {
     setScenarioIdx((i) => Math.min(i + 1, WIZARD_SCENARIOS.length - 1));
     setPrompt('');
@@ -101,7 +107,11 @@ export function PromptWizard({
   }, []);
 
   const submit = useCallback(async () => {
-    const finalPrompt = (bestPrompt || prompt).trim();
+    const candidatePrompt = (bestPrompt || prompt).trim();
+    const finalPrompt =
+      candidatePrompt.length >= MIN_FINAL_PROMPT_LENGTH
+        ? candidatePrompt
+        : scenario.starterPrompt;
     setSubmitting(true);
     setServerError(null);
     try {
@@ -127,7 +137,7 @@ export function PromptWizard({
     } finally {
       setSubmitting(false);
     }
-  }, [bestPrompt, prompt, enrollmentId, moduleNumber, activity.id, onSubmitSuccess]);
+  }, [bestPrompt, prompt, scenario.starterPrompt, enrollmentId, moduleNumber, activity.id, onSubmitSuccess]);
 
   if (submitted) {
     return (
@@ -161,7 +171,7 @@ export function PromptWizard({
         <strong style={{ color: INK }}>O</strong>bjective,{' '}
         <strong style={{ color: INK }}>R</strong>esources,{' '}
         <strong style={{ color: INK }}>E</strong>xpectations — and shows how the AI’s answer changes
-        as a result. Revise and Run again until all four turn green.
+        as a result. Start from the worked prompt if a blank box slows you down.
       </p>
 
       {/* Which task */}
@@ -203,6 +213,27 @@ export function PromptWizard({
         {/* Editor pane */}
         {!done && (
         <div style={{ flex: '1 1 320px', minWidth: 280 }}>
+          <div
+            style={{
+              display: 'grid',
+              gap: 8,
+              marginBottom: 12,
+              padding: 12,
+              border: `1px solid ${LINE}`,
+              borderRadius: 12,
+              background: CREAM,
+            }}
+          >
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+              <div style={eyebrow}>Worked starter</div>
+              <button type="button" onClick={useStarterPrompt} style={secondaryBtn}>
+                Use starter prompt
+              </button>
+            </div>
+            <p style={{ margin: 0, color: INK, fontSize: 13, lineHeight: 1.5 }}>
+              {scenario.starterPrompt}
+            </p>
+          </div>
           <label htmlFor="pw-input" style={{ display: 'block', fontFamily: INTER, fontSize: 14, fontWeight: 700, color: INK, marginBottom: 6 }}>
             Write your prompt to the AI (attempt {history.length + 1} of {MAX_TRIES})
           </label>
@@ -270,9 +301,8 @@ export function PromptWizard({
             </p>
           ) : (
             <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 12px' }}>
-              Out of attempts for this one — no penalty. The closest a complete prompt gets:
-              name the role, state the exact task, point to the source below and forbid guessing,
-              and set the format. Carry that into the next scenario.
+              Out of attempts for this one — no penalty. Use the worked starter as your saved
+              prompt if your own attempt is not ready yet, then revisit the pattern later.
             </p>
           )}
           {!isGraded ? (
@@ -455,6 +485,19 @@ const primaryBtn: CSSProperties = {
   border: 'none',
   borderRadius: 12,
   padding: '11px 20px',
+  cursor: 'pointer',
+};
+const secondaryBtn: CSSProperties = {
+  fontFamily: INTER,
+  fontSize: 11,
+  fontWeight: 800,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: INK,
+  background: 'white',
+  border: `1px solid ${LINE}`,
+  borderRadius: 10,
+  padding: '9px 12px',
   cursor: 'pointer',
 };
 const gridHeadCell: CSSProperties = {

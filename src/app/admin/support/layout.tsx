@@ -44,6 +44,7 @@ export default async function SupportAdminLayout({ children }: { children: React
         <Link href="/admin/support">Queue</Link>
         <Link href="/admin/support/search">Search</Link>
         <Link href="/admin/funnel">Funnel</Link>
+        <Link href="/admin/toolbox-usage">Toolbox usage</Link>
         <a href="/api/admin/support/export.csv?range=30d">Export CSV</a>
       </nav>
       {children}

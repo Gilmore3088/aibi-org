@@ -31,7 +31,7 @@ const LOOP_STEPS = [
   {
     label: 'Build',
     title: 'Shape the artifact',
-    body: 'Turn the lab result into reviewed work product.',
+    body: 'Turn the lab result into review-ready work product.',
   },
   {
     label: 'Save',

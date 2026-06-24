@@ -88,6 +88,10 @@ export default function AssessmentLandingPage() {
               12 questions give you a score, top gap, and 30-day starter move.
               The paid assessment adds deeper diagnostic detail.
             </p>
+            <p className="mk-hero-role-note">
+              Role examples include frontline tellers, branch teams, lending,
+              operations, compliance, and marketing.
+            </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
                 Start free snapshot <ArrowR className="mk-ic" />

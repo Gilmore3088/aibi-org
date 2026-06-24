@@ -10,7 +10,11 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import type { Activity } from '@content/courses/foundation-program';
-import { ActivitySection, ModuleHandoffCheck } from './ActivitySection';
+import {
+  ActivitySection,
+  ModuleHandoffCheck,
+  readSaveProgressError,
+} from './ActivitySection';
 import { CompletionCTA } from './CompletionCTA';
 import { ModuleNavigation } from './ModuleNavigation';
 
@@ -37,6 +41,7 @@ export function ModuleContentClient({
   const [transferPlan, setTransferPlan] = useState('');
   const [handoffError, setHandoffError] = useState<string | null>(null);
   const [transferPlanError, setTransferPlanError] = useState<string | null>(null);
+  const [saveProgressError, setSaveProgressError] = useState<string | null>(null);
 
   const handleAllActivitiesComplete = useCallback(() => {
     setModuleComplete(true);
@@ -63,6 +68,7 @@ export function ModuleContentClient({
   const handleHandoffNoteChange = useCallback((value: string) => {
     setHandoffNote(value);
     setHandoffError(null);
+    setSaveProgressError(null);
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(`foundation-module-handoff-${moduleNumber}`, value);
@@ -79,6 +85,7 @@ export function ModuleContentClient({
   const handleTransferPlanChange = useCallback((value: string) => {
     setTransferPlan(value);
     setTransferPlanError(null);
+    setSaveProgressError(null);
     const ready = value.trim().length >= 12;
     if (typeof window === 'undefined') return;
     try {
@@ -111,6 +118,7 @@ export function ModuleContentClient({
     }
 
     setSaving(true);
+    setSaveProgressError(null);
     try {
       const res = await fetch('/api/courses/save-progress', {
         method: 'POST',
@@ -122,14 +130,19 @@ export function ModuleContentClient({
           moduleTransferPlan: trimmedTransferPlan,
         }),
       });
-      if (res.ok) {
-        setModuleComplete(true);
-        void import('@/lib/analytics/events').then((mod) =>
-          mod.trackModuleCompleted({ moduleNumber }),
-        );
+      if (!res.ok) {
+        setSaveProgressError(await readSaveProgressError(res));
+        return;
       }
+
+      setModuleComplete(true);
+      void import('@/lib/analytics/events').then((mod) =>
+        mod.trackModuleCompleted({ moduleNumber }),
+      );
     } catch {
-      // Silently fail — user can retry by clicking the button again
+      setSaveProgressError(
+        'We could not save your module progress. Check your connection and try again.',
+      );
     } finally {
       setSaving(false);
     }
@@ -158,6 +171,7 @@ export function ModuleContentClient({
           transferPlanValue={transferPlan}
           error={handoffError ?? undefined}
           transferPlanError={transferPlanError ?? undefined}
+          saveError={saveProgressError ?? undefined}
           saving={saving}
           onChange={handleHandoffNoteChange}
           onTransferPlanChange={handleTransferPlanChange}

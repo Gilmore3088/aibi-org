@@ -17,6 +17,7 @@ import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
+import { MODULE_3_PROMPTING_ACTIVITIES } from '@content/courses/foundation-program/module-3-activities';
 import { buildModuleActivity, getModuleActivitySpec } from '@content/courses/foundation-program/module-activities';
 import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import type { Activity, ActivityField } from '@content/courses/foundation-program';
@@ -230,16 +231,19 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   // --- Server-side minLength validation (T-05-02, CONT-05) ---
-  const moduleSpec = getModuleActivitySpec(moduleNumber);
+  const nativeActivities = moduleNumber === 3 ? MODULE_3_PROMPTING_ACTIVITIES : undefined;
+  const moduleSpec = nativeActivities ? undefined : getModuleActivitySpec(moduleNumber);
   const configuredActivity = moduleSpec ? buildModuleActivity(moduleSpec) : undefined;
   const v4Activity = configuredActivity ? null : getV4Activity(moduleNumber);
   const mod = configuredActivity ? undefined : getModuleByNumber(moduleNumber);
-  let submittedActivity: Activity | undefined =
-    configuredActivity?.id === activityId
+  let submittedActivity: Activity | undefined = nativeActivities?.find((a) => a.id === activityId);
+
+  submittedActivity = submittedActivity ??
+    (configuredActivity?.id === activityId
       ? configuredActivity
       : v4Activity?.id === activityId
         ? v4Activity
-        : undefined;
+        : undefined);
 
   if (mod) {
     submittedActivity = submittedActivity ?? mod.activities.find((a) => a.id === activityId);

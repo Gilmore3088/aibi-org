@@ -34,6 +34,7 @@ export interface WizardScenario {
   /** Approved source material the learner is meant to ground the prompt in. */
   readonly sourceLabel: string;
   readonly sourceMaterial: string;
+  readonly starterPrompt: string;
   readonly elements: readonly CoreElement[];
   /** Closing line shown only when every element is present. */
   readonly winLine: string;
@@ -53,6 +54,8 @@ const feeWaiver: WizardScenario = {
   sourceLabel: 'Approved fee-waiver policy (excerpt)',
   sourceMaterial:
     'Basic Checking monthly service fee: $12. Waived automatically when the account keeps a $1,500 minimum daily balance OR has a recurring direct deposit of $500+ per month. One courtesy waiver per 12 months may be granted by a banker for members who do not meet either condition. Courtesy waivers require banker approval.',
+  starterPrompt:
+    'You are a branch banking assistant helping a teller answer a member. Use only the Basic Checking fee-waiver policy below; do not guess. Tell whether the $12 fee can be waived and list the conditions. Answer in 2-3 plain-English sentences and note that courtesy waivers require banker approval.',
   elements: [
     {
       key: 'context',
@@ -109,6 +112,8 @@ const cdPenalty: WizardScenario = {
   sourceLabel: 'Approved CD penalty schedule (excerpt)',
   sourceMaterial:
     'Early-withdrawal penalty for terms of 12 months or less: 90 days of simple interest on the amount withdrawn, calculated at the certificate’s stated rate. Simple interest = principal × rate × (days ÷ 365). Penalties may reduce principal if earned interest is insufficient. Quote figures are estimates; the exact figure must be confirmed in the core system before the member is told.',
+  starterPrompt:
+    'You are a branch assistant preparing a member-ready answer. Use only the CD penalty schedule below; do not assume another formula. Calculate the 90-day simple-interest penalty and final amount the member receives for a $10,000 CD at 4.00% APY. Show the steps, then give a one-line answer and note the estimate must be confirmed in core before quoting.',
   elements: [
     {
       key: 'context',
@@ -172,3 +177,4 @@ export function gradePrompt(
 }
 
 export const MAX_TRIES = 6;
+export const MIN_FINAL_PROMPT_LENGTH = 30;

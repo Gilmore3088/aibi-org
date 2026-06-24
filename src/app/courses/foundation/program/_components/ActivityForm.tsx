@@ -18,6 +18,8 @@ import {
 } from '../_lib/activityFormHelpers';
 import { ActivityReadOnlyField, ActivityInteractiveField } from './ActivityFields';
 import { ArtifactDownload } from './ArtifactDownload';
+import { PromptWizard } from './PromptWizard';
+import { StrategyDrill } from './StrategyDrill';
 
 export interface ActivityFormProps {
   readonly activity: Activity;
@@ -992,7 +994,35 @@ function PacketSaveStatusCard() {
   );
 }
 
-export function ActivityForm({
+export function ActivityForm(props: ActivityFormProps) {
+  if (props.moduleNumber === 3 && props.activity.type === 'drill') {
+    return (
+      <StrategyDrill
+        activity={props.activity}
+        enrollmentId={props.enrollmentId}
+        moduleNumber={props.moduleNumber}
+        existingResponse={props.existingResponse}
+        onSubmitSuccess={props.onSubmitSuccess}
+      />
+    );
+  }
+
+  if (props.moduleNumber === 3 && props.activity.type === 'builder') {
+    return (
+      <PromptWizard
+        activity={props.activity}
+        enrollmentId={props.enrollmentId}
+        moduleNumber={props.moduleNumber}
+        existingResponse={props.existingResponse}
+        onSubmitSuccess={props.onSubmitSuccess}
+      />
+    );
+  }
+
+  return <StandardActivityForm {...props} />;
+}
+
+function StandardActivityForm({
   activity,
   enrollmentId,
   moduleNumber,

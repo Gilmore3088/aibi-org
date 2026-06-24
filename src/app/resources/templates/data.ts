@@ -16,6 +16,7 @@ export type TemplateSlug =
   | 'ai-use-policy-starter'
   | 'ai-workflow-sop'
   | 'board-briefing-checklist'
+  | 'cdfi-grant-ai-evidence-checklist'
   | 'gtm-plan';
 
 export interface TemplateSection {
@@ -313,6 +314,83 @@ export const TEMPLATES: readonly Template[] = [
           'Incident log — anything flagged since the last briefing.',
           'Compliance review readiness — what we can show an examiner today.',
           'A scorecard against the AI readiness baseline — what moved, what didn’t.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'cdfi-grant-ai-evidence-checklist',
+    title: 'CDFI Grant AI Evidence Checklist',
+    dek: 'A mission-first checklist for documenting AI-assisted work in grant, impact, and community-development evidence files.',
+    audience: 'CDFI, MDI, community development, grants, and impact teams',
+    readMinutes: 7,
+    sourcedFrom: [
+      'AIEOG AI Lexicon — AI governance, AI use case inventory',
+      'Your grant agreement, award conditions, and reporting instructions',
+      'Institution records retention policy',
+    ],
+    sections: [
+      {
+        heading: 'Grant or impact goal',
+        intro:
+          'Name the mission outcome the AI-assisted work supports. Keep the language tied to the grant, program, or community-development plan rather than the tool.',
+        items: [
+          'Program, grant, or internal initiative name.',
+          'Target community, member, borrower, or small-business segment.',
+          'Outcome being supported: access, speed, language clarity, documentation quality, or staff capacity.',
+        ],
+      },
+      {
+        heading: 'AI-assisted task',
+        intro:
+          'Describe the exact staff task where AI helps. The task should be internal and reviewable before any member, borrower, funder, or examiner sees the output.',
+        items: [
+          'Drafting narrative, summarizing outreach notes, organizing evidence, or improving plain-language explanations.',
+          'Approved tool and owner.',
+          'Human reviewer and backup reviewer.',
+        ],
+      },
+      {
+        heading: 'Data boundary',
+        intro:
+          'State what may and may not enter the AI tool. If real member, borrower, or applicant data is not allowed, write that plainly.',
+        items: [
+          'Allowed inputs: public program language, internal templates, de-identified summaries, or synthetic examples.',
+          'Blocked inputs: NPI, account numbers, loan details, full applications, demographic data, or examination-sensitive material unless an approved private tool and agreement cover it.',
+          'Sanitization step before prompting.',
+        ],
+      },
+      {
+        heading: 'Evidence retained',
+        intro:
+          'Keep enough evidence to show the work was controlled without turning the file into a tool log dump.',
+        items: [
+          'Prompt or working brief used.',
+          'Source material referenced.',
+          'AI draft or summary, if retained under policy.',
+          'Reviewer note, correction, and final-use decision.',
+          'Where the final artifact is stored.',
+        ],
+      },
+      {
+        heading: 'Fairness and mission check',
+        intro:
+          'Before using the output, ask whether the AI-assisted work could narrow access, confuse applicants, or hide a policy decision.',
+        items: [
+          'Does the output preserve the institution’s mission and plain-language standard?',
+          'Could any member, borrower, or applicant group be disadvantaged by the wording or process?',
+          'Did a human verify that the output matches approved program criteria?',
+        ],
+      },
+      {
+        heading: 'Reporting note',
+        intro:
+          'When the work supports a grant file or impact report, add a short note that separates AI assistance from the institution’s final judgment.',
+        steps: [
+          'Describe the human-owned decision or final artifact.',
+          'Name the AI-assisted support task.',
+          'Name the reviewer and date.',
+          'Reference the retained evidence file.',
         ],
       },
     ],

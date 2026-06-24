@@ -1,11 +1,6 @@
-// SHARED TOOL DATA — sourced from src/app/my-toolbox/_script.js v5
-// (see issue #182 for the extract+share rationale).
-//
-// View-layer fields (previewBody, footer) intentionally stay in
-// _script.js because they generate inline HTML for the drawer mini-doc
-// preview. Consumers that need only the canonical prompt data — like
-// /playground?tool=<key> — should read from here and ignore the view
-// layer.
+// SHARED TOOL DATA
+// Extracted from the legacy my-toolbox static prototype so active Toolbox
+// consumers can share canonical prompt data without importing prototype HTML.
 
 export type ToolType = 'p' | 's' | 'a' | 'pb';
 

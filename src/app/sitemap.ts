@@ -17,8 +17,10 @@ const ROUTES = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
   { path: '/assessment', priority: 0.75, changeFrequency: 'monthly' as const },
   { path: '/assessment/in-depth', priority: 0.9, changeFrequency: 'monthly' as const },
+  { path: '/pricing', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/courses', priority: 0.9, changeFrequency: 'monthly' as const },
   { path: '/for-institutions', priority: 0.9, changeFrequency: 'monthly' as const },
+  { path: '/about', priority: 0.7, changeFrequency: 'monthly' as const },
   { path: '/faq', priority: 0.65, changeFrequency: 'monthly' as const },
   { path: '/prompt-cards', priority: 0.65, changeFrequency: 'monthly' as const },
   {
@@ -30,11 +32,20 @@ const ROUTES = [
   // surface. /courses/foundation/program itself is auth-gated (307 → /auth/login)
   // and is intentionally excluded so search engines don't index login redirects.
   {
+    path: '/courses/foundation/gallery',
+    priority: 0.72,
+    changeFrequency: 'monthly' as const,
+  },
+  {
     path: '/courses/foundation/program/purchase',
     priority: 0.85,
     changeFrequency: 'monthly' as const,
   },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
+  { path: '/security/data-handling', priority: 0.65, changeFrequency: 'monthly' as const },
+  { path: '/security/it-approval', priority: 0.65, changeFrequency: 'monthly' as const },
+  { path: '/certifications', priority: 0.6, changeFrequency: 'monthly' as const },
+  { path: '/verify', priority: 0.45, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
   { path: '/playbooks', priority: 0.8, changeFrequency: 'monthly' as const },
   ...PLAYBOOK_INDEX.map((playbook) => ({

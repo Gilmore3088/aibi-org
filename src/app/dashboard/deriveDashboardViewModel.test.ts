@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { modules } from '@content/courses/foundation-program';
 import {
   deriveDashboardViewModel,
   resolveGreetingName,
@@ -63,6 +64,7 @@ function learner(partial: Partial<LearnerDashboardState> = {}): LearnerDashboard
   return {
     email: 'learner@example.com',
     enrollment: null,
+    certificate: null,
     practice: {
       completedRepIds: [],
       completedCount: 0,
@@ -216,6 +218,63 @@ describe('deriveDashboardViewModel lifecycle personas', () => {
     expect(model.toolboxLabel).toBe('Foundation access');
     expect(model.completedArtifactCount).toBe(2);
     expect(model.nextArtifact?.title).toBe('Safe AI Use Checklist');
+  });
+
+  it('does not mark the certificate step verified from module count alone', () => {
+    const dashboard = learner({
+      enrollment: {
+        id: 'enrollment-1',
+        completedModules: modules.map((module) => module.number),
+        currentModule: modules.length,
+        enrolledAt: '2026-06-03T12:00:00.000Z',
+      },
+    });
+
+    const model = deriveDashboardViewModel({
+      accountEmail: 'learner@example.com',
+      assessments: assessments({ snapshot: freeSnapshot }),
+      completedRepIds: [],
+      currentRep,
+      dashboard,
+      snapshot: freeSnapshot,
+      toolboxAccess: toolbox({ entitled: true, tier: 'full' }),
+    });
+
+    expect(model.completedModuleCount).toBe(modules.length);
+    expect(model.stepCertificate).toBe(false);
+    expect(model.certificateId).toBeNull();
+    expect(model.stepsComplete).toBe(4);
+  });
+
+  it('marks the certificate step verified only when a certificate row exists', () => {
+    const dashboard = learner({
+      enrollment: {
+        id: 'enrollment-1',
+        completedModules: modules.map((module) => module.number),
+        currentModule: modules.length,
+        enrolledAt: '2026-06-03T12:00:00.000Z',
+      },
+      certificate: {
+        id: 'AIBIP-2026-ABC234',
+        issuedAt: '2026-06-23T12:00:00.000Z',
+        verifyUrl: '/verify/AIBIP-2026-ABC234',
+      },
+    });
+
+    const model = deriveDashboardViewModel({
+      accountEmail: 'learner@example.com',
+      assessments: assessments({ snapshot: freeSnapshot }),
+      completedRepIds: [],
+      currentRep,
+      dashboard,
+      snapshot: freeSnapshot,
+      toolboxAccess: toolbox({ entitled: true, tier: 'full' }),
+    });
+
+    expect(model.stepCertificate).toBe(true);
+    expect(model.certificateId).toBe('AIBIP-2026-ABC234');
+    expect(model.certificateVerifyUrl).toBe('/verify/AIBIP-2026-ABC234');
+    expect(model.stepsComplete).toBe(5);
   });
 });
 

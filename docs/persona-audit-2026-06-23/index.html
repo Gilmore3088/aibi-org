@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Massive-Persona UX Audit · The AI Banking Institute · 2026-06-23</title>
+<style>
+  :root{
+    --ink:#071A2F; --ink-2:#0B2745;
+    --gold:#C8A24A; --gold-soft:#E6D39B; --gold-deep:#9A7A2F;
+    --cream:#F7F3EA; --cream-2:#EFE7D7;
+    --slate-50:#F8FAFC; --slate-100:#F1F5F9; --slate-200:#E2E8F0;
+    --slate-400:#94A3B8; --slate-500:#64748B; --slate-600:#475569;
+    --emerald:#047857; --amber:#9A7A2F; --rose:#9F1239; --rose-soft:#FECDD3;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--gold-deep)}
+  code,.mono{font-family:var(--mono);font-size:.86em;background:var(--cream-2);padding:.05em .35em;border-radius:4px}
+
+  /* layout */
+  header.hero{background:linear-gradient(160deg,var(--ink),var(--ink-2));color:var(--cream);padding:48px 32px 40px}
+  .wrap{max-width:1120px;margin:0 auto}
+  .kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--gold-soft);margin:0 0 12px}
+  h1{font-size:clamp(28px,4vw,44px);line-height:1.08;margin:0 0 14px;font-weight:800;letter-spacing:-.01em}
+  .hero .sub{color:#cdd8e4;max-width:760px;font-size:17px;margin:0 0 26px}
+  .stat-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+  .stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 18px;min-width:150px}
+  .stat .n{font-size:30px;font-weight:800;line-height:1}
+  .stat .l{font-size:12.5px;color:#aebccb;margin-top:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+  .stat.bad .n{color:#FCA5A5}.stat.warn .n{color:var(--gold-soft)}.stat.good .n{color:#6EE7B7}
+
+  /* sticky nav */
+  nav.toc{position:sticky;top:0;z-index:20;background:rgba(247,243,234,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--cream-2);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  nav.toc .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 32px}
+  nav.toc a{font-size:13px;text-decoration:none;color:var(--slate-600);padding:6px 12px;border-radius:999px;font-weight:600}
+  nav.toc a:hover{background:var(--cream-2);color:var(--ink)}
+
+  main{padding:8px 32px 80px}
+  section{padding:36px 0;border-bottom:1px solid var(--cream-2)}
+  h2{font-size:26px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px}
+  h2 .num{color:var(--gold-deep);font-family:var(--mono);font-size:15px;margin-right:10px;vertical-align:middle}
+  .lead{color:var(--slate-600);max-width:820px;margin:0 0 22px;font-size:16px}
+  h3{font-size:18px;margin:26px 0 8px}
+
+  /* gap cards */
+  .gap{background:#fff;border:1px solid var(--cream-2);border-left:5px solid var(--rose);border-radius:16px;padding:20px 22px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .gap h3{margin:0 0 6px;font-size:19px;display:flex;align-items:flex-start;gap:10px}
+  .gap .body{color:var(--slate-600);font-size:14.5px}
+  .gap ul{margin:10px 0 0;padding-left:20px}
+  .gap li{margin:4px 0;font-size:14px}
+  .gap .actions{margin-top:12px;background:var(--cream);border-radius:10px;padding:12px 14px}
+  .gap .actions b{font-size:12.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--gold-deep)}
+
+  /* chips */
+  .chip{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:.03em;white-space:nowrap;vertical-align:middle}
+  .p0{background:#FEE2E2;color:#991B1B;border:1px solid #FCA5A5}
+  .p1{background:#FEF3C7;color:#92400E;border:1px solid #FCD34D}
+  .p2{background:var(--slate-100);color:var(--slate-600);border:1px solid var(--slate-200)}
+  .eff{background:var(--ink);color:var(--cream);font-size:10.5px;padding:1px 7px}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--cream-2);border-radius:14px;background:#fff}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--cream-2);vertical-align:top}
+  th{background:var(--ink);color:var(--cream);font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;position:sticky;top:54px}
+  tbody tr:hover{background:var(--slate-50)}
+  td.c{text-align:center;white-space:nowrap}
+  .o-ok{color:var(--emerald);font-weight:700}
+  .o-warn{color:var(--gold-deep);font-weight:700}
+  .o-fail{color:var(--rose);font-weight:700}
+  .sev-Crit{background:#FEE2E2;color:#991B1B;border-radius:6px;padding:1px 7px;font-weight:700;font-size:12px}
+  .sev-High{background:#FEF3C7;color:#92400E;border-radius:6px;padding:1px 7px;font-weight:700;font-size:12px}
+  .sev-Med{background:var(--slate-100);color:var(--slate-600);border-radius:6px;padding:1px 7px;font-size:12px}
+  .sev-Low{background:#ECFDF5;color:var(--emerald);border-radius:6px;padding:1px 7px;font-size:12px}
+
+  /* clicks table */
+  .ctv td:nth-child(2),.ctv td:nth-child(4){font-family:var(--mono);font-weight:600}
+
+  /* function blocks */
+  .fn{background:#fff;border:1px solid var(--cream-2);border-radius:14px;padding:16px 20px;margin:12px 0}
+  .fn h3{margin:0 0 8px;font-size:16px}
+  .fn ul{margin:0;padding-left:18px}
+  .fn li{margin:6px 0;font-size:14px;color:var(--slate-600)}
+  .fn li b{color:var(--ink)}
+
+  .filterbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+  .filterbar button{font-family:var(--sans);font-size:13px;font-weight:600;border:1px solid var(--slate-200);background:#fff;color:var(--slate-600);padding:6px 14px;border-radius:999px;cursor:pointer}
+  .filterbar button.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .filterbar .count{font-size:13px;color:var(--slate-500);margin-left:auto;font-family:var(--mono)}
+
+  .note{background:var(--cream-2);border-radius:12px;padding:14px 18px;font-size:14px;color:var(--slate-600);margin:14px 0}
+  footer{padding:30px 32px 60px;color:var(--slate-500);font-size:13px}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:999px}
+  @media(max-width:640px){th{position:static}main,header.hero,nav.toc .wrap{padding-left:18px;padding-right:18px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">UX Audit · Branch massive-persona · 2026-06-23</p>
+    <h1>100 personas walked through every experience on the site.</h1>
+    <p class="sub">A code-grounded review simulating 100 diverse community-bank &amp; credit-union personas
+    (FI type × role × personality × source × goal × completion behavior) across free &amp; paid assessments,
+    resources, the $295 course, the certificate, the toolbox, team buying, auth/fulfillment, and support —
+    with special attention to clicks-to-value.</p>
+    <div class="stat-row">
+      <div class="stat good"><div class="n">100</div><div class="l">Local persona pass</div></div>
+      <div class="stat warn"><div class="n">0</div><div class="l">Open damaged</div></div>
+      <div class="stat bad"><div class="n">0</div><div class="l">Open failed</div></div>
+      <div class="stat good"><div class="n">23</div><div class="l">Critical remediated</div></div>
+      <div class="stat good"><div class="n">6</div><div class="l">P0 gaps remediated</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#summary">Summary</a>
+    <a href="#gaps">Largest gaps</a>
+    <a href="#clicks">Clicks-to-value</a>
+    <a href="#functions">By function</a>
+    <a href="#personas">100 personas</a>
+    <a href="#method">Method</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="summary">
+  <h2><span class="num">01</span>Executive summary</h2>
+  <p class="lead"><b>Implementation update:</b> all 100 persona rows now pass locally. The original audit found
+  a strong acquisition surface but severe value-delivery failures after the buying, download, resume, team-inquiry,
+  demo, and certificate moments. Those failure paths are now locally remediated in code and covered with focused
+  regression tests.</p>
+  <p class="lead"><b>Original audit baseline:</b> 58 of 100 personas failed, bounced, or were stranded, including
+  23 critical failures. The issues clustered <b>after the click that matters</b>, in value-delivery rather than raw
+  click counts. The six money-and-trust loss points were:</p>
+  <ol class="lead" style="line-height:1.7">
+    <li><b>The $295 certificate was unreachable in the audit</b> — locally remediated; live Vercel PDF/email proof remains.</li>
+    <li><b>Paid buyers got stranded</b> — locally remediated with passwordless recovery, resend links, stranded-buyer detection, and support intake; live email proof remains.</li>
+    <li><b>No retention loop existed</b> — locally remediated with assessment drafts, resume reminders, paid not-started reminders, stalled-module reminders, and In-Depth waiting reminders; live cron/email proof remains.</li>
+    <li><b>Team buyers ready to pay got a <code>mailto:</code></b> — locally remediated with structured inquiry flows, launch packets, SLA copy, inbox notification, and support-case creation; live delivery proof remains.</li>
+    <li><b>The interactive demos were convincing fakes</b> — locally remediated with governed public model endpoints and honest practice/playground labeling; live model-key proof remains.</li>
+    <li><b>Email-gated free downloads broke after capture</b> — locally remediated with committed-PDF success gates, static PDF streams, and failure states; live PDF proof remains.</li>
+  </ol>
+  <div class="note"><b>Current status:</b> persona-row remediation is locally complete. Remaining proof is production-level: Vercel env/redeploy, Stripe/manual-refund workflow, cron/email delivery, PDF generation, public model-key behavior, and seeded/live data validation.</div>
+</section>
+
+<section id="gaps">
+  <h2><span class="num">02</span>Largest gaps <span class="chip p0">P0 · fix first</span></h2>
+  <p class="lead">Business-breaking failures — places where a user does everything right and gets nothing, or where the system silently loses money. Ranked.</p>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 1</span> The $295 certificate was unreachable — local remediation shipped; production proof remains.</h3>
+    <div class="body"><b>Implementation update 2026-06-23:</b> work-product submission now auto-approves after all 18 modules are complete, issues a certificate idempotently, sends the certificate email on first issuance, the dashboard only shows “Verified” when a real certificate row exists, and <code>/verify</code> has a certificate-ID lookup page. Remaining work is live Vercel proof for the certificate/PDF/email paths.
+    <br><br>Original finding: every learner who finished all 18 modules and submitted their work product (personas 10, 37, 48, 60, 78, 94, 100) waited forever.
+    <ul>
+      <li>Nothing set <code>work_submissions.review_status='approved'</code> — no reviewer UI, cron, or auto-approve.</li>
+      <li>Nothing called the certificate issuance path.</li>
+      <li>Even if approved, the cert PDF used <code>@react-pdf renderToBuffer</code> → React #31 500.</li>
+      <li><code>/submit</code> promised an issuance email that no route sent.</li>
+      <li>The dashboard falsely showed “Verified ✓” the moment modules completed.</li>
+      <li>There was no <code>/verify</code> lookup entry point for third parties.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · ✅ local auto-approval + certificate issuance <span class="chip eff">M</span> · prove cert/report/AUP PDFs on Vercel preview <span class="chip eff">M</span> · ✅ first-issuance certificate email <span class="chip eff">S</span> · ✅ dashboard credential truth + <code>/verify</code> lookup <span class="chip eff">S</span></div>
+  </div>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 2</span> Paid buyers get stranded — access depends on one email bank gateways filter.</h3>
+    <div class="body">$99 &amp; $295 fulfillment is a password-less account + a single magic-link email (personas 2, 25, 44, 65, 86, 98). For Mimecast/Proofpoint banks — the exact audience:
+    <ul>
+      <li>If the email is filtered, the buyer has a provisioned account they can’t reach.</li>
+      <li><code>/auth/login</code> requires a password the account never set; device-confirm is same-browser-only (a 2nd-device returner loops).</li>
+      <li>The webhook only emails on <code>action==='created'</code> — a failed first send + Stripe retry is a dedup no-op, never re-sends.</li>
+      <li>No “stranded buyer” detection — ops can’t tell stranded from lazy.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · make login lead with passwordless/magic-link <span class="chip eff">M</span> · make device-confirm cross-device-tolerant <span class="chip eff">M</span> · add a self-serve “I bought something but can’t get in” recovery <span class="chip eff">M</span> · flag <code>enrolled &amp;&amp; never authenticated</code> + alert ops <span class="chip eff">S</span></div>
+  </div>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 3</span> Retention loop was absent — local reminders shipped; production proof remains.</h3>
+    <div class="body"><b>Implementation update 2026-06-23:</b> assessment drafts/resume reminders and paid-product re-engagement are implemented locally. Foundation stalled reminders are module-specific, so Module 3 abandoners get pulled back to their current module. Remaining work is live migration, cron, and email proof.
+    <br><br>Original finding: there was no re-engagement anywhere (only <code>cleanup-rate-limits</code> + pdf-cleanup crons).
+    <ul>
+      <li>Free-assessment abandoners were <code>sessionStorage</code>-only, email was captured only after Q12, “Start over” re-rolled a fresh question set, and cross-device return was structurally impossible.</li>
+      <li>Idle $99 buyers and never-start $295 buyers were never contacted again.</li>
+      <li>Module-3 abandoners had persisted progress but no pull-back reminder.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · ✅ server-side assessment drafts/resume link <span class="chip eff">M</span> · ✅ transactional paid re-engagement reminders <span class="chip eff">M</span> · ✅ stable question set on resume/restart <span class="chip eff">S</span> · prove cron/email delivery in production <span class="chip eff">M</span></div>
+  </div>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 4</span> Team buyers ready to pay get a <code>mailto:</code>, not a checkout.</h3>
+    <div class="body">Nine personas want team training; the four most ready-to-buy (55, 73, 81, 91) hit a wall.
+    <ul>
+      <li><code>/assessment/team</code> copy literally says checkout is “intentionally gated until two production-like cohorts pass QA.”</li>
+      <li>Every team CTA on <code>/for-institutions</code> is a raw <code>mailto:</code> — no form, CRM, scheduler, or SLA.</li>
+      <li>The full self-serve Stripe machinery exists but is flag-dark.</li>
+      <li>The team-report preview is linked only via a mobile-only deep link.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · replace every <code>mailto:</code> with a lead form + Calendly + “reply within 1 business day” <span class="chip eff">S</span> · remove the QA-gating rationale from buyer copy <span class="chip eff">S</span> · finish hardening &amp; flip the self-serve flag (or present a clean assisted motion) <span class="chip eff">M</span> · surface the team preview on desktop <span class="chip eff">S</span></div>
+  </div>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 5</span> The interactive demos are convincing fakes that destroy credibility with the best prospects.</h3>
+    <div class="body"><code>/playground</code> and <code>/practice</code> are canned mockups (personas 9, 18, 45, 64, 96).
+    <ul>
+      <li>“Run” is a typewriter over hardcoded output; “Save to Toolbox” persists nothing; the “recent” panel is fiction.</li>
+      <li><code>/practice</code> falsely brands itself “Signed-in sandbox / Enrolled-only” while public, and offers a <code>.md</code> download of fabricated AI output.</li>
+      <li>The real working loop (<code>/dashboard/toolbox</code>, “AiBI Lab”) is buried behind auth+payment and not in nav.</li>
+      <li>Both are orphaned; ~2,463 lines of orphaned dead code sit alongside.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · wire to the real (rate-limited, PII-scanned) model OR clearly label “interactive preview” + link the real product <span class="chip eff">M</span> · remove the false “Enrolled-only” claim &amp; fake export <span class="chip eff">S</span> · give the real Toolbox a discoverable entry <span class="chip eff">S</span> · delete the orphaned dead code <span class="chip eff">S</span></div>
+  </div>
+
+  <div class="gap">
+    <h3><span class="chip p0">GAP 6</span> Every email-gated free download is broken — surrender an email, get a 500.</h3>
+    <div class="body">The only two email-gated free assets are the only two using <code>@react-pdf renderToBuffer</code> (personas 7, 16, 28, 33, 47, 56, 63).
+    <ul>
+      <li>Originally, Prompt Cards PDF and Safe AI Use Guide both 500ed in prod (React #31).</li>
+      <li>Locally fixed: both stream committed PDFs; success/unlock waits for a successful PDF response; Prompt Cards role selection matches the server allowlist.</li>
+      <li>Related static course/resource PDF render risk has been reduced locally by serving committed files for the highest-risk downloads.</li>
+    </ul></div>
+    <div class="actions"><b>Action</b> · move all <code>renderToBuffer</code> downloads to the working Chromium/print path (or pre-generate static PDFs) <span class="chip eff">M</span> · fix the Prompt Cards role dropdown <span class="chip eff">S</span> · don’t show “unlocked”/“success” until the file streams <span class="chip eff">S</span></div>
+  </div>
+</section>
+
+<section id="clicks">
+  <h2><span class="num">03</span>Clicks-to-value</h2>
+  <p class="lead">Click count is <b>not</b> the funnel’s main problem — but there are real, cheap wins, especially the free-assessment → resource / role-playbook paths that were flagged.</p>
+  <div class="tbl-wrap">
+    <table class="ctv">
+      <thead><tr><th>Value moment</th><th>Today</th><th>Friction</th><th>Target</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Start free assessment</td><td>1 click</td><td>—</td><td>1</td><td>Already optimal — every hero/CTA → <code>/assessment/take</code>.</td></tr>
+        <tr><td>See free score</td><td>1 + 12 + email</td><td>email gate (by design)</td><td>same</td><td>Keep email capture as primary; no-thanks summary lane implemented locally.</td></tr>
+        <tr><td><b>Free downloadable resource</b></td><td>2 desktop / 3 mobile</td><td>no home link; nav-only; mobile behind “More”; prompt cards buried+broken</td><td>1–2</td><td>Add “Free downloads” to primary nav + a resource tile on home <b>and on the free-assessment result</b>; promote Resources out of mobile “More.”</td></tr>
+        <tr><td><b>Assessment → role playbook / template</b></td><td>2–3 + scroll-hunt</td><td>specific artifact buried; prompt cards 3–4 + broken</td><td>1–2</td><td>On the result, surface a <b>direct download of the matched role’s playbook + kit</b> (not just a link).</td></tr>
+        <tr><td>Reach $99 offer</td><td>1 to offer → 1</td><td>production proof open</td><td>1–2</td><td>Implemented locally: home/pricing/footer expose the offer and security/playground/course link to In-Depth.</td></tr>
+        <tr><td>Reach $295 checkout</td><td>2 (/courses) / 3 (home)</td><td>one avoidable 307 hop</td><td>2</td><td>Repoint home “Start learning” to <code>/courses</code>.</td></tr>
+        <tr><td>Run the public AI demo</td><td>unreachable + fake</td><td>orphan + mockup</td><td>1</td><td>Link a real (or honestly-labeled) demo from nav/home.</td></tr>
+        <tr><td>Earn certificate after $295</td><td><span class="o-fail">BLOCKED</span></td><td>no issuance path</td><td>—</td><td>See Gap 1.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>Net wins (all small effort):</b> (1) put resources / role-playbooks one click from home and on the result page, (2) prove the new $99 entry/cross-links in production, (3) drop the <code>/courses</code> redirect hop, (4) un-bury the real demo.</div>
+</section>
+
+<section id="functions">
+  <h2><span class="num">04</span>Action items by website function</h2>
+  <p class="lead">Each function’s prioritized fixes. <span class="chip p0">P0</span> lost revenue / broken promise · <span class="chip p1">P1</span> material conversion/trust leak · <span class="chip p2">P2</span> polish. <span class="chip eff">S/M/L</span> effort.</p>
+
+  <div class="fn"><h3>A · Free assessment <span class="chip p2">strong base</span></h3><ul>
+    <li><span class="chip p1">P1</span> Add a graceful <b>“see a summary / no thanks” lane</b> — implemented locally with “View summary without email.” <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Remove hardcoded <code>marketingOptIn:true</code>; marketing follow-up opt-in is now explicit and default-off locally. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Persist phase so reloading on the score/results page doesn’t bounce to the questionnaire; restore the same questions on resume. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Carry ROI calculator context into the assessment and result path — implemented locally with <code>roi_*</code> query params and a result-panel reminder. <span class="chip eff">S</span></li>
+    <li><span class="chip p2">P2</span> Dead <code>#restart</code>, score-phase answer review, Supabase-down print fallback, raw-email log redaction, and dead <code>TierPreview</code> cleanup are implemented locally. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>B · Resources / downloads <span class="chip p2">easy wins</span></h3><ul>
+    <li><span class="chip p0">P0</span> Fix the 2 broken email-gated downloads (Gap 6). <span class="chip eff">M</span></li>
+    <li><span class="chip p1">P1</span> Discovery: resource entry points are improved locally; Resources is now first-level in mobile nav and the hub links security/governance review paths. Prompt cards/playbooks also have hub/footer paths. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Mobile tax: “Resources” is no longer behind the “More” panel; More now holds Pricing and Institutions. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Inconsistent gating fixed locally: <code>/playbooks</code> now links directly to the same playbook PDF endpoints used by <code>/resources</code>. <span class="chip eff">S</span></li>
+    <li><span class="chip p2">P2</span> Dead-end resources fixed locally: Draft playbook assets are omitted until shipped, and the GTM template plus platform feature card are discoverable from <code>/resources</code>. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>C · $99 In-Depth assessment</h3><ul>
+    <li><span class="chip p1">P1</span> Discoverability fixed locally: home/pricing/footer expose the offer, and security, playground, and courses link to <code>/assessment/in-depth</code>. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Idle-buyer re-engagement (Gap 3) + stranded-buyer detection (Gap 2). <span class="chip eff">M</span></li>
+    <li><span class="chip p2">P2</span> <code>/access</code> scaffolding and <code>/purchased</code> paid-Toolbox copy are fixed locally: entitled buyers redirect to <code>/dashboard/assessments</code>, and the purchase page points paid Toolbox access at the signed-in/login path with public resources secondary. <span class="chip eff">M</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>D · $295 Foundation course</h3><ul>
+    <li><span class="chip p0">P0</span> Certificate dead-end (Gap 1) + stranded buyers (Gap 2) + retention (Gap 3). <span class="chip eff">M</span></li>
+    <li><span class="chip p1">P1</span> <b>Module 3 difficulty cliff</b> — 0 activities in M2 → a 60-char authored-prompt gate in M3, no skip/scaffolding. <span class="chip eff">M</span> <span class="chip">implemented locally</span></li>
+    <li><span class="chip p1">P1</span> <code>/program</code> home enrollment gate and <code>/courses</code> credential-value surface. <span class="chip eff">S</span> <span class="chip">implemented locally</span></li>
+    <li><span class="chip p2">P2</span> <code>save-progress</code> error surfacing, data-driven pillar-completion CTAs, and retired <code>module-N.ts</code> cleanup are implemented locally. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>E · Toolbox / practice / playground</h3><ul>
+    <li><span class="chip p1">P1</span> Fake-demo credibility (Gap 5). <span class="chip eff">M</span></li>
+    <li><span class="chip p1">P1</span> <b>PII guardrail</b> hardening is implemented locally: broader contextual detection plus non-content server audit fields for paid Toolbox overrides. <span class="chip eff">M</span></li>
+    <li><span class="chip p2">P2</span> <code>/api/sandbox/chat</code> entitlement gate is implemented locally; free signed-in accounts now get 403 before metered model usage. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>F · Team / institutions</h3><ul>
+    <li><span class="chip p0">P0</span> Team checkout wall (Gap 4). <span class="chip eff">M</span></li>
+    <li><span class="chip p2">P2</span> <code>/for-institutions</code> hero dashboard mockup is labeled as an illustrative mock-data preview locally. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>G · Auth / fulfillment</h3><ul>
+    <li><span class="chip p0">P0</span> Passwordless login + cross-device confirm + recovery (Gap 2). <span class="chip eff">M</span></li>
+    <li><span class="chip p2">P2</span> <code>signOut</code> trusted-device cleanup is implemented and regression-tested locally. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>H · Navigation / IA</h3><ul>
+    <li><span class="chip p1">P1</span> No <code>/pricing</code> page / scattered pricing map — implemented locally with <code>/pricing</code>, nav/footer links, sitemap entry, and homepage comparison link. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> Flagged legacy-chrome routes now use mockup chrome locally; full legacy-system deletion remains future cleanup. <span class="chip eff">S</span></li>
+    <li><span class="chip p1">P1</span> <code>/playground</code> and <code>/certifications</code> have inbound footer/course links locally. <span class="chip eff">S</span></li>
+    <li><span class="chip p2">P2</span> Home “Start learning” now points directly to <code>/courses</code>; <code>CHROMELESS_PATHS</code> duplicates removed. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>I · Support / refund</h3><ul>
+    <li><span class="chip p1">P1</span> Refund UX is implemented locally: <code>/support/purchase-help</code> now uses modern chrome, shows the 7-day refund self-check, sets a 1-business-day refund review expectation, and states that approved refunds are issued manually in Stripe. <span class="chip eff">S</span></li>
+  </ul></div>
+
+  <div class="fn"><h3>J · Security / compliance content</h3><ul>
+    <li><span class="chip p1">P1</span> <code>/security/data-handling</code> now includes AiBI operating posture: retention window, usage/PII audit logging, subprocessor and residency boundaries, DPA/SOC 2 posture, and PII warning overrides. <span class="chip eff">S</span></li>
+    <li><span class="chip p2">P2</span> <code>/resources</code> now surfaces Security &amp; governance, LLM data handling, and IT review packet links. <span class="chip eff">S</span></li>
+  </ul></div>
+</section>
+
+<section id="personas">
+  <h2><span class="num">05</span>All 100 personas</h2>
+  <p class="lead">Every persona walked step-by-step against the real flows. Filter by outcome or severity.</p>
+  <div class="filterbar" id="filterbar">
+    <button data-f="all" class="active">All</button>
+    <button data-f="fail">❌ Failed</button>
+    <button data-f="warn">⚠️ Damaged</button>
+    <button data-f="ok">✅ Reached</button>
+    <button data-f="Crit">Critical</button>
+    <span class="count" id="rowcount"></span>
+  </div>
+  <div class="tbl-wrap">
+    <table id="ptable">
+      <thead><tr><th>#</th><th>Persona</th><th>Out</th><th>Worst friction</th><th>Sev</th></tr></thead>
+      <tbody>
+        <!-- rows injected -->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="method">
+  <h2><span class="num">06</span>Method &amp; severity</h2>
+  <p class="lead">Original audit method: (1) seven agents read the actual code and mapped every flow with file:line evidence and exact click counts; (2) a 100-persona roster was authored across every diversity axis and all 14 completion-behavior buckets; (3) eight agents walked all 100 personas step-by-step through the real flows; (4) findings were deduped, severity-ranked, and organized. This report now includes the 2026-06-23 local remediation status for those findings.</p>
+  <div class="tbl-wrap" style="max-width:560px">
+    <table>
+      <thead><tr><th>Severity</th><th>Distinct issues</th><th>Representative</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip p0">P0</span></td><td>6 gaps</td><td>cert dead-end, stranded buyers, no retention, team checkout, fake demos, broken downloads</td></tr>
+        <tr><td><span class="chip p1">P1</span></td><td>~18</td><td>$99 discoverability, pricing scatter, module-3 cliff, nav split, PII audit log, email opt-in, refund UX</td></tr>
+        <tr><td><span class="chip p2">P2</span></td><td>~20</td><td>hero copy, mobile first-paint, dead anchors, silent failures, dead code</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lead" style="margin-top:18px">Source docs (on branch <span class="pill">massive-persona</span>): <code>00-flow-atlas.md</code> · <code>01-persona-roster.md</code> · <code>02-persona-outcomes.md</code> · <code>03-action-items.md</code>.</p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  Massive-Persona UX Audit · The AI Banking Institute · 2026-06-23 · audit plus local remediation tracker.
+</footer>
+
+<script>
+const P = [
+ [1,"Curious CEO","ok","no-PDF if Supabase down (latent); silent acct","Low"],
+ [2,"Board-Pressured President","ok","Foundation purchase-link resend, paid re-engagement, stranded-buyer cases, and canonical www magic links are implemented locally; production proof open","Crit"],
+ [3,"Skeptical CFO","ok","/pricing compares Free, $99, $295, and team paths; $99 is visible and certificate proof/value is explained locally; production proof open","High"],
+ [4,"Eager Innovation Officer","ok","institution/team CTAs route to structured inquiry, inbox notification, and team_seats support-case creation locally; production proof open","High"],
+ [5,"Overwhelmed Compliance Chief","ok","Resources -> AI Use Policy Starter -> Word download path is exposed and covered locally","Low"],
+ [6,"Detail-Driven BSA Officer","ok","BSA/AML role filter now surfaces the SAR Narrative Template with a Word-compatible download from Resources","Low"],
+ [7,"Burned-by-Vendors CIO","ok","Safe AI Use Guide streams from committed PDF and the form only shows success after PDF fetch succeeds locally; production proof open","Crit"],
+ [8,"Time-Starved CRO","ok","visible mid-assessment resume-link path stores server draft and restores by token locally; production email/cron proof open","High"],
+ [9,"Self-Learning Lender","ok","/playground has footer discovery, calls the governed public model endpoint, and renders returned model text locally; production model-key proof open","High"],
+ [10,"Required-to-Certify Analyst","ok","final packet submission auto-approves, issues the certificate, sends first-issuance email, and dashboard links the verified credential locally; production PDF/email proof open","Crit"],
+ [11,"Refund-Seeker","ok","refund page shows 7-day self-check, 1-business-day review expectation, modern chrome, high-priority support case intake, and admin refund decision logging locally","Med"],
+ [12,"De Novo Founder","ok","Module 3 uses the strategy drill plus Prompt Wizard, worked starters, 30-character final prompt floor, and paid re-engagement pulls stalled learners back locally; production cron/email proof open","High"],
+ [13,"MDI Mission Officer","ok","free report shows a mission lens when the typed institution name explicitly signals MDI, CDFI, or community-development context","Low"],
+ [14,"CDFI Grant Writer","ok","Resources includes a CDFI Grant AI Evidence Checklist with a Word-compatible download for grant, impact, and community-development evidence files","Low"],
+ [15,"Thrift Traditionalist","ok","hero names community banks/credit unions, the 3-minute assessment, and first artifact; Start over returns to Q1 without changing the selected question set locally","High"],
+ [16,"Trust Company Counsel","ok","Safe AI Use Guide streams from committed PDF; /security links counsel to LLM data handling and IT review packet; /resources surfaces the security/governance path locally","High"],
+ [17,"Bankers' Bank Strategist","ok","/for-institutions exposes a partner/association rollout path, form option, and high-priority team_seats support case for multi-institution inquiries locally","High"],
+ [18,"Fintech Vendor Scout","ok","non-ICP can self-select out; /playground is discoverable and real, while pricing and /for-institutions expose a partner/association inquiry path for vendor or service-provider channel interest","Low"],
+ [19,"State Examiner","ok","/verify has a public certificate-ID lookup with normalization/error handling; completed final packet flow issues reusable certificate records locally; live certificate-row proof open","High"],
+ [20,"Independent Consultant","ok","free-first path works; bank-framed report is expected ICP framing and not blocking","Low"],
+ [21,"Grad Student","ok","public assessment and resource-learning paths work; no persona-specific product defect","Low"],
+ [22,"Trade Journalist","ok","/about and footer expose a press/media inquiry path with attribution boundaries and the operator inbox","Low"],
+ [23,"Frontline Teller","ok","Module 3 no longer starts from a blank long prompt gate; worked starters and the wizard give low-tech learners a concrete path locally","Crit"],
+ [24,"L&D Director","ok","/assessment/team and /for-institutions expose an L&D cohort-pilot path, cohort launch packet, form option, and high-priority cohort-pilot support case locally; production proof open","High"],
+ [25,"Branch Ops Manager","ok","Foundation success page routes filtered-email recovery to prefilled purchase help; purchase-link resend, paid re-engagement, and stranded-buyer support cases are implemented locally; production proof open","Crit"],
+ [26,"CISO Gatekeeper","ok","/security/data-handling covers AiBI retention, subprocessors/residency, DPA/SOC 2 posture, and PII override audit boundaries locally; production proof open","Med"],
+ [27,"Digital Banking Lead","ok","playground now links $99 path; paid re-engagement local, production proof open","High"],
+ [28,"Marketing CMO","ok","Prompt Cards and Safe AI Use Guide stream committed PDFs; Prompt Cards waits for the PDF response before unlock/download, with focused route and UI coverage locally; production proof open","Med"],
+ [29,"Internal Auditor","ok","discovery-only path remains healthy; no persona-specific product defect","Low"],
+ [30,"Board Director","ok","free assessment has a no-thanks summary lane, real #restart target, score-phase answer review, and Start over preserves the selected question set locally","Med"],
+ [31,"Project Manager","ok","/for-institutions exposes a PMO project-plan path with 90-day milestones, named owners, one-business-day SLA, form option, and high-priority project-plan support case locally","Med"],
+ [32,"Chief Credit Officer","ok","healthy In-Depth/evaluation path remains intact; no persona-specific product defect","Low"],
+ [33,"Vendor-Mgmt Officer","ok","Safe AI Use Guide streams from committed PDF and /security/data-handling plus /security/it-approval expose DPA/SOC 2 posture, subprocessors, residency, and forwardable review links locally; production proof open","Crit"],
+ [34,"Operations Clerk","ok","Module 3 uses short scaffolded reps, starter prompts, and a lower final prompt floor locally; production learner-path proof open","Crit"],
+ [35,"Returning Mobile→Desktop","ok","free assessment offers a visible server-backed resume-link path, restores by token on another device, preserves the selected question set, sends stale-draft reminders locally, and uses a 30-day expiry for weeks-later returns; production email/cron proof open","Crit"],
+ [36,"Accidental Clicker","ok","hero now names ICP and 3-minute value before the proof object","Med"],
+ [37,"Eager Early Adopter","ok","final packet completion issues the certificate locally; dashboard/verify/certificate PDF paths exist; toolkit and post-assessment report downloads now show a retry/support path instead of failing silently on PDF 500s; production PDF/email proof open","Crit"],
+ [38,"Budget Hawk CFO","ok","/pricing compares Free, $99, $295, and team paths in one surface and links budget skeptics directly to the ROI calculator; production proof open","High"],
+ [39,"Compliance Box-Checker","ok","compliance resource discovery remains healthy; resources surface the compliance policy template and security/governance path, and Safe AI Use Guide download coverage passes locally","Low"],
+ [40,"3rd-Party Cert Verifier","ok","/verify provides a public certificate-ID lookup, normalizes printed IDs, uses mockup chrome, and unknown IDs stay in the lookup flow for correction locally","High"],
+ [41,"Curious Director","ok","public discovery path remains healthy: Resources is primary/mobile nav, /resources exposes role playbooks/templates, and playbook PDFs download directly without an email gate locally","Low"],
+ [42,"Overwhelmed CEO","ok","assessment header reassures with question position plus answered count, mid-assessment users can email a 30-day server-backed resume link, and stale-draft reminders are implemented locally; production email/cron proof open","High"],
+ [43,"Risk-Averse CRO","ok","/security cross-links cautious evaluators to the $99 In-Depth report, and idle In-Depth buyers are included in paid re-engagement locally; production email/cron proof open","High"],
+ [44,"CUNA Newsletter Reader","ok","Foundation success page routes filtered-email recovery to prefilled purchase help; purchase-link resend, paid not-started re-engagement, and stranded-buyer support cases are implemented locally; production email/cron proof open","Crit"],
+ [45,"IT Generalist","ok","/practice is honestly labeled as a public demo, calls the governed public model endpoint, removes the false enrolled-only/fake-export path, and sends saved work to real paid Toolbox access locally; production model-key proof open","High"],
+ [46,"Lending Team Lead","ok","team/cohort CTAs route to structured inquiry with one-business-day SLA, support inbox notification, team_seats support-case creation, and commercial lending context preserved in the case summary locally","Med"],
+ [47,"Skeptical Examiner-Whisperer","ok","/resources surfaces templates plus the security/governance path, /security links Safe AI Use Guide with LLM data handling and IT review packet, and the Safe Guide streams from a committed PDF locally; production proof open","High"],
+ [48,"First-Time Founder","ok","completed final-packet learners no longer remain stuck on Credential Pending; the certificate page auto-approves eligible packets, issues the certificate, and renders the credential locally; production PDF/email proof open","Crit"],
+ [49,"MDI CEO","ok","free assessment email/report path remains healthy; EmailGate sends the report with marketing opt-in default-off, offers a no-thanks summary lane, and auth/profile side effects remain non-blocking locally","Low"],
+ [50,"CDFI Ops Lead","ok","/resources surfaces the CDFI Grant AI Evidence Checklist with an inline template and Word-compatible download for grant, impact, and community-development evidence files locally","Low"],
+ [51,"Half-Hearted Buyer","ok","Foundation purchase-link resend, paid not-started re-engagement, and stranded-buyer support-case detection are implemented locally for buyers who never log in; production email/cron proof open","High"],
+ [52,"Diligent In-Depth Buyer","ok","healthy In-Depth path remains intact: pricing/landing expose the $99 report, purchase success points to real paid access, /access routes entitled buyers to the assessment dashboard, and completion detection remains covered locally","Low"],
+ [53,"Won't-Give-Email Skeptic","ok","EmailGate has a visible View summary without email lane and marketing follow-up is explicit/default-off when sending the report locally","High"],
+ [54,"Mid-Assessment Bailer","ok","free assessment preserves the selected question set on restart/resume, offers a 30-day server-backed resume link mid-assessment, and stale-draft reminders are implemented locally; production email/cron proof open","High"],
+ [55,"Cohort Champion","ok","ready-to-buy cohort champions now see the cohort launch packet, one-business-day assisted inquiry, and cohort-pilot/team_seats support-case path instead of QA-gate copy locally; production form/inbox proof open","Crit"],
+ [56,"Prompt-Card Collector","ok","/resources and the footer expose /prompt-cards; Prompt Cards role values match the API allowlist, unlock waits for a successful static PDF stream, and failed PDF fetches keep the library locked locally; production PDF proof open","Crit"],
+ [57,"Module-3 Quitter","ok","Module 3 scaffold and paid stalled-learner reminder are implemented locally; production cron/email proof open","High"],
+ [58,"Recommending COO","ok","course evaluation explains what the certificate proves, links /certifications and /verify, and completed final-packet learners auto-issue a credential locally; production PDF/email proof open","High"],
+ [59,"Returning Desktop Finisher","ok","stale free-assessment drafts now trigger a 30-day resume reminder with a cross-device link, and resumed drafts restore the saved question set locally; production cron/email proof open","Crit"],
+ [60,"Cert-Completer","ok","completed final-packet learners auto-issue a certificate, dashboard Verified links require a real certificate row, and certificate/report/AUP PDF helpers use Chromium/HTML print paths locally; production PDF/email proof open","Crit"],
+ [61,"Refund Regretter","ok","same refund-support path as persona 11: policy, SLA, support-case intake, and manual Stripe handoff are explicit locally","Med"],
+ [62,"Quick-Bounce Director","ok","hero now names community banks/credit unions and 3-minute value","Med"],
+ [63,"Security Guide Hunter","ok","Safe AI Use Guide form verifies the PDF response before success; static PDF endpoint covered locally; production proof open","Crit"],
+ [64,"Playground Tinkerer","ok","/playground and /practice call the governed public model endpoint with PII/injection scans, spend/rate caps, playground-public usage logging, and real paid Toolbox handoff locally; production model-key proof open","Crit"],
+ [65,"Board-Asked CRO","ok","Foundation purchase-link resend, purchase-help quick recovery, paid not-started reminders, and stranded-buyer support cases are implemented locally for gateway-filtered $295 buyers; production email/cron proof open","Crit"],
+ [66,"Won't-Pay Browser","ok","/pricing gives a clear free/$99/$295/team buyer map with payment, proof, decision rules, and support/refund paths; header/footer discovery covered locally","Med"],
+ [67,"Detail Auditor","ok","discovery only","Low"],
+ [68,"Eager New Lender","ok","$295 upsell may exceed small-CU budget","Low"],
+ [69,"Sleeper Buyer","ok","paid Foundation buyers who never start qualify for deduped not-started reminders with magic-link recovery and send logging locally; production cron/email proof open","High"],
+ [70,"Mobile First-Timer","ok","home and assessment entry name frontline tellers, branch teams, lending, operations, compliance, and marketing before the free-assessment CTA; production mobile visual proof open","Med"],
+ [71,"Email-Only Reader","ok","corp gateway (latent, served inline)","Low"],
+ [72,"Stubborn Non-Emailer","ok","free assessment has a visible summary-without-email lane, marketing follow-up is explicit/default-off, and score-phase restart/review controls use a real #restart target locally; production visual proof open","Med"],
+ [73,"Team Pilot Buyer","ok","team pilot buyers get a structured cohort-pilot/L&D rollout inquiry, one-business-day SLA, support-case creation, launch packet, and no mailto/QA-gate wall locally; self-serve team checkout remains flag-dark","High"],
+ [74,"Certificate Auditor","ok","/verify provides a public certificate-ID lookup, footer discovery, normalization for printed IDs, and a correction path for unknown IDs locally; live certificate-row proof open","High"],
+ [75,"Idle $99 Owner","ok","idle $99 In-Depth buyers qualify for deduped waiting reminders with a magic link to /assessment/in-depth/take and send logging locally; production cron/email proof open","High"],
+ [76,"Strategist CEO","ok","certificate value/details, /verify, visible $99 In-Depth pricing, and structured team/institution inquiry give the CEO both expansion paths locally; production proof open","High"],
+ [77,"Anxious Exam-Prep CCO","ok","/playbooks PDF gate and \"Coming soon\" trap removed locally; production proof open","Med"],
+ [78,"Self-Directed Completer","ok","self-directed completers auto-issue the certificate after final-packet completion, and toolkit AUP/report PDFs use the Chromium/HTML print path with retry/support UI on failures locally; production PDF/email proof open","Crit"],
+ [79,"Comparison Shopper","ok","/pricing compares Free, $99 In-Depth, $295 Foundation, and assisted institution rollout in one surface with nav/footer/sitemap discovery locally; production proof open","High"],
+ [80,"Accidental Mobile Tap","ok","value copy now precedes demo on mobile; sticky CTA is immediate","Med"],
+ [81,"Whole-Team Buyer","ok","whole-team buyers get a clean assisted purchase motion with structured inquiry, one-business-day SLA, inbox notification, team_seats support-case creation, and launch-packet context locally; self-serve team checkout remains flag-dark","Crit"],
+ [82,"Module-3 Abandoner","ok","Module 3 wall reduced and module-specific paid re-engagement can pull the learner back locally; production cron/email proof open","High"],
+ [83,"Curious Regulator","ok","coherent /about + /resources","Low"],
+ [84,"ROI-Calc Obsessive","ok","ROI calculator inputs travel into /assessment/take via compact roi_* params and surface in the score gate/result handoff locally","High"],
+ [85,"In-Depth Finisher","ok","reload-on-results bounce (A5)","Low"],
+ [86,"Returning Cert-Chaser","ok","login leads with passwordless sign-in, purchase-link recovery exists, cross-device device-confirmation mints a fresh auth link instead of dead-ending, and certificate/dashboard truth is locally covered; production email proof open","Crit"],
+ [87,"Reluctant Refunder","ok","Foundation refund self-check states 7-day, fewer-than-two-modules, and no-certificate criteria; admin refund actions are logged locally","High"],
+ [88,"Template Snatcher","ok","discovery only","Low"],
+ [89,"Skeptical IT Auditor","ok","/security/data-handling discloses retention, subprocessors/residency, DPA/SOC 2 posture, and PII warning override audit boundaries; scanner/Toolbox override metadata covered locally","Med"],
+ [90,"Won't-Email Director","ok","free assessment offers summary without email, marketing follow-up is explicit/default-off, and /security/data-handling explains retention/provider/PII override posture locally","Med"],
+ [91,"Eager Cohort Lead","ok","cohort leads see one structured L&D/cohort-pilot path with launch packet, one-business-day SLA, form option, and high-priority support-case creation locally instead of competing mailto dead ends","High"],
+ [92,"Mobile Mid-Quit","ok","mobile/interrupted assessment users can email a 30-day server-backed resume link, restore by token with the same question set, and receive stale-draft reminders locally; production cron/email proof open","High"],
+ [93,"Idle Course Owner","ok","paid Foundation owners who never start or stall qualify for deduped magic-link reminders, including module-specific stalled links and send logging locally; production cron/email proof open","High"],
+ [94,"Diligent Self-Learner","ok","final-packet submission and the certificate page auto-approve/issue eligible completed learners instead of leaving them in refresh limbo locally; production PDF/email proof open","Crit"],
+ [95,"Quick-Glance CEO","ok","hero leads with 3-minute readiness promise and visible ICP","Med"],
+ [96,"Practice-Sandbox Tester","ok","/practice is honestly labeled as a public demo, calls the governed public model endpoint, removes the false enrolled-only/fake .md export path, and routes saved work to real paid Toolbox access locally; production model-key proof open","Crit"],
+ [97,"Cert-Verifying Examiner","ok","/verify has a public certificate-ID lookup in mockup chrome, footer/certification discovery, printed-ID normalization, and an unknown-ID correction path locally; live certificate-row proof open","High"],
+ [98,"$99 Buyer Who Vanishes","ok","$99 In-Depth buyers have generic purchase-link resend to /assessment/in-depth/take, stranded-buyer detection, and idle waiting reminders locally; production email/cron/support-case proof open","Crit"],
+ [99,"Resource-Only Grazer","ok","discovery only","Low"],
+ [100,"Full-Funnel Champion","ok","full-funnel completers auto-issue the credential and see a post-certificate referral panel with assessment share link, peer email, and verification URL locally; production PDF/email proof open","Crit"],
+];
+const OUT={ok:'<span class="o-ok">✅</span>',warn:'<span class="o-warn">⚠️</span>',fail:'<span class="o-fail">❌</span>'};
+const tb=document.querySelector('#ptable tbody');
+function render(filter){
+  tb.innerHTML='';
+  let n=0;
+  P.forEach(r=>{
+    const [num,name,out,fric,sev]=r;
+    const show = filter==='all' || filter===out || filter===sev;
+    if(!show) return; n++;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="c">${num}</td><td><b>${name}</b></td><td class="c">${OUT[out]}</td><td>${fric}</td><td class="c"><span class="sev-${sev}">${sev}</span></td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('rowcount').textContent=n+' personas';
+}
+render('all');
+document.querySelectorAll('#filterbar button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#filterbar button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    render(b.dataset.f);
+  });
+});
+</script>
+</body>
+</html>

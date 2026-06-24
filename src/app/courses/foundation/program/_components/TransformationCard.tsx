@@ -77,16 +77,19 @@ export function TransformationCard({
 }: TransformationCardProps) {
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
 
   const handleDownloadReport = useCallback(async () => {
     if (downloading) return;
     setDownloading(true);
+    setReportError(null);
     try {
       const url = enrollmentId
         ? `/api/courses/generate-transformation-report?enrollmentId=${encodeURIComponent(enrollmentId)}`
         : '/api/courses/generate-transformation-report';
       const res = await fetch(url);
       if (!res.ok) {
+        setReportError('The report PDF did not generate. Try again, or contact support if it keeps happening.');
         return;
       }
       const blob = await res.blob();
@@ -99,7 +102,7 @@ export function TransformationCard({
       document.body.removeChild(a);
       URL.revokeObjectURL(objectUrl);
     } catch {
-      // network failure — silently skip
+      setReportError('The report PDF could not be downloaded. Try again, or contact support if it keeps happening.');
     } finally {
       setDownloading(false);
     }
@@ -336,6 +339,23 @@ export function TransformationCard({
           )}
         </button>
       </div>
+      {reportError ? (
+        <p
+          role="alert"
+          style={{
+            margin: '12px 0 0',
+            color: 'var(--slate-600)',
+            fontSize: 13,
+            lineHeight: 1.45,
+          }}
+        >
+          {reportError}{' '}
+          <Link href="/support/purchase-help" style={{ color: 'var(--ink)', textDecoration: 'underline' }}>
+            Contact support
+          </Link>
+          .
+        </p>
+      ) : null}
     </div>
   );
 }

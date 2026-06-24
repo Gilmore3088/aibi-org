@@ -1,16 +1,13 @@
 // /api/courses/cards/[card]
 //
-// Renders a branded one-page reference card (CORE, five-move-zones) as a PDF
-// on demand via @react-pdf/renderer, and logs the download into
-// resource_downloads. Same pattern as the starter-artifact route — no
-// chromium, no Supabase Storage upload. These are free lead-gen / course
-// reference artifacts, so no auth gate.
+// Serves a static branded one-page reference card (CORE, five-move-zones) as
+// a PDF and logs the download into resource_downloads. These are free lead-gen
+// / course reference artifacts, so no auth gate.
 
 import { headers } from 'next/headers';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import { BankerCardDocument, BANKER_CARDS } from '@/lib/pdf/BankerCardDocument';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { BANKER_CARDS } from '@/lib/pdf/BankerCardDocument';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 
@@ -32,11 +29,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
   }
 
   try {
-    const element = React.createElement(BankerCardDocument, {
-      card: data,
-    }) as React.ReactElement<DocumentProps>;
-    const buffer = await renderToBuffer(element);
-    const pdf = new Uint8Array(buffer);
+    const file = await readFile(join(process.cwd(), 'public', 'downloads', 'cards', data.filename));
 
     if (isSupabaseConfigured()) {
       try {
@@ -57,17 +50,17 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
       }
     }
 
-    return new Response(pdf, {
+    return new Response(new Uint8Array(file), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${data.filename}"`,
-        'Content-Length': String(pdf.length),
+        'Content-Length': String(file.length),
         'Cache-Control': 'private, max-age=3600',
       },
     });
   } catch (err) {
-    console.error('[courses/cards] PDF generation error:', err);
+    console.error('[courses/cards] static PDF read failed:', err);
     return new Response(JSON.stringify({ error: 'PDF generation failed. Please try again.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

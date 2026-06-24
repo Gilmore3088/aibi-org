@@ -22,7 +22,7 @@ export interface SkillStarter {
 }
 
 // ---------------------------------------------------------------------------
-// FORMAT OPTIONS — kept in sync with module-7.ts activity 7.1 field options
+// FORMAT OPTIONS — kept in sync with the Foundation skill-builder activity options
 // ---------------------------------------------------------------------------
 export const FORMAT_OPTIONS: ReadonlyArray<{ readonly value: string; readonly label: string }> = [
   { value: 'markdown-table', label: 'Markdown Table (structured comparison)' },

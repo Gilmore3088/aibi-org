@@ -80,4 +80,46 @@ describe('ActivitySection', () => {
     );
     expect(onAllActivitiesComplete).toHaveBeenCalledTimes(1);
   });
+
+  it('shows a visible error when module progress cannot be saved', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: async () => ({
+        error: 'Module out of sequence. Refresh the page and try again.',
+      }),
+    });
+    const onAllActivitiesComplete = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <ActivitySection
+        activities={[activity]}
+        enrollmentId="enrollment-1"
+        moduleNumber={1}
+        existingResponses={{
+          '1.1': {
+            'practice-response': 'A saved artifact response that already meets the requirement.',
+            __learning_judgment_note: 'I removed identifiers and verified the human review boundary.',
+          },
+        }}
+        isLastModule={false}
+        isAlreadyCompleted={false}
+        onAllActivitiesComplete={onAllActivitiesComplete}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText(/My handoff note/i), {
+      target: { value: 'Reuse this on the next branch update and keep proof in the packet.' },
+    });
+    fireEvent.change(screen.getByLabelText(/Next real use/i), {
+      target: { value: 'Use this on the next branch rollout email before manager review.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Complete module' }));
+
+    expect(
+      await screen.findByText('Module out of sequence. Refresh the page and try again.'),
+    ).toBeTruthy();
+    expect(onAllActivitiesComplete).not.toHaveBeenCalled();
+  });
 });

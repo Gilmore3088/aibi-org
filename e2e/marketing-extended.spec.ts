@@ -22,9 +22,9 @@ test.describe('marketing — content + brand invariants', () => {
     // matrix, but we can confirm the CTA link points at a real Calendly URL.
     const res = await request.get('/for-institutions');
     const body = await res.text();
-    // If Calendly is wired anywhere on the marketing site, the href will
-    // contain "calendly.com".
-    expect(body).toMatch(/calendly\.com|mailto:hello@aibankinginstitute/i);
+    // Institution CTAs should expose a scheduler or the in-page lead form;
+    // the shared footer may still include the general support email.
+    expect(body).toMatch(/calendly\.com|team-inquiry|Institution inquiry/i);
   });
 
   test('§11 no banned phrases in homepage HTML', async ({ page }) => {

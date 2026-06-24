@@ -7,7 +7,7 @@
 //   - T-05-10: Auth session required — unauthenticated requests return 401.
 //   - T-05-10: Enrollment ownership verified — enrollment.user_id must match authenticated user.
 //   - T-05-12: Ownership check prevents generating PDFs for other users' responses.
-//   - T-05-11: User text rendered via @react-pdf/renderer Text components — no HTML injection possible.
+//   - T-05-11: User text is HTML-escaped before Chromium print rendering.
 //
 // GET: re-download from saved activity response (activity_id = '5.2').
 // POST: accept fresh response data and generate immediately.
@@ -16,11 +16,8 @@
 import { cookies } from 'next/headers';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import { AcceptableUseCardDocument } from '@/lib/pdf/AcceptableUseCardDocument';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { buildAcceptableUseCardPdfBuffer } from '@/lib/pdf/acceptable-use-card';
 
 const ACTIVITY_5_2 = '5.2';
 const PDF_FILENAME = 'AiBI-Acceptable-Use-Card.pdf';
@@ -37,14 +34,6 @@ interface ActivityResponseRow {
 interface EnrollmentRow {
   id: string;
   user_id: string;
-}
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
 }
 
 async function authenticate(): Promise<
@@ -114,20 +103,12 @@ async function generatePdf(
   highestRiskScenario: string,
   quickWinUseCase: string,
 ): Promise<Buffer> {
-  const generatedDate = formatDate(new Date());
-
-  // Cast required: renderToBuffer expects ReactElement<DocumentProps> but our wrapper
-  // component is typed as ReactElement<AcceptableUseCardProps>. The component renders
-  // a <Document> root so the cast is safe.
-  const element = React.createElement(AcceptableUseCardDocument, {
+  return buildAcceptableUseCardPdfBuffer({
     roleContext,
     primaryAiTool,
     highestRiskScenario,
     quickWinUseCase,
-    generatedDate,
-  }) as React.ReactElement<DocumentProps>;
-
-  return renderToBuffer(element);
+  });
 }
 
 function pdfResponse(buffer: Buffer): Response {

@@ -9,6 +9,8 @@
 //   2. Every static /downloads/*.pdf file linked from src code.
 //   3. Every role playbook PDF (/downloads/<role>-playbook.pdf), one per
 //      slug listed in the roles taxonomy.
+//   4. Every gated lead-capture PDF endpoint that is not listed in the
+//      resource catalog.
 //
 // Usage:
 //   node scripts/qa-downloads.mjs                       # against production
@@ -57,6 +59,24 @@ const ROLE_PLAYBOOK_SLUGS = [
   'infosec',
   'compliance',
   'in-depth',
+];
+
+const GATED_DOWNLOAD_URLS = [
+  '/api/guides/safe-ai-use',
+  '/api/prompt-cards/download',
+];
+
+const PUBLIC_ARTIFACT_URLS = [
+  '/api/courses/cards/core',
+  '/api/courses/cards/five-move-zones',
+  '/api/assessment/starter-artifact/current-ai-usage',
+  '/api/assessment/starter-artifact/experimentation-culture',
+  '/api/assessment/starter-artifact/ai-literacy-level',
+  '/api/assessment/starter-artifact/quick-win-potential',
+  '/api/assessment/starter-artifact/leadership-buy-in',
+  '/api/assessment/starter-artifact/security-posture',
+  '/api/assessment/starter-artifact/training-infrastructure',
+  '/api/assessment/starter-artifact/builder-potential',
 ];
 
 // ── Test runner ────────────────────────────────────────────────────────────
@@ -134,7 +154,8 @@ async function main() {
 
   console.log(
     `discovered: ${apiUrls.length} API · ${staticUrls.length} static · ` +
-      `${playbookUrls.length} role playbooks\n`,
+      `${playbookUrls.length} role playbooks · ${GATED_DOWNLOAD_URLS.length} gated · ` +
+      `${PUBLIC_ARTIFACT_URLS.length} public artifacts\n`,
   );
 
   const browser = await chromium.launch();
@@ -158,6 +179,18 @@ async function main() {
   for (const url of playbookUrls) {
     process.stdout.write(`  static ${url} ... `);
     const r = await checkOne(page, url, 'playbook');
+    process.stdout.write(`${r.ok ? '✓' : '✗'}  ${r.status}  ${r.fileType.padEnd(3)} ${r.bytes}b  ${r.elapsedMs}ms${r.ok ? '' : `  ← ${r.reason}`}\n`);
+    results.push(r);
+  }
+  for (const url of GATED_DOWNLOAD_URLS) {
+    process.stdout.write(`  gated ${url} ... `);
+    const r = await checkOne(page, url, 'gated');
+    process.stdout.write(`${r.ok ? '✓' : '✗'}  ${r.status}  ${r.fileType.padEnd(3)} ${r.bytes}b  ${r.elapsedMs}ms${r.ok ? '' : `  ← ${r.reason}`}\n`);
+    results.push(r);
+  }
+  for (const url of PUBLIC_ARTIFACT_URLS) {
+    process.stdout.write(`  artifact ${url} ... `);
+    const r = await checkOne(page, url, 'artifact');
     process.stdout.write(`${r.ok ? '✓' : '✗'}  ${r.status}  ${r.fileType.padEnd(3)} ${r.bytes}b  ${r.elapsedMs}ms${r.ok ? '' : `  ← ${r.reason}`}\n`);
     results.push(r);
   }

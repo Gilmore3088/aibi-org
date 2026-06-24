@@ -57,6 +57,24 @@ After configuring it, send a synthetic alert with authenticated
 Set `ADMIN_SUPPORT_EMAILS=hello@aibankinginstitute.com` before using the
 support console.
 
+### Optional cron tuning
+These have safe defaults and are not required in Production unless the operator
+wants different timing:
+
+| Var | Default |
+|-----|---------|
+| `STRANDED_BUYER_ALERT_AFTER_HOURS` | `4` |
+| `STRANDED_BUYER_LOOKBACK_DAYS` | `14` |
+| `STRANDED_BUYER_MAX_CHECKS` | `100` |
+| `ABANDONED_ASSESSMENT_REMINDER_AFTER_HOURS` | `24` |
+| `ABANDONED_ASSESSMENT_LOOKBACK_DAYS` | `14` |
+| `ABANDONED_ASSESSMENT_MAX_REMINDERS` | `50` |
+| `PAID_REENGAGEMENT_FOUNDATION_NOT_STARTED_AFTER_DAYS` | `3` |
+| `PAID_REENGAGEMENT_FOUNDATION_STALLED_AFTER_DAYS` | `7` |
+| `PAID_REENGAGEMENT_IN_DEPTH_WAITING_AFTER_DAYS` | `3` |
+| `PAID_REENGAGEMENT_LOOKBACK_DAYS` | `60` |
+| `PAID_REENGAGEMENT_MAX_CHECKS` | `100` |
+
 ### Guarded launch flags
 | Var | Notes |
 |-----|-------|

@@ -311,10 +311,12 @@ section.mk-std { padding: 56px 0; }
   padding: 64px 0;
 }
 .mk-cta-band {
+  box-sizing: border-box;
   display: grid;
   gap: 32px;
   grid-template-columns: 1fr;
   padding: 32px;
+  width: 100%;
   border-radius: var(--r-3xl);
   border: 1px solid rgba(200, 162, 74, 0.25);
   background: rgba(255, 255, 255, 0.05);
@@ -350,6 +352,17 @@ section.mk-std { padding: 56px 0; }
   flex-direction: column;
   gap: 12px;
   justify-content: center;
+  min-width: 0;
+}
+.mk-cta-actions .mk-btn {
+  box-sizing: border-box;
+  justify-content: center;
+  line-height: 1.15;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+  width: 100%;
 }
 /* Enlarge the gold CTA inside cta-band — true bottom-of-page conversion button */
 .mk-cta-actions .mk-btn-gold {
@@ -440,6 +453,13 @@ section.mk-std { padding: 56px 0; }
   font-size: 17px; line-height: 1.6;
   color: var(--on-dark-70);
   margin-top: 16px; max-width: 36ch;
+}
+.mk-hero-role-note {
+  max-width: 46ch;
+  margin: 12px 0 0;
+  color: rgba(255,255,255,0.74);
+  font-size: 14px;
+  line-height: 1.45;
 }
 .mk-hero .mk-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .mk-kicker-gold-soft {
@@ -2402,12 +2422,20 @@ section.mk-std { padding: 56px 0; }
 .mk-take-flow-meta {
   display: flex; align-items: center; gap: 14px;
 }
+.mk-take-flow-status {
+  display: grid;
+  gap: 2px;
+  text-align: right;
+}
 .mk-take-flow-q {
   font-size: 12px; font-weight: 600; color: var(--slate-600);
   letter-spacing: 0.04em;
 }
+.mk-take-flow-count {
+  font-size: 11px; font-weight: 600; color: var(--slate-500);
+}
 @media (max-width: 419px) {
-  .mk-take-flow-q { display: none; }
+  .mk-take-flow-status { display: none; }
 }
 .mk-take-flow-exit {
   font-size: 13px; font-weight: 600; color: var(--gold-deep);
@@ -2486,6 +2514,69 @@ section.mk-std { padding: 56px 0; }
 .mk-take-q-option.is-selected .mk-take-q-option-mark {
   color: var(--gold);
 }
+
+.mk-take-resume {
+  margin-top: 6px;
+  padding: 16px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-lg);
+  background: #fff;
+}
+.mk-take-resume label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mk-take-resume-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+@media (max-width: 479px) {
+  .mk-take-resume-row { grid-template-columns: 1fr; }
+}
+.mk-take-resume input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--cream);
+}
+.mk-take-resume input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(200, 162, 74, 0.18);
+}
+.mk-take-resume button {
+  min-height: 42px;
+  border: 0;
+  border-radius: var(--r-md);
+  padding: 0 16px;
+  background: var(--ink);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.mk-take-resume button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.mk-take-resume-message {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.mk-take-resume-message.is-success { color: #047857; }
+.mk-take-resume-message.is-error { color: #991b1b; }
 
 .mk-take-restart { text-align: center; }
 .mk-take-restart-btn {
@@ -4609,6 +4700,10 @@ section.mk-std { padding: 56px 0; }
   font-size: 15px; line-height: 1.5; color: var(--slate-600);
   font-weight: 500; margin-top: 4px;
 }
+.mk-credential-actions {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-top: 22px;
+}
 
 /* ============================================================
    Assessment page rework (2026-05-26)
@@ -4985,6 +5080,13 @@ section.mk-std { padding: 56px 0; }
   line-height: 1.35;
   box-shadow: var(--shadow-soft);
 }
+.mk-reg-ref-grid p {
+  margin: 8px 0 0;
+  color: var(--slate-600);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
 
 /* Template document (/resources/templates/[slug]) */
 .mk-tpl-meta {
@@ -5120,6 +5222,25 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-600);
   max-width: 30ch;
 }
+.mk-price-compare-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--gold-deep);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.mk-price-compare-link:hover {
+  color: var(--ink);
+}
+.mk-price-compare-link svg {
+  width: 14px;
+  height: 14px;
+}
 .mk-price-options {
   display: grid;
   grid-template-columns: 1fr;
@@ -5219,6 +5340,342 @@ section.mk-std { padding: 56px 0; }
   }
 }
 
+/* ============================================================
+   Pricing page — /pricing
+   ============================================================ */
+.mk-pricing-page {
+  background: var(--cream);
+}
+.mk-pricing-hero {
+  display: grid;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+  padding: clamp(56px, 8vw, 92px) max(24px, calc((100vw - 1180px) / 2));
+  background: var(--ink);
+  color: #fff;
+}
+@media (min-width: 920px) {
+  .mk-pricing-hero {
+    grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.68fr);
+  }
+}
+.mk-pricing-hero .mk-k,
+.mk-pricing-section-head .mk-k,
+.mk-pricing-tier .mk-k,
+.mk-pricing-support .mk-k {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.mk-pricing-hero .mk-k {
+  color: var(--gold-soft);
+}
+.mk-pricing-hero h1 {
+  margin: 12px 0 0;
+  max-width: 10ch;
+  color: #fff;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+.mk-pricing-hero-copy > p:not(.mk-k) {
+  margin: 22px 0 0;
+  max-width: 48ch;
+  color: rgba(255,255,255,0.74);
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.55;
+}
+.mk-pricing-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+.mk-pricing-visual {
+  display: grid;
+  gap: 1px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.16);
+}
+.mk-pricing-visual-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 82px;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.07);
+}
+.mk-pricing-visual-row.is-featured {
+  background: var(--gold);
+  color: var(--ink);
+}
+.mk-pricing-visual-row span,
+.mk-pricing-visual-row em {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 800;
+  color: currentColor;
+  opacity: 0.78;
+}
+.mk-pricing-visual-row strong {
+  min-width: 0;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+.mk-pricing-tier-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: clamp(34px, 6vw, 72px) max(18px, calc((100vw - 1180px) / 2));
+}
+@media (min-width: 720px) {
+  .mk-pricing-tier-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1120px) {
+  .mk-pricing-tier-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.mk-pricing-tier {
+  display: flex;
+  min-width: 0;
+  min-height: 470px;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid var(--ink-a10);
+  border-radius: 8px;
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+.mk-pricing-tier.is-featured {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.mk-pricing-tier.is-featured .mk-k,
+.mk-pricing-tier.is-featured .mk-pricing-tier-price span,
+.mk-pricing-tier.is-featured .mk-pricing-tier-best,
+.mk-pricing-tier.is-featured .mk-pricing-tier-output,
+.mk-pricing-tier.is-featured li {
+  color: rgba(255,255,255,0.76);
+}
+.mk-pricing-tier h2 {
+  margin: 0;
+  color: inherit;
+  font-size: 24px;
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.mk-pricing-tier-price {
+  display: grid;
+  gap: 6px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ink-a10);
+}
+.mk-pricing-tier.is-featured .mk-pricing-tier-price {
+  border-bottom-color: rgba(255,255,255,0.16);
+}
+.mk-pricing-tier-price strong {
+  font-size: clamp(36px, 5vw, 48px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.mk-pricing-tier-price span {
+  color: var(--slate-600);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.mk-pricing-tier-best,
+.mk-pricing-tier-output {
+  margin: 0;
+  color: var(--slate-700);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.mk-pricing-tier-output {
+  font-weight: 700;
+  color: var(--ink);
+}
+.mk-pricing-tier ul {
+  display: grid;
+  gap: 8px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mk-pricing-tier li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--slate-600);
+  font-size: 13px;
+  line-height: 1.42;
+}
+.mk-pricing-tier li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: var(--gold);
+}
+.mk-pricing-tier-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  min-height: 44px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.mk-pricing-tier-link:hover {
+  color: var(--gold-deep);
+}
+.mk-pricing-tier.is-featured .mk-pricing-tier-link {
+  color: var(--gold-soft);
+}
+.mk-pricing-compare,
+.mk-pricing-rules,
+.mk-pricing-support {
+  padding: clamp(38px, 6vw, 72px) max(18px, calc((100vw - 1180px) / 2));
+  border-top: 1px solid var(--ink-a10);
+}
+.mk-pricing-section-head {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.mk-pricing-section-head h2,
+.mk-pricing-support h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+.mk-pricing-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--ink-a10);
+  background: #fff;
+}
+.mk-pricing-table {
+  width: 100%;
+  min-width: 880px;
+  border-collapse: collapse;
+}
+.mk-pricing-table th,
+.mk-pricing-table td {
+  padding: 18px;
+  border-bottom: 1px solid var(--ink-a10);
+  border-right: 1px solid var(--ink-a10);
+  text-align: left;
+  vertical-align: top;
+}
+.mk-pricing-table th {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mk-pricing-table td {
+  color: var(--slate-700);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.mk-pricing-table tr:last-child th,
+.mk-pricing-table tr:last-child td {
+  border-bottom: 0;
+}
+.mk-pricing-table th:last-child,
+.mk-pricing-table td:last-child {
+  border-right: 0;
+}
+.mk-pricing-rule-list {
+  display: grid;
+  gap: 1px;
+  background: var(--ink-a10);
+  border: 1px solid var(--ink-a10);
+}
+@media (min-width: 760px) {
+  .mk-pricing-rule-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.mk-pricing-rule-list article {
+  min-height: 150px;
+  padding: 22px;
+  background: #fff;
+}
+.mk-pricing-rule-list h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 750;
+  line-height: 1.15;
+}
+.mk-pricing-rule-list p,
+.mk-pricing-support p {
+  margin: 10px 0 0;
+  color: var(--slate-600);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.mk-pricing-support {
+  display: grid;
+  gap: 22px;
+  align-items: center;
+  background: #fff;
+}
+@media (min-width: 880px) {
+  .mk-pricing-support {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+.mk-pricing-support p {
+  max-width: 68ch;
+}
+.mk-pricing-support-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 560px) {
+  .mk-pricing-hero-actions,
+  .mk-pricing-support-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .mk-pricing-visual-row {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+  .mk-pricing-visual-row em {
+    grid-column: 2;
+  }
+  .mk-pricing-tier {
+    min-height: 0;
+  }
+}
+
 /* Trust anchor */
 .mk-trust-anchor {
   display: grid;
@@ -5252,6 +5709,12 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-600);
   font-size: 16px;
   line-height: 1.58;
+}
+.mk-trust-anchor a {
+  color: var(--gold-deep);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 .mk-trust-anchor-panel {
   display: grid;
@@ -5589,8 +6052,8 @@ section.mk-std { padding: 56px 0; }
 
 /* Sticky mobile CTA bar — production audit 2026-05-28 found 4–6 swipe
    "dead zones" between consecutive primary CTAs on every parent page.
-   This bar appears after the user has scrolled past the hero so an
-   action prompt stays in reach. Desktop renders nothing. */
+   It appears immediately on mobile so the first-paint CTA stays in reach.
+   Desktop renders nothing. */
 .mk-sticky-mobile-cta {
   position: fixed;
   left: 12px;
@@ -7690,10 +8153,9 @@ section.mk-std { padding: 56px 0; }
 /* Mobile header redesign (2026-05-28):
    - Center the brand row (no top-right CTA — the sticky bottom CTA covers
      the same surface, no reason to duplicate it in the header)
-   - Nav pill is a 4-cell grid: 3 primary routes (Home/Assess/Course) +
+   - Nav pill is a 5-cell grid: 4 primary routes (Home/Assess/Learn/Resources) +
      a "More" button that expands an inline panel below
-   - The More panel hosts Resources + Institutions (About + Security + FAQ
-     live in the footer) */
+   - The More panel hosts Pricing + Institutions (About + Security + FAQ live in the footer) */
 @media (max-width: 1179px) {
   /* Center brand, hide desktop CTA. */
   .mk-header-inner {
@@ -7703,13 +8165,13 @@ section.mk-std { padding: 56px 0; }
     display: none;
   }
 
-  /* Mobile nav pill — 4-column grid (3 primary + More button). */
+  /* Mobile nav pill — 5-column grid (4 primary + More button). */
   .mk-nav-mobile-wrap {
     padding-bottom: 12px;
   }
   .mk-nav-mobile {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 4px;
     padding: 6px;
     overflow-x: visible;
@@ -7774,6 +8236,6 @@ section.mk-std { padding: 56px 0; }
   .mk-nav-mobile-more {
     font-size: 12px;
     padding: 10px 4px;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 }

@@ -12,23 +12,25 @@ import { Wordmark } from '@/components/brand';
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assessment', href: '/assessment' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Learn', href: '/courses' },
   { label: 'Resources', href: '/resources' },
   { label: 'Institutions', href: '/for-institutions' },
 ];
 
-// Mobile primary nav — 3 core buttons + a "More" overflow. Labels shortened
-// ("Assessment" → "Assess") so the four mobile cells breathe at narrow
-// widths. Resources + Institutions live in the More panel. About + Security
-// + FAQ live in the footer, not nav (2026-05-28 user direction).
+// Mobile primary nav — core routes + a "More" overflow. Labels shortened
+// ("Assessment" → "Assess") so the five mobile cells breathe at narrow
+// widths. Institutions live in the More panel. About + Security + FAQ live in
+// the footer, not nav (2026-05-28 user direction).
 const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assess', href: '/assessment' },
   { label: 'Learn', href: '/courses' },
+  { label: 'Resources', href: '/resources' },
 ];
 
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
-  { label: 'Resources', href: '/resources', helper: 'Research, templates, downloads' },
+  { label: 'Pricing', href: '/pricing', helper: 'Compare free, individual, course, and team options' },
   { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
 ];
 

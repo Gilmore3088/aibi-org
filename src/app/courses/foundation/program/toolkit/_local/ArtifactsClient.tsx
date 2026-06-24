@@ -98,7 +98,7 @@ const TYPE_LABELS: Record<ArtifactType, string> = {
   skill: 'Reusable skill',
   workflow: 'Workflow map',
   evidence: 'Evidence note',
-  'work-product': 'Reviewed work product',
+  'work-product': 'Review-ready work product',
   card: 'Acceptable Use card',
   report: 'Foundation packet',
   inventory: 'Subscription inventory',

@@ -74,7 +74,7 @@ export function RubricAccordion() {
           gap: 12,
         }}
       >
-        <span style={kicker}>What the reviewer checks</span>
+        <span style={kicker}>What the completion gate checks</span>
         <span
           aria-hidden="true"
           style={{
@@ -97,7 +97,7 @@ export function RubricAccordion() {
           margin: '14px 0 18px',
         }}
       >
-        Five questions. A reviewer answers each before a score is issued.
+        Five questions. The final packet must answer each before the certificate is issued.
       </p>
 
       <ol

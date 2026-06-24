@@ -38,6 +38,11 @@ export interface LearnerDashboardState {
     readonly enrolledAt: string;
     readonly onboardingAnswers?: unknown;
   } | null;
+  readonly certificate: {
+    readonly id: string;
+    readonly issuedAt: string;
+    readonly verifyUrl: string;
+  } | null;
   readonly practice: {
     readonly completedRepIds: readonly string[];
     readonly completedCount: number;
@@ -90,6 +95,8 @@ export interface DashboardViewModel {
   readonly stepEnrolled: boolean;
   readonly stepFirstModule: boolean;
   readonly stepCertificate: boolean;
+  readonly certificateId: string | null;
+  readonly certificateVerifyUrl: string | null;
   readonly stepsComplete: number;
   readonly totalSteps: number;
   readonly nowIndex: number;
@@ -134,7 +141,9 @@ export function deriveDashboardViewModel(input: DashboardViewModelInput): Dashbo
   const completedModuleCount = dashboard?.enrollment?.completedModules.length ?? 0;
   const stepFirstModule = completedModuleCount > 0;
   const totalModules = modules.length;
-  const stepCertificate = stepEnrolled && completedModuleCount >= totalModules;
+  const certificateId = dashboard?.certificate?.id ?? null;
+  const certificateVerifyUrl = dashboard?.certificate?.verifyUrl ?? null;
+  const stepCertificate = Boolean(certificateId);
   const savedPromptCount = dashboard?.prompts.savedCount ?? 0;
   const artifacts = dashboard?.artifacts ?? [];
   const completedArtifactCount = artifacts.filter((artifact) => artifact.status === 'completed').length;
@@ -225,6 +234,8 @@ export function deriveDashboardViewModel(input: DashboardViewModelInput): Dashbo
     stepAccount,
     stepAssessment,
     stepCertificate,
+    certificateId,
+    certificateVerifyUrl,
     stepEnrolled,
     stepFirstModule,
     stepInDepth,

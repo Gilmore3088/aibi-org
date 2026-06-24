@@ -13,6 +13,7 @@ import {
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 import { TrustAnchor } from '@/components/sections/TrustAnchor';
+import { TeamLeadForm } from '@/components/inquiry/TeamLeadForm';
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -51,12 +52,8 @@ const XIcon = (p: IconProps) => (
 
 const PRIMARY_ENTRY_PATH = '/assessment/take';
 const TEAM_ASSESSMENT_PATH = '/assessment/team';
-const BRIEFING_MAILTO =
-  'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions';
-const ASSISTED_ROLLOUT_MAILTO =
-  'mailto:hello@aibankinginstitute.com?subject=Assisted%20AI%20rollout%20request';
-const COURSE_SEATS_MAILTO =
-  'mailto:hello@aibankinginstitute.com?subject=Foundation%20course%20seat%20pricing';
+const TEAM_INQUIRY_ANCHOR = '#team-inquiry';
+const BOOKING_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || TEAM_INQUIRY_ANCHOR;
 
 const TIERS = [
   {
@@ -94,7 +91,7 @@ const TIERS = [
       'Institutional readiness baseline + post-engagement diagnostic',
       'Aggregate dashboard after privacy thresholds are confirmed',
     ],
-    ctaHref: ASSISTED_ROLLOUT_MAILTO,
+    ctaHref: TEAM_INQUIRY_ANCHOR,
     ctaLabel: 'Request rollout',
     ctaVariant: 'ink' as const,
   },
@@ -133,26 +130,45 @@ export default function ForInstitutionsPage() {
             <h1>Find the gaps. Train the team.</h1>
             <p className="mk-lede">
               Start with a readiness baseline, then decide whether your team needs Foundation seats,
-              an assisted cohort, or a scoped briefing.
+              an L&D-led cohort pilot, a PMO project plan, a partner rollout, or a scoped briefing.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
                 Take the free assessment <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href={BRIEFING_MAILTO}>
-                Request briefing
+              <Button variant="ghost-dark" size="lg" href={BOOKING_URL}>
+                Book executive briefing
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="#engagement">
+                See enrollment options
               </Button>
             </div>
           </div>
 
           {/* Mobile-only: compact metric summary */}
-          <div className="mk-dash-mobile-summary" aria-label="Sample institution dashboard">
+          <div className="mk-dash-mobile-summary" aria-label="Illustrative sample institution dashboard">
             <div className="mk-dash-mobile-header">
               <div>
                 <div className="mk-dash-mobile-title">Institution Dashboard</div>
-                <div className="mk-dash-mobile-sub">First National · Sample</div>
+                <div className="mk-dash-mobile-sub">First National · illustrative sample</div>
               </div>
               <BarsIcon size={24} />
+            </div>
+            <div
+              style={{
+                display: 'inline-flex',
+                margin: '10px 0 0',
+                border: '1px solid rgba(148, 118, 63, .32)',
+                borderRadius: 999,
+                padding: '4px 8px',
+                color: 'var(--gold-deep)',
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Mock data preview
             </div>
             <div className="mk-dash-mobile-metric">
               <div>
@@ -195,7 +211,17 @@ export default function ForInstitutionsPage() {
             <div className="mk-head">
               <div>
                 <div className="mk-k">Institution Dashboard</div>
-                <div className="mk-t">First National · Sample</div>
+                <div className="mk-t">First National · illustrative sample</div>
+                <div
+                  style={{
+                    marginTop: 6,
+                    color: 'var(--slate-500)',
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}
+                >
+                  Mock cohort data for preview only.
+                </div>
               </div>
               <BarsIcon size={32} />
             </div>
@@ -493,9 +519,9 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BRIEFING_MAILTO}
+              href={BOOKING_URL}
             >
-              Request a briefing <ArrowR className="mk-ic" />
+              Book executive briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <ul>
@@ -505,6 +531,15 @@ export default function ForInstitutionsPage() {
             <li><CheckIcon className="mk-ic" />Pricing for your headcount & departments</li>
           </ul>
         </div>
+      </Section>
+
+      <Section id="team-inquiry-section" variant="std">
+        <TeamLeadForm
+          id="team-inquiry"
+          title="Send the team request before checkout."
+          description="Use this when you want an Executive Briefing, Team Assessment rollout, Foundation seats for multiple staff, an L&D cohort pilot, a PMO project plan, or a partner rollout across member or client institutions. The request goes to hello@aibankinginstitute.com and the support/admin queue."
+          defaultType="cohort-pilot-request"
+        />
       </Section>
 
 
@@ -523,6 +558,46 @@ export default function ForInstitutionsPage() {
         />
         <div className="mk-contact-grid">
           <div className="mk-ccard">
+            <div className="mk-lab">PMO scope</div>
+            <h3>PMO project plan</h3>
+            <div className="mk-price">
+              <div className="mk-v">90</div>
+              <div className="mk-u">days · milestones and owners</div>
+            </div>
+            <p>
+              For project managers who need a concrete rollout plan before
+              coordinating leaders, department owners, and support handoffs.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />90-day workplan with milestones and dependencies</li>
+              <li><CheckIcon className="mk-ic" />Named sponsor, rollout owner, support owner, and reporting cadence</li>
+              <li><CheckIcon className="mk-ic" />One-business-day response SLA and first-call agenda</li>
+            </ul>
+            <Button variant="ink" size="lg" href={TEAM_INQUIRY_ANCHOR}>
+              Scope project plan <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
+            <div className="mk-lab">L&D rollout</div>
+            <h3>Cohort pilot / L&D rollout</h3>
+            <div className="mk-price">
+              <div className="mk-v">Pilot</div>
+              <div className="mk-u">launch packet · scoped first</div>
+            </div>
+            <p>
+              For training, HR, or L&D owners who need a concrete cohort path
+              before asking managers to assign seats.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Cohort launch plan and owner handoff</li>
+              <li><CheckIcon className="mk-ic" />Manager kickoff email and participant invite copy</li>
+              <li><CheckIcon className="mk-ic" />Completion tracker and aggregate report handoff</li>
+            </ul>
+            <Button variant="ink" size="lg" href={TEAM_INQUIRY_ANCHOR}>
+              Plan cohort pilot <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
             <div className="mk-lab">Assisted team diagnostic</div>
             <h3>Team Assessment</h3>
             <div className="mk-price">
@@ -533,12 +608,19 @@ export default function ForInstitutionsPage() {
               Run the 48-question team assessment after we confirm cohort setup,
               privacy thresholds, reporting owner, and support path.
             </p>
+            <p>
+              Forward the{' '}
+              <Link href="/security/it-approval">
+                IT review packet
+              </Link>{' '}
+              before seats are assigned.
+            </p>
             <ul>
               <li><CheckIcon className="mk-ic" />Shared participant link</li>
               <li><CheckIcon className="mk-ic" />Department and role breakdowns</li>
               <li><CheckIcon className="mk-ic" />Print-ready team report</li>
             </ul>
-            <Button variant="ink" size="lg" href={ASSISTED_ROLLOUT_MAILTO}>
+            <Button variant="ink" size="lg" href={TEAM_INQUIRY_ANCHOR}>
               Request assisted rollout <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -558,7 +640,7 @@ export default function ForInstitutionsPage() {
               <li><CheckIcon className="mk-ic" />Enrollment handoff scoped up front</li>
               <li><CheckIcon className="mk-ic" />SSO and invoicing discussed before rollout</li>
             </ul>
-            <Button variant="ink" size="lg" href={COURSE_SEATS_MAILTO}>
+            <Button variant="ink" size="lg" href={TEAM_INQUIRY_ANCHOR}>
               Request course seats <ArrowR className="mk-ic" />
             </Button>
           </div>
@@ -581,9 +663,29 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BRIEFING_MAILTO}
+              href={BOOKING_URL}
             >
-              Request a briefing <ArrowR className="mk-ic" />
+              Book executive briefing <ArrowR className="mk-ic" />
+            </Button>
+          </div>
+          <div className="mk-ccard">
+            <div className="mk-lab">Partner channel</div>
+            <h3>Partner / association rollout</h3>
+            <div className="mk-price">
+              <div className="mk-v">Multi</div>
+              <div className="mk-u">institution · scoped by partner</div>
+            </div>
+            <p>
+              For bankers' banks, banking associations, and service providers
+              introducing AI readiness across member or client institutions.
+            </p>
+            <ul>
+              <li><CheckIcon className="mk-ic" />Named partner audience and launch channel</li>
+              <li><CheckIcon className="mk-ic" />Member-facing briefing and assessment path</li>
+              <li><CheckIcon className="mk-ic" />Cohort reporting boundaries scoped up front</li>
+            </ul>
+            <Button variant="ink" size="lg" href={TEAM_INQUIRY_ANCHOR}>
+              Scope partner rollout <ArrowR className="mk-ic" />
             </Button>
           </div>
         </div>
@@ -604,7 +706,7 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Request briefing', href: BRIEFING_MAILTO, variant: 'ghost-dark' },
+          { label: 'Book briefing', href: BOOKING_URL, variant: 'ghost-dark' },
         ]}
       />
 

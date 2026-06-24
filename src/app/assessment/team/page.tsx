@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
+import { TeamLeadForm } from '@/components/inquiry/TeamLeadForm';
 import { TEAM_ASSESSMENT_MIN_SEATS } from '@/lib/team-assessment/constants';
 import { isTeamAssessmentSelfServeEnabled } from '@/lib/team-assessment/self-serve';
 import { TeamCheckoutForm } from './_components/TeamCheckoutForm';
@@ -11,9 +12,6 @@ export const metadata: Metadata = {
     'An assisted 48-question AI readiness assessment for teams, departments, and institution-wide rollout planning.',
   alternates: { canonical: '/assessment/team' },
 };
-
-const ASSISTED_ROLLOUT_MAILTO =
-  'mailto:hello@aibankinginstitute.com?subject=Assisted%20Team%20Assessment%20rollout';
 
 export default function TeamAssessmentPage(): JSX.Element {
   const selfServeEnabled = isTeamAssessmentSelfServeEnabled();
@@ -50,6 +48,23 @@ export default function TeamAssessmentPage(): JSX.Element {
             </div>
           </div>
           {selfServeEnabled ? <TeamCheckoutForm /> : <TeamAssistedRolloutCard />}
+        </section>
+
+        <section className="team-packet" aria-label="Cohort launch packet">
+          <div>
+            <p className="team-kicker">For HR and L&D</p>
+            <h2>Cohort launch packet before seats go live.</h2>
+            <p>
+              The assisted path gives the internal owner enough structure to launch
+              a pilot without inventing the training operation from scratch.
+            </p>
+          </div>
+          <ul>
+            <li>Cohort roster template with departments, roles, sponsor, and completion owner.</li>
+            <li>Manager kickoff email and participant invite copy for the first cohort.</li>
+            <li>Completion tracker plus aggregate report handoff once privacy thresholds are met.</li>
+          </ul>
+          <Link href="#team-assessment-inquiry">Plan an L&D cohort pilot</Link>
         </section>
 
         <section className="team-detail" aria-label="How it works">
@@ -115,72 +130,6 @@ export default function TeamAssessmentPage(): JSX.Element {
           border-radius: 18px;
           padding: 18px;
           box-shadow: 0 18px 60px rgba(7, 26, 47, 0.07);
-        }
-        .team-assisted {
-          display: grid;
-          gap: 18px;
-          background: #fff;
-          border: 1px solid var(--ink-a10);
-          border-radius: 18px;
-          padding: 26px;
-          box-shadow: 0 24px 70px rgba(7, 26, 47, 0.1);
-        }
-        .team-assisted-k {
-          margin: 0;
-          color: var(--gold-deep);
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-        }
-        .team-assisted h2 {
-          margin: 0;
-          color: var(--ink);
-          font-size: 30px;
-          line-height: 1.08;
-        }
-        .team-assisted p {
-          margin: 0;
-          color: var(--slate-600);
-          font-size: 15px;
-          line-height: 1.55;
-        }
-        .team-assisted ul {
-          display: grid;
-          gap: 10px;
-          margin: 0;
-          padding: 16px 0;
-          border-top: 1px solid var(--ink-a10);
-          border-bottom: 1px solid var(--ink-a10);
-          list-style: none;
-        }
-        .team-assisted li {
-          display: grid;
-          grid-template-columns: 16px 1fr;
-          gap: 10px;
-          color: var(--ink);
-          font-size: 14px;
-          line-height: 1.45;
-        }
-        .team-assisted li::before {
-          content: "—";
-          color: var(--gold-deep);
-          font-weight: 900;
-        }
-        .team-assisted a {
-          display: inline-flex;
-          min-height: 52px;
-          align-items: center;
-          justify-content: center;
-          border-radius: 12px;
-          background: var(--ink);
-          color: var(--cream);
-          padding: 0 20px;
-          font-size: 13px;
-          font-weight: 900;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          text-decoration: none;
         }
         .team-proof-head,
         .team-proof-row {
@@ -262,6 +211,59 @@ export default function TeamAssessmentPage(): JSX.Element {
           font-size: 16px;
           line-height: 1.55;
         }
+        .team-packet {
+          display: grid;
+          grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+          gap: 32px;
+          align-items: start;
+          margin-top: 46px;
+          border: 1px solid var(--ink-a10);
+          background: #fff;
+          padding: 28px;
+        }
+        .team-packet h2 {
+          margin: 0;
+          color: var(--ink);
+          font-size: clamp(30px, 3.5vw, 48px);
+          line-height: 1.02;
+          letter-spacing: 0;
+        }
+        .team-packet p {
+          margin: 16px 0 0;
+          color: var(--slate-600);
+          font-size: 16px;
+          line-height: 1.55;
+        }
+        .team-packet ul {
+          display: grid;
+          gap: 12px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .team-packet li {
+          display: grid;
+          grid-template-columns: 16px 1fr;
+          gap: 10px;
+          color: var(--ink);
+          font-size: 15px;
+          line-height: 1.45;
+        }
+        .team-packet li::before {
+          content: "—";
+          color: var(--gold-deep);
+          font-weight: 900;
+        }
+        .team-packet a {
+          grid-column: 2;
+          width: fit-content;
+          color: var(--gold-deep);
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.13em;
+          text-transform: uppercase;
+          text-decoration: none;
+        }
         .team-final {
           margin-top: 72px;
           padding-top: 28px;
@@ -276,7 +278,8 @@ export default function TeamAssessmentPage(): JSX.Element {
             padding: 28px 18px 72px;
           }
           .team-hero,
-          .team-detail {
+          .team-detail,
+          .team-packet {
             grid-template-columns: 1fr;
             gap: 24px;
           }
@@ -294,6 +297,9 @@ export default function TeamAssessmentPage(): JSX.Element {
           .team-proof {
             display: none;
           }
+          .team-packet a {
+            grid-column: 1;
+          }
         }
       `}</style>
     </div>
@@ -302,20 +308,13 @@ export default function TeamAssessmentPage(): JSX.Element {
 
 function TeamAssistedRolloutCard(): JSX.Element {
   return (
-    <aside className="team-assisted" aria-label="Request assisted team assessment rollout">
-      <p className="team-assisted-k">Assisted rollout only</p>
-      <h2>Start with a scoped team rollout.</h2>
-      <p>
-        Team Assessment checkout is intentionally gated until two production-like
-        cohorts pass end-to-end QA. We set up the cohort with you instead of
-        opening public self-serve payment.
-      </p>
-      <ul>
-        <li>{TEAM_ASSESSMENT_MIN_SEATS}+ seat cohort planning</li>
-        <li>Privacy threshold and department slices confirmed before launch</li>
-        <li>Admin handoff, support owner, and report timing agreed up front</li>
-      </ul>
-      <a href={ASSISTED_ROLLOUT_MAILTO}>Request assisted rollout</a>
-    </aside>
+    <TeamLeadForm
+      id="team-assessment-inquiry"
+      compact
+      eyebrow="Assisted rollout"
+      title="Start with a scoped team rollout."
+      description={`${TEAM_ASSESSMENT_MIN_SEATS}+ seats, privacy thresholds, reporting owner, and support path are confirmed before a checkout link is issued.`}
+      defaultType="team-assessment-request"
+    />
   );
 }

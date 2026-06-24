@@ -119,9 +119,8 @@ export function PricingProof({
         <div>{enrollButton}</div>
       </div>
 
-      {/* Proof column — one quote + one stat */}
+      {/* Proof column — one review standard + one stat */}
       <div style={{ display: 'grid', gap: 18 }}>
-        {/* OPERATOR: replace with a real reviewer quote + attribution */}
         <figure
           style={{
             margin: 0,
@@ -142,7 +141,7 @@ export function PricingProof({
               color: 'var(--gold-soft)',
             }}
           >
-            From the reviewer
+            Review standard
           </span>
           <blockquote
             style={{
@@ -154,9 +153,9 @@ export function PricingProof({
               fontWeight: 500,
             }}
           >
-            {/* OPERATOR: replace */}
-            &ldquo;We grade for the work that gets shown to an examiner.
-            If a saved prompt cannot be defended, it does not pass.&rdquo;
+            The passing bar is a saved work product with a named human review
+            step, a clear source boundary, and a reuse rule. If the learner and
+            manager cannot defend how it should be used, it is not ready for work.
           </blockquote>
           <figcaption
             style={{
@@ -167,8 +166,7 @@ export function PricingProof({
               letterSpacing: '0.04em',
             }}
           >
-            {/* OPERATOR: replace with real attribution */}
-            Principal reviewer · The AI Banking Institute
+            Institute completion standard
           </figcaption>
         </figure>
 

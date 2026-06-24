@@ -9,7 +9,9 @@ import { useSearchParams } from 'next/navigation';
 // device whose aibi-trusted-device cookie is missing or expired.
 // The email is fired by /api/auth/check-device; this page only renders
 // the wait state. The user finishes the flow by clicking the link in
-// the email, which lands on /auth/confirm-device.
+// the email, which lands on /auth/confirm-device. If they open that link
+// on another browser, the route now hands them into a fresh one-time
+// sign-in link instead of looping.
 
 const cardStyle: CSSProperties = {
   width: '100%',
@@ -104,8 +106,8 @@ export default function ConfirmDevicePendingPage() {
         <h1 style={h1Style}>Check your email.</h1>
         <p style={bodyStyle}>
           We sent a one-time confirmation link to{' '}
-          <strong style={{ color: 'var(--ink)' }}>{email}</strong>. Open it from this same browser
-          to finish signing in.
+          <strong style={{ color: 'var(--ink)' }}>{email}</strong>. Open it to finish signing in.
+          If it opens on another device, we will send that browser through a fresh sign-in step.
         </p>
         <p style={bodyStyle}>
           We only ask for this on devices we have not seen before. After this confirmation, this

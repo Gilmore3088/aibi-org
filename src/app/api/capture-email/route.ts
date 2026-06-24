@@ -74,6 +74,12 @@ const INSTITUTION_MAX_LEN = 120;
 const LEAD_SOURCE_MAX_LEN = 64;
 const ARTIFACT_MAX_LEN = 128;
 
+function redactEmail(email: string): string {
+  const [local = '', domain = ''] = email.split('@');
+  const localPrefix = local.slice(0, 2);
+  return `${localPrefix || '**'}***@${domain || 'unknown'}`;
+}
+
 interface DimensionEntry {
   score: number;
   maxScore: number;
@@ -229,7 +235,7 @@ export async function POST(request: Request) {
   if (parsed.kind === 'research') {
     const { email: researchEmail, lead_source, requested_artifact } = parsed;
     console.log(
-      `[capture-email] research-library gate email=${researchEmail} artifact=${requested_artifact ?? 'none'}`,
+      `[capture-email] research-library gate email=${redactEmail(researchEmail)} artifact=${requested_artifact ?? 'none'}`,
     );
     if (process.env.SKIP_MAILERLITE !== 'true') {
       await subscribeToAssessmentForm({
@@ -405,7 +411,7 @@ export async function POST(request: Request) {
         .sort((a, b) => a.pct - b.pct)[0];
       const artifact = lowest ? getStarterArtifact(lowest.id as Dimension) : null;
 
-      console.log(`[capture-email] firing sendAssessmentBreakdown to=${email} profileId=${profileId ?? 'null'}`);
+      console.log(`[capture-email] firing sendAssessmentBreakdown to=${redactEmail(email)} profileId=${profileId ?? 'null'}`);
       sendAssessmentBreakdown({
         email,
         score,

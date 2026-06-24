@@ -4,16 +4,16 @@
 // Delegates interactive form to WorkProductForm (client component).
 //
 // Layout (audit §9 redesign — 2026-05-27):
-//   1. SubmissionArtifactHero — the reviewed work product the learner is
+//   1. SubmissionArtifactHero — the final-packet work product the learner is
 //      submitting, shown as concrete evidence (not abstract copy).
-//   2. Status panel — gate, under-review, approved, or "ready to submit" form.
-//   3. RubricAccordion — quiet, opens to the five reviewer checks.
+//   2. Status panel — gate, finalizing, approved, or "ready to submit" form.
+//   3. RubricAccordion — quiet, opens to the five completion-gate checks.
 //
 // Access rules unchanged:
 //   - Unauthenticated / not enrolled → redirect to /courses/foundation/program/purchase
 //   - Enrolled but not all modules complete → show completion gate message
-//   - Submission pending or under re-review → show "under review" message
-//   - Submission approved → show "approved" message with certificate link
+//   - Submission pending or under re-review → auto-approve and issue where possible
+//   - Submission approved → ensure certificate exists and show certificate link
 //   - Submission failed (no prior resubmission) → form in resubmission mode
 //   - No submission → form in initial submission mode
 
@@ -22,6 +22,7 @@ import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { issueCertificateForEnrollment } from '@/lib/certificates/issue';
 import { CourseShellWrapper } from '@/components/lms/CourseShellWrapper';
 import { WorkProductForm } from '../_components/WorkProductForm';
 import type { WorkSubmission } from '@/types/course';
@@ -34,8 +35,6 @@ export const metadata: Metadata = {
 };
 
 const ALL_MODULES = modules.map((module) => module.number);
-const REVIEW_TURNAROUND_BUSINESS_DAYS = 5;
-
 function allModulesComplete(completedModules: readonly number[]): boolean {
   return ALL_MODULES.every((m) => completedModules.includes(m));
 }
@@ -91,8 +90,9 @@ export default async function SubmitPage() {
 
   // Check for existing submission
   let submission: WorkSubmission | null = null;
+  let serviceClient: ReturnType<typeof createServiceRoleClient> | null = null;
   if (isSupabaseConfigured()) {
-    const serviceClient = createServiceRoleClient();
+    serviceClient = createServiceRoleClient();
     const { data } = await serviceClient
       .from('work_submissions')
       .select(
@@ -109,7 +109,48 @@ export default async function SubmitPage() {
   }
 
   const modulesComplete = allModulesComplete(enrollment.completed_modules);
-  const status = submission?.review_status ?? null;
+  let status = submission?.review_status ?? null;
+
+  if (
+    modulesComplete &&
+    serviceClient &&
+    submission &&
+    (status === 'pending' || status === 'resubmitted' || status === 'approved')
+  ) {
+    if (status !== 'approved') {
+      const reviewedAt = new Date().toISOString();
+      const { error } = await serviceClient
+        .from('work_submissions')
+        .update({
+          review_status: 'approved',
+          reviewed_at: reviewedAt,
+          review_feedback:
+            'Auto-approved after completion of all Foundation modules and final packet submission.',
+        })
+        .eq('id', submission.id);
+
+      if (!error) {
+        submission = {
+          ...submission,
+          review_status: 'approved',
+          reviewed_at: reviewedAt,
+          review_feedback:
+            'Auto-approved after completion of all Foundation modules and final packet submission.',
+        };
+        status = 'approved';
+      }
+    }
+
+    if (status === 'approved') {
+      await issueCertificateForEnrollment({
+        serviceClient,
+        enrollmentId: enrollment.id,
+      }).catch((error) => {
+        console.warn('[submit] certificate auto-issue skip', error);
+      });
+    }
+  }
+
   const showForm = modulesComplete && (!submission || status === 'failed');
 
   return (
@@ -148,8 +189,8 @@ export default async function SubmitPage() {
                 lineHeight: 1.6,
               }}
             >
-              Typical turnaround is {REVIEW_TURNAROUND_BUSINESS_DAYS} business days.
-              You will receive an email when your score is issued — no need to refresh this page.
+              Your final packet is saved. The automatic completion gate will issue
+              your credential as soon as the certificate service finishes processing.
             </p>
             <p
               style={{

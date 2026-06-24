@@ -12,8 +12,8 @@
  *
  * Behavior:
  *   - desktop (>=768px): renders nothing (display:none in CSS)
- *   - mobile: appears once the user has scrolled past 600px (roughly
- *     one viewport on iPhone 14), so it doesn't fight the hero CTA
+ *   - mobile: appears immediately, so the first-paint CTA remains reachable
+ *     even when the hero proof object stacks above or below the copy
  *   - tap target: 48px tall, full-width, gold fill, ink text
  *   - dismissable: small close button on the right; once dismissed in
  *     a session it stays hidden (sessionStorage flag)
@@ -32,7 +32,7 @@ export interface StickyMobileCtaProps {
 }
 
 const DISMISS_KEY = 'aibi.sticky-mobile-cta.dismissed-v1';
-const SHOW_AFTER_SCROLL_PX = 600;
+const SHOW_AFTER_SCROLL_PX = 0;
 
 export function StickyMobileCta({ label, href, source }: StickyMobileCtaProps) {
   const [visible, setVisible] = useState(false);
@@ -49,7 +49,7 @@ export function StickyMobileCta({ label, href, source }: StickyMobileCtaProps) {
     } catch {
       // sessionStorage can throw in private mode — fail open.
     }
-    const onScroll = () => setVisible(window.scrollY > SHOW_AFTER_SCROLL_PX);
+    const onScroll = () => setVisible(window.scrollY >= SHOW_AFTER_SCROLL_PX);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

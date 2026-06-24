@@ -12,7 +12,7 @@ tags:
 
 A week ago you completed the readiness assessment and scored in the Early Stage tier. The diagnosis: experiments exist, governance does not.
 
-The fastest way to move out of Early Stage is to enroll your existing experimenters in AiBI-Foundation. They already understand why this matters — the program teaches them how to make it repeatable.
+The fastest way to move out of Early Stage is to put your existing experimenters through AiBI-Foundation. They already understand why this matters — the program turns their scattered habits into repeatable prompts, workflow templates, safe-use checks, and a Foundation Packet.
 
 What changes in 30 days:
 
@@ -21,7 +21,7 @@ What changes in 30 days:
 - One workflow gets a documented review step.
 - A measurable time-saving claim — with numbers — gets to leadership.
 
-[**Enroll your team in AiBI-Foundation**](https://aibankinginstitute.com/courses/foundation/program)
+[**Enroll in AiBI-Foundation**](https://www.aibankinginstitute.com/courses/foundation/program/purchase)
 
 Your tier is the one where Executive Briefing pays off most. You have enough internal momentum that an outside roadmap conversation lands hard. We walk through your scores with leadership at the table, name the dimension that is holding you back, and write the 90-day plan with you. No slides. No sales theater.
 

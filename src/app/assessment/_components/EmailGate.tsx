@@ -26,6 +26,11 @@ import {
   FREE_ROLE_LABEL,
   type FreeRole,
 } from '@content/assessments/v3/roles';
+import {
+  formatRoiCurrency,
+  formatRoiNumber,
+  type RoiAssessmentContext,
+} from '@/lib/roi/assessment-context';
 
 // Free-funnel role taxonomy (FREE_ROLES / FREE_ROLE_LABEL / FREE_ROLE_TO_V2)
 // lives in @content/assessments/v3/roles, shared with /api/capture-email so
@@ -50,6 +55,12 @@ interface EmailGateProps {
       readonly role?: FreeRole;
     },
   ) => void;
+  readonly onSkip: (extras: {
+    readonly firstName?: string;
+    readonly institutionName?: string;
+    readonly role?: FreeRole;
+  }) => void;
+  readonly roiContext?: RoiAssessmentContext | null;
 }
 
 type Status = 'idle' | 'submitting' | 'error';
@@ -110,11 +121,14 @@ export function EmailGate({
   maxScore,
   dimensionBreakdown,
   onCaptured,
+  onSkip,
+  roiContext,
 }: EmailGateProps) {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [institutionName, setInstitutionName] = useState('');
   const [role, setRole] = useState<FreeRole | ''>('');
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
@@ -171,8 +185,7 @@ export function EmailGate({
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
           role: role || undefined,
-          // Every completer gets tier-routed follow-ups about their result.
-          marketingOptIn: true,
+          marketingOptIn,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -223,6 +236,14 @@ export function EmailGate({
     // now visible fields, so the user can fill them in directly. The
     // backend still records isFreeEmailDomain for the post-capture nudge.
     await submit(trimmedEmail);
+  }
+
+  function handleSkip(): void {
+    onSkip({
+      firstName: firstName.trim() || undefined,
+      institutionName: institutionName.trim() || undefined,
+      role: role || undefined,
+    });
   }
 
   return (
@@ -300,6 +321,23 @@ export function EmailGate({
 
           {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            {roiContext && (
+              <div className="rounded-[16px] border border-[color:var(--gold)]/35 bg-[color:var(--gold)]/8 p-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                  ROI context carried forward
+                </p>
+                <p className="mt-2 text-[14px] leading-[1.55] text-[color:var(--slate-700)]">
+                  Your calculator scenario estimated{' '}
+                  <strong className="text-[color:var(--ink)]">
+                    {formatRoiCurrency(roiContext.mid)}
+                  </strong>{' '}
+                  in annual recaptured capacity across{' '}
+                  {formatRoiNumber(roiContext.fte)} employees. This assessment
+                  shows where that value is most likely to be unlocked first.
+                </p>
+              </div>
+            )}
+
             <div>
               <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                 Send the full result
@@ -420,6 +458,27 @@ export function EmailGate({
               No credit card. Work email recommended if you want the result
               tied to your institution.
             </p>
+
+            <label className="flex items-start gap-3 rounded-[14px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-3.5 py-3">
+              <input
+                type="checkbox"
+                checked={marketingOptIn}
+                onChange={(event) => setMarketingOptIn(event.target.checked)}
+                className="mt-1 h-4 w-4 accent-[color:var(--gold)]"
+              />
+              <span className="text-[13px] leading-[1.55] text-[color:var(--slate-700)]">
+                Send a few follow-up ideas for this result. You can leave this
+                unchecked and still receive the report email.
+              </span>
+            </label>
+
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="w-full rounded-[14px] border border-[color:var(--ink-a15)] bg-white px-4 py-3 text-[14px] font-semibold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]"
+            >
+              View summary without email
+            </button>
 
             {/* WHAT UNLOCKS — three rows the email genuinely delivers
                 AND that aren't already shown above. */}

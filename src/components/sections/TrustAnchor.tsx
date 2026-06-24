@@ -1,4 +1,6 @@
 import { REGULATIONS } from '@content/regulations';
+import { BRAND } from '@content/copy';
+import Link from 'next/link';
 
 const TRUST_POINTS = [
   'Curriculum claims are mapped to named public references, not implied regulator approval.',
@@ -13,9 +15,13 @@ export function TrustAnchor(): JSX.Element {
         <p className="mk-trust-anchor-k">Who builds this</p>
         <h2 id="trust-anchor-title">Built around bank-review discipline.</h2>
         <p>
-          The Institute teaches staff to produce reviewable AI work: clear data
-          boundaries, human ownership, source checks, and artifacts a manager,
-          compliance partner, risk officer, or IT reviewer can inspect.
+          {BRAND.name} is founder-led by {BRAND.founder.name}. It teaches
+          staff to produce reviewable AI work: clear data boundaries, human
+          ownership, source checks, and artifacts a manager, compliance
+          partner, risk officer, or IT reviewer can inspect.
+        </p>
+        <p>
+          <Link href="/about">Read the operating standards</Link>
         </p>
       </div>
       <div className="mk-trust-anchor-panel">

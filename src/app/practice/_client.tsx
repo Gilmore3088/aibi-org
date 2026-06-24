@@ -34,7 +34,6 @@ const SaveIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M19 21H5a2 2 0 0 1-
 const RefreshIcon = (p: IconProps) => (<svg {...sw(p)}><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>);
 const WorkflowIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="15" y="3" width="6" height="6" rx="1" /><rect x="9" y="15" width="6" height="6" rx="1" /><path d="M6 9v6h6M18 9v6h-6" /></svg>);
 const CopyIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>);
-const DownloadIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>);
 
 type Role = 'Operations' | 'Compliance' | 'Marketing' | 'Retail';
 
@@ -83,113 +82,76 @@ const PROMPT_HELPERS: { label: string; addition: string }[] = [
   { label: 'Add data boundary', addition: '\n\nData boundary: Do not include customer identifiers, account numbers, SSNs, or confidential records.' },
 ];
 
-function buildMockOutput(s: Scenario | null) {
-  if (!s) return 'Run the scenario to generate a draft output.';
-  if (s.outputType === 'Job aid') {
-    return `# Draft Job Aid
-
-## Purpose
-Help frontline staff complete the process clearly and consistently.
-
-## Steps
-1. Confirm the request and identify the applicable procedure.
-2. Review the approved process before taking action.
-3. Complete the required steps in order.
-4. Escalate exceptions to the review owner.
-5. Document the completed action.
-
-## Exceptions
-- If the procedure is unclear, stop and escalate.
-- If customer-specific data is involved, use approved systems only.
-
-## Risk Notes
-- This draft does not replace policy.
-- Manager review is required before distribution.
-
-## Reviewer Checklist
-- [ ] Procedure meaning preserved
-- [ ] Steps are accurate
-- [ ] Exceptions are clear
-- [ ] No customer data included`;
-  }
-  if (s.outputType === 'Review packet') {
-    return `# AI Use-Case Review Packet
-
-## Business Purpose
-Summarize internal policy updates for staff awareness.
-
-## Proposed Tool
-AI writing assistant.
-
-## Data Used
-Internal policy text only. No customer data.
-
-## Expected Output
-Plain-English internal summary.
-
-## Risks
-- Inaccurate summary
-- Missing context
-- Unreviewed staff guidance
-
-## Approval Checkpoint
-Compliance review before distribution.
-
-## Retention Rule
-Save reviewed version and source reference.`;
-  }
-  return `# Draft Output
-
-## Summary
-The scenario has been converted into a structured, review-ready work product.
-
-## Output Sections
-- Purpose
-- Key points
-- Risk notes
-- Open questions
-- Review checklist
-
-## Review Note
-This output is a draft and requires review by ${s.reviewOwner}.`;
-}
+const INITIAL_OUTPUT = 'Run the scenario to generate a capped live-model draft output.';
 
 export default function PracticeSandboxPage() {
   const [role, setRole] = useState<Role>('Operations');
   const [scenarioId, setScenarioId] = useState(SCENARIOS.Operations[0].id);
   const [prompt, setPrompt] = useState(SCENARIOS.Operations[0].prompt);
-  const [output, setOutput] = useState('Run the scenario to generate a draft output.');
+  const [output, setOutput] = useState(INITIAL_OUTPUT);
   const [checked, setChecked] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
+  const [running, setRunning] = useState(false);
+  const [error, setError] = useState('');
 
   const scenarioList = SCENARIOS[role];
   const scenario = scenarioList.find((s) => s.id === scenarioId) ?? scenarioList[0];
   const reviewComplete = checked.length === REVIEW_ITEMS.length;
+  const hasLiveOutput = output !== INITIAL_OUTPUT && !error;
+  const canSave = reviewComplete && hasLiveOutput && !running;
 
   function changeRole(r: Role) {
     const first = SCENARIOS[r][0];
     setRole(r);
     setScenarioId(first.id);
     setPrompt(first.prompt);
-    setOutput('Run the scenario to generate a draft output.');
+    setOutput(INITIAL_OUTPUT);
     setChecked([]);
     setSaved(false);
+    setError('');
   }
   function changeScenario(id: string) {
     const next = scenarioList.find((s) => s.id === id) ?? scenarioList[0];
     setScenarioId(next.id);
     setPrompt(next.prompt);
-    setOutput('Run the scenario to generate a draft output.');
+    setOutput(INITIAL_OUTPUT);
     setChecked([]);
     setSaved(false);
+    setError('');
   }
   function applyHelper(addition: string) {
     setPrompt((cur) => cur + addition);
     setSaved(false);
   }
-  function run() {
-    setOutput(buildMockOutput(scenario));
+  async function run() {
+    if (running) return;
+    setRunning(true);
     setSaved(false);
+    setError('');
+    setOutput('Running the capped public model...');
+    try {
+      const response = await fetch('/api/playground/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenarioTitle: `${role} · ${scenario.title}`,
+          sampleData: scenario.sampleData,
+          prompt,
+        }),
+      });
+      const json = (await response.json().catch(() => ({}))) as { text?: string; error?: string };
+      if (!response.ok || typeof json.text !== 'string') {
+        throw new Error(json.error ?? 'The demo could not run. Please try again.');
+      }
+      setOutput(json.text);
+      setChecked([]);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'The demo could not run. Please try again.';
+      setError(message);
+      setOutput(message);
+    } finally {
+      setRunning(false);
+    }
   }
   function toggle(item: string) {
     setChecked((cur) => (cur.includes(item) ? cur.filter((x) => x !== item) : [...cur, item]));
@@ -205,13 +167,8 @@ export default function PracticeSandboxPage() {
     }
   }
   function downloadOut() {
-    const blob = new Blob([output], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${scenario.id}-sandbox-output.md`;
-    a.click();
-    URL.revokeObjectURL(url);
+    setSaved(true);
+    window.location.href = '/auth/login?next=/dashboard/toolbox';
   }
 
   return (
@@ -226,17 +183,17 @@ export default function PracticeSandboxPage() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <EyebrowChip icon={<FlaskIcon className="mk-ic" />}>Signed-in sandbox</EyebrowChip>
+            <EyebrowChip icon={<FlaskIcon className="mk-ic" />}>Public demo sandbox</EyebrowChip>
             <h1>Practice safely before using AI at work.</h1>
             <p className="mk-lede">
-              Use role-based scenarios, safe sample data, review checklists, and saveable outputs
-              to turn lessons into usable work products.
+              Use role-based scenarios, safe sample data, and review checklists. Public runs are
+              capped and use synthetic examples only.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" onClick={run}>
-                Run Scenario <PlayIcon className="mk-ic" />
+              <Button variant="gold" size="lg" onClick={run} disabled={running}>
+                {running ? 'Running...' : 'Run Scenario'} <PlayIcon className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/my-toolbox">
+              <Button variant="ghost-dark" size="lg" href="/auth/login?next=/dashboard/toolbox">
                 Open Toolbox <ArrowR className="mk-ic" />
               </Button>
             </div>
@@ -368,6 +325,7 @@ export default function PracticeSandboxPage() {
                     onChange={(e) => {
                       setPrompt(e.target.value);
                       setSaved(false);
+                      setError('');
                     }}
                   />
                   <div className="mk-pr-helpers">
@@ -378,8 +336,8 @@ export default function PracticeSandboxPage() {
                     ))}
                   </div>
                   <div style={{ marginTop: 20 }}>
-                    <Button variant="ink" onClick={run}>
-                      Run Scenario <PlayIcon className="mk-ic" />
+                    <Button variant="ink" onClick={run} disabled={running}>
+                      {running ? 'Running...' : 'Run Scenario'} <PlayIcon className="mk-ic" />
                     </Button>
                   </div>
                 </div>
@@ -399,13 +357,14 @@ export default function PracticeSandboxPage() {
                         <CopyIcon className="mk-ic" />
                         Copy
                       </Button>
-                      <Button variant="ghost-light" onClick={downloadOut}>
-                        <DownloadIcon className="mk-ic" />
-                        .md
-                      </Button>
                     </div>
                   </div>
                   <pre className="mk-pr-output">{output}</pre>
+                  {error && (
+                    <p style={{ color: 'var(--red-700)', fontSize: 13, margin: '10px 0 0' }}>
+                      {error}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -444,20 +403,21 @@ export default function PracticeSandboxPage() {
                 ))}
               </div>
               <div className="mk-pr-actions">
-                <Button variant="ink" onClick={() => setSaved(true)} disabled={!reviewComplete}>
+                <Button variant="ink" onClick={downloadOut} disabled={!canSave || saved}>
                   <SaveIcon className="mk-ic" />
-                  Save to Toolbox
+                  {saved ? 'Opening sign in' : 'Save to Toolbox'}
                 </Button>
-                <Button variant="ghost-light" href="/my-toolbox/skill-builder">
+                <Button variant="ghost-light" href="/auth/login?next=/dashboard/toolbox">
                   <WorkflowIcon className="mk-ic" />
                   Convert to Skill
                 </Button>
                 <Button
                   variant="ghost-light"
                   onClick={() => {
-                    setOutput('Run the scenario to generate a draft output.');
+                    setOutput(INITIAL_OUTPUT);
                     setChecked([]);
                     setSaved(false);
+                    setError('');
                   }}
                 >
                   <RefreshIcon className="mk-ic" />
@@ -476,7 +436,7 @@ export default function PracticeSandboxPage() {
                     fontSize: 14,
                   }}
                 >
-                  Reviewed sandbox output saved to toolbox.
+                  Sign in to save reviewed output in your Toolbox.
                 </div>
               )}
             </div>

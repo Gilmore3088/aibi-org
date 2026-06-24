@@ -66,8 +66,8 @@ const ARTIFACTS: readonly Artifact[] = [
   },
   {
     kicker: 'Submission · Module 7',
-    title: 'Reviewed work product',
-    description: 'A real artifact — email, summary, or script — submitted, reviewed, and marked up against the rubric.',
+    title: 'Review-ready work product',
+    description: 'A real artifact - email, summary, or script - shaped with source notes, edits, and reviewer questions.',
     preview: (
       <div style={{ fontSize: 13, color: 'var(--ink)', lineHeight: 1.55 }}>
         <span style={{ background: 'var(--gold-a20)', padding: '0 2px' }}>
@@ -89,7 +89,7 @@ const ARTIFACTS: readonly Artifact[] = [
             letterSpacing: '0.06em',
           }}
         >
-          REVIEWER: tighten the second clause. Source on DSCR?
+          REVIEW STEP: tighten the second clause. Source on DSCR?
         </div>
       </div>
     ),
@@ -97,13 +97,13 @@ const ARTIFACTS: readonly Artifact[] = [
   {
     kicker: 'Assessment · Module 18',
     title: 'Final practical assessment',
-    description: 'A reviewed work-product package graded against the rubric. The credential is awarded on a passing score.',
+    description: 'A final work-product package checked against the completion rubric. The credential is awarded when the packet is submitted after all modules.',
     preview: (
       <div style={{ display: 'grid', gap: 6, fontSize: 12.5 }}>
         {[
           ['Acceptable Use', 'Pass'],
           ['Saved prompts (3)', 'Pass'],
-          ['Reviewed work product', 'Pass'],
+          ['Review-ready work product', 'Pass'],
           ['Practical scenario', 'Pass'],
         ].map(([row, status]) => (
           <div

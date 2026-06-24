@@ -2,7 +2,8 @@
 
 // CompletionCTA — shown after a learner marks a module complete.
 // Every module gets a compact adult-learning debrief: retrieval, feedback,
-// transfer, and spaced replay. Module 5 keeps the Executive Briefing CTA.
+// transfer, and spaced replay. Pillar-completion offers are derived from the
+// module map so the CTA does not drift when module counts change.
 // The final module adds the assessed work-product submission CTA.
 // FUNL-01/02: funnel touchpoint for learners who have completed the Understanding pillar.
 // A11Y-01: keyboard accessible links with visible focus rings.
@@ -17,6 +18,7 @@ import {
   getArtifactFirst,
   modules,
 } from '@content/courses/foundation-program';
+import type { Pillar } from '@content/courses/foundation-program';
 import { getFoundationLabBrief } from '@content/courses/foundation-program/lab-first';
 
 interface CompletionCTAProps {
@@ -92,6 +94,30 @@ type CompletionEvidence = {
   readonly handoffNote: string;
   readonly transferPlan: string;
 };
+
+interface PillarCompletionCta {
+  readonly pillar: Pillar;
+  readonly eyebrow: string;
+  readonly title: string;
+  readonly body: string;
+  readonly href: string;
+  readonly label: string;
+  readonly footnote: string;
+  readonly track?: () => void;
+}
+
+const PILLAR_COMPLETION_CTAS: readonly PillarCompletionCta[] = [
+  {
+    pillar: 'understanding',
+    eyebrow: 'Understanding pillar complete',
+    title: 'You have the foundation. Now see the full picture.',
+    body: "Map what you built to your institution's workflows, vendors, and risk profile.",
+    href: 'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Foundation%20learner%20follow-up',
+    label: 'Book an Executive Briefing',
+    footnote: 'No obligation. 30 minutes. Specific to your institution.',
+    track: () => trackBriefingBooked({ source: 'cta' }),
+  },
+];
 
 const COMPLETION_CUE_IDS: readonly CompletionCueId[] = [
   'retrieve',
@@ -173,6 +199,21 @@ function saveCompletionCues(moduleNumber: number, cues: ReadonlySet<CompletionCu
   } catch {
     // Local persistence is a learning aid; completion should not depend on it.
   }
+}
+
+export function getCompletedPillar(moduleNumber: number): Pillar | null {
+  const current = modules.find((module) => module.number === moduleNumber);
+  if (!current) return null;
+
+  const samePillarModules = modules.filter((module) => module.pillar === current.pillar);
+  const lastPillarModule = samePillarModules.at(-1);
+  return lastPillarModule?.number === moduleNumber ? current.pillar : null;
+}
+
+export function getPillarCompletionCta(moduleNumber: number): PillarCompletionCta | null {
+  const completedPillar = getCompletedPillar(moduleNumber);
+  if (!completedPillar) return null;
+  return PILLAR_COMPLETION_CTAS.find((cta) => cta.pillar === completedPillar) ?? null;
 }
 
 function CompletionDebrief({
@@ -582,10 +623,71 @@ function ArrowIcon() {
   );
 }
 
-export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps) {
-  const briefingMailto =
-    'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Foundation%20learner%20follow-up';
+function PillarCompletionOffer({ cta }: { readonly cta: PillarCompletionCta }) {
+  return (
+    <div
+      aria-label="Module complete — next steps"
+      style={{
+        marginTop: 16,
+        padding: 28,
+        background: 'var(--cream-2)',
+        border: '1px solid var(--ink-a10)',
+        borderLeft: '4px solid var(--gold)',
+        borderRadius: 16,
+      }}
+    >
+      <p style={eyebrow}>{cta.eyebrow}</p>
+      <p
+        style={{
+          fontFamily: fontStack,
+          fontSize: 22,
+          fontWeight: 700,
+          letterSpacing: '-0.01em',
+          color: 'var(--ink)',
+          margin: '0 0 12px',
+        }}
+      >
+        {cta.title}
+      </p>
+      <p
+        style={{
+          fontFamily: fontStack,
+          fontSize: 16,
+          color: 'var(--slate-600)',
+          lineHeight: 1.65,
+          margin: '0 0 20px',
+        }}
+      >
+        {cta.body}
+      </p>
+      <a
+        href={cta.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={cta.track}
+        style={ctaPrimary}
+      >
+        {cta.label}
+        <ArrowIcon />
+      </a>
+      <p
+        style={{
+          marginTop: 12,
+          fontFamily: fontStack,
+          fontSize: 12,
+          fontWeight: 600,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: 'var(--slate-500)',
+        }}
+      >
+        {cta.footnote}
+      </p>
+    </div>
+  );
+}
 
+export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps) {
   // Final module — Application pillar complete: work product submission CTA
   // and post-course assessment CTA.
   if (isLastModule) {
@@ -614,7 +716,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
               margin: '0 0 12px',
             }}
           >
-            Ready for your assessed work product.
+            Ready for your final packet.
           </p>
           <p
             style={{
@@ -625,7 +727,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
               margin: '0 0 20px',
             }}
           >
-            Submit one reviewed work product backed by the prompt, verification,
+            Submit one review-ready work product backed by the prompt, verification,
             limits, and human-judgment notes you built across the course.
           </p>
           <Link href="/courses/foundation/program/submit" style={ctaPrimary}>
@@ -643,7 +745,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
               color: 'var(--slate-500)',
             }}
           >
-            One work product required. Reviewer scores four parts against a five-dimension rubric.
+            One work product required. The completion gate checks four parts against the packet rubric.
           </p>
         </div>
 
@@ -693,70 +795,12 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
     );
   }
 
-  // M9 — Understanding pillar complete, Executive Briefing CTA
-  if (moduleNumber === 9) {
+  const pillarCompletionCta = getPillarCompletionCta(moduleNumber);
+  if (pillarCompletionCta) {
     return (
       <>
         <CompletionDebrief moduleNumber={moduleNumber} isLastModule={isLastModule} />
-        <div
-          aria-label="Module complete — next steps"
-          style={{
-            marginTop: 16,
-            padding: 28,
-            background: 'var(--cream-2)',
-            border: '1px solid var(--ink-a10)',
-            borderLeft: '4px solid var(--gold)',
-            borderRadius: 16,
-          }}
-        >
-          <p style={eyebrow}>Understanding pillar complete</p>
-          <p
-            style={{
-              fontFamily: fontStack,
-              fontSize: 22,
-              fontWeight: 700,
-              letterSpacing: '-0.01em',
-              color: 'var(--ink)',
-              margin: '0 0 12px',
-            }}
-          >
-            You have the foundation. Now see the full picture.
-          </p>
-          <p
-            style={{
-              fontFamily: fontStack,
-              fontSize: 16,
-              color: 'var(--slate-600)',
-              lineHeight: 1.65,
-              margin: '0 0 20px',
-            }}
-          >
-            Map what you built to your institution&rsquo;s workflows, vendors, and risk profile.
-          </p>
-          <a
-            href={briefingMailto}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackBriefingBooked({ source: 'cta' })}
-            style={ctaPrimary}
-          >
-            Book an Executive Briefing
-            <ArrowIcon />
-          </a>
-          <p
-            style={{
-              marginTop: 12,
-              fontFamily: fontStack,
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: 'var(--slate-500)',
-            }}
-          >
-            No obligation. 30 minutes. Specific to your institution.
-          </p>
-        </div>
+        <PillarCompletionOffer cta={pillarCompletionCta} />
         <TimeSavingsCard moduleNumber={moduleNumber} />
       </>
     );

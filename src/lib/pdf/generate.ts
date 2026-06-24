@@ -7,11 +7,30 @@
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import puppeteer, { type Browser } from 'puppeteer-core';
+import puppeteer, { type Browser, type PDFOptions } from 'puppeteer-core';
 
 interface GenerateOptions {
   readonly profileId: string;
   readonly origin: string;
+}
+
+interface GeneratePdfFromRouteOptions {
+  readonly path: string;
+  readonly origin: string;
+  readonly viewport?: {
+    readonly width: number;
+    readonly height: number;
+  };
+  readonly pdf?: PDFOptions;
+}
+
+interface GeneratePdfFromHtmlOptions {
+  readonly html: string;
+  readonly viewport?: {
+    readonly width: number;
+    readonly height: number;
+  };
+  readonly pdf?: PDFOptions;
 }
 
 // Minimal launch flags that work on macOS system Chrome. The Linux
@@ -36,6 +55,50 @@ export async function generateAssessmentPdf({
   profileId,
   origin,
 }: GenerateOptions): Promise<Buffer> {
+  return generatePdfFromRoute({
+    origin,
+    path: `/assessment/results/print/${profileId}`,
+    viewport: { width: 1200, height: 1600 },
+    pdf: {
+      format: 'Letter',
+      printBackground: true,
+      margin: { top: '0.75in', right: '0.75in', bottom: '0.75in', left: '0.75in' },
+    },
+  });
+}
+
+export async function generatePdfFromRoute({
+  origin,
+  path,
+  viewport = { width: 1200, height: 1600 },
+  pdf,
+}: GeneratePdfFromRouteOptions): Promise<Buffer> {
+  return withBrowserPdf({ viewport, pdf }, async (page) => {
+    const url = `${origin}${path.startsWith('/') ? path : `/${path}`}`;
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+  });
+}
+
+export async function generatePdfFromHtml({
+  html,
+  viewport = { width: 1200, height: 1600 },
+  pdf,
+}: GeneratePdfFromHtmlOptions): Promise<Buffer> {
+  return withBrowserPdf({ viewport, pdf }, async (page) => {
+    await page.setContent(html, { waitUntil: 'load', timeout: 30000 });
+  });
+}
+
+async function withBrowserPdf(
+  options: {
+    readonly viewport: {
+      readonly width: number;
+      readonly height: number;
+    };
+    readonly pdf?: PDFOptions;
+  },
+  loadPage: (page: Awaited<ReturnType<Browser['newPage']>>) => Promise<void>,
+): Promise<Buffer> {
   // The .env.local file may export VERCEL=1 for things like preview
   // detection in the app. We can't trust it alone — we also have to
   // confirm we're actually on Linux before trying to extract the
@@ -63,15 +126,14 @@ export async function generateAssessmentPdf({
 
   const browser: Browser = await puppeteer.launch({
     args: launchArgs,
-    defaultViewport: { width: 1200, height: 1600 },
+    defaultViewport: options.viewport,
     executablePath,
     headless: true,
   });
 
   try {
     const page = await browser.newPage();
-    const url = `${origin}/assessment/results/print/${profileId}`;
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+    await loadPage(page);
 
     await page.evaluateHandle('document.fonts.ready');
 
@@ -79,6 +141,7 @@ export async function generateAssessmentPdf({
       format: 'Letter',
       printBackground: true,
       margin: { top: '0.75in', right: '0.75in', bottom: '0.75in', left: '0.75in' },
+      ...options.pdf,
     });
 
     return buffer as Buffer;

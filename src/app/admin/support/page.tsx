@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { listSupportCases } from '@/lib/support/cases';
 import { getSupportMetrics } from '@/lib/support/metrics';
 import { SUPPORT_CASE_CATEGORIES, SUPPORT_CASE_PRIORITIES } from '@/lib/support/types';
+import { SupportOpsChecklist } from './SupportOpsChecklist';
 
 interface PageProps {
   readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -104,6 +105,8 @@ export default async function SupportAdminPage({ searchParams }: PageProps) {
           <strong>{metrics.opsHealth.accessRescuesSent}</strong>
         </div>
       </section>
+
+      <SupportOpsChecklist />
 
       <section className="support-split">
         <div className="support-panel">

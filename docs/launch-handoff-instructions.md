@@ -11,15 +11,18 @@ checks, and the verification commands below.
 ### Repository
 
 - `main` is synced with `origin/main`.
-- Current HEAD during handoff: `f2ec5015 fix(deps): upgrade to React 19 to repair @react-pdf PDF downloads`.
+- Current HEAD during this handoff update: `be21380f`.
 - The local working tree is not clean. Do not revert it blindly; it contains
-  active admin/dashboard/support/e2e work from another stream.
+  the active 20/50/100-persona remediation work, launch docs, tests, migrations,
+  static downloads, admin/support, auth recovery, retention, public demo, and PDF
+  work.
 - `supabase/migrations/00051_fix_funnel_active_learner.sql` is applied to
   production Supabase and marked applied in migration history, but the file is
   still untracked locally and must be included in the next commit/PR.
-- `supabase/migrations/00052_resource_downloaders_scorecard.sql` is untracked
-  and not applied to production as of this handoff. Review and apply separately
-  if that metric change is accepted.
+- `supabase/migrations/00052_resource_download_metrics_view.sql` and
+  `supabase/migrations/00053_resource_downloaders_scorecard.sql` have also been
+  applied to production Supabase. Do not assume `supabase db push --linked` is
+  safe until the migration-history mismatch is cleaned up.
 
 ### Production service verification already completed
 
@@ -54,9 +57,30 @@ checks, and the verification commands below.
 - Supabase production has objects from `00049`, `00050`, and `00051`.
   The remote `funnel_contacts` view now requires real course progress for
   `active_learner`: at least one completed module or `current_module > 1`.
+- Supabase production has the `00052` resource-download metrics views and the
+  `00053` scorecard correction. `resource_downloaders` now means unique
+  known-email resource downloaders, not anonymous raw download rows.
+- Local migrations now continue through `00058`. Migrations `00054`-`00058`
+  cover assessment drafts, draft reminders, paid re-engagement events, PII audit
+  fields, and 30-day free-assessment resume links. Apply/verify them before any
+  production deploy that depends on the 100-persona remediation.
+- Vercel Production env has the admin allowlists/support inbox and dashboard
+  metric exclusions set:
+  `FUNNEL_ADMIN_EMAILS`, `ADMIN_SUPPORT_EMAILS`, `SUPPORT_INBOX_EMAIL`,
+  `ADMIN_DASHBOARD_EXCLUDED_EMAILS`, and
+  `ADMIN_DASHBOARD_EXCLUDED_EMAIL_PATTERNS`.
+- Production was redeployed after the admin/support and metric corrections.
+  Smoke checks confirmed `/admin` and `/admin/funnel` redirect unauthenticated
+  users to login, and `/api/admin/support/metrics?range=30d` returns `401` when
+  unauthenticated.
 - Top-of-funnel launch direction is now locked as a permission-first
   assessment/playbook funnel plus a controlled account-based outbound pilot.
   A scraped-list blast is not an approved launch motion.
+- The 20-person remediation comparison and finalized 50-person GTM readiness
+  review are complete locally under `Plans/`.
+- The 100-persona remediation pass is locally complete: the persona outcomes now
+  count `100 ok / 0 warn / 0 fail`. The remaining 100-persona work is production
+  proof, not unresolved local persona-row remediation.
 
 ### MailerLite state
 
@@ -239,7 +263,38 @@ refunded.
 2. Confirm Stripe sends `charge.refunded` with `2xx`.
 3. Confirm access is retained.
 
-### 3. Locked business decisions
+### 3. Close GTM/proof gaps before broad promotion
+
+The current review chain is:
+
+- 20-persona GTM review:
+  `docs/reviews/gtm-20-persona-review-2026-06-23.md`.
+- 20-person remediation comparison:
+  `Plans/20-persona-remediation-comparison-2026-06-23.md`.
+- Finalized 50-person GTM readiness review:
+  `Plans/50-persona-gtm-readiness-review-2026-06-23.md`.
+- 100-persona outcome tracker:
+  `docs/persona-audit-2026-06-23/02-persona-outcomes.md`.
+
+Before broad paid promotion:
+
+- Secure one named top-of-funnel channel with owner, date, audience, CTA, UTMs,
+  and stop/continue thresholds.
+- Add or intentionally defer founder/advisor attribution. Do not use names,
+  logos, quotes, or advisor language without written approval.
+- Live-verify the deployed secondary links on
+  `/courses/foundation/program/purchase` so undecided users can go to course
+  overview, free assessment, purchase help, or institution inquiry without
+  committing to checkout.
+- Run a Friday scorecard from `/admin`, `/admin/funnel`, and `/admin/support`.
+  Treat anonymous resource-download events as non-leads and keep test/internal
+  identities excluded.
+- Prove the 100-persona remediation in production: personalized PDFs, gated
+  downloads, buyer recovery, stranded-buyer cron, paid re-engagement cron, team
+  lead capture/support-case creation, public demo model calls/rate limits,
+  certificate lookup/print, and support access-rescue/refund timeline logging.
+
+### 4. Locked business decisions
 
 These are the launch defaults unless the owner explicitly changes them.
 
@@ -352,90 +407,53 @@ approval, or regulator/examiner endorsement language.
 
 ## Local repo handoff
 
-Current dirty files at handoff:
+Current dirty-worktree status at handoff:
+
+- Branch: `main`.
+- HEAD: `be21380f`.
+- `git status --short | wc -l` reported 260 entries during this update.
+- The dirty tree includes both tracked edits and untracked files from the
+  20/50/100-persona remediation pass. Treat it as active work, not disposable
+  scratch.
+
+Local/untracked artifacts created for the persona remediation and reviews include:
 
 ```text
-.env.local.example
-content/certifications/v1.ts
-docs/launch-handoff-instructions.md
-docs/mailerlite-emails/06-early-stage-day7.html
-docs/mailerlite-emails/11-ready-to-scale-day3.html
-docs/mailerlite-emails/index.html
-e2e/helpers/seed.ts
-e2e/resource-delivery.spec.ts
-e2e/resources.spec.ts
-scripts/scan-secrets.mjs
-src/app/admin/funnel/page.tsx
-src/app/admin/support/layout.tsx
-src/app/admin/support/page.tsx
-src/app/api/dashboard/toolbox-access/route.ts
-src/app/auth/callback/route.ts
-src/app/auth/reset-password/page.tsx
-src/app/dashboard/page.tsx
-src/lib/funnel/queries.ts
-src/lib/support/metrics.test.ts
-src/lib/support/metrics.ts
-e2e/dashboard-personas.spec.ts
-src/app/admin/admin-overview.module.css
-src/app/admin/page.tsx
-src/lib/admin/metric-exclusions.test.ts
-src/lib/admin/metric-exclusions.ts
-supabase/migrations/00051_fix_funnel_active_learner.sql
-supabase/migrations/00052_resource_downloaders_scorecard.sql
+Plans/20-persona-prioritized-remediation-plans-2026-06-23.md
+Plans/20-persona-remediation-comparison-2026-06-23.md
+Plans/50-persona-gtm-readiness-review-2026-06-23.md
+docs/reviews/gtm-20-persona-review-2026-06-23.md
+docs/handoffs/persona-sweep-2026-06-23/summary.md
+docs/handoffs/persona-sweep-2026-06-23/sweep.json
+docs/handoffs/persona-sweep-2026-06-23/shots/*.png
+docs/persona-audit-2026-06-23/
+docs/live-smoke-test-evidence-log.md
+docs/proof-collection-runbook.md
 ```
 
-Known agent-authored changes in this stream:
-
-- `scripts/scan-secrets.mjs` now skips symlinks before scanning so a dangling
-  local `.claude/skills/*` symlink cannot abort `npm run audit:secrets`.
-- `docs/launch-handoff-instructions.md` now locks the top-of-funnel motion as
-  permission-first assessment/playbook traffic plus a controlled account-based
-  outbound pilot. A scraped-list blast is explicitly not approved.
-- `docs/mailerlite-emails/index.html` now warns operators that the MailerLite
-  email HTML is for opted-in nurture only.
-- `docs/mailerlite-emails/06-early-stage-day7.html` removes unsupported
-  "we have advised" proof language.
-- `docs/mailerlite-emails/11-ready-to-scale-day3.html` frames Specialist and
-  Leader capability as roadmap/by-request instead of live credential coverage.
-- `content/certifications/v1.ts` now shows the canonical Foundation price of
-  `$295`, matching Stripe and launch copy.
-
-Known production-applied but uncommitted migration:
+Production-applied migrations now represented in the repo:
 
 - `supabase/migrations/00051_fix_funnel_active_learner.sql`
+- `supabase/migrations/00052_resource_download_metrics_view.sql`
+- `supabase/migrations/00053_resource_downloaders_scorecard.sql`
 
-Known local-only migration not applied:
+Local migrations that must be applied/verified for the 100-persona production
+proof gate:
 
-- `supabase/migrations/00052_resource_downloaders_scorecard.sql`
+- `supabase/migrations/00054_assessment_drafts.sql`
+- `supabase/migrations/00055_assessment_draft_reminders.sql`
+- `supabase/migrations/00056_paid_reengagement_events.sql`
+- `supabase/migrations/00057_ai_usage_pii_audit.sql`
+- `supabase/migrations/00058_extend_assessment_draft_ttl.sql`
 
-Do not run `git reset --hard` or delete the untracked files unless the owner
-explicitly decides that this local work should be discarded.
+Do not run `git reset --hard` or delete ignored artifacts unless the owner
+explicitly decides this local work should be discarded.
 
-Recommended PR split:
-
-1. Admin metrics and funnel data quality:
-   - `src/lib/admin/metric-exclusions.ts`
-   - `src/lib/admin/metric-exclusions.test.ts`
-   - `src/lib/support/metrics.ts`
-   - `src/lib/support/metrics.test.ts`
-   - `src/lib/funnel/queries.ts`
-   - `.env.local.example`
-   - relevant admin pages
-   - `00051`
-   - possibly `00052` after review
-2. Dashboard persona and dashboard UX changes:
-   - `src/app/dashboard/page.tsx`
-   - `src/app/api/dashboard/toolbox-access/route.ts`
-   - `e2e/dashboard-personas.spec.ts`
-   - `e2e/helpers/seed.ts`
-3. Resource page e2e updates:
-   - `e2e/resource-delivery.spec.ts`
-   - `e2e/resources.spec.ts`
-4. Auth/reset-password continuation:
-   - `src/app/auth/callback/route.ts`
-   - `src/app/auth/reset-password/page.tsx`
-5. Secret scanner hardening:
-   - `scripts/scan-secrets.mjs`
+Recommended PR scope from this handoff: split the local work by functional risk
+area rather than landing the entire 260-entry dirty tree as one change. Suggested
+groups: launch docs/reviews, assessment resume/retention, buyer recovery/auth,
+PDF/downloads/certificate verification, team/support intake, public demo/toolbox
+usage, pricing/nav/security/copy, and course Module 3/certificate UX.
 
 ## Verification commands
 
@@ -444,10 +462,12 @@ Run these before handing to review:
 ```bash
 git diff --check
 npm run audit:secrets
+npx tsc --noEmit --pretty false
 npm test -- src/lib/admin/metric-exclusions.test.ts src/lib/support/metrics.test.ts
 npm run lint
 npm test
 npm run build
+npx playwright test e2e/dashboard-personas.spec.ts e2e/resource-delivery.spec.ts e2e/resources.spec.ts e2e/api-gates.spec.ts e2e/a11y.spec.ts --project=chromium
 ```
 
 Run production env audit without committing pulled secrets:
@@ -505,10 +525,11 @@ supabase migration repair --linked --status applied 000NN
 
 Use this only after reviewing the SQL and confirming it is safe/idempotent.
 
-For `00052`, verify first whether the app code now derives scorecard metrics in
-TypeScript (`src/lib/funnel/queries.ts`) or still relies on the SQL
-`funnel_scorecard` view. If the TypeScript path is now authoritative, `00052`
-may be redundant or should be reconciled before applying.
+`00051`, `00052`, and `00053` are already applied to production through the
+direct-query path above. Local migrations now run through `00058`. Keep the
+applied files in the next reviewed PR, apply/repair `00054`-`00058` only after
+reviewing them, and reconcile migration history before relying on
+`supabase db push --linked` again.
 
 ## Final go/no-go
 
@@ -521,10 +542,20 @@ They are not ready for broad paid promotion until all of these are true:
 - One live Foundation purchase smoke test passes.
 - Full refund revocation is proven.
 - Stripe dashboard shows `2xx` webhook deliveries for the smoke events.
+- Supabase migrations through `00058` are applied/verified and
+  `/api/health/supabase` is `ok:true`.
+- 100-persona production proof is complete: personalized PDFs, gated downloads,
+  buyer recovery, stranded-buyer cron, retention cron, team lead capture,
+  public demo model call/rate-limit/PII behavior, certificate lookup/print, and
+  support access-rescue/refund timeline logging.
 - Outbound pilot operating setup is complete if cold outreach is used:
   suppression list, unsubscribe path, sending domain/inbox plan, UTMs, source
   rules, and stop thresholds.
+- One named top-of-funnel channel is secured; otherwise revenue targets remain
+  planning math.
 - Founder/advisor attribution remains deferred across live copy, or approved
   names are populated without unsupported trust claims.
+- Foundation purchase page secondary links for undecided buyers are deployed
+  and live-verified.
 - Dirty local work is committed into reviewed PRs or intentionally discarded by
   the owner.

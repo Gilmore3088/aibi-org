@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { DocumentPreview, MockupShell } from '@/components/mockup';
 import { GuideRequestForm } from './_components/GuideRequestForm';
 
@@ -59,6 +60,7 @@ export default function SecurityPage() {
   return (
     <MockupShell
       activePath="/security"
+      cta={{ label: 'Get In-Depth report', href: '/assessment/in-depth' }}
       eyebrow="Security & Governance · Free guide"
       title={<>Set the AI boundary before staff use it.</>}
       lede={
@@ -154,6 +156,20 @@ export default function SecurityPage() {
         {
           kicker: '§03 · Data handling',
           heading: <>Practice with synthetic data. Keep customer data out of prompts.</>,
+          lede: (
+            <>
+              IT and security reviewers can also read the public{' '}
+              <Link href="/security/data-handling" style={{ color: 'var(--gold-deep)', fontWeight: 800 }}>
+                LLM data-handling summary
+              </Link>
+              , including what is sent to providers when a learner runs AiBI Lab or Toolbox.
+              The{' '}
+              <Link href="/security/it-approval" style={{ color: 'var(--gold-deep)', fontWeight: 800 }}>
+                IT review packet
+              </Link>{' '}
+              gives internal reviewers the product scope, support path, and claim boundaries in one place.
+            </>
+          ),
           body: (
             <div className="mk-reg-ref-grid">
               {DATA_HANDLING_RULES.map((rule) => (
@@ -189,8 +205,9 @@ export default function SecurityPage() {
           </>
         ),
         actions: [
-          { label: 'See how we work', href: '/for-institutions', variant: 'gold' },
-          { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
+          { label: 'IT review packet', href: '/security/it-approval', variant: 'gold' },
+          { label: 'Get In-Depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
+          { label: 'For institutions', href: '/for-institutions', variant: 'ghost-dark' },
         ],
       }}
     />

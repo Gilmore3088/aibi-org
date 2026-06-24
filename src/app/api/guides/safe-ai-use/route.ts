@@ -1,83 +1,13 @@
-// GET /api/guides/safe-ai-use
-//
-// Generates and serves the Safe AI Use Guide as a downloadable PDF.
-// Public endpoint — no authentication required (guide is a free lead-generation artifact).
-//
-// Fonts are registered once per process (module-level) via React PDF Font API.
-// Pattern: identical to generate-static-artifacts.mjs font registration.
-//
-// Usage: called by the GuideRequestForm after successful email capture,
-// or directly as a download link once a user has submitted their email.
-
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer, Font } from '@react-pdf/renderer';
-import path from 'path';
-import { SafeAIUseGuideDocument } from '@/lib/pdf/SafeAIUseGuideDocument';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 
 const PDF_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
+const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-safe-ai-use-guide.pdf');
 
-// ---------------------------------------------------------------------------
-// Font registration — must run before first renderToBuffer call.
-// Fonts live in assets/pdf-fonts/ — read server-side by react-pdf, never
-// served to the browser (moved out of public/ on 2026-05-17).
-// In a Next.js server context process.cwd() is the project root.
-// ---------------------------------------------------------------------------
-let fontsRegistered = false;
-
-function ensureFonts() {
-  if (fontsRegistered) return;
-
-  // 2026-05-17: TTF fonts moved out of public/ to assets/pdf-fonts/ — they
-  // are only used server-side by react-pdf, never served to the browser.
-  // Keeping them in public/ shipped 2.4 MB of unused static assets on every
-  // Vercel deploy. They still live in the repo, just not in public/.
-  const fontsDir = path.join(process.cwd(), 'assets', 'pdf-fonts');
-
-  Font.registerHyphenationCallback((word) => [word]);
-
-  Font.register({
-    family: 'Cormorant',
-    fonts: [
-      { src: path.join(fontsDir, 'Cormorant-Variable.ttf'), fontWeight: 400 },
-      { src: path.join(fontsDir, 'Cormorant-Variable.ttf'), fontWeight: 700 },
-      {
-        src: path.join(fontsDir, 'Cormorant-Italic-Variable.ttf'),
-        fontStyle: 'italic',
-        fontWeight: 400,
-      },
-    ],
-  });
-
-  Font.register({
-    family: 'CormorantSC',
-    fonts: [{ src: path.join(fontsDir, 'CormorantSC-Bold.ttf'), fontWeight: 700 }],
-  });
-
-  Font.register({
-    family: 'DMSans',
-    fonts: [
-      { src: path.join(fontsDir, 'DMSans-Variable.ttf'), fontWeight: 400 },
-      { src: path.join(fontsDir, 'DMSans-Variable.ttf'), fontWeight: 700 },
-    ],
-  });
-
-  Font.register({
-    family: 'DMMono',
-    fonts: [{ src: path.join(fontsDir, 'DMMono-Regular.ttf'), fontWeight: 400 }],
-  });
-
-  fontsRegistered = true;
-}
-
-// ---------------------------------------------------------------------------
-// GET — generate and stream PDF
-// ---------------------------------------------------------------------------
 export async function GET(request: Request): Promise<Response> {
-  // PDF generation is expensive (renderToBuffer); throttle per IP to
-  // discourage scrape/DoS abuse. The guide is identical for every caller
-  // (static content) so a generous per-IP cap is fine.
+  // This lead-generation guide is static content. Serving the committed PDF
+  // avoids the production React PDF render path while preserving abuse limits.
   const limited = await rateLimitOrFail({
     key: 'safe-ai-use-guide',
     scope: 'ip',
@@ -88,27 +18,19 @@ export async function GET(request: Request): Promise<Response> {
   if (limited) return limited as unknown as Response;
 
   try {
-    ensureFonts();
-
-    const element = React.createElement(
-      SafeAIUseGuideDocument,
-    ) as React.ReactElement<DocumentProps>;
-
-    const buffer = await renderToBuffer(element);
-    const body = new Uint8Array(buffer);
-
-    return new Response(body, {
+    const file = await readFile(PDF_PATH);
+    return new Response(new Uint8Array(file), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${PDF_FILENAME}"`,
-        'Content-Length': String(buffer.length),
+        'Content-Length': String(file.length),
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
       },
     });
   } catch (err) {
-    console.error('[safe-ai-use-guide] PDF generation error:', err);
-    return new Response(JSON.stringify({ error: 'PDF generation failed. Please try again.' }), {
+    console.error('[safe-ai-use-guide] static PDF read failed:', err);
+    return new Response(JSON.stringify({ error: 'PDF unavailable. Please try again.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

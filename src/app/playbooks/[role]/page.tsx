@@ -64,23 +64,23 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
   const data = PLAYBOOKS[role as RoleSlug];
   if (!data) notFound();
   const builtAssets = getAssetsForPlaybook(role as PlaybookSlug);
-  const tabAssets = data.assets.map((asset) => {
+  const tabAssets = data.assets.flatMap((asset) => {
     const built = builtAssets.find(
       (a) =>
         a.title.toLowerCase() === asset.name.toLowerCase() ||
         a.slug === toSlug(asset.name),
     );
     const linkable = asset.status === 'Ready' && Boolean(built);
+    if (!linkable || !built) {
+      return [];
+    }
+
     return {
       name: asset.name,
       type: asset.type,
-      linkable,
-      href: linkable && built ? `/playbooks/${role}/${built.slug}` : undefined,
-      statusLabel: linkable
-        ? 'Open template'
-        : asset.status === 'Draft'
-          ? 'Coming soon'
-          : 'In review',
+      linkable: true,
+      href: `/playbooks/${role}/${built.slug}`,
+      statusLabel: 'Open template',
     };
   });
 

@@ -18,6 +18,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 import { Section } from "@/components/system/Section";
+import { buildRoiAssessmentHref } from "@/lib/roi/assessment-context";
 
 interface ROIInputs {
   readonly fte: number;
@@ -102,6 +103,10 @@ export function ROIDossier() {
   const result = useMemo(
     () => calcROI({ fte, costPerFTE, loHours, hiHours }),
     [fte, costPerFTE, loHours, hiHours]
+  );
+  const assessmentHref = useMemo(
+    () => buildRoiAssessmentHref("/assessment/take", { fte, costPerFTE, loHours, hiHours }),
+    [costPerFTE, fte, hiHours, loHours],
   );
 
   return (
@@ -194,10 +199,10 @@ export function ROIDossier() {
           </p>
           <div className="mt-s6">
             <Link
-              href="/assessment/in-depth"
+              href={assessmentHref}
               className="inline-block font-sans text-mono-md font-medium uppercase tracking-wider rounded-sharp bg-gold text-linen px-s8 py-s4 hover:bg-gold-2 transition-colors duration-fast"
             >
-              Take the In-Depth Assessment · $99 →
+              Take the free assessment →
             </Link>
           </div>
         </div>

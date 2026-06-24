@@ -20,6 +20,7 @@ vi.mock('@/lib/ai-harness/client', () => ({
 }));
 
 import { checkPerMinuteLimits, logUsage } from '@/lib/ai-harness/rate-limit';
+import { scanForPII } from '@/lib/sandbox/pii-scanner';
 
 beforeEach(() => {
   streamMock.mockImplementation(async function* () {
@@ -93,5 +94,40 @@ describe('POST /api/toolbox/run/stream', () => {
     expect(res.status).toBe(429);
     expect(res.headers.get('retry-after')).toBe('30');
     expect(streamMock).not.toHaveBeenCalled();
+  });
+
+  it('returns a recoverable PII warning before streaming', async () => {
+    (scanForPII as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+      safe: false,
+      kind: 'masked_identifier',
+      reason: 'This message appears to contain a masked customer identifier.',
+    });
+
+    const res = await POST(req(body));
+    const json = await res.json();
+
+    expect(res.status).toBe(422);
+    expect(json.kind).toBe('pii_warning');
+    expect(json.canOverride).toBe(true);
+    expect(streamMock).not.toHaveBeenCalled();
+    expect(logUsage).not.toHaveBeenCalled();
+  });
+
+  it('logs server-side PII override metadata after confirmed fabricated streaming', async () => {
+    (scanForPII as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+      safe: false,
+      kind: 'masked_identifier',
+      reason: 'This message appears to contain a masked customer identifier.',
+    });
+
+    const res = await POST(req({ ...body, confirmedFabricated: true }));
+    await readAll(res.body!);
+
+    expect(logUsage).toHaveBeenCalledWith(expect.objectContaining({
+      status: 'succeeded',
+      piiFlagged: true,
+      piiOverride: true,
+      piiKind: 'masked_identifier',
+    }));
   });
 });

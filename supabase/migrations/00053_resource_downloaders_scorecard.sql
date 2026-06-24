@@ -1,4 +1,4 @@
--- 00052_resource_downloaders_scorecard.sql
+-- 00053_resource_downloaders_scorecard.sql
 --
 -- The funnel scorecard should not treat raw resource_downloads rows as buyer
 -- demand. Most rows are anonymous redirects/PDF generations, and repeated

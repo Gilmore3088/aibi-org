@@ -108,6 +108,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       { status: 422 },
     );
   }
+  const piiAudit = {
+    piiFlagged: !pii.safe,
+    piiOverride: !pii.safe && confirmedFabricated,
+    piiKind: pii.safe ? undefined : pii.kind,
+  };
 
   // Injection filter is not user-overridable — it protects the model.
   const injection = scanForInjection(latestUser.content);
@@ -134,6 +139,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       model,
       status: 'rate-limited',
       ipHash,
+      ...piiAudit,
     });
     return NextResponse.json(
       { error: 'Daily Toolbox AI limit reached. Please try again tomorrow.' },
@@ -161,6 +167,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       outputTokens: result.usage.outputTokens,
       status: 'succeeded',
       ipHash,
+      ...piiAudit,
     });
 
     return NextResponse.json({ text: result.text, usage: result.usage });
@@ -174,6 +181,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       status: 'errored',
       errorKind: error instanceof LLMError ? error.kind : 'unknown',
       ipHash,
+      ...piiAudit,
     });
 
     return NextResponse.json(

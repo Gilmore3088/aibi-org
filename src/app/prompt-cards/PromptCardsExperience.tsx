@@ -8,6 +8,7 @@ import {
   PROMPT_CARDS,
   type PromptCard,
 } from '@/content/prompt-cards/cards';
+import { SiteHeader } from '@/components/mockup';
 const STORAGE_KEY = 'aibi-prompt-cards-unlocked';
 
 function buildPrompt(card: PromptCard): string {
@@ -15,6 +16,17 @@ function buildPrompt(card: PromptCard): string {
     .map((input) => `${input.label}: [${input.helper}]`)
     .join('\n');
   return `${card.promptTemplate}\n\nInputs to complete:\n${inputs}\n\nSafety note: ${AIBI_SAFETY_NOTE}`;
+}
+
+function downloadPromptCardsPdf(blob: Blob) {
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'AiBI-Prompt-Cards.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
 }
 
 export function PromptCardsExperience() {
@@ -60,8 +72,10 @@ export function PromptCardsExperience() {
   }
 
   return (
-    <main className="bg-[color:var(--cream)]">
-      <section className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
+    <div className="mockup-scope">
+      <SiteHeader activePath="/resources" cta={{ label: 'Take assessment', href: '/assessment/take' }} />
+      <main className="bg-[color:var(--cream)]">
+        <section className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-20">
           <div>
             <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
@@ -234,12 +248,13 @@ export function PromptCardsExperience() {
             View AiBI-Foundation
           </Link>
         </div>
-      </section>
+        </section>
 
-      {leadOpen && (
-        <LeadModal onClose={() => setLeadOpen(false)} onUnlocked={markUnlocked} />
-      )}
-    </main>
+        {leadOpen && (
+          <LeadModal onClose={() => setLeadOpen(false)} onUnlocked={markUnlocked} />
+        )}
+      </main>
+    </div>
   );
 }
 
@@ -360,6 +375,12 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Could not load the cards.');
+      const pdfRes = await fetch('/api/prompt-cards/download', { cache: 'no-store' });
+      if (!pdfRes.ok) {
+        const pdfError = (await pdfRes.json().catch(() => ({}))) as { error?: string };
+        throw new Error(pdfError.error ?? 'The PDF could not be generated. Please try again.');
+      }
+      downloadPromptCardsPdf(await pdfRes.blob());
       onUnlocked();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not load the cards.');
@@ -387,7 +408,7 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
           <label className="block">
             <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]">Role</span>
             <select value={role} onChange={(event) => setRole(event.target.value)} className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-3 text-sm">
-              <option value="foundation">Foundation</option>
+              <option value="practitioner">Banking practitioner</option>
               <option value="compliance-risk">Compliance / Risk</option>
               <option value="executive">Executive</option>
               <option value="training-buyer">Training Buyer</option>
@@ -407,7 +428,7 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
         </div>
         {error && <p className="mt-4 text-sm text-[color:#9b2226]">{error}</p>}
         <button disabled={submitting} type="submit" className="mt-6 w-full bg-[color:var(--gold)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-50">
-          {submitting ? 'Unlocking...' : 'Unlock cards'}
+          {submitting ? 'Preparing PDF...' : 'Unlock and download cards'}
         </button>
       </form>
     </div>

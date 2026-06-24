@@ -8,6 +8,7 @@
 import { useMemo, useState } from 'react';
 import { trackBriefingBooked } from '@/lib/analytics/events';
 import type { BriefingSource } from '@/components/analytics/BriefingButton';
+import { buildRoiAssessmentHref } from '@/lib/roi/assessment-context';
 
 function calcROI(inputs: {
   fte: number;
@@ -73,6 +74,10 @@ export function ROICalculatorBody({
     () => calcROI({ fte, costPerFTE, loHours, hiHours }),
     [fte, costPerFTE, loHours, hiHours]
   );
+  const contextualCtaHref = useMemo(
+    () => buildRoiAssessmentHref(ctaHref, { fte, costPerFTE, loHours, hiHours }),
+    [costPerFTE, ctaHref, fte, hiHours, loHours],
+  );
 
   return (
     <div className="mk-roi-calculator">
@@ -135,12 +140,18 @@ export function ROICalculatorBody({
           </a>
           .
         </p>
+        <p className="mk-roi-methodology">
+          CFO note: this is recaptured labor capacity, not guaranteed savings or
+          a projected efficiency-ratio change. The financial result depends on
+          whether those hours are eliminated, redeployed, or converted into
+          measurable throughput.
+        </p>
         <a
-          href={ctaHref}
-          target={ctaHref.startsWith('http') ? '_blank' : undefined}
-          rel={ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+          href={contextualCtaHref}
+          target={contextualCtaHref.startsWith('http') ? '_blank' : undefined}
+          rel={contextualCtaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
           onClick={
-            ctaHref.startsWith('http')
+            contextualCtaHref.startsWith('http')
               ? () => trackBriefingBooked({ source: briefingSource })
               : undefined
           }

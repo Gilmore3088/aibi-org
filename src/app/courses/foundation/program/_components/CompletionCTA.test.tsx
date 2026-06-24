@@ -1,6 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { CompletionCTA } from './CompletionCTA';
+import { modules } from '@content/courses/foundation-program';
+import {
+  CompletionCTA,
+  getCompletedPillar,
+  getPillarCompletionCta,
+} from './CompletionCTA';
+
+const understandingModules = modules.filter((module) => module.pillar === 'understanding');
+const firstUnderstandingModule = understandingModules.at(0);
+const lastUnderstandingModule = understandingModules.at(-1);
+const firstCreationModule = modules.find((module) => module.pillar === 'creation');
+
+if (!firstUnderstandingModule || !lastUnderstandingModule || !firstCreationModule) {
+  throw new Error('Expected Foundation course pillar fixtures for CompletionCTA tests');
+}
 
 describe('CompletionCTA', () => {
   afterEach(() => {
@@ -57,12 +71,27 @@ describe('CompletionCTA', () => {
     );
   });
 
-  it('keeps the executive briefing CTA after the module debrief', () => {
-    render(<CompletionCTA moduleNumber={9} isLastModule={false} />);
+  it('keeps the executive briefing CTA after the Understanding pillar debrief', () => {
+    expect(getCompletedPillar(lastUnderstandingModule.number)).toBe('understanding');
+    expect(getPillarCompletionCta(lastUnderstandingModule.number)?.label).toBe(
+      'Book an Executive Briefing',
+    );
+
+    render(<CompletionCTA moduleNumber={lastUnderstandingModule.number} isLastModule={false} />);
 
     expect(screen.getByText('Module debrief')).toBeTruthy();
     expect(screen.getByText('Understanding pillar complete')).toBeTruthy();
     expect(screen.getByRole('link', { name: /Book an Executive Briefing/i })).toBeTruthy();
+  });
+
+  it('does not show the executive briefing CTA before the Understanding pillar is complete', () => {
+    expect(getCompletedPillar(firstUnderstandingModule.number)).toBeNull();
+    expect(getPillarCompletionCta(firstUnderstandingModule.number)).toBeNull();
+
+    render(<CompletionCTA moduleNumber={firstUnderstandingModule.number} isLastModule={false} />);
+
+    expect(screen.queryByText('Understanding pillar complete')).toBeNull();
+    expect(screen.queryByRole('link', { name: /Book an Executive Briefing/i })).toBeNull();
   });
 
   it('persists replay checks as learners mark retrieval prompts complete', () => {
@@ -108,11 +137,26 @@ describe('CompletionCTA', () => {
     expect(screen.getByTestId('foundation-completion-replay').textContent).toContain('3 replay cues left.');
   });
 
-  it('does not treat module 9 as the final module', () => {
-    render(<CompletionCTA moduleNumber={9} isLastModule={false} />);
+  it('does not treat the Understanding pillar completion as the final module', () => {
+    render(<CompletionCTA moduleNumber={lastUnderstandingModule.number} isLastModule={false} />);
 
     expect(screen.queryByText('All modules complete')).toBeNull();
-    const nextModuleLink = screen.getByRole('link', { name: /Module 10/i });
-    expect(nextModuleLink.getAttribute('href')).toBe('/courses/foundation/program/10');
+    const nextModuleNumber = lastUnderstandingModule.number + 1;
+    const nextModuleLink = screen.getByRole('link', {
+      name: new RegExp(`Module ${String(nextModuleNumber).padStart(2, '0')}`, 'i'),
+    });
+    expect(nextModuleLink.getAttribute('href')).toBe(
+      `/courses/foundation/program/${nextModuleNumber}`,
+    );
+  });
+
+  it('does not show the executive briefing CTA after a non-configured pillar completes', () => {
+    expect(getCompletedPillar(firstCreationModule.number - 1)).toBe('understanding');
+    expect(getPillarCompletionCta(firstCreationModule.number)).toBeNull();
+
+    render(<CompletionCTA moduleNumber={firstCreationModule.number} isLastModule={false} />);
+
+    expect(screen.queryByText('Understanding pillar complete')).toBeNull();
+    expect(screen.queryByRole('link', { name: /Book an Executive Briefing/i })).toBeNull();
   });
 });

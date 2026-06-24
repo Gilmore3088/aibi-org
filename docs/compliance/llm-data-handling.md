@@ -1,6 +1,7 @@
 # LLM Data Handling — Provider Stance
 
-**Status:** Filled by Plan D, 2026-05-04.
+**Status:** Filled by Plan D, 2026-05-04. Public summary added 2026-06-23 at
+`/security/data-handling`.
 
 This document is the current audit trail for the AiBI Toolbox and course lab
 provider stance. It records the data-handling stance of each LLM provider used
@@ -9,7 +10,7 @@ verification date and link to the provider's published terms.
 
 **Review cadence:** quarterly, by the engineering owner. Each review
 either re-confirms the stance (and updates the "Last verified" date) or
-files an issue if the terms have changed. Next review due: 2026-08-04.
+files an issue if the terms have changed. Next review due: 2026-09-23.
 
 **Owner:** James Gilmore (`@Gilmore3088`).
 
@@ -17,19 +18,19 @@ files an issue if the terms have changed. Next review due: 2026-08-04.
 
 ## Anthropic
 - **Tier in use:** Commercial API (paid, default).
-- **Last verified:** 2026-05-04.
+- **Last verified:** 2026-06-23.
 - **Provider terms link:** https://www.anthropic.com/legal/commercial-terms (data handling clauses) and https://www.anthropic.com/legal/privacy (Inputs and Outputs section).
 - **Stance:** Anthropic does not train on customer prompts or completions submitted via the paid Commercial API by default. Customer Inputs and Outputs are processed solely to provide the API service. No opt-in to model training is configured for the AiBI Toolbox.
 
 ## OpenAI
 - **Tier in use:** OpenAI API (paid, post-March 2023 default).
-- **Last verified:** 2026-05-04.
-- **Provider terms link:** https://openai.com/policies/api-data-usage-policies/ and https://openai.com/policies/business-terms/.
-- **Stance:** As of OpenAI's March 2023 policy update, API inputs and outputs are not used to train OpenAI models by default. The AiBI Toolbox does not opt in to data sharing for model improvement. OpenAI retains API data for up to 30 days for abuse and misuse monitoring, then deletes it (see policy page for the current retention window).
+- **Last verified:** 2026-06-23.
+- **Provider terms link:** https://openai.com/enterprise-privacy/ and https://openai.com/policies/business-terms/.
+- **Stance:** API inputs and outputs are not used to train OpenAI models by default. The AiBI Toolbox does not opt in to data sharing for model improvement. OpenAI may retain API inputs and outputs for up to 30 days to provide services and identify abuse, except for endpoints/features with different handling or legal requirements (see policy page for the current retention window).
 
 ## Google (Gemini)
 - **Tier in use:** Gemini API, **paid tier only**. (The Toolbox does not use the free tier for production traffic.)
-- **Last verified:** 2026-05-04.
+- **Last verified:** 2026-06-23.
 - **Provider terms link:** https://ai.google.dev/gemini-api/terms (paid services data use clauses).
 - **Stance:** On the paid Gemini API tier, Google does not use prompts or responses to improve Google products (including not using them to train Google's generative models) under current terms. **Important caveat:** the free Gemini API tier has different terms (prompts may be used to improve products, and human reviewers may read and annotate inputs/outputs). The Toolbox enforces paid-tier billing on its `GEMINI_API_KEY`; if a learner-facing key were ever swapped for a free-tier key, this stance would not hold and the doc would need to be updated immediately.
 
@@ -44,3 +45,4 @@ The Playground UI shows a "Last verified [date] — provider data-handling stanc
 | Date | Reviewer | Outcome |
 |---|---|---|
 | 2026-05-04 | @Gilmore3088 | Initial fill (Plan D). All three stances verified against current provider terms. |
+| 2026-06-23 | Codex | Re-checked official Anthropic Commercial Terms, OpenAI Enterprise Privacy/API Platform data handling, and Gemini API Additional Terms; added public `/security/data-handling` summary. |

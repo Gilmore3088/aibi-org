@@ -12,22 +12,22 @@ tags:
 
 A week ago you completed the readiness assessment and scored in the Starting Point tier. The diagnosis was clear: skills first, tools second.
 
-The AiBI-Foundation certification is the answer:
+AiBI-Foundation is the answer:
 
 - **Eighteen modules**, designed to fit a banker's calendar — most learners finish in three to six weeks of focused work.
-- **SAFE framework** baked into every exercise. Your team learns prompt patterns alongside the policy guardrails to use them safely.
+- **SAFE framework** baked into every exercise. Learners build prompt patterns alongside the policy guardrails to use them safely.
 - **Built for community banks specifically.** No retail-only examples, no Silicon Valley jargon. Lending, deposits, compliance, member service — the actual surfaces your team works with.
 - **Practice sandbox** with sample data. Your team works on realistic scenarios, never on real member data.
 
-What you get when your team finishes:
+What learners build:
 
-- Daily use of AI for internal workflows, with consistent reusable patterns.
-- A documented prompt library you own.
-- Three reportable time-saving workflows in the first 90 days.
+- Saved prompts for internal workflows, with consistent reusable patterns.
+- Workflow templates, safe-use checklists, and review notes.
+- An 18-piece Foundation Packet that shows what they practiced and how it should be reused.
 
 That is the difference between "AI is on the agenda" and "AI is on the floor."
 
-[**Enroll your team in AiBI-Foundation**](https://aibankinginstitute.com/courses/foundation/program)
+[**Enroll in AiBI-Foundation**](https://www.aibankinginstitute.com/courses/foundation/program/purchase)
 
 If you would rather walk the diagnosis through with a person first — your results, your institution, your priorities — book a 30-minute Executive Briefing instead. No hard sell.
 

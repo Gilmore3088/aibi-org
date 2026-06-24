@@ -157,7 +157,7 @@ export function PlaybookTabs({
               <SectionHead
                 kicker="Toolbox assets"
                 heading={<>The playbook ships real tools.</>}
-                lede={<>Open the usable artifacts first. Draft assets stay visible as coming soon.</>}
+                lede={<>Open the usable artifacts first. Draft assets are omitted until they ship.</>}
               />
               <div className="mk-pb-asset-grid">
                 {assets.map((asset) => {

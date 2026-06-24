@@ -62,7 +62,7 @@ export const certifications: readonly Certification[] = [
       'AI through a leadership accountability lens',
       'Efficiency ratio strategy — live modeling with your numbers',
       '3-year AI roadmap development for board presentation',
-      'AI governance and examiner readiness',
+      'AI governance and review readiness',
       'Vendor evaluation and concentration risk',
     ],
     format: '1-day in-person workshop.',

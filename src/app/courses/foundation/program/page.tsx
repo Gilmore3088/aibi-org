@@ -17,6 +17,7 @@
 // shape through the shared <CourseShell> primitives.
 
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import {
   modules,
   foundationCourseConfig,
@@ -29,7 +30,8 @@ import {
   toLMSModules,
   type LMSModule,
 } from '@/components/lms';
-import { getEnrollmentResult, isFetchError } from './_lib/getEnrollment';
+import { getEnrollmentResult } from './_lib/getEnrollment';
+import { resolveCourseOverviewAccess } from './_lib/courseOverviewAccess';
 import { jsonLdString } from '@/lib/seo/jsonld';
 import { FOUNDATION_COURSE_JSONLD } from './_lib/programJsonLd';
 import { CourseStructure } from './_components/CourseStructure';
@@ -47,9 +49,12 @@ export const metadata: Metadata = {
 };
 
 export default async function CourseOverviewPage() {
-  const enrollmentResult = await getEnrollmentResult();
-  const fetchFailed = isFetchError(enrollmentResult);
-  const enrollment = fetchFailed ? null : enrollmentResult;
+  const access = resolveCourseOverviewAccess(await getEnrollmentResult());
+  if (access.action === 'redirect') {
+    redirect(access.href);
+  }
+
+  const { enrollment, fetchFailed } = access;
   const completedModules = enrollment?.completed_modules ?? [];
   const currentModule = enrollment?.current_module ?? 1;
   const completedCount = completedModules.length;

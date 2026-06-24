@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getBuyerSnapshot } from '@/lib/support/buyer';
 import { getSupportCaseWithEvents, supportCaseStripeDashboardUrl } from '@/lib/support/cases';
 import { BuyerSnapshotPanel } from '../../BuyerSnapshotPanel';
+import { SupportOpsChecklist } from '../../SupportOpsChecklist';
 import { CaseActions } from './CaseActions';
 
 interface PageProps {
@@ -82,6 +83,7 @@ export default async function SupportCasePage({ params }: PageProps) {
       </section>
 
       <BuyerSnapshotPanel snapshot={snapshot} />
+      <SupportOpsChecklist />
     </main>
   );
 }

@@ -8,9 +8,9 @@ import { test, expect, type Page, type FrameLocator } from '@playwright/test';
  *
  * This is the test that course-purchase.spec.ts intentionally leaves as
  * `test.fixme` — it requires:
- *   - STRIPE_SECRET_KEY set to a test-mode (sk_test_*) key OR a live key
- *     against which test cards are valid (Stripe accepts the 4242 family in
- *     both modes)
+ *   - STRIPE_SECRET_KEY set to a test-mode (sk_test_*) key and matching test
+ *     price IDs. Stripe test cards do not prove production live-money
+ *     readiness and must not be used with live-mode keys.
  *   - The create-checkout route returning a real Checkout Session URL (not
  *     503 / missing-key)
  *
@@ -18,7 +18,7 @@ import { test, expect, type Page, type FrameLocator } from '@playwright/test';
  * session (preview env without Stripe keys, dev without secrets), the test
  * skips with a clear message instead of failing red.
  *
- * Opt-in via env: set E2E_STRIPE_LIVE=true to run. Default = skipped so
+ * Opt-in via env: set E2E_STRIPE_ROUNDTRIP=true to run. Default = skipped so
  * unattended CI runs don't accidentally hit Stripe.
  */
 
@@ -31,10 +31,10 @@ const TEST_CARD = {
   email: 'e2e+stripe-roundtrip@aibankinginstitute.test',
 } as const;
 
-const RUN_LIVE = process.env.E2E_STRIPE_LIVE === 'true';
+const RUN_ROUNDTRIP = process.env.E2E_STRIPE_ROUNDTRIP === 'true';
 
-test.describe('Stripe Checkout — live round-trip with test card', () => {
-  test.skip(!RUN_LIVE, 'Opt-in: set E2E_STRIPE_LIVE=true to run. Default skipped.');
+test.describe('Stripe Checkout — test-mode round-trip with test card', () => {
+  test.skip(!RUN_ROUNDTRIP, 'Opt-in: set E2E_STRIPE_ROUNDTRIP=true to run. Default skipped.');
   // This spec drives Stripe's external checkout.stripe.com page. Give it
   // generous timeouts — the redirect chain and iframe load can be slow.
   test.setTimeout(120_000);

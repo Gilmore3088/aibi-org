@@ -5,6 +5,7 @@
 import { createHash } from 'node:crypto';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { ProviderName, LLMErrorKind } from './types';
+import type { PIIKind } from '@/lib/sandbox/pii-scanner';
 
 export function hashIp(ip: string): string {
   const salt = process.env.TOOLBOX_IP_HASH_SALT ?? '';
@@ -162,6 +163,9 @@ export async function logUsage(params: {
   readonly status: 'succeeded' | 'rate-limited' | 'errored';
   readonly errorKind?: LLMErrorKind;
   readonly ipHash?: string;
+  readonly piiFlagged?: boolean;
+  readonly piiOverride?: boolean;
+  readonly piiKind?: PIIKind;
 }): Promise<void> {
   if (!isSupabaseConfigured()) return;
   const client = createServiceRoleClient();
@@ -177,6 +181,9 @@ export async function logUsage(params: {
     status: params.status,
     error_kind: params.errorKind ?? null,
     ip_hash: params.ipHash ?? null,
+    pii_flagged: params.piiFlagged ?? false,
+    pii_override: params.piiOverride ?? false,
+    pii_kind: params.piiKind ?? null,
   });
   if (error) {
     console.error('[rate-limit] logUsage insert failed:', error);

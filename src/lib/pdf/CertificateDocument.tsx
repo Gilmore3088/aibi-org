@@ -378,7 +378,7 @@ export function CertificateDocument({
           <View style={styles.footer}>
             <Text style={styles.footerVerifyUrl}>{verificationUrl}</Text>
             <Text style={styles.assessmentNote}>
-              Assessed by skill submission and work product — not a test score
+              Issued after course completion and final packet submission - not a test score
             </Text>
           </View>
         </View>

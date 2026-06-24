@@ -95,6 +95,16 @@ const alertStyle: CSSProperties = {
   lineHeight: 1.45,
 };
 
+const successStyle: CSSProperties = {
+  borderRadius: 12,
+  border: '1px solid rgba(4, 120, 87, 0.25)',
+  background: 'rgba(4, 120, 87, 0.06)',
+  color: '#047857',
+  padding: '10px 14px',
+  fontSize: 14,
+  lineHeight: 1.45,
+};
+
 const linkStyle: CSSProperties = {
   color: 'var(--gold-deep)',
   fontWeight: 600,
@@ -146,19 +156,157 @@ function DevSkipButton() {
   );
 }
 
-// ── Password form (the only sign-in path) ────────────────────────────────────
-//
-// Magic-link sign-in was retired 2026-05-28 (#187). Community-bank users
-// expect institutional-grade auth: a password they choose, optional MFA
-// (Phase 2), and optional Microsoft SSO (Phase 3). Magic links also
-// routinely get held by corporate email security gateways (Mimecast,
-// Proofpoint, Microsoft Defender) past their expiry, which makes them
-// unreliable for the audience.
-//
-// Existing users who only ever used a magic link have an auth.users row
-// with no password. They use /auth/forgot-password to set one — Supabase's
-// resetPasswordForEmail works regardless of whether a password was ever
-// set, so the "migration" is implicit and on-demand.
+function Divider({ label }: { readonly label: string }) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr auto 1fr',
+        gap: 12,
+        alignItems: 'center',
+        margin: '18px 0',
+        color: 'var(--slate-500)',
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+      }}
+    >
+      <span style={{ height: 1, background: 'var(--slate-200)' }} />
+      <span>{label}</span>
+      <span style={{ height: 1, background: 'var(--slate-200)' }} />
+    </div>
+  );
+}
+
+function EmailLinkForm({
+  redirectTo,
+  prefillEmail,
+}: {
+  readonly redirectTo: string;
+  readonly prefillEmail: string;
+}) {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus('submitting');
+    setMessage(null);
+    const data = new FormData(e.currentTarget);
+
+    const response = await fetch('/api/auth/send-sign-in-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: data.get('email'),
+        next: redirectTo,
+      }),
+    });
+
+    const body = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
+    if (response.ok) {
+      setStatus('success');
+      setMessage(body.message ?? 'Check your inbox for a one-time sign-in link.');
+      return;
+    }
+
+    setStatus('error');
+    setMessage(body.error ?? 'Could not send the sign-in link.');
+  }
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <Field
+        label="Email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        placeholder="you@yourbank.com"
+        defaultValue={prefillEmail}
+      />
+      <button type="submit" style={primaryBtnStyle} disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'SENDING…' : 'EMAIL ME A SIGN-IN LINK'}
+      </button>
+      {message ? (
+        <div
+          role={status === 'error' ? 'alert' : 'status'}
+          style={{
+            ...(status === 'error' ? alertStyle : successStyle),
+            marginTop: 12,
+          }}
+        >
+          {message}
+        </div>
+      ) : null}
+    </form>
+  );
+}
+
+function PurchaseRecoveryForm({ prefillEmail }: { readonly prefillEmail: string }) {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus('submitting');
+    setMessage(null);
+    const data = new FormData(e.currentTarget);
+
+    const response = await fetch('/api/auth/resend-purchase-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: data.get('email') }),
+    });
+
+    const body = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
+    if (response.ok) {
+      setStatus('success');
+      setMessage(body.message ?? 'If that email has a purchase, a fresh access link is on its way.');
+      return;
+    }
+
+    setStatus('error');
+    setMessage(body.error ?? 'Could not request a fresh access link.');
+  }
+
+  return (
+    <form onSubmit={handleSubmit} noValidate style={{ marginTop: 18 }}>
+      <p style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: 14, fontWeight: 700 }}>
+        Bought something but cannot get in?
+      </p>
+      <p style={{ margin: '0 0 12px', color: 'var(--slate-600)', fontSize: 13, lineHeight: 1.45 }}>
+        Send a fresh purchase access link to the email used at checkout.
+      </p>
+      <Field
+        label="Purchase email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        placeholder="you@yourbank.com"
+        defaultValue={prefillEmail}
+      />
+      <button type="submit" style={ghostBtnStyle} disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'SENDING…' : 'RESEND PURCHASE LINK'}
+      </button>
+      {message ? (
+        <div
+          role={status === 'error' ? 'alert' : 'status'}
+          style={{
+            ...(status === 'error' ? alertStyle : successStyle),
+            marginTop: 12,
+          }}
+        >
+          {message}
+        </div>
+      ) : null}
+    </form>
+  );
+}
+
+// ── Password form ───────────────────────────────────────────────────────────
 
 function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefillEmail: string }) {
   const router = useRouter();
@@ -274,14 +422,22 @@ export default function LoginPage() {
         {urlError && (
           <div role="alert" style={{ ...alertStyle, marginBottom: 16 }}>
             {urlError === 'missing_code'
-              ? 'The link is invalid or has expired. Please sign in with your password, or use Forgot password to reset it.'
+              ? 'The link is invalid or has expired. Request a new sign-in link below, or use your password.'
               : urlError === 'not_configured'
                 ? 'Authentication is not yet configured.'
                 : urlError}
           </div>
         )}
 
+        <EmailLinkForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
+
+        <Divider label="or use password" />
+
         <PasswordForm redirectTo={redirectTo} prefillEmail={prefillEmail} />
+
+        <div style={{ marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--slate-200)' }}>
+          <PurchaseRecoveryForm prefillEmail={prefillEmail} />
+        </div>
 
         <DevSkipButton />
       </div>

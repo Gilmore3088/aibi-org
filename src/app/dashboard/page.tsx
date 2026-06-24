@@ -112,6 +112,7 @@ export default function DashboardPage() {
   });
   const {
     artifacts,
+    certificateVerifyUrl,
     completedArtifactCount,
     completedModuleCount,
     currentModuleNumber,
@@ -300,8 +301,22 @@ export default function DashboardPage() {
                         Earn your <strong>Foundation</strong> certificate.
                       </>
                     }
-                    meta={stepCertificate ? 'Verified' : `${completedModuleCount}/${totalModules}`}
-                    href={stepEnrolled ? '/courses/foundation/program' : undefined}
+                    meta={
+                      stepCertificate
+                        ? 'Verified'
+                        : completedModuleCount >= totalModules
+                          ? 'Submit packet'
+                          : `${completedModuleCount}/${totalModules}`
+                    }
+                    href={
+                      stepCertificate
+                        ? certificateVerifyUrl ?? '/courses/foundation/program/certificate'
+                        : stepEnrolled && completedModuleCount >= totalModules
+                          ? '/courses/foundation/program/submit'
+                          : stepEnrolled
+                            ? '/courses/foundation/program'
+                            : undefined
+                    }
                   />
                 </div>
               </aside>

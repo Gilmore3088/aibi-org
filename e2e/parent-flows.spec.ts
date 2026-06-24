@@ -13,7 +13,7 @@ import { test, expect, type Page } from '@playwright/test';
  *   / (home)               — hero CTA reaches /assessment
  *   /assessment             — primary CTA reaches /assessment/take
  *   /courses                — enroll CTA reaches /courses/foundation/program/purchase
- *   /for-institutions       — "Book a briefing" CTA opens Calendly URL
+ *   /for-institutions       — briefing CTA opens Calendly or the in-page inquiry form
  *   /resources               — download click opens an inline email gate
  *
  * Filed under the 2026-05-28 funnel-audit goal: each parent page must
@@ -110,14 +110,14 @@ test.describe('parent flows — desktop', () => {
     await expect(backLink).toBeVisible();
   });
 
-  test('/for-institutions — booking CTA opens advisory or Calendly (#I1 / #352)', async ({ page }) => {
+  test('/for-institutions — booking CTA opens advisory, Calendly, or inquiry form (#I1 / #352)', async ({ page }) => {
     await gotoStable(page, '/for-institutions');
     const briefing = page.getByRole('link', { name: /book.*briefing|executive briefing/i }).first();
     await expect(briefing).toBeVisible();
     const href = await briefing.getAttribute('href');
-    // Two valid targets: direct Calendly URL, or the in-app /for-institutions/advisory
-    // page that embeds Calendly. Both keep the funnel intact.
-    expect(href).toMatch(/calendly\.com|^https?:\/\/|^\/for-institutions\/advisory/);
+    // Valid targets: direct Calendly URL, an in-app advisory page that embeds
+    // Calendly, or the in-page team inquiry form when Calendly is not configured.
+    expect(href).toMatch(/calendly\.com|^https?:\/\/|^\/for-institutions\/advisory|^#team-inquiry/);
   });
 
   test('/for-institutions — "See enrollment options" CTA links to anchor (#352)', async ({ page }) => {

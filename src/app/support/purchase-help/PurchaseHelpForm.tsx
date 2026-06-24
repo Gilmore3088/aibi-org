@@ -10,7 +10,7 @@ const ISSUE_OPTIONS = [
   ['other', 'Something else'],
 ] as const;
 
-export function PurchaseHelpForm() {
+export function PurchaseHelpForm({ prefillEmail = '' }: { readonly prefillEmail?: string }) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
@@ -35,7 +35,9 @@ export function PurchaseHelpForm() {
     if (response.ok) {
       form.reset();
       setStatus('success');
-      setMessage('Received. We will review the details and reply from hello@aibankinginstitute.com.');
+      setMessage(
+        'Received. Access issues are triaged first; refund requests are reviewed within 1 business day from hello@aibankinginstitute.com.',
+      );
       return;
     }
 
@@ -48,7 +50,7 @@ export function PurchaseHelpForm() {
     <form className="purchase-help__form" onSubmit={onSubmit}>
       <label>
         <span>Purchase email</span>
-        <input name="email" type="email" autoComplete="email" required />
+        <input name="email" type="email" autoComplete="email" defaultValue={prefillEmail} required />
       </label>
       <label>
         <span>Issue</span>
@@ -68,6 +70,51 @@ export function PurchaseHelpForm() {
       </label>
       <button type="submit" disabled={status === 'submitting'}>
         {status === 'submitting' ? 'Submitting...' : 'Send support request'}
+      </button>
+      {message ? <p className={`purchase-help__message is-${status}`}>{message}</p> : null}
+    </form>
+  );
+}
+
+export function PurchaseAccessLinkForm({ prefillEmail = '' }: { readonly prefillEmail?: string }) {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    setStatus('submitting');
+    setMessage(null);
+
+    const response = await fetch('/api/auth/resend-purchase-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: data.get('email') }),
+    });
+
+    const body = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
+    if (response.ok) {
+      setStatus('success');
+      setMessage(body.message ?? 'If that email has a purchase, a fresh access link is on its way.');
+      return;
+    }
+
+    setStatus('error');
+    setMessage(body.error ?? 'Could not request a fresh access link.');
+  }
+
+  return (
+    <form className="purchase-help__form purchase-help__quick" onSubmit={onSubmit}>
+      <div>
+        <strong>Need the purchase link resent?</strong>
+        <p>Use the checkout email. The response is generic, so this does not reveal whether an account exists.</p>
+      </div>
+      <label>
+        <span>Purchase email</span>
+        <input name="email" type="email" autoComplete="email" defaultValue={prefillEmail} required />
+      </label>
+      <button type="submit" disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'Sending...' : 'Resend purchase link'}
       </button>
       {message ? <p className={`purchase-help__message is-${status}`}>{message}</p> : null}
     </form>

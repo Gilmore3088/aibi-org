@@ -88,6 +88,47 @@ describe('POST /api/toolbox/run dispatcher', () => {
     expect(piiCallOrder).toBeLessThan(chatCallOrder);
   });
 
+  it('returns a recoverable PII warning before calling the model', async () => {
+    (scanForPII as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+      safe: false,
+      kind: 'person_name',
+      reason: 'This message appears to contain a customer or member name.',
+    });
+
+    const res = await POST(reqBody({ skill: minimalSkill, messages, provider: 'openai', model: 'gpt-4o-mini' }));
+    const json = await res.json();
+
+    expect(res.status).toBe(422);
+    expect(json.kind).toBe('pii_warning');
+    expect(json.canOverride).toBe(true);
+    expect(chatMock).not.toHaveBeenCalled();
+    expect(logUsage).not.toHaveBeenCalled();
+  });
+
+  it('logs server-side PII override metadata when the user confirms fabricated data', async () => {
+    (scanForPII as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+      safe: false,
+      kind: 'person_name',
+      reason: 'This message appears to contain a customer or member name.',
+    });
+
+    const res = await POST(reqBody({
+      skill: minimalSkill,
+      messages,
+      provider: 'openai',
+      model: 'gpt-4o-mini',
+      confirmedFabricated: true,
+    }));
+
+    expect(res.status).toBe(200);
+    expect(logUsage).toHaveBeenCalledWith(expect.objectContaining({
+      status: 'succeeded',
+      piiFlagged: true,
+      piiOverride: true,
+      piiKind: 'person_name',
+    }));
+  });
+
   it('dispatches to OpenAI when provider=openai', async () => {
     await POST(reqBody({ skill: minimalSkill, messages, provider: 'openai', model: 'gpt-4o-mini' }));
     expect(createLLMClient).toHaveBeenCalledWith('openai');

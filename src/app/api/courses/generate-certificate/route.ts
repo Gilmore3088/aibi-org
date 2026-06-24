@@ -1,5 +1,6 @@
 // POST /api/courses/generate-certificate
-// Internal endpoint triggered by the reviewer approval flow.
+// Internal endpoint triggered after the Foundation completion gate approves a
+// final packet.
 // Creates a certificate record in Supabase (with idempotency guard) and
 // returns the certificate PDF as application/pdf.
 //
@@ -16,38 +17,12 @@
 import { cookies } from 'next/headers';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { generateCertificateId } from '@/lib/certificates/generateId';
-import { sendCertificateIssued } from '@/lib/resend';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import { CertificateDocument } from '@/lib/pdf/CertificateDocument';
+import {
+  issueCertificateForEnrollment,
+  type CertificateRow,
+} from '@/lib/certificates/issue';
+import { buildCertificatePdfBuffer } from '@/lib/certificates/pdf';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
-
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
-
-function formatDate(isoString: string): string {
-  const date = new Date(isoString);
-  return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-}
-
-interface EnrollmentRow {
-  id: string;
-  user_id: string | null;
-  email: string;
-}
-
-interface CertificateRow {
-  id: string;
-  certificate_id: string;
-  holder_name: string;
-  designation: string;
-  issued_at: string;
-  enrollment_id: string;
-}
 
 function jsonError(message: string, status: number): Response {
   return new Response(JSON.stringify({ error: message }), {
@@ -102,48 +77,6 @@ async function authenticate(): Promise<
   return { userId: user.id };
 }
 
-async function resolveHolderName(
-  serviceClient: ReturnType<typeof createServiceRoleClient>,
-  enrollment: EnrollmentRow,
-): Promise<string> {
-  if (enrollment.user_id) {
-    const { data: userData, error: userError } =
-      await serviceClient.auth.admin.getUserById(enrollment.user_id);
-
-    if (!userError && userData?.user) {
-      const meta = userData.user.user_metadata as Record<string, unknown> | null;
-      const displayName =
-        (typeof meta?.full_name === 'string' && meta.full_name.trim()) ||
-        (typeof meta?.name === 'string' && meta.name.trim()) ||
-        null;
-      if (displayName) return displayName;
-    }
-  }
-
-  // Fallback: title-case the email prefix
-  const prefix = enrollment.email.split('@')[0] ?? enrollment.email;
-  return prefix
-    .split(/[._-]/)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(' ');
-}
-
-async function buildPdfBuffer(cert: CertificateRow): Promise<Buffer> {
-  const verificationUrl = `https://aibankinginstitute.com/verify/${cert.certificate_id}`;
-  // Cast required: renderToBuffer expects ReactElement<DocumentProps> but our wrapper
-  // component is typed as ReactElement<CertificateDocumentProps>. The component renders
-  // a <Document> root so the cast is safe.
-  const element = React.createElement(CertificateDocument, {
-    holderName: cert.holder_name,
-    designation: 'AiBI-Foundation',
-    issuingInstitution: 'The AI Banking Institute',
-    issuedDate: formatDate(cert.issued_at),
-    certificateId: cert.certificate_id,
-    verificationUrl,
-  }) as React.ReactElement<DocumentProps>;
-  return renderToBuffer(element);
-}
-
 // ============================================================
 // POST — Internal: triggered by review-submission on approval
 // Body: { enrollmentId: string }
@@ -187,101 +120,18 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError('No approved submission found for this enrollment.', 409);
   }
 
-  // Idempotency: return existing certificate without creating a duplicate (CERT-01, T-08-06)
-  const { data: existingCert, error: existingError } = await serviceClient
-    .from('certificates')
-    .select('id, certificate_id, holder_name, designation, issued_at, enrollment_id')
-    .eq('enrollment_id', enrollmentId)
-    .maybeSingle();
-
-  if (existingError) {
-    return jsonError('Failed to check for existing certificate.', 500);
+  let issued;
+  try {
+    issued = await issueCertificateForEnrollment({ serviceClient, enrollmentId });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to issue certificate.';
+    const status = message === 'Enrollment not found.' ? 404 : 500;
+    return jsonError(message, status);
   }
 
-  if (existingCert) {
-    const cert = existingCert as CertificateRow;
-    const pdfBuffer = await buildPdfBuffer(cert);
-    return pdfResponse(pdfBuffer, cert.certificate_id, 200, true);
-  }
-
-  // Look up enrollment to resolve holder name
-  const { data: enrollmentData, error: enrollmentError } = await serviceClient
-    .from('course_enrollments')
-    .select('id, user_id, email')
-    .eq('id', enrollmentId)
-    .single();
-
-  if (enrollmentError || !enrollmentData) {
-    return jsonError('Enrollment not found.', 404);
-  }
-
-  const enrollment = enrollmentData as EnrollmentRow;
-  const holderName = await resolveHolderName(serviceClient, enrollment);
-
-  // Generate unique certificate ID
-  const certificateId = generateCertificateId();
-  const issuedAt = new Date().toISOString();
-
-  // Insert certificate record
-  const { data: insertedCert, error: insertError } = await serviceClient
-    .from('certificates')
-    .insert({
-      enrollment_id: enrollmentId,
-      certificate_id: certificateId,
-      holder_name: holderName,
-      designation: 'AiBI-Foundation',
-      issued_at: issuedAt,
-    })
-    .select('id, certificate_id, holder_name, designation, issued_at, enrollment_id')
-    .single();
-
-  if (insertError) {
-    // Handle race condition: unique constraint violation means cert was just created by another request
-    if (
-      insertError.code === '23505' ||
-      (insertError.message && (insertError.message.includes('unique') || insertError.message.includes('duplicate')))
-    ) {
-      const { data: raceCert, error: raceError } = await serviceClient
-        .from('certificates')
-        .select('id, certificate_id, holder_name, designation, issued_at, enrollment_id')
-        .eq('enrollment_id', enrollmentId)
-        .single();
-
-      if (raceError || !raceCert) {
-        return jsonError('Failed to retrieve certificate after conflict.', 500);
-      }
-
-      const cert = raceCert as CertificateRow;
-      const pdfBuffer = await buildPdfBuffer(cert);
-      return pdfResponse(pdfBuffer, cert.certificate_id, 200, true);
-    }
-
-    return jsonError('Failed to create certificate record.', 500);
-  }
-
-  const cert = insertedCert as CertificateRow;
-  const pdfBuffer = await buildPdfBuffer(cert);
-
-  // Fire-and-forget transactional email — only on first issuance, not on
-  // race-condition / idempotent retrieval branches above.
-  sendCertificateIssued({
-    email: enrollment.email,
-    holderName: cert.holder_name,
-    designation: 'AiBI-Foundation — The AI Banking Institute',
-    certificateId: cert.certificate_id,
-    issuedDate: formatDate(cert.issued_at),
-    enrollmentId: cert.enrollment_id,
-  }).catch((err) => console.warn('[certificate] resend skip', err));
-
-  // Server-side analytics — first issuance only (this branch is gated by
-  // the insert-not-race path above).
-  void import('@vercel/analytics/server')
-    .then((mod) =>
-      mod.track('certificate_issued', { certificateId: cert.certificate_id }),
-    )
-    .catch((err) => console.warn('[certificate] analytics skip', err));
-
-  return pdfResponse(pdfBuffer, cert.certificate_id, 201, false);
+  const cert = issued.certificate;
+  const pdfBuffer = await buildCertificatePdfBuffer(cert, new URL(request.url).origin);
+  return pdfResponse(pdfBuffer, cert.certificate_id, issued.created ? 201 : 200, !issued.created);
 }
 
 // ============================================================
@@ -346,6 +196,6 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   const cert = certData as CertificateRow;
-  const pdfBuffer = await buildPdfBuffer(cert);
+  const pdfBuffer = await buildCertificatePdfBuffer(cert, new URL(request.url).origin);
   return pdfResponse(pdfBuffer, cert.certificate_id, 200, false);
 }

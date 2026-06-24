@@ -5,6 +5,7 @@
 // gold landmark, middle-dot credential format).
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
@@ -22,7 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { certificateId } = await params;
   return {
     title: 'Certificate Verification — The AI Banking Institute',
-    description: 'Verify the authenticity of an AI Banking Institute credential.',
+    description:
+      'Confirm an AI Banking Institute certificate record. Verification is not regulator or third-party endorsement.',
     robots: { index: false, follow: false },
     alternates: { canonical: `/verify/${certificateId}` },
   };
@@ -220,12 +222,12 @@ function NotFoundContent() {
           margin: 0,
         }}
       >
-        <a
-          href="https://aibankinginstitute.com"
+        <Link
+          href="/verify"
           style={{ color: 'var(--ink)', fontWeight: 600 }}
         >
-          Return to The AI Banking Institute
-        </a>
+          Try another certificate ID
+        </Link>
       </p>
     </div>
   );
@@ -280,10 +282,13 @@ export default async function CertificateVerificationPage({ params }: PageProps)
               fontFamily: INTER_STACK,
               fontSize: 14,
               color: 'var(--slate-600)',
+              lineHeight: 1.5,
               margin: 0,
             }}
           >
-            Issued by The AI Banking Institute · ID {certificateId}
+            Issued by The AI Banking Institute · ID {certificateId}. This page
+            verifies the certificate record only; it is not regulator or
+            third-party endorsement.
           </p>
         </div>
 

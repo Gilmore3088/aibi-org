@@ -10,6 +10,7 @@ import type { ProviderName } from '@/lib/ai-harness/types';
 import { isAllowedModel } from '@/lib/toolbox/playground-models';
 import { getAuthUser } from '@/lib/api/auth';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -84,10 +85,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   }
 
+  const access = await getPaidToolboxAccess();
+  if (!access || !canBuildOrRun(access)) {
+    return NextResponse.json({ error: 'Paid sandbox access required.' }, { status: 403 });
+  }
+
   const limited = await rateLimitOrFail({
     key: 'sandbox-chat',
     scope: 'user',
-    identifier: user.id,
+    identifier: access.userId,
     max: RATE_LIMIT_PER_USER_PER_HOUR,
     windowSeconds: 3600,
   });

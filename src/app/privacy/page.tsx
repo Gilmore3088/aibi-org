@@ -13,17 +13,17 @@ export default function PrivacyPage() {
       activePath="/"
       eyebrow="Legal · Privacy"
       title={<>What we collect. What we do not.</>}
-      lede="We collect the minimum needed to run the assessment, deliver the course, and send your results. We never sell data. Member or customer data from your institution never enters any model."
+      lede="We collect the minimum needed to run the assessment, deliver the course, support buyers, and send results. We never sell data. The product is designed so customer or member records are not needed for training."
       sections={[
         {
           kicker: 'What we collect',
-          heading: <>Email, assessment responses, course progress.</>,
-          lede: <>When you complete an assessment, your email goes to MailerLite so we can send tier-routed follow-up notes about your result. Assessment responses live in Supabase. Course progress lives in Supabase. That is it.</>,
+          heading: <>Email, assessment responses, course progress, saved work, and support records.</>,
+          lede: <>When you complete an assessment, your email may go to MailerLite so we can send tier-routed follow-up notes about your result. Assessment responses, course progress, saved artifacts, support cases, and operating metadata live in Supabase and related service providers needed to operate the product.</>,
         },
         {
           kicker: 'What we do not',
-          heading: <>No tracking pixels in emails. No third-party data brokers. No sale.</>,
-          lede: <>Analytics is first-party (Vercel Analytics) and IP-aggregated. We do not enrich your data with third-party sources. Full text of the policy is available on request.</>,
+          heading: <>No third-party data brokers. No enrichment. No sale.</>,
+          lede: <>Analytics is first-party (Vercel Analytics) and IP-aggregated. We do not enrich your data with third-party sources or sell it. Learners should not enter customer PII, account numbers, confidential files, secrets, or non-public examination material into AI prompts; the LLM data-handling summary explains the provider path.</>,
           surface: 'white',
         },
       ]}
@@ -31,7 +31,8 @@ export default function PrivacyPage() {
         heading: <>Questions about how your data is handled?</>,
         body: <>Email hello@aibankinginstitute.com — we answer privacy questions personally.</>,
         actions: [
-          { label: 'Email us', href: 'mailto:hello@aibankinginstitute.com', variant: 'gold' },
+          { label: 'LLM data handling', href: '/security/data-handling', variant: 'gold' },
+          { label: 'IT review packet', href: '/security/it-approval', variant: 'ghost-dark' },
         ],
       }}
     />

@@ -51,6 +51,14 @@ import {
   teamAssessmentReportUnlockedHtml,
   teamAssessmentReportUnlockedText,
 } from './templates/team-assessment-report-unlocked';
+import {
+  foundationNotStartedReminderHtml,
+  foundationNotStartedReminderText,
+  foundationStalledReminderHtml,
+  foundationStalledReminderText,
+  inDepthWaitingReminderHtml,
+  inDepthWaitingReminderText,
+} from './templates/paid-reengagement';
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
 
@@ -491,6 +499,50 @@ function supportShell(title: string, body: string): string {
 </body></html>`;
 }
 
+export interface InquiryNotificationPayload {
+  readonly to?: string;
+  readonly name: string;
+  readonly email: string;
+  readonly institution: string;
+  readonly track: string;
+  readonly type: string;
+  readonly notes: string;
+}
+
+export function sendInquiryNotification(
+  payload: InquiryNotificationPayload,
+): Promise<ResendResult> {
+  const body = `
+    <p style="font-size:15px;line-height:1.55;color:#334155;margin:0 0 16px">
+      A new institution inquiry was submitted from the website.
+    </p>
+    <dl style="font-size:14px;line-height:1.6;color:#334155;margin:0 0 20px">
+      <dt style="font-weight:700;color:#071A2F">Name</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.name)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Email</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.email)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Institution</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.institution)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Track</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.track)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Type</dt><dd style="margin:0 0 8px">${escapeInlineHtml(payload.type)}</dd>
+      <dt style="font-weight:700;color:#071A2F">Notes</dt><dd style="margin:0">${escapeInlineHtml(payload.notes || 'No notes provided.')}</dd>
+    </dl>`;
+
+  return sendInline({
+    to: payload.to ?? process.env.SUPPORT_INBOX_EMAIL ?? REPLY_TO,
+    subject: `[AiBI inquiry] ${payload.track}`,
+    html: supportShell('New institution inquiry', body),
+    text: [
+      'AI Banking Institute inquiry',
+      `Name: ${payload.name}`,
+      `Email: ${payload.email}`,
+      `Institution: ${payload.institution}`,
+      `Track: ${payload.track}`,
+      `Type: ${payload.type}`,
+      '',
+      payload.notes || 'No notes provided.',
+    ].join('\n'),
+    tag: '[resend:inquiry-notification]',
+  });
+}
+
 export interface SupportCaseNotificationPayload {
   readonly to?: string;
   readonly caseId: string;
@@ -562,6 +614,121 @@ export function sendSupportCaseAcknowledgement(
 export interface SupportAccessRescuePayload {
   readonly email: string;
   readonly accessUrl: string;
+}
+
+export function sendAuthSignInLink(
+  payload: SupportAccessRescuePayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'Your AI Banking Institute sign-in link',
+    html: supportShell(
+      'Your sign-in link',
+      `<p style="font-size:15px;line-height:1.55;color:#334155;margin:0 0 18px">
+        Use this one-time link to sign in and continue. If you did not request it, you can ignore this email.
+      </p>
+      <p style="margin:0">
+        <a href="${payload.accessUrl}" style="display:inline-block;padding:12px 18px;background:#071A2F;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-radius:8px">Sign in</a>
+      </p>`,
+    ),
+    text: `AI Banking Institute\n\nUse this one-time link to sign in and continue:\n${payload.accessUrl}\n\nIf you did not request it, you can ignore this email.`,
+    tag: '[resend:auth-sign-in-link]',
+  });
+}
+
+export interface AssessmentResumeLinkPayload {
+  readonly email: string;
+  readonly resumeUrl: string;
+  readonly currentQuestion: number;
+  readonly totalQuestions: number;
+  readonly expiresInDays: number;
+}
+
+export function sendAssessmentResumeLink(
+  payload: AssessmentResumeLinkPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'Resume your AI readiness assessment',
+    html: supportShell(
+      'Resume your assessment',
+      `<p style="font-size:15px;line-height:1.55;color:#334155;margin:0 0 18px">
+        Continue from question ${payload.currentQuestion} of ${payload.totalQuestions}. This link keeps your current question set and saved answers.
+      </p>
+      <p style="margin:0 0 14px">
+        <a href="${payload.resumeUrl}" style="display:inline-block;padding:12px 18px;background:#071A2F;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border-radius:8px">Resume assessment</a>
+      </p>
+      <p style="font-size:13px;line-height:1.5;color:#64748B;margin:0">
+        The link expires in ${payload.expiresInDays} days. If you did not request it, you can ignore this email.
+      </p>`,
+    ),
+    text:
+      `AI Banking Institute\n\n` +
+      `Resume your AI readiness assessment from question ${payload.currentQuestion} of ${payload.totalQuestions}:\n` +
+      `${payload.resumeUrl}\n\n` +
+      `This link expires in ${payload.expiresInDays} days. If you did not request it, you can ignore this email.`,
+    tag: '[resend:assessment-resume-link]',
+  });
+}
+
+// ── Paid-product retention reminders ───────────────────────────────────────
+
+export interface FoundationNotStartedReminderPayload {
+  readonly email: string;
+  readonly actionUrl: string;
+}
+
+export function sendFoundationNotStartedReminder(
+  payload: FoundationNotStartedReminderPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'Your AiBI-Foundation enrollment is ready',
+    html: foundationNotStartedReminderHtml({ actionUrl: payload.actionUrl }),
+    text: foundationNotStartedReminderText({ actionUrl: payload.actionUrl }),
+    tag: '[resend:foundation-not-started-reminder]',
+  });
+}
+
+export interface FoundationStalledReminderPayload {
+  readonly email: string;
+  readonly actionUrl: string;
+  readonly moduleNumber: number;
+}
+
+export function sendFoundationStalledReminder(
+  payload: FoundationStalledReminderPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: `Continue AiBI-Foundation Module ${payload.moduleNumber}`,
+    html: foundationStalledReminderHtml({
+      actionUrl: payload.actionUrl,
+      moduleNumber: payload.moduleNumber,
+    }),
+    text: foundationStalledReminderText({
+      actionUrl: payload.actionUrl,
+      moduleNumber: payload.moduleNumber,
+    }),
+    tag: '[resend:foundation-stalled-reminder]',
+  });
+}
+
+export interface InDepthWaitingReminderPayload {
+  readonly email: string;
+  readonly actionUrl: string;
+}
+
+export function sendInDepthWaitingReminder(
+  payload: InDepthWaitingReminderPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: 'Your In-Depth Assessment is waiting',
+    html: inDepthWaitingReminderHtml({ actionUrl: payload.actionUrl }),
+    text: inDepthWaitingReminderText({ actionUrl: payload.actionUrl }),
+    tag: '[resend:in-depth-waiting-reminder]',
+  });
 }
 
 export function sendSupportAccessRescue(

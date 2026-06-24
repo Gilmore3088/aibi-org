@@ -10,6 +10,7 @@
 
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
@@ -29,11 +30,34 @@ import { PurchaseFinalCTA } from './_components/PurchaseFinalCTA';
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
   description:
-    'Enroll in the AiBI-Foundation course. Eighteen bite-sized modules, practical artifacts, and a credential aligned with SR 11-7, Interagency TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
+    'Enroll in the AiBI-Foundation course. Eighteen bite-sized modules, practical artifacts, and a credential mapped to public references; not regulator-endorsed.',
 };
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
+
+const SECONDARY_DECISIONS = [
+  {
+    href: '/courses/foundation',
+    label: 'Course overview',
+    detail: 'Compare modules, artifacts, and outcomes before enrolling.',
+  },
+  {
+    href: '/assessment/take',
+    label: 'Free assessment',
+    detail: 'Start with the 12-question readiness snapshot.',
+  },
+  {
+    href: '/support/purchase-help',
+    label: 'Purchase help',
+    detail: 'Ask about access, payments, refunds, or duplicate purchases.',
+  },
+  {
+    href: '/for-institutions',
+    label: 'Institution inquiry',
+    detail: 'Route team seats, briefings, or assisted rollouts.',
+  },
+] as const;
 
 async function getUserEmail(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
@@ -186,6 +210,10 @@ export default async function PurchasePage(
           }
         />
 
+        <PurchaseDecisionLinks />
+
+        <PurchaseDataHandlingNote />
+
         {/* 2. SAMPLE WEEK — three columns, real Module 1 content */}
         <SampleWeek />
 
@@ -210,6 +238,8 @@ export default async function PurchasePage(
             <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
           }
         />
+
+        <PurchaseDecisionLinks compact />
       </div>
       <div className="foundation-mobile-purchase-bar" aria-label="Enroll in AiBI-Foundation">
         <div>
@@ -269,5 +299,126 @@ export default async function PurchasePage(
         }
       `}</style>
     </CourseShell>
+  );
+}
+
+function PurchaseDecisionLinks({ compact = false }: { compact?: boolean }) {
+  return (
+    <nav
+      aria-label={compact ? 'Other Foundation purchase options' : 'Foundation purchase decision help'}
+      style={{
+        margin: compact ? '24px 0 0' : '-20px 0 48px',
+        padding: compact ? '18px 0 0' : '22px 0',
+        borderTop: '1px solid var(--ink-a10)',
+        borderBottom: compact ? 0 : '1px solid var(--ink-a10)',
+      }}
+    >
+      <p
+        style={{
+          margin: compact ? '0 0 12px' : '0 0 16px',
+          fontFamily: INTER_STACK,
+          color: 'var(--slate-600)',
+          fontSize: compact ? 13 : 14,
+          lineHeight: 1.5,
+        }}
+      >
+        Not ready to enroll yet? Choose the next best step without starting checkout.
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
+          gap: compact ? 10 : 12,
+        }}
+      >
+        {SECONDARY_DECISIONS.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 6,
+              minHeight: compact ? 86 : 104,
+              padding: compact ? '14px 0' : '16px 0',
+              color: 'var(--ink)',
+              textDecoration: 'none',
+              borderTop: compact ? '1px solid var(--ink-a10)' : 0,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 15,
+                fontWeight: 800,
+                letterSpacing: 0,
+              }}
+            >
+              {item.label}
+            </span>
+            <span
+              style={{
+                fontFamily: INTER_STACK,
+                fontSize: 13,
+                lineHeight: 1.45,
+                color: 'var(--slate-600)',
+                letterSpacing: 0,
+              }}
+            >
+              {item.detail}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function PurchaseDataHandlingNote() {
+  return (
+    <aside
+      aria-label="Foundation data handling"
+      style={{
+        margin: '-24px 0 44px',
+        padding: '18px 20px',
+        background: 'var(--cream-2)',
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 14,
+      }}
+    >
+      <p
+        style={{
+          margin: 0,
+          fontFamily: INTER_STACK,
+          fontSize: 11,
+          fontWeight: 800,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: 'var(--gold-deep)',
+        }}
+      >
+        Data handling
+      </p>
+      <p
+        style={{
+          margin: '8px 0 0',
+          fontFamily: INTER_STACK,
+          color: 'var(--ink)',
+          fontSize: 14,
+          lineHeight: 1.55,
+        }}
+      >
+        The course is built around synthetic or sanitized examples. Authenticated
+        lab and Toolbox runs send prompts to selected AI providers only when a
+        learner asks for an AI response, with PII and injection checks in front
+        of the call.{' '}
+        <Link
+          href="/security/data-handling"
+          style={{ color: 'var(--gold-deep)', fontWeight: 800 }}
+        >
+          Read the LLM data-handling summary.
+        </Link>
+      </p>
+    </aside>
   );
 }

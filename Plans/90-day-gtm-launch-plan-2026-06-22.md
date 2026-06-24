@@ -1,9 +1,16 @@
 # 90-Day GTM Launch Plan And Hard Readiness Review
 
-Last updated: 2026-06-22.
+Last updated: 2026-06-23.
 
 Source-of-truth branch: `main`.
 Current docs index: [Current Docs](../CURRENT_DOCS.md).
+
+Related June 23 readiness artifacts:
+
+- [20-persona prioritized remediation plans](20-persona-prioritized-remediation-plans-2026-06-23.md)
+- [20-persona remediation comparison](20-persona-remediation-comparison-2026-06-23.md)
+- [50-persona GTM readiness review](50-persona-gtm-readiness-review-2026-06-23.md)
+- [100-persona audit action items](../docs/persona-audit-2026-06-23/03-action-items.md)
 
 ## Executive Position
 
@@ -16,11 +23,20 @@ Launch the AI Banking Institute around the individual buyer funnel first:
 
 The harsher read: the codebase is production-deployable, but that is not the same as being revenue-safe. The individual funnel can be promoted after live transaction QA. The team/institution funnel should stay assisted-sales until fulfillment, reporting, support, privacy, and buyer handoff have been manually proven with real production-like cohorts.
 
+As of the June 23 persona pass, the 20-person remediation plans, the 50-person
+GTM readiness review, and the larger 100-persona remediation pass are complete
+locally. The 100-persona audit expanded the attack surface and found deeper
+post-click P0s; those persona rows now pass locally. The remaining blockers are
+production/operator gates: live transaction evidence, personalized PDF and
+download proof, cron/email delivery, admin/support login, MailerLite activation,
+physical iPhone/Safari QA, and first-user proof.
+
 > **Gating precondition (before anything else in this plan).** Supabase production
-> migrations must be applied through `00048` and verified via `/api/health/supabase` →
-> `ok: true`. This is the #1 launch blocker: a missing column 404'd **every** assessment
-> result on 2026-06-18. **✅ Resolved 2026-06-22:** `00044`–`00048` applied via MCP;
-> `/api/health/supabase` returns `ok:true`. Re-verify after any further schema change.
+> migrations must be applied through the current local ceiling, `00058`, and verified via
+> `/api/health/supabase` → `ok: true`. This is the #1 launch blocker: a missing column
+> 404'd **every** assessment result on 2026-06-18. **✅ Former outage resolved
+> 2026-06-22:** `00044`–`00048` applied via MCP; `/api/health/supabase` returned
+> `ok:true`. Re-verify after applying `00049`–`00058`.
 > Everything else here is recoverable. The binary go/no-go list is
 > `docs/launch-checklist.md` — this plan owns strategy and sequencing, that file owns the gate.
 
@@ -30,7 +46,7 @@ The harsher read: the codebase is production-deployable, but that is not the sam
 |---|---|---|
 | Branch hygiene | Remote branch list is only `origin/main`; local branch list is only `main`; stale work archived. | Production source of truth is clean. |
 | Deployment | Vercel status for `2f6defd0` is green. | Public site can deploy from `main`. |
-| Tests | `npm run lint`, `npm test` (326 tests), `npm run build`, and `npm audit --audit-level=moderate` pass. | Repo-level quality gate is green. |
+| Tests | `npx tsc --noEmit --pretty false`, `npm run lint`, `npm test` (566 tests), `npm run build`, and the plan-named Chromium E2E batch pass locally. | Repo-level quality gate is green; production proof remains separate. |
 | Free Assessment | `/assessment` and `/assessment/take` exist. | Lead magnet exists, but live completion/email/PDF behavior still needs production smoke. |
 | In-Depth Assessment | `/assessment/in-depth`, `/assessment/in-depth/take`, `/api/checkout/in-depth`, and webhook provisioning exist. | Individual $99 offer is the first paid conversion target after live QA. |
 | Foundation Course | 18-module course exists under `/courses/foundation/program`. | Course can be sold if checkout, entitlement, toolbox saves, and certificate flows pass live QA. |
@@ -38,12 +54,15 @@ The harsher read: the codebase is production-deployable, but that is not the sam
 | Team Assessment | `/assessment/team`, checkout, cohort, participant, admin, and print routes exist. | Product should not be pushed hard until a dedicated team-report hardening pass is complete. |
 | Refund Copy | FAQ, Terms, and purchase FAQ now state a 7-day policy. | Trust blocker reduced, but support execution must be assigned. |
 | Dependencies | GitHub Dependabot open alerts are empty; `npm audit` is clean. | Security-alert blocker cleared. |
+| Admin/support operations | `/admin`, `/admin/funnel`, `/admin/support`, buyer search, support CSV export, purchase-help intake, ops alerts, metric exclusions, and support-owner flow exist in current code. | The operating system exists; it still needs live operator login, inbox/email delivery, daily queue handling, and Friday scorecard discipline. |
+| Trust/security packet | `/about`, `/security/data-handling`, `/security/it-approval`, proof standards, and the proof collection runbook exist in current code. | CEO, CIO, InfoSec, and legal-review friction is reduced; real proof and live page verification are still required. |
+| Persona remediation | 20 persona plans are prioritized, the 20-person comparison is complete, the 50-person review is finalized, and the 100-persona audit rows are `100 ok / 0 warn / 0 fail` locally. Plan-named Chromium E2E coverage passed 81 tests locally with 6 seeded-dashboard tests skipped for missing local Supabase seed prerequisites. | Remaining P0s are live-money, production proof, and operator proof, not another broad website rewrite. |
 
 ## Harsher Critique
 
 ### 1. Green Code Is Not A Launch Strategy
 
-The site builds and deploys, but the revenue chain depends on external state: Vercel env vars, Stripe live prices, Stripe webhook subscriptions, Supabase migrations through `00048`, Resend sender health, analytics access, and production email deliverability. None of that is proven by a green build.
+The site builds and deploys, but the revenue chain depends on external state: Vercel env vars, Stripe live prices, Stripe webhook subscriptions, Supabase migrations through `00058`, Resend sender health, analytics access, and production email deliverability. None of that is proven by a green build.
 
 Launch rule: do not buy traffic or announce paid products until a human completes live purchase QA for Free Assessment, In-Depth, Foundation, refunds, emails, entitlements, and Toolbox access.
 
@@ -82,6 +101,17 @@ Launch rule: assign an owner, inbox, SLA, and response macros before serious pro
 The site has product surfaces, but not enough external proof yet. Without testimonials, before/after artifacts, buyer screenshots, or anonymized outcomes, conversion will rely on copy alone.
 
 Launch rule: collect proof from the first 10-20 users before scaling beyond warm/organic channels.
+
+### 8. The 50-Person Review Tightened The Launch Gates
+
+The June 23 50-person review confirms that the updated website is materially
+stronger than the original 20-person review state, but production readiness is
+still not proven by local tests.
+
+Launch rule: before paid promotion, verify admin/support login with the real
+operator, run the live smoke log, activate MailerLite after seed tests, complete
+physical iPhone/Safari QA, and collect the first approved proof items before
+scaling beyond a controlled founder-led launch.
 
 ## Strategic Positioning
 
@@ -185,6 +215,11 @@ Track weekly:
 - Course module starts/completions.
 - Certificate completions.
 
+Use the admin dashboard as the operating source of truth: `/admin` for launch health,
+`/admin/funnel` for known-contact funnel movement, and `/admin/support` for queue/refund
+state. Test/internal identities must stay excluded from these metrics, and anonymous
+resource-download rows should not be treated as leads.
+
 Decision rules:
 
 - If assessment start rate is weak, simplify `/assessment` above-the-fold again.
@@ -250,14 +285,20 @@ weekly scorecard. Maintain it there; do not re-add a copy to this plan.
 |---|---:|---|---|
 | Live external services not proven by repo checks | High | Stripe/Supabase/Resend failures break revenue even with green code. | Complete live QA before promotion. |
 | Product copy drift history | High | Buyers lose trust when pages, emails, docs, and receipts disagree. | Run copy audit across public pages, emails, Stripe, and PDFs. |
+| 100-persona production proof remains | High | The larger audit found value-delivery failures after users buy, submit, or request downloads. The local remediations are now implemented and the persona rows pass locally, but production behavior is not proven by repo checks. | Finish production proof for PDF/resource rendering, stranded-buyer recovery, retention crons/email delivery, team lead capture, public demo truthfulness, email-gated download fixes, certificate verification, and support-case creation before paid promotion. |
 | Team Assessment hardening gap | High | Institutional buyers expect robust aggregate reporting and support. | Keep assisted-sales; run seeded and real cohort QA before scaling. |
-| Analytics dashboard not proven | Medium | No reliable operating cadence means optimization becomes guesswork. | Manual weekly scorecard first. |
-| Support owner still unassigned | Medium | Paid buyers need fast resolution. `docs/support-runbook.md` now has the dashboards and macros, but ownership is external. | Assign support owner, inbox, SLA, and refund authority before promotion. |
+| Metric definitions need discipline | Medium | Admin metrics now exclude known test/internal identities, but launch analysis can still be distorted if source rules and exclusions drift. | Keep metric exclusions documented and treat anonymous resource-download events as non-leads. |
+| First named channel not secured | High | The 8,000-session model remains a planning model until a real channel exists. | Secure one named acquisition channel with owner, date, audience, CTA, UTMs, and stop/continue thresholds after the site/support readiness gates pass. |
+| Admin/support operator login not live-verified | High | The support console exists, but prior admin-login/reset friction means the real operator path can still fail in production. | Verify allowlist, Supabase session, trusted-device confirmation, reset or magic-link delivery, buyer search, case creation, access rescue email, and timeline logging. |
+| Dashboard cadence not proven | Medium | `/admin`, `/admin/funnel`, and `/admin/support` exist, but launch decisions still fail if nobody reviews them. | Run a Friday scorecard with notes and one next action per week. |
+| Support operating routine not proven | Medium | Paid buyers need fast resolution. `hello@aibankinginstitute.com` and `/admin/support` are the v1 support setup, but manual refund authority and daily queue handling still need live practice. | Confirm owner, business-hours SLA, refund authority, and Stripe click path before promotion. |
 | AI usage costs unknown | Medium | Sandbox/toolbox success can create unpredictable COGS. | Add usage caps and weekly cost review. |
-| Proof gap | Medium | Product can look plausible but unproven. | Collect testimonials, before/after artifacts, and learner outcomes. |
+| Proof gap | Medium | Product can look plausible but unproven even with safer claim boundaries. | Use `docs/proof-collection-runbook.md`, `/about` proof standards, and `/courses/foundation/gallery`; collect at least three approved proof items before scaling beyond controlled launch. |
+| Physical iPhone/Safari QA not complete | Medium | Chromium viewport tests passed locally, but real Safari browser chrome, tap targets, and email/app handoffs can differ. | Run the physical-device route list in `docs/launch-checklist.md` and record screenshots or notes. |
 | Team Assessment self-serve must remain gated | High | Code now keeps `/assessment/team` assisted-sales by default and `/api/checkout/team-assessment` returns 403 unless `ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT=true`. | Do not set the flag until two production-like cohorts pass E2E QA and owner accepts self-serve risk. |
 | No named founder/advisor content in the funnel | Medium | A factual trust anchor now names public references and claim boundaries, but `AdvisorsStrip` remains empty until real people approve attribution. | Owner supplies founder/advisor content; keep placeholders out of production. Ties to Proof gap. |
 | Buying-path friction needs live verification | Medium | Code now adds refund terms near $99/$295 CTAs, makes `/for-institutions` assessment-first, and links ROI methodology from the calculator. | Verify on the live build before scaling traffic. |
+| Foundation purchase page can become a terminal surface | Medium | The 2026-06-23 production persona sweep found no 4xx/JS failures, but three personas dead-ended on `/courses/foundation/program/purchase`. | Add secondary links to course overview, free assessment, purchase help, and institution inquiry. |
 | Comp ($0) access can't be auto-revoked | Low | $0 sessions have no charge, so `charge.refunded` never fires for comps. | Revoke comps by deleting the `course_enrollments` row; documented in stripe-products.md + checklist §6. |
 | Stripe Tax disabled crosses its own threshold | Low | The 90-day model targets >50 paid transactions; the tax-revisit trigger is 50. | Tracked as checklist §10 — re-evaluate Stripe Tax at 50 transactions or first multi-state pattern. |
 

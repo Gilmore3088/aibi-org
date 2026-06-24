@@ -92,6 +92,9 @@ export default async function InDepthPurchasedPage({
   const emailQs = prefillEmail
     ? `&email=${encodeURIComponent(prefillEmail)}`
     : '';
+  const toolboxHref = signedInEmail
+    ? '/dashboard/toolbox'
+    : `/auth/login?next=/dashboard/toolbox${emailQs}`;
 
   return (
     <main
@@ -342,19 +345,19 @@ export default async function InDepthPurchasedPage({
               marginBottom: 10,
             }}
           >
-            Included with your purchase
+            Paid account tools
           </p>
           <h2
             style={{
               fontSize: 26,
               fontWeight: 700,
               lineHeight: 1.15,
-              letterSpacing: '-0.02em',
+              letterSpacing: 0,
               color: 'var(--ink)',
               marginBottom: 10,
             }}
           >
-            Your paid Toolbox
+            {signedInEmail ? 'Open your paid Toolbox.' : 'Toolbox access is tied to your paid account.'}
           </h2>
           <p
             className="mb-5"
@@ -365,18 +368,14 @@ export default async function InDepthPurchasedPage({
               maxWidth: '60ch',
             }}
           >
-            Access to the Library, Cookbook, Build, AiBI Lab, and saved assets
-            is included with the In-Depth Assessment. Start from banker-vetted
-            prompts, test with sample facts, and save trusted versions.
+            Your In-Depth purchase includes paid Toolbox access: Library,
+            Cookbook, Build, AiBI Lab, and saved assets. {signedInEmail
+              ? 'Open it from this signed-in browser when you are ready to turn report findings into reusable work products.'
+              : 'Use the one-click email above or log in with the checkout email to open the paid workspace.'}
           </p>
           <div className="flex flex-wrap gap-4">
-            {/* Was /dashboard/toolbox/library — auth-walled, so a just-paid
-                unauthenticated buyer hit a login wall when clicking the
-                toolkit framed as "INCLUDED WITH YOUR PURCHASE". Send them
-                to the public /resources hub which surfaces the same library
-                artifacts as free downloads. Issue #323. */}
             <Link
-              href="/resources"
+              href={toolboxHref}
               className="inline-block uppercase transition-colors"
               style={{
                 background: 'var(--gold)',
@@ -388,11 +387,23 @@ export default async function InDepthPurchasedPage({
                 letterSpacing: '0.16em',
               }}
             >
-              BROWSE THE LIBRARY →
+              {signedInEmail ? 'OPEN THE TOOLBOX' : 'LOG IN TO OPEN TOOLBOX'} →
             </Link>
-            {/* Was /courses/foundation/program — auth-walled. Send unauth
-                buyers to the public purchase landing so the upsell actually
-                works. Issue #322. */}
+            <Link
+              href="/resources"
+              className="inline-block uppercase transition-colors"
+              style={{
+                border: '1px solid var(--ink-a15)',
+                color: 'var(--ink)',
+                padding: '14px 28px',
+                borderRadius: 12,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.16em',
+              }}
+            >
+              BROWSE PUBLIC RESOURCES
+            </Link>
             <Link
               href="/courses/foundation/program/purchase"
               className="inline-block uppercase transition-colors"

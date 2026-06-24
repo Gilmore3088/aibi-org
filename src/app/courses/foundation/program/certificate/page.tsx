@@ -10,6 +10,7 @@
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { issueCertificateForEnrollment } from '@/lib/certificates/issue';
 import { CourseShellWrapper } from "@/components/lms/CourseShellWrapper";
 import type { Certificate } from '@/types/course';
 import { formatDate } from './_lib/formatDate';
@@ -32,6 +33,7 @@ const KICKER: React.CSSProperties = {
 };
 
 const TOTAL_MODULES = foundationCourseConfig.modules.length;
+const PEER_REFERRAL_URL = 'https://www.aibankinginstitute.com/assessment/take?ref=foundation-certificate';
 
 interface PendingState {
   readonly title: string;
@@ -67,7 +69,7 @@ function derivePendingState(args: {
   if (submissionStatus === 'approved') {
     return {
       title: 'Your credential is being generated',
-      body: 'Your Final Foundation Packet has been reviewed and approved. The credential will appear here shortly — refresh this page in a moment.',
+      body: 'Your Final Foundation Packet has been approved. The credential should appear here shortly - refresh this page in a moment.',
       ctaHref: '/courses/foundation/program/certificate',
       ctaLabel: 'Refresh page',
       progress: null,
@@ -76,8 +78,8 @@ function derivePendingState(args: {
 
   if (submissionStatus === 'pending' || submissionStatus === 'resubmitted') {
     return {
-      title: 'Your Final Foundation Packet is under review',
-      body: `You've completed all ${TOTAL_MODULES} modules and submitted your Final Foundation Packet. We review submissions within a few business days; your credential appears here as soon as it's approved.`,
+      title: 'Your Final Foundation Packet is being finalized',
+      body: `You've completed all ${TOTAL_MODULES} modules and submitted your Final Foundation Packet. The automated completion gate issues your credential once the certificate service finishes processing.`,
       ctaHref: '/courses/foundation/program',
       ctaLabel: 'Back to the course',
       progress: { done: TOTAL_MODULES, total: TOTAL_MODULES },
@@ -96,11 +98,120 @@ function derivePendingState(args: {
 
   return {
     title: 'One step left: submit your Final Foundation Packet',
-    body: `You've completed all ${TOTAL_MODULES} modules. Submit your Final Foundation Packet - the review-ready summary that pulls your saved artifacts together - to earn your AiBI-Foundation credential.`,
+    body: `You've completed all ${TOTAL_MODULES} modules. Submit your Final Foundation Packet - the review-ready summary that pulls your saved artifacts together - to issue your AiBI-Foundation credential.`,
     ctaHref: submitHref,
     ctaLabel: 'Submit Final Packet',
     progress: { done: TOTAL_MODULES, total: TOTAL_MODULES },
   };
+}
+
+function ReferralPanel({
+  certificateId,
+  holderName,
+}: {
+  readonly certificateId: string;
+  readonly holderName: string;
+}) {
+  const verifyUrl = `https://www.aibankinginstitute.com/verify/${certificateId}`;
+  const mailBody = [
+    'Hi,',
+    '',
+    `${holderName} completed the AiBI-Foundation credential and thought this might be useful for your team.`,
+    '',
+    `Start with the free AI readiness assessment: ${PEER_REFERRAL_URL}`,
+    `Credential verification: ${verifyUrl}`,
+    '',
+    'The assessment takes about three minutes and does not require customer data.',
+  ].join('\n');
+  const mailtoHref = `mailto:?subject=${encodeURIComponent('AI readiness assessment referral')}&body=${encodeURIComponent(mailBody)}`;
+
+  return (
+    <section
+      aria-labelledby="referral-panel-heading"
+      style={{
+        marginTop: 28,
+        border: '1px solid var(--ink-a10)',
+        borderRadius: 18,
+        background: '#fff',
+        padding: 22,
+        boxShadow: '0 18px 48px rgba(7, 26, 47, 0.06)',
+      }}
+    >
+      <p style={{ ...KICKER, marginBottom: 10 }}>Referral</p>
+      <h2
+        id="referral-panel-heading"
+        style={{
+          margin: 0,
+          color: 'var(--ink)',
+          fontFamily: INTER_STACK,
+          fontSize: 26,
+          lineHeight: 1.12,
+        }}
+      >
+        Refer a peer.
+      </h2>
+      <p
+        style={{
+          margin: '10px 0 18px',
+          color: 'var(--slate-600)',
+          fontFamily: INTER_STACK,
+          fontSize: 14,
+          lineHeight: 1.55,
+        }}
+      >
+        Send a colleague the free three-minute assessment and your public
+        credential verification link.
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gap: 10,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        }}
+      >
+        <a
+          href={PEER_REFERRAL_URL}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 46,
+            borderRadius: 12,
+            background: 'var(--ink)',
+            color: 'var(--cream)',
+            fontFamily: INTER_STACK,
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+          }}
+        >
+          Share assessment link
+        </a>
+        <a
+          href={mailtoHref}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 46,
+            borderRadius: 12,
+            border: '1px solid var(--ink-a10)',
+            color: 'var(--ink)',
+            fontFamily: INTER_STACK,
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+          }}
+        >
+          Email referral
+        </a>
+      </div>
+    </section>
+  );
 }
 
 export const metadata = {
@@ -156,11 +267,7 @@ export default async function CertificatePage() {
     .eq('enrollment_id', enrollment.id)
     .maybeSingle();
 
-  const certificate = certData as Certificate | null;
-
-  const verificationUrl = certificate
-    ? `https://aibankinginstitute.com/verify/${certificate.certificate_id}`
-    : null;
+  let certificate = certData as Certificate | null;
 
   let pendingState: PendingState | null = null;
   if (!certificate) {
@@ -182,12 +289,52 @@ export default async function CertificatePage() {
       submissionStatus = row.review_status ?? row.status ?? null;
     }
 
+    if (
+      allModulesComplete &&
+      (submissionStatus === 'pending' ||
+        submissionStatus === 'resubmitted' ||
+        submissionStatus === 'approved')
+    ) {
+      if (submissionStatus !== 'approved') {
+        const reviewedAt = new Date().toISOString();
+        const { error } = await serviceClient
+          .from('work_submissions')
+          .update({
+            review_status: 'approved',
+            reviewed_at: reviewedAt,
+            review_feedback:
+              'Auto-approved after completion of all Foundation modules and final packet submission.',
+          })
+          .eq('enrollment_id', enrollment.id);
+
+        if (!error) {
+          submissionStatus = 'approved';
+        }
+      }
+
+      if (submissionStatus === 'approved') {
+        const issued = await issueCertificateForEnrollment({
+          serviceClient,
+          enrollmentId: enrollment.id,
+        }).catch((error) => {
+          console.warn('[certificate-page] certificate auto-issue skip', error);
+          return null;
+        });
+
+        certificate = issued?.certificate as Certificate | null;
+      }
+    }
+
     pendingState = derivePendingState({
       allModulesComplete,
       completedCount: completedModules.length,
       submissionStatus,
     });
   }
+
+  const verificationUrl = certificate
+    ? `https://aibankinginstitute.com/verify/${certificate.certificate_id}`
+    : null;
 
   return (
     <CourseShellWrapper
@@ -240,6 +387,10 @@ export default async function CertificatePage() {
               certificateId={certificate.certificate_id}
               enrollmentId={enrollment.id}
               downloadFilename={`AiBI-Foundation-Certificate-${certificate.certificate_id}.pdf`}
+            />
+            <ReferralPanel
+              certificateId={certificate.certificate_id}
+              holderName={certificate.holder_name}
             />
           </>
         ) : (

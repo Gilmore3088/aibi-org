@@ -26,8 +26,8 @@ const CHROMELESS_PATHS: readonly string[] = [
   // the global SiteNav is removed entirely.
   '/',
   '/assessment',
-  '/assessment/take',
   '/results',
+  '/pricing',
   '/courses',
   '/playground',
   '/practice',
@@ -37,23 +37,23 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/dashboard',
   '/courses/foundation/program',
   '/auth',
-  '/',
   '/security',
+  '/about',
   '/faq',
   '/certifications',
   '/resources',
-  '/faq',
+  '/prompt-cards',
+  '/support/purchase-help',
   '/privacy',
   '/terms',
   '/ai-use-disclaimer',
+  '/verify',
   '/admin',
 
   // Pre-existing chromeless routes (own brand lockup or no chrome by design)
   '/design-system',
-  // /courses/foundation/program and /auth intentionally NOT chromeless —
-  // both need the global SiteNav. /auth surfaces drop the LedgerSurface
-  // internal lockup via showHeader={false} so there's no duplicate mark.
-  // CourseShell's sidebar + breadcrumb cover the course tree only.
+  // /auth and signed-in app shells own their page-level chrome and are
+  // footerless below.
 ];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they

@@ -400,6 +400,7 @@ export default async function AdminOverviewPage({ searchParams }: PageProps) {
               <Link href="/admin/support">Support queue</Link>
               <Link href="/admin/support/search">Buyer search</Link>
               <Link href="/admin/funnel">Funnel</Link>
+              <Link href="/admin/toolbox-usage">Toolbox usage</Link>
               <a href={`/api/admin/support/export.csv?range=${range}`}>Export CSV</a>
             </nav>
           </div>
@@ -591,6 +592,10 @@ export default async function AdminOverviewPage({ searchParams }: PageProps) {
                 <li>
                   <Link href="/admin/support?category=refund_request">Refund queue</Link>
                   <p>Eligibility context and manual Stripe decision logging.</p>
+                </li>
+                <li>
+                  <Link href="/admin/toolbox-usage">Toolbox usage</Link>
+                  <p>Public demo spend, rate limits, failures, and IP-hash concentration.</p>
                 </li>
               </ul>
             </section>

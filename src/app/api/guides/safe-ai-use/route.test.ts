@@ -1,0 +1,59 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const mocks = vi.hoisted(() => ({
+  readFile: vi.fn(),
+  rateLimitOrFail: vi.fn(),
+  getRequestIp: vi.fn(),
+}));
+
+vi.mock('node:fs/promises', () => ({
+  default: {
+    readFile: mocks.readFile,
+  },
+  readFile: mocks.readFile,
+}));
+
+vi.mock('@/lib/api/rate-limit', () => ({
+  rateLimitOrFail: mocks.rateLimitOrFail,
+  getRequestIp: mocks.getRequestIp,
+}));
+
+import { GET } from './route';
+
+describe('GET /api/guides/safe-ai-use', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.rateLimitOrFail.mockResolvedValue(null);
+    mocks.getRequestIp.mockReturnValue('203.0.113.30');
+    mocks.readFile.mockResolvedValue(Buffer.from('%PDF-1.7 safe guide'));
+  });
+
+  it('streams the committed Safe AI Use Guide PDF', async () => {
+    const response = await GET(new Request('https://www.aibankinginstitute.com/api/guides/safe-ai-use'));
+    const body = await response.arrayBuffer();
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Content-Type')).toBe('application/pdf');
+    expect(response.headers.get('Content-Disposition')).toBe(
+      'attachment; filename="AiBI-Safe-AI-Use-Guide.pdf"',
+    );
+    expect(response.headers.get('Content-Length')).toBe(String(Buffer.from('%PDF-1.7 safe guide').length));
+    expect(Buffer.from(body).toString('utf8')).toBe('%PDF-1.7 safe guide');
+    expect(mocks.rateLimitOrFail).toHaveBeenCalledWith({
+      key: 'safe-ai-use-guide',
+      scope: 'ip',
+      identifier: '203.0.113.30',
+      max: 20,
+      windowSeconds: 3600,
+    });
+  });
+
+  it('returns 500 when the committed PDF cannot be read', async () => {
+    mocks.readFile.mockRejectedValue(new Error('missing'));
+
+    const response = await GET(new Request('https://www.aibankinginstitute.com/api/guides/safe-ai-use'));
+
+    expect(response.status).toBe(500);
+    await expect(response.json()).resolves.toEqual({ error: 'PDF unavailable. Please try again.' });
+  });
+});

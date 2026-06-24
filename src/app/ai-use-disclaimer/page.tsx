@@ -18,7 +18,7 @@ export default function AiUseDisclaimerPage() {
         {
           kicker: 'What we use AI for',
           heading: <>Drafting, editing, structuring. Never deciding.</>,
-          lede: <>Course outlines, draft prose, formatting passes — yes. Curriculum decisions, scenario judgment, examiner-facing claims — never without human review. Every Toolbox artifact passes a named reviewer.</>,
+          lede: <>Course outlines, draft prose, formatting passes — yes. Curriculum decisions, scenario judgment, examiner-facing claims — never without human review. Toolbox artifacts teach learners to name the human review step before work reuse.</>,
         },
         {
           kicker: 'What we ask of learners',

@@ -1,5 +1,5 @@
 // SubmissionArtifactHero — leads the /submit page with a preview of the
-// reviewed work product the learner is about to put under review. Shows the
+// final-packet work product the learner is about to submit. Shows the
 // four scored parts: prompt → raw output → edited output → annotation.
 //
 // Server component. Pure presentation. No props — the structure is fixed by
@@ -95,7 +95,7 @@ export function SubmissionArtifactHero() {
             textTransform: 'uppercase',
           }}
         >
-          AiBI-Foundation · Reviewed work product
+          AiBI-Foundation · Final packet
         </span>
       </div>
 
@@ -110,7 +110,7 @@ export function SubmissionArtifactHero() {
           color: 'var(--cream-2)',
         }}
       >
-        Submit one reviewed work product. We score four parts.
+        Submit one final packet. We check four parts.
       </h1>
 
       <p
@@ -129,7 +129,7 @@ export function SubmissionArtifactHero() {
 
       <div
         role="group"
-        aria-label="Sample reviewed work product"
+        aria-label="Sample final packet work product"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',

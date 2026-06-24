@@ -2,8 +2,9 @@
  * PII scanner for AiBI Lab.
  *
  * Scans free-text input for personally identifiable information (SSNs,
- * account numbers, emails, phone numbers, dates of birth) before the
- * text is sent to an AI provider. Runs in both client and server
+ * account numbers, emails, phone numbers, dates of birth, addresses,
+ * contextual names, and masked/customer identifiers) before the text is
+ * sent to an AI provider. Runs in both client and server
  * contexts -- no Node-only or browser-only APIs are used.
  *
  * Design goals:
@@ -14,9 +15,25 @@
  *    message at a time.
  */
 
-interface ScanResult {
+export type PIIKind =
+  | 'ssn'
+  | 'account_number'
+  | 'email'
+  | 'phone'
+  | 'date_of_birth'
+  | 'address'
+  | 'person_name'
+  | 'masked_identifier';
+
+export interface ScanResult {
   safe: boolean;
+  kind?: PIIKind;
   reason?: string;
+}
+
+interface Detection {
+  kind: PIIKind;
+  reason: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -34,7 +51,11 @@ function isPlausibleYear(digits: string): boolean {
 // Individual detectors — each returns a reason string or null.
 // ---------------------------------------------------------------------------
 
-function detectSSN(text: string): string | null {
+function detection(kind: PIIKind, reason: string): Detection {
+  return { kind, reason };
+}
+
+function detectSSN(text: string): Detection | null {
   // XXX-XX-XXXX  (dashes required for the formatted variant)
   const dashPattern = /\b(\d{3})-(\d{2})-(\d{4})\b/g;
   let m: RegExpExecArray | null;
@@ -46,9 +67,9 @@ function detectSSN(text: string): string | null {
     // Real SSNs never start with 000, 666, or 9xx per SSA rules, but
     // we flag them anyway — better a false positive on a weird number
     // than a missed real SSN.
-    return (
+    return detection('ssn',
       'This message appears to contain a Social Security number. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
     );
   }
 
@@ -64,16 +85,40 @@ function detectSSN(text: string): string | null {
     // Exclude if it looks like a phone number without separators —
     // phone detection handles those separately with area-code heuristics.
     // Here we only flag pure 9-digit sequences as potential SSNs.
-    return (
+    return detection('ssn',
       'This message appears to contain a Social Security number. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
     );
   }
 
   return null;
 }
 
-function detectAccountNumber(text: string): string | null {
+function detectMaskedIdentifier(text: string): Detection | null {
+  const masked =
+    /\b(?:ssn|social\s+security|account|acct|member|customer|consumer|loan|card|debit\s+card|credit\s+card)\b[^\n]{0,32}(?:x{2,}|\*{2,}|ending\s+in|last\s+(?:four|4))[\s:#-]*\d{4}\b/i;
+  if (masked.test(text)) {
+    return detection(
+      'masked_identifier',
+      'This message appears to contain a masked customer identifier. Use the sample data provided instead.',
+    );
+  }
+  return null;
+}
+
+function detectContextualIdentifier(text: string): Detection | null {
+  const contextual =
+    /\b(?:account|acct|member|customer|consumer|loan|card|debit\s+card|credit\s+card|cif|tin|tax\s+id)\s*(?:number|no\.?|#|id|identifier|ending|last\s+(?:four|4)|ref(?:erence)?)?\s*(?:[:#=]|\bis\b)?\s*(?:[A-Z]{1,5}[- ]?)?(?:\d[ -]?){4,17}\b/gi;
+  if (contextual.test(text)) {
+    return detection(
+      'account_number',
+      'This message appears to contain a customer, account, loan, card, or member identifier. Use the sample data provided instead.',
+    );
+  }
+  return null;
+}
+
+function detectAccountNumber(text: string): Detection | null {
   // 8-12 consecutive digits not part of a longer digit run.
   const pattern = /(?<!\d)(\d{8,12})(?!\d)/g;
   let m: RegExpExecArray | null;
@@ -100,50 +145,82 @@ function detectAccountNumber(text: string): string | null {
       if (isPlausibleYear(yearPart)) continue;
     }
 
-    return (
+    return detection('account_number',
       'This message appears to contain an account number. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
     );
   }
 
   return null;
 }
 
-function detectEmail(text: string): string | null {
+function detectEmail(text: string): Detection | null {
   // Standard email pattern — intentionally broad.
   const pattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
   if (pattern.test(text)) {
-    return (
+    return detection('email',
       'This message appears to contain an email address. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
     );
   }
   return null;
 }
 
-function detectPhone(text: string): string | null {
+function detectPhone(text: string): Detection | null {
   // (XXX) XXX-XXXX
   const paren = /\(\d{3}\)\s?\d{3}[-.]\d{4}/;
   // XXX-XXX-XXXX or XXX.XXX.XXXX
   const dashed = /(?<!\d)\d{3}[-.\s]\d{3}[-.\s]\d{4}(?!\d)/;
 
   if (paren.test(text) || dashed.test(text)) {
-    return (
+    return detection('phone',
       'This message appears to contain a phone number. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
     );
   }
   return null;
 }
 
-function detectDOB(text: string): string | null {
+function detectDOB(text: string): Detection | null {
   // Look for contextual keywords near a date-like pattern.
   const pattern =
     /\b(?:DOB|date\s+of\s+birth|born\s+on|birthdate|birth\s+date)\b[\s:]*\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/i;
   if (pattern.test(text)) {
-    return (
+    return detection('date_of_birth',
       'This message appears to contain a date of birth. ' +
-      'Use the sample data provided instead.'
+      'Use the sample data provided instead.',
+    );
+  }
+  return null;
+}
+
+function detectAddress(text: string): Detection | null {
+  const streetAddress =
+    /\b\d{1,6}\s+(?:[A-Z0-9][a-zA-Z0-9.'-]*\s+){0,5}(?:street|st\.?|avenue|ave\.?|road|rd\.?|boulevard|blvd\.?|drive|dr\.?|lane|ln\.?|court|ct\.?|way|place|pl\.?|circle|cir\.?|highway|hwy\.?)\b/i;
+  const poBox = /\bP\.?\s*O\.?\s+Box\s+\d{1,8}\b/i;
+  if (streetAddress.test(text) || poBox.test(text)) {
+    return detection(
+      'address',
+      'This message appears to contain a street or mailing address. Use the sample data provided instead.',
+    );
+  }
+  return null;
+}
+
+function detectPersonName(text: string): Detection | null {
+  const fullName = String.raw`[A-Z][a-z]+(?:[-'][A-Z][a-z]+)?\s+[A-Z][a-z]+(?:[-'][A-Z][a-z]+)?`;
+  const contextual = new RegExp(
+    String.raw`\b(?:customer|member|borrower|client|employee|applicant|complainant|consumer)\s+(?:named\s+|name\s+is\s+)?${fullName}\b`,
+    'g',
+  );
+  const labeled = new RegExp(
+    String.raw`\b(?:from|name|customer|member|borrower|client|employee|applicant|complainant|consumer)\s*:\s*${fullName}\b`,
+    'gi',
+  );
+  if (contextual.test(text) || labeled.test(text)) {
+    return detection(
+      'person_name',
+      'This message appears to contain a customer or member name. Use the sample data provided instead.',
     );
   }
   return null;
@@ -155,12 +232,22 @@ function detectDOB(text: string): string | null {
 
 export function scanForPII(text: string): ScanResult {
   // Run detectors in priority order (most sensitive first).
-  const detectors = [detectSSN, detectEmail, detectDOB, detectPhone, detectAccountNumber];
+  const detectors = [
+    detectSSN,
+    detectEmail,
+    detectDOB,
+    detectPhone,
+    detectAddress,
+    detectMaskedIdentifier,
+    detectContextualIdentifier,
+    detectAccountNumber,
+    detectPersonName,
+  ];
 
   for (const detect of detectors) {
-    const reason = detect(text);
-    if (reason) {
-      return { safe: false, reason };
+    const result = detect(text);
+    if (result) {
+      return { safe: false, kind: result.kind, reason: result.reason };
     }
   }
 

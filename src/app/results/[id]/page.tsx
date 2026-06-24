@@ -19,6 +19,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadAssessmentResponse } from '@/lib/assessment/load-response';
 import { ResultsViewV2 } from '@/app/assessment/_components/ResultsViewV2';
 import { ResultsViewV3 } from '@/app/assessment/_components/ResultsViewV3';
+import { parseRoiAssessmentContext } from '@/lib/roi/assessment-context';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -47,6 +48,7 @@ export default async function ResultsPage(props: ResultsPageProps) {
   // persist first name server-side). Rendered as escaped text only.
   const nameParam = typeof searchParams?.name === 'string' ? searchParams.name.slice(0, 80) : null;
   const showPersonalEmailNote = searchParams?.personal === '1';
+  const roiContext = parseRoiAssessmentContext(searchParams);
 
   return (
     <main className="min-h-screen bg-[color:var(--cream)]">
@@ -62,6 +64,7 @@ export default async function ResultsPage(props: ResultsPageProps) {
           profileId={response.profileId}
           role={response.role}
           showPersonalEmailNote={showPersonalEmailNote}
+          roiContext={roiContext}
         />
       ) : (
         <ResultsViewV2

@@ -2,10 +2,12 @@
 // Certification inquiry form — validates, logs, sends ack email.
 
 import { NextResponse } from 'next/server';
-import { sendInquiryAck } from '@/lib/resend';
+import { sendInquiryAck, sendInquiryNotification } from '@/lib/resend';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { subscribeToPlaybookForm } from '@/lib/mailerlite';
+import { createSupportCase } from '@/lib/support/cases';
+import { getSupportInboxEmail } from '@/lib/support/admin';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,6 +30,21 @@ const ALLOWED_TYPES = new Set([
   'playbook-request',
   'certification-inquiry',
   'briefing-request',
+  'partner-rollout-request',
+  'cohort-pilot-request',
+  'project-plan-request',
+  'team-rollout-request',
+  'team-assessment-request',
+  'foundation-seats-request',
+]);
+
+const TEAM_SUPPORT_TYPES = new Set([
+  'partner-rollout-request',
+  'cohort-pilot-request',
+  'project-plan-request',
+  'team-rollout-request',
+  'team-assessment-request',
+  'foundation-seats-request',
 ]);
 
 // Role allowlist for playbook-request `track` (which is "{role}-playbook").
@@ -48,6 +65,14 @@ interface InquiryPayload {
   track?: unknown;
   notes?: unknown;
   type?: unknown;
+}
+
+function productForInquiryType(type: string): string {
+  if (type === 'foundation-seats-request') return 'foundation-course-seats';
+  if (type === 'partner-rollout-request') return 'partner-rollout';
+  if (type === 'cohort-pilot-request') return 'cohort-pilot';
+  if (type === 'project-plan-request') return 'project-plan';
+  return 'team-assessment';
 }
 
 function isValid(p: InquiryPayload): p is {
@@ -94,6 +119,10 @@ export async function POST(request: Request) {
     at: new Date().toISOString(),
   });
 
+  const firstName = body.name.split(' ')[0] ?? body.name;
+  const track = body.track || 'AiBI';
+  const notes = body.notes.trim();
+
   // Provision a Supabase Auth account for the inquirer so they have a
   // real identity if they later take the assessment or buy a course.
   // Idempotent and non-blocking.
@@ -104,10 +133,49 @@ export async function POST(request: Request) {
   // Acknowledgement email — fire-and-forget, never blocks the response.
   sendInquiryAck({
     email: body.email,
-    name: body.name.split(' ')[0] ?? body.name,
+    name: firstName,
     institution: body.institution,
-    track: body.track || 'AiBI',
+    track,
   }).catch((err) => console.warn('[inquiry] resend skip', err));
+
+  sendInquiryNotification({
+    to: getSupportInboxEmail(),
+    name: body.name,
+    email: body.email,
+    institution: body.institution,
+    track,
+    type: body.type,
+    notes,
+  }).catch((err) => console.warn('[inquiry] owner notification skip', err));
+
+  if (TEAM_SUPPORT_TYPES.has(body.type)) {
+    await createSupportCase({
+      buyerEmail: body.email,
+      subject: `Institution inquiry: ${track}`,
+      summary: [
+        `Name: ${body.name}`,
+        `Institution: ${body.institution}`,
+        `Track: ${track}`,
+        '',
+        notes || 'No notes provided.',
+      ].join('\n'),
+      category: 'team_seats',
+      priority: body.type === 'team-assessment-request'
+        || body.type === 'partner-rollout-request'
+        || body.type === 'cohort-pilot-request'
+        || body.type === 'project-plan-request'
+        ? 'high'
+        : 'normal',
+      source: 'buyer_form',
+      product: productForInquiryType(body.type),
+      actorType: 'customer',
+      actorEmail: body.email,
+      metadata: {
+        inquiryType: body.type,
+        track,
+      },
+    }).catch((err) => console.warn('[inquiry] support case skip', err));
+  }
 
   // Playbook PDF requests route to the playbook MailerLite group with
   // role stored as a custom field so per-role segments can fan out.
@@ -119,7 +187,7 @@ export async function POST(request: Request) {
     if (ALLOWED_PLAYBOOK_ROLES.has(role)) {
       subscribeToPlaybookForm({
         email: body.email,
-        firstName: body.name.split(' ')[0] ?? body.name,
+        firstName,
         role,
         institution: body.institution,
       }).catch((err) => console.warn('[inquiry] mailerlite skip', err));

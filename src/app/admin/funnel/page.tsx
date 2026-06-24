@@ -248,13 +248,14 @@ export default async function AdminFunnelPage() {
             <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>Funnel</h1>
             <p style={{ color: 'var(--slate-600)', fontSize: 14, marginTop: 6, maxWidth: 720 }}>
               Live known-contact funnel from Supabase. Revenue and refund dollars live in Stripe;
-              anonymous traffic lives in Vercel/Plausible. Counts include any seed/test rows still in
-              the database.
+              anonymous traffic lives in Vercel/Plausible. Known-contact counts exclude configured
+              test/internal identities; raw resource-download tiles remain popularity signals only.
             </p>
           </div>
           <nav style={nav} aria-label="Admin">
             <Link href="/admin" style={navLink}>Overview</Link>
             <Link href="/admin/support" style={navLink}>Support</Link>
+            <Link href="/admin/toolbox-usage" style={navLink}>Toolbox usage</Link>
           </nav>
         </div>
 

@@ -87,6 +87,9 @@ export default async function AiBIPurchasedPage({
   const emailQs = prefillEmail
     ? `&email=${encodeURIComponent(prefillEmail)}`
     : '';
+  const purchaseHelpHref = `/support/purchase-help${
+    prefillEmail ? `?email=${encodeURIComponent(prefillEmail)}` : ''
+  }`;
 
   const step1Done = Boolean(signedInEmail);
 
@@ -399,15 +402,15 @@ export default async function AiBIPurchasedPage({
           </span>
           <span>Ongoing access under current offer · 18 bite-sized modules · One credential</span>
           <span>
-            Trouble?{' '}
+            Trouble getting the email?{' '}
             <a
-              href="mailto:hello@aibankinginstitute.com"
+              href={purchaseHelpHref}
               style={{
                 color: 'var(--gold-deep)',
                 textDecoration: 'underline',
               }}
             >
-              hello@aibankinginstitute.com
+              resend the purchase link or open support
             </a>
           </span>
         </section>

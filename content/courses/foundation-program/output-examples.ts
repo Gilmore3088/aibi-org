@@ -1473,7 +1473,7 @@ indemnification language.]`,
       },
       {
         heading: 'Regulatory citations are specific and accurate',
-        detail: 'SR 11-7, ECOA/Reg B, and the AIEOG AI Lexicon definition of explainability are all cited correctly with appropriate context. An examiner reviewing this scorecard would recognize these as correctly applied standards.',
+        detail: 'SR 11-7, ECOA/Reg B, and the AIEOG AI Lexicon definition of explainability are cited with specific context so risk, compliance, and legal reviewers can verify the standards before use.',
       },
       {
         heading: 'Hard stop on fair lending score is non-negotiable',
@@ -1483,7 +1483,7 @@ indemnification language.]`,
     qualityMarkers: [
       'VERIFY placeholders are used correctly — vendor name, product name, and scores are left blank for the evaluator to complete',
       'The 75/60 scoring threshold is defined before the scoring begins, not after — prevents score-chasing',
-      'HITL (human-in-the-loop) uses the AIEOG Lexicon definition, which is the official regulatory terminology',
+      'HITL (human-in-the-loop) uses the AIEOG Lexicon definition as public-sector reference terminology',
       'The exit provision criterion (Section 4) is often overlooked in vendor evaluations — its inclusion here reflects real operational risk awareness',
     ],
   },

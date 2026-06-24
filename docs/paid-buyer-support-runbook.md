@@ -2,6 +2,30 @@
 
 Use this for paid launch support until support volume proves a different process is needed.
 
+## Owner and SLA
+
+Owner/inbox: `hello@aibankinginstitute.com`.
+
+V1 queue routine:
+
+1. Check `/admin/support` at start of day, midday, and end of business day Pacific time.
+2. Check immediately after any planned promotion, email send, or live smoke test.
+3. Triage urgent paid-access, duplicate-purchase, refund, webhook, and failed-email cases first.
+4. Use `/admin/support/search` on every paid case before replying.
+5. Record the first human response in the case timeline before moving a case to `waiting_customer` or `waiting_internal`.
+
+V1 SLA:
+
+| Case type | First response target |
+|---|---|
+| Paid access failure or charged-without-access | 4 business hours |
+| Refund request | 1 business day |
+| Duplicate purchase | 1 business day |
+| General purchase question | 1 business day |
+| Ops alert for provisioning, email, or webhook failure | Treat as urgent until the timeline explains the outcome |
+
+If the queue shows unresolved charged-without-access cases, pause promotion until the root cause is known.
+
 ## Dashboards
 
 1. Support Ops
@@ -31,6 +55,31 @@ Use this for paid launch support until support volume proves a different process
 Buyer support form: `/support/purchase-help`.
 
 The form creates a support case, emails `hello@aibankinginstitute.com`, and sends a generic acknowledgement to the buyer. It does not reveal whether the email has an account or purchase record.
+
+## Access rescue flow
+
+1. Open the case in `/admin/support`.
+2. Confirm buyer email and Stripe Checkout Session id when available.
+3. Review buyer snapshot: enrollment, entitlement, purchase, refund, and email state.
+4. Click "Send access email".
+5. Confirm the timeline shows the access-rescue event.
+6. Reply from the support inbox using the missing-purchase-email or failed-access macro.
+7. If delivery failed or the bank gateway blocks the message, provide the fallback sign-in path.
+8. If access cannot be restored, move to refund eligibility review.
+
+## Refund authority flow
+
+The app does not issue Stripe refunds. The support console records eligibility,
+decision, and timeline evidence only.
+
+1. Confirm the request is within policy or qualifies as duplicate purchase / unresolved access failure.
+2. Review buyer snapshot blockers: submitted assessment, completed Foundation modules, certificate issued, refunded session, and active entitlement state.
+3. Open Stripe from the case or buyer snapshot and confirm payment/refund state.
+4. Record `refund approved` or `refund denied` in the case timeline.
+5. If approved, issue the money movement manually in Stripe.
+6. Return to the support case and click "Record manual refund".
+7. Send the buyer a human reply confirming the outcome. The webhook does not send a refund email.
+8. Confirm access state after full refunds; partial refunds retain access.
 
 ## Macros
 

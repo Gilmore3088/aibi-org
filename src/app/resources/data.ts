@@ -14,6 +14,7 @@ import {
   ClipboardCheck,
   Eye,
   FileText,
+  Layers,
   Library,
   LockKeyhole,
   Megaphone,
@@ -188,6 +189,8 @@ export interface Template {
   href: string;
   /** Editable download for the template card, usually a Word-compatible doc. */
   download?: string;
+  /** Optional role slugs for role-filtered discovery. */
+  roles?: string[];
   icon: IconType;
 }
 
@@ -211,6 +214,16 @@ export const templates: Template[] = [
     icon: Workflow,
   },
   {
+    title: 'SAR Narrative Template',
+    format: 'Template · BSA/AML',
+    desc: 'A FinCEN five-element narrative shell with reviewer flags, signature line, and no-customer-PII prompt boundary.',
+    preview: ['Who / what / where / when / why', 'Reviewer flags', 'Signature line', 'No customer PII'],
+    href: '/playbooks/bsa-aml/sar-narrative-template',
+    download: '/api/playbooks/bsa-aml/sar-narrative-template/word',
+    roles: ['bsa-aml'],
+    icon: FileText,
+  },
+  {
     title: 'Board / Leadership Briefing Checklist',
     format: 'Template · 5 min',
     desc: 'What to show before, during, and after an AI rollout conversation.',
@@ -220,6 +233,15 @@ export const templates: Template[] = [
     icon: BarChart3,
   },
   {
+    title: 'CDFI Grant AI Evidence Checklist',
+    format: 'Template · Mission',
+    desc: 'A mission-first checklist for documenting AI-assisted work in grant, impact, and community-development evidence files.',
+    preview: ['Grant goal', 'Data boundary', 'Evidence retained', 'Fairness check'],
+    href: '/resources/templates/cdfi-grant-ai-evidence-checklist',
+    download: '/api/resources/templates/cdfi-grant-ai-evidence-checklist/word',
+    icon: BadgeCheck,
+  },
+  {
     title: 'AI Use Policy Starter',
     format: 'Template · 8 min',
     desc: 'A practical starter policy defining tools, data, review, incidents, and ownership.',
@@ -227,6 +249,15 @@ export const templates: Template[] = [
     href: '/resources/templates/ai-use-policy-starter',
     download: '/api/resources/templates/ai-use-policy-starter/word',
     icon: FileText,
+  },
+  {
+    title: 'Go-to-Market Plan for an AI Initiative',
+    format: 'Template · Launch',
+    desc: 'A one-page launch plan for audience, promise, proof, channels, timeline, and owners.',
+    preview: ['Audience', 'Promise', 'Channels', 'Timeline'],
+    href: '/resources/templates/gtm-plan',
+    download: '/api/resources/template-gtm-plan/download',
+    icon: Megaphone,
   },
 ];
 
@@ -266,6 +297,13 @@ export const deskCards: DeskCard[] = [
     desc: 'SR 11-7, ECOA / Reg B, TPRM, and AI lexicon basics.',
     href: '/api/resources/regulatory-cheatsheet/download',
     icon: BookOpen,
+  },
+  {
+    title: 'Platform Feature Reference Card',
+    type: 'Reference',
+    desc: 'Which platform features to use for drafting, summarizing, review, and evidence capture.',
+    href: '/api/resources/platform-feature-reference-card/download',
+    icon: Layers,
   },
 ];
 

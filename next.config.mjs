@@ -66,6 +66,15 @@ const nextConfig = {
     '/api/assessment/pdf/warm': [
       './node_modules/@sparticuz/chromium/bin/**',
     ],
+    '/api/courses/generate-certificate': [
+      './node_modules/@sparticuz/chromium/bin/**',
+    ],
+    '/api/courses/generate-acceptable-use-card': [
+      './node_modules/@sparticuz/chromium/bin/**',
+    ],
+    '/api/courses/generate-transformation-report': [
+      './node_modules/@sparticuz/chromium/bin/**',
+    ],
   },
   // Decision log: 2026-04-17 — /courses and /certifications merged into /education
   // to reduce nav clutter. Exact-match redirects preserve sub-route access:
@@ -105,11 +114,10 @@ const nextConfig = {
       { source: '/services', destination: '/for-institutions', permanent: true },
       { source: '/teams', destination: '/for-institutions', permanent: true },
       { source: '/foundations', destination: '/courses', permanent: true },
-      // 2026-05-29 product simplification: no separate /about page (the
-      // institute speaks through its product surfaces, not a bio page) and
-      // no advisory offering (the institute sells education + the In-Depth
-      // Assessment, not consulting). /research consolidates into /resources.
-      { source: '/about', destination: '/', permanent: true },
+      // 2026-05-29 product simplification: no advisory offering (the
+      // institute sells education + the In-Depth Assessment, not consulting).
+      // /about was restored 2026-06-23 as a credibility and operating-standards
+      // page for executive buyers, so do not redirect it away.
       { source: '/for-institutions/advisory', destination: '/for-institutions', permanent: true },
       // 2026-06-01: /research fully consolidated into /resources. The bare
       // /research hub and every /research/<slug> article + /research/templates/*

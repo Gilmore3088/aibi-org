@@ -119,7 +119,7 @@ export function OutcomesPanel() {
           <div>
             <div style={ARTIFACT_TITLE_STYLE}>Final practical assessment</div>
             <div style={ARTIFACT_BODY_STYLE}>
-              Submit a reviewed work product package that demonstrates safe,
+              Submit a review-ready work product package that demonstrates safe,
               practical AI use.
             </div>
           </div>

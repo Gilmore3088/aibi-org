@@ -41,6 +41,7 @@ interface ModuleHandoffCheckProps {
   readonly transferPlanValue: string;
   readonly error?: string;
   readonly transferPlanError?: string;
+  readonly saveError?: string;
   readonly saving?: boolean;
   readonly onChange: (value: string) => void;
   readonly onTransferPlanChange: (value: string) => void;
@@ -54,6 +55,7 @@ export function ModuleHandoffCheck({
   transferPlanValue,
   error,
   transferPlanError,
+  saveError,
   saving = false,
   onChange,
   onTransferPlanChange,
@@ -271,6 +273,21 @@ export function ModuleHandoffCheck({
                 ? isLastModule ? 'Complete course' : 'Complete module'
                 : 'Add review + transfer'}
           </button>
+          {saveError && (
+            <p
+              role="alert"
+              style={{
+                margin: 0,
+                maxWidth: 540,
+                color: 'var(--ink)',
+                fontSize: 13,
+                lineHeight: 1.45,
+                fontWeight: 760,
+              }}
+            >
+              {saveError}
+            </p>
+          )}
         </div>
       </div>
       <style
@@ -296,6 +313,18 @@ export function ModuleHandoffCheck({
   );
 }
 
+export async function readSaveProgressError(response: Response): Promise<string> {
+  try {
+    const body = (await response.json()) as { error?: unknown };
+    if (typeof body.error === 'string' && body.error.trim().length > 0) {
+      return body.error;
+    }
+  } catch {
+    // The status code is enough to show the learner a retryable save failure.
+  }
+  return 'We could not save your module progress. Please try again.';
+}
+
 export function ActivitySection({
   activities,
   enrollmentId,
@@ -317,6 +346,8 @@ export function ActivitySection({
   });
 
   const [progressSaved, setProgressSaved] = useState(isAlreadyCompleted);
+  const [savingProgress, setSavingProgress] = useState(false);
+  const [saveProgressError, setSaveProgressError] = useState<string | null>(null);
   const [hasLabDraft, setHasLabDraft] = useState(false);
   const [handoffNote, setHandoffNote] = useState('');
   const [transferPlan, setTransferPlan] = useState('');
@@ -401,6 +432,7 @@ export function ActivitySection({
   const handleHandoffNoteChange = useCallback((value: string) => {
     setHandoffNote(value);
     setHandoffError(null);
+    setSaveProgressError(null);
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(`foundation-module-handoff-${moduleNumber}`, value);
@@ -417,6 +449,7 @@ export function ActivitySection({
   const handleTransferPlanChange = useCallback((value: string) => {
     setTransferPlan(value);
     setTransferPlanError(null);
+    setSaveProgressError(null);
     const ready = value.trim().length >= 12;
     if (typeof window === 'undefined') return;
     try {
@@ -447,6 +480,8 @@ export function ActivitySection({
       return;
     }
 
+    setSavingProgress(true);
+    setSaveProgressError(null);
     try {
       const res = await fetch('/api/courses/save-progress', {
         method: 'POST',
@@ -459,15 +494,22 @@ export function ActivitySection({
         }),
       });
 
-      if (res.ok) {
-        setProgressSaved(true);
-        onAllActivitiesComplete();
-        void import('@/lib/analytics/events').then((mod) =>
-          mod.trackModuleCompleted({ moduleNumber }),
-        );
+      if (!res.ok) {
+        setSaveProgressError(await readSaveProgressError(res));
+        return;
       }
+
+      setProgressSaved(true);
+      onAllActivitiesComplete();
+      void import('@/lib/analytics/events').then((mod) =>
+        mod.trackModuleCompleted({ moduleNumber }),
+      );
     } catch {
-      // Silently fail — user can retry by clicking the button again
+      setSaveProgressError(
+        'We could not save your module progress. Check your connection and try again.',
+      );
+    } finally {
+      setSavingProgress(false);
     }
   }, [enrollmentId, handoffNote, moduleNumber, onAllActivitiesComplete, transferPlan]);
 
@@ -613,6 +655,8 @@ export function ActivitySection({
           transferPlanValue={transferPlan}
           error={handoffError ?? undefined}
           transferPlanError={transferPlanError ?? undefined}
+          saveError={saveProgressError ?? undefined}
+          saving={savingProgress}
           onChange={handleHandoffNoteChange}
           onTransferPlanChange={handleTransferPlanChange}
           onComplete={handleSaveProgress}

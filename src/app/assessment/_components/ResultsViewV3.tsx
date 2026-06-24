@@ -25,6 +25,11 @@ import { SiteHeader } from '@/components/mockup';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
+  formatRoiCurrency,
+  formatRoiNumber,
+  type RoiAssessmentContext,
+} from '@/lib/roi/assessment-context';
+import {
   GAP_CONTENT,
   RECOMMENDATIONS,
   STARTER_PROMPTS,
@@ -39,7 +44,7 @@ interface ResultsViewV3Props {
   readonly tier: Tier;
   readonly tierId: Tier['id'];
   readonly dimensionBreakdown: Record<Dimension, DimensionScore>;
-  readonly email: string;
+  readonly email?: string | null;
   readonly firstName?: string | null;
   readonly institutionName?: string | null;
   readonly profileId: string | null;
@@ -49,6 +54,8 @@ interface ResultsViewV3Props {
   /** Show the "you used a personal email" note above the report. Set on the
    *  immediate post-capture hand-off when a free-mail domain was used. */
   readonly showPersonalEmailNote?: boolean;
+  /** Optional calculator context passed from the ROI block into the assessment. */
+  readonly roiContext?: RoiAssessmentContext | null;
 }
 
 interface RankedSignal {
@@ -95,6 +102,15 @@ function barClasses(band: SignalBand): string {
   return 'bg-[#B7791F]';
 }
 
+const MISSION_INSTITUTION_PATTERN =
+  /\b(mdi|minority depository|cdfi|community development|mission|underserved|low-income|lmi)\b/i;
+
+function missionInstitutionName(institutionName: string | null | undefined): string | null {
+  const trimmed = institutionName?.trim();
+  if (!trimmed || !MISSION_INSTITUTION_PATTERN.test(trimmed)) return null;
+  return trimmed;
+}
+
 // Role playbooks are sourced from the single index in app/playbooks/data.ts
 // (no more hard-coded card list here). Every free role now resolves to a
 // dedicated playbook via FREE_ROLE_TO_PLAYBOOK; 'retail' is the fallback when
@@ -124,9 +140,11 @@ export function ResultsViewV3({
   tierId,
   dimensionBreakdown,
   firstName,
+  institutionName,
   profileId,
   role,
   showPersonalEmailNote,
+  roiContext,
 }: ResultsViewV3Props) {
   // 12 free-question topics, ordered by score ascending so the weakest are easy to find.
   const signals: RankedSignal[] = (
@@ -150,6 +168,7 @@ export function ResultsViewV3({
   const cta = TIER_CLOSING_CTA[tierId];
 
   const matchedPlaybook = bestMatchPlaybook(role);
+  const missionName = missionInstitutionName(institutionName);
 
   const resultHeadline = firstName?.trim()
     ? `${firstName.trim()}, your result is ${tier.label}.`
@@ -244,10 +263,47 @@ export function ResultsViewV3({
         </div>
       </section>
 
+      {roiContext && (
+        <RoiContextPanel roiContext={roiContext} />
+      )}
+
       <QuickActionStrip
         matchedPlaybookPath={matchedPlaybookPath}
         profileId={profileId}
       />
+
+      {missionName && (
+        <section
+          className="rounded-[24px] border border-[color:var(--gold)]/45 bg-[color:var(--cream)] p-6 md:p-7"
+          aria-label="Mission lens"
+        >
+          <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Mission lens
+          </p>
+          <h2 className="mt-3 text-[28px] md:text-[36px] font-semibold leading-[1.06] text-[color:var(--ink)]">
+            Read this result through {missionName}&rsquo;s capacity and trust goals.
+          </h2>
+          <p className="mt-4 max-w-4xl text-[16px] md:text-[18px] leading-[1.65] text-[color:var(--slate-700)]">
+            For MDI, CDFI, and community-development institutions, the first AI win should
+            not be novelty. Start with an internal workflow that protects member or borrower
+            trust, documents human review, and gives staff more time for mission work.
+          </p>
+          <ul className="mt-5 grid gap-3 md:grid-cols-3">
+            {[
+              'Pick a low-risk internal workflow before any customer-facing use.',
+              'Name the human reviewer and keep the reviewed artifact.',
+              'Measure recaptured staff time alongside service quality and fairness checks.',
+            ].map((item) => (
+              <li
+                key={item}
+                className="rounded-[16px] border border-[color:var(--ink-a10)] bg-white p-4 text-[15px] leading-[1.55] text-[color:var(--ink)]"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* FREE SNAPSHOT TOPICS — not the paid 8-dimension diagnostic. */}
       <section className="grid lg:grid-cols-2 gap-8 items-start">
@@ -432,9 +488,13 @@ export function ResultsViewV3({
                 <p className="mt-2 text-[16px] md:text-[17px] text-[color:var(--slate-600)] leading-[1.6]">
                   {artifact.subtitle}
                 </p>
-                {profileId && (
+                {profileId ? (
                   <div className="mt-auto pt-4">
                     <PdfDownloadButton profileId={profileId} />
+                  </div>
+                ) : (
+                  <div className="mt-auto pt-4" data-print-hide="true">
+                    <PrintReportButton label="Print report" />
                   </div>
                 )}
               </article>
@@ -659,6 +719,47 @@ export function ResultsViewV3({
   );
 }
 
+function RoiContextPanel({
+  roiContext,
+}: {
+  readonly roiContext: RoiAssessmentContext;
+}) {
+  return (
+    <section className="rounded-[24px] border border-[color:var(--gold)]/35 bg-white p-5 md:p-6">
+      <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Your ROI scenario
+          </p>
+          <h2 className="mt-2 text-[24px] md:text-[32px] font-semibold leading-tight text-[color:var(--ink)]">
+            Keep the value model attached to the readiness work.
+          </h2>
+          <p className="mt-3 text-[16px] md:text-[17px] leading-[1.65] text-[color:var(--slate-600)] max-w-3xl">
+            You modeled {formatRoiNumber(roiContext.fte)} employees at{' '}
+            {formatRoiCurrency(roiContext.costPerFTE)} loaded cost and{' '}
+            {roiContext.loHours}-{roiContext.hiHours} hours per week. The
+            assessment below points to the first workflow discipline to improve
+            before treating the estimate as achievable.
+          </p>
+        </div>
+        <div className="rounded-[18px] bg-[color:var(--cream)] border border-[color:var(--ink-a10)] p-4 min-w-[240px]">
+          <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Estimated annual capacity
+          </p>
+          <p className="mt-2 text-[32px] font-bold tabular-nums text-[color:var(--ink)]">
+            {formatRoiCurrency(roiContext.mid)}
+          </p>
+          <p className="mt-2 text-[13px] leading-[1.55] text-[color:var(--slate-600)]">
+            Range {formatRoiCurrency(roiContext.low)}-{formatRoiCurrency(roiContext.high)} ·{' '}
+            {formatRoiNumber(roiContext.hoursPerYear)} hours/year · ~
+            {roiContext.payrollRecaptured}% of payroll.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* -------------------------------------------------------------------- */
 
 function ResultPrintStyles() {
@@ -720,12 +821,37 @@ function QuickActionStrip({
             compact
             label="Download report"
           />
-        ) : null}
+        ) : (
+          <PrintReportButton compact label="Print report" />
+        )}
         <ResultActionLink href="/assessment/in-depth" variant="gold">
           Get 90-day playbook
         </ResultActionLink>
       </div>
     </section>
+  );
+}
+
+function PrintReportButton({
+  compact = false,
+  label,
+}: {
+  readonly compact?: boolean;
+  readonly label: string;
+}) {
+  const classes = compact
+    ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--ink-a15)] bg-white px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]'
+    : 'inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--ink-a15)] bg-white px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]';
+
+  return (
+    <button
+      type="button"
+      data-print-hide="true"
+      className={classes}
+      onClick={() => window.print()}
+    >
+      {label}
+    </button>
   );
 }
 

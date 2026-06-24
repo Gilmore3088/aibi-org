@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { FOUNDATION_ARTIFACTS } from '@content/practice-reps/foundation-program';
 import { dashboardSessionErrorResponse, getDashboardSession } from '@/lib/dashboard/session';
+import { createServiceRoleClient } from '@/lib/supabase/client';
 import { dbReadValues } from '@/lib/products/normalize';
 
 interface EnrollmentRow {
@@ -24,6 +25,11 @@ interface UserArtifactRow {
   readonly artifact_id: string;
   readonly status: 'available' | 'in-progress' | 'completed' | 'locked';
   readonly updated_at: string;
+}
+
+interface CertificateRow {
+  readonly certificate_id: string;
+  readonly issued_at: string;
 }
 
 export async function GET(): Promise<NextResponse> {
@@ -90,6 +96,26 @@ export async function GET(): Promise<NextResponse> {
   const practiceCompletions = (practiceResult.data ?? []) as PracticeCompletionRow[];
   const savedPrompts = (promptsResult.data ?? []) as SavedPromptRow[];
   const userArtifacts = (artifactsResult.data ?? []) as UserArtifactRow[];
+  let certificate: CertificateRow | null = null;
+
+  if (enrollment) {
+    try {
+      const serviceClient = createServiceRoleClient();
+      const { data: certificateData, error: certificateError } = await serviceClient
+        .from('certificates')
+        .select('certificate_id, issued_at')
+        .eq('enrollment_id', enrollment.id)
+        .maybeSingle();
+
+      if (certificateError) {
+        console.warn('[dashboard/learner] certificate lookup failed:', certificateError.message);
+      } else {
+        certificate = certificateData as CertificateRow | null;
+      }
+    } catch (error) {
+      console.warn('[dashboard/learner] certificate lookup skipped:', error);
+    }
+  }
 
   const completedRepIds = practiceCompletions.map((row) => row.rep_id);
   const currentModule = Math.max(1, enrollment?.current_module ?? 1);
@@ -124,6 +150,13 @@ export async function GET(): Promise<NextResponse> {
           currentModule,
           enrolledAt: enrollment.enrolled_at,
           onboardingAnswers: enrollment.onboarding_answers,
+        }
+      : null,
+    certificate: certificate
+      ? {
+          id: certificate.certificate_id,
+          issuedAt: certificate.issued_at,
+          verifyUrl: `/verify/${certificate.certificate_id}`,
         }
       : null,
     practice: {

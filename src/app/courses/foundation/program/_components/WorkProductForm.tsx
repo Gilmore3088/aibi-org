@@ -1,6 +1,6 @@
 'use client';
 
-// WorkProductForm — one reviewed work product with four scored parts.
+// WorkProductForm — one final-packet work product with four required parts.
 //
 // Upload pattern (avoids Vercel 4.5MB body limit):
 //   1. On file select → POST ?action=presign to get a Supabase presigned URL.
@@ -13,6 +13,7 @@
 // Resubmission mode: when isResubmission=true, shows reviewer feedback above the form.
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { SkillFileUpload } from './SkillFileUpload';
 import { ResubmissionBanner } from './ResubmissionBanner';
 import {
@@ -33,6 +34,13 @@ export interface WorkProductFormProps {
   readonly reviewFeedback?: string | null;
 }
 
+interface SubmitSuccess {
+  readonly message?: string;
+  readonly certificateId?: string;
+  readonly verifyUrl?: string;
+  readonly certificateUrl?: string;
+}
+
 export function WorkProductForm({
   enrollmentId,
   isResubmission = false,
@@ -48,6 +56,7 @@ export function WorkProductForm({
   const [skillFilePath, setSkillFilePath] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState<SubmitSuccess | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const successRef = useRef<HTMLDivElement>(null);
@@ -108,6 +117,8 @@ export function WorkProductForm({
           }),
         });
         if (res.ok || res.status === 201) {
+          const data = (await res.json().catch(() => ({}))) as SubmitSuccess;
+          setSubmitSuccess(data);
           setSubmitting(false);
           setSubmitted(true);
           return;
@@ -151,11 +162,32 @@ export function WorkProductForm({
           Submitted
         </p>
         <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-2">
-          Your work product has been submitted.
+          Your work product has been approved.
         </p>
         <p className="font-sans text-base text-[color:var(--slate-600)]">
-          You will receive feedback within five business days.
+          Your AiBI-Foundation certificate is ready now.
         </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href={submitSuccess?.certificateUrl ?? '/courses/foundation/program/certificate'}
+            className="inline-flex items-center rounded-xl bg-[color:var(--ink)] px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+          >
+            View certificate
+          </Link>
+          {submitSuccess?.verifyUrl ? (
+            <Link
+              href={submitSuccess.verifyUrl}
+              className="inline-flex items-center rounded-xl border border-[color:var(--ink-a10)] bg-white px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+            >
+              Public verify page
+            </Link>
+          ) : null}
+        </div>
+        {submitSuccess?.certificateId ? (
+          <p className="mt-3 font-sans text-xs text-[color:var(--slate-500)]">
+            Certificate ID: {submitSuccess.certificateId}
+          </p>
+        ) : null}
       </div>
     );
   }

@@ -1,4 +1,4 @@
--- 00051_resource_download_metrics_view.sql
+-- 00052_resource_download_metrics_view.sql
 --
 -- Per-resource download KPIs for the /admin/funnel dashboard.
 --

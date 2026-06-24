@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +10,11 @@ import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3'
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 import type { FreeRole } from '@content/assessments/v3/roles';
+import {
+  appendRoiSearchParams,
+  parseRoiAssessmentContext,
+  type RoiAssessmentContext,
+} from '@/lib/roi/assessment-context';
 
 // ResultsViewV3 is a ~25 KB source component (drags in PdfDownloadButton +
 // result-rendering helpers). It only renders after the user
@@ -21,6 +26,8 @@ const ResultsViewV3 = dynamic(
   { ssr: false },
 );
 
+type ResumeStatus = 'idle' | 'sending' | 'sent' | 'error' | 'restoring';
+
 export default function AssessmentPage() {
   const router = useRouter();
   const state = useAssessmentV3();
@@ -31,11 +38,60 @@ export default function AssessmentPage() {
   const [capturedRole, setCapturedRole] = useState<FreeRole | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [resumeEmail, setResumeEmail] = useState('');
+  const [resumeStatus, setResumeStatus] = useState<ResumeStatus>('idle');
+  const [resumeMessage, setResumeMessage] = useState<string | null>(null);
+  const [roiContext, setRoiContext] = useState<RoiAssessmentContext | null>(null);
   const scoreHeadingRef = useRef<HTMLDivElement | null>(null);
+  const resumeAttemptedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
+    setRoiContext(parseRoiAssessmentContext(new URLSearchParams(window.location.search)));
   }, []);
+
+  useEffect(() => {
+    if (!mounted || resumeAttemptedRef.current || state.selectedQuestions.length === 0) return;
+    const token = new URLSearchParams(window.location.search).get('resume');
+    if (!token) return;
+
+    resumeAttemptedRef.current = true;
+    setResumeStatus('restoring');
+    setResumeMessage('Restoring your saved assessment.');
+
+    void (async () => {
+      try {
+        const response = await fetch(`/api/assessment/drafts/${encodeURIComponent(token)}`, {
+          cache: 'no-store',
+        });
+        const data = (await response.json().catch(() => ({}))) as {
+          error?: string;
+          draft?: {
+            selectedQuestionIds: string[];
+            answers: number[];
+            currentQuestion: number;
+            phase?: 'questions' | 'score' | 'results';
+          };
+        };
+        if (!response.ok || !data.draft) {
+          throw new Error(data.error ?? 'That resume link could not be opened.');
+        }
+        const restored = state.restoreDraft({
+          selectedQuestionIds: data.draft.selectedQuestionIds,
+          answers: data.draft.answers,
+          currentQuestion: data.draft.currentQuestion,
+          phase: data.draft.phase ?? 'questions',
+        });
+        if (!restored) throw new Error('That resume link no longer matches this assessment.');
+        window.history.replaceState(null, '', '/assessment/take');
+        setResumeStatus('sent');
+        setResumeMessage('Your saved assessment is restored.');
+      } catch (error) {
+        setResumeStatus('error');
+        setResumeMessage(error instanceof Error ? error.message : 'That resume link could not be opened.');
+      }
+    })();
+  }, [mounted, state, state.selectedQuestions.length]);
 
   useEffect(() => {
     if (state.isComplete && state.phase === 'score') {
@@ -44,12 +100,48 @@ export default function AssessmentPage() {
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
 
   useEffect(() => {
-    if (state.phase === 'results' && capturedEmail) {
+    if (state.phase === 'results') {
       requestAnimationFrame(() => {
         window.scrollTo(0, 0);
       });
     }
-  }, [state.phase, capturedEmail]);
+  }, [state.phase]);
+
+  async function sendResumeLink(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+    const email = resumeEmail.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setResumeStatus('error');
+      setResumeMessage('Enter a valid email address.');
+      return;
+    }
+
+    setResumeStatus('sending');
+    setResumeMessage(null);
+
+    try {
+      const response = await fetch('/api/assessment/drafts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          selectedQuestionIds: state.selectedQuestions.map((question) => question.id),
+          answers: state.answers,
+          currentQuestion: state.currentQuestion,
+          phase: state.phase,
+        }),
+      });
+      const data = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
+      if (!response.ok) {
+        throw new Error(data.error ?? 'Resume link could not be sent.');
+      }
+      setResumeStatus('sent');
+      setResumeMessage(data.message ?? 'Check your email for a resume link.');
+    } catch (error) {
+      setResumeStatus('error');
+      setResumeMessage(error instanceof Error ? error.message : 'Resume link could not be sent.');
+    }
+  }
 
   if (!mounted) {
     return <AssessmentSkeleton />;
@@ -65,6 +157,7 @@ export default function AssessmentPage() {
         <AssessmentFlowHeader
           progress={state.progress}
           questionNumber={state.currentQuestion + 1}
+          answeredCount={state.answers.length}
           totalQuestions={QUESTIONS_PER_SESSION}
         />
       ) : showAssessmentShellHeader ? (
@@ -116,23 +209,31 @@ export default function AssessmentPage() {
                     );
                   })}
                 </div>
+                <ResumeLinkForm
+                  email={resumeEmail}
+                  status={resumeStatus}
+                  message={resumeMessage}
+                  onEmailChange={setResumeEmail}
+                  onSubmit={sendResumeLink}
+                />
               </section>
             </>
           );
         })()}
 
-        {inResultsPhase && state.tier && capturedEmail ? (
+        {inResultsPhase && state.tier ? (
           <ResultsViewV3
             score={state.totalScore}
             tier={state.tier}
             dimensionBreakdown={state.getDimensionBreakdown()}
-            email={capturedEmail}
+            email={capturedEmail ?? undefined}
             tierId={state.tier.id}
             firstName={capturedFirstName}
             institutionName={capturedInstitution}
             profileId={capturedProfileId}
             role={capturedRole}
             showPersonalEmailNote={usedFreeEmail}
+            roiContext={roiContext}
           />
         ) : (
           <div className="mk-take-inner">
@@ -161,6 +262,7 @@ export default function AssessmentPage() {
                       version="v3"
                       maxScore={48}
                       dimensionBreakdown={breakdown}
+                      roiContext={roiContext}
                       onCaptured={(email, extras) => {
                         // Single render path: when the profile persisted, hand
                         // off to the canonical server-rendered /results/[id].
@@ -171,6 +273,7 @@ export default function AssessmentPage() {
                           const params = new URLSearchParams({ from: 'assessment' });
                           if (extras.firstName) params.set('name', extras.firstName);
                           if (extras.usedFreeEmail) params.set('personal', '1');
+                          if (roiContext) appendRoiSearchParams(params, roiContext);
                           router.replace(`/results/${extras.profileId}?${params.toString()}`);
                           return;
                         }
@@ -184,11 +287,23 @@ export default function AssessmentPage() {
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
                         state.advanceToResults();
                       }}
+                      onSkip={(extras) => {
+                        setCapturedEmail(null);
+                        setCapturedFirstName(extras.firstName ?? null);
+                        setCapturedInstitution(extras.institutionName ?? null);
+                        setCapturedProfileId(null);
+                        setCapturedRole(extras.role ?? null);
+                        setUsedFreeEmail(false);
+                        state.advanceToResults();
+                      }}
                     />
                   </div>
                 </section>
 
-                <div className="mk-take-restart">
+                <div id="restart" className="mk-take-restart">
+                  <button type="button" onClick={state.goBack} className="mk-take-restart-btn">
+                    Review answers
+                  </button>
                   <button type="button" onClick={state.restart} className="mk-take-restart-btn">
                     Start over
                   </button>
@@ -203,6 +318,49 @@ export default function AssessmentPage() {
   );
 }
 
+function ResumeLinkForm({
+  email,
+  status,
+  message,
+  onEmailChange,
+  onSubmit,
+}: {
+  email: string;
+  status: ResumeStatus;
+  message: string | null;
+  onEmailChange: (value: string) => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}) {
+  const busy = status === 'sending' || status === 'restoring';
+
+  return (
+    <form id="assessment-resume-link" className="mk-take-resume" onSubmit={onSubmit}>
+      <label htmlFor="assessment-resume-email">Email yourself a resume link</label>
+      <div className="mk-take-resume-row">
+        <input
+          id="assessment-resume-email"
+          name="email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          value={email}
+          onChange={(event) => onEmailChange(event.target.value)}
+          placeholder="you@bank.com"
+          disabled={busy}
+        />
+        <button type="submit" disabled={busy}>
+          {busy ? 'Sending...' : 'Send'}
+        </button>
+      </div>
+      {message ? (
+        <p className={`mk-take-resume-message is-${status === 'error' ? 'error' : 'success'}`}>
+          {message}
+        </p>
+      ) : null}
+    </form>
+  );
+}
+
 // Compact in-flow header for the questions phase. The full marketing
 // SiteHeader (Home · Assess · Learn · Resources · Institutions) is wrong
 // chrome mid-task — the user is answering, not browsing. This minimal
@@ -212,12 +370,16 @@ export default function AssessmentPage() {
 function AssessmentFlowHeader({
   progress,
   questionNumber,
+  answeredCount,
   totalQuestions,
 }: {
   progress: number;
   questionNumber: number;
+  answeredCount: number;
   totalQuestions: number;
 }) {
+  const clampedAnsweredCount = Math.min(Math.max(answeredCount, 0), totalQuestions);
+
   return (
     <header className="mk-take-flow-header" role="banner">
       <div className="mk-take-flow-header-row">
@@ -226,11 +388,16 @@ function AssessmentFlowHeader({
           <span className="mk-take-flow-brand-sub">AI Readiness Assessment</span>
         </Link>
         <div className="mk-take-flow-meta">
-          <span className="mk-take-flow-q">
-            Question {questionNumber} of {totalQuestions}
+          <span className="mk-take-flow-status">
+            <span className="mk-take-flow-q">
+              Question {questionNumber} of {totalQuestions}
+            </span>
+            <span className="mk-take-flow-count">
+              {clampedAnsweredCount} of {totalQuestions} answered · save your place anytime
+            </span>
           </span>
-          <Link href="/assessment" className="mk-take-flow-exit">
-            Save &amp; exit
+          <Link href="#assessment-resume-link" className="mk-take-flow-exit">
+            Email resume link
           </Link>
         </div>
       </div>

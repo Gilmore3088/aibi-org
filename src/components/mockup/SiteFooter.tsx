@@ -6,6 +6,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
     label: 'Start here',
     links: [
       { href: '/assessment/take', label: 'Free assessment' },
+      { href: '/pricing', label: 'Pricing' },
       { href: '/assessment/in-depth', label: 'In-depth assessment' },
       { href: '/courses', label: 'AiBI-Foundation course' },
       { href: '/for-institutions', label: 'For institutions' },
@@ -15,16 +16,24 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
     label: 'Resources',
     links: [
       { href: '/resources', label: 'Downloads & templates' },
+      { href: '/prompt-cards', label: 'Prompt cards' },
       { href: '/resources/templates/ai-use-policy-starter', label: 'Templates' },
       { href: '/playbooks', label: 'Role playbooks' },
+      { href: '/playground', label: 'AI demo sandbox' },
       { href: '/for-institutions/samples/efficiency-ratio-workbook', label: 'Efficiency ratio workbook' },
     ],
   },
   {
     label: 'Institute',
     links: [
+      { href: '/about', label: 'About the Institute' },
       { href: '/faq', label: 'FAQ' },
       { href: '/security', label: 'Security & governance' },
+      { href: '/security/data-handling', label: 'LLM data handling' },
+      { href: '/security/it-approval', label: 'IT review packet' },
+      { href: '/certifications', label: 'Certifications' },
+      { href: '/verify', label: 'Verify certificate' },
+      { href: 'mailto:hello@aibankinginstitute.com?subject=Press%20%2F%20media%20inquiry%20%E2%80%94%20The%20AI%20Banking%20Institute', label: 'Press / media inquiries' },
       { href: 'mailto:hello@aibankinginstitute.com', label: 'hello@aibankinginstitute.com' },
     ],
   },

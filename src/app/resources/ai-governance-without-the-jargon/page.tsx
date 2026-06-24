@@ -100,7 +100,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             },
             {
               label: 'Policy work',
-              body: 'The AIEOG Lexicon gives staff and examiners the shared vocabulary for AI governance.',
+              body: 'The AIEOG Lexicon gives staff, risk, audit, and IT teams shared vocabulary for AI governance.',
             },
           ]}
         />
@@ -232,9 +232,9 @@ export default function AIGovernanceWithoutJargonArticle() {
             filing. This is not optional. The legal accountability for a
             filed SAR rests with the institution and the staff member who
             approves it &mdash; not with the AI that flagged the
-            transaction. An examiner reviewing your SAR files will ask
+            transaction. Any review of AI-supported SAR work needs to show
             how the determination was made. &ldquo;The AI said so&rdquo; is
-            not a satisfactory answer.
+            not a defensible answer.
           </p>
           <p>
             AI transaction monitoring systems must also meet the same
@@ -251,10 +251,10 @@ export default function AIGovernanceWithoutJargonArticle() {
           <p>
             In February 2026, the US Treasury, FBIIC, and FSSCC published
             the AIEOG AI Lexicon &mdash; the first cross-regulator glossary
-            for AI in financial services. It is not a regulation. But it is
-            the vocabulary regulators will use in examinations. Institutions
-            whose AI policies use different terminology for the same concepts
-            create unnecessary examination risk.
+            for AI in financial services. It is not a regulation, but it is a
+            public source vocabulary banks can use when documenting AI
+            governance. Institutions whose AI policies use different terminology
+            for the same concepts create unnecessary review friction.
           </p>
           <p>
             Six terms from the AIEOG Lexicon are directly relevant to daily
@@ -274,10 +274,10 @@ export default function AIGovernanceWithoutJargonArticle() {
           <p>
             <strong>What this means for your daily work:</strong> When
             reviewing or drafting AI governance documents, use the AIEOG
-            Lexicon definitions verbatim. It is not about compliance theater
-            &mdash; it is about alignment. Examiners who know the Lexicon
-            will look for the Lexicon&rsquo;s terms. Policies that use
-            equivalent but different language create avoidable friction.
+            Lexicon definitions verbatim where they fit. It is not about
+            compliance theater &mdash; it is about alignment. Policies that use
+            equivalent but different language create avoidable friction for
+            compliance, risk, IT, and external reviewers.
           </p>
 
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
@@ -337,7 +337,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             The free Executive Briefing maps your institution against all five
             frameworks, identifies your highest-priority governance gaps, and
             gives you three specific actions you can take before your next
-            examiner visit. No obligation. No sales pitch. 45 minutes.
+            risk, audit, or exam conversation. No obligation. No sales pitch. 45 minutes.
           </p>
           <a
             href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20AI%20governance%20article%20follow-up"

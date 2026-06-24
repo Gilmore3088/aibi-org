@@ -11,6 +11,7 @@ import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supab
 import { sanitizeNext } from '@/lib/supabase/auth';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { sendIndepthAssessmentPurchase } from '@/lib/resend';
+import { clearAuthCookiesForSignOut } from './signOutCookies';
 
 /**
  * Re-send the In-Depth buyer their ONE-CLICK access link — the same
@@ -90,10 +91,6 @@ export async function signOutAction(): Promise<void> {
   // not import the Supabase SDK, so AuthDropdown — its only caller —
   // stays free of any Supabase JS in the client bundle.
   const cookieStore = await cookies();
-  for (const cookie of cookieStore.getAll()) {
-    if (cookie.name.startsWith('sb-')) {
-      cookieStore.delete(cookie.name);
-    }
-  }
+  clearAuthCookiesForSignOut(cookieStore);
   redirect('/');
 }

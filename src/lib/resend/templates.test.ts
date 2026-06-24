@@ -36,6 +36,14 @@ import {
   assessmentOptionsText,
 } from './templates/assessment-options';
 import { inquiryAckHtml, inquiryAckText } from './templates/inquiry-ack';
+import {
+  foundationNotStartedReminderHtml,
+  foundationNotStartedReminderText,
+  foundationStalledReminderHtml,
+  foundationStalledReminderText,
+  inDepthWaitingReminderHtml,
+  inDepthWaitingReminderText,
+} from './templates/paid-reengagement';
 
 const BRAND_MARKER = 'AI Banking Institute';
 const DOCTYPE_MARKER = '<!doctype html>';
@@ -268,5 +276,38 @@ describe('inquiryAck template', () => {
     assertValidText(text, 'inquiryAck');
     expect(text).toContain('Robert Chen');
     expect(text).toContain('Enterprise Licensing');
+  });
+});
+
+// ── Paid-product re-engagement reminders ──────────────────────────────────
+
+describe('paid re-engagement templates', () => {
+  const actionUrl = 'https://aibankinginstitute.com/auth/callback?token_hash=test';
+
+  it('foundation not-started HTML and text render correctly', () => {
+    const html = foundationNotStartedReminderHtml({ actionUrl });
+    const text = foundationNotStartedReminderText({ actionUrl });
+    assertValidHtml(html, 'foundationNotStartedReminder');
+    assertValidText(text, 'foundationNotStartedReminder');
+    expect(html).toContain(actionUrl);
+    expect(text).toContain('AiBI-Foundation');
+  });
+
+  it('foundation stalled HTML and text render correctly', () => {
+    const html = foundationStalledReminderHtml({ actionUrl, moduleNumber: 4 });
+    const text = foundationStalledReminderText({ actionUrl, moduleNumber: 4 });
+    assertValidHtml(html, 'foundationStalledReminder');
+    assertValidText(text, 'foundationStalledReminder');
+    expect(html).toContain('Module 4');
+    expect(text).toContain('Module 4');
+  });
+
+  it('in-depth waiting HTML and text render correctly', () => {
+    const html = inDepthWaitingReminderHtml({ actionUrl });
+    const text = inDepthWaitingReminderText({ actionUrl });
+    assertValidHtml(html, 'inDepthWaitingReminder');
+    assertValidText(text, 'inDepthWaitingReminder');
+    expect(html).toContain('In-Depth');
+    expect(text).toContain(actionUrl);
   });
 });

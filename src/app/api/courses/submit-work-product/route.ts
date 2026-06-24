@@ -18,6 +18,7 @@ import { createServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getPresignedUploadUrl, isValidStoragePath } from '@/lib/supabase/storage';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
+import { issueCertificateForEnrollment } from '@/lib/certificates/issue';
 
 const TOTAL_MODULES = foundationCourseConfig.modules.length;
 const MIN_INPUT_TEXT = 50;
@@ -49,6 +50,44 @@ interface SubmitBody {
 interface WorkSubmissionRow {
   id: string;
   review_status: string;
+}
+
+function certificatePayload(certificateId: string) {
+  return {
+    certificateId,
+    verifyUrl: `/verify/${certificateId}`,
+    certificateUrl: '/courses/foundation/program/certificate',
+  };
+}
+
+async function issueCertificateJson(
+  serviceClient: ReturnType<typeof createServiceRoleClient>,
+  enrollmentId: string,
+): Promise<
+  | { ok: true; certificateId: string; created: boolean }
+  | { ok: false; response: NextResponse }
+> {
+  try {
+    const issued = await issueCertificateForEnrollment({ serviceClient, enrollmentId });
+    return {
+      ok: true,
+      certificateId: issued.certificate.certificate_id,
+      created: issued.created,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Certificate could not be issued.';
+    return {
+      ok: false,
+      response: NextResponse.json(
+        {
+          error:
+            'Work product saved, but the certificate could not be issued. Please contact support.',
+          detail: message,
+        },
+        { status: 500 },
+      ),
+    };
+  }
 }
 
 function allModulesComplete(completedModules: number[]): boolean {
@@ -285,23 +324,56 @@ export async function POST(request: Request): Promise<NextResponse> {
   const submissions = (existingSubmissions ?? []) as WorkSubmissionRow[];
   const latestSubmission = submissions[0] ?? null;
 
-  // Block duplicate submissions (pending or already under re-review)
+  // Auto-issue was locked for the 100-persona remediation pass: a complete
+  // course + submitted final packet earns the certificate immediately. Legacy
+  // pending rows are approved here instead of keeping learners stranded.
   if (
     latestSubmission &&
     (latestSubmission.review_status === 'pending' ||
       latestSubmission.review_status === 'resubmitted')
   ) {
+    const reviewedAt = new Date().toISOString();
+    const { error: approveExistingError } = await serviceClient
+      .from('work_submissions')
+      .update({
+        review_status: 'approved',
+        reviewed_at: reviewedAt,
+        review_feedback:
+          'Auto-approved after completion of all Foundation modules and final packet submission.',
+      })
+      .eq('id', latestSubmission.id);
+
+    if (approveExistingError) {
+      return NextResponse.json(
+        { error: 'Failed to approve existing submission. Please try again.' },
+        { status: 500 },
+      );
+    }
+
+    const issued = await issueCertificateJson(serviceClient, enrollmentId);
+    if (!issued.ok) return issued.response;
+
     return NextResponse.json(
-      { error: 'Submission already under review.' },
-      { status: 409 },
+      {
+        message: 'Work product approved',
+        submissionId: latestSubmission.id,
+        ...certificatePayload(issued.certificateId),
+      },
+      { status: 200 },
     );
   }
 
-  // Block further submissions after approval
   if (latestSubmission && latestSubmission.review_status === 'approved') {
+    const issued = await issueCertificateJson(serviceClient, enrollmentId);
+    if (!issued.ok) return issued.response;
+
     return NextResponse.json(
-      { error: 'Work product already approved.' },
-      { status: 409 },
+      {
+        message: 'Work product already approved',
+        submissionId: latestSubmission.id,
+        ...certificatePayload(issued.certificateId),
+      },
+      { status: 200 },
     );
   }
 
@@ -314,7 +386,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    // Update the existing failed row to 'resubmitted'
+    const reviewedAt = new Date().toISOString();
+
+    // Auto-approve the resubmission once the learner has completed all modules
+    // and provided the required final packet fields.
     const { error: updateError } = await serviceClient
       .from('work_submissions')
       .update({
@@ -323,10 +398,12 @@ export async function POST(request: Request): Promise<NextResponse> {
         raw_output_text: rawOutputText,
         edited_output_text: editedOutputText,
         annotation_text: annotationText,
-        review_status: 'resubmitted',
+        review_status: 'approved',
         reviewer_id: null,
         review_scores: null,
-        reviewed_at: null,
+        review_feedback:
+          'Auto-approved after completion of all Foundation modules and final packet resubmission.',
+        reviewed_at: reviewedAt,
         submitted_at: new Date().toISOString(),
       })
       .eq('id', latestSubmission.id);
@@ -338,15 +415,22 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    // TODO: send confirmation email when ConvertKit/Loops is wired (deferred per CLAUDE.md decisions)
+    const issued = await issueCertificateJson(serviceClient, enrollmentId);
+    if (!issued.ok) return issued.response;
 
     return NextResponse.json(
-      { message: 'Work product resubmitted', submissionId: latestSubmission.id },
+      {
+        message: 'Work product approved',
+        submissionId: latestSubmission.id,
+        ...certificatePayload(issued.certificateId),
+      },
       { status: 201 },
     );
   }
 
-  // --- Insert new submission with status 'pending' ---
+  const reviewedAt = new Date().toISOString();
+
+  // --- Insert new submission with status 'approved' ---
   const { data: newSubmission, error: insertError } = await serviceClient
     .from('work_submissions')
     .insert({
@@ -356,7 +440,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       raw_output_text: rawOutputText,
       edited_output_text: editedOutputText,
       annotation_text: annotationText,
-      review_status: 'pending',
+      review_status: 'approved',
+      review_feedback:
+        'Auto-approved after completion of all Foundation modules and final packet submission.',
+      reviewed_at: reviewedAt,
     })
     .select('id')
     .single();
@@ -368,10 +455,15 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  // TODO: send confirmation email when ConvertKit/Loops is wired (deferred per CLAUDE.md decisions)
+  const issued = await issueCertificateJson(serviceClient, enrollmentId);
+  if (!issued.ok) return issued.response;
 
   return NextResponse.json(
-    { message: 'Work product submitted', submissionId: newSubmission.id },
+    {
+      message: 'Work product approved',
+      submissionId: newSubmission.id,
+      ...certificatePayload(issued.certificateId),
+    },
     { status: 201 },
   );
 }

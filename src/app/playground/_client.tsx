@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   SiteHeader,
   Section,
@@ -114,8 +114,15 @@ const WB: Record<WBKey, { title: string; input: string; output: string; outLabel
   },
 };
 
-function renderMarkup(s: string) {
+function escapeMarkup(s: string) {
   return s
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function renderMarkup(s: string) {
+  return escapeMarkup(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br>');
 }
@@ -129,41 +136,45 @@ export default function PlaygroundPage() {
   const [outputHtml, setOutputHtml] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [error, setError] = useState<string>('');
 
   function load(k: WBKey) {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
     setWbKey(k);
     setHasRun(false);
     setRunning(false);
     setOutputHtml('');
     setTags([]);
     setSaved(false);
+    setError('');
   }
 
-  function run() {
+  async function run() {
     if (running) return;
     setRunning(true);
     setSaved(false);
-    const full = WB[wbKey].output;
-    let i = 0;
+    setError('');
     setOutputHtml('');
-    const speed = Math.max(8, Math.min(20, Math.floor(1400 / full.length)));
-    timerRef.current = setInterval(() => {
-      if (i >= full.length) {
-        if (timerRef.current) clearInterval(timerRef.current);
-        timerRef.current = null;
-        setRunning(false);
-        setHasRun(true);
-        setOutputHtml(renderMarkup(full));
-        return;
+    try {
+      const response = await fetch('/api/playground/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenarioTitle: WB[wbKey].title,
+          sampleData: WB[wbKey].input,
+          prompt: `Create the ${WB[wbKey].outLabel.replace('Output · ', '')}. Use the sample data only.`,
+        }),
+      });
+      const json = (await response.json().catch(() => ({}))) as { text?: string; error?: string };
+      if (!response.ok || typeof json.text !== 'string') {
+        throw new Error(json.error ?? 'The demo could not run. Please try again.');
       }
-      setOutputHtml((prev) => prev + full[i]);
-      i++;
-    }, speed);
+      setOutputHtml(renderMarkup(json.text));
+      setHasRun(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'The demo could not run. Please try again.');
+    } finally {
+      setRunning(false);
+    }
   }
 
   function toggleTag(t: string) {
@@ -173,14 +184,8 @@ export default function PlaygroundPage() {
   function save() {
     if (!hasRun) return;
     setSaved(true);
+    window.location.href = '/auth/login?next=/dashboard/toolbox';
   }
-
-  useEffect(
-    () => () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    },
-    [],
-  );
 
   const d = WB[wbKey];
 
@@ -249,7 +254,7 @@ export default function PlaygroundPage() {
                     <span dangerouslySetInnerHTML={{ __html: outputHtml }} />
                   ) : (
                     <span className="mk-hint">
-                      Click <strong>Run</strong> to generate sample output.
+                      {error || <>Click <strong>Run</strong> to generate a capped live-model output.</>}
                     </span>
                   )}
                 </div>
@@ -285,17 +290,17 @@ export default function PlaygroundPage() {
               <div style={{ display: 'flex', gap: 10 }}>
                 <Button variant="ghost-light" onClick={run} disabled={running}>
                   <PlayIcon className="mk-ic" />
-                  Run
+                  {running ? 'Running...' : 'Run'}
                 </Button>
                 <Button variant="ink" onClick={save} disabled={!hasRun || saved}>
                   {saved ? <CheckIcon className="mk-ic" /> : <SaveIcon className="mk-ic" />}
-                  {saved ? 'Saved' : 'Save to Toolbox'}
+                  {saved ? 'Opening sign in' : 'Save to Toolbox'}
                 </Button>
               </div>
             </div>
             <div className={`mk-wb-toast${saved ? ' is-shown' : ''}`}>
               <CheckIcon className="mk-ic" />
-              Saved to your Toolbox.
+              Sign in to save this in your Toolbox.
             </div>
           </div>
         </div>
@@ -435,6 +440,7 @@ export default function PlaygroundPage() {
         }
         actions={[
           { label: 'Try a Scenario', href: '/practice', variant: 'gold' },
+          { label: 'Get In-Depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
           { label: 'Compare with a Demo', href: '#workbench', variant: 'ghost-dark' },
         ]}
       />

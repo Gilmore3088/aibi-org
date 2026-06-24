@@ -26,20 +26,28 @@ interface RouteCase {
 
 const PUBLIC_ROUTES: readonly RouteCase[] = [
   // Marketing surfaces — highest visibility
-  { path: '/', label: 'homepage', mustContain: /Turning Bankers into Builders/i },
+  { path: '/', label: 'homepage', mustContain: /AI use is spreading/i },
   { path: '/for-institutions', label: 'for-institutions' },
   { path: '/for-institutions/advisory', label: 'for-institutions-advisory' },
   // /education was consolidated into /resources per #420 — removed from audit
   { path: '/about', label: 'about' },
   { path: '/security', label: 'security' },
+  { path: '/security/data-handling', label: 'security-data-handling' },
+  { path: '/security/it-approval', label: 'security-it-approval' },
   { path: '/resources', label: 'resources' },
 
   // Free assessment flow — CLAUDE.md MVP gate
   { path: '/assessment', label: 'assessment-landing' },
   { path: '/assessment/start', label: 'assessment-start' },
+  { path: '/assessment/take', label: 'assessment-take' },
 
   // In-Depth paid assessment landing
   { path: '/assessment/in-depth', label: 'assessment-in-depth' },
+
+  // Course and support purchase paths
+  { path: '/courses', label: 'courses' },
+  { path: '/courses/foundation/program/purchase', label: 'foundation-purchase' },
+  { path: '/support/purchase-help', label: 'support-purchase-help' },
 
   // Auth surfaces — every form field is a touch target
   { path: '/auth/login', label: 'auth-login' },

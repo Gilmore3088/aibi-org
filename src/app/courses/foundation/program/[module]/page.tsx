@@ -23,6 +23,7 @@ import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   getArtifactFirst,
 } from '@content/courses/foundation-program';
+import { MODULE_3_PROMPTING_ACTIVITIES } from '@content/courses/foundation-program/module-3-activities';
 import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
@@ -233,12 +234,15 @@ export default async function ModulePage(props: ModulePageParams) {
     ? getRoleSpotlight(enrollment.onboarding_answers)
     : 'other';
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(moduleNum);
-  const moduleSpec = getModuleActivitySpec(moduleNum);
-  const moduleActivities = moduleSpec
-    ? [buildModuleActivity(moduleSpec)]
-    : expandedModule
-      ? [buildV4Activity(expandedModule)]
-      : mod.activities;
+  const nativeActivities = moduleNum === 3 ? MODULE_3_PROMPTING_ACTIVITIES : undefined;
+  const moduleSpec = nativeActivities ? undefined : getModuleActivitySpec(moduleNum);
+  const moduleActivities = nativeActivities
+    ? nativeActivities
+    : moduleSpec
+      ? [buildModuleActivity(moduleSpec)]
+      : expandedModule
+        ? [buildV4Activity(expandedModule)]
+        : mod.activities;
   const moduleTables = expandedModule ? undefined : mod.tables;
 
   const existingResponses: Record<string, Record<string, string>> = {};

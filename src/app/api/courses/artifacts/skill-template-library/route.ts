@@ -8,17 +8,16 @@
 //   - Enrollment ownership NOT required — the library is a fixed document,
 //     but authentication confirms the requester is an active learner.
 //
-// Output: PDF download of the 6-page Skill Template Library.
+// Output: static PDF download of the Skill Template Library.
 
 import { cookies } from 'next/headers';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import { SkillTemplateLibraryDocument } from '@/lib/pdf/SkillTemplateLibraryDocument';
 
 const PDF_FILENAME = 'AiBI-Skill-Template-Library.pdf';
+const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-skill-template-library.pdf');
 
 export async function GET(): Promise<Response> {
   // When Supabase is not configured (local dev), serve the PDF without auth check
@@ -50,25 +49,19 @@ export async function GET(): Promise<Response> {
   }
 
   try {
-    const element = React.createElement(
-      SkillTemplateLibraryDocument,
-      {},
-    ) as React.ReactElement<DocumentProps>;
+    const file = await readFile(PDF_PATH);
 
-    const buffer = await renderToBuffer(element);
-    const body = new Uint8Array(buffer);
-
-    return new Response(body, {
+    return new Response(new Uint8Array(file), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${PDF_FILENAME}"`,
-        'Content-Length': String(buffer.length),
+        'Content-Length': String(file.length),
         'Cache-Control': 'private, max-age=3600',
       },
     });
   } catch (err) {
-    console.error('[skill-template-library] PDF generation error:', err);
+    console.error('[skill-template-library] static PDF read failed:', err);
     return new Response(JSON.stringify({ error: 'PDF generation failed. Please try again.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

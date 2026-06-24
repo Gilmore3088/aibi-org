@@ -11,6 +11,18 @@
     "src/app/api/cron/cleanup-rate-limits/route.ts": {
       "maxDuration": 30,
       "memory": 256
+    },
+    "src/app/api/cron/stranded-buyers/route.ts": {
+      "maxDuration": 30,
+      "memory": 512
+    },
+    "src/app/api/cron/assessment-abandoned/route.ts": {
+      "maxDuration": 30,
+      "memory": 512
+    },
+    "src/app/api/cron/paid-reengagement/route.ts": {
+      "maxDuration": 30,
+      "memory": 512
     }
   },
   "crons": [
@@ -21,6 +33,18 @@
     {
       "path": "/api/cron/cleanup-rate-limits",
       "schedule": "30 4 * * *"
+    },
+    {
+      "path": "/api/cron/stranded-buyers",
+      "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/cron/assessment-abandoned",
+      "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/api/cron/paid-reengagement",
+      "schedule": "30 17 * * *"
     }
   ]
 }

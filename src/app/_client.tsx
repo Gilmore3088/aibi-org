@@ -153,14 +153,16 @@ export default function HomePage() {
           <div className="mk-deco-blur" />
         </div>
         <div className="mk-container mk-hero-inner mk-home-redline-inner">
-          <HomeRedlinePrompt />
           <div>
-            <p className="mk-kicker mk-kicker-gold-soft">The hidden AI gap</p>
+            <p className="mk-kicker mk-kicker-gold-soft">For community banks and credit unions</p>
             <h1>
-              AI use is spreading. <span className="mk-hero-accent">Workflow discipline is not.</span>
+              Find your institution&apos;s AI readiness gap in <span className="mk-hero-accent">three minutes.</span>
             </h1>
             <p className="mk-lede">
-              See where your AI use needs stronger guardrails, then start with the workflow habits your role needs most.
+              See where your AI use needs stronger guardrails, then start with the workflow habits and first artifact your role needs most.
+            </p>
+            <p className="mk-hero-role-note">
+              Built for frontline tellers, branch teams, lenders, operations, compliance, and marketing roles.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
@@ -170,8 +172,9 @@ export default function HomePage() {
                 Start learning
               </Button>
             </div>
-            <p className="mk-hero-meta">Free · individual snapshot · 12 questions</p>
+            <p className="mk-hero-meta">Free · 12 questions · 3 minutes · first artifact</p>
           </div>
+          <HomeRedlinePrompt />
         </div>
       </section>
 
@@ -231,7 +234,7 @@ export default function HomePage() {
 
       <PriceStrip />
 
-      <Section variant="std">
+      <Section id="roi-calculator" variant="std">
         <SectionHead
           kicker="Impact"
           heading={<>What could one hour saved per employee be worth?</>}
@@ -251,7 +254,7 @@ export default function HomePage() {
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
           { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },
-          { label: 'Start learning', href: '/courses/foundation', variant: 'ghost-dark' },
+          { label: 'Start learning', href: '/courses', variant: 'ghost-dark' },
         ]}
       />
 
@@ -395,7 +398,7 @@ const PRICE_TIERS: {
     eyebrow: 'Deep dive',
     label: 'In-Depth Report',
     price: '$99',
-    note: '48-question diagnostic with a 90-day playbook.',
+    note: 'Written report, peer band, eight scores, and a 90-day action register.',
     href: '/assessment/in-depth',
     action: 'View report',
   },
@@ -403,7 +406,7 @@ const PRICE_TIERS: {
     eyebrow: 'Capability',
     label: 'AiBI-Foundation',
     price: '$295',
-    note: 'Course, practice reps, artifacts, and certificate.',
+    note: '18 modules with saved prompts, workflow templates, and a Foundation Packet.',
     href: '/courses',
     action: 'Explore course',
   },
@@ -425,6 +428,9 @@ function PriceStrip() {
           <p className="mk-k">Choose a path</p>
           <h2 id="home-price-strip-heading">Start small or build the full capability.</h2>
           <p>Each path leads to a concrete output, not another generic AI webinar.</p>
+          <a href="/pricing" className="mk-price-compare-link">
+            Compare all pricing <ArrowGlyph />
+          </a>
         </div>
         <div className="mk-price-options">
           {PRICE_TIERS.map(({ eyebrow, label, price, note, href, action, featured }) => (

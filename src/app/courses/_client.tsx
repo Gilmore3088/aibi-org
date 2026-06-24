@@ -128,6 +128,29 @@ const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: Icon
   },
 ];
 
+const CREDENTIAL_PROOF: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
+  {
+    title: 'Earned after the packet is complete',
+    desc: 'The certificate issues after all modules are complete and the final Foundation Packet is submitted.',
+    icon: CheckCircleIcon,
+  },
+  {
+    title: 'Public authenticity URL',
+    desc: 'Verification confirms the credential record, holder, and issued date so an employer or reviewer can check it.',
+    icon: FileIcon,
+  },
+  {
+    title: 'Evidence behind the badge',
+    desc: 'The packet preserves prompts, outputs, edits, workflow maps, review notes, and safety boundaries from course work.',
+    icon: ClipboardIcon,
+  },
+  {
+    title: 'Clear claim boundary',
+    desc: 'AiBI-Foundation is not a license, regulator approval, regulator recognition, or third-party endorsement.',
+    icon: WorkflowIcon,
+  },
+];
+
 // ---------- Page ----------
 
 export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly facts?: CoursesOverviewFacts }) {
@@ -212,6 +235,35 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         <CoursePreviewDemos />
       </Section>
 
+      <Section variant="std">
+        <SectionHead
+          kicker="Data handling"
+          heading={<>Built for sample facts and reviewed outputs.</>}
+          lede={
+            <>
+              Course previews use synthetic or sanitized banking examples. Authenticated
+              lab and Toolbox runs send prompts to the selected AI provider only when a
+              learner asks the model to respond, with PII and prompt-injection checks in
+              front of the call.
+            </>
+          }
+        />
+        <div className="mk-reg-ref-grid">
+          <div>Synthetic or sanitized examples are enough to complete the course.</div>
+          <div>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</div>
+          <div>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</div>
+          <div>Provider stance and retained product records are summarized before purchase.</div>
+        </div>
+        <div style={{ marginTop: 22, display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+          <Button variant="ghost-dark" href="/security/data-handling">
+            Read the data-handling summary
+          </Button>
+          <Button variant="ghost-dark" href="/assessment/in-depth">
+            Get In-Depth report
+          </Button>
+        </div>
+      </Section>
+
       {/* WHAT LEARNERS BUILD — 4 work modes across the Foundation Packet */}
       <Section variant="std" surface="white">
         <SectionHead
@@ -237,6 +289,44 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               </div>
             );
           })}
+        </div>
+      </Section>
+
+      <Section variant="std">
+        <SectionHead
+          kicker="Credential value"
+          heading={<>What the certificate proves.</>}
+          lede={
+            <>
+              AiBI-Foundation is earned by completing the course and submitting
+              evidence of reviewed work, not by attending a webinar or passing
+              through a marketing gate.
+            </>
+          }
+        />
+        <div className="mk-credential">
+          {CREDENTIAL_PROOF.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="mk-credential-row">
+                <span className="mk-pic-ink-gold">
+                  <Icon size={20} />
+                </span>
+                <div>
+                  <p className="mk-k">{item.title}</p>
+                  <p className="mk-v">{item.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mk-credential-actions">
+          <Button variant="ghost-dark" href="/certifications">
+            Read credential details
+          </Button>
+          <Button variant="ghost-dark" href="/verify">
+            Open verification lookup
+          </Button>
         </div>
       </Section>
 
@@ -283,6 +373,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         body={<>The gallery shows synthetic, anonymized examples in the same structure learners use for saved course artifacts.</>}
         actions={[
           { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
+          { label: 'Get In-Depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
           { label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
         ]}
       />

@@ -12,8 +12,13 @@
 import { NextResponse } from 'next/server';
 import { cookies, headers } from 'next/headers';
 
-import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
+import {
+  createServerClientWithCookies,
+  createServiceRoleClient,
+  isSupabaseConfigured,
+} from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
+import { generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   consumeDeviceConfirmation,
   issueTrustedDevice,
@@ -68,15 +73,25 @@ export async function GET(request: Request): Promise<NextResponse> {
   const dest = new URL(consumed.redirectTo, url.origin);
 
   if (!user || user.id !== targetUserId) {
-    // The token is valid but this browser doesn't carry the session it was
-    // issued for. Send them to /auth/login with the original destination
-    // preserved so they can sign in here. We don't burn the cookie or
-    // create the trusted_devices row — they'll need to re-confirm.
+    // Cross-device tolerance: if the user opens this device-confirmation
+    // email on another browser, that browser has no Supabase session to
+    // bind. Generate a fresh one-time auth link for the same user and
+    // route them through /auth/callback instead of dead-ending on login.
+    try {
+      const service = createServiceRoleClient();
+      const { data } = await service.auth.admin.getUserById(targetUserId);
+      const email = data.user?.email;
+      const accessUrl = email ? await generateMagicLink(email, consumed.redirectTo) : null;
+      if (accessUrl) return NextResponse.redirect(accessUrl);
+    } catch (err) {
+      console.warn('[auth/confirm-device] cross-device auth link failed:', err);
+    }
+
     const loginUrl = new URL('/auth/login', url.origin);
     loginUrl.searchParams.set('next', consumed.redirectTo);
     loginUrl.searchParams.set(
       'error',
-      'Open the confirmation link in the same browser where you signed in.',
+      'This browser needs a fresh sign-in link. Enter your email below.',
     );
     return NextResponse.redirect(loginUrl);
   }

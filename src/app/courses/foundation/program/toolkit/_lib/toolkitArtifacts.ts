@@ -76,7 +76,7 @@ export function buildCountLine(c: CountSummary): string {
   const parts: string[] = [];
   if (c.prompts > 0) parts.push(`${c.prompts} saved prompt${c.prompts === 1 ? '' : 's'}`);
   if (c.workProducts > 0)
-    parts.push(`${c.workProducts} reviewed work product${c.workProducts === 1 ? '' : 's'}`);
+    parts.push(`${c.workProducts} review-ready work product${c.workProducts === 1 ? '' : 's'}`);
   if (c.cards > 0) parts.push(`${c.cards} decision card${c.cards === 1 ? '' : 's'}`);
   if (c.inventories > 0) parts.push(`${c.inventories} inventory asset${c.inventories === 1 ? '' : 's'}`);
   if (c.reports > 0) parts.push(`${c.reports} review packet${c.reports === 1 ? '' : 's'}`);

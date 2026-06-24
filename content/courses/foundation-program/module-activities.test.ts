@@ -6,6 +6,7 @@ import { FOUNDATION_MICRO_MODULES } from './micro-modules';
 import { getArtifactFirst } from './artifact-first';
 import { getFoundationLabBrief, getFoundationRoleTransfer } from './lab-first';
 import { buildModuleActivity, getModuleActivitySpec } from './module-activities';
+import { MODULE_3_PROMPTING_ACTIVITIES } from './module-3-activities';
 import { ROLE_PATHS } from './role-paths';
 import { courseArtifactToToolboxSkill } from '@/lib/toolbox/save-mappers';
 
@@ -157,6 +158,16 @@ describe('late Foundation course activity artifacts', () => {
         expect(field.placeholder, `module ${microModule.number} ${field.id} placeholder`).toMatch(/\S/);
       }
     }
+  });
+
+  it('keeps Module 3 prompt building scaffolded instead of a long blank-page gate', () => {
+    const promptBuilder = MODULE_3_PROMPTING_ACTIVITIES.find((activity) => activity.id === '3.2');
+    if (!promptBuilder) throw new Error('Missing Module 3 prompt builder');
+
+    expect(MODULE_3_PROMPTING_ACTIVITIES.map((activity) => activity.id)).toEqual(['3.1', '3.2']);
+    expect(promptBuilder.type).toBe('builder');
+    expect(promptBuilder.description).toMatch(/worked starter prompt/i);
+    expect(promptBuilder.fields[0]?.minLength).toBeLessThanOrEqual(30);
   });
 
   it('maps every module artifact into a Toolbox-ready day-job asset', () => {

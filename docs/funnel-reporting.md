@@ -1,9 +1,10 @@
 # Funnel reporting — launch visibility
 
-Three read-only Supabase **views** answer "how many leads / assessments /
-purchases / completions do I have right now?" without a single new table,
-write-path, or instrumentation call. They are added by
-`supabase/migrations/00049_funnel_reporting_views.sql`.
+Supabase-derived reporting answers "how many leads / assessments / purchases /
+completions do I have right now?" without a parallel write-path ledger. The
+known-contact views started in `supabase/migrations/00049_funnel_reporting_views.sql`;
+the current admin dashboard also applies server-side metric exclusions and
+resource-download corrections from the later reporting migrations.
 
 ## Why views, not a new tracking system
 
@@ -32,25 +33,21 @@ every checkout route to remember to write.
 | **Vercel Analytics / Plausible** | Anonymous traffic and pre-email intent (assessment start, briefing CTA clicks). |
 | **Supabase (these views)** | **Known-contact** funnel state — anyone who has given an email. |
 
-## The three views
+## The reporting surfaces
 
-All three are read-only, derived, and **service-role only** (see Security).
+The browser source of truth is `/admin/funnel`, backed by service-role reads and
+server-side filtering. Supabase Studio remains useful for CSV exports when the
+browser table cap is hit.
 
-### 1. `funnel_scorecard` — the daily numbers
+### 1. Funnel scorecard — the daily numbers
 
-One row per metric, with `all_time` / `last_7d` / `last_24h` counts, ordered by
-`sort_order`. This is the daily launch scorecard.
+One row per metric, with `all_time` / `last_7d` / `last_24h` counts. This is
+the daily launch scorecard in `/admin/funnel`.
 
-```sql
-select metric_label, all_time, last_7d, last_24h
-from funnel_scorecard
-order by sort_order;
-```
-
-Metrics: known contacts, free assessments completed, prompt-card leads, resource
-downloads (incl. anonymous), waitlist signups, In-Depth purchases ($99),
-In-Depth completed, Foundation purchases ($295), team cohorts, certificates
-issued, full refunds.
+Metrics: known contacts, free assessments completed, prompt-card leads, unique
+resource downloaders with known email, waitlist signups, In-Depth purchases
+($99), In-Depth completed, Foundation purchases ($295), team cohorts,
+certificates issued, and full refunds.
 
 ### 2. `funnel_stage_distribution` — the funnel shape
 
@@ -104,23 +101,90 @@ abandoned checkouts) lives in Vercel/Plausible and Stripe, not here.
 
 ## Reading and exporting
 
-- Run any of the queries above in the **Supabase SQL editor** (Studio →
-  SQL Editor). Studio's **Export → CSV** fills a spreadsheet in one click, which
-  is the manual daily scorecard.
-- The Stripe dashboard supplies revenue/refund **dollars**; these views supply
-  counts and contact context.
+- Use `/admin/funnel` for the operator view: scorecard, stage distribution,
+  recent contacts, and resource-download popularity.
+- Use Supabase Studio's **Export → CSV** for the full contact list when the
+  browser table cap is hit.
+- Use `/admin/support` and `/api/admin/support/export.csv?range=7d|30d|90d`
+  for support cases, refunds, access rescues, and support workload.
+- The Stripe dashboard supplies revenue/refund **dollars**; admin dashboards
+  supply counts and contact context.
+
+## Metric exclusions and resource-download rules
+
+Known-contact metrics exclude configured test/internal identities before they
+reach the scorecard, stage distribution, or contacts table.
+
+Configured exclusions:
+
+- `ADMIN_DASHBOARD_EXCLUDED_EMAILS` — comma/newline list of exact addresses.
+- `ADMIN_DASHBOARD_EXCLUDED_EMAIL_PATTERNS` — comma/newline list of wildcard
+  patterns.
+- Built-in default test patterns: `*@aibankinginstitute.test`, `*@example.test`,
+  and `*@example.com`.
+
+Important reading rules:
+
+- Exact exclusions use the app's `canonicalEmail()` helper, so Gmail dot/plus
+  variants are covered for exact addresses.
+- The scorecard's `Resource downloaders (known email)` row counts unique known
+  email people after exclusions. It is the lead-quality row.
+- The resource-download tiles/table below the scorecard are raw popularity
+  signals. They include anonymous, repeat, and test/seed traffic and use hashed
+  IP as the approximate unique-visitor signal. Do not treat those raw tiles as
+  qualified leads.
+- Anonymous resource downloads are useful for content interest, not for pipeline
+  counts.
+
+## Friday scorecard cadence
+
+Every Friday, the operator copies one row of evidence into a spreadsheet or
+launch log, adds notes, and chooses exactly one next action for the following
+week. The point is not dashboard watching; it is one operating decision.
+
+Use this 20-row template:
+
+| # | Row | Source | Pull | Decision use |
+|---:|---|---|---|---|
+| 1 | Named channel / audience / CTA | Channel brief | Manual note | Confirms the week had a real traffic source. |
+| 2 | Sessions by channel | Vercel Analytics / Plausible | Last 7d | Shows whether traffic actually arrived. |
+| 3 | Assessment starts | Vercel Analytics / Plausible | Last 7d | Measures top-of-funnel intent before email capture. |
+| 4 | Known contacts | `/admin/funnel` | Last 7d + all-time | Counts people with email, after exclusions. |
+| 5 | Free assessments completed | `/admin/funnel` | Last 7d | Measures core free-product completion. |
+| 6 | Completion-to-known-contact rate | Manual calc | Row 5 / row 4 | Flags capture or completion leakage. |
+| 7 | Prompt-card leads | `/admin/funnel` | Last 7d | Measures resource-to-email conversion. |
+| 8 | Resource downloaders with known email | `/admin/funnel` | Last 7d | Counts qualified resource downloaders only. |
+| 9 | Top raw resource downloads | `/admin/funnel` resource table | Last 7d | Guides content interest, not lead count. |
+| 10 | Checkout starts / paid clicks | Stripe or analytics | Last 7d | Shows paid intent before purchase. |
+| 11 | In-Depth purchases | `/admin/funnel` + Stripe | Last 7d + dollars | Tracks the $99 rung. |
+| 12 | In-Depth completions | `/admin/funnel` | Last 7d | Finds paid buyers who still need rescue. |
+| 13 | Foundation purchases | `/admin/funnel` + Stripe | Last 7d + dollars | Tracks the $295 rung. |
+| 14 | Active learners | `/admin/funnel` stage distribution | Current | Confirms paid access becomes real progress. |
+| 15 | Certificates issued | `/admin/funnel` | Last 7d | Measures downstream course completion. |
+| 16 | Open/new/SLA support cases | `/admin/support` | Current + last 7d | Decides whether support is blocking growth. |
+| 17 | Pending/approved/issued refunds | `/admin/support` + Stripe | Current + last 7d | Separates product issues from manual money movement. |
+| 18 | Provisioning/email/webhook failures | `/admin` or `/admin/support` | Last 7d | Flags operational breakage. |
+| 19 | Excluded test/internal rows reviewed | `/admin` + env vars | Current | Confirms data hygiene has not drifted. |
+| 20 | What changed / one next action | Friday note | Manual | The single conversion/support/product change for next week. |
+
+Rules for the Friday note:
+
+- Every number must name its source.
+- Keep test/internal exclusions visible in the note.
+- Treat anonymous raw downloads as content-interest only.
+- If Stripe dollars and admin counts disagree, Stripe is authoritative for
+  money and admin is authoritative for app-state counts.
+- The week is not reviewed until row 20 has one owner and one next action.
 
 ## Known limitations (by design)
 
-- **Email dedupe is `lower(trim(email))`.** It does *not* replicate the Gmail
-  dot/`+tag` stripping in `src/lib/email/canonicalize.ts`, to avoid a second
-  canonicalization definition that could drift from the app. A person who used a
-  Gmail alias on one form and the plain address on another may appear as two
-  contacts. Negligible at launch scale.
-- **Counts include test/seed data.** The shared database holds development rows
-  (seeded enrollments, downloads, etc.). The views report what is in the table;
-  they do not try to guess which rows are real. Factor this in when reading
-  launch numbers, or clean seed rows separately (never via these views).
+- **Funnel contacts still depend on source-table email quality.** Known-contact
+  rows are filtered for configured test/internal identities, but a real person
+  who uses materially different non-Gmail addresses can still appear more than
+  once.
+- **Raw resource-download popularity includes noise.** The scorecard's known-email
+  downloader row is filtered; the raw resource table is intentionally not
+  de-duplicated by person and includes anonymous/repeat/test traffic.
 - **No revenue dollars.** Intentional — Stripe is authoritative for money.
 
 ## Security model

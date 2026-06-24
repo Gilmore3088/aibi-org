@@ -17,7 +17,10 @@ import {
 import {
   ArrowRight,
   CheckCircle,
+  ClipboardCheck,
   Download,
+  LockKeyhole,
+  ShieldCheck,
 } from './icons';
 import {
   type DeskCard as DeskCardData,
@@ -53,6 +56,33 @@ const EMPTY_FILTERS: FilterState = {
   search: '',
 };
 
+const GOVERNANCE_LINKS = [
+  {
+    title: 'Security & governance',
+    desc: 'The public boundary for approved tools, restricted data, human review, and evidence.',
+    href: '/security',
+    action: 'Open security page',
+    tag: 'Guide',
+    icon: ShieldCheck,
+  },
+  {
+    title: 'LLM data handling',
+    desc: 'Provider calls, retention posture, subprocessors, PII checks, and override handling.',
+    href: '/security/data-handling',
+    action: 'Review data path',
+    tag: 'Data',
+    icon: LockKeyhole,
+  },
+  {
+    title: 'IT review packet',
+    desc: 'Forwardable scope, support path, trust boundaries, and institution rollout questions.',
+    href: '/security/it-approval',
+    action: 'Forward packet',
+    tag: 'Review',
+    icon: ClipboardCheck,
+  },
+] as const;
+
 function matchesSearch(text: string, search: string): boolean {
   if (!search) return true;
   return text.toLowerCase().includes(search.toLowerCase());
@@ -80,9 +110,18 @@ function roleMatchesPlaybook(p: RolePlaybook, roles: ReadonlySet<RoleFilter>): b
 
 function templateMatches(template: TemplateData, f: FilterState): boolean {
   if (f.formats.size && !f.formats.has('Template')) return false;
-  // Templates aren't role-scoped — only honor role filter when search is
-  // also empty to avoid hiding the entire grid on a role-only filter.
-  if (f.roles.size && !f.search) return false;
+  if (f.roles.size) {
+    const selectedRoleSlugs = Array.from(f.roles).flatMap((role) => ROLE_SLUG_MAP[role]);
+    const templateRoles = template.roles ?? [];
+    if (templateRoles.length > 0) {
+      if (!templateRoles.some((role) => selectedRoleSlugs.includes(role))) return false;
+    } else if (!f.search) {
+      // Generic templates are intentionally hidden on a role-only filter so
+      // persona-driven visitors get a precise role artifact first. Search can
+      // still cross-cut all template titles and descriptions.
+      return false;
+    }
+  }
   return matchesSearch(`${template.title} ${template.desc} ${template.format}`, f.search);
 }
 
@@ -200,6 +239,19 @@ export function ResourcesExperience() {
           </div>
         </Section>
       )}
+
+      <Section variant="std" surface="white" id="security-governance">
+        <SectionHead
+          kicker="Security and governance"
+          heading="Need the review path before you download?"
+          lede="If IT, risk, or compliance needs the boundary first, start with these public review pages."
+        />
+        <div className="rx-grid rx-grid-3 rx-grid-2col-mobile">
+          {GOVERNANCE_LINKS.map((link) => (
+            <GovernanceReviewCard key={link.href} link={link} />
+          ))}
+        </div>
+      </Section>
 
       {visibleDeskCards.length > 0 && (
         <Section variant="std" surface="white" id="desk-cards">
@@ -383,6 +435,25 @@ function StarterKitCard({
       >
         Download kit <Download size={14} />
       </a>
+    </article>
+  );
+}
+
+function GovernanceReviewCard({ link }: { link: (typeof GOVERNANCE_LINKS)[number] }) {
+  const Icon = link.icon;
+  return (
+    <article className="rx-pb-card">
+      <div className="rx-kit-card-head">
+        <Icon size={28} className="rx-kit-icon" />
+        <span className="rx-pill rx-pill-outline">{link.tag}</span>
+      </div>
+      <h3 className="rx-kit-title">{link.title}</h3>
+      <p className="rx-kit-desc">{link.desc}</p>
+      <div className="rx-pb-actions">
+        <Button variant="ink" href={link.href}>
+          {link.action} <ArrowRight size={16} />
+        </Button>
+      </div>
     </article>
   );
 }

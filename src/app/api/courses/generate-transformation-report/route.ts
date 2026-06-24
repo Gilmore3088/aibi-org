@@ -7,22 +7,20 @@
 // Security model:
 //   - Auth session required — unauthenticated requests return 401.
 //   - Enrollment ownership verified — enrollment.user_id must match authenticated user.
-//   - User text rendered via @react-pdf/renderer Text components — no HTML injection.
+//   - User text is HTML-escaped before Chromium print rendering.
 
 import { cookies } from 'next/headers';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import React from 'react';
-import type { DocumentProps } from '@react-pdf/renderer';
-import { renderToBuffer } from '@react-pdf/renderer';
 import {
-  TransformationReportDocument,
+  buildTransformationReportPdfBuffer,
   type TransformationReportProps,
   type SkillEntry,
   type QuickWinEntry,
   type DimensionEntry,
-} from '@/lib/pdf/TransformationReportDocument';
+} from '@/lib/pdf/transformation-report';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { FOUNDATION_MODULE_COUNT } from '@content/courses/foundation-program/course-config';
 
 const PDF_FILENAME = 'AiBI-Foundation-Transformation-Report.pdf';
 
@@ -54,6 +52,10 @@ interface ActivityResponseRow {
 
 interface WorkSubmissionRow {
   review_status: string;
+}
+
+interface CertificateRow {
+  certificate_id: string;
 }
 
 interface QuickWinRow {
@@ -204,11 +206,7 @@ function buildSkills(activityResponses: ActivityResponseRow[]): SkillEntry[] {
 // ── Generate PDF buffer ───────────────────────────────────────────────────────
 
 async function generatePdf(props: TransformationReportProps): Promise<Buffer> {
-  const element = React.createElement(
-    TransformationReportDocument,
-    props,
-  ) as React.ReactElement<DocumentProps>;
-  return renderToBuffer(element);
+  return buildTransformationReportPdfBuffer(props);
 }
 
 // ── PDF Response ──────────────────────────────────────────────────────────────
@@ -245,6 +243,7 @@ export async function GET(request: Request): Promise<Response> {
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }
+  const normalizedEnrollmentId = enrollmentId.trim();
 
   // Auth
   const authResult = await authenticate();
@@ -270,7 +269,7 @@ export async function GET(request: Request): Promise<Response> {
       'id, user_id, email, completed_modules, onboarding_answers, ' +
       'post_assessment_score, post_assessment_tier_label, post_assessment_dimension_scores'
     )
-    .eq('id', enrollmentId.trim())
+    .eq('id', normalizedEnrollmentId)
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -293,7 +292,7 @@ export async function GET(request: Request): Promise<Response> {
   const { data: activityRows } = await serviceClient
     .from('activity_responses')
     .select('activity_id, response')
-    .eq('enrollment_id', enrollmentId.trim());
+    .eq('enrollment_id', normalizedEnrollmentId);
 
   const activityResponses: ActivityResponseRow[] =
     (activityRows as ActivityResponseRow[] | null) ?? [];
@@ -302,7 +301,7 @@ export async function GET(request: Request): Promise<Response> {
   const { data: quickWinRows } = await serviceClient
     .from('quick_wins')
     .select('description, tool, time_saved_minutes, skill_name')
-    .eq('enrollment_id', enrollmentId.trim())
+    .eq('enrollment_id', normalizedEnrollmentId)
     .order('created_at', { ascending: false });
 
   const quickWins: QuickWinEntry[] = ((quickWinRows as QuickWinRow[] | null) ?? []).map((w) => ({
@@ -315,12 +314,19 @@ export async function GET(request: Request): Promise<Response> {
   const { data: submissionRow } = await serviceClient
     .from('work_submissions')
     .select('review_status')
-    .eq('enrollment_id', enrollmentId.trim())
+    .eq('enrollment_id', normalizedEnrollmentId)
     .maybeSingle();
 
   const submission = submissionRow as WorkSubmissionRow | null;
   const workProductSubmitted = submission !== null;
   const workProductReviewed = submission?.review_status === 'approved';
+
+  const { data: certificateData } = await serviceClient
+    .from('certificates')
+    .select('certificate_id')
+    .eq('enrollment_id', normalizedEnrollmentId)
+    .maybeSingle();
+  const certificate = certificateData as CertificateRow | null;
 
   // Fetch pre-assessment readiness from user_profiles. Assessment data was
   // consolidated onto user_profiles.readiness_* columns; the legacy
@@ -360,11 +366,13 @@ export async function GET(request: Request): Promise<Response> {
     workflowsAutomated: skills.length,
     quickWins,
     modulesCompleted: completedModules,
-    totalModules: 9,
+    totalModules: FOUNDATION_MODULE_COUNT,
     workProductSubmitted,
     workProductReviewed,
-    verificationUrl: `https://aibankinginstitute.com/verify/${enrollmentId.trim()}`,
-    enrollmentId: enrollmentId.trim(),
+    verificationUrl: certificate?.certificate_id
+      ? `https://aibankinginstitute.com/verify/${certificate.certificate_id}`
+      : 'Certificate verification pending',
+    enrollmentId: normalizedEnrollmentId,
   };
 
   try {
