@@ -18,6 +18,7 @@ describe('GuideRequestForm', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
+    window.sessionStorage.clear();
   });
 
   it('shows success only after lead capture and PDF fetch both succeed', async () => {
@@ -48,6 +49,7 @@ describe('GuideRequestForm', () => {
       2,
       '/api/guides/safe-ai-use?source_surface=security-safe-ai-guide',
     );
+    expect(window.sessionStorage.getItem('aibi.freeResource.email')).toBe('jordan@bank.test');
     expect(createObjectURL).toHaveBeenCalled();
     expect(clickMock).toHaveBeenCalled();
   });
@@ -71,6 +73,7 @@ describe('GuideRequestForm', () => {
 
     expect((await screen.findByRole('alert')).textContent).toBe('PDF unavailable. Please try again.');
     expect(screen.queryByText(/Your guide is ready/i)).toBeNull();
+    expect(window.sessionStorage.getItem('aibi.freeResource.email')).toBeNull();
     expect(clickMock).not.toHaveBeenCalled();
   });
 });
