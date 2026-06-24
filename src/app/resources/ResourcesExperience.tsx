@@ -318,7 +318,7 @@ export function ResourcesExperience() {
           <SectionHead
             kicker="Role playbooks"
             heading={`${visiblePlaybooks.length} playbook${visiblePlaybooks.length === 1 ? '' : 's'} for the role you picked.`}
-            lede="Open the role path, then copy the templates and prompts that come with it."
+            lede="Open the role path, then download the gated templates and prompts that come with it."
           />
           <div className="rx-grid rx-grid-3 rx-grid-2col-mobile">
             {visiblePlaybooks.map((playbook) => (
@@ -347,7 +347,7 @@ export function ResourcesExperience() {
         <Section variant="std" id="templates">
           <SectionHead
             kicker="Templates"
-            heading="Copy these into your next meeting."
+            heading="Start your next meeting with these templates."
             lede="Starter documents for policy, workflow, board review, and AI use-case governance."
           />
           <div className="rx-grid rx-grid-4 rx-list-mobile">

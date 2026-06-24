@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 // /resources/templates/ai-workflow-sop — interactive working template
 //
 // Validates the form-driven builder: hero snapshot reactivity, field
-// edits, markdown preview reflection, review checklist state, copy +
-// download wiring, and the /resources entry point that links here.
+// edits, markdown preview reflection, review checklist state, gated copy +
+// gated download wiring, and the /resources entry point that links here.
 
 test.describe('/resources/templates/ai-workflow-sop builder', () => {
   test('renders hero + builder + preview', async ({ page }) => {
@@ -59,25 +59,51 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
     await expect(markBtn).toBeEnabled();
   });
 
-  test('Copy Markdown writes to clipboard with the rendered markdown', async ({ page, context, browserName }) => {
+  test('gates Copy Markdown behind email capture, then writes rendered markdown', async ({ page, context, browserName }) => {
     test.skip(browserName === 'webkit', 'clipboard-read permission unsupported in WebKit');
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.route('/api/capture-email', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      });
+    });
     await page.goto('/resources/templates/ai-workflow-sop');
     await expect(page.getByTestId('markdown-preview')).toBeVisible();
+    await expect(page.getByRole('button', { name: /Copy Markdown/i })).toHaveCount(0);
 
-    await page.getByRole('button', { name: /Copy Markdown/ }).click();
-    // The button text toggles to "Copied" briefly; the contract we
-    // actually care about is the clipboard contents.
+    await page
+      .getByRole('button', { name: /Get Markdown for AI Workflow SOP Markdown/i })
+      .first()
+      .click();
+    await page.getByLabel(/Work email/i).fill('ops@bank.com');
+    await page.getByRole('button', { name: /Continue/i }).click();
+
     const clip = await page.evaluate(() => navigator.clipboard.readText());
     expect(clip).toContain('# AI-Assisted Procedure Summary Workflow');
     expect(clip).toContain('## 10. Retention Rule');
   });
 
-  test('Download .md triggers a markdown file download', async ({ page }) => {
+  test('gates markdown file download behind email capture', async ({ page }) => {
+    await page.route('/api/capture-email', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      });
+    });
     await page.goto('/resources/templates/ai-workflow-sop');
+    await expect(page.getByRole('button', { name: /Download \.md/i })).toHaveCount(0);
+    await page
+      .getByRole('button', { name: /Get \.md for AI Workflow SOP Markdown file/i })
+      .first()
+      .click();
+    await page.getByLabel(/Work email/i).fill('ops@bank.com');
+
     const [download] = await Promise.all([
       page.waitForEvent('download'),
-      page.getByRole('button', { name: /Download \.md/i }).click(),
+      page.getByRole('button', { name: /Get file/i }).click(),
     ]);
     expect(download.suggestedFilename()).toBe('ai-workflow-sop-template.md');
   });
