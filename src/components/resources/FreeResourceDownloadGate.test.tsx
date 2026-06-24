@@ -109,4 +109,48 @@ describe('FreeResourceDownloadGate', () => {
       '/api/resources/operations-playbook/download?source_surface=resources-role-playbook-card&assessment_role=operations&assessment_tier_id=early-stage&assessment_tier_label=Early+Stage&assessment_top_gap=workflow-readiness',
     );
   });
+
+  it('runs custom resource actions only after email capture', async () => {
+    const onUnlock = vi.fn();
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({ ok: true }), { status: 200 }),
+    );
+
+    render(
+      <FreeResourceDownloadGate
+        title="AI Workflow SOP Markdown"
+        slug="template-ai-workflow-sop"
+        source="resources-ai-workflow-sop-copy"
+        actionLabel="Get Markdown"
+        capturedLabel="Copy Markdown"
+        submitLabel="Continue"
+        stayInteractiveAfterUnlock
+        onUnlock={onUnlock}
+      />,
+    );
+
+    expect(screen.queryByRole('button', { name: /Copy Markdown/i })).toBeNull();
+    fireEvent.click(
+      screen.getByRole('button', { name: /Get Markdown for AI Workflow SOP Markdown/i }),
+    );
+    expect(onUnlock).not.toHaveBeenCalled();
+
+    fireEvent.change(screen.getByLabelText(/Work email/i), {
+      target: { value: 'ops@bank.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /Continue/i }));
+
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith('/api/capture-email', expect.objectContaining({
+        method: 'POST',
+      }));
+      expect(onUnlock).toHaveBeenCalledWith(expect.objectContaining({
+        email: 'ops@bank.com',
+        source: 'resources-ai-workflow-sop-copy',
+      }));
+      expect(
+        screen.getByRole('button', { name: /Copy Markdown for AI Workflow SOP Markdown/i }),
+      ).toBeTruthy();
+    });
+  });
 });

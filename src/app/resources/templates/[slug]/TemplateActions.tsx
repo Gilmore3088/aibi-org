@@ -1,49 +1,25 @@
 'use client';
 
-// Copy / download affordances for a static template page (qa-site-walk U18).
-// The template renders as read-only HTML; a banker is meant to adapt it in an
-// afternoon, so give them a Word-compatible document first, plus one-click
-// "Copy Markdown" for teams that want plain text.
-
-import { useState } from 'react';
-import { Button } from '@/components/mockup';
+import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
 
 interface TemplateActionsProps {
-  readonly markdown: string;
+  readonly title: string;
   readonly slug: string;
-  readonly surface?: 'dark' | 'light';
 }
 
-export function TemplateActions({ markdown, slug, surface = 'light' }: TemplateActionsProps) {
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(markdown);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard blocked (insecure context / permissions) — no-op; the
-      // Word download is the fallback path.
-    }
-  }
-
+export function TemplateActions({ title, slug }: TemplateActionsProps) {
   return (
     <div className="mk-tpl-copy" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-      <Button
-        variant="gold"
+      <FreeResourceDownloadGate
+        title={title}
         href={`/api/resources/templates/${slug}/word`}
-        aria-label="Download this template as a Word document"
-      >
-        Download Word doc
-      </Button>
-      <Button
-        variant={surface === 'dark' ? 'ghost-dark' : 'ghost-light'}
-        onClick={copy}
-        aria-label="Copy this template as Markdown"
-      >
-        {copied ? 'Copied' : 'Copy text'}
-      </Button>
+        slug={`template-${slug}`}
+        source="resources-template-page"
+        format="Word"
+        actionLabel="Get Word doc"
+        capturedLabel="Download Word doc"
+        buttonVariant="gold"
+      />
     </div>
   );
 }

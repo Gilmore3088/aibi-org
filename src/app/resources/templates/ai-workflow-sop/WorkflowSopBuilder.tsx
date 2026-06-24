@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from 'react';
 import { Button, EyebrowChip, SiteHeader } from '@/components/mockup';
+import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
 import {
   BadgeCheck,
   CheckCircle,
   ClipboardCheck,
-  Download,
   FileText,
   LockKeyhole,
   ShieldCheck,
@@ -254,12 +254,33 @@ export function WorkflowSopBuilder() {
               path, and retention rule before an AI workflow is reused.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" onClick={copyMarkdown}>
-                {copied ? 'Copied' : 'Copy Markdown'}
-              </Button>
-              <Button variant="ghost-dark" size="lg" onClick={downloadMarkdown}>
-                Download .md <Download size={16} />
-              </Button>
+              <FreeResourceDownloadGate
+                title="AI Workflow SOP Markdown"
+                slug="template-ai-workflow-sop"
+                source="resources-ai-workflow-sop-copy"
+                format="Markdown"
+                actionLabel="Get Markdown"
+                capturedLabel={copied ? 'Copied' : 'Copy Markdown'}
+                buttonVariant="gold"
+                buttonSize="lg"
+                formAriaLabel="Enter your email to use the AI Workflow SOP Markdown"
+                submitLabel="Continue"
+                stayInteractiveAfterUnlock
+                onUnlock={copyMarkdown}
+              />
+              <FreeResourceDownloadGate
+                title="AI Workflow SOP Markdown file"
+                slug="template-ai-workflow-sop-md"
+                source="resources-ai-workflow-sop-download"
+                format="Markdown"
+                actionLabel="Get .md"
+                capturedLabel="Download .md"
+                buttonVariant="ghost-dark"
+                buttonSize="lg"
+                formAriaLabel="Enter your email to download the AI Workflow SOP Markdown file"
+                stayInteractiveAfterUnlock
+                onUnlock={downloadMarkdown}
+              />
             </div>
           </div>
 
@@ -544,12 +565,31 @@ function MarkdownPreview({
           <h3>ai-workflow-sop-template.md</h3>
         </div>
         <div className="sop-preview-actions">
-          <Button variant="ghost-light" onClick={copyMarkdown}>
-            {copied ? 'Copied' : 'Copy'}
-          </Button>
-          <Button variant="ink" onClick={downloadMarkdown}>
-            .md <Download size={16} />
-          </Button>
+          <FreeResourceDownloadGate
+            title="AI Workflow SOP Markdown"
+            slug="template-ai-workflow-sop"
+            source="resources-ai-workflow-sop-preview-copy"
+            format="Markdown"
+            actionLabel="Get Markdown"
+            capturedLabel={copied ? 'Copied' : 'Copy'}
+            buttonVariant="ghost-light"
+            formAriaLabel="Enter your email to use the AI Workflow SOP Markdown"
+            submitLabel="Continue"
+            stayInteractiveAfterUnlock
+            onUnlock={copyMarkdown}
+          />
+          <FreeResourceDownloadGate
+            title="AI Workflow SOP Markdown file"
+            slug="template-ai-workflow-sop-md"
+            source="resources-ai-workflow-sop-preview-download"
+            format="Markdown"
+            actionLabel="Get .md"
+            capturedLabel="Download .md"
+            buttonVariant="ink"
+            formAriaLabel="Enter your email to download the AI Workflow SOP Markdown file"
+            stayInteractiveAfterUnlock
+            onUnlock={downloadMarkdown}
+          />
         </div>
       </div>
       <pre className="sop-md" data-testid="markdown-preview">{markdown}</pre>

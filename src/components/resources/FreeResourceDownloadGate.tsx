@@ -22,12 +22,17 @@ const variantClass: Record<ButtonVariant, string> = {
 
 export interface FreeResourceDownloadGateProps {
   readonly title: string;
-  readonly href: string;
+  readonly href?: string;
   readonly slug: string;
   readonly source: string;
   readonly format?: string;
   readonly actionLabel?: string;
   readonly capturedLabel?: string;
+  readonly doneLabel?: string;
+  readonly formAriaLabel?: string;
+  readonly submitLabel?: string;
+  readonly stayInteractiveAfterUnlock?: boolean;
+  readonly onUnlock?: (context: FreeResourceCaptureContext | null) => void | Promise<void>;
   readonly buttonVariant?: ButtonVariant;
   readonly buttonSize?: ButtonSize;
   readonly buttonClassName?: string;
@@ -57,6 +62,11 @@ export function FreeResourceDownloadGate({
   format = 'PDF',
   actionLabel,
   capturedLabel,
+  doneLabel,
+  formAriaLabel,
+  submitLabel,
+  stayInteractiveAfterUnlock = false,
+  onUnlock,
   buttonVariant,
   buttonSize,
   buttonClassName,
@@ -84,22 +94,42 @@ export function FreeResourceDownloadGate({
     }
   }, []);
 
-  function openDownload(context: FreeResourceCaptureContext | null = captureContext) {
-    const attributedHref = buildFreeResourceDownloadHref(href, {
-      source,
-      ...(context?.role ? { role: context.role } : {}),
-      ...(context?.tier ? { tier: context.tier } : {}),
-      ...(context?.tierLabel ? { tierLabel: context.tierLabel } : {}),
-      ...(context?.topGap ? { topGap: context.topGap } : {}),
-    });
-    if (onNavigate) onNavigate(attributedHref);
-    else window.location.assign(attributedHref);
-    setPhase('done');
+  function applyRememberedCapture(): FreeResourceCaptureContext | null {
+    const remembered = readRememberedFreeResourceCapture();
+    if (!remembered) return null;
+    setCaptured(true);
+    setEmail(remembered.email);
+    setCaptureContext(remembered);
+    return remembered;
+  }
+
+  async function runUnlockedAction(context: FreeResourceCaptureContext | null = captureContext) {
+    try {
+      if (onUnlock) {
+        await onUnlock(context);
+      } else if (href) {
+        const attributedHref = buildFreeResourceDownloadHref(href, {
+          source,
+          ...(context?.role ? { role: context.role } : {}),
+          ...(context?.tier ? { tier: context.tier } : {}),
+          ...(context?.tierLabel ? { tierLabel: context.tierLabel } : {}),
+          ...(context?.topGap ? { topGap: context.topGap } : {}),
+        });
+        if (onNavigate) onNavigate(attributedHref);
+        else window.location.assign(attributedHref);
+      }
+
+      setPhase(stayInteractiveAfterUnlock ? 'idle' : 'done');
+    } catch (error) {
+      setErrorMsg(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+      setPhase('error');
+    }
   }
 
   function handleClick() {
-    if (captured) {
-      openDownload();
+    const remembered = captured ? null : applyRememberedCapture();
+    if (captured || remembered) {
+      void runUnlockedAction(remembered ?? captureContext);
       return;
     }
     setPhase('form');
@@ -143,7 +173,7 @@ export function FreeResourceDownloadGate({
       rememberFreeResourceCapture(nextContext);
       setCaptureContext(nextContext);
       setCaptured(true);
-      openDownload(nextContext);
+      await runUnlockedAction(nextContext);
     } catch (error) {
       setErrorMsg(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
       setPhase('error');
@@ -155,7 +185,7 @@ export function FreeResourceDownloadGate({
   if (phase === 'done') {
     return (
       <div className={containerClass} role="status" aria-live="polite">
-        <span className="mk-download-gate-ok">Opening {title}&hellip;</span>
+        <span className="mk-download-gate-ok">{doneLabel ?? `Opening ${title}...`}</span>
       </div>
     );
   }
@@ -165,7 +195,7 @@ export function FreeResourceDownloadGate({
       <form
         className={['mk-download-gate-form', containerClassName].filter(Boolean).join(' ')}
         onSubmit={handleSubmit}
-        aria-label={`Enter your email to download ${title}`}
+        aria-label={formAriaLabel ?? `Enter your email to download ${title}`}
         noValidate
       >
         <div className="mk-download-gate-field">
@@ -193,7 +223,7 @@ export function FreeResourceDownloadGate({
               className="mk-btn mk-btn-gold mk-download-gate-submit"
               disabled={phase === 'submitting'}
             >
-              {phase === 'submitting' ? 'Sending...' : 'Get file'}
+              {phase === 'submitting' ? 'Sending...' : (submitLabel ?? 'Get file')}
             </button>
           </div>
           {errorMsg ? (

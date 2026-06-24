@@ -1,7 +1,7 @@
 // /resources/templates/[slug] — render an inline practical template.
 //
 // Each template is a structured starter document a banker can read,
-// copy, and adapt. Content lives in src/app/resources/templates/data.ts.
+// download, and adapt. Content lives in src/app/resources/templates/data.ts.
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -18,27 +18,6 @@ import { TemplateActions } from './TemplateActions';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-// Serialize a template to plain Markdown so a banker can copy/download and
-// adapt it (qa-site-walk U18). Server-side; the string is handed to the
-// client TemplateActions component.
-function templateToMarkdown(t: Template): string {
-  const lines: string[] = [`# ${t.title}`, '', t.dek, ''];
-  for (const s of t.sections) {
-    lines.push(`## ${s.heading}`, '');
-    if (s.intro) lines.push(s.intro, '');
-    if (s.items) for (const item of s.items) lines.push(`- ${item}`);
-    if (s.steps) s.steps.forEach((step, i) => lines.push(`${i + 1}. ${step}`));
-    if (s.items || s.steps) lines.push('');
-  }
-  if (t.sourcedFrom.length) {
-    lines.push('## Sourced from', '');
-    for (const src of t.sourcedFrom) lines.push(`- ${src}`);
-    lines.push('');
-  }
-  lines.push('---', '', 'Starter template from The AI Banking Institute — adapt before adoption.');
-  return lines.join('\n');
 }
 
 function templatePreviewLines(section: Template['sections'][number]): string[] {
@@ -85,8 +64,6 @@ export default async function TemplatePage(props: PageProps) {
   const t = getTemplate(params.slug);
   if (!t) notFound();
 
-  const markdown = templateToMarkdown(t);
-
   return (
     <div className="mockup-scope">
       <SiteHeader
@@ -109,7 +86,7 @@ export default async function TemplatePage(props: PageProps) {
               <span>{t.readMinutes} min</span>
             </div>
             <div style={{ marginTop: 20 }}>
-              <TemplateActions markdown={markdown} slug={t.slug} surface="dark" />
+              <TemplateActions title={t.title} slug={t.slug} />
             </div>
           </div>
           <TemplateHeroPreview template={t} />
@@ -133,7 +110,7 @@ export default async function TemplatePage(props: PageProps) {
                 Actions
               </p>
               <div style={{ display: 'grid', gap: 10, marginTop: 12 }}>
-                <TemplateActions markdown={markdown} slug={t.slug} />
+                <TemplateActions title={t.title} slug={t.slug} />
               </div>
             </>
           }
@@ -173,7 +150,7 @@ export default async function TemplatePage(props: PageProps) {
           </aside>
 
           <div className="mk-tpl-actions" style={{ flexWrap: 'wrap', gap: 12 }}>
-            <TemplateActions markdown={markdown} slug={t.slug} />
+            <TemplateActions title={t.title} slug={t.slug} />
             <Button variant="ink" href="/resources#templates">
               ← All templates
             </Button>
