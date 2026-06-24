@@ -7,6 +7,7 @@
 // gold CTA. Voice is matter-of-fact — no "powered by" marketing.
 
 import { useState, type CSSProperties, type FormEvent } from 'react';
+import { buildFreeResourceDownloadHref } from '@/lib/resources/freeResourceCapture';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -112,7 +113,9 @@ export function GuideRequestForm() {
   }
 
   async function triggerPdfDownload() {
-    const response = await fetch(GUIDE_DOWNLOAD_PATH);
+    const response = await fetch(buildFreeResourceDownloadHref(GUIDE_DOWNLOAD_PATH, {
+      source: 'security-safe-ai-guide',
+    }));
     if (!response.ok) {
       const data = (await response.json().catch(() => ({}))) as { error?: string };
       throw new Error(data.error ?? 'Guide download unavailable. Please try again.');

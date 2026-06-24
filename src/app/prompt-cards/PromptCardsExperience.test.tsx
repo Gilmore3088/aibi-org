@@ -73,7 +73,11 @@ describe('PromptCardsExperience', () => {
       email: 'marketing@communitybank.test',
       role: 'practitioner',
     }));
-    expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/prompt-cards/download', { cache: 'no-store' });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      '/api/prompt-cards/download?source_surface=prompt-cards-lead-modal&assessment_role=practitioner',
+      { cache: 'no-store' },
+    );
     expect(screen.getByRole('heading', { name: /all 20 workflow cards/i })).toBeTruthy();
     expect(window.localStorage.getItem('aibi-prompt-cards-unlocked')).toBe('true');
     expect(window.sessionStorage.getItem('aibi.freeResource.email')).toBe('marketing@communitybank.test');

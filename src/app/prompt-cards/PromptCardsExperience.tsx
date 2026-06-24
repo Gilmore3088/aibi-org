@@ -416,7 +416,11 @@ function LeadModal({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Could not load the cards.');
-      const pdfRes = await fetch('/api/prompt-cards/download', { cache: 'no-store' });
+      const pdfHref = buildFreeResourceDownloadHref('/api/prompt-cards/download', {
+        source: 'prompt-cards-lead-modal',
+        role,
+      });
+      const pdfRes = await fetch(pdfHref, { cache: 'no-store' });
       if (!pdfRes.ok) {
         const pdfError = (await pdfRes.json().catch(() => ({}))) as { error?: string };
         throw new Error(pdfError.error ?? 'The PDF could not be generated. Please try again.');

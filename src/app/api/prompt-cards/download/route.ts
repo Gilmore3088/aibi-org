@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { logStaticResourceDownload } from '@/lib/resources/downloadLogging';
 
 const PDF_FILENAME = 'AiBI-Prompt-Cards.pdf';
 const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-prompt-cards.pdf');
@@ -19,6 +20,10 @@ export async function GET(request: Request): Promise<Response> {
 
   try {
     const file = await readFile(PDF_PATH);
+    await logStaticResourceDownload(request, {
+      resourceSlug: 'aibi-prompt-cards',
+      defaultSourceSurface: 'prompt-cards-download',
+    });
     return new Response(new Uint8Array(file), {
       headers: {
         'Content-Type': 'application/pdf',

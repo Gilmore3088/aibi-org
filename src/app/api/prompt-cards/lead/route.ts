@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { subscribeToAssessmentForm } from '@/lib/mailerlite';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { freeResourceCaptureResponse } from '@/lib/resources/captureCookie';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROLES = new Set(['practitioner', 'compliance-risk', 'executive', 'training-buyer', 'other']);
@@ -64,5 +65,5 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
   }
 
-  return NextResponse.json({ ok: true });
+  return freeResourceCaptureResponse({ ok: true }, email);
 }

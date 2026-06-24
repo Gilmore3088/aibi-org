@@ -27,13 +27,12 @@ describe('GuideRequestForm', () => {
       .mockResolvedValueOnce({
         ok: true,
         blob: async () => new Blob(['%PDF-1.7'], { type: 'application/pdf' }),
-      });
+    });
     const clickMock = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => undefined);
-    const createObjectURL = vi.fn(() => 'blob:safe-ai-guide');
-    const revokeObjectURL = vi.fn();
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:safe-ai-guide');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined);
 
     vi.stubGlobal('fetch', fetchMock);
-    vi.stubGlobal('URL', { createObjectURL, revokeObjectURL });
 
     render(<GuideRequestForm />);
 
@@ -45,7 +44,10 @@ describe('GuideRequestForm', () => {
     expect(fetchMock).toHaveBeenNthCalledWith(1, '/api/inquiry', expect.objectContaining({
       method: 'POST',
     }));
-    expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/guides/safe-ai-use');
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      '/api/guides/safe-ai-use?source_surface=security-safe-ai-guide',
+    );
     expect(createObjectURL).toHaveBeenCalled();
     expect(clickMock).toHaveBeenCalled();
   });

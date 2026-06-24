@@ -57,6 +57,9 @@ describe('POST /api/prompt-cards/lead', () => {
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({ ok: true });
+    expect(response.headers.get('set-cookie')).toContain(
+      'aibi_free_resource_email=collector%40communitybank.test',
+    );
     expect(mocks.subscribeToAssessmentForm).toHaveBeenCalledWith({
       email: 'collector@communitybank.test',
       fields: { source: 'prompt-cards', role },
