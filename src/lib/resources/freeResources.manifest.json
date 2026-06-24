@@ -72,7 +72,7 @@
       "variants": { "pdf": "regulatory-cheatsheet.pdf", "word": "/api/resources/regulatory-cheatsheet/word", "zip": null, "largePrintPdf": "/api/resources/regulatory-cheatsheet/large-print" },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/regulatory-cheatsheet/download",
-      "sourceCitations": ["SR 11-7", "CFPB Reg B", "Interagency Third-Party Risk Guidance", "FFIEC BSA/AML Manual"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "OCC Bulletin 2026-13", "FDIC FIL-15-2026", "CFPB Reg B", "Interagency Third-Party Risk Guidance", "FFIEC BSA/AML Manual"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": {
         "roles": ["compliance", "executive"],

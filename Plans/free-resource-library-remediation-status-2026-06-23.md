@@ -118,6 +118,7 @@ This branch implements the first guardrail pass from the content resource review
 - Regenerated `prompt-strategy-cheat-sheet` large-print PDF from 31 pages down to 8 pages.
 - Updated the large-print generator so dense tables reflow into compact two-column row groups, and risk-band cards avoid awkward page splits when possible.
 - Rebuilt Frontline Enablement Kit and Marketing Review Kit ZIPs so bundled prompt resources use the concise quick-card PDF.
+- Refreshed the Regulatory Cheat Sheet from stale SR 11-7-only framing to the current SR 26-2 / OCC Bulletin 2026-13 / FDIC FIL-15-2026 model-risk grounding, regenerated both standard and large-print PDFs, and added audit guards for required current-source language plus stale-framing regressions.
 - Cleared the parent-page launch-gate failures found during resource verification:
   - Home primary CTA now exposes "Get my AI readiness score" and the sample readiness score uses `/48`.
   - `/assessment` now says the free path is 12 questions in three minutes and uses "Start free assessment" on the primary CTA.
@@ -150,6 +151,7 @@ This branch implements the first guardrail pass from the content resource review
 - `npx playwright test e2e/resources-workflow-sop.spec.ts e2e/resources.spec.ts --project=chromium`
 - `npx playwright test e2e/marketing-extended.spec.ts --project=chromium -g "security renders"`
 - `npx playwright test e2e/smoke.spec.ts --project=chromium`
+- `npm run audit:resources` after the Regulatory Cheat Sheet SR 26-2 refresh (`31` manifest rows, `31` public downloads)
 - Prior PR #517 remote checks: Vercel preview, smoke, axe, Lighthouse, mobile viewport, and secret scan all passed before this artifact large-print update.
 - Visual PDF check after prompt-card rebuild:
   - Standard prompt card: 4 pages, rendered pages inspected, no clipping.
@@ -157,6 +159,7 @@ This branch implements the first guardrail pass from the content resource review
   - Platform large-print matrix: 12 pages, rendered table pages inspected, no clipped comparison rows.
   - Data Handling large-print artifact: 5 pages, cover and first content page rendered and inspected, no clipped text.
   - Fair-Lending large-print artifact: 5 pages, cover and first content page rendered and inspected, no clipped text.
+  - Regulatory Cheat Sheet standard and large-print PDFs regenerated from SR 26-2 source HTML; rendered pages inspected for clipping.
 
 Latest resource audit result: `31 manifest rows, 31 public downloads`.
 
@@ -171,11 +174,11 @@ These items remain separate from this implementation:
 - Rebase after the massive persona branch lands and verify overlapping persona fixes.
 - Replace remaining hardcoded `/resources`, assessment-output, playbook, and template lists with manifest-derived rendering where practical. Starter kits, role playbook cards, problem paths, desk cards, and paid previews now derive from the manifest; template cards now derive from the lightweight template index and the manifest; resource-delivery E2E now derives route coverage from the manifest and public indexes.
 - The raw download log now captures known email, source surface, assessment role, assessment tier, assessment top gap, HTTP referrer, and hashed IP for generic resources, large-print resources, Prompt Cards, and the Safe AI Use Guide; `/admin/funnel` now shows attribution segment tables. Remaining analytics work is deeper campaign/source analysis once real traffic exists.
-- Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card plus starter-kit artifact PDFs now have reflowed large-print PDFs. Remaining artifact work is deeper official source refresh, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
+- Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card plus starter-kit artifact PDFs now have reflowed large-print PDFs. The Regulatory Cheat Sheet has been refreshed against current SR 26-2 / OCC / FDIC model-risk guidance. Remaining artifact work is deeper official source refresh for other resources, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
 - Continue deeper source refresh and accessibility QA for dynamic Word/template outputs. The dynamic Word template route is now branded, source-boxed, and directly tested.
 - The sample readiness report now matches current v3 free-assessment scoring and is guarded by source/PDF text audit checks.
 - Add deeper guided resource finder UX and accessibility improvements. The Start Here chooser, visible problem-path section, all nine role filters, format filters, skip links, clear/reset filters, and live result-count announcement are now present.
-- Add current official source grounding and accessibility variants for major resources.
+- Add current official source grounding and accessibility variants for the remaining major resources.
 - Add route, artifact, accessibility, and E2E checks from the full plan.
 
 ## Persona-Branch Dependency

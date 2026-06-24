@@ -109,7 +109,7 @@ const DESCRIPTIONS = {
   'red-yellow-green-use-card': 'Classify AI use cases in ten seconds.',
   'safe-ai-use-checklist': 'Strip data, ask clearly, fact-check, escalate.',
   'prompt-strategy-cheat-sheet': 'Write prompts with role, context, format, constraints, and review.',
-  'regulatory-cheatsheet': 'SR 11-7, ECOA / Reg B, TPRM, and AI lexicon basics.',
+  'regulatory-cheatsheet': 'SR 26-2, ECOA / Reg B, TPRM, BSA/AML, and AI lexicon basics.',
   'platform-feature-reference-card': 'Quick reference to AiBI platform features and entitlement tiers.',
   'sample-readiness-report': 'Score, maturity tier, top gap, dimension snapshot, and starter artifact.',
 };
