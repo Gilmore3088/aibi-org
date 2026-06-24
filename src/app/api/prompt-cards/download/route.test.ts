@@ -4,6 +4,7 @@ const mocks = vi.hoisted(() => ({
   readFile: vi.fn(),
   rateLimitOrFail: vi.fn(),
   getRequestIp: vi.fn(),
+  logStaticResourceDownload: vi.fn(),
 }));
 
 vi.mock('node:fs/promises', () => ({
@@ -18,6 +19,10 @@ vi.mock('@/lib/api/rate-limit', () => ({
   getRequestIp: mocks.getRequestIp,
 }));
 
+vi.mock('@/lib/resources/downloadLogging', () => ({
+  logStaticResourceDownload: mocks.logStaticResourceDownload,
+}));
+
 import { GET } from './route';
 
 describe('GET /api/prompt-cards/download', () => {
@@ -26,6 +31,7 @@ describe('GET /api/prompt-cards/download', () => {
     mocks.rateLimitOrFail.mockResolvedValue(null);
     mocks.getRequestIp.mockReturnValue('203.0.113.31');
     mocks.readFile.mockResolvedValue(Buffer.from('%PDF-1.7 prompt cards'));
+    mocks.logStaticResourceDownload.mockResolvedValue(undefined);
   });
 
   it('streams the committed Prompt Cards PDF', async () => {
@@ -46,6 +52,13 @@ describe('GET /api/prompt-cards/download', () => {
       max: 20,
       windowSeconds: 3600,
     });
+    expect(mocks.logStaticResourceDownload).toHaveBeenCalledWith(
+      expect.any(Request),
+      {
+        resourceSlug: 'aibi-prompt-cards',
+        defaultSourceSurface: 'prompt-cards-download',
+      },
+    );
   });
 
   it('returns 500 when the committed PDF cannot be read', async () => {
@@ -55,5 +68,6 @@ describe('GET /api/prompt-cards/download', () => {
 
     expect(response.status).toBe(500);
     await expect(response.json()).resolves.toEqual({ error: 'PDF unavailable. Please try again.' });
+    expect(mocks.logStaticResourceDownload).not.toHaveBeenCalled();
   });
 });

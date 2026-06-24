@@ -8,6 +8,7 @@ import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { subscribeToPlaybookForm } from '@/lib/mailerlite';
 import { createSupportCase } from '@/lib/support/cases';
 import { getSupportInboxEmail } from '@/lib/support/admin';
+import { setFreeResourceCaptureCookie } from '@/lib/resources/captureCookie';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,6 +46,10 @@ const TEAM_SUPPORT_TYPES = new Set([
   'team-rollout-request',
   'team-assessment-request',
   'foundation-seats-request',
+]);
+const RESOURCE_CAPTURE_INQUIRY_TYPES = new Set([
+  'guide-request',
+  'playbook-request',
 ]);
 
 // Role allowlist for playbook-request `track` (which is "{role}-playbook").
@@ -196,5 +201,8 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true });
+  const response = NextResponse.json({ ok: true });
+  return RESOURCE_CAPTURE_INQUIRY_TYPES.has(body.type)
+    ? setFreeResourceCaptureCookie(response, body.email)
+    : response;
 }

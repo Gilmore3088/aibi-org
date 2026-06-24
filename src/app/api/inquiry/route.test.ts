@@ -169,6 +169,24 @@ describe('POST /api/inquiry', () => {
     }));
   });
 
+  it('sets the free-resource capture cookie for Safe AI Guide requests', async () => {
+    const response = await POST(request({
+      name: 'Jordan Lee',
+      email: 'Jordan@CommunityBank.test',
+      institution: 'Community Bank',
+      track: 'Safe AI Use Guide',
+      notes: 'Requested via /security guide download.',
+      type: 'guide-request',
+    }));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ ok: true });
+    expect(response.headers.get('set-cookie')).toContain(
+      'aibi_free_resource_email=jordan%40communitybank.test',
+    );
+    expect(mocks.createSupportCase).not.toHaveBeenCalled();
+  });
+
   it('captures L&D cohort pilot inquiries as high-priority team support cases', async () => {
     const response = await POST(request({
       name: 'Taylor Chen',

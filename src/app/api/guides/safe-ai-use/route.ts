@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { logStaticResourceDownload } from '@/lib/resources/downloadLogging';
 
 const PDF_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-safe-ai-use-guide.pdf');
@@ -19,6 +20,10 @@ export async function GET(request: Request): Promise<Response> {
 
   try {
     const file = await readFile(PDF_PATH);
+    await logStaticResourceDownload(request, {
+      resourceSlug: 'aibi-safe-ai-use-guide',
+      defaultSourceSurface: 'security-safe-ai-guide',
+    });
     return new Response(new Uint8Array(file), {
       status: 200,
       headers: {
