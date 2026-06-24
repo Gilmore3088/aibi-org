@@ -9,6 +9,13 @@ import {
   type PromptCard,
 } from '@/content/prompt-cards/cards';
 import { SiteHeader } from '@/components/mockup';
+import {
+  buildFreeResourceDownloadHref,
+  normalizeCaptureEmail,
+  readRememberedFreeResourceCapture,
+  rememberFreeResourceCapture,
+  type FreeResourceCaptureContext,
+} from '@/lib/resources/freeResourceCapture';
 const STORAGE_KEY = 'aibi-prompt-cards-unlocked';
 
 function buildPrompt(card: PromptCard): string {
@@ -36,8 +43,16 @@ export function PromptCardsExperience() {
   const [category, setCategory] = useState('All');
   const [copied, setCopied] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [captureContext, setCaptureContext] = useState<FreeResourceCaptureContext | null>(null);
 
   useEffect(() => {
+    const remembered = readRememberedFreeResourceCapture();
+    if (remembered) {
+      setCaptureContext(remembered);
+      setUnlocked(true);
+      return;
+    }
+
     setUnlocked(window.localStorage.getItem(STORAGE_KEY) === 'true');
   }, []);
 
@@ -46,6 +61,13 @@ export function PromptCardsExperience() {
       ? PROMPT_CARDS
       : PROMPT_CARDS.filter((card) => card.category === category)
   ), [category]);
+  const downloadHref = useMemo(() => buildFreeResourceDownloadHref('/api/prompt-cards/download', {
+    source: 'prompt-cards-library',
+    ...(captureContext?.role ? { role: captureContext.role } : {}),
+    ...(captureContext?.tier ? { tier: captureContext.tier } : {}),
+    ...(captureContext?.tierLabel ? { tierLabel: captureContext.tierLabel } : {}),
+    ...(captureContext?.topGap ? { topGap: captureContext.topGap } : {}),
+  }), [captureContext]);
 
   const selected = PROMPT_CARDS.find((card) => card.id === selectedId) ?? PROMPT_CARDS[0];
   const sampleCards = PROMPT_CARDS.slice(0, 4);
@@ -55,7 +77,11 @@ export function PromptCardsExperience() {
     setLeadOpen(true);
   }
 
-  function markUnlocked() {
+  function markUnlocked(context?: FreeResourceCaptureContext) {
+    if (context) {
+      rememberFreeResourceCapture(context);
+      setCaptureContext(context);
+    }
     window.localStorage.setItem(STORAGE_KEY, 'true');
     setUnlocked(true);
     setLeadOpen(false);
@@ -88,13 +114,22 @@ export function PromptCardsExperience() {
               20 structured workflows from the AI Banking Institute to help banking professionals use AI with better inputs, clearer outputs, and stronger review habits.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={unlock}
-                className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
-              >
-                Get the AiBI Prompt Cards
-              </button>
+              {unlocked ? (
+                <a
+                  href={downloadHref}
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                >
+                  Download PDF
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={unlock}
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                >
+                  Get the AiBI Prompt Cards
+                </button>
+              )}
               <Link
                 href="/courses/foundation/program"
                 className="border border-[color:var(--ink)]/25 px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
@@ -152,7 +187,7 @@ export function PromptCardsExperience() {
             </p>
             {unlocked ? (
               <a
-                href="/api/prompt-cards/download"
+                href={downloadHref}
                 className="mt-5 block bg-[color:var(--ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
               >
                 Download PDF
@@ -355,7 +390,13 @@ function DetailBlock({ title, items }: { readonly title: string; readonly items:
   );
 }
 
-function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; readonly onUnlocked: () => void }) {
+function LeadModal({
+  onClose,
+  onUnlocked,
+}: {
+  readonly onClose: () => void;
+  readonly onUnlocked: (context: FreeResourceCaptureContext) => void;
+}) {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('practitioner');
   const [institutionType, setInstitutionType] = useState('');
@@ -381,7 +422,12 @@ function LeadModal({ onClose, onUnlocked }: { readonly onClose: () => void; read
         throw new Error(pdfError.error ?? 'The PDF could not be generated. Please try again.');
       }
       downloadPromptCardsPdf(await pdfRes.blob());
-      onUnlocked();
+      onUnlocked({
+        email: normalizeCaptureEmail(email) ?? email,
+        source: 'prompt-cards',
+        role,
+        capturedAt: new Date().toISOString(),
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not load the cards.');
     } finally {
