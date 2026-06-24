@@ -4,7 +4,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { resetPassword } from '@/lib/supabase/auth';
+import { resetPassword, sanitizeNext } from '@/lib/supabase/auth';
 
 // Lenient email-shaped check so a crafted ?email= can't pre-fill garbage.
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -121,6 +121,7 @@ export default function ForgotPasswordPage() {
   const searchParams = useSearchParams();
   const rawEmail = searchParams.get('email');
   const prefillEmail = rawEmail && EMAIL_SHAPE.test(rawEmail) ? rawEmail : '';
+  const nextDest = sanitizeNext(searchParams.get('next'));
   const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -133,7 +134,7 @@ export default function ForgotPasswordPage() {
     const data = new FormData(e.currentTarget);
     const email = data.get('email') as string;
 
-    const result = await resetPassword(email);
+    const result = await resetPassword(email, nextDest);
     setPending(false);
 
     if (result.error) {

@@ -245,8 +245,8 @@ export default async function AiBIPurchasedPage({
                       <p style={{ margin: '12px 0 0', fontSize: 13, color: 'var(--slate-600)' }}>
                         Prefer a password for next time?{' '}
                         <a
-                          href={`/auth/forgot-password${
-                            prefillEmail ? `?email=${encodeURIComponent(prefillEmail)}` : ''
+                          href={`/auth/forgot-password?next=${encodeURIComponent('/courses/foundation/program')}${
+                            prefillEmail ? `&email=${encodeURIComponent(prefillEmail)}` : ''
                           }`}
                           style={{ color: 'var(--gold-deep)', textDecoration: 'underline', fontWeight: 600 }}
                         >
@@ -268,8 +268,8 @@ export default async function AiBIPurchasedPage({
                     >
                       <PrimaryButton
                         as="a"
-                        href={`/auth/forgot-password${
-                          prefillEmail ? `?email=${encodeURIComponent(prefillEmail)}` : ''
+                        href={`/auth/forgot-password?next=${encodeURIComponent('/courses/foundation/program')}${
+                          prefillEmail ? `&email=${encodeURIComponent(prefillEmail)}` : ''
                         }`}
                       >
                         SET MY PASSWORD

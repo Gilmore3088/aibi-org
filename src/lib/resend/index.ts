@@ -54,6 +54,10 @@ import {
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
 
+function siteUrl(): string {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com').replace(/\/+$/, '');
+}
+
 const DEFAULT_FROM = 'hello@aibankinginstitute.com';
 const DEFAULT_FROM_NAME = 'The AI Banking Institute';
 const REPLY_TO = 'hello@aibankinginstitute.com';
@@ -144,12 +148,12 @@ export function sendAssessmentBreakdown(
   payload: AssessmentBreakdownEmailPayload,
 ): Promise<ResendResult> {
   const resultsUrl = payload.profileId
-    ? `https://aibankinginstitute.com/results/${payload.profileId}`
-    : 'https://aibankinginstitute.com/assessment';
+    ? `${siteUrl()}/results/${payload.profileId}`
+    : `${siteUrl()}/assessment`;
 
   const dashboardUrl =
     payload.magicLinkUrl ??
-    'https://aibankinginstitute.com/auth/login?next=/dashboard';
+    `${siteUrl()}/auth/login?next=/dashboard`;
 
   return sendInline({
     to: payload.email,
@@ -193,7 +197,7 @@ export function sendCoursePurchaseIndividual(
   const courseUrl =
     payload.magicLinkUrl ??
     payload.courseUrl ??
-    'https://aibankinginstitute.com/courses/foundation/program';
+    `${siteUrl()}/courses/foundation/program`;
 
   return sendInline({
     to: payload.email,
@@ -217,7 +221,7 @@ export function sendIndepthAssessmentPurchase(
 ): Promise<ResendResult> {
   const assessmentUrl =
     payload.magicLinkUrl ??
-    'https://aibankinginstitute.com/assessment/in-depth/purchased';
+    `${siteUrl()}/assessment/in-depth/purchased`;
 
   return sendInline({
     to: payload.email,
@@ -242,7 +246,7 @@ export function sendCoursePurchaseInstitution(
   payload: CoursePurchaseInstitutionPayload,
 ): Promise<ResendResult> {
   const adminUrl =
-    payload.magicLinkUrl ?? 'https://aibankinginstitute.com/courses/foundation/program';
+    payload.magicLinkUrl ?? `${siteUrl()}/courses/foundation/program`;
 
   return sendInline({
     to: payload.email,
@@ -252,14 +256,14 @@ export function sendCoursePurchaseInstitution(
       seatsPurchased: payload.seatsPurchased,
       amountPaid: payload.amountPaid,
       adminUrl,
-      courseUrl: 'https://aibankinginstitute.com/courses/foundation/program',
+      courseUrl: `${siteUrl()}/courses/foundation/program`,
     }),
     text: coursePurchaseInstitutionText({
       institutionName: payload.institutionName,
       seatsPurchased: payload.seatsPurchased,
       amountPaid: payload.amountPaid,
       adminUrl,
-      courseUrl: 'https://aibankinginstitute.com/courses/foundation/program',
+      courseUrl: `${siteUrl()}/courses/foundation/program`,
     }),
     tag: '[resend:course-purchase-institution]',
   });
@@ -383,16 +387,16 @@ export function sendCertificateIssued(
       designation: payload.designation,
       certificateId: payload.certificateId,
       issuedDate: payload.issuedDate,
-      verifyUrl: `https://aibankinginstitute.com/verify/${payload.certificateId}`,
-      downloadUrl: `https://aibankinginstitute.com/api/courses/generate-certificate?enrollmentId=${payload.enrollmentId}`,
+      verifyUrl: `${siteUrl()}/verify/${payload.certificateId}`,
+      downloadUrl: `${siteUrl()}/api/courses/generate-certificate?enrollmentId=${payload.enrollmentId}`,
     }),
     text: certificateIssuedText({
       holderName: payload.holderName,
       designation: payload.designation,
       certificateId: payload.certificateId,
       issuedDate: payload.issuedDate,
-      verifyUrl: `https://aibankinginstitute.com/verify/${payload.certificateId}`,
-      downloadUrl: `https://aibankinginstitute.com/api/courses/generate-certificate?enrollmentId=${payload.enrollmentId}`,
+      verifyUrl: `${siteUrl()}/verify/${payload.certificateId}`,
+      downloadUrl: `${siteUrl()}/api/courses/generate-certificate?enrollmentId=${payload.enrollmentId}`,
     }),
     tag: '[resend:certificate-issued]',
   });

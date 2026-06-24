@@ -114,6 +114,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   return NextResponse.json({
     trusted: false,
-    dest: `/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}`,
+    dest: `/auth/confirm-device-pending?email=${encodeURIComponent(user.email ?? '')}&redirectTo=${encodeURIComponent(redirectTo)}`,
   });
 }

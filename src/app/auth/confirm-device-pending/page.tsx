@@ -3,6 +3,7 @@
 import { type CSSProperties, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { sanitizeNext } from '@/lib/supabase/auth';
 
 // Holding state for the new-device sign-in confirmation flow (#187 PR 2).
 // /auth/login routes here after a successful password sign-in from a
@@ -81,6 +82,7 @@ const resendBtnStyle: CSSProperties = {
 export default function ConfirmDevicePendingPage() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') ?? 'your inbox';
+  const redirectTo = sanitizeNext(searchParams.get('redirectTo'));
   const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   async function handleResend() {
@@ -89,7 +91,7 @@ export default function ConfirmDevicePendingPage() {
       const res = await fetch('/api/auth/check-device', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirectTo: '/dashboard' }),
+        body: JSON.stringify({ redirectTo }),
       });
       setResendStatus(res.ok ? 'sent' : 'error');
     } catch {
