@@ -14,19 +14,27 @@ import {
   SiteHeader,
   StickyMobileCta,
 } from '@/components/mockup';
+import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
 import {
   ArrowRight,
+  BarChart3,
+  BookOpen,
   CheckCircle,
+  ClipboardCheck,
   Download,
+  ShieldCheck,
+  Users,
 } from './icons';
 import {
   type DeskCard as DeskCardData,
   type PaidPreview as PaidPreviewData,
+  type ProblemPath as ProblemPathData,
   type RolePlaybook,
   type StarterKit,
   type Template as TemplateData,
   deskCards,
   paidPreviews,
+  problemPaths,
   rolePlaybooks,
   starterKits,
   templates,
@@ -35,11 +43,64 @@ import {
 // ─── Filter taxonomy ─────────────────────────────────────────────────────
 // Roles map 1:1 to RolePlaybook slugs. Formats are descriptive labels that
 // span Template.format, DeskCard.type, and a synthetic "Playbook" / "Sample".
-const ROLE_OPTIONS = ['Compliance', 'Retail', 'Marketing', 'Lending', 'BSA/AML', 'IT/InfoSec'] as const;
+const ROLE_OPTIONS = [
+  'Compliance',
+  'Retail',
+  'Marketing',
+  'Lending',
+  'BSA/AML',
+  'IT/InfoSec',
+  'Executive',
+  'Operations',
+  'Training/HR',
+] as const;
 type RoleFilter = (typeof ROLE_OPTIONS)[number];
 
 const FORMAT_OPTIONS = ['Playbook', 'Template', 'Desk card', 'Sample'] as const;
 type FormatFilter = (typeof FORMAT_OPTIONS)[number];
+
+function requireProblemPath(title: ProblemPathData['title']): void {
+  const path = problemPaths.find((entry) => entry.title === title);
+  if (!path) throw new Error(`Missing problem path: ${title}`);
+}
+
+requireProblemPath('Set AI rules');
+requireProblemPath('Brief leadership');
+requireProblemPath('Train staff');
+requireProblemPath('Preview paid output');
+
+const START_HERE_CHOICES = [
+  {
+    label: 'I need rules',
+    desc: 'Open the policy starter and use-case review path.',
+    href: '/resources/templates/ai-use-policy-starter',
+    icon: ShieldCheck,
+  },
+  {
+    label: 'I need a role playbook',
+    desc: 'Jump to the nine role-specific playbooks.',
+    href: '#role-playbooks',
+    icon: Users,
+  },
+  {
+    label: 'I need a board artifact',
+    desc: 'Open the leadership briefing checklist.',
+    href: '/resources/templates/board-briefing-checklist',
+    icon: BarChart3,
+  },
+  {
+    label: 'I need staff training',
+    desc: 'Start with the safe-use staff card.',
+    href: '#desk-cards',
+    icon: BookOpen,
+  },
+  {
+    label: 'I just took the assessment',
+    desc: 'Preview the report and next-step path.',
+    href: '#preview-paid',
+    icon: ClipboardCheck,
+  },
+] as const;
 
 interface FilterState {
   readonly roles: ReadonlySet<RoleFilter>;
@@ -71,6 +132,9 @@ const ROLE_SLUG_MAP: Record<RoleFilter, string[]> = {
   Lending: ['lending'],
   'BSA/AML': ['bsa-aml'],
   'IT/InfoSec': ['infosec'],
+  Executive: ['executive'],
+  Operations: ['operations'],
+  'Training/HR': ['training-hr'],
 };
 
 function roleMatchesPlaybook(p: RolePlaybook, roles: ReadonlySet<RoleFilter>): boolean {
@@ -98,6 +162,31 @@ function paidPreviewMatches(preview: PaidPreviewData, f: FilterState): boolean {
   return matchesSearch(`${preview.title} ${preview.desc}`, f.search);
 }
 
+function problemPathMatches(path: ProblemPathData, f: FilterState): boolean {
+  if (f.formats.size && !f.formats.has(path.format)) return false;
+  if (f.roles.size && !f.search) return false;
+  return matchesSearch(`${path.title} ${path.artifact} ${path.format}`, f.search);
+}
+
+function slugFromApiDownloadHref(href: string): string | null {
+  const match = href.match(/^\/api\/resources\/([^/]+)\/download$/);
+  return match?.[1] ?? null;
+}
+
+function slugFromTemplateWordHref(href: string): string | null {
+  const match = href.match(/^\/api\/resources\/templates\/([^/]+)\/word$/);
+  return match ? `template-${match[1]}` : null;
+}
+
+function slugFromResourceWordHref(href: string): string | null {
+  const match = href.match(/^\/api\/resources\/([^/]+)\/word$/);
+  return match?.[1] ?? null;
+}
+
+function slugFromWordHref(href: string): string | null {
+  return slugFromResourceWordHref(href) ?? slugFromTemplateWordHref(href);
+}
+
 export function ResourcesExperience() {
   const [selectedKit, setSelectedKit] = useState<StarterKit>(starterKits[0]);
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
@@ -110,6 +199,10 @@ export function ResourcesExperience() {
     () => templates.filter((t) => templateMatches(t, filters)),
     [filters],
   );
+  const visibleProblemPaths = useMemo(
+    () => problemPaths.filter((p) => problemPathMatches(p, filters)),
+    [filters],
+  );
   const visibleDeskCards = useMemo(
     () => deskCards.filter((c) => deskCardMatches(c, filters)),
     [filters],
@@ -118,9 +211,16 @@ export function ResourcesExperience() {
     () => paidPreviews.filter((p) => paidPreviewMatches(p, filters)),
     [filters],
   );
+  const visibleResourceCount =
+    visiblePlaybooks.length +
+    visibleProblemPaths.length +
+    visibleTemplates.length +
+    visibleDeskCards.length +
+    visiblePaidPreviews.length;
 
   return (
     <div className="mockup-scope" style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
+      <ResourceSkipLinks />
       <SiteHeader activePath="/resources" />
 
       <section className="mk-hero">
@@ -149,10 +249,15 @@ export function ResourcesExperience() {
         </div>
       </section>
 
+      <StartHereChooser />
+
       {/* 2-col grid: sticky filter rail (left, desktop) + filtered content. */}
       <div className="rx-page-grid">
         <FilterRail filters={filters} setFilters={setFilters} />
-        <div className="rx-page-main">
+        <div className="rx-page-main" id="resources-main">
+          <p className="rx-sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {visibleResourceCount} filtered {visibleResourceCount === 1 ? 'artifact' : 'artifacts'} shown.
+          </p>
       <Section variant="std" id="starter-kits">
         <SectionHead
           kicker="Featured starter kits"
@@ -186,6 +291,21 @@ export function ResourcesExperience() {
         </Section>
       )}
 
+      {visibleProblemPaths.length > 0 && (
+        <Section variant="std" id="problem-paths">
+          <SectionHead
+            kicker="Problem paths"
+            heading="Pick the job, then open the artifact."
+            lede="Use these paths when you know the work to be done but not the resource name."
+          />
+          <div className="rx-grid rx-grid-3 rx-grid-2col-mobile">
+            {visibleProblemPaths.map((path) => (
+              <ProblemPathCard key={path.title} path={path} />
+            ))}
+          </div>
+        </Section>
+      )}
+
       {visibleTemplates.length > 0 && (
         <Section variant="std" id="templates">
           <SectionHead
@@ -195,7 +315,7 @@ export function ResourcesExperience() {
           />
           <div className="rx-grid rx-grid-4 rx-list-mobile">
             {visibleTemplates.map((template) => (
-              <TemplateCard key={template.title} template={template} />
+              <TemplateCard key={template.slug} template={template} />
             ))}
           </div>
         </Section>
@@ -216,7 +336,7 @@ export function ResourcesExperience() {
             </div>
             <div className="rx-grid rx-grid-2 rx-chips-mobile">
               {visibleDeskCards.map((card) => (
-                <DeskCard key={card.title} card={card} />
+                <DeskCard key={card.slug} card={card} />
               ))}
             </div>
           </div>
@@ -234,7 +354,7 @@ export function ResourcesExperience() {
               />
               <div className="rx-grid rx-grid-2 rx-feature-mobile">
                 {visiblePaidPreviews.map((preview) => (
-                  <PaidPreviewCard key={preview.title} preview={preview} />
+                  <PaidPreviewCard key={preview.slug} preview={preview} />
                 ))}
               </div>
             </div>
@@ -244,7 +364,7 @@ export function ResourcesExperience() {
       )}
 
       {/* Empty-state when every filter excludes everything. */}
-      {visiblePlaybooks.length + visibleTemplates.length + visibleDeskCards.length + visiblePaidPreviews.length === 0 && (
+      {visiblePlaybooks.length + visibleProblemPaths.length + visibleTemplates.length + visibleDeskCards.length + visiblePaidPreviews.length === 0 && (
         <Section variant="std" surface="white">
           <div className="rx-empty-state">
             <p className="mk-k">No matches</p>
@@ -281,6 +401,41 @@ export function ResourcesExperience() {
 }
 
 /* ─── Sub-components ─────────────────────────────────────────────────── */
+
+function ResourceSkipLinks() {
+  return (
+    <nav className="rx-skip-links" aria-label="Resource page shortcuts">
+      <a href="#start-here">Skip to start here</a>
+      <a href="#resource-filters">Skip to filters</a>
+      <a href="#resources-main">Skip to resources</a>
+    </nav>
+  );
+}
+
+function StartHereChooser() {
+  return (
+    <Section variant="std" surface="white" id="start-here">
+      <div className="rx-start-grid" aria-labelledby="rx-start-here-heading">
+        <div className="rx-start-copy">
+          <div className="mk-k">Start here</div>
+          <h2 id="rx-start-here-heading">Pick the work you need.</h2>
+        </div>
+        <div className="rx-start-cards">
+          {START_HERE_CHOICES.map((choice) => {
+            const Icon = choice.icon;
+            return (
+              <a key={choice.label} className="rx-mini-card" href={choice.href}>
+                <Icon size={24} className="rx-mini-icon" />
+                <div className="rx-mini-title">{choice.label}</div>
+                <p className="rx-mini-sub">{choice.desc}</p>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </Section>
+  );
+}
 
 function FeaturedKit({
   selectedKit,
@@ -322,21 +477,48 @@ function FeaturedKit({
           <ul className="rx-featured-items-list">
             {selectedKit.items.map((item) => (
               <li key={item.href}>
-                <a className="rx-featured-item" href={item.href} target="_blank" rel="noopener">
-                  <CheckCircle size={20} className="rx-featured-item-check" />
-                  <span>{item.label}</span>
-                </a>
+                <div className="rx-featured-item-row">
+                  {slugFromApiDownloadHref(item.href) ? (
+                    <FreeResourceDownloadGate
+                      title={item.label}
+                      href={item.href}
+                      slug={slugFromApiDownloadHref(item.href)!}
+                      source="resources-featured-kit-item"
+                      actionLabel="Get PDF"
+                      capturedLabel="Download PDF"
+                      buttonClassName="rx-featured-item"
+                    >
+                      <CheckCircle size={20} className="rx-featured-item-check" />
+                      <span>{item.label}</span>
+                    </FreeResourceDownloadGate>
+                  ) : (
+                    <a className="rx-featured-item" href={item.href}>
+                      <CheckCircle size={20} className="rx-featured-item-check" />
+                      <span>{item.label}</span>
+                    </a>
+                  )}
+                  {item.readHref && (
+                    <a className="rx-featured-item-read" href={item.readHref}>
+                      Read HTML
+                    </a>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
-          <Button
-            variant="ink"
+          <FreeResourceDownloadGate
+            title={selectedKit.title}
             href={selectedKit.zip}
-            className="rx-featured-cta"
-            aria-label={`Download ${selectedKit.title} kit`}
+            slug={slugFromApiDownloadHref(selectedKit.zip) ?? selectedKit.id}
+            source="resources-featured-kit"
+            format="ZIP"
+            actionLabel="Get ZIP"
+            capturedLabel="Download ZIP"
+            buttonVariant="ink"
+            buttonClassName="mk-btn mk-btn-ink rx-featured-cta"
           >
             Download kit <Download size={16} />
-          </Button>
+          </FreeResourceDownloadGate>
         </div>
       </div>
     </div>
@@ -376,13 +558,58 @@ function StarterKitCard({
           {kit.items.length} {kit.items.length === 1 ? 'file' : 'files'} · click to preview contents
         </p>
       </button>
-      <a
-        className="rx-kit-card-zip"
+      <FreeResourceDownloadGate
+        title={kit.title}
         href={kit.zip}
-        aria-label={`Download ${kit.title} kit`}
+        slug={slugFromApiDownloadHref(kit.zip) ?? kit.id}
+        source="resources-starter-kit-card"
+        format="ZIP"
+        actionLabel="Get ZIP"
+        capturedLabel="Download ZIP"
+        buttonClassName="rx-kit-card-zip"
+        containerClassName="fr-download-gate-kit"
       >
         Download kit <Download size={14} />
-      </a>
+      </FreeResourceDownloadGate>
+    </article>
+  );
+}
+
+function ProblemPathCard({ path }: { path: ProblemPathData }) {
+  const Icon = path.icon;
+  const downloadSlug = slugFromApiDownloadHref(path.href);
+
+  return (
+    <article className="rx-pb-card">
+      <Icon size={28} className="rx-kit-icon" />
+      <p className="rx-template-format">Problem path · {path.format}</p>
+      <h3 className="rx-kit-title">{path.title}</h3>
+      <p className="rx-kit-desc">{path.artifact}</p>
+      <div className="rx-pb-actions">
+        {downloadSlug ? (
+          <FreeResourceDownloadGate
+            title={path.artifact}
+            href={path.href}
+            slug={downloadSlug}
+            source="resources-problem-path"
+            format={path.format === 'Sample' ? 'PDF sample' : 'PDF'}
+            actionLabel={path.format === 'Sample' ? 'Get sample' : 'Get PDF'}
+            capturedLabel={path.format === 'Sample' ? 'Open sample' : 'Download PDF'}
+            buttonVariant="ink"
+          >
+            {path.format === 'Sample' ? 'Open sample' : 'Download'} <ArrowRight size={16} />
+          </FreeResourceDownloadGate>
+        ) : (
+          <Button variant="ink" href={path.href}>
+            Open <ArrowRight size={16} />
+          </Button>
+        )}
+        {path.readHref && (
+          <Button variant="ghost-light" href={path.readHref}>
+            Read HTML
+          </Button>
+        )}
+      </div>
     </article>
   );
 }
@@ -406,9 +633,36 @@ function RolePlaybookCard({ playbook }: { playbook: RolePlaybook }) {
         <Button variant="ink" href={`/playbooks/${playbook.slug}`}>
           Open
         </Button>
-        <Button variant="ghost-light" href={playbook.pdf}>
+        {playbook.readHref && (
+          <Button variant="ghost-light" href={playbook.readHref}>
+            Read HTML
+          </Button>
+        )}
+        <FreeResourceDownloadGate
+          title={`${playbook.title} Playbook`}
+          href={playbook.pdf}
+          slug={slugFromApiDownloadHref(playbook.pdf) ?? `${playbook.slug}-playbook`}
+          source="resources-role-playbook-card"
+          actionLabel="Get PDF"
+          capturedLabel="Download PDF"
+          buttonVariant="ghost-light"
+        >
           PDF <Download size={16} />
-        </Button>
+        </FreeResourceDownloadGate>
+        {playbook.word && (
+          <FreeResourceDownloadGate
+            title={`${playbook.title} Playbook`}
+            href={playbook.word}
+            slug={slugFromWordHref(playbook.word) ?? `${playbook.slug}-playbook`}
+            source="resources-role-playbook-word"
+            format="Word"
+            actionLabel="Get Word"
+            capturedLabel="Download Word"
+            buttonVariant="ghost-light"
+          >
+            Word <Download size={16} />
+          </FreeResourceDownloadGate>
+        )}
       </div>
     </article>
   );
@@ -432,15 +686,19 @@ function TemplateCard({ template }: { template: TemplateData }) {
           Open
         </Button>
         {template.download && (
-          <Button
-            variant="ghost-light"
+          <FreeResourceDownloadGate
+            title={template.title}
             href={template.download}
-            className="rx-download-icon-btn"
-            aria-label={`Download ${template.title}`}
-            title={`Download ${template.title}`}
+            slug={slugFromWordHref(template.download) ?? template.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+            source="resources-template-card"
+            format="Word"
+            actionLabel="Get Word"
+            capturedLabel="Download Word"
+            buttonVariant="ghost-light"
+            buttonClassName="mk-btn mk-btn-ghost-light rx-download-icon-btn"
           >
             <Download size={18} />
-          </Button>
+          </FreeResourceDownloadGate>
         )}
       </div>
     </article>
@@ -450,14 +708,55 @@ function TemplateCard({ template }: { template: TemplateData }) {
 function DeskCard({ card }: { card: DeskCardData }) {
   const Icon = card.icon;
   return (
-    <a className="rx-desk-card" href={card.href} target="_blank" rel="noopener">
+    <article className="rx-desk-card rx-desk-card-gated">
       <span className="rx-desk-icon"><Icon size={24} /></span>
-      <div>
+      <div className="rx-desk-card-body">
         <p className="rx-template-format">{card.type}</p>
         <h3 className="rx-kit-title">{card.title}</h3>
         <p className="rx-kit-desc">{card.desc}</p>
+        <FreeResourceDownloadGate
+          title={card.title}
+          href={card.href}
+          slug={slugFromApiDownloadHref(card.href) ?? card.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+          source="resources-desk-card"
+          actionLabel="Get PDF"
+          capturedLabel="Download PDF"
+          buttonClassName="mk-download-gate-trigger"
+          containerClassName="fr-download-gate-desk"
+        />
+        {card.word && (
+          <FreeResourceDownloadGate
+            title={card.title}
+            href={card.word}
+            slug={slugFromWordHref(card.word) ?? card.slug}
+            source="resources-desk-card-word"
+            format="Word"
+            actionLabel="Get Word"
+            capturedLabel="Download Word"
+            buttonClassName="mk-download-gate-trigger"
+            containerClassName="fr-download-gate-desk"
+          />
+        )}
+        {card.readHref && (
+          <a className="mk-download-gate-trigger rx-readable-card-link" href={card.readHref}>
+            Read HTML
+          </a>
+        )}
+        {card.largePrint && (
+          <FreeResourceDownloadGate
+            title={`${card.title} large-print PDF`}
+            href={card.largePrint}
+            slug={card.slug}
+            source="resources-desk-card-large-print"
+            format="large-print PDF"
+            actionLabel="Get large print"
+            capturedLabel="Download large print"
+            buttonClassName="mk-download-gate-trigger"
+            containerClassName="fr-download-gate-desk"
+          />
+        )}
       </div>
-    </a>
+    </article>
   );
 }
 
@@ -469,9 +768,36 @@ function PaidPreviewCard({ preview }: { preview: PaidPreviewData }) {
       <h3 className="rx-kit-title">{preview.title}</h3>
       <p className="rx-kit-desc">{preview.desc}</p>
       <div className="rx-pb-actions">
-        <Button variant="ink" href={preview.href}>
+        <FreeResourceDownloadGate
+          title={preview.title}
+          href={preview.href}
+          slug={slugFromApiDownloadHref(preview.href) ?? preview.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+          source="resources-paid-preview"
+          actionLabel={preview.actionLabel}
+          capturedLabel={preview.actionLabel}
+          buttonVariant="ink"
+        >
           {preview.actionLabel} <ArrowRight size={16} />
-        </Button>
+        </FreeResourceDownloadGate>
+        {preview.readHref && (
+          <Button variant="ghost-light" href={preview.readHref}>
+            Read HTML
+          </Button>
+        )}
+        {preview.word && (
+          <FreeResourceDownloadGate
+            title={preview.title}
+            href={preview.word}
+            slug={slugFromWordHref(preview.word) ?? preview.slug}
+            source="resources-paid-preview-word"
+            format="Word"
+            actionLabel="Get Word"
+            capturedLabel="Download Word"
+            buttonVariant="ghost-light"
+          >
+            Word <Download size={16} />
+          </FreeResourceDownloadGate>
+        )}
       </div>
     </article>
   );
@@ -598,7 +924,7 @@ function FilterRail({
   );
 
   return (
-    <aside className="rx-filter-rail" aria-label="Filter artifacts">
+    <aside className="rx-filter-rail" id="resource-filters" aria-label="Filter artifacts">
       {/* Desktop view: static, sticky. */}
       <div className="rx-filter-rail-desktop">
         <h2 className="rx-filter-rail-title">Find an artifact</h2>

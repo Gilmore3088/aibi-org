@@ -1,0 +1,50 @@
+import { describe, expect, it } from 'vitest';
+import { GET } from './route';
+
+function contextFor(slug: string) {
+  return {
+    params: Promise.resolve({ slug }),
+  };
+}
+
+describe('/api/resources/templates/[slug]/word', () => {
+  it('returns a branded editable template document with source basis', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-use-policy-starter/word'),
+      contextFor('ai-use-policy-starter'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-type')).toContain('application/msword');
+    expect(response.headers.get('content-disposition')).toContain('Ai-Use-Policy-Starter.doc');
+
+    const body = await response.text();
+    expect(body).toContain('[</span>A<span class="serif-i">i</span><span class="bracket">]</span> Banking Institute');
+    expect(body).toContain('Editable starter template');
+    expect(body).toContain('Document status:');
+    expect(body).toContain('Source basis');
+    expect(body).toContain('Interagency TPRM Guidance');
+    expect(body).toContain('Adapt it to your institution');
+  });
+
+  it('renders structured template sections into editable document content', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-use-policy-starter/word'),
+      contextFor('ai-use-policy-starter'),
+    );
+
+    const body = await response.text();
+    expect(body).toContain('<h2>Allowed data</h2>');
+    expect(body).toContain('<ul><li>Public information: allowed without restriction.</li>');
+    expect(body).toContain('Human-in-the-loop requirement');
+  });
+
+  it('returns 404 for unknown template slugs', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/missing/word'),
+      contextFor('missing'),
+    );
+
+    expect(response.status).toBe(404);
+  });
+});

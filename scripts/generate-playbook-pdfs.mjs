@@ -6,15 +6,26 @@
 // v1, current copy, current data all flow through automatically).
 //
 // Usage:
-//   1. npm run dev
-//   2. node scripts/generate-playbook-pdfs.mjs
+//   node scripts/generate-playbook-pdfs.mjs
+//
+// Override BASE_URL only when intentionally rendering from a preview URL.
 
 import { chromium } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const BASE = process.env.BASE_URL || 'http://localhost:3000';
-const ROLES = ['compliance', 'retail', 'marketing', 'lending', 'bsa-aml', 'infosec'];
+const BASE = process.env.BASE_URL || 'https://www.aibankinginstitute.com';
+const ROLES = [
+  'compliance',
+  'retail',
+  'marketing',
+  'lending',
+  'bsa-aml',
+  'infosec',
+  'executive',
+  'operations',
+  'training-hr',
+];
 const OUT_DIR = resolve(process.cwd(), 'public/downloads');
 
 async function main() {

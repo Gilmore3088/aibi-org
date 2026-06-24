@@ -2,12 +2,13 @@
  *
  * Each role shares the same structural shape; the per-role narrative
  * lives here so the page template stays a single file. Source of truth:
- * public/sketches/playbook-{compliance,retail,marketing,lending,bsa-aml,infosec}.html.
+ * this module plus the shared /playbooks/[role] page template.
  *
  * The deeper per-role differences in the original sketches (scenario
  * variations, training-path nuances, evidence sets) can be expanded in
  * follow-up commits — this first pass captures the playbook IA and
- * top-level role-specific framing.
+ * top-level role-specific framing. The current role set covers all nine
+ * free-assessment role paths.
  */
 
 import type { FreeRole } from '@content/assessments/v3/roles';

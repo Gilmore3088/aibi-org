@@ -121,6 +121,12 @@ abandoned checkouts) lives in Vercel/Plausible and Stripe, not here.
   (seeded enrollments, downloads, etc.). The views report what is in the table;
   they do not try to guess which rows are real. Factor this in when reading
   launch numbers, or clean seed rows separately (never via these views).
+- **Resource-download attribution is raw event context.** New download rows may
+  include `source_surface`, `assessment_role`, `assessment_tier_id`,
+  `assessment_tier_label`, and `assessment_top_gap`. Those fields support later
+  segmentation through the `resource_download_attribution_metrics` view and the
+  `/admin/funnel` resource-download section. Treat the segment tables as
+  directional launch diagnostics, not campaign ROI.
 - **No revenue dollars.** Intentional — Stripe is authoritative for money.
 
 ## Security model
@@ -149,9 +155,10 @@ drop view if exists funnel_contacts;
 
 ## Viewing in the browser — `/admin/funnel`
 
-A read-only operator page at `/admin/funnel` renders all three views (scorecard,
-stage distribution, most-recent contacts). It reads via the service-role client
-and is gated two ways:
+A read-only operator page at `/admin/funnel` renders the scorecard, stage
+distribution, most-recent contacts, resource-download totals, per-resource
+download counts, and resource attribution segments. It reads via the
+service-role client and is gated two ways:
 
 - **Auth + allowlist:** `src/app/admin/layout.tsx` requires a Supabase session
   whose email is on the `FUNNEL_ADMIN_EMAILS` env allowlist (comma-separated).

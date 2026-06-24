@@ -6,6 +6,8 @@
 
 import { Fragment } from 'react';
 import type {
+  ResourceDownloadAttributionRow,
+  ResourceDownloadAttributionSegment,
   ResourceDownloadMetricRow,
   ResourceDownloadTotalsRow,
 } from '@/lib/funnel/queries';
@@ -70,6 +72,27 @@ const catHeader: React.CSSProperties = {
   textTransform: 'uppercase',
   color: 'var(--gold-deep)',
 };
+const segmentGrid: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: 16,
+  marginTop: 16,
+};
+const segmentTitle: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+  margin: '0 0 8px',
+};
+
+const SEGMENT_LABELS: Record<ResourceDownloadAttributionSegment, string> = {
+  source_surface: 'Source surfaces',
+  assessment_role: 'Assessment roles',
+  assessment_tier: 'Assessment tiers',
+  assessment_top_gap: 'Assessment top gaps',
+};
 
 function fmtDate(iso: string | null): string {
   return iso ? iso.slice(0, 10) : '—';
@@ -87,9 +110,52 @@ function Tile({ label, value }: { readonly label: string; readonly value: number
 interface ResourceDownloadsProps {
   readonly totals: ResourceDownloadTotalsRow | null;
   readonly rows: ResourceDownloadMetricRow[];
+  readonly attributionRows?: ResourceDownloadAttributionRow[];
 }
 
-export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
+function AttributionTable({
+  segment,
+  rows,
+}: {
+  readonly segment: ResourceDownloadAttributionSegment;
+  readonly rows: ResourceDownloadAttributionRow[];
+}) {
+  if (rows.length === 0) return null;
+
+  return (
+    <section aria-label={SEGMENT_LABELS[segment]}>
+      <h3 style={segmentTitle}>{SEGMENT_LABELS[segment]}</h3>
+      <div style={{ ...card, overflowX: 'auto' }}>
+        <table style={table}>
+          <thead>
+            <tr>
+              <th style={th} scope="col">Segment</th>
+              <th style={{ ...th, textAlign: 'right' }} scope="col">Downloads</th>
+              <th style={{ ...th, textAlign: 'right' }} scope="col">Known</th>
+              <th style={{ ...th, textAlign: 'right' }} scope="col">7d</th>
+              <th style={{ ...th, textAlign: 'right' }} scope="col">Last</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={`${r.segment_type}:${r.segment_value}`}>
+                <td style={td}>{r.segment_label || r.segment_value}</td>
+                <td style={{ ...num, fontWeight: 600 }}>{r.downloads}</td>
+                <td style={num}>{r.known_downloaders}</td>
+                <td style={num}>{r.last_7d}</td>
+                <td style={{ ...num, whiteSpace: 'nowrap', color: 'var(--slate-500)' }}>
+                  {fmtDate(r.last_download)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+export function ResourceDownloads({ totals, rows, attributionRows = [] }: ResourceDownloadsProps) {
   if (rows.length === 0) {
     return (
       <div style={{ ...card, padding: 16, fontSize: 14, color: 'var(--slate-600)' }}>
@@ -108,6 +174,18 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
     byCategory.set(meta.category, list);
   }
   const categories = RESOURCE_CATEGORY_ORDER.filter((c) => byCategory.has(c));
+  const attributionBySegment = new Map<ResourceDownloadAttributionSegment, ResourceDownloadAttributionRow[]>();
+  for (const row of attributionRows) {
+    const list = attributionBySegment.get(row.segment_type) ?? [];
+    list.push(row);
+    attributionBySegment.set(row.segment_type, list);
+  }
+  const segmentOrder: ResourceDownloadAttributionSegment[] = [
+    'source_surface',
+    'assessment_role',
+    'assessment_tier',
+    'assessment_top_gap',
+  ];
 
   return (
     <>
@@ -126,7 +204,8 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
         (not de-duplicated, not test-filtered). The scorecard&rsquo;s
         &ldquo;Resource downloaders (known email)&rdquo; counts unique
         known-email people with test emails excluded, so it is much lower. Treat
-        these as relative popularity, not absolute demand.
+        these as relative popularity, not absolute demand. Attribution segments
+        are populated only for downloads that passed through the shared resource gate.
       </p>
 
       <div style={{ ...card, overflowX: 'auto' }}>
@@ -166,6 +245,18 @@ export function ResourceDownloads({ totals, rows }: ResourceDownloadsProps) {
           </tbody>
         </table>
       </div>
+
+      {attributionRows.length > 0 ? (
+        <div style={segmentGrid}>
+          {segmentOrder.map((segment) => (
+            <AttributionTable
+              key={segment}
+              segment={segment}
+              rows={attributionBySegment.get(segment) ?? []}
+            />
+          ))}
+        </div>
+      ) : null}
     </>
   );
 }

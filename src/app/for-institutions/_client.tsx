@@ -51,8 +51,9 @@ const XIcon = (p: IconProps) => (
 
 const PRIMARY_ENTRY_PATH = '/assessment/take';
 const TEAM_ASSESSMENT_PATH = '/assessment/team';
-const BRIEFING_MAILTO =
-  'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20request%20%E2%80%94%20for%20institutions';
+const BRIEFING_URL =
+  process.env.NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL ??
+  'https://calendly.com/aibankinginstitute/executive-briefing';
 const ASSISTED_ROLLOUT_MAILTO =
   'mailto:hello@aibankinginstitute.com?subject=Assisted%20AI%20rollout%20request';
 const COURSE_SEATS_MAILTO =
@@ -139,8 +140,11 @@ export default function ForInstitutionsPage() {
               <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
                 Take the free assessment <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href={BRIEFING_MAILTO}>
-                Request briefing
+              <Button variant="ghost-dark" size="lg" href={BRIEFING_URL}>
+                Book a briefing
+              </Button>
+              <Button variant="ghost-dark" size="lg" href="#engagement">
+                See enrollment options
               </Button>
             </div>
           </div>
@@ -493,9 +497,9 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BRIEFING_MAILTO}
+              href={BRIEFING_URL}
             >
-              Request a briefing <ArrowR className="mk-ic" />
+              Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
           <ul>
@@ -581,9 +585,9 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BRIEFING_MAILTO}
+              href={BRIEFING_URL}
             >
-              Request a briefing <ArrowR className="mk-ic" />
+              Book a briefing <ArrowR className="mk-ic" />
             </Button>
           </div>
         </div>
@@ -604,7 +608,7 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Request briefing', href: BRIEFING_MAILTO, variant: 'ghost-dark' },
+          { label: 'Book a briefing', href: BRIEFING_URL, variant: 'ghost-dark' },
         ]}
       />
 

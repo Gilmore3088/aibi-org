@@ -13,9 +13,11 @@ import {
   getFunnelContacts,
   getResourceDownloadMetrics,
   getResourceDownloadTotals,
+  getResourceDownloadAttributionMetrics,
   type FunnelScorecardRow,
   type FunnelStageRow,
   type FunnelContactRow,
+  type ResourceDownloadAttributionRow,
   type ResourceDownloadMetricRow,
   type ResourceDownloadTotalsRow,
 } from '@/lib/funnel/queries';
@@ -217,6 +219,7 @@ export default async function AdminFunnelPage() {
 
   let resourceMetrics: ResourceDownloadMetricRow[] = [];
   let resourceTotals: ResourceDownloadTotalsRow | null = null;
+  let resourceAttribution: ResourceDownloadAttributionRow[] = [];
   let resourceError: string | null = null;
 
   try {
@@ -232,9 +235,10 @@ export default async function AdminFunnelPage() {
   // Resource KPIs read separate views — keep their failure independent so a
   // funnel-view error doesn't blank the resource section (and vice versa).
   try {
-    [resourceMetrics, resourceTotals] = await Promise.all([
+    [resourceMetrics, resourceTotals, resourceAttribution] = await Promise.all([
       getResourceDownloadMetrics(),
       getResourceDownloadTotals(),
+      getResourceDownloadAttributionMetrics(),
     ]);
   } catch (err) {
     resourceError = err instanceof Error ? err.message : 'Failed to load resource downloads';
@@ -309,7 +313,11 @@ export default async function AdminFunnelPage() {
             Could not load resource downloads: {resourceError}
           </div>
         ) : (
-          <ResourceDownloads totals={resourceTotals} rows={resourceMetrics} />
+          <ResourceDownloads
+            totals={resourceTotals}
+            rows={resourceMetrics}
+            attributionRows={resourceAttribution}
+          />
         )}
       </div>
     </main>

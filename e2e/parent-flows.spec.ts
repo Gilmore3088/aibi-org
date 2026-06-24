@@ -73,12 +73,12 @@ test.describe('parent flows — desktop', () => {
     expect(href).toMatch(/^\/assessment\/take/);
   });
 
-  test('/assessment — page describes v3 specs (12 dimensions / 12 questions / 3 min) (#349)', async ({ page }) => {
+  test('/assessment — page describes v3 specs (12 signals / 12 questions / 3 min) (#349)', async ({ page }) => {
     await gotoStable(page, '/assessment');
     const body = await page.locator('body').innerText();
     // Post-#349 the page must lead with the free v3 specs on the free-tier hero.
     expect(body).toMatch(/12 questions|12-question/i);
-    expect(body).toMatch(/12 dimensions|twelve readiness dimensions/i);
+    expect(body).toMatch(/12 readiness signals|twelve readiness signals/i);
     expect(body).toMatch(/\b3 minutes|three minutes|~3 ?min/i);
     // Free-tier sample card score is /48, not /100.
     expect(body).toMatch(/\/\s*48\b/);

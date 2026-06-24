@@ -1,14 +1,13 @@
-// Generate static PDFs for /research/templates/[slug] pages.
+// Generate static PDFs for /resources/templates/[slug] pages.
 //
-// Canonical content lives in src/app/research/templates/data.ts. This
+// Canonical content lives in src/app/resources/templates/data.ts. This
 // script renders each template page via Playwright Chromium and emits a
 // printable PDF to public/downloads/template-<slug>.pdf so the
 // /resources Artifact Library can offer a "PDF" CTA alongside the HTML
 // "Open" CTA. Idempotent — safe to re-run any time TEMPLATES changes.
 //
 // Usage:
-//   1. In one terminal: `npm run dev`
-//   2. In another:      `node scripts/generate-template-pdfs.mjs`
+//   node scripts/generate-template-pdfs.mjs
 //
 // Override the base URL with BASE_URL=https://preview.url node scripts/...
 
@@ -16,7 +15,7 @@ import { chromium } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const BASE = process.env.BASE_URL || 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'https://www.aibankinginstitute.com';
 const SLUGS = [
   'ai-use-policy-starter',
   'ai-workflow-sop',
@@ -33,9 +32,9 @@ async function main() {
   const page = await ctx.newPage();
 
   for (const slug of SLUGS) {
-    const url = `${BASE}/research/templates/${slug}`;
+    const url = `${BASE}/resources/templates/${slug}`;
     process.stdout.write(`→ ${slug}: ${url} ... `);
-    const res = await page.goto(url, { waitUntil: 'networkidle' });
+    const res = await page.goto(url, { waitUntil: 'load', timeout: 60_000 });
     if (!res || !res.ok()) {
       throw new Error(`HTTP ${res?.status() ?? 'no-response'} on ${url}`);
     }

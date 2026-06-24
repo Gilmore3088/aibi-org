@@ -25,6 +25,10 @@ import {
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
+import {
+  FREE_RESOURCE_CAPTURE_COOKIE,
+  normalizeCaptureEmail,
+} from '@/lib/resources/freeResourceCapture';
 
 // Free-funnel role taxonomy (FREE_ROLES / parseFreeRole) lives in
 // @content/assessments/v3/roles so EmailGate.tsx and this route share one
@@ -73,6 +77,22 @@ const NAME_MAX_LEN = 80;
 const INSTITUTION_MAX_LEN = 120;
 const LEAD_SOURCE_MAX_LEN = 64;
 const ARTIFACT_MAX_LEN = 128;
+const FREE_RESOURCE_CAPTURE_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24;
+
+function captureResponse(body: Record<string, unknown>, email: string): NextResponse {
+  const response = NextResponse.json(body);
+  const normalizedEmail = normalizeCaptureEmail(email);
+  if (normalizedEmail) {
+    response.cookies.set(FREE_RESOURCE_CAPTURE_COOKIE, normalizedEmail, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: FREE_RESOURCE_CAPTURE_COOKIE_MAX_AGE_SECONDS,
+    });
+  }
+  return response;
+}
 
 interface DimensionEntry {
   score: number;
@@ -237,7 +257,7 @@ export async function POST(request: Request) {
         fields: { lead_source, ...(requested_artifact ? { requested_artifact } : {}) },
       }).catch((err) => console.warn('[capture-email] mailerlite research skip', err));
     }
-    return NextResponse.json({ ok: true });
+    return captureResponse({ ok: true }, researchEmail);
   }
 
   // ── Assessment path (existing logic below, unchanged) ─────────────────────
@@ -427,10 +447,10 @@ export async function POST(request: Request) {
     console.log('[capture-email] email-send guard rejected — not sending');
   }
 
-  return NextResponse.json({
+  return captureResponse({
     ok: true,
     profileId,
     mailerliteTagAdded: mailerliteTagged,
     magicLinkUrl,
-  });
+  }, email);
 }

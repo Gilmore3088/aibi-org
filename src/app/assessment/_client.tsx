@@ -85,12 +85,13 @@ export default function AssessmentLandingPage() {
             <p className="mk-kicker-gold-soft">Assessment</p>
             <h1>Find your AI starting point.</h1>
             <p className="mk-lede">
-              12 questions give you a score, top gap, and 30-day starter move.
-              The paid assessment adds deeper diagnostic detail.
+              12 questions in three minutes give you a score, top gap, and
+              30-day starter move. The paid assessment adds deeper diagnostic
+              detail across eight scored readiness dimensions.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Start free snapshot <ArrowR className="mk-ic" />
+                Start free assessment <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-light" size="lg" href="/assessment/in-depth">
                 See paid assessment
@@ -159,8 +160,8 @@ function AssessmentPathPreview() {
         <div className="mk-path-eyebrow">Free snapshot</div>
         <h3>Get your first 30-day AI action brief.</h3>
         <p>
-          Twelve questions produce a readiness score, maturity tier, top gap,
-          and one starter artifact.
+          Twelve readiness signals produce a score, maturity tier, top gap,
+          and one starter artifact in about three minutes.
         </p>
         <ul>
           <li><CheckIcon className="mk-ic" /> Score out of 48</li>

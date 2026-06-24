@@ -1,13 +1,11 @@
 // generate-kit-zips.mjs — rebuild the 4 downloadable kit ZIPs in brand v1.
 //
-// Each kit ZIP bundles brand-v1 PDFs + .md cheatsheets + a per-kit
-// START-HERE.pdf (regenerated brand v1) + a README.md (kept verbatim
-// from the prior bundle — text-only, no brand impact).
+// Each kit ZIP bundles brand-v1 PDFs + a per-kit START-HERE.pdf
+// (regenerated brand v1) + a README.md. Core kit assets ship as PDFs so the
+// public downloads are branded, readable, and consistent.
 //
-// PDF sources: pulled live from production via the Supabase Storage
-// signed-URL redirect (so we always pick up the most recent uploaded
-// version, no local PDF dependency).
-// MD sources: public/artifacts/<slug>.md in this repo.
+// PDF sources: prefer committed files in public/downloads; fall back to the
+// production download endpoint when a local file is not present.
 // README: cached per-kit in public/downloads/kits/<slug>/README.md (this
 // script writes them on first run from inline strings).
 // START-HERE: rendered via Playwright from a small per-kit HTML template
@@ -40,11 +38,10 @@ const KITS = {
     pdfs: [
       ['safe-ai-use-checklist.pdf',          'Staff-facing habits before using AI: strip data, ask clearly, fact-check, escalate.'],
       ['red-yellow-green-use-card.pdf',      'Ten-second classification card for safe, review-required, and prohibited AI uses.'],
+      ['artifact-ai-use-case-inventory.pdf', 'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
     ],
-    markdowns: [
-      ['ai-use-case-inventory.md',           'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
-    ],
+    markdowns: [],
   },
   'frontline-enablement-kit': {
     title: 'Frontline Enablement Kit',
@@ -55,10 +52,9 @@ const KITS = {
       ['retail-playbook.pdf',                'Role playbook for safe frontline AI use: summaries, replies, coaching, training, and customer signal.'],
       ['safe-ai-use-checklist.pdf',          'Staff-facing safety habits before using any AI tool.'],
       ['prompt-strategy-cheat-sheet.pdf',    'Prompt pattern for useful, safe, reviewable AI output.'],
+      ['artifact-data-handling-reference-card.pdf', 'Desk reference for what data can and cannot be used with AI tools.'],
     ],
-    markdowns: [
-      ['data-handling-reference-card.md',    'Desk reference for what data can and cannot be used with AI tools.'],
-    ],
+    markdowns: [],
   },
   'lending-review-kit': {
     title: 'Lending Review Kit',
@@ -67,12 +63,11 @@ const KITS = {
       'For lending and credit teams reviewing AI-assisted denials, decisions, and adverse-action notices with documented human checks.',
     pdfs: [
       ['lending-playbook.pdf',               'Role playbook for safe lending AI use: adverse-action tuner, decision summaries, fair-lending pre-checks.'],
+      ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for fair-lending and disparate-impact concerns on AI-assisted decisions.'],
+      ['artifact-ai-use-case-inventory.pdf', 'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
     ],
-    markdowns: [
-      ['fair-lending-ai-review-checklist.md','Reviewer checklist for fair-lending and disparate-impact concerns on AI-assisted decisions.'],
-      ['ai-use-case-inventory.md',           'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
-    ],
+    markdowns: [],
   },
   'marketing-review-kit': {
     title: 'Marketing Review Kit',
@@ -167,7 +162,7 @@ async function buildKit(browser, kitSlug, kit) {
   const kitWork = resolve(WORK_DIR, kitSlug);
   await mkdir(kitWork, { recursive: true });
 
-  // 1. PDFs — pull live from production (Supabase signed URLs)
+  // 1. PDFs — prefer committed artifacts, then fall back to production.
   const seen = new Set();
   for (const [filename] of kit.pdfs) {
     if (seen.has(filename)) continue;
@@ -175,7 +170,12 @@ async function buildKit(browser, kitSlug, kit) {
     const slug = filename.replace(/\.pdf$/, '');
     const url = `${BASE}/api/resources/${slug}/download`;
     process.stdout.write(`  pdf  ${filename} ... `);
-    const buf = await fetchToBuffer(url);
+    let buf;
+    try {
+      buf = await readFile(resolve(OUT_DIR, filename));
+    } catch {
+      buf = await fetchToBuffer(url);
+    }
     await writeFile(resolve(kitWork, filename), buf);
     console.log(`${buf.length.toLocaleString()}b`);
   }

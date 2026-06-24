@@ -15,12 +15,16 @@ import { cookies, headers } from 'next/headers';
 import { createServerClientWithCookies, createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { getDownloadResource, type DownloadResource } from '@/lib/resources/downloadCatalog';
+import { parseDownloadAttribution } from '@/lib/resources/downloadAttribution';
+import {
+  FREE_RESOURCE_CAPTURE_COOKIE,
+  normalizeCaptureEmail,
+} from '@/lib/resources/freeResourceCapture';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const SIGNED_URL_TTL_SECONDS = 300; // 5 minutes
-
 interface ResourceRow {
   readonly id: string | null;
   readonly slug: string;
@@ -62,7 +66,7 @@ async function staticDownloadResponse(
   }
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+export async function GET(request: Request, context: RouteContext): Promise<Response> {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
   }
@@ -106,9 +110,13 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
   // Entitlement check for gated resources
   let userId: string | null = null;
   let userEmail: string | null = null;
+  const cookieStore = await cookies();
+  const capturedResourceEmail = normalizeCaptureEmail(
+    cookieStore.get(FREE_RESOURCE_CAPTURE_COOKIE)?.value,
+  );
 
   if (resource.tier_required !== 'free') {
-    const supabase = createServerClientWithCookies(await cookies());
+    const supabase = createServerClientWithCookies(cookieStore);
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -142,15 +150,33 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     }
   } else {
     // For free resources still try to attribute the download to a logged-in user
-    const supabase = createServerClientWithCookies(await cookies());
+    const supabase = createServerClientWithCookies(cookieStore);
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (user) {
       userId = user.id;
       userEmail = user.email ?? null;
+    } else {
+      userEmail = capturedResourceEmail;
     }
   }
+
+  const headerList = await headers();
+  const ipHeader =
+    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    headerList.get('x-real-ip') ??
+    'anonymous';
+  const downloadLog = {
+    resource_id: resource.id,
+    resource_slug: resource.slug,
+    user_id: userId,
+    email: userEmail,
+    ip_hash: hashIp(ipHeader),
+    user_agent: headerList.get('user-agent'),
+    referrer: headerList.get('referer'),
+    ...parseDownloadAttribution(request.url),
+  };
 
   // Generate signed URL
   const { data: signed, error: signedErr } = await service
@@ -167,6 +193,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     // resources have no public fallback — return 503 instead of 500 so the
     // caller knows it's transient.
     if (resource.tier_required === 'free') {
+      await service.from('resource_downloads').insert(downloadLog);
       return staticDownloadResponse(resource);
     }
     console.error(`[resources:download] storage error for ${slug}:`, signedErr?.message);
@@ -174,21 +201,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
   }
 
   // Log download (non-blocking; failure should not break the download)
-  const headerList = await headers();
-  const ipHeader =
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    headerList.get('x-real-ip') ??
-    'anonymous';
-
-  await service.from('resource_downloads').insert({
-    resource_id: resource.id,
-    resource_slug: resource.slug,
-    user_id: userId,
-    email: userEmail,
-    ip_hash: hashIp(ipHeader),
-    user_agent: headerList.get('user-agent'),
-    referrer: headerList.get('referer'),
-  });
+  await service.from('resource_downloads').insert(downloadLog);
 
   return NextResponse.redirect(signed.signedUrl, { status: 302 });
 }

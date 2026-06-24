@@ -1,7 +1,4 @@
-'use client';
-
-import { useState } from 'react';
-import { PlaybookDownloadModal } from './PlaybookDownloadModal';
+import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
 
 export interface PlaybookDownloadButtonProps {
   readonly role: string;
@@ -12,26 +9,17 @@ export function PlaybookDownloadButton({
   role,
   roleTitle,
 }: PlaybookDownloadButtonProps) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <button
-        type="button"
-        className="mk-btn mk-btn-ghost-dark mk-btn-lg"
-        onClick={() => setOpen(true)}
-      >
-        Download Playbook (PDF)
-      </button>
-      {open && (
-        <PlaybookDownloadModal
-          role={role}
-          roleTitle={roleTitle}
-          pdfHref={`/api/resources/${role}-playbook/download`}
-          pdfFilename={`AiBI-${roleTitle.replace(/[^A-Za-z0-9]+/g, '-')}-Playbook.pdf`}
-          onClose={() => setOpen(false)}
-        />
-      )}
-    </>
+    <FreeResourceDownloadGate
+      title={`${roleTitle} Playbook`}
+      href={`/api/resources/${role}-playbook/download`}
+      slug={`${role}-playbook`}
+      source="playbook-page"
+      actionLabel="Get PDF"
+      capturedLabel="Download PDF"
+      buttonClassName="mk-btn mk-btn-ghost-dark mk-btn-lg"
+    >
+      Download Playbook (PDF)
+    </FreeResourceDownloadGate>
   );
 }

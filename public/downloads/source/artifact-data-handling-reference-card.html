@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Data Handling Reference Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #071A2F; --ink-2: #0B2745;
+  --gold: #C8A24A; --gold-deep: #9A7A2F;
+  --cream: #F7F3EA; --cream-2: #EFE7D7;
+  --slate-200: #E2E8F0; --slate-500: #64748B; --slate-600: #475569;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; color: var(--ink); }
+body {
+  font-family: -apple-system, "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11pt; line-height: 1.55;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 0 24pt; }
+.cover {
+  background: var(--ink); color: #fff;
+  padding: 36pt 32pt; margin: 0 0 24pt;
+  border-bottom: 4pt solid var(--gold);
+}
+.cover .kicker {
+  font-size: 8.5pt; letter-spacing: .22em; text-transform: uppercase;
+  color: #E6D39B; font-weight: 600;
+}
+/* Brand v1 [Ai] mark — typographic lockup. Inline since the script does
+   not have access to the React <Wordmark> component. Matches src/styles/brand.css. */
+.aibi-mark {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 600; font-size: 12pt;
+  letter-spacing: -.012em; color: #F7F3EA;
+  display: inline-flex; align-items: baseline; line-height: 1;
+}
+.aibi-mark .bk { color: var(--gold); font-weight: 500; padding: 0 .03em; }
+.aibi-mark .ai { padding: 0 0 0 .02em; }
+.aibi-mark .si {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.14em;
+  line-height: 0; margin: 0 .005em 0 -.04em; color: inherit;
+}
+.aibi-mark .full { margin-left: .32em; }
+.cover h1 {
+  margin: 8pt 0 0; font-size: 22pt; line-height: 1.15;
+  font-weight: 700; letter-spacing: -.01em;
+}
+.cover .meta {
+  margin-top: 14pt; font-size: 9pt; color: #c8d0d8;
+  border-top: 1pt solid rgba(255,255,255,.18);
+  padding-top: 10pt;
+}
+.body { padding: 0 32pt; }
+.body h1, .body h2, .body h3 { color: var(--ink); font-weight: 600; line-height: 1.25; }
+.body h1 { font-size: 18pt; margin: 22pt 0 8pt; }
+.body h2 {
+  font-size: 13pt; margin: 22pt 0 8pt;
+  padding-bottom: 4pt; border-bottom: 1pt solid var(--slate-200);
+}
+.body h3 { font-size: 11pt; margin: 16pt 0 4pt; color: var(--gold-deep); text-transform: uppercase; letter-spacing: .12em; }
+.body p, .body li { color: var(--slate-600); }
+.body p { margin: 10pt 0; }
+.body strong { color: var(--ink); }
+.body ul, .body ol { padding-left: 18pt; margin: 10pt 0; }
+.body li { margin: 4pt 0; }
+.body code {
+  background: var(--cream); color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9.5pt; padding: 1pt 4pt; border-radius: 3pt;
+}
+.body pre {
+  background: var(--ink); color: #E6D39B; padding: 12pt;
+  border-radius: 6pt; overflow: auto; font-size: 9.5pt; line-height: 1.45;
+}
+.body pre code { background: transparent; color: inherit; padding: 0; }
+.body hr {
+  border: 0; border-top: 1pt solid var(--slate-200); margin: 20pt 0;
+}
+.body table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 10pt; }
+.body th, .body td { border: 1pt solid var(--slate-200); padding: 6pt 8pt; text-align: left; vertical-align: top; }
+.body th { background: var(--cream); color: var(--ink); font-weight: 600; }
+.body blockquote {
+  border-left: 3pt solid var(--gold);
+  margin: 12pt 0; padding: 2pt 0 2pt 14pt; color: var(--slate-600);
+}
+.footer {
+  margin: 28pt 32pt 0; padding-top: 12pt;
+  border-top: 1pt solid var(--slate-200);
+  font-size: 8.5pt; color: var(--slate-500); text-align: center;
+}
+@page { margin: 0.5in; size: Letter; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="cover">
+      <span class="aibi-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span><span class="full">Banking Institute</span></span>
+      <h1>Data Handling Reference Card</h1>
+      <div class="meta">Reference card · For community banks and credit unions</div>
+    </header>
+    <main class="body"><p>For staff using AI tools. One page. Keep it within reach.</p>
+<h2>Before you paste anything</h2>
+<p>Ask three questions:</p>
+<ol>
+<li><strong>What data class is this?</strong> Green (public), Yellow (internal,
+non-customer), Red (NPI / PII / loan files).</li>
+<li><strong>Is this an approved tool for that class?</strong> If you&#39;re not certain, ask
+your manager before pasting.</li>
+<li><strong>Could a customer&#39;s name, account number, balance, SSN, or DOB be
+inferred from the context, even if not literally typed?</strong> If yes, the
+data is Red.</li>
+</ol>
+<h2>The categories</h2>
+<h3>Green — free to use</h3>
+<ul>
+<li>Public information published by the bank or credit union</li>
+<li>Marketing language about the institution (no internal numbers)</li>
+<li>Generic banking concepts, regulatory citations, FAQs</li>
+<li>Synthetic / fictional examples clearly labeled as such</li>
+</ul>
+<p><strong>Examples:</strong> drafting a press release, summarizing a public 8-K, writing
+generic email templates with placeholders.</p>
+<h3>Yellow — use approved tools only, strip identifiers</h3>
+<ul>
+<li>Internal policies and procedures</li>
+<li>Non-customer-specific operational data</li>
+<li>Drafts of communications that will be reviewed before sending</li>
+<li>Anonymized scenario walkthroughs</li>
+</ul>
+<p><strong>Examples:</strong> summarizing a board memo (with names removed), drafting an
+internal training module, refining policy language.</p>
+<h3>Red — never paste into AI tools, public or approved</h3>
+<ul>
+<li>Customer names + any identifier (account number, SSN, DOB, address)</li>
+<li>Loan files, credit applications, member account histories</li>
+<li>Transaction-level data tied to any identifier</li>
+<li>Adverse-action documentation</li>
+<li>Anything that would require disclosure under GLBA Privacy Rule</li>
+<li>Live BSA / SAR narratives or supporting documentation</li>
+</ul>
+<p><strong>If you need AI assistance on Red work</strong>, use only the institution&#39;s
+approved tool, strip identifiers first, and operate on the scrubbed text.
+When in doubt: do not paste; ask first.</p>
+<h2>The placeholder pattern</h2>
+<p>Replace identifying details with bracketed placeholders. The AI can still
+produce useful drafts on the structure.</p>
+<ul>
+<li><code>[CUSTOMER]</code>, <code>[MEMBER]</code></li>
+<li><code>[ACCOUNT NUMBER]</code>, <code>[LOAN ID]</code></li>
+<li><code>[BALANCE]</code>, <code>[TRANSACTION AMOUNT]</code></li>
+<li><code>[DATE]</code>, <code>[BRANCH]</code></li>
+</ul>
+<h2>Before you send the output</h2>
+<ul>
+<li>Read every fact. AI tools make confident-sounding errors on numbers,
+dates, regulatory citations, and policy claims.</li>
+<li>Flag any uncertain claim with <code>[VERIFY]</code> and resolve before use.</li>
+<li>For customer-facing or regulated work, route through a human reviewer
+even if the prompt was Green-class.</li>
+</ul>
+<h2>Escalate any of these immediately</h2>
+<ul>
+<li>A coworker pasting Red data into a public tool</li>
+<li>A vendor demo that asks for live customer data</li>
+<li>A policy gap you can&#39;t resolve from this card</li>
+<li>An AI output that contradicts your institution&#39;s stated policy</li>
+</ul>
+<h2>Citations</h2>
+<ul>
+<li>GLBA Privacy Rule (Title V, Subtitle A) — confidentiality of nonpublic
+personal information</li>
+<li>AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026</li>
+<li>SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC</li>
+<li>Interagency Guidance on Third-Party Risk Management, Federal Reserve / OCC / FDIC</li>
+</ul>
+</main>
+    <div class="footer">aibankinginstitute.com · Adapt before adopting.</div>
+  </div>
+</body>
+</html>

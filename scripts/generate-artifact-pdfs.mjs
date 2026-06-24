@@ -1,12 +1,17 @@
 // Render the markdown artifacts in public/artifacts/ to styled PDFs in
-// public/downloads/artifact-<slug>.pdf.
+// public/downloads/artifact-<slug>.pdf. For artifacts without a separate
+// template route, also write the branded HTML source to
+// public/downloads/source/artifact-<slug>.html so /api/resources/[slug]/word
+// can serve a Word-compatible version from the same source.
 //
 // Why: shipping raw .md to the browser shows unstyled source text. Each
 // artifact is a finished reference card that bankers print or save, so
 // it ships as a designed PDF mirror. The .md file remains the source of
 // truth; the PDF is regenerated when the .md changes.
 //
-// Usage:  node scripts/generate-artifact-pdfs.mjs
+// Usage:
+//   node scripts/generate-artifact-pdfs.mjs
+//   node scripts/generate-artifact-pdfs.mjs --only data-handling-reference-card,fair-lending-ai-review-checklist
 
 import { chromium } from '@playwright/test';
 import { marked } from 'marked';
@@ -14,14 +19,30 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const ARTIFACTS = [
-  { slug: 'data-handling-reference-card', title: 'Data Handling Reference Card' },
-  { slug: 'ai-use-case-inventory',        title: 'AI Use-Case Inventory' },
-  { slug: 'fair-lending-ai-review-checklist', title: 'Fair-Lending AI Review Checklist' },
+  {
+    slug: 'data-handling-reference-card',
+    resourceSlug: 'artifact-data-handling-reference-card',
+    title: 'Data Handling Reference Card',
+    writeSourceHtml: true,
+  },
+  {
+    slug: 'ai-use-case-inventory',
+    resourceSlug: 'artifact-ai-use-case-inventory',
+    title: 'AI Use-Case Inventory',
+    writeSourceHtml: false,
+  },
+  {
+    slug: 'fair-lending-ai-review-checklist',
+    resourceSlug: 'artifact-fair-lending-ai-review-checklist',
+    title: 'Fair-Lending AI Review Checklist',
+    writeSourceHtml: true,
+  },
 ];
 
 const ROOT = process.cwd();
 const SRC_DIR = resolve(ROOT, 'public/artifacts');
 const OUT_DIR = resolve(ROOT, 'public/downloads');
+const SOURCE_HTML_DIR = resolve(OUT_DIR, 'source');
 
 // Mockup tokens (kept in sync with src/styles/tokens-mockup.css).
 const STYLES = `
@@ -146,15 +167,26 @@ function stripLeadingH1(md) {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
+  await mkdir(SOURCE_HTML_DIR, { recursive: true });
+  const onlyArg = process.argv.includes('--only')
+    ? process.argv[process.argv.indexOf('--only') + 1].split(',').map((slug) => slug.trim()).filter(Boolean)
+    : null;
+  const artifacts = onlyArg
+    ? ARTIFACTS.filter((artifact) => onlyArg.includes(artifact.slug) || onlyArg.includes(artifact.resourceSlug))
+    : ARTIFACTS;
+
   const browser = await chromium.launch();
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
 
-  for (const { slug, title } of ARTIFACTS) {
+  for (const { slug, resourceSlug, title, writeSourceHtml } of artifacts) {
     const mdPath = resolve(SRC_DIR, `${slug}.md`);
     const md = await readFile(mdPath, 'utf8');
     const contentHtml = marked.parse(stripLeadingH1(md), { async: false });
     const html = pageHtml({ title, contentHtml });
+    if (writeSourceHtml) {
+      await writeFile(resolve(SOURCE_HTML_DIR, `${resourceSlug}.html`), html);
+    }
     await page.setContent(html, { waitUntil: 'load' });
     await page.emulateMedia({ media: 'print' });
     const pdf = await page.pdf({

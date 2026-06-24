@@ -74,7 +74,12 @@ support console.
 ## Public (NEXT_PUBLIC_ — shipped to the browser, not secret)
 
 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CALENDLY_URL`
+`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CALENDLY_URL`,
+`NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL`
+
+`NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL` powers the institution-facing "Book a
+briefing" CTA. If unset, the app falls back to
+`https://calendly.com/aibankinginstitute/executive-briefing`.
 
 ## Preview/test flags — NEVER set in Production scope
 
