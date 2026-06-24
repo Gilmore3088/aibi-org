@@ -96,8 +96,12 @@ This branch implements the first guardrail pass from the content resource review
   - Prompt Strategy Cheat Sheet
   - Regulatory Cheat Sheet
   - Platform Feature Reference Card
+- Added large-print PDF variants for the two source-backed artifact PDFs that appear inside starter kits:
+  - Data Handling Reference Card
+  - Fair-Lending AI Review Checklist
 - Added `npm run generate:large-print-resources`, which reflows dense source tables into stacked large-print cards instead of preserving clipped comparison grids.
 - Added `/api/resources/[slug]/large-print`, visible `/resources` large-print actions, focused route tests, Playwright coverage, and audit checks for committed large-print PDFs.
+- Updated starter-kit item rows and problem paths so manifest-declared large-print PDFs are included in the `/resources` link inventory and remain email-gated before download.
 - Rebuilt `prompt-strategy-cheat-sheet.pdf` from a 20-page mini-manual into a 4-page quick card aligned to the original resource promise:
   - RCFC + R prompt pattern
   - Green/yellow/red safety lane
@@ -121,8 +125,9 @@ This branch implements the first guardrail pass from the content resource review
 - `npx vitest run src/app/admin/funnel/_components/ResourceDownloads.test.tsx`
 - `npx vitest run src/lib/resources/readableResourceContent.test.ts src/app/resources/data.test.ts src/lib/resources/freeResources.test.ts` (`20` tests)
 - `npx vitest run src/lib/resources/freeResources.test.ts src/app/resources/data.test.ts src/app/api/resources/[slug]/large-print/route.test.ts` (`23` tests)
+- `npx vitest run src/lib/resources/freeResources.test.ts src/app/api/resources/[slug]/large-print/route.test.ts src/app/resources/data.test.ts` (`25` tests)
 - `npx vitest run src/app/resources/data.test.ts src/lib/resources/freeResources.test.ts src/lib/resources/downloadCatalog.test.ts src/lib/resources/resourceMeta.test.ts`
-- `npm test` (`435` tests)
+- `npm test` (`617` tests)
 - `npm run lint`
 - `npm run build`
 - `npx playwright test e2e/resources.spec.ts --project=chromium` (`15` tests)
@@ -136,11 +141,13 @@ This branch implements the first guardrail pass from the content resource review
 - `npx playwright test e2e/resources-workflow-sop.spec.ts e2e/resources.spec.ts --project=chromium`
 - `npx playwright test e2e/marketing-extended.spec.ts --project=chromium -g "security renders"`
 - `npx playwright test e2e/smoke.spec.ts --project=chromium`
-- PR #517 remote checks: Vercel preview, smoke, axe, Lighthouse, mobile viewport, and secret scan all passed.
+- Prior PR #517 remote checks: Vercel preview, smoke, axe, Lighthouse, mobile viewport, and secret scan all passed before this artifact large-print update.
 - Visual PDF check after prompt-card rebuild:
   - Standard prompt card: 4 pages, rendered pages inspected, no clipping.
   - Large-print prompt card: 8 pages, rendered pages inspected, no clipping; card breaks favor complete sections over dense fit.
   - Platform large-print matrix: 12 pages, rendered table pages inspected, no clipped comparison rows.
+  - Data Handling large-print artifact: 5 pages, cover and first content page rendered and inspected, no clipped text.
+  - Fair-Lending large-print artifact: 5 pages, cover and first content page rendered and inspected, no clipped text.
 
 Latest resource audit result: `31 manifest rows, 31 public downloads`.
 
@@ -155,7 +162,7 @@ These items remain separate from this implementation:
 - Rebase after the massive persona branch lands and verify overlapping persona fixes.
 - Replace remaining hardcoded `/resources`, assessment-output, playbook, and template lists with manifest-derived rendering where practical. Starter kits, role playbook cards, problem paths, desk cards, and paid previews now derive from the manifest; template cards now derive from the lightweight template index and the manifest.
 - The raw download log now captures known email, source surface, assessment role, assessment tier, assessment top gap, HTTP referrer, and hashed IP for generic resources, large-print resources, Prompt Cards, and the Safe AI Use Guide; `/admin/funnel` now shows attribution segment tables. Remaining analytics work is deeper campaign/source analysis once real traffic exists.
-- Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card PDFs now have reflowed large-print PDFs. Remaining artifact work is deeper official source refresh, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
+- Core public downloads now pass route/manifest/dev-token/ZIP/PDF extraction/browser-chrome/source/adaptation audit. Source-backed PDFs now have readable HTML variants, and desk-card plus starter-kit artifact PDFs now have reflowed large-print PDFs. Remaining artifact work is deeper official source refresh, tagged PDFs, broader large-print coverage for long-form playbooks, and visual QA beyond automated text extraction.
 - Continue deeper source refresh and accessibility QA for dynamic Word/template outputs. The dynamic Word template route is now branded, source-boxed, and directly tested.
 - The sample readiness report now matches current v3 free-assessment scoring and is guarded by source/PDF text audit checks.
 - Add deeper guided resource finder UX and accessibility improvements. The Start Here chooser, visible problem-path section, all nine role filters, format filters, skip links, clear/reset filters, and live result-count announcement are now present.

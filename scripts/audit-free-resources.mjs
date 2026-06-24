@@ -199,14 +199,24 @@ for (const resource of manifest.resources) {
         error(`${resource.slug} declares source-backed Word route but is missing ${rel(join(SOURCE_DIR, `${resource.slug}.html`))}`);
       }
 
-      if (resource.category === 'desk-card' && hasSourceHtml) {
-        const expectedLargePrintRoute = `/api/resources/${resource.slug}${LARGE_PRINT_ROUTE_SUFFIX}`;
+      const expectedLargePrintRoute = `/api/resources/${resource.slug}${LARGE_PRINT_ROUTE_SUFFIX}`;
+      const hasLargePrintRoute = resource.variants?.largePrintPdf === expectedLargePrintRoute;
+
+      if (resource.variants?.largePrintPdf && !hasLargePrintRoute) {
+        error(`${resource.slug} has unexpected large-print route ${resource.variants.largePrintPdf}; expected ${expectedLargePrintRoute}`);
+      }
+
+      if (resource.category === 'desk-card' && hasSourceHtml && !hasLargePrintRoute) {
+        error(`${resource.slug} desk card is missing large-print route ${expectedLargePrintRoute}`);
+      }
+
+      if (hasLargePrintRoute) {
         const largePrintPath = join(LARGE_PRINT_DIR, `${resource.slug}.pdf`);
-        if (resource.variants?.largePrintPdf !== expectedLargePrintRoute) {
-          error(`${resource.slug} desk card is missing large-print route ${expectedLargePrintRoute}`);
+        if (!hasSourceHtml) {
+          error(`${resource.slug} declares large-print route but is missing ${rel(join(SOURCE_DIR, `${resource.slug}.html`))}`);
         }
         if (!existsSync(largePrintPath)) {
-          error(`${resource.slug} desk card is missing ${rel(largePrintPath)}`);
+          error(`${resource.slug} large-print route is missing ${rel(largePrintPath)}`);
         } else {
           scanDevTokens(largePrintPath);
           scanPdfArtifact(largePrintPath, `${resource.slug} large-print`);

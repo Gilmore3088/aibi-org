@@ -1,4 +1,4 @@
-// Render source-backed desk-card resources to large-print PDFs.
+// Render selected source-backed resources to large-print PDFs.
 //
 // Source HTML remains the canonical content. This script applies a
 // large-print stylesheet at render time and writes committed artifacts under
@@ -17,6 +17,7 @@ const ROOT = process.cwd();
 const SOURCE_DIR = resolve(ROOT, 'public/downloads/source');
 const OUT_DIR = resolve(ROOT, 'public/downloads/large-print');
 const MANIFEST_PATH = resolve(ROOT, 'src/lib/resources/freeResources.manifest.json');
+const LARGE_PRINT_CATEGORIES = new Set(['desk-card', 'artifact']);
 
 const LARGE_PRINT_CSS = `
 @page {
@@ -232,7 +233,9 @@ async function loadSlugs() {
   return manifest.resources
     .filter((resource) =>
       resource.status === 'public' &&
-      resource.category === 'desk-card' &&
+      LARGE_PRINT_CATEGORIES.has(resource.category) &&
+      resource.download?.fileType === 'pdf' &&
+      resource.variants?.word === `/api/resources/${resource.slug}/word` &&
       resource.variants?.largePrintPdf === expectedLargePrintRoute(resource.slug)
     )
     .map((resource) => resource.slug);

@@ -6,6 +6,7 @@ import {
   downloadableFreeResources,
   publicFreeResources,
   largePrintResourceHref,
+  largePrintFreeResources,
   readableFreeResources,
   readableResourceHref,
 } from '@/lib/resources/freeResources';
@@ -51,6 +52,9 @@ describe('resources data model', () => {
       );
       expect(kit.items.map((item) => item.readHref ?? null)).toEqual(
         manifestMembers.map((resource) => readableResourceHref(resource) ?? null),
+      );
+      expect(kit.items.map((item) => item.largePrint ?? null)).toEqual(
+        manifestMembers.map((resource) => largePrintResourceHref(resource) ?? null),
       );
       expect(kit.items.length, `${kit.slug} should not be empty`).toBeGreaterThan(0);
     }
@@ -139,6 +143,7 @@ describe('resources data model', () => {
       expect(resource, `${path.title} should use a public manifest canonical route`).toBeDefined();
       expect(resource?.title).toBe(path.artifact);
       expect(path.readHref).toBe(readableResourceHref(resource ?? null) ?? undefined);
+      expect(path.largePrint).toBe(largePrintResourceHref(resource ?? null) ?? undefined);
       expect(
         resource?.visibleSurfaces.some((surface) => surface === 'resources' || surface === 'template'),
         `${path.title} should be visible from a public resource surface`,
@@ -225,11 +230,11 @@ describe('resources data model', () => {
 
   it('includes every visible large-print route in all resource hrefs', () => {
     const hrefs = new Set(allDownloadHrefs());
-    const largePrintHrefs = deskCards
-      .map((card) => card.largePrint)
+    const largePrintHrefs = largePrintFreeResources
+      .map((resource) => largePrintResourceHref(resource))
       .filter((href): href is string => Boolean(href));
 
-    expect(largePrintHrefs.length).toBeGreaterThanOrEqual(5);
+    expect(largePrintHrefs.length).toBeGreaterThanOrEqual(7);
     for (const href of largePrintHrefs) {
       expect(hrefs.has(href), `${href} missing from allDownloadHrefs`).toBe(true);
     }

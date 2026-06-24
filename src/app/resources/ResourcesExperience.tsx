@@ -220,6 +220,11 @@ function slugFromResourceWordHref(href: string): string | null {
   return match?.[1] ?? null;
 }
 
+function slugFromLargePrintHref(href: string): string | null {
+  const match = href.match(/^\/api\/resources\/([^/]+)\/large-print$/);
+  return match?.[1] ?? null;
+}
+
 function slugFromWordHref(href: string): string | null {
   return slugFromResourceWordHref(href) ?? slugFromTemplateWordHref(href);
 }
@@ -552,6 +557,20 @@ function FeaturedKit({
                       Read HTML
                     </a>
                   )}
+                  {item.largePrint && (
+                    <FreeResourceDownloadGate
+                      title={`${item.label} large-print PDF`}
+                      href={item.largePrint}
+                      slug={slugFromLargePrintHref(item.largePrint) ?? slugFromApiDownloadHref(item.href) ?? item.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                      source="resources-featured-kit-large-print"
+                      format="large-print PDF"
+                      actionLabel="Get large print"
+                      capturedLabel="Download large print"
+                      buttonClassName="rx-featured-item-read"
+                    >
+                      Large print
+                    </FreeResourceDownloadGate>
+                  )}
                 </div>
               </li>
             ))}
@@ -658,6 +677,20 @@ function ProblemPathCard({ path }: { path: ProblemPathData }) {
           <Button variant="ghost-light" href={path.readHref}>
             Read HTML
           </Button>
+        )}
+        {path.largePrint && (
+          <FreeResourceDownloadGate
+            title={`${path.artifact} large-print PDF`}
+            href={path.largePrint}
+            slug={slugFromLargePrintHref(path.largePrint) ?? downloadSlug ?? path.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+            source="resources-problem-path-large-print"
+            format="large-print PDF"
+            actionLabel="Get large print"
+            capturedLabel="Download large print"
+            buttonVariant="ghost-light"
+          >
+            Large print
+          </FreeResourceDownloadGate>
         )}
       </div>
     </article>

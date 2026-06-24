@@ -79,6 +79,11 @@ export type LargePrintFreeResource = FreeResource & {
   readonly variants: FreeResourceVariants & { readonly largePrintPdf: string };
 };
 
+const LARGE_PRINT_RESOURCE_CATEGORIES = new Set<FreeResourceCategory>([
+  'desk-card',
+  'artifact',
+]);
+
 const RESOURCE_BY_SLUG = new Map(freeResources.map((resource) => [resource.slug, resource]));
 
 export function getFreeResource(slug: string): FreeResource | null {
@@ -113,9 +118,10 @@ export function isLargePrintFreeResource(resource: FreeResource | null): resourc
   return Boolean(
     resource &&
       resource.status === 'public' &&
-      resource.category === 'desk-card' &&
+      LARGE_PRINT_RESOURCE_CATEGORIES.has(resource.category) &&
       resource.download &&
       resource.download.fileType === 'pdf' &&
+      resource.variants.word === expectedSourceBackedWordRoute(resource.slug) &&
       resource.variants.largePrintPdf === expectedLargePrintRoute(resource.slug),
   );
 }

@@ -72,21 +72,27 @@ describe('freeResources manifest', () => {
     }
   });
 
-  it('exposes committed large-print PDFs for every source-backed desk card', () => {
+  it('exposes committed large-print PDFs for desk cards and selected source-backed artifacts', () => {
     const sourceSlugs = new Set(
       readdirSync(join(process.cwd(), 'public', 'downloads', 'source'))
         .filter((filename) => filename.endsWith('.html') && !filename.startsWith('_'))
         .map((filename) => filename.replace(/\.html$/, '')),
     );
-    const deskCards = downloadableFreeResources.filter(
-      (resource) => resource.category === 'desk-card' && sourceSlugs.has(resource.slug),
+    const requiredArtifactSlugs = new Set([
+      'artifact-data-handling-reference-card',
+      'artifact-fair-lending-ai-review-checklist',
+    ]);
+    const expectedLargePrintResources = downloadableFreeResources.filter(
+      (resource) =>
+        sourceSlugs.has(resource.slug) &&
+        (resource.category === 'desk-card' || requiredArtifactSlugs.has(resource.slug)),
     );
 
     expect(largePrintFreeResources.map((resource) => resource.slug)).toEqual(
-      deskCards.map((resource) => resource.slug),
+      expectedLargePrintResources.map((resource) => resource.slug),
     );
 
-    for (const resource of deskCards) {
+    for (const resource of expectedLargePrintResources) {
       expect(resource.variants.largePrintPdf).toBe(`/api/resources/${resource.slug}/large-print`);
       expect(
         existsSync(join(process.cwd(), 'public', 'downloads', largePrintFilePath(resource.slug))),
