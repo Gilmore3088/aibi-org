@@ -69,3 +69,6 @@ export type { EssayArchiveItem, EssayArchiveProps } from "./EssayArchive";
 export { SiteNav } from "./SiteNav";
 export { SiteFooter } from "./SiteFooter";
 export type { SiteFooterProps } from "./SiteFooter";
+
+export { LayoutChrome } from "./LayoutChrome";
+export type { LayoutChromeProps } from "./LayoutChrome";

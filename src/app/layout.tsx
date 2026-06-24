@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { headers } from 'next/headers';
 import {
   Cormorant_SC,
   Inter,
@@ -9,52 +8,11 @@ import {
 } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
-import { SiteNav, SiteFooter } from '@/components/system';
+import { SiteNav, SiteFooter, LayoutChrome } from '@/components/system';
 import { MockupSiteFooter } from '@/components/mockup';
 import { BRAND } from '@content/copy';
 import { organizationJsonLd, websiteJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 import './globals.css';
-
-// Routes that render WITHOUT the global Header/Footer chrome. These pages
-// provide their own internal brand lockup, so showing the global Header on
-// top would produce a duplicate logo (or, in the case of the design system
-// reference, would frame a pixel-faithful mockup with extraneous chrome).
-const CHROMELESS_PATHS: readonly string[] = [
-  // 2026-05-26 redesign sprint — every route ported to the mockup design
-  // system renders its own SiteHeader from @/components/mockup. As each
-  // route migrates, it joins this list. When all routes have migrated
-  // the global SiteNav is removed entirely.
-  '/',
-  '/assessment',
-  '/results',
-  '/pricing',
-  '/courses',
-  '/playground',
-  '/practice',
-  '/my-toolbox',
-  '/for-institutions',
-  '/playbooks',
-  '/dashboard',
-  '/courses/foundation/program',
-  '/auth',
-  '/security',
-  '/about',
-  '/faq',
-  '/certifications',
-  '/resources',
-  '/prompt-cards',
-  '/support/purchase-help',
-  '/privacy',
-  '/terms',
-  '/ai-use-disclaimer',
-  '/verify',
-  '/admin',
-
-  // Pre-existing chromeless routes (own brand lockup or no chrome by design)
-  '/design-system',
-  // /auth and signed-in app shells own their page-level chrome and are
-  // footerless below.
-];
 
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
 // were declared here but had zero references anywhere in src/. They were
@@ -213,30 +171,16 @@ export const metadata: Metadata = {
   },
 };
 
-// Chromeless routes that should still have NO footer at all. Truly-bare
-// surfaces — operator tools, the pre-launch holding page, and signed-in
-// app shells that own their own bottom chrome.
-const FOOTERLESS_PATHS: readonly string[] = [
-  '/coming-soon',
-  '/design-system',
-  '/auth',
-  '/dashboard',
-  '/courses/foundation/program',
-  '/assessment/take',
-  '/assessment/in-depth/take',
-  '/admin',
-];
-
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = (await headers()).get('x-pathname') ?? '/';
-  const chromeless = CHROMELESS_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`),
-  );
-  const footerless = FOOTERLESS_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`),
-  );
-  const showMockupFooter = chromeless && !footerless;
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // The chrome-visibility decision (which Header/Footer subtree mounts) is made
+  // inside <LayoutChrome> from usePathname(), NOT from the x-pathname request
+  // header. usePathname() is identical across SSR and the first client render,
+  // so server HTML and client hydration always agree — this removes the only
+  // non-deterministic input that produced the intermittent React #418
+  // hydration error on /resources via soft navigation. The chrome elements are
+  // Server Components (SiteNav reads next/headers for nav-active state), so we
+  // render them here and hand them to the client wrapper as slots; the wrapper
+  // only chooses which slot to mount.
   return (
     <html lang="en">
       <head>
@@ -256,17 +200,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body
         className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} ${instrumentSerif.variable} flex flex-col min-h-screen`}
       >
-        {!chromeless && (
-          <a href="#main-content" className="skip-link">
-            Skip to main content
-          </a>
-        )}
-        {!chromeless && <SiteNav />}
-        <div id="main-content" className="flex-1">
+        <LayoutChrome
+          skipLink={
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
+          }
+          siteNav={<SiteNav />}
+          siteFooter={<SiteFooter />}
+          mockupFooter={<MockupSiteFooter />}
+        >
           {children}
-        </div>
-        {!chromeless && <SiteFooter />}
-        {showMockupFooter && <MockupSiteFooter />}
+        </LayoutChrome>
         <Analytics />
       </body>
     </html>
