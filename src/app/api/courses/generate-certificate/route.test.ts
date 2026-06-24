@@ -281,10 +281,8 @@ describe('/api/courses/generate-certificate', () => {
   describe('Chromium tracing guard', () => {
     it('keeps /api/courses/generate-certificate in outputFileTracingIncludes', async () => {
       const { readFile } = await import('node:fs/promises');
-      const { fileURLToPath } = await import('node:url');
-      const configPath = fileURLToPath(
-        new URL('../../../../../next.config.mjs', import.meta.url),
-      );
+      const { resolve } = await import('node:path');
+      const configPath = resolve(process.cwd(), 'next.config.mjs');
       const source = await readFile(configPath, 'utf8');
 
       const tracingMatch = source.match(
