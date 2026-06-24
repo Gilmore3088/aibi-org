@@ -8,15 +8,18 @@ function contextFor(slug: string) {
 }
 
 describe('/api/resources/[slug]/large-print', () => {
-  it('returns a large-print PDF for manifest-backed desk cards', async () => {
+  it.each([
+    'safe-ai-use-checklist',
+    'artifact-data-handling-reference-card',
+  ])('returns a large-print PDF for manifest-backed resource %s', async (slug) => {
     const response = await GET(
-      new Request('https://www.aibankinginstitute.com/api/resources/safe-ai-use-checklist/large-print'),
-      contextFor('safe-ai-use-checklist'),
+      new Request(`https://www.aibankinginstitute.com/api/resources/${slug}/large-print`),
+      contextFor(slug),
     );
 
     expect(response.status).toBe(200);
     expect(response.headers.get('content-type')).toContain('application/pdf');
-    expect(response.headers.get('content-disposition')).toContain('safe-ai-use-checklist-large-print.pdf');
+    expect(response.headers.get('content-disposition')).toContain(`${slug}-large-print.pdf`);
     expect((await response.arrayBuffer()).byteLength).toBeGreaterThan(10_000);
   });
 

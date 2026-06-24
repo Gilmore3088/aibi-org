@@ -65,7 +65,7 @@ export interface StarterKit {
   title: string;
   desc: string;
   audience: string;
-  items: { label: string; href: string; readHref?: string }[];
+  items: { label: string; href: string; readHref?: string; largePrint?: string }[];
   /** Download URL for the ZIP bundle of every artifact in the kit
    * (routed through /api/resources/[slug]/download). */
   zip: string;
@@ -113,6 +113,7 @@ function starterKitItems(slug: string): StarterKit['items'] {
       label: titleFromManifest(resource),
       href: resource.canonicalRoute,
       readHref: readableResourceHref(resource) ?? undefined,
+      largePrint: largePrintResourceHref(resource) ?? undefined,
     }));
 }
 
@@ -212,10 +213,11 @@ export interface ProblemPath {
   format: 'Template' | 'Desk card' | 'Sample';
   href: string;
   readHref?: string;
+  largePrint?: string;
   icon: IconType;
 }
 
-function problemArtifact(slug: string): Pick<ProblemPath, 'artifact' | 'href' | 'readHref'> {
+function problemArtifact(slug: string): Pick<ProblemPath, 'artifact' | 'href' | 'readHref' | 'largePrint'> {
   const resource = getFreeResource(slug);
   if (!resource || resource.status !== 'public') {
     throw new Error(`Missing public problem-path resource for ${slug}`);
@@ -225,6 +227,7 @@ function problemArtifact(slug: string): Pick<ProblemPath, 'artifact' | 'href' | 
     artifact: resource.title,
     href: resource.canonicalRoute,
     readHref: readableResourceHref(resource) ?? undefined,
+    largePrint: largePrintResourceHref(resource) ?? undefined,
   };
 }
 
@@ -407,6 +410,7 @@ export function allDownloadHrefs(): string[] {
     k.items.forEach((i) => {
       hrefs.add(i.href);
       if (i.readHref) hrefs.add(i.readHref);
+      if (i.largePrint) hrefs.add(i.largePrint);
     });
     hrefs.add(k.zip);
   });
@@ -431,6 +435,7 @@ export function allDownloadHrefs(): string[] {
   });
   problemPaths.forEach((p) => {
     if (p.readHref) hrefs.add(p.readHref);
+    if (p.largePrint) hrefs.add(p.largePrint);
   });
   deskCards.forEach((d) => {
     if (d.readHref) hrefs.add(d.readHref);

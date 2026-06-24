@@ -8,6 +8,10 @@ import {
   starterKits,
 } from '../src/app/resources/data';
 
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // /resources — Artifact Library
 //
 // Full UA tests for every user path on the new resources page. The page
@@ -162,8 +166,11 @@ test.describe('/resources page', () => {
       ).toBeVisible();
 
       if (path.href.startsWith('/api/resources/')) {
+        const actionLabel = path.format === 'Sample' ? 'Get sample' : 'Get PDF';
         await expect(
-          problemSection.getByRole('button', { name: new RegExp(`for ${path.artifact}`, 'i') }),
+          problemSection.getByRole('button', {
+            name: new RegExp(`${actionLabel} for ${escapeRegex(path.artifact)}`, 'i'),
+          }),
           `download gate for ${path.artifact}`,
         ).toBeVisible();
       } else {
