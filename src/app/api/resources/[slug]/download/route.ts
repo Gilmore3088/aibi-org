@@ -45,23 +45,42 @@ const TIER_TO_PRODUCTS: Record<ResourceRow['tier_required'], readonly string[]> 
   'in-depth-assessment': ['in-depth-assessment'],
 };
 
+// Best-effort download logging. A logging failure must never break delivery.
+async function logDownload(
+  service: ReturnType<typeof createServiceRoleClient>,
+  downloadLog: Record<string, unknown>,
+  slug: string,
+): Promise<void> {
+  try {
+    const { error } = await service.from('resource_downloads').insert(downloadLog);
+    if (error) {
+      console.warn(`[resources:download] log insert failed for ${slug}:`, error.message);
+    }
+  } catch (err) {
+    console.warn(`[resources:download] log insert threw for ${slug}:`, err);
+  }
+}
+
+function inferDownloadContentType(filePath: string): string {
+  return filePath.toLowerCase().endsWith('.zip') ? 'application/zip' : 'application/pdf';
+}
+
 async function staticDownloadResponse(
-  resource: Pick<ResourceRow, 'file_path'> & { readonly file_type?: 'pdf' | 'zip' },
+  resource: Pick<ResourceRow, 'file_path'>,
 ): Promise<Response> {
   try {
     const file = await readFile(join(process.cwd(), 'public', 'downloads', resource.file_path));
     const filename = resource.file_path.split('/').pop() ?? resource.file_path;
-    const contentType = resource.file_type === 'zip' ? 'application/zip' : 'application/pdf';
     return new NextResponse(file, {
       status: 200,
       headers: {
-        'Content-Type': contentType,
+        'Content-Type': inferDownloadContentType(resource.file_path),
         'Content-Disposition': `attachment; filename="${filename}"`,
         'Cache-Control': 'public, max-age=300',
       },
     });
   } catch (error) {
-    console.error(`[resources:download] static fallback missing for ${resource.file_path}:`, error);
+    console.error(`[resources:download] static file missing for ${resource.file_path}:`, error);
     return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });
   }
 }
@@ -178,7 +197,23 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     ...parseDownloadAttribution(request.url),
   };
 
-  // Generate signed URL
+  // Free-tier resources are served straight from the repo-committed file under
+  // /public/downloads — the source of truth that ships with every deploy and is
+  // traced into this function (see outputFileTracingIncludes in next.config).
+  //
+  // We deliberately do NOT serve free resources from the Storage bucket. The
+  // bucket is populated by a manual seed script and silently drifts out of date:
+  // it was serving stale website-screenshot playbook PDFs (a print of the
+  // /playbooks/[role] marketing page) to every visitor while the correct, rich
+  // PDFs sat committed in the repo. Serving the committed file removes that
+  // entire class of bug. Gated resources still use short-lived signed URLs
+  // (they have no public file and require an authenticated entitlement).
+  if (resource.tier_required === 'free') {
+    await logDownload(service, downloadLog, slug);
+    return staticDownloadResponse(resource);
+  }
+
+  // Gated resource — generate a short-lived signed URL from Storage.
   const { data: signed, error: signedErr } = await service
     .storage
     .from('resources')
@@ -187,21 +222,11 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     });
 
   if (signedErr || !signed?.signedUrl) {
-    // Storage failed (bucket not seeded or not created yet). For free-tier
-    // resources the file is also committed under /public/downloads, so stream it
-    // directly rather than relying on legacy /downloads redirects. Gated
-    // resources have no public fallback — return 503 instead of 500 so the
-    // caller knows it's transient.
-    if (resource.tier_required === 'free') {
-      await service.from('resource_downloads').insert(downloadLog);
-      return staticDownloadResponse(resource);
-    }
     console.error(`[resources:download] storage error for ${slug}:`, signedErr?.message);
     return NextResponse.json({ error: 'Download temporarily unavailable.' }, { status: 503 });
   }
 
-  // Log download (non-blocking; failure should not break the download)
-  await service.from('resource_downloads').insert(downloadLog);
+  await logDownload(service, downloadLog, slug);
 
   return NextResponse.redirect(signed.signedUrl, { status: 302 });
 }

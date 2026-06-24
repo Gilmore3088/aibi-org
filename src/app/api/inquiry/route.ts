@@ -2,7 +2,8 @@
 // Certification inquiry form — validates, logs, sends ack email.
 
 import { NextResponse } from 'next/server';
-import { sendInquiryAck, sendInquiryNotification } from '@/lib/resend';
+import { sendInquiryAck, sendInquiryNotification, sendResourceDelivery } from '@/lib/resend';
+import { resolveDeliverableResource } from '@/lib/resources/resourceDelivery';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { subscribeToPlaybookForm } from '@/lib/mailerlite';
@@ -135,13 +136,36 @@ export async function POST(request: Request) {
     console.warn('[inquiry] auth-admin skip', err),
   );
 
-  // Acknowledgement email — fire-and-forget, never blocks the response.
-  sendInquiryAck({
-    email: body.email,
-    name: firstName,
-    institution: body.institution,
-    track,
-  }).catch((err) => console.warn('[inquiry] resend skip', err));
+  // Resource requests (the Safe AI Use Guide and role playbooks) get the file
+  // emailed to them, not a generic "we'll follow up" acknowledgement. The form
+  // also triggers an immediate browser download; the email is the durable copy
+  // the requester can find later. Other inquiry types keep the ack.
+  //   guide-request    → track is a label; the artifact is the Safe AI Use Guide
+  //   playbook-request → track is "{role}-playbook", which is the resource slug
+  const deliverableSlug =
+    body.type === 'guide-request'
+      ? 'aibi-safe-ai-use-guide'
+      : body.type === 'playbook-request'
+        ? body.track
+        : null;
+  const deliverable = deliverableSlug ? resolveDeliverableResource(deliverableSlug) : null;
+
+  if (deliverable) {
+    sendResourceDelivery({
+      email: body.email,
+      title: deliverable.title,
+      downloadUrl: deliverable.downloadUrl,
+      firstName,
+    }).catch((err) => console.warn('[inquiry] resource delivery skip', err));
+  } else {
+    // Acknowledgement email — fire-and-forget, never blocks the response.
+    sendInquiryAck({
+      email: body.email,
+      name: firstName,
+      institution: body.institution,
+      track,
+    }).catch((err) => console.warn('[inquiry] resend skip', err));
+  }
 
   sendInquiryNotification({
     to: getSupportInboxEmail(),

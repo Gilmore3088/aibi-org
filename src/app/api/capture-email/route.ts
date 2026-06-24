@@ -15,7 +15,8 @@ import {
   removeAssessmentTier,
   type TierId,
 } from '@/lib/mailerlite/sequences';
-import { sendAssessmentBreakdown } from '@/lib/resend';
+import { sendAssessmentBreakdown, sendResourceDelivery } from '@/lib/resend';
+import { resolveDeliverableResource } from '@/lib/resources/resourceDelivery';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import {
   checkEmailCaptureLimit,
@@ -248,6 +249,17 @@ export async function POST(request: Request) {
         email: researchEmail,
         fields: { lead_source, ...(requested_artifact ? { requested_artifact } : {}) },
       }).catch((err) => console.warn('[capture-email] mailerlite research skip', err));
+    }
+    // Email the requested artifact so the file lands in the inbox, not only as
+    // a transient browser download. Best-effort; only fires when the requested
+    // slug resolves to a free, link-deliverable resource.
+    const deliverable = resolveDeliverableResource(requested_artifact);
+    if (deliverable) {
+      sendResourceDelivery({
+        email: researchEmail,
+        title: deliverable.title,
+        downloadUrl: deliverable.downloadUrl,
+      }).catch((err) => console.warn('[capture-email] resource delivery skip', err));
     }
     return captureResponse({ ok: true }, researchEmail);
   }

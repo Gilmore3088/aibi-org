@@ -8,6 +8,11 @@
 // HTML loads _brand.css (brand v1 colors + the bracketed [Ai] seal mark).
 // We render via file:// URL so no dev server is required.
 //
+// This is the ONLY supported way to (re)generate the playbook PDFs. The old
+// generate-playbook-pdfs.mjs — which printed the /playbooks/[role] *marketing
+// page* to PDF — was removed: it produced website-screenshot PDFs, not real
+// playbooks. Edit the hand-authored source HTML here, then re-run this script.
+//
 // Usage:  node scripts/generate-source-html-pdfs.mjs [--only slug1,slug2]
 
 import { chromium } from '@playwright/test';

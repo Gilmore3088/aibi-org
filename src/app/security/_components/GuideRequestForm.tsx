@@ -185,8 +185,9 @@ export function GuideRequestForm() {
             margin: '0 0 18px',
           }}
         >
-          Your request was received. The Safe AI Use Guide should open as a
-          browser download or tab. If it does not start, use the button below.
+          The Safe AI Use Guide should open as a browser download or tab, and
+          we&rsquo;ve also emailed you a copy. If the download does not start, use
+          the button below.
         </p>
         <button
           type="button"
