@@ -36,7 +36,7 @@
     },
     {
       "path": "/api/cron/stranded-buyers",
-      "schedule": "0 */2 * * *"
+      "schedule": "30 16 * * *"
     },
     {
       "path": "/api/cron/assessment-abandoned",
