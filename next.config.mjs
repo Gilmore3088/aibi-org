@@ -62,10 +62,15 @@ const nextConfig = {
     // public/downloads — the source of truth that ships with every deploy.
     // readFile uses a dynamic path, so Next cannot statically trace these;
     // include them explicitly or the route 404s the file at runtime and the
-    // download silently fails. The Word/large-print/readable variants read
-    // the hand-authored HTML under public/downloads/source.
+    // download silently fails. Tracing is scoped per function bundle, so each
+    // route that reads from disk needs its own include even when a broader glob
+    // on another route happens to match the same files: the Word/readable
+    // variants read the hand-authored HTML under public/downloads/source, and
+    // the large-print variant serves pre-generated PDFs under
+    // public/downloads/large-print.
     '/api/resources/[slug]/download': ['./public/downloads/**'],
     '/api/resources/[slug]/word': ['./public/downloads/source/**'],
+    '/api/resources/[slug]/large-print': ['./public/downloads/large-print/**'],
     '/api/guides/safe-ai-use': ['./public/downloads/aibi-safe-ai-use-guide.pdf'],
     // @sparticuz/chromium ships the (brotli-compressed) Chromium binary under
     // its bin/. Because the package is externalized (above), Next must be told
