@@ -40,6 +40,10 @@ import {
   inquiryAckText,
 } from './templates/inquiry-ack';
 import {
+  resourceDeliveryHtml,
+  resourceDeliveryText,
+} from './templates/resource-delivery';
+import {
   teamAssessmentPurchaseHtml,
   teamAssessmentPurchaseText,
 } from './templates/team-assessment-purchase';
@@ -475,6 +479,35 @@ export function sendInquiryAck(payload: InquiryAckPayload): Promise<ResendResult
       track: payload.track,
     }),
     tag: '[resend:inquiry-ack]',
+  });
+}
+
+// ── Email 6: Free resource delivery ─────────────────────────────────────────
+
+export interface ResourceDeliveryPayload {
+  readonly email: string;
+  readonly title: string;
+  readonly downloadUrl: string;
+  readonly firstName?: string;
+}
+
+export function sendResourceDelivery(
+  payload: ResourceDeliveryPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: `Your download: ${payload.title}`,
+    html: resourceDeliveryHtml({
+      title: payload.title,
+      downloadUrl: payload.downloadUrl,
+      ...(payload.firstName ? { firstName: payload.firstName } : {}),
+    }),
+    text: resourceDeliveryText({
+      title: payload.title,
+      downloadUrl: payload.downloadUrl,
+      ...(payload.firstName ? { firstName: payload.firstName } : {}),
+    }),
+    tag: '[resend:resource-delivery]',
   });
 }
 

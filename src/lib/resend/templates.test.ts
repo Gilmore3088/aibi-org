@@ -37,6 +37,10 @@ import {
 } from './templates/assessment-options';
 import { inquiryAckHtml, inquiryAckText } from './templates/inquiry-ack';
 import {
+  resourceDeliveryHtml,
+  resourceDeliveryText,
+} from './templates/resource-delivery';
+import {
   foundationNotStartedReminderHtml,
   foundationNotStartedReminderText,
   foundationStalledReminderHtml,
@@ -92,6 +96,48 @@ describe('assessmentResultsBreakdown template', () => {
     const text = assessmentResultsBreakdownText(vars);
     assertValidText(text, 'assessmentResultsBreakdown');
     expect(text).toContain('Emerging');
+  });
+});
+
+// ── Email 6: Free resource delivery ────────────────────────────────────────
+
+describe('resourceDelivery template', () => {
+  const vars = {
+    title: 'IT / InfoSec Playbook',
+    downloadUrl: 'https://aibankinginstitute.com/api/resources/infosec-playbook/download',
+    firstName: 'Jordan',
+  };
+
+  it('HTML renders correctly with a working download link', () => {
+    const html = resourceDeliveryHtml(vars);
+    assertValidHtml(html, 'resourceDelivery');
+    expect(html).toContain('IT / InfoSec Playbook');
+    expect(html).toContain(vars.downloadUrl);
+    expect(html).toContain('Jordan');
+  });
+
+  it('renders without a first name', () => {
+    const html = resourceDeliveryHtml({ title: vars.title, downloadUrl: vars.downloadUrl });
+    assertValidHtml(html, 'resourceDelivery (no name)');
+    expect(html).toContain(vars.downloadUrl);
+  });
+
+  it('escapes HTML in the title and name', () => {
+    const html = resourceDeliveryHtml({
+      title: '<script>x</script>',
+      downloadUrl: vars.downloadUrl,
+      firstName: '<b>hax</b>',
+    });
+    expect(html).not.toContain('<script>x</script>');
+    expect(html).not.toContain('<b>hax</b>');
+    expect(html).toContain('&lt;script&gt;');
+  });
+
+  it('text renders correctly', () => {
+    const text = resourceDeliveryText(vars);
+    assertValidText(text, 'resourceDelivery');
+    expect(text).toContain('IT / InfoSec Playbook');
+    expect(text).toContain(vars.downloadUrl);
   });
 });
 

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   sendInquiryAck: vi.fn(),
   sendInquiryNotification: vi.fn(),
+  sendResourceDelivery: vi.fn(),
   ensureAuthUser: vi.fn(),
   rateLimitOrFail: vi.fn(),
   getRequestIp: vi.fn(),
@@ -13,6 +14,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/lib/resend', () => ({
   sendInquiryAck: mocks.sendInquiryAck,
   sendInquiryNotification: mocks.sendInquiryNotification,
+  sendResourceDelivery: mocks.sendResourceDelivery,
 }));
 
 vi.mock('@/lib/supabase/auth-admin', () => ({
@@ -54,6 +56,7 @@ describe('POST /api/inquiry', () => {
     mocks.ensureAuthUser.mockResolvedValue({ userId: 'user-123', created: false });
     mocks.sendInquiryAck.mockResolvedValue({ skipped: true, reason: 'test' });
     mocks.sendInquiryNotification.mockResolvedValue({ skipped: true, reason: 'test' });
+    mocks.sendResourceDelivery.mockResolvedValue({ skipped: true, reason: 'test' });
     mocks.subscribeToPlaybookForm.mockResolvedValue(undefined);
     mocks.createSupportCase.mockResolvedValue({ id: 'case-123' });
   });
@@ -185,6 +188,40 @@ describe('POST /api/inquiry', () => {
       'aibi_free_resource_email=jordan%40communitybank.test',
     );
     expect(mocks.createSupportCase).not.toHaveBeenCalled();
+    // The guide is emailed to the requester (not a generic "we'll follow up" ack).
+    expect(mocks.sendResourceDelivery).toHaveBeenCalledWith({
+      email: 'Jordan@CommunityBank.test',
+      title: 'Safe AI Use Guide',
+      downloadUrl: 'https://aibankinginstitute.com/api/guides/safe-ai-use',
+      firstName: 'Jordan',
+    });
+    expect(mocks.sendInquiryAck).not.toHaveBeenCalled();
+  });
+
+  it('emails the requested role playbook for playbook-request inquiries', async () => {
+    const response = await POST(request({
+      name: 'Sam Okafor',
+      email: 'sam@communitybank.test',
+      institution: 'Community Bank',
+      track: 'infosec-playbook',
+      notes: 'Requested via playbook modal.',
+      type: 'playbook-request',
+    }));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ ok: true });
+    expect(mocks.sendResourceDelivery).toHaveBeenCalledWith({
+      email: 'sam@communitybank.test',
+      title: 'IT / InfoSec Playbook',
+      downloadUrl: 'https://aibankinginstitute.com/api/resources/infosec-playbook/download',
+      firstName: 'Sam',
+    });
+    expect(mocks.sendInquiryAck).not.toHaveBeenCalled();
+    // Still routes the lead into the playbook MailerLite group.
+    expect(mocks.subscribeToPlaybookForm).toHaveBeenCalledWith(expect.objectContaining({
+      email: 'sam@communitybank.test',
+      role: 'infosec',
+    }));
   });
 
   it('captures L&D cohort pilot inquiries as high-priority team support cases', async () => {

@@ -57,6 +57,16 @@ const nextConfig = {
     '/api/courses/artifacts/skill-templates/[name]': [
       './public/artifacts/skill-templates/**',
     ],
+    // Free resource downloads (playbooks, desk cards, templates, starter-kit
+    // ZIPs) are served straight from the repo-committed files under
+    // public/downloads — the source of truth that ships with every deploy.
+    // readFile uses a dynamic path, so Next cannot statically trace these;
+    // include them explicitly or the route 404s the file at runtime and the
+    // download silently fails. The Word/large-print/readable variants read
+    // the hand-authored HTML under public/downloads/source.
+    '/api/resources/[slug]/download': ['./public/downloads/**'],
+    '/api/resources/[slug]/word': ['./public/downloads/source/**'],
+    '/api/guides/safe-ai-use': ['./public/downloads/aibi-safe-ai-use-guide.pdf'],
     // @sparticuz/chromium ships the (brotli-compressed) Chromium binary under
     // its bin/. Because the package is externalized (above), Next must be told
     // to trace those files into the warm function — otherwise Vercel reports
