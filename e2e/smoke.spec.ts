@@ -9,9 +9,9 @@ test.describe('marketing smoke', () => {
   test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // Current mockup-system hero H1.
+    // Current persona-remediated hero H1.
     await expect(
-      page.getByRole('heading', { level: 1, name: /AI use is spreading.*Workflow discipline is not/i }),
+      page.getByRole('heading', { level: 1, name: /Find your institution.s AI readiness gap in three minutes/i }),
     ).toBeVisible();
   });
 
