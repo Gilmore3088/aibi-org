@@ -80,7 +80,7 @@ const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [stri
     label: 'Sample readiness output',
     title: 'Score, top gap, first artifact',
     rows: [
-      ['Readiness', '62 / 100'],
+      ['Readiness', '32 / 48'],
       ['Top gap', 'Workflow documentation'],
       ['Starter', 'AI Workflow SOP'],
     ],
@@ -166,7 +166,7 @@ export default function HomePage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Find my readiness gaps <ArrowGlyph />
+                Get my AI readiness score <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="/courses">
                 Start learning

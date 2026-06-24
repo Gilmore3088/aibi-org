@@ -11,13 +11,9 @@
 //   - ECOA / Reg B
 //   - GAO 25-107197 (May 2025)
 
-export type TemplateSlug =
-  | 'ai-use-case-inventory'
-  | 'ai-use-policy-starter'
-  | 'ai-workflow-sop'
-  | 'board-briefing-checklist'
-  | 'cdfi-grant-ai-evidence-checklist'
-  | 'gtm-plan';
+import { TEMPLATE_INDEX, type TemplateSlug, type TemplateIndexEntry } from './templateIndex';
+
+export type { TemplateSlug } from './templateIndex';
 
 export interface TemplateSection {
   readonly heading: string;
@@ -40,13 +36,19 @@ export interface Template {
   readonly sections: readonly TemplateSection[];
 }
 
+type TemplateBase = Omit<TemplateIndexEntry, 'preview'>;
+
+const TEMPLATE_BASE_BY_SLUG = Object.fromEntries(
+  TEMPLATE_INDEX.map(({ preview: _preview, ...template }) => [template.slug, template]),
+) as Record<TemplateSlug, TemplateBase>;
+
+function templateBase(slug: TemplateSlug): TemplateBase {
+  return TEMPLATE_BASE_BY_SLUG[slug];
+}
+
 export const TEMPLATES: readonly Template[] = [
   {
-    slug: 'ai-use-case-inventory',
-    title: 'AI Use-Case Inventory',
-    dek: 'A register for documenting every approved, restricted, and proposed AI use case before it becomes normal work.',
-    audience: 'Compliance, risk, operations, and AI program owners',
-    readMinutes: 6,
+    ...templateBase('ai-use-case-inventory'),
     sourcedFrom: [
       'AIEOG AI Lexicon — AI governance, AI use case inventory',
       'SR 11-7 Model Risk Management Guidance',
@@ -106,11 +108,7 @@ export const TEMPLATES: readonly Template[] = [
     ],
   },
   {
-    slug: 'ai-use-policy-starter',
-    title: 'AI Use Policy Starter',
-    dek: 'A starter policy your team can adapt in an afternoon. Defines allowed tools, allowed data, review requirements, and an incident path.',
-    audience: 'Compliance, risk, and senior management',
-    readMinutes: 8,
+    ...templateBase('ai-use-policy-starter'),
     sourcedFrom: [
       'AIEOG AI Lexicon — US Treasury / FBIIC / FSSCC, Feb 2026',
       'SR 11-7 Model Risk Management Guidance',
@@ -186,11 +184,7 @@ export const TEMPLATES: readonly Template[] = [
     ],
   },
   {
-    slug: 'ai-workflow-sop',
-    title: 'AI Workflow SOP Template',
-    dek: 'A one-page workflow SOP for any AI-assisted task. Documents the unit examiners actually look at: input, output, retention, review.',
-    audience: 'Operations, compliance, lending, any team running AI-assisted work',
-    readMinutes: 6,
+    ...templateBase('ai-workflow-sop'),
     sourcedFrom: [
       'SR 11-7 Model Risk Management Guidance',
       'AIEOG AI Lexicon — AI use case inventory, HITL',
@@ -275,11 +269,7 @@ export const TEMPLATES: readonly Template[] = [
     ],
   },
   {
-    slug: 'board-briefing-checklist',
-    title: 'Board / Leadership Briefing Checklist',
-    dek: 'What to put in front of your board before, during, and after AI rollout. Twelve items, three categories.',
-    audience: 'C-suite preparing AI briefings for board or executive committee',
-    readMinutes: 5,
+    ...templateBase('board-briefing-checklist'),
     sourcedFrom: [
       'GAO 25-107197 — no comprehensive AI-specific banking framework yet',
       'AIEOG AI Lexicon — AI governance, AI use case inventory',
@@ -396,11 +386,7 @@ export const TEMPLATES: readonly Template[] = [
     ],
   },
   {
-    slug: 'gtm-plan',
-    title: 'Go-to-Market Plan for an AI Initiative',
-    dek: 'A go-to-market plan for launching an AI capability inside a community bank or credit union. Six sections, one page.',
-    audience: 'Marketing, retail, and product leaders launching an AI capability internally or to members',
-    readMinutes: 7,
+    ...templateBase('gtm-plan'),
     sourcedFrom: [
       'Apiture — Digital Loyalty Dividend (2025)',
       'Apiture — Digital Transformation for Community Banks (2025)',

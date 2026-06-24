@@ -368,6 +368,26 @@ export interface ResourceDownloadTotalsRow {
   resources_tracked: number;
 }
 
+export type ResourceDownloadAttributionSegment =
+  | 'source_surface'
+  | 'assessment_role'
+  | 'assessment_tier'
+  | 'assessment_top_gap';
+
+export interface ResourceDownloadAttributionRow {
+  segment_type: ResourceDownloadAttributionSegment;
+  segment_value: string;
+  segment_label: string;
+  downloads: number;
+  last_7d: number;
+  last_24h: number;
+  /** Distinct hashed-IP count within this segment. */
+  unique_visitors: number;
+  /** Distinct known emails within this segment. */
+  known_downloaders: number;
+  last_download: string | null;
+}
+
 /**
  * Single-row roll-up for the dashboard headline tiles, from the
  * resource_download_totals view (migration 00052). Service-role only.
@@ -380,4 +400,19 @@ export async function getResourceDownloadTotals(): Promise<ResourceDownloadTotal
     .maybeSingle();
   if (error) throw new Error(`resource_download_totals read failed: ${error.message}`);
   return (data as ResourceDownloadTotalsRow | null) ?? null;
+}
+
+/**
+ * Segment rollups for the attribution fields on resource_downloads
+ * (migration 00055). Service-role only. Ordered most-downloaded first; the
+ * admin component regroups by segment_type.
+ */
+export async function getResourceDownloadAttributionMetrics(): Promise<ResourceDownloadAttributionRow[]> {
+  const client = createServiceRoleClient();
+  const { data, error } = await client
+    .from('resource_download_attribution_metrics')
+    .select('segment_type, segment_value, segment_label, downloads, last_7d, last_24h, unique_visitors, known_downloaders, last_download')
+    .order('downloads', { ascending: false });
+  if (error) throw new Error(`resource_download_attribution_metrics read failed: ${error.message}`);
+  return (data ?? []) as ResourceDownloadAttributionRow[];
 }

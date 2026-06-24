@@ -13,11 +13,11 @@ describe('/playbooks/[role]', () => {
     expect(screen.getAllByText(/Open template/i).length).toBeGreaterThan(0);
   });
 
-  it('downloads the role PDF directly without an email gate', async () => {
+  it('exposes the role PDF through the resource download gate', async () => {
     render(await PlaybookPage({ params: Promise.resolve({ role: 'compliance' }) }));
 
-    const pdfLink = screen.getByRole('link', { name: /download compliance officer pdf/i });
-    expect(pdfLink.getAttribute('href')).toBe('/api/resources/compliance-playbook/download');
-    expect(screen.queryByText(/Where should we send your playbook/i)).toBeNull();
+    expect(
+      screen.getByRole('button', { name: /Get PDF for Compliance Officer Playbook/i }),
+    ).toBeTruthy();
   });
 });

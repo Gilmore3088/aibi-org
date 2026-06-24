@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fair-Lending AI Review Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #071A2F; --ink-2: #0B2745;
+  --gold: #C8A24A; --gold-deep: #9A7A2F;
+  --cream: #F7F3EA; --cream-2: #EFE7D7;
+  --slate-200: #E2E8F0; --slate-500: #64748B; --slate-600: #475569;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; color: var(--ink); }
+body {
+  font-family: -apple-system, "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11pt; line-height: 1.55;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 0 24pt; }
+.cover {
+  background: var(--ink); color: #fff;
+  padding: 36pt 32pt; margin: 0 0 24pt;
+  border-bottom: 4pt solid var(--gold);
+}
+.cover .kicker {
+  font-size: 8.5pt; letter-spacing: .22em; text-transform: uppercase;
+  color: #E6D39B; font-weight: 600;
+}
+/* Brand v1 [Ai] mark — typographic lockup. Inline since the script does
+   not have access to the React <Wordmark> component. Matches src/styles/brand.css. */
+.aibi-mark {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 600; font-size: 12pt;
+  letter-spacing: -.012em; color: #F7F3EA;
+  display: inline-flex; align-items: baseline; line-height: 1;
+}
+.aibi-mark .bk { color: var(--gold); font-weight: 500; padding: 0 .03em; }
+.aibi-mark .ai { padding: 0 0 0 .02em; }
+.aibi-mark .si {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.14em;
+  line-height: 0; margin: 0 .005em 0 -.04em; color: inherit;
+}
+.aibi-mark .full { margin-left: .32em; }
+.cover h1 {
+  margin: 8pt 0 0; font-size: 22pt; line-height: 1.15;
+  font-weight: 700; letter-spacing: -.01em;
+}
+.cover .meta {
+  margin-top: 14pt; font-size: 9pt; color: #c8d0d8;
+  border-top: 1pt solid rgba(255,255,255,.18);
+  padding-top: 10pt;
+}
+.body { padding: 0 32pt; }
+.body h1, .body h2, .body h3 { color: var(--ink); font-weight: 600; line-height: 1.25; }
+.body h1 { font-size: 18pt; margin: 22pt 0 8pt; }
+.body h2 {
+  font-size: 13pt; margin: 22pt 0 8pt;
+  padding-bottom: 4pt; border-bottom: 1pt solid var(--slate-200);
+}
+.body h3 { font-size: 11pt; margin: 16pt 0 4pt; color: var(--gold-deep); text-transform: uppercase; letter-spacing: .12em; }
+.body p, .body li { color: var(--slate-600); }
+.body p { margin: 10pt 0; }
+.body strong { color: var(--ink); }
+.body ul, .body ol { padding-left: 18pt; margin: 10pt 0; }
+.body li { margin: 4pt 0; }
+.body code {
+  background: var(--cream); color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9.5pt; padding: 1pt 4pt; border-radius: 3pt;
+}
+.body pre {
+  background: var(--ink); color: #E6D39B; padding: 12pt;
+  border-radius: 6pt; overflow: auto; font-size: 9.5pt; line-height: 1.45;
+}
+.body pre code { background: transparent; color: inherit; padding: 0; }
+.body hr {
+  border: 0; border-top: 1pt solid var(--slate-200); margin: 20pt 0;
+}
+.body table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 10pt; }
+.body th, .body td { border: 1pt solid var(--slate-200); padding: 6pt 8pt; text-align: left; vertical-align: top; }
+.body th { background: var(--cream); color: var(--ink); font-weight: 600; }
+.body blockquote {
+  border-left: 3pt solid var(--gold);
+  margin: 12pt 0; padding: 2pt 0 2pt 14pt; color: var(--slate-600);
+}
+.footer {
+  margin: 28pt 32pt 0; padding-top: 12pt;
+  border-top: 1pt solid var(--slate-200);
+  font-size: 8.5pt; color: var(--slate-500); text-align: center;
+}
+@page { margin: 0.5in; size: Letter; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="cover">
+      <span class="aibi-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span><span class="full">Banking Institute</span></span>
+      <h1>Fair-Lending AI Review Checklist</h1>
+      <div class="meta">Reference card · For community banks and credit unions</div>
+    </header>
+    <main class="body"><p>For institutions that have, or are about to have, AI in or near a credit
+decision. Run this before deployment, then again on a recurring cadence.</p>
+<h2>Why this exists</h2>
+<p>ECOA and Regulation B do not have an &quot;AI exception.&quot; Disparate-impact
+obligations attach to any process that influences a credit decision,
+whether the influence comes from a human, a static model, or an AI tool.
+The institutions that run this review before being asked are positioned
+to defend the program; the ones that don&#39;t are positioned to explain why.</p>
+<h2>Scope this review</h2>
+<p>Identify every AI-assisted process that:</p>
+<ul>
+<li>Generates, recommends, or filters credit decisions</li>
+<li>Sets pricing tiers, terms, or limits</li>
+<li>Determines marketing eligibility for credit products</li>
+<li>Triages applicants for human review</li>
+<li>Drafts adverse-action reasoning or supporting documentation</li>
+</ul>
+<p>Each one needs its own review. The same process may need separate reviews
+for each product line.</p>
+<h2>Pre-deployment checklist</h2>
+<h3>Data and design</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Training or input data documented, including the date range,
+source systems, and any known gaps</li>
+<li><input disabled="" type="checkbox"> Protected-class indicators identified in the data layer (race, sex,
+age, marital status, national origin, disability, familial status,
+receipt of public assistance, exercise of ECOA rights)</li>
+<li><input disabled="" type="checkbox"> Proxy variables flagged (ZIP code, surname, neighborhood markers
+that may correlate with protected class)</li>
+<li><input disabled="" type="checkbox"> Decisions documented end-to-end: what data goes in, what comes out,
+who acts on it</li>
+</ul>
+<h3>Disparate-impact testing</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Approval-rate gap measured across protected classes</li>
+<li><input disabled="" type="checkbox"> Score / recommendation distribution compared across protected
+classes</li>
+<li><input disabled="" type="checkbox"> Outcome variance (loan performance, default, prepay) compared
+across protected classes</li>
+<li><input disabled="" type="checkbox"> Results compared to the non-AI baseline (same process without the
+AI tool)</li>
+<li><input disabled="" type="checkbox"> Documented threshold for what constitutes a material gap, and the
+action triggered at the threshold</li>
+</ul>
+<h3>Explainability</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Adverse-action reasoning can be produced for any AI-assisted
+decision in a form that satisfies Regulation B</li>
+<li><input disabled="" type="checkbox"> Principal reasons map to specific input factors, not opaque scores</li>
+<li><input disabled="" type="checkbox"> Documentation is reviewable by a compliance officer without
+vendor assistance</li>
+</ul>
+<h3>Governance</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Named owner for the AI-assisted process</li>
+<li><input disabled="" type="checkbox"> Named compliance reviewer</li>
+<li><input disabled="" type="checkbox"> Documented oversight level (automated / sampled / mandatory)</li>
+<li><input disabled="" type="checkbox"> Escalation path when a metric crosses an internal threshold</li>
+<li><input disabled="" type="checkbox"> Logged in the institution&#39;s AI use-case inventory</li>
+</ul>
+<h2>Recurring review checklist</h2>
+<p>Run quarterly at minimum. Annually if the process is low-volume.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Re-pull disparate-impact metrics</li>
+<li><input disabled="" type="checkbox"> Compare to the prior period — flag any worsening trend</li>
+<li><input disabled="" type="checkbox"> Verify the AI tool has not been materially updated by the vendor
+since the last review; if it has, re-run the full pre-deployment
+review</li>
+<li><input disabled="" type="checkbox"> Review adverse-action samples for explainability</li>
+<li><input disabled="" type="checkbox"> Report results to the same forum that receives the institution&#39;s
+standard fair-lending program reporting</li>
+</ul>
+<h2>Decisions log</h2>
+<p>Maintain a short log of decisions made under this review: dates, who
+signed off, what changed. The log is what an examiner reads first.</p>
+<h2>Citations</h2>
+<ul>
+<li>Equal Credit Opportunity Act (15 U.S.C. § 1691)</li>
+<li>Regulation B (12 CFR Part 1002), CFPB</li>
+<li>SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC</li>
+<li>AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026</li>
+<li>GAO-25-107197, US GAO, May 2025</li>
+</ul>
+</main>
+    <div class="footer">aibankinginstitute.com · Adapt before adopting.</div>
+  </div>
+</body>
+</html>

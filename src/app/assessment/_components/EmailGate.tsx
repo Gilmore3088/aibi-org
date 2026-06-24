@@ -31,6 +31,7 @@ import {
   formatRoiNumber,
   type RoiAssessmentContext,
 } from '@/lib/roi/assessment-context';
+import { rememberFreeResourceCapture } from '@/lib/resources/freeResourceCapture';
 
 // Free-funnel role taxonomy (FREE_ROLES / FREE_ROLE_LABEL / FREE_ROLE_TO_V2)
 // lives in @content/assessments/v3/roles, shared with /api/capture-email so
@@ -207,6 +208,14 @@ export function EmailGate({
         ...(dimensionBreakdown ? { dimensionBreakdown } : {}),
       });
       trackEmailCaptured({ tier: tierId });
+      rememberFreeResourceCapture({
+        email: emailToUse,
+        source: 'assessment-email-gate',
+        ...(role ? { role } : {}),
+        tier: tierId,
+        tierLabel,
+        ...(focusGap ? { topGap: focusGap.id } : {}),
+      });
       onCaptured(emailToUse, {
         firstName: firstName.trim() || undefined,
         institutionName: institutionName.trim() || undefined,

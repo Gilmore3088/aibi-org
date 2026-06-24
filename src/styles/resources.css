@@ -5,6 +5,48 @@
 
 .mockup-scope .rx-grid { display: grid; gap: 1.25rem; }
 .mockup-scope .rx-grid > * { min-width: 0; }
+.mockup-scope .rx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mockup-scope .rx-skip-links {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  transform: translateY(-150%);
+  transition: transform 120ms ease;
+}
+.mockup-scope .rx-skip-links:focus-within {
+  transform: translateY(0);
+}
+.mockup-scope .rx-skip-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft, 0 1px 2px rgba(0,0,0,.06));
+}
+.mockup-scope .rx-skip-links a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
 @media (min-width: 768px) { .mockup-scope .rx-grid-2 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 768px) { .mockup-scope .rx-grid-3 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .mockup-scope .rx-grid-3 { grid-template-columns: repeat(3, 1fr); } }
@@ -136,15 +178,269 @@
 .mockup-scope .rx-kit-btn:hover { background: var(--cream-2); }
 .mockup-scope .rx-kit-btn-active { background: var(--ink); color: #fff; }
 .mockup-scope .rx-featured-items-list { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-direction: column; gap: .75rem; }
+.mockup-scope .rx-featured-item-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem;
+  align-items: stretch;
+}
 .mockup-scope .rx-featured-item {
   display: flex; align-items: center; gap: .75rem;
   border-radius: 1rem; background: var(--cream); padding: 1rem;
   font-weight: 600; text-decoration: none; color: var(--ink);
   transition: background .15s ease;
 }
+button.rx-featured-item {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
 .mockup-scope .rx-featured-item:hover { background: var(--cream-2); }
 .mockup-scope .rx-featured-item-check { color: var(--gold); flex-shrink: 0; }
+.mockup-scope .rx-featured-item-read {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  border-radius: 1rem;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0 .75rem;
+}
+.mockup-scope .rx-featured-item-read:hover {
+  border-color: var(--gold);
+  color: var(--gold-deep);
+}
+.mockup-scope .rx-featured-item-read:focus-visible,
+.mockup-scope .rx-readable-card-link:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
 .mockup-scope .rx-featured-cta { margin-top: 1.25rem; width: 100%; }
+
+/* Readable HTML resource variant */
+.mockup-scope.rx-readable-page {
+  min-height: 100vh;
+  background: var(--cream);
+  color: var(--ink);
+}
+.mockup-scope .rx-readable-hero {
+  background: var(--ink);
+  color: #fff;
+  padding: 32px 0;
+}
+.mockup-scope .rx-readable-hero .mk-k {
+  color: var(--gold-soft);
+}
+.mockup-scope .rx-readable-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+@media (min-width: 900px) {
+  .mockup-scope .rx-readable-hero-inner {
+    grid-template-columns: minmax(0, 0.58fr) minmax(320px, 0.42fr);
+  }
+}
+.mockup-scope .rx-readable-lede {
+  max-width: 680px;
+  margin-top: .65rem;
+  color: #d8e0ea;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+.mockup-scope .rx-readable-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: .75rem;
+}
+@media (min-width: 900px) {
+  .mockup-scope .rx-readable-actions {
+    justify-content: flex-end;
+  }
+}
+.mockup-scope .rx-readable-main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+}
+.mockup-scope .rx-readable-document {
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+  padding: clamp(24px, 4vw, 56px);
+}
+.mockup-scope .rx-readable-document .cover,
+.mockup-scope .rx-readable-document .page {
+  padding: 0;
+  margin: 0 0 2.25rem;
+  min-height: 0;
+  width: auto;
+  height: auto;
+  box-shadow: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.mockup-scope .rx-readable-document .cover {
+  border-bottom: 1px solid var(--slate-200);
+  padding-bottom: 1.75rem;
+}
+.mockup-scope .rx-readable-document h1 {
+  max-width: 780px;
+  margin: .75rem 0 1rem;
+  color: var(--ink);
+  font-size: 2rem;
+  line-height: 1.03;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .mockup-scope .rx-readable-document h1 {
+    font-size: 3.25rem;
+  }
+}
+.mockup-scope .rx-readable-document h2 {
+  margin: 1.75rem 0 .75rem;
+  color: var(--ink);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+.mockup-scope .rx-readable-document h3 {
+  margin: 1.25rem 0 .5rem;
+  color: var(--ink);
+  font-size: 1.2rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+.mockup-scope .rx-readable-document h4 {
+  margin: 1rem 0 .4rem;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+.mockup-scope .rx-readable-document p,
+.mockup-scope .rx-readable-document li,
+.mockup-scope .rx-readable-document td,
+.mockup-scope .rx-readable-document th {
+  font-size: 1rem;
+  line-height: 1.72;
+}
+.mockup-scope .rx-readable-document p,
+.mockup-scope .rx-readable-document ul,
+.mockup-scope .rx-readable-document ol,
+.mockup-scope .rx-readable-document table {
+  margin: .75rem 0;
+}
+.mockup-scope .rx-readable-document ul,
+.mockup-scope .rx-readable-document ol {
+  padding-left: 1.35rem;
+}
+.mockup-scope .rx-readable-document li {
+  margin: .35rem 0;
+}
+.mockup-scope .rx-readable-document code {
+  border-radius: 6px;
+  background: var(--cream);
+  color: var(--ink);
+  padding: .1rem .35rem;
+  font-size: .95em;
+}
+.mockup-scope .rx-readable-document table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.mockup-scope .rx-readable-document th,
+.mockup-scope .rx-readable-document td {
+  min-width: 180px;
+  border: 1px solid var(--slate-200);
+  padding: .7rem .85rem;
+  vertical-align: top;
+}
+.mockup-scope .rx-readable-document th {
+  background: var(--cream);
+  color: var(--ink);
+  text-align: left;
+}
+.mockup-scope .rx-readable-document .seal,
+.mockup-scope .rx-readable-document .footer-row,
+.mockup-scope .rx-readable-document .page-footer {
+  display: none;
+}
+.mockup-scope .rx-readable-document .kicker,
+.mockup-scope .rx-readable-document .section-kicker,
+.mockup-scope .rx-readable-document .label {
+  color: var(--gold-deep);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.mockup-scope .rx-readable-document .lede {
+  max-width: 760px;
+  color: var(--slate-600);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.mockup-scope .rx-readable-document .callout,
+.mockup-scope .rx-readable-document .cite,
+.mockup-scope .rx-readable-document .principle,
+.mockup-scope .rx-readable-document .toc,
+.mockup-scope .rx-readable-document .card,
+.mockup-scope .rx-readable-document .risk-band {
+  border: 1px solid var(--slate-200);
+  border-left: 4px solid var(--gold);
+  border-radius: 12px;
+  background: var(--cream);
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: none;
+}
+.mockup-scope .rx-readable-document .prompt {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #e9eef6;
+  padding: 1rem;
+  white-space: pre-wrap;
+}
+.mockup-scope .rx-readable-next {
+  padding: 0 0 56px;
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .mockup-scope .rx-featured-item-row {
+    grid-template-columns: 1fr;
+  }
+  .mockup-scope .rx-featured-item-read {
+    min-height: 40px;
+  }
+  .mockup-scope .rx-readable-actions .fr-download-gate,
+  .mockup-scope .rx-readable-actions .mk-btn {
+    width: 100%;
+  }
+  .mockup-scope .rx-readable-document {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 22px 18px;
+  }
+  .mockup-scope .rx-readable-main {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 
 /* Hero layout override — two columns on desktop */
 .mockup-scope .mk-hero-inner { display: grid; gap: 2.5rem; }
@@ -152,7 +448,36 @@
   .mockup-scope .mk-hero-inner { grid-template-columns: 0.78fr 1.22fr; align-items: center; }
 }
 
-/* Chooser panel */
+/* Start-here chooser */
+.mockup-scope .rx-start-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .mockup-scope .rx-start-grid {
+    grid-template-columns: minmax(220px, 0.28fr) minmax(0, 0.72fr);
+  }
+}
+.mockup-scope .rx-start-copy h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 600;
+  margin-top: .35rem;
+}
+.mockup-scope .rx-start-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .85rem;
+}
+@media (min-width: 640px) {
+  .mockup-scope .rx-start-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1180px) {
+  .mockup-scope .rx-start-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+/* Legacy chooser panel */
 .mockup-scope .rx-chooser {
   background: #fff;
   border-radius: 2rem;
@@ -294,9 +619,18 @@
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .mockup-scope .rx-desk-card > * { min-width: 0; }
-.mockup-scope .rx-desk-card:hover {
+.mockup-scope .rx-desk-card:not(.rx-desk-card-gated):hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-feature, 0 24px 40px -20px rgba(0,0,0,.20));
+}
+.mockup-scope .rx-desk-card-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+.mockup-scope .rx-desk-card-gated .fr-download-gate-desk {
+  margin-top: .5rem;
 }
 .mockup-scope .rx-desk-icon {
   display: flex; align-items: center; justify-content: center;
@@ -496,7 +830,21 @@
   text-decoration: none;
   transition: background .15s ease;
 }
+button.rx-kit-card-zip {
+  width: calc(100% - 3rem);
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
 .mockup-scope .rx-kit-card-zip:hover { background: var(--cream-2); }
+.mockup-scope .fr-download-gate-kit .mk-download-gate-form,
+.mockup-scope .fr-download-gate-kit.mk-download-gate-form {
+  margin: 0 1.5rem 1.5rem;
+  padding: 1rem;
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: .9rem;
+}
 
 /* ─── 2-col guided artifact-finder layout (2026-05-28) ──────────────────
    Sticky left rail on desktop ≥1024px, collapsible <details> below.

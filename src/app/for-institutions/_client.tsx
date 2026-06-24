@@ -53,7 +53,12 @@ const XIcon = (p: IconProps) => (
 const PRIMARY_ENTRY_PATH = '/assessment/take';
 const TEAM_ASSESSMENT_PATH = '/assessment/team';
 const TEAM_INQUIRY_ANCHOR = '#team-inquiry';
-const BOOKING_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || TEAM_INQUIRY_ANCHOR;
+const CONFIGURED_BRIEFING_URL =
+  process.env.NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL || process.env.NEXT_PUBLIC_CALENDLY_URL;
+const BRIEFING_URL =
+  CONFIGURED_BRIEFING_URL && CONFIGURED_BRIEFING_URL.trim()
+    ? CONFIGURED_BRIEFING_URL
+    : TEAM_INQUIRY_ANCHOR;
 
 const TIERS = [
   {
@@ -136,7 +141,7 @@ export default function ForInstitutionsPage() {
               <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
                 Take the free assessment <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href={BOOKING_URL}>
+              <Button variant="ghost-dark" size="lg" href={BRIEFING_URL}>
                 Book executive briefing
               </Button>
               <Button variant="ghost-dark" size="lg" href="#engagement">
@@ -519,7 +524,7 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BOOKING_URL}
+              href={BRIEFING_URL}
             >
               Book executive briefing <ArrowR className="mk-ic" />
             </Button>
@@ -663,7 +668,7 @@ export default function ForInstitutionsPage() {
             <Button
               variant="gold"
               size="lg"
-              href={BOOKING_URL}
+              href={BRIEFING_URL}
             >
               Book executive briefing <ArrowR className="mk-ic" />
             </Button>
@@ -706,7 +711,7 @@ export default function ForInstitutionsPage() {
         }
         actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Book briefing', href: BOOKING_URL, variant: 'ghost-dark' },
+          { label: 'Book briefing', href: BRIEFING_URL, variant: 'ghost-dark' },
         ]}
       />
 

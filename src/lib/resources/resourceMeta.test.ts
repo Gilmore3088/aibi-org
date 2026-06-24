@@ -7,6 +7,10 @@ describe('resourceMeta', () => {
       label: 'Compliance Playbook',
       category: 'Role playbooks',
     });
+    expect(resourceMeta('executive-playbook')).toEqual({
+      label: 'Executive AI Board Packet',
+      category: 'Role playbooks',
+    });
   });
 
   it('maps starter kits', () => {
@@ -26,6 +30,7 @@ describe('resourceMeta', () => {
 
   it('maps templates and artifacts', () => {
     expect(resourceMeta('template-ai-workflow-sop').category).toBe('Templates');
+    expect(resourceMeta('template-gtm-plan').label).toBe('AI GTM Plan');
     expect(resourceMeta('artifact-ai-use-case-inventory').category).toBe('Artifacts');
   });
 

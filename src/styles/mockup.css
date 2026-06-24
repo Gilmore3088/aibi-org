@@ -5028,6 +5028,14 @@ section.mk-std { padding: 56px 0; }
   margin-top: auto; padding-top: 14px;
   border-top: 1px solid var(--slate-200);
 }
+.fr-download-gate {
+  display: inline-flex;
+  max-width: 100%;
+}
+.fr-download-gate .mk-btn {
+  max-width: 100%;
+  justify-content: center;
+}
 .mk-download-gate-field { display: flex; flex-direction: column; gap: 6px; }
 .mk-download-gate-label {
   font-size: 11px; font-weight: 600; color: var(--slate-500);

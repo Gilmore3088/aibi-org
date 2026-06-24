@@ -13,6 +13,9 @@ describe('downloadCatalog', () => {
       'marketing-playbook',
       'bsa-aml-playbook',
       'infosec-playbook',
+      'executive-playbook',
+      'operations-playbook',
+      'training-hr-playbook',
     ]) {
       expect(getDownloadResource(slug), `${slug} should be cataloged`).not.toBeNull();
     }
@@ -24,6 +27,7 @@ describe('downloadCatalog', () => {
       'red-yellow-green-use-card',
       'prompt-strategy-cheat-sheet',
       'regulatory-cheatsheet',
+      'platform-feature-reference-card',
       'artifact-ai-use-case-inventory',
       'artifact-data-handling-reference-card',
       'artifact-fair-lending-ai-review-checklist',
@@ -33,6 +37,7 @@ describe('downloadCatalog', () => {
       'lending-review-kit',
       'sample-readiness-report',
       'in-depth-playbook',
+      'template-gtm-plan',
     ]) {
       expect(getDownloadResource(slug), `${slug} should be cataloged`).not.toBeNull();
     }

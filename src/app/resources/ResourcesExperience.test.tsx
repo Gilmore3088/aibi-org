@@ -24,15 +24,15 @@ describe('ResourcesExperience', () => {
       screen.getByRole('heading', { name: /Go-to-Market Plan for an AI Initiative/i }),
     ).toBeTruthy();
     expect(
-      screen.getByRole('link', { name: /Download Go-to-Market Plan for an AI Initiative/i }).getAttribute('href'),
-    ).toBe('/api/resources/template-gtm-plan/download');
+      screen.getByRole('button', { name: /Get Word for Go-to-Market Plan for an AI Initiative/i }),
+    ).toBeTruthy();
 
-    expect(screen.getByRole('link', { name: /Platform Feature Reference Card/i }).getAttribute('href')).toBe(
-      '/api/resources/platform-feature-reference-card/download',
-    );
-    expect(screen.getByRole('link', { name: /Browse prompt cards/i }).getAttribute('href')).toBe(
-      '/prompt-cards',
-    );
+    expect(
+      screen.getByRole('button', { name: /Get PDF for Platform Feature Reference Card/i }),
+    ).toBeTruthy();
+    expect(
+      screen.getByRole('link', { name: /Browse prompt cards/i }).getAttribute('href'),
+    ).toBe('/prompt-cards');
   });
 
   it('surfaces the compliance policy template with a Word download', () => {
@@ -43,16 +43,15 @@ describe('ResourcesExperience', () => {
 
     expect(policyCard).toBeTruthy();
     expect(
-      within(policyCard as HTMLElement).getByText(/practical starter policy defining tools/i),
+      within(policyCard as HTMLElement).getByText(/starter policy your team can adapt/i),
     ).toBeTruthy();
     expect(within(policyCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
       '/resources/templates/ai-use-policy-starter',
     );
     expect(
       within(policyCard as HTMLElement)
-        .getByRole('link', { name: /Download AI Use Policy Starter/i })
-        .getAttribute('href'),
-    ).toBe('/api/resources/templates/ai-use-policy-starter/word');
+        .getByRole('button', { name: /Get Word for AI Use Policy Starter/i }),
+    ).toBeTruthy();
   });
 
   it('surfaces a CDFI grant evidence template with a Word download', () => {
@@ -70,9 +69,8 @@ describe('ResourcesExperience', () => {
     );
     expect(
       within(cdfiCard as HTMLElement)
-        .getByRole('link', { name: /Download CDFI Grant AI Evidence Checklist/i })
-        .getAttribute('href'),
-    ).toBe('/api/resources/templates/cdfi-grant-ai-evidence-checklist/word');
+        .getByRole('button', { name: /Get Word for CDFI Grant AI Evidence Checklist/i }),
+    ).toBeTruthy();
   });
 
   it('surfaces a BSA-specific template when the BSA/AML role filter is selected', () => {
@@ -92,8 +90,7 @@ describe('ResourcesExperience', () => {
     );
     expect(
       within(sarCard as HTMLElement)
-        .getByRole('link', { name: /Download SAR Narrative Template/i })
-        .getAttribute('href'),
-    ).toBe('/api/playbooks/bsa-aml/sar-narrative-template/word');
+        .getByRole('button', { name: /Get Word for SAR Narrative Template/i }),
+    ).toBeTruthy();
   });
 });

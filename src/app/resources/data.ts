@@ -7,6 +7,16 @@
  * HTTP 200 on every link returned by allDownloadHrefs(). */
 
 import type { ComponentType, SVGProps } from 'react';
+import { PLAYBOOK_INDEX, type RoleSlug } from '@/app/playbooks/data';
+import { TEMPLATE_INDEX, type TemplateSlug } from '@/app/resources/templates/templateIndex';
+import {
+  getFreeResource,
+  largePrintResourceHref,
+  publicFreeResources,
+  readableResourceHref,
+  type FreeResource,
+  type FreeResourceCategory,
+} from '@/lib/resources/freeResources';
 import {
   BarChart3,
   BadgeCheck,
@@ -14,7 +24,6 @@ import {
   ClipboardCheck,
   Eye,
   FileText,
-  Layers,
   Library,
   LockKeyhole,
   Megaphone,
@@ -27,12 +36,36 @@ import {
 
 type IconType = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
+type PublicDownloadResource = FreeResource & {
+  readonly download: NonNullable<FreeResource['download']>;
+};
+
+function isPublicDownloadResource(resource: FreeResource | null): resource is PublicDownloadResource {
+  return resource !== null && resource.status === 'public' && resource.download !== null;
+}
+
+function publicDownloadResourcesByCategory(
+  category: FreeResourceCategory,
+): PublicDownloadResource[] {
+  return publicFreeResources.filter(
+    (resource): resource is PublicDownloadResource =>
+      isPublicDownloadResource(resource) &&
+      resource.category === category &&
+      resource.visibleSurfaces.includes('resources'),
+  );
+}
+
+function resourceDownloadHref(resource: PublicDownloadResource): string {
+  return `/api/resources/${resource.slug}/download`;
+}
+
 export interface StarterKit {
+  slug: string;
   id: string;
   title: string;
   desc: string;
   audience: string;
-  items: { label: string; href: string }[];
+  items: { label: string; href: string; readHref?: string }[];
   /** Download URL for the ZIP bundle of every artifact in the kit
    * (routed through /api/resources/[slug]/download). */
   zip: string;
@@ -41,146 +74,171 @@ export interface StarterKit {
   icon: IconType;
 }
 
-export const starterKits: StarterKit[] = [
-  {
+const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly desc: string; readonly zipSize: string; readonly icon: IconType }> = {
+  'governance-starter-kit': {
     id: 'governance',
-    title: 'AI Governance Starter Kit',
     desc: 'Start here if your team is beginning to allow AI tools.',
-    audience: 'Compliance, risk, executive team',
-    items: [
-      { label: 'Safe AI Use Checklist', href: '/api/resources/safe-ai-use-checklist/download' },
-      { label: 'Red / Yellow / Green Use Card', href: '/api/resources/red-yellow-green-use-card/download' },
-      { label: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download' },
-      { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
-    ],
-    zip: '/api/resources/governance-starter-kit/download',
-    zipSize: '459 KB',
+    zipSize: '853 KB',
     icon: ShieldCheck,
   },
-  {
+  'frontline-enablement-kit': {
     id: 'frontline',
-    title: 'Frontline Enablement Kit',
     desc: 'Give branch and contact center teams safer AI practice routines.',
-    audience: 'Retail, branch, contact center',
-    items: [
-      { label: 'Retail Playbook', href: '/api/resources/retail-playbook/download' },
-      { label: 'Safe AI Use Checklist', href: '/api/resources/safe-ai-use-checklist/download' },
-      { label: 'Prompt Strategy Cheat Sheet', href: '/api/resources/prompt-strategy-cheat-sheet/download' },
-      { label: 'Data Handling Reference Card', href: '/api/resources/artifact-data-handling-reference-card/download' },
-    ],
-    zip: '/api/resources/frontline-enablement-kit/download',
-    zipSize: '695 KB',
+    zipSize: '1.1 MB',
     icon: Users,
   },
-  {
+  'marketing-review-kit': {
     id: 'marketing',
-    title: 'Marketing Review Kit',
     desc: 'Create faster campaign drafts without skipping claims and disclosure review.',
-    audience: 'Marketing, product, compliance',
-    items: [
-      { label: 'Marketing Playbook', href: '/api/resources/marketing-playbook/download' },
-      { label: 'Prompt Strategy Cheat Sheet', href: '/api/resources/prompt-strategy-cheat-sheet/download' },
-      { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
-      { label: 'AI Use Policy Starter', href: '/resources/templates/ai-use-policy-starter' },
-    ],
-    zip: '/api/resources/marketing-review-kit/download',
-    zipSize: '563 KB',
+    zipSize: '1.5 MB',
     icon: Megaphone,
   },
-  {
+  'lending-review-kit': {
     id: 'lending',
-    title: 'Lending Review Kit',
     desc: 'Keep adverse-action, fair-lending, and decision packet work traceable.',
-    audience: 'Lending, credit, compliance',
-    items: [
-      { label: 'Lending Playbook', href: '/api/resources/lending-playbook/download' },
-      { label: 'Fair-Lending AI Review Checklist', href: '/api/resources/artifact-fair-lending-ai-review-checklist/download' },
-      { label: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download' },
-      { label: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop' },
-    ],
-    zip: '/api/resources/lending-review-kit/download',
-    zipSize: '308 KB',
+    zipSize: '927 KB',
     icon: FileText,
   },
-];
+};
+
+function titleFromManifest(resource: FreeResource): string {
+  if (resource.slug === 'retail-playbook') return 'Retail Playbook';
+  return resource.title;
+}
+
+function starterKitItems(slug: string): StarterKit['items'] {
+  return publicFreeResources
+    .filter((resource) => resource.zipMembership.includes(slug))
+    .map((resource) => ({
+      label: titleFromManifest(resource),
+      href: resource.canonicalRoute,
+      readHref: readableResourceHref(resource) ?? undefined,
+    }));
+}
+
+export const starterKits: StarterKit[] = publicDownloadResourcesByCategory('starter-kit').map((resource) => {
+  const presentation = STARTER_KIT_PRESENTATION[resource.slug];
+  if (!presentation) throw new Error(`Missing starter-kit presentation for ${resource.slug}`);
+
+  return {
+    slug: resource.slug,
+    id: presentation.id,
+    title: resource.title,
+    desc: presentation.desc,
+    audience: resource.audience.join(', '),
+    items: starterKitItems(resource.slug),
+    zip: resourceDownloadHref(resource),
+    zipSize: presentation.zipSize,
+    icon: presentation.icon,
+  };
+});
 
 export interface RolePlaybook {
-  slug: string;
+  slug: RoleSlug;
   title: string;
   desc: string;
   includes: string[];
   pdf: string;
+  word?: string;
+  readHref?: string;
   icon: IconType;
 }
 
-export const rolePlaybooks: RolePlaybook[] = [
-  {
-    slug: 'compliance',
-    title: 'Compliance',
-    desc: 'Governance, use-case review, workflow SOPs, evidence packets, and board update rhythm.',
+const ROLE_PLAYBOOK_PRESENTATION = {
+  compliance: {
     includes: ['Use-case intake', 'Review checklist', 'Board update'],
-    pdf: '/api/resources/compliance-playbook/download',
     icon: ShieldCheck,
   },
-  {
-    slug: 'retail',
-    title: 'Branch / Retail',
-    desc: 'Frontline summaries, service replies, coaching cards, huddle scripts, and customer signal reports.',
+  retail: {
     includes: ['Reply library', 'Coaching card', 'Voice report'],
-    pdf: '/api/resources/retail-playbook/download',
     icon: Users,
   },
-  {
-    slug: 'marketing',
-    title: 'Marketing',
-    desc: 'Brand voice, campaign kits, disclosure flags, reporting narratives, and segment-safe messaging.',
+  marketing: {
     includes: ['Brand prompt', 'Campaign kit', 'Review route'],
-    pdf: '/api/resources/marketing-playbook/download',
     icon: Megaphone,
   },
-  {
-    slug: 'lending',
-    title: 'Lending',
-    desc: 'Adverse-action traceability, fair-lending checks, decision packet indexes, and language coaching.',
+  lending: {
     includes: ['Traceability', 'Phrase screen', 'Packet index'],
-    pdf: '/api/resources/lending-playbook/download',
     icon: FileText,
   },
-  {
-    slug: 'bsa-aml',
-    title: 'BSA / AML',
-    desc: 'SAR scaffolds, CDD baselines, synthetic typology training, alert patterning, and SOPs.',
+  'bsa-aml': {
     includes: ['SAR scaffold', 'CDD baseline', 'Training scenario'],
-    pdf: '/api/resources/bsa-aml-playbook/download',
     icon: Target,
   },
-  {
-    slug: 'infosec',
-    title: 'IT / InfoSec',
-    desc: 'Data classes, approved tools, AI vetting memos, gateway rules, and AgentSecOps controls.',
+  infosec: {
     includes: ['Tool verdict', 'Data matrix', 'Agent review'],
-    pdf: '/api/resources/infosec-playbook/download',
     icon: LockKeyhole,
   },
-];
+  executive: {
+    includes: ['Adoption thesis', 'Board briefing', 'Pilot scorecard'],
+    icon: BarChart3,
+  },
+  operations: {
+    includes: ['Workflow SOP', 'Working brief', 'Handoff check'],
+    icon: Workflow,
+  },
+  'training-hr': {
+    includes: ['Training path', 'Safe-use sheet', 'Capability tracker'],
+    icon: BookOpen,
+  },
+} satisfies Record<RoleSlug, { readonly includes: readonly string[]; readonly icon: IconType }>;
+
+function rolePlaybookResource(slug: RoleSlug): PublicDownloadResource {
+  const resource = getFreeResource(`${slug}-playbook`);
+  if (!isPublicDownloadResource(resource) || resource.category !== 'playbook') {
+    throw new Error(`Missing public role playbook download for ${slug}`);
+  }
+  return resource;
+}
+
+export const rolePlaybooks: RolePlaybook[] = PLAYBOOK_INDEX.map(({ slug, title, desc }) => {
+  const presentation = ROLE_PLAYBOOK_PRESENTATION[slug];
+  const resource = rolePlaybookResource(slug);
+  return {
+    slug,
+    title,
+    desc,
+    includes: [...presentation.includes],
+    pdf: resourceDownloadHref(resource),
+    word: resource.variants.word ?? undefined,
+    readHref: readableResourceHref(resource) ?? undefined,
+    icon: presentation.icon,
+  };
+});
 
 export interface ProblemPath {
   title: string;
   artifact: string;
+  format: 'Template' | 'Desk card' | 'Sample';
   href: string;
+  readHref?: string;
   icon: IconType;
 }
 
+function problemArtifact(slug: string): Pick<ProblemPath, 'artifact' | 'href' | 'readHref'> {
+  const resource = getFreeResource(slug);
+  if (!resource || resource.status !== 'public') {
+    throw new Error(`Missing public problem-path resource for ${slug}`);
+  }
+
+  return {
+    artifact: resource.title,
+    href: resource.canonicalRoute,
+    readHref: readableResourceHref(resource) ?? undefined,
+  };
+}
+
 export const problemPaths: ProblemPath[] = [
-  { title: 'Set AI rules', artifact: 'AI Use Policy Starter', href: '/resources/templates/ai-use-policy-starter', icon: ShieldCheck },
-  { title: 'Review a use case', artifact: 'AI Use-Case Inventory', href: '/api/resources/artifact-ai-use-case-inventory/download', icon: ClipboardCheck },
-  { title: 'Train staff', artifact: 'Safe AI Use + R/Y/G cards', href: '/api/resources/safe-ai-use-checklist/download', icon: BookOpen },
-  { title: 'Build a workflow SOP', artifact: 'AI Workflow SOP', href: '/resources/templates/ai-workflow-sop', icon: Workflow },
-  { title: 'Brief leadership', artifact: 'Board Briefing Checklist', href: '/resources/templates/board-briefing-checklist', icon: BarChart3 },
-  { title: 'Preview paid output', artifact: 'Sample Readiness Report', href: '/api/resources/sample-readiness-report/download', icon: Eye },
+  { title: 'Set AI rules', ...problemArtifact('template-ai-use-policy-starter'), format: 'Template', icon: ShieldCheck },
+  { title: 'Review a use case', ...problemArtifact('artifact-ai-use-case-inventory'), format: 'Template', icon: ClipboardCheck },
+  { title: 'Train staff', ...problemArtifact('safe-ai-use-checklist'), format: 'Desk card', icon: BookOpen },
+  { title: 'Build a workflow SOP', ...problemArtifact('template-ai-workflow-sop'), format: 'Template', icon: Workflow },
+  { title: 'Brief leadership', ...problemArtifact('template-board-briefing-checklist'), format: 'Template', icon: BarChart3 },
+  { title: 'Preview paid output', ...problemArtifact('sample-readiness-report'), format: 'Sample', icon: Eye },
 ];
 
 export interface Template {
+  slug: string;
   title: string;
   format: string;
   desc: string;
@@ -194,26 +252,41 @@ export interface Template {
   icon: IconType;
 }
 
-export const templates: Template[] = [
+const TEMPLATE_PRESENTATION = {
+  'ai-use-case-inventory': { icon: ClipboardCheck },
+  'ai-workflow-sop': { icon: Workflow },
+  'board-briefing-checklist': { icon: BarChart3 },
+  'cdfi-grant-ai-evidence-checklist': { icon: BadgeCheck },
+  'ai-use-policy-starter': { icon: FileText },
+  'gtm-plan': { icon: Megaphone },
+} satisfies Record<TemplateSlug, { readonly icon: IconType }>;
+
+function templateWordHref(slug: TemplateSlug): string {
+  const wordHref = `/api/resources/templates/${slug}/word`;
+  const resource = publicFreeResources.find(
+    (entry) => entry.visibleSurfaces.includes('template') && entry.variants.word === wordHref,
+  );
+  if (!resource) throw new Error(`Missing public template Word resource for ${slug}`);
+  return wordHref;
+}
+
+const genericTemplates: Template[] = TEMPLATE_INDEX.map((template) => {
+  const presentation = TEMPLATE_PRESENTATION[template.slug];
+  return {
+    slug: template.slug,
+    title: template.title,
+    format: `Template · ${template.readMinutes} min`,
+    desc: template.dek,
+    preview: [...template.preview],
+    href: `/resources/templates/${template.slug}`,
+    download: templateWordHref(template.slug),
+    icon: presentation.icon,
+  };
+});
+
+const roleSpecificTemplates: Template[] = [
   {
-    title: 'AI Use-Case Inventory',
-    format: 'Template · Register',
-    desc: 'Document purpose, tool, data class, owner, risk tier, reviewer, and cadence.',
-    preview: ['Use case', 'Tool', 'Data', 'Reviewer'],
-    href: '/resources/templates/ai-use-case-inventory',
-    download: '/api/resources/templates/ai-use-case-inventory/word',
-    icon: ClipboardCheck,
-  },
-  {
-    title: 'AI Workflow SOP',
-    format: 'Template · SOP',
-    desc: 'Capture tool, input, output, reviewer, approval checkpoint, and retention rule.',
-    preview: ['Tool', 'Input', 'Output', 'Review'],
-    href: '/resources/templates/ai-workflow-sop',
-    download: '/api/resources/templates/ai-workflow-sop/word',
-    icon: Workflow,
-  },
-  {
+    slug: 'sar-narrative-template',
     title: 'SAR Narrative Template',
     format: 'Template · BSA/AML',
     desc: 'A FinCEN five-element narrative shell with reviewer flags, signature line, and no-customer-PII prompt boundary.',
@@ -223,114 +296,106 @@ export const templates: Template[] = [
     roles: ['bsa-aml'],
     icon: FileText,
   },
-  {
-    title: 'Board / Leadership Briefing Checklist',
-    format: 'Template · 5 min',
-    desc: 'What to show before, during, and after an AI rollout conversation.',
-    preview: ['Policy', 'Inventory', 'Risk', 'Next'],
-    href: '/resources/templates/board-briefing-checklist',
-    download: '/api/resources/templates/board-briefing-checklist/word',
-    icon: BarChart3,
-  },
-  {
-    title: 'CDFI Grant AI Evidence Checklist',
-    format: 'Template · Mission',
-    desc: 'A mission-first checklist for documenting AI-assisted work in grant, impact, and community-development evidence files.',
-    preview: ['Grant goal', 'Data boundary', 'Evidence retained', 'Fairness check'],
-    href: '/resources/templates/cdfi-grant-ai-evidence-checklist',
-    download: '/api/resources/templates/cdfi-grant-ai-evidence-checklist/word',
-    icon: BadgeCheck,
-  },
-  {
-    title: 'AI Use Policy Starter',
-    format: 'Template · 8 min',
-    desc: 'A practical starter policy defining tools, data, review, incidents, and ownership.',
-    preview: ['Allowed', 'Blocked', 'Review', 'Escalate'],
-    href: '/resources/templates/ai-use-policy-starter',
-    download: '/api/resources/templates/ai-use-policy-starter/word',
-    icon: FileText,
-  },
-  {
-    title: 'Go-to-Market Plan for an AI Initiative',
-    format: 'Template · Launch',
-    desc: 'A one-page launch plan for audience, promise, proof, channels, timeline, and owners.',
-    preview: ['Audience', 'Promise', 'Channels', 'Timeline'],
-    href: '/resources/templates/gtm-plan',
-    download: '/api/resources/template-gtm-plan/download',
-    icon: Megaphone,
-  },
 ];
 
+export const templates: Template[] = [...genericTemplates, ...roleSpecificTemplates];
+
 export interface DeskCard {
+  slug: string;
   title: string;
   type: string;
   desc: string;
   href: string;
+  word?: string;
+  readHref?: string;
+  largePrint?: string;
   icon: IconType;
 }
 
-export const deskCards: DeskCard[] = [
-  {
-    title: 'Safe AI Use Checklist',
+const DESK_CARD_PRESENTATION: Record<string, { readonly type: string; readonly desc: string; readonly icon: IconType }> = {
+  'safe-ai-use-checklist': {
     type: 'Staff card',
     desc: 'Strip data, ask clearly, fact-check, escalate.',
-    href: '/api/resources/safe-ai-use-checklist/download',
     icon: ShieldCheck,
   },
-  {
-    title: 'Red / Yellow / Green Use Card',
+  'red-yellow-green-use-card': {
     type: 'Staff card',
     desc: 'Classify AI use cases in ten seconds.',
-    href: '/api/resources/red-yellow-green-use-card/download',
     icon: BadgeCheck,
   },
-  {
-    title: 'Prompt Strategy Cheat Sheet',
+  'prompt-strategy-cheat-sheet': {
     type: 'Prompt card',
     desc: 'Write prompts with role, context, format, constraints, and review.',
-    href: '/api/resources/prompt-strategy-cheat-sheet/download',
     icon: Sparkles,
   },
-  {
-    title: 'Regulatory Cheatsheet',
+  'regulatory-cheatsheet': {
     type: 'Reference',
     desc: 'SR 11-7, ECOA / Reg B, TPRM, and AI lexicon basics.',
-    href: '/api/resources/regulatory-cheatsheet/download',
     icon: BookOpen,
   },
-  {
-    title: 'Platform Feature Reference Card',
+  'platform-feature-reference-card': {
     type: 'Reference',
     desc: 'Which platform features to use for drafting, summarizing, review, and evidence capture.',
-    href: '/api/resources/platform-feature-reference-card/download',
-    icon: Layers,
+    icon: Library,
   },
-];
+};
+
+export const deskCards: DeskCard[] = publicDownloadResourcesByCategory('desk-card').map((resource) => {
+  const presentation = DESK_CARD_PRESENTATION[resource.slug];
+  if (!presentation) throw new Error(`Missing desk-card presentation for ${resource.slug}`);
+
+  return {
+    slug: resource.slug,
+    title: resource.title,
+    type: presentation.type,
+    desc: presentation.desc,
+    href: resourceDownloadHref(resource),
+    word: resource.variants.word ?? undefined,
+    readHref: readableResourceHref(resource) ?? undefined,
+    largePrint: largePrintResourceHref(resource) ?? undefined,
+    icon: presentation.icon,
+  };
+});
 
 export interface PaidPreview {
+  slug: string;
   title: string;
   desc: string;
   href: string;
+  word?: string;
+  readHref?: string;
   actionLabel: string;
   icon: IconType;
 }
 
-export const paidPreviews: PaidPreview[] = [
-  {
-    title: 'Sample Readiness Report',
-    desc: 'Score, maturity tier, top gap, dimension snapshot, and starter artifact.',
-    href: '/api/resources/sample-readiness-report/download',
-    actionLabel: 'Open sample',
-    icon: BarChart3,
-  },
-  {
-    title: 'In-Depth Assessment Playbook',
+const PAID_PREVIEW_PRESENTATION: Record<string, { readonly desc: string; readonly actionLabel: string; readonly icon: IconType }> = {
+  'in-depth-playbook': {
     desc: 'How the $99 report turns assessment results into a 90-day AI win.',
-    href: '/api/resources/in-depth-playbook/download',
     actionLabel: 'Open playbook',
     icon: Library,
   },
-];
+  'sample-readiness-report': {
+    desc: 'Score, maturity tier, top gap, dimension snapshot, and starter artifact.',
+    actionLabel: 'Open sample',
+    icon: BarChart3,
+  },
+};
+
+export const paidPreviews: PaidPreview[] = publicDownloadResourcesByCategory('paid-preview').map((resource) => {
+  const presentation = PAID_PREVIEW_PRESENTATION[resource.slug];
+  if (!presentation) throw new Error(`Missing paid-preview presentation for ${resource.slug}`);
+
+  return {
+    slug: resource.slug,
+    title: resource.title,
+    desc: presentation.desc,
+    href: resourceDownloadHref(resource),
+    word: resource.variants.word ?? undefined,
+    readHref: readableResourceHref(resource) ?? undefined,
+    actionLabel: presentation.actionLabel,
+    icon: presentation.icon,
+  };
+});
 
 export const chooserTabs = ['By role', 'By problem', 'By format'] as const;
 export type ChooserTab = (typeof chooserTabs)[number];
@@ -339,7 +404,10 @@ export type ChooserTab = (typeof chooserTabs)[number];
 export function allDownloadHrefs(): string[] {
   const hrefs = new Set<string>();
   starterKits.forEach((k) => {
-    k.items.forEach((i) => hrefs.add(i.href));
+    k.items.forEach((i) => {
+      hrefs.add(i.href);
+      if (i.readHref) hrefs.add(i.readHref);
+    });
     hrefs.add(k.zip);
   });
   rolePlaybooks.forEach((r) => hrefs.add(r.pdf));
@@ -348,7 +416,27 @@ export function allDownloadHrefs(): string[] {
     hrefs.add(t.href);
     if (t.download) hrefs.add(t.download);
   });
-  deskCards.forEach((d) => hrefs.add(d.href));
-  paidPreviews.forEach((p) => hrefs.add(p.href));
+  deskCards.forEach((d) => {
+    hrefs.add(d.href);
+    if (d.word) hrefs.add(d.word);
+    if (d.largePrint) hrefs.add(d.largePrint);
+  });
+  paidPreviews.forEach((p) => {
+    hrefs.add(p.href);
+    if (p.word) hrefs.add(p.word);
+  });
+  rolePlaybooks.forEach((r) => {
+    if (r.word) hrefs.add(r.word);
+    if (r.readHref) hrefs.add(r.readHref);
+  });
+  problemPaths.forEach((p) => {
+    if (p.readHref) hrefs.add(p.readHref);
+  });
+  deskCards.forEach((d) => {
+    if (d.readHref) hrefs.add(d.readHref);
+  });
+  paidPreviews.forEach((p) => {
+    if (p.readHref) hrefs.add(p.readHref);
+  });
   return Array.from(hrefs);
 }

@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { allDownloadHrefs, starterKits, rolePlaybooks, deskCards } from '../src/app/resources/data';
+import {
+  allDownloadHrefs,
+  deskCards,
+  paidPreviews,
+  problemPaths,
+  rolePlaybooks,
+  starterKits,
+} from '../src/app/resources/data';
 
 // /resources — Artifact Library
 //
@@ -19,13 +26,36 @@ test.describe('/resources page', () => {
     await expect(page.getByRole('link', { name: /get readiness score/i }).first()).toBeVisible();
   });
 
+  test('renders start-here chooser and keyboard skip shortcuts', async ({ page }) => {
+    await page.goto('/resources');
+
+    await expect(page.getByRole('heading', { level: 2, name: /Pick the work you need/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /I need rules/i })).toHaveAttribute(
+      'href',
+      '/resources/templates/ai-use-policy-starter',
+    );
+    await expect(page.getByRole('link', { name: /I need a role playbook/i })).toHaveAttribute(
+      'href',
+      '#role-playbooks',
+    );
+    await expect(page.getByRole('link', { name: /I just took the assessment/i })).toHaveAttribute(
+      'href',
+      '#preview-paid',
+    );
+
+    const shortcuts = page.getByRole('navigation', { name: /Resource page shortcuts/i });
+    await expect(shortcuts.getByRole('link', { name: /Skip to start here/i })).toHaveAttribute('href', '#start-here');
+    await expect(shortcuts.getByRole('link', { name: /Skip to filters/i })).toHaveAttribute('href', '#resource-filters');
+    await expect(shortcuts.getByRole('link', { name: /Skip to resources/i })).toHaveAttribute('href', '#resources-main');
+  });
+
   test('every starter kit card exposes a ZIP download link to a valid path', async ({ page }) => {
     await page.goto('/resources');
     for (const kit of starterKits) {
       const card = page.locator(`[data-kit-id="${kit.id}"]`);
       await expect(card).toBeVisible();
-      const zipLink = card.locator(`a[href="${kit.zip}"]`);
-      await expect(zipLink, `kit ${kit.id} ZIP link`).toBeVisible();
+      const zipGate = card.getByRole('button', { name: new RegExp(`Get ZIP for ${kit.title}`, 'i') });
+      await expect(zipGate, `kit ${kit.id} ZIP gate`).toBeVisible();
     }
   });
 
@@ -34,12 +64,16 @@ test.describe('/resources page', () => {
     const featured = page.getByTestId('featured-kit');
     // Default selection is governance.
     const governanceKit = starterKits.find((k) => k.id === 'governance')!;
-    await expect(featured.locator(`a[href="${governanceKit.zip}"]`)).toBeVisible();
+    await expect(
+      featured.getByRole('button', { name: new RegExp(`Get ZIP for ${governanceKit.title}`, 'i') }),
+    ).toBeVisible();
 
     // Select Lending Review Kit and confirm the CTA flips.
     const lendingKit = starterKits.find((k) => k.id === 'lending')!;
     await page.getByRole('button', { name: /Preview Lending Review Kit in the featured panel/i }).click();
-    await expect(featured.locator(`a[href="${lendingKit.zip}"]`)).toBeVisible();
+    await expect(
+      featured.getByRole('button', { name: new RegExp(`Get ZIP for ${lendingKit.title}`, 'i') }),
+    ).toBeVisible();
   });
 
   test('starter-kit chooser updates the recommended-kit panel', async ({ page }) => {
@@ -53,7 +87,7 @@ test.describe('/resources page', () => {
 
     // The featured panel should now list the lending playbook artifact.
     await expect(
-      page.getByRole('link', { name: /Lending Playbook/i }).first(),
+      page.getByRole('button', { name: /Lending Playbook/i }).first(),
     ).toBeVisible();
   });
 
@@ -69,10 +103,20 @@ test.describe('/resources page', () => {
 
     await filters.getByRole('button', { name: 'BSA/AML' }).click();
     await expect(filters.getByRole('button', { name: 'BSA/AML' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('[role="status"][aria-live="polite"]')).toContainText('2 filtered artifacts shown.');
     await expect(
       page.getByRole('heading', { level: 2, name: /1 playbook for the role you picked/i }),
     ).toBeVisible();
     await expect(page.getByRole('heading', { level: 3, name: 'BSA / AML' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3, name: 'SAR Narrative Template' })).toBeVisible();
+
+    await filters.getByRole('button', { name: /Reset all filters/i }).click();
+    await filters.getByRole('button', { name: 'Training/HR' }).click();
+    await expect(filters.getByRole('button', { name: 'Training/HR' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('heading', { level: 2, name: /1 playbook for the role you picked/i }),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3, name: 'Training / HR' })).toBeVisible();
 
     await filters.getByRole('button', { name: /Reset all filters/i }).click();
     await filters.getByRole('button', { name: 'Template' }).click();
@@ -91,19 +135,100 @@ test.describe('/resources page', () => {
     for (const playbook of rolePlaybooks) {
       const open = page.locator(`a[href="/playbooks/${playbook.slug}"]`).first();
       await expect(open, `Open link for ${playbook.slug}`).toBeVisible();
-      const pdf = page.locator(`a[href="${playbook.pdf}"]`).first();
-      await expect(pdf, `PDF link for ${playbook.slug}`).toBeVisible();
+      const pdfGate = page.getByRole('button', { name: new RegExp(`Get PDF for ${playbook.title} Playbook`, 'i') });
+      await expect(pdfGate, `PDF gate for ${playbook.slug}`).toBeVisible();
+      if (playbook.word) {
+        const wordGate = page.getByRole('button', { name: new RegExp(`Get Word for ${playbook.title} Playbook`, 'i') });
+        await expect(wordGate, `Word gate for ${playbook.slug}`).toBeVisible();
+      }
+      if (playbook.readHref) {
+        await expect(
+          page.locator(`a[href="${playbook.readHref}"]`).first(),
+          `readable HTML link for ${playbook.slug}`,
+        ).toBeVisible();
+      }
     }
   });
 
-  test('desk cards link to correct API download routes', async ({ page }) => {
+  test('problem paths are visible and wired to public resources', async ({ page }) => {
+    await page.goto('/resources');
+    const problemSection = page.locator('#problem-paths');
+    await expect(problemSection.getByRole('heading', { level: 2, name: /Pick the job, then open the artifact/i })).toBeVisible();
+
+    for (const path of problemPaths) {
+      await expect(
+        problemSection.getByRole('heading', { level: 3, name: path.title }),
+        `problem path ${path.title}`,
+      ).toBeVisible();
+
+      if (path.href.startsWith('/api/resources/')) {
+        await expect(
+          problemSection.getByRole('button', { name: new RegExp(`for ${path.artifact}`, 'i') }),
+          `download gate for ${path.artifact}`,
+        ).toBeVisible();
+      } else {
+        await expect(
+          problemSection.locator(`a[href="${path.href}"]`).first(),
+          `link for ${path.artifact}`,
+        ).toBeVisible();
+      }
+    }
+  });
+
+  test('desk cards expose gated PDF downloads', async ({ page }) => {
     await page.goto('/resources');
     for (const card of deskCards) {
       await expect(
-        page.locator(`a[href="${card.href}"]`).first(),
+        page.getByRole('button', { name: new RegExp(`Get PDF for ${card.title}`, 'i') }).first(),
         `desk card ${card.title}`,
       ).toBeVisible();
+      if (card.word) {
+        await expect(
+          page.getByRole('button', { name: new RegExp(`Get Word for ${card.title}`, 'i') }).first(),
+          `desk card Word ${card.title}`,
+        ).toBeVisible();
+      }
+      if (card.readHref) {
+        await expect(
+          page.locator(`a[href="${card.readHref}"]`).first(),
+          `desk card readable HTML ${card.title}`,
+        ).toBeVisible();
+      }
+      if (card.largePrint) {
+        await expect(
+          page.getByRole('button', { name: new RegExp(`Get large print for ${card.title} large-print PDF`, 'i') }).first(),
+          `desk card large-print ${card.title}`,
+        ).toBeVisible();
+      }
     }
+  });
+
+  test('paid preview cards expose Word downloads when available', async ({ page }) => {
+    await page.goto('/resources');
+    for (const preview of paidPreviews) {
+      if (!preview.word) continue;
+      await expect(
+        page.getByRole('button', { name: new RegExp(`Get Word for ${preview.title}`, 'i') }),
+        `paid preview Word ${preview.title}`,
+      ).toBeVisible();
+      if (preview.readHref) {
+        await expect(
+          page.locator(`a[href="${preview.readHref}"]`).first(),
+          `paid preview readable HTML ${preview.title}`,
+        ).toBeVisible();
+      }
+    }
+  });
+
+  test('readable HTML resource route renders source-backed artifacts', async ({ page }) => {
+    await page.goto('/resources/access/safe-ai-use-checklist');
+    await expect(page).toHaveTitle(/Safe AI Use Checklist.*Readable HTML/i);
+    await expect(
+      page.getByRole('heading', { level: 1, name: /The Safe AI Use Checklist/i }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: /Back to library/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Get PDF for Safe AI Use Checklist/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Get Word for Safe AI Use Checklist/i })).toBeVisible();
   });
 
   test('assessment CTA card routes to /assessment', async ({ page }) => {
@@ -119,7 +244,7 @@ test.describe('/resources page', () => {
     // short-lived signed URL. 401/403 are acceptable for auth-gated downloads.
     // In envs without Supabase (local/preview), the route can return 503. A
     // 404 means the known slug is missing or unpublished and should fail.
-    const hrefs = allDownloadHrefs().filter((h) => h.startsWith('/api/'));
+    const hrefs = allDownloadHrefs().filter((h) => h.startsWith('/api/') || h.startsWith('/resources/access/'));
     expect(hrefs.length).toBeGreaterThan(0);
     for (const href of hrefs) {
       const res = await request.get(href);

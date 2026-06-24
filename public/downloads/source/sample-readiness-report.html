@@ -17,26 +17,38 @@
   }
   .ring {
     width: 84pt; height: 84pt; border-radius: 999pt;
-    background: conic-gradient(var(--gold) 0deg 223deg, var(--slate-200) 223deg 360deg);
+    background: conic-gradient(var(--gold) 0deg 270deg, var(--slate-200) 270deg 360deg);
     display: flex; align-items: center; justify-content: center;
     position: relative;
   }
   .ring::after {
     content: ''; position: absolute; inset: 8pt; background: #fff; border-radius: 999pt;
   }
-  .ring .n { position: relative; font-size: 24pt; font-weight: 800; color: var(--ink); z-index: 1; }
+  .ring .n { position: relative; font-size: 21pt; font-weight: 800; color: var(--ink); z-index: 1; }
   .score-meta .tier { font-size: 14pt; font-weight: 700; color: var(--ink); margin-bottom: 2pt; }
   .score-meta .gap { font-size: 10pt; color: var(--slate-600); }
-  .dim {
-    display: grid; grid-template-columns: 1.6in 1fr 28pt; gap: 12pt;
+  .signal {
+    display: grid; grid-template-columns: 1.85in 1fr 34pt; gap: 12pt;
     align-items: center; padding: 8pt 0; border-bottom: 1px solid var(--slate-200);
     font-size: 10pt;
   }
-  .dim:last-child { border-bottom: 0; }
-  .dim .name { font-weight: 600; color: var(--ink); }
-  .dim .bar { height: 8pt; background: var(--slate-100); border-radius: 999pt; overflow: hidden; position: relative; }
-  .dim .bar > i { display: block; height: 100%; background: var(--gold); border-radius: 999pt; }
-  .dim .val { font-weight: 700; color: var(--ink); text-align: right; font-size: 10pt; }
+  .signal:last-child { border-bottom: 0; }
+  .signal .name { font-weight: 600; color: var(--ink); }
+  .signal .bar { height: 8pt; background: var(--slate-100); border-radius: 999pt; overflow: hidden; position: relative; }
+  .signal .bar > i { display: block; height: 100%; background: var(--gold); border-radius: 999pt; }
+  .signal .val { font-weight: 700; color: var(--ink); text-align: right; font-size: 10pt; }
+  .mini-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10pt; margin: 12pt 0 14pt;
+  }
+  .mini-card {
+    border: 1px solid var(--slate-200); border-radius: 12pt; padding: 12pt 14pt;
+    background: #fff;
+  }
+  .mini-card .label {
+    font-size: 8pt; letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--slate-500); font-weight: 700; margin-bottom: 4pt;
+  }
+  .mini-card p { margin: 0; font-size: 10pt; }
 </style>
 </head>
 <body>
@@ -50,47 +62,70 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Sample Readiness Report · v1.0</div>
+    <div class="kicker">Sample Readiness Report · v3 free snapshot</div>
     <h1>Your AI Readiness Snapshot — sample</h1>
-    <p class="lede">An illustrative example of the report a banker receives after the free 12-question AI Readiness Assessment. The numbers below are not real. Take the assessment for your own.</p>
+    <p class="lede">An illustrative example of the report a banker receives after the free 12-question AI Readiness Assessment. The numbers below are sample data. Take the assessment for your own score, tier, top gap, and starter artifact.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
-    <div>AIBankingInstitute.com/assessment</div>
+    <div>AIBankingInstitute.com/assessment/take</div>
   </div>
 </section>
 
 <section class="page">
-  <div class="sample-strip">Sample report · illustrative data · take the assessment at aibankinginstitute.com/assessment</div>
+  <div class="sample-strip">Sample report · illustrative data · take the assessment at aibankinginstitute.com/assessment/take</div>
 
   <div class="section-kicker" style="margin-top: 18pt;">Your snapshot</div>
   <h2>Score, maturity tier, and top gap</h2>
 
   <div class="score-ring">
-    <div class="ring"><div class="n">62</div></div>
+    <div class="ring"><div class="n">36/48</div></div>
     <div class="score-meta">
-      <div class="tier">Structured Beginner</div>
-      <div class="gap">Top gap · Workflow documentation</div>
-      <div class="gap" style="margin-top: 4pt;">Recommended path · Foundation course → Workflow SOP → AI use-case checklist</div>
+      <div class="tier">Building Momentum</div>
+      <div class="gap">Top gap · Documentation</div>
+      <div class="gap" style="margin-top: 4pt;">Recommended path · Save-the-prompt habit → Workflow SOP → AI use-case inventory</div>
     </div>
   </div>
 
   <h3>What the score means</h3>
-  <p>A score of 62 places this institution in the <strong>Structured Beginner</strong> band. The bank has informal AI use across departments, an executive conversation underway, and the beginnings of a governance posture — but no written framework, no inventory of use cases, and no documented review path. This is the most common tier for community banks and credit unions today, and the easiest to move out of.</p>
+  <p>A score of <strong>36 out of 48</strong> places this sample banker in the <strong>Building Momentum</strong> band. The pattern is not beginner-level awareness. It is uneven traction: several AI habits are already useful, but the work depends on memory, individual judgment, and informal handoffs. The fastest improvement is not another tool. It is making the useful work visible, reviewable, and repeatable.</p>
 
-  <h3>The eight readiness dimensions</h3>
-  <div class="card" style="padding: 16pt 18pt;">
-    <div class="dim"><div class="name">Strategy &amp; vision</div><div class="bar"><i style="width: 70%;"></i></div><div class="val">70</div></div>
-    <div class="dim"><div class="name">Governance posture</div><div class="bar"><i style="width: 52%;"></i></div><div class="val">52</div></div>
-    <div class="dim"><div class="name">Data readiness</div><div class="bar"><i style="width: 64%;"></i></div><div class="val">64</div></div>
-    <div class="dim"><div class="name">Talent &amp; skills</div><div class="bar"><i style="width: 58%;"></i></div><div class="val">58</div></div>
-    <div class="dim"><div class="name">Culture &amp; adoption</div><div class="bar"><i style="width: 66%;"></i></div><div class="val">66</div></div>
-    <div class="dim"><div class="name">Technology stack</div><div class="bar"><i style="width: 60%;"></i></div><div class="val">60</div></div>
-    <div class="dim"><div class="name">Risk posture</div><div class="bar"><i style="width: 55%;"></i></div><div class="val">55</div></div>
-    <div class="dim"><div class="name">Use-case maturity</div><div class="bar"><i style="width: 71%;"></i></div><div class="val">71</div></div>
+  <div class="mini-grid">
+    <div class="mini-card">
+      <div class="label">Free path</div>
+      <p>12 questions, one per readiness signal, scored 1 to 4.</p>
+    </div>
+    <div class="mini-card">
+      <div class="label">Score range</div>
+      <p>12 to 48, grouped into four maturity tiers.</p>
+    </div>
+    <div class="mini-card">
+      <div class="label">Output</div>
+      <p>Score, tier, top gap, next move, and one starter artifact.</p>
+    </div>
+    <div class="mini-card">
+      <div class="label">Scope</div>
+      <p>A banker-level snapshot, not an examiner finding or institutional diagnostic.</p>
+    </div>
   </div>
 
-  <p style="margin-top: 12pt;">The dimension scores are how AiBI separates "where you are" from "where to start." The lowest dimension is not the right starting point. The <strong>highest-leverage</strong> dimension — the one where a 90-day project moves you from <em style="font-style:normal; font-weight:600;">"we should look at this"</em> to <em style="font-style:normal; font-weight:600;">"we shipped this and it works"</em> — is.</p>
+  <h3>The 12 readiness signals</h3>
+  <div class="card" style="padding: 16pt 18pt;">
+    <div class="signal"><div class="name">Strategic Value</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Approved Tool Path</div><div class="bar"><i style="width: 50%;"></i></div><div class="val">2/4</div></div>
+    <div class="signal"><div class="name">Data Safety Reflexes</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Prompting Skill</div><div class="bar"><i style="width: 100%;"></i></div><div class="val">4/4</div></div>
+    <div class="signal"><div class="name">Role Fit</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Human Review</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Documentation</div><div class="bar"><i style="width: 50%;"></i></div><div class="val">2/4</div></div>
+    <div class="signal"><div class="name">Vendor Awareness</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Customer Impact Awareness</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Workflow Readiness</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Training Culture</div><div class="bar"><i style="width: 75%;"></i></div><div class="val">3/4</div></div>
+    <div class="signal"><div class="name">Leadership Visibility</div><div class="bar"><i style="width: 100%;"></i></div><div class="val">4/4</div></div>
+  </div>
+
+  <p style="margin-top: 12pt;">The signal list separates capability from noise. A high Prompting Skill score says the banker can get useful answers. A lower Documentation score says the work may still be hard to reconstruct later. For this sample, the best next move is a simple evidence habit: save the prompt, unedited output, edits, final version, date, and use case for any AI-assisted work that leaves the desk.</p>
 
   <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>Sample Report · 1</div></div>
 </section>
@@ -98,32 +133,33 @@
 <section class="page">
   <div class="section-kicker">Your starter artifact</div>
   <h2>One concrete next step</h2>
-  <p>Every AiBI readiness report ends with a starter artifact — a one-page work product tailored to the lowest-leverage dimension that the recipient can actually use this week. The sample artifact below is the one a Compliance lead in the Structured Beginner band would receive.</p>
+  <p>Every free readiness snapshot ends with one starter artifact tied to the lowest-scoring readiness signal. The sample artifact below is what a banker with a Documentation gap could use this week.</p>
 
   <div class="callout">
-    <div class="label">Starter artifact · AI use-case review packet</div>
-    <p style="margin-top: 6pt;">A single page your compliance officer prints, signs, and uses every time a department head proposes a new AI use case. The packet captures business purpose, tool, user role, data class, risk tier (Red / Yellow / Green), human reviewer, and review cadence. Pair with the AiBI <strong>Safe AI Use Checklist</strong> and the <strong>Red / Yellow / Green Use Card</strong>.</p>
+    <div class="label">Starter artifact · AI recordkeeping template</div>
+    <p style="margin-top: 6pt;">Create one place to save AI-assisted work. For each item, capture six fields: date, task, tool, prompt, unedited output, and the edits or judgment applied before use. This is not bureaucracy. It is the evidence trail that lets a manager, reviewer, or examiner reconstruct what AI did and what the human decided.</p>
   </div>
 
   <h3>What you would do with this real report</h3>
   <ol>
-    <li>Share the snapshot with your executive team. The conversation is about the highest-leverage dimension, not the lowest.</li>
-    <li>Pick a 90-day win. Foundations course, AI use case inventory, or a measurable pilot in retail / marketing.</li>
-    <li>Book an Executive Briefing with AiBI to map the next four quarters against your actual numbers.</li>
+    <li>Read the score and tier once, then focus on the top gap.</li>
+    <li>Use the starter artifact on one real task this week.</li>
+    <li>Share the before/after with a manager or reviewer so the AI work becomes visible and repeatable.</li>
   </ol>
 
   <h3>What the In-Depth report adds</h3>
-  <p>The free 12-question assessment is a snapshot. The <strong>In-Depth Readiness Assessment</strong> ($99) is a 48-question instrument across the same eight dimensions, an anonymized team rollup (when your team takes it), a peer-band comparison, a regulatory exhibit, and a 90-day playbook keyed to your lowest-leverage finding.</p>
+  <p>The free 12-question assessment is a snapshot. The <strong>In-Depth Readiness Assessment</strong> is a separate 48-question diagnostic across eight scored dimensions. It adds dimension-level analysis, a role-specific action plan, a reviewer-ready PDF report, and a practical 90-day next-step register for deeper planning.</p>
 
   <div class="card">
     <div class="num">Next step</div>
     <h4>Take the free assessment</h4>
-    <p>Three minutes. No credit card. Your real snapshot, your real top gap, your real starter artifact.</p>
-    <p style="margin-top: 8pt; font-weight: 600; color: var(--ink);">AIBankingInstitute.com/assessment</p>
+    <p>Three minutes. No credit card. Your real score, your real top gap, your real starter artifact.</p>
+    <p style="margin-top: 8pt; font-weight: 600; color: var(--ink);">AIBankingInstitute.com/assessment/take</p>
   </div>
 
   <div class="cite">
-    Sample report based on the AiBI Readiness Assessment v2 instrument. The data above is illustrative; a real report uses the recipient's actual responses across all 8 dimensions.
+    Source basis: Sample report based on the AiBI Readiness Assessment v3 free snapshot: 12 readiness signals, one question per signal, 1-4 scoring, total range 12-48, and shared free-readiness tier bands. The data above is illustrative; a real report uses the recipient's actual responses and role context.
+    <p>This sample report is a starter artifact and sales/education preview, not legal advice, regulatory analysis, or an examiner-approved readiness finding. Adapt before adoption and validate real recommendations against the institution's actual assessment responses, governance context, and approved AI-use policy.</p>
   </div>
 
   <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>Sample Report · 2</div></div>
