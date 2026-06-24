@@ -70,4 +70,18 @@ describe('GET /api/guides/safe-ai-use', () => {
     await expect(response.json()).resolves.toEqual({ error: 'PDF unavailable. Please try again.' });
     expect(mocks.logStaticResourceDownload).not.toHaveBeenCalled();
   });
+
+  // The mocked tests above prove response shaping. This guard reads the REAL
+  // committed asset (bypassing the fs mock) so a future cleanup that deletes
+  // public/downloads/*.pdf — which would 500 the route at runtime but leave the
+  // mocked tests green — fails here instead of in production.
+  it('ships a real committed PDF asset', async () => {
+    const fs = await vi.importActual<typeof import('node:fs/promises')>('node:fs/promises');
+    const { join } = await vi.importActual<typeof import('node:path')>('node:path');
+    const pdfPath = join(process.cwd(), 'public', 'downloads', 'aibi-safe-ai-use-guide.pdf');
+    const buffer = await fs.readFile(pdfPath);
+
+    expect(buffer.subarray(0, 5).toString('utf8')).toBe('%PDF-');
+    expect(buffer.length).toBeGreaterThan(10_000);
+  });
 });
