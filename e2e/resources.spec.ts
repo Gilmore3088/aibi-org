@@ -121,7 +121,7 @@ test.describe('/resources page', () => {
     await filters.getByRole('button', { name: /Reset all filters/i }).click();
     await filters.getByRole('button', { name: 'Template' }).click();
     await expect(filters.getByRole('button', { name: 'Template' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByRole('heading', { level: 2, name: /Copy these into your next meeting/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /Start your next meeting with these templates/i })).toBeVisible();
     await expect(page.getByRole('heading', { level: 3, name: 'AI Workflow SOP' })).toBeVisible();
 
     await filters.getByRole('searchbox', { name: /Search/i }).fill('Board');
