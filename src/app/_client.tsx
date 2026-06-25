@@ -13,6 +13,7 @@ import {
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 import { TrustAnchor } from '@/components/sections/TrustAnchor';
+import { HomeHelpWidget } from '@/components/sections/HomeHelpWidget';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -201,6 +202,8 @@ export default function HomePage() {
           <HomeRedlinePrompt />
         </div>
       </section>
+
+      <HomeHelpWidget />
 
       <Section variant="std" surface="white">
         <SectionHead
