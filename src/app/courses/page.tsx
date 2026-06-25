@@ -29,9 +29,9 @@ const courseOverviewFacts = {
   })),
 };
 
-const TITLE = 'AiBI-Foundation Course';
+const TITLE = 'AiBI Foundation Course';
 const DESCRIPTION =
-  `AiBI-Foundation is a ${MODULE_COUNT}-module, ${FOUNDATION_TOTAL_MINUTES}-minute course where bankers build prompt cards, skill templates, workflow maps, and a ${ARTIFACT_COUNT}-piece Foundation Packet.`;
+  `AiBI Foundation is a ${MODULE_COUNT}-module, ${FOUNDATION_TOTAL_MINUTES}-minute course where bankers build prompt cards, skill templates, workflow maps, and a ${ARTIFACT_COUNT}-piece Foundation Packet.`;
 
 export const metadata: Metadata = {
   alternates: { canonical: '/courses' },

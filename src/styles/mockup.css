@@ -9045,3 +9045,339 @@ section.mk-std { padding: 56px 0; }
     letter-spacing: 0;
   }
 }
+
+/* ============================================================
+   /courses — Learn page Foundation cleanup (2026-06-25)
+   ============================================================ */
+
+.mk-learn-page .mk-hero-inner {
+  max-width: 1180px;
+}
+
+@media (min-width: 1024px) {
+  .mk-learn-page .mk-hero-inner {
+    grid-template-columns: minmax(0, 0.95fr) minmax(380px, 0.8fr);
+    gap: 72px;
+  }
+}
+
+.mk-learn-page .mk-hero h1 {
+  max-width: 14ch;
+}
+
+.mk-learn-page .mk-hero .mk-lede {
+  max-width: 48ch;
+}
+
+.mk-course-proofline {
+  margin: 18px 0 0;
+  max-width: 64ch;
+  color: rgba(255,255,255,0.72);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.mk-course-outcome-card {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--on-dark-08);
+  border-radius: 28px;
+  box-shadow: var(--shadow-hero);
+  padding: 28px;
+}
+
+.mk-course-outcome-card .mk-k,
+.mk-lesson-preview .mk-k,
+.mk-data-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.mk-course-outcome-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.mk-course-outcome-card li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.mk-course-outcome-card li svg {
+  flex: none;
+  color: var(--gold-deep);
+}
+
+.mk-course-outcome-foot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.mk-course-outcome-foot span {
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--gold-soft);
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mk-course-outcomes-section {
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.mk-course-outcomes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 760px) {
+  .mk-course-outcomes {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.mk-course-outcome {
+  min-height: 92px;
+  border: 1px solid var(--slate-200);
+  border-radius: 18px;
+  background: var(--cream);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mk-course-outcome strong {
+  display: block;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.mk-course-outcome span {
+  color: var(--slate-600);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mk-learn-page .mk-build4 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+  .mk-learn-page .mk-build4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mk-learn-page .mk-build-card,
+.mk-learn-page .mk-flow4-card,
+.mk-learn-page .mk-credential-row {
+  border-radius: 18px;
+  min-height: 100%;
+}
+
+.mk-learn-page .mk-build-card h3,
+.mk-learn-page .mk-flow4-card h3 {
+  font-size: 20px;
+}
+
+.mk-lesson-preview {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .mk-lesson-preview {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  }
+}
+
+.mk-lesson-preview-copy {
+  background: var(--cream);
+  border: 1px solid var(--slate-200);
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.mk-lesson-preview-copy h3 {
+  margin: 10px 0 18px;
+  font-size: clamp(24px, 2.5vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.mk-lesson-preview-copy ol {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 12px;
+  color: var(--slate-700);
+  font-weight: 600;
+}
+
+.mk-prompt-compare {
+  display: grid;
+  gap: 14px;
+}
+
+.mk-prompt-before,
+.mk-prompt-after {
+  border: 1px solid var(--slate-200);
+  border-radius: 22px;
+  padding: 22px;
+  background: #fff;
+}
+
+.mk-prompt-before {
+  background: var(--cream);
+}
+
+.mk-prompt-before > p:last-child {
+  margin: 10px 0 0;
+  color: var(--slate-700);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mk-prompt-strategy {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mk-prompt-row {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.mk-prompt-row:last-child {
+  border-bottom: 0;
+}
+
+.mk-prompt-row span {
+  color: var(--gold-deep);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mk-prompt-row strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mk-data-band {
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 24px;
+  padding: 28px;
+}
+
+@media (min-width: 920px) {
+  .mk-data-band {
+    grid-template-columns: 0.72fr 1fr auto;
+    padding: 30px 34px;
+  }
+}
+
+.mk-data-band h2 {
+  margin: 8px 0 0;
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.12;
+  color: #fff;
+}
+
+.mk-data-band .mk-data-kicker {
+  color: var(--gold-soft);
+}
+
+.mk-data-list {
+  display: grid;
+  gap: 10px;
+}
+
+.mk-data-list p {
+  margin: 0;
+  color: rgba(255,255,255,0.72);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.mk-learn-page .mk-pricing-wrap {
+  max-width: 780px;
+}
+
+.mk-learn-page .mk-pricing-card header h3 {
+  font-size: clamp(30px, 3.4vw, 42px);
+}
+
+@media (max-width: 640px) {
+  .mk-course-proofline {
+    font-size: 12px;
+  }
+
+  .mk-course-outcome-card {
+    padding: 24px;
+  }
+
+  .mk-course-outcome-card ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mk-course-outcome-card li {
+    align-items: flex-start;
+    min-height: 78px;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .mk-course-outcome-foot {
+    display: none;
+  }
+
+  .mk-prompt-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .mk-data-band {
+    border-radius: 20px;
+    padding: 24px;
+  }
+}

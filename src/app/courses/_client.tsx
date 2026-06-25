@@ -1,19 +1,9 @@
 'use client';
 
-import {
-  SiteHeader,
-  Section,
-  SectionHead,
-  Button,
-  CtaBand,
-  StickyMobileCta,
-} from '@/components/mockup';
-import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
-import { CoursePreviewDemos } from './_components/CoursePreviewDemos';
-
-// ---------- Icons (inline SVG) ----------
+import { SiteHeader, Section, SectionHead, Button, StickyMobileCta } from '@/components/mockup';
 
 type IconProps = { className?: string; size?: number };
+
 export interface CoursesOverviewFacts {
   readonly moduleCount: number;
   readonly artifactCount: number;
@@ -47,14 +37,24 @@ function countWord(count: number) {
 
 function buildPricingBullets(facts: CoursesOverviewFacts) {
   return [
-    `${facts.moduleCount} bite-sized modules · ${facts.totalMinutes} minutes`,
-    'Onboarding, role context, and work-target selection',
-    'Prompt Builder, Skill Builder, and workflow-map practice',
+    `${facts.moduleCount} modules · ${facts.totalMinutes} minutes`,
     `${facts.artifactCount}-piece Foundation Packet`,
+    'Prompt Builder, Skill Builder, and workflow-map practice',
     'Review notes and transfer plans in every module',
-    '5+ certificate practice reps',
-    'Final packet submission + certificate',
+    'Final packet submission and certificate',
+    'Public certificate verification URL',
     'Ongoing access to purchased materials under current offer',
+  ];
+}
+
+function buildOutcomeStats(facts: CoursesOverviewFacts) {
+  return [
+    { value: String(facts.moduleCount), label: 'modules' },
+    { value: String(facts.totalMinutes), label: 'minutes' },
+    { value: String(facts.artifactCount), label: 'packet artifacts' },
+    { value: '4', label: 'builder modes' },
+    { value: '1', label: 'Foundation Packet' },
+    { value: 'Cert', label: 'public verification' },
   ];
 }
 
@@ -81,22 +81,22 @@ const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y
 const ARTIFACTS: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
     title: 'Communication Artifacts',
-    desc: 'Rewrite rushed notes, staff updates, and recurring messages with clear action, owner, and review.',
+    desc: 'Staff updates, recurring messages, and internal notes with clear action, owner, and review.',
     icon: ChatIcon,
   },
   {
     title: 'Reusable Prompts + Skills',
-    desc: 'Use the Prompt Builder and Skill Builder to save templates with placeholders and review rules.',
+    desc: 'Templates with safe placeholders, source rules, output formats, and human review notes.',
     icon: WorkflowIcon,
   },
   {
     title: 'Workflow Maps',
-    desc: 'Map AI-supported steps, human handoffs, blocked decisions, tool choices, and source checks.',
+    desc: 'AI-supported steps, human handoffs, blocked decisions, tool choices, and source checks.',
     icon: FileIcon,
   },
   {
     title: 'Safety Proof',
-    desc: 'Keep claim reviews, safe-use checklists, role use-case cards, and final work-product evidence.',
+    desc: 'Claim reviews, safe-use checklists, role cards, review notes, and final work-product evidence.',
     icon: ClipboardIcon,
   },
 ];
@@ -105,65 +105,63 @@ const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: Icon
   {
     step: '01',
     title: 'Set role and work target',
-    desc: 'Onboarding captures role context; each module asks for one safe work target before the learner opens the lab.',
+    desc: 'Onboarding captures role context; each module starts with one safe work target.',
     icon: ChatIcon,
   },
   {
     step: '02',
     title: 'See the artifact first',
-    desc: 'Every module begins with what you are building, why it matters, what you will save, and what you must prove.',
+    desc: 'Every module shows what you are building, why it matters, and what you must prove.',
     icon: ClipboardIcon,
   },
   {
     step: '03',
     title: 'Use the builders',
-    desc: 'Prompt Builder, Skill Builder, and workflow-map tools turn sample banking tasks into structured drafts.',
+    desc: 'Prompt Builder, Skill Builder, and workflow tools turn sample banking tasks into structured drafts.',
     icon: WorkflowIcon,
   },
   {
     step: '04',
     title: 'Save reusable templates',
-    desc: 'Each output is saved with placeholders, a review note, and a first-use plan in My Foundation Packet.',
+    desc: 'Each output is saved with placeholders, a review note, and a first-use plan.',
     icon: FileIcon,
   },
 ];
 
 const CREDENTIAL_PROOF: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
-    title: 'Earned after the packet is complete',
-    desc: 'The certificate issues after all modules are complete and the final Foundation Packet is submitted.',
+    title: 'Earned after packet completion',
+    desc: 'All modules are complete and the final Foundation Packet is submitted.',
     icon: CheckCircleIcon,
   },
   {
     title: 'Public authenticity URL',
-    desc: 'Verification confirms the credential record, holder, and issued date so an employer or reviewer can check it.',
+    desc: 'An employer or reviewer can verify the holder, credential, and issued date.',
     icon: FileIcon,
   },
   {
     title: 'Evidence behind the badge',
-    desc: 'The packet preserves prompts, outputs, edits, workflow maps, review notes, and safety boundaries from course work.',
+    desc: 'Prompts, outputs, edits, workflow maps, review notes, and safety boundaries stay with the packet.',
     icon: ClipboardIcon,
   },
   {
     title: 'Clear claim boundary',
-    desc: 'AiBI-Foundation is not a license, regulator approval, regulator recognition, or third-party endorsement.',
+    desc: 'AiBI Foundation is not a license, regulator approval, regulator recognition, or third-party endorsement.',
     icon: WorkflowIcon,
   },
 ];
 
-// ---------- Page ----------
-
 export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly facts?: CoursesOverviewFacts }) {
   const pricingBullets = buildPricingBullets(facts);
+  const outcomeStats = buildOutcomeStats(facts);
 
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope mk-learn-page">
       <SiteHeader
         activePath="/courses"
         cta={{ label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase' }}
       />
 
-      {/* HERO */}
       <section className="mk-hero">
         <div className="mk-deco">
           <div className="mk-deco-ring" />
@@ -171,103 +169,44 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <p className="mk-kicker-gold-soft">Learn</p>
-            <h1>Build reusable AI skills.</h1>
+            <p className="mk-kicker-gold-soft">AiBI Foundation</p>
+            <h1>Build reusable AI work products for banking.</h1>
             <p className="mk-lede">
-              18 short labs. Prompts, skills, workflows, and safety proof save to your packet.
+              AiBI Foundation is an {facts.moduleCount}-module course where bankers practice
+              safe prompting, reusable skills, workflow mapping, and review discipline. Every
+              module produces an artifact you save to your Foundation Packet.
             </p>
             <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="#curriculum">
-                Preview builders <ArrowR className="mk-ic" />
+              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
+                Enroll · {facts.individualPriceLabel} <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses/foundation/program/purchase">
-                Enroll {facts.individualPriceLabel}
+              <Button variant="ghost-dark" size="lg" href="#lesson-preview">
+                Preview a lesson
               </Button>
             </div>
+            <p className="mk-course-proofline">
+              {facts.moduleCount} modules · {facts.totalMinutes} minutes · {facts.artifactCount}-piece Foundation Packet · Certificate with public verification
+            </p>
           </div>
 
-          <HeroPacketCard facts={facts} />
+          <HeroOutcomeCard facts={facts} />
         </div>
       </section>
 
-      <Section variant="std" surface="white">
-        <SectionHead
-          kicker="How the course works"
-          heading={<>Start small. Save real work.</>}
-          lede={
-            <>
-              Understand the concept, try it in the lab, build the artifact, then save it to your packet.
-            </>
-          }
-        />
-        <div className="mk-flow4">
-          {LEARNING_FLOW.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.step} className="mk-flow4-card">
-                <div className="mk-flow4-top">
-                  <span className="mk-pic-ink-gold">
-                    <Icon size={22} />
-                  </span>
-                  <span className="mk-flow4-step">{item.step}</span>
-                </div>
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-              </div>
-            );
-          })}
+      <Section variant="tight" surface="white" className="mk-course-outcomes-section">
+        <div className="mk-course-outcomes" aria-label="AiBI Foundation outcomes">
+          {outcomeStats.map((outcome) => (
+            <div key={`${outcome.value}-${outcome.label}`} className="mk-course-outcome">
+              <strong>{outcome.value}</strong>
+              <span>{outcome.label}</span>
+            </div>
+          ))}
         </div>
       </Section>
 
-      {/* COURSE PREVIEW — representative animated demos, not the full curriculum */}
-      <Section variant="std" surface="white">
-        <div id="curriculum" />
-        <SectionHead
-          kicker={`${facts.moduleCount}-module curriculum · Builder preview`}
-          heading={<>Preview the builders. Save the outputs.</>}
-          lede={
-            <>
-              Prompt Builder and Skill Builder are working course tools. Workflow mapping shows
-              human checkpoints for agent-shaped work without implying a technical agent build.
-            </>
-          }
-        />
-        <CoursePreviewDemos />
-      </Section>
-
-      <Section variant="std">
-        <SectionHead
-          kicker="Data handling"
-          heading={<>Built for sample facts and reviewed outputs.</>}
-          lede={
-            <>
-              Course previews use synthetic or sanitized banking examples. Authenticated
-              lab and Toolbox runs send prompts to the selected AI provider only when a
-              learner asks the model to respond, with PII and prompt-injection checks in
-              front of the call.
-            </>
-          }
-        />
-        <div className="mk-reg-ref-grid">
-          <div>Synthetic or sanitized examples are enough to complete the course.</div>
-          <div>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</div>
-          <div>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</div>
-          <div>Provider stance and retained product records are summarized before purchase.</div>
-        </div>
-        <div style={{ marginTop: 22, display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-          <Button variant="ghost-dark" href="/security/data-handling">
-            Read the data-handling summary
-          </Button>
-          <Button variant="ghost-dark" href="/assessment/in-depth">
-            Get In-Depth report
-          </Button>
-        </div>
-      </Section>
-
-      {/* WHAT LEARNERS BUILD — 4 work modes across the Foundation Packet */}
       <Section variant="std" surface="white">
         <SectionHead
-          kicker="What learners build"
+          kicker="What you will build"
           heading={<>{countWord(facts.artifactCount)} artifacts. One Foundation Packet.</>}
           lede={
             <>
@@ -294,11 +233,71 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
 
       <Section variant="std">
         <SectionHead
-          kicker="Credential value"
-          heading={<>What the certificate proves.</>}
+          kicker="How the course works"
+          heading={<>Short lessons become saved work products.</>}
           lede={
             <>
-              AiBI-Foundation is earned by completing the course and submitting
+              Understand the concept, try it in the lab, build the artifact, then save it to your packet.
+            </>
+          }
+        />
+        <div className="mk-flow4">
+          {LEARNING_FLOW.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.step} className="mk-flow4-card">
+                <div className="mk-flow4-top">
+                  <span className="mk-pic-ink-gold">
+                    <Icon size={22} />
+                  </span>
+                  <span className="mk-flow4-step">{item.step}</span>
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </Section>
+
+      <Section variant="std" surface="white" id="lesson-preview">
+        <SectionHead
+          kicker="Preview one lesson"
+          heading={<>Turn a weak prompt into a reusable strategy.</>}
+          lede={
+            <>
+              One module shows the rhythm: start with a rough banking prompt, add guardrails,
+              then save a reviewed First Prompt Card.
+            </>
+          }
+        />
+        <LessonPreview />
+      </Section>
+
+      <Section variant="std">
+        <div className="mk-data-band">
+          <div>
+            <p className="mk-data-kicker">How data is handled</p>
+            <h2>Practice with sample facts. Keep sensitive data out.</h2>
+          </div>
+          <div className="mk-data-list">
+            <p>Synthetic or sanitized banking examples are enough to complete the course.</p>
+            <p>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</p>
+            <p>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</p>
+          </div>
+          <Button variant="ghost-light" href="/security/data-handling">
+            Read the data-handling summary
+          </Button>
+        </div>
+      </Section>
+
+      <Section variant="std">
+        <SectionHead
+          kicker="Credential value"
+          heading={<>This is not a webinar certificate.</>}
+          lede={
+            <>
+              AiBI Foundation is earned by completing the course and submitting
               evidence of reviewed work, not by attending a webinar or passing
               through a marketing gate.
             </>
@@ -330,18 +329,17 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </div>
       </Section>
 
-      {/* PRICING */}
       <Section variant="std">
         <div className="mk-pricing-wrap">
           <div className="mk-pricing-card">
             <header>
               <p className="mk-k">One-time · No subscription</p>
-              <h3>AiBI-Foundation</h3>
+              <h3>AiBI Foundation</h3>
             </header>
             <div className="mk-pricing-amount">
               <p className="mk-k">Individual enrollment</p>
               <p className="mk-pricing-value">{facts.individualPriceLabel}</p>
-              <p>Volume seat pricing is scoped by request before rollout.</p>
+              <p>{facts.moduleCount} modules · {facts.totalMinutes} minutes · Foundation Packet · certificate</p>
             </div>
             <ul className="mk-pricing-bullets">
               {pricingBullets.map((item) => (
@@ -353,7 +351,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
             </ul>
             <div className="mk-pricing-ctas">
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll in AiBI-Foundation
+                Enroll in Foundation
               </Button>
               <Button variant="ghost-light" size="lg" href="/for-institutions">
                 Ask about team enrollment
@@ -362,21 +360,6 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
           </div>
         </div>
       </Section>
-
-      <AdvisorsStrip />
-
-      {/* FINAL CTA */}
-      <CtaBand
-        hiddenOnMobile
-        kicker="Not sure yet?"
-        heading={<>See what a finished artifact looks like before you commit.</>}
-        body={<>The gallery shows synthetic, anonymized examples in the same structure learners use for saved course artifacts.</>}
-        actions={[
-          { label: 'Browse the artifact gallery', href: '/courses/foundation/gallery', variant: 'gold' },
-          { label: 'Get In-Depth report', href: '/assessment/in-depth', variant: 'ghost-dark' },
-          { label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase', variant: 'ghost-dark' },
-        ]}
-      />
 
       <StickyMobileCta
         label={`Enroll · ${facts.individualPriceLabel}`}
@@ -387,33 +370,73 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
   );
 }
 
-// Course hero proof object — mirrors the .mk-hreport pattern used on Home
-// and Assessment. Shows the artifact packet a learner walks away with so
-// the hero answers "what do I get?", not just "what is this?". Audit
-// 2026-05-28 hero-system feedback: Course was the biggest visual mismatch
-// because it was text-only while every other primary hero had a right-side
-// proof object.
-function HeroPacketCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
+function HeroOutcomeCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
+  const outcomes = [
+    `${facts.artifactCount} saved artifacts`,
+    'Prompt Builder practice',
+    'Skill Builder practice',
+    'Workflow map practice',
+    'Foundation Packet',
+    'Certificate + public verification URL',
+  ];
+
   return (
-    <div className="mk-hreport mk-course-hreport">
-      <div className="mk-hreport-left">
-        <div className="mk-k">Foundation Packet</div>
-        <div className="mk-v">{facts.artifactCount}</div>
-        <div className="mk-u">saved artifacts</div>
-        <div className="mk-tier">
-          <CheckCircleIcon size={16} />
-          {facts.individualPriceLabel} · {facts.totalHoursLabel} hrs
-        </div>
+    <div className="mk-course-outcome-card" aria-label="AiBI Foundation course outcomes">
+      <p className="mk-k">You leave with</p>
+      <ul>
+        {outcomes.map((outcome) => (
+          <li key={outcome}>
+            <CheckCircleIcon size={18} />
+            <span>{outcome}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mk-course-outcome-foot">
+        <span>{facts.individualPriceLabel}</span>
+        <span>{facts.totalMinutes} minutes</span>
+        <span>{facts.moduleCount} modules</span>
       </div>
-      <div className="mk-hreport-right">
-        <div className="mk-k">Includes</div>
-        <div className="mk-hresult">
-          {facts.samplePacketSlots.map((slot) => (
-            <div key={slot.moduleNumber} className="mk-hresult-row">
-              <div className="mk-rk">{String(slot.moduleNumber).padStart(2, '0')}</div>
-              <div className="mk-rv">{slot.label}</div>
-            </div>
-          ))}
+    </div>
+  );
+}
+
+function LessonPreview() {
+  const strategyRows = [
+    ['Role', 'Branch operations reviewer'],
+    ['Task', 'Rewrite the procedure for frontline branch staff'],
+    ['Source', 'Approved procedure excerpt only'],
+    ['Format', 'Staff-ready note with action, owner, and escalation trigger'],
+    ['Constraint', 'No customer data. Preserve policy meaning.'],
+    ['Reviewer', 'Manager review before reuse'],
+    ['Rule', 'Mark unclear items with [VERIFY]'],
+  ] as const;
+
+  return (
+    <div className="mk-lesson-preview">
+      <div className="mk-lesson-preview-copy">
+        <p className="mk-k">Module 04 · Build a reusable prompt</p>
+        <h3>Learners practice the builder, then save the First Prompt Card.</h3>
+        <ol>
+          <li>Learner starts with a weak prompt.</li>
+          <li>Builder adds task, audience, constraints, output, and review.</li>
+          <li>Learner saves a reusable prompt strategy to the Foundation Packet.</li>
+        </ol>
+      </div>
+      <div className="mk-prompt-compare" aria-label="Prompt before and after">
+        <div className="mk-prompt-before">
+          <p className="mk-k">Weak prompt</p>
+          <p>&quot;Rewrite this procedure for frontline branch staff.&quot;</p>
+        </div>
+        <div className="mk-prompt-after">
+          <p className="mk-k">Reusable prompt strategy</p>
+          <div className="mk-prompt-strategy">
+            {strategyRows.map(([label, value]) => (
+              <div key={label} className="mk-prompt-row">
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
