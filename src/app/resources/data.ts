@@ -95,8 +95,8 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
   },
   'lending-review-kit': {
     id: 'lending',
-    desc: 'Keep adverse-action, fair-lending, and decision packet work traceable.',
-    zipSize: '927 KB',
+    desc: 'Review one AI-assisted lending workflow and keep decisions human, explainable, and file-supported.',
+    zipSize: '744 KB',
     icon: FileText,
   },
 };
