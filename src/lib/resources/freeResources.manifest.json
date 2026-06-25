@@ -493,7 +493,7 @@
     },
     {
       "slug": "executive-playbook",
-      "title": "Executive AI Board Packet",
+      "title": "The Executive AI Governance Kit for Community Banks",
       "audience": ["Executive", "Board"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -502,7 +502,7 @@
       "variants": { "pdf": "executive-playbook.pdf", "word": "/api/resources/executive-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/executive-playbook/download",
-      "sourceCitations": ["NIST AI RMF", "GAO 25-107197"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "GLBA information-security obligations", "GAO 25-107197", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["executive"], "tierLabels": ["Building Momentum", "Ready to Scale"], "topGaps": ["board-readiness"] },
       "status": "public"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The Executive / Leadership AI-Native Playbook — The AI Banking Institute</title>
+<title>The Executive AI Governance Kit for Community Banks — The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page { padding-bottom: 0.95in; }
@@ -79,9 +79,10 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · Executive / Leadership · v2.0</div>
-    <h1>The Executive &amp; Board AI Governance Playbook</h1>
-    <p class="lede">Set the direction, own the risk appetite, fund the first pilot, and report adoption to the board with evidence. A practical operating and governance playbook for CEOs, presidents, CFOs, COOs, and directors of community banks and credit unions moving from scattered pilots to a governed AI program.</p>
+    <div class="kicker">Executive decision kit · v2.1</div>
+    <h1>The Executive AI Governance Kit for Community Banks</h1>
+    <p class="lede">Five board decisions, one funded pilot, one data line, and one evidence dashboard.</p>
+    <p class="lede" style="font-size:11pt; max-width:5.9in;">In 90 minutes, prepare the five board decisions, one pilot memo, one data-line statement, and one quarterly AI dashboard your bank needs to govern AI.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -89,628 +90,186 @@
   </div>
 </section>
 
-<!-- Section 1 -->
 <section class="page">
-  <div class="section-kicker">Section 1 · Executive snapshot</div>
-  <h2>The operating principle</h2>
-  <div class="principle">Leadership does not pick every tool. Leadership names the outcome, sets the data line, names an owner, funds a pilot with a kill switch, and demands evidence before scale.</div>
-  <p>AI inside a financial institution becomes dangerous the moment the strategy is implicit. Teams experiment, vendors pitch, staff paste customer data into free tools, and the board receives anecdotes instead of a controlled view of risk and return. The executive job is not to implement AI. It is to turn AI from a collection of experiments into a governed operating program with ownership, boundaries, metrics, and a board reporting rhythm.</p>
-  <p>This v2 playbook is written for the people who decide and govern, not the people who build. It assumes you will never write a prompt in anger. It assumes you will be the one a regulator, a director, or an angry customer eventually asks: <em>who approved this, what data did it touch, and how did you know it was working?</em></p>
-
-  <div class="toc">
-    <div class="section-kicker" style="margin-top:0;">What's inside</div>
-    <ol>
-      <li>Executive snapshot</li>
-      <li>The business case &amp; why now</li>
-      <li>The 2026 board-governance landscape</li>
-      <li>Six governance questions every board must ask</li>
-      <li>The executive's AI operating model</li>
-      <li>A worked example: Lakeshore Community Bank</li>
-      <li>Five executive plays</li>
-      <li>Board-ready risk posture</li>
-      <li>What examiners ask</li>
-      <li>Pilot ROI scorecard</li>
-      <li>30 / 60 / 90-day executive plan</li>
-      <li>Measurement model</li>
-      <li>What good looks like</li>
-      <li>Common executive mistakes</li>
-      <li>Copy-paste governance artifacts</li>
-      <li>Recommended AiBI path</li>
-      <li>Final operating principle</li>
-    </ol>
-  </div>
-
-  <h3>Who this is for</h3>
-  <ul>
-    <li>CEOs and presidents setting institutional AI direction.</li>
-    <li>CFOs deciding what to fund and how to measure return.</li>
-    <li>COOs accountable for operational adoption and controls.</li>
-    <li>Board members and risk-committee chairs providing oversight.</li>
-    <li>Chief Risk and Compliance Officers translating strategy into guardrails.</li>
-  </ul>
-
-  <h3>The core problem</h3>
-  <p>The old executive question was <strong>should we allow AI?</strong> That question is already answered — your staff are using it, with or without your approval. The real 2026 question is <strong>how do we govern AI so we capture the upside, contain the downside, and can prove to a board and an examiner that we did both on purpose?</strong></p>
+  <div class="section-kicker">Action sheet · this quarter</div>
+  <h2>The Five Decisions Your Board Needs This Quarter</h2>
+  <p>This is a decision kit, not a technology briefing. The board does not need a model architecture lecture. It needs to approve the boundaries management will operate inside, see the first controlled pilot, and know what evidence will come back next quarter.</p>
+  <table>
+    <thead><tr><th>Decision</th><th>Board question</th><th>Show-me artifact</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1 · Scope</strong></td><td>Where will we allow AI this quarter, and what is out of scope?</td><td>AI scope statement and use-case inventory by risk tier.</td></tr>
+      <tr><td><strong>2 · Data line</strong></td><td>How do we keep NPI and sensitive records out of unapproved tools?</td><td>Data-line statement, approved tools list, exception log.</td></tr>
+      <tr><td><strong>3 · Owner</strong></td><td>Who owns AI adoption and who can stop a use case?</td><td>Named executive owner and committee charter.</td></tr>
+      <tr><td><strong>4 · Pilot</strong></td><td>What one use case are we funding, and how do we know if it works?</td><td>Pilot authorization memo with budget, metric, and kill switch.</td></tr>
+      <tr><td><strong>5 · Evidence</strong></td><td>What will management report next quarter?</td><td>Quarterly board AI dashboard and evidence index.</td></tr>
+    </tbody>
+  </table>
+  <div class="principle">Leadership names the outcome, sets the data line, names an owner, funds a pilot with a kill switch, and demands evidence before scale.</div>
 </section>
 
-<!-- Section 2 -->
 <section class="page">
-  <div class="section-kicker">Section 2 · The business case &amp; why now</div>
-  <h2>AI is now the top planned technology investment</h2>
-  <p>For the first time, artificial intelligence is the single most-cited planned technology investment among community and regional financial institutions. In Jack Henry's 2025 Strategy Benchmark, AI (48%) ranked first, ahead of digital banking (38%) and data analytics (32%), and roughly 40% of institutions plan to make AI a top-five investment over the next one to three years. This is no longer an innovation-lab curiosity; it is a budget line your peers are funding.</p>
-  <p>But adoption alone is not the differentiator. Cornerstone Advisors' <em>What's Going On in Banking 2026</em> found that nearly half of banks (49%) and a majority of credit unions (59%) have already deployed generative AI, and that agentic AI is now discussed at the executive or board level at more than half of institutions. Cornerstone's blunt conclusion: in 2026, what separates leaders from laggards is not who experiments the most, but <strong>who operationalizes AI with discipline and purpose</strong>.</p>
+  <div class="section-kicker">Board packet · decisions to minute</div>
+  <h2>Board-ready starter language</h2>
+  <h3>Motion 1 · AI scope</h3>
+  <div class="adopt"><span class="adopt-label">Board-ready starter language</span><p>"Management is authorized to pursue AI use cases that improve internal efficiency, documentation, training, customer-service preparation, and workflow support, subject to the institution's approved data line, human-review requirements, vendor oversight, and evidence-retention standards. AI use in or near credit, fraud, AML, account closure, pricing, eligibility, or adverse action requires separate review before launch."</p></div>
+  <h3>Motion 2 · Data line</h3>
+  <div class="adopt"><span class="adopt-label">Board-ready starter language</span><p>"Customer non-public information, transaction-level records, authentication data, SAR-related information, examiner correspondence, employee personnel records, and confidential legal or compliance materials may not be entered into any public or personal AI tool. Sensitive data may be used only in an approved environment with documented contractual, security, logging, and retention controls."</p></div>
+  <h3>Motion 3 · Owner and cadence</h3>
+  <div class="adopt"><span class="adopt-label">Board-ready starter language</span><p>"The [COO / CRO / designated executive] is accountable for AI governance. The AI Governance Committee will maintain the inventory, approve use cases, oversee vendors and incidents, and report to the Board or Risk Committee quarterly."</p></div>
+</section>
 
-  <div class="principle">Everyone has a pilot. The advantage in 2026 goes to the institution that can govern, measure, and scale one.</div>
+<section class="page">
+  <div class="section-kicker">Regulatory posture</div>
+  <h2>Use existing obligations without over-claiming</h2>
+  <p>Current model-risk guidance, including SR 26-2 where applicable, should be considered when AI supports quantitative, customer-impacting, regulated, or model-like decision processes. Generative AI used for drafting, summarization, research, or workflow support should still be governed through data boundaries, approved tools, human review, vendor oversight, evidence retention, and incident response.</p>
+  <p>AI used in or near credit must support specific, accurate adverse-action reasons and be monitored for protected-basis outcome gaps, proxy-variable risk, explainability, and governance concerns. Do not rely on opaque AI output where the institution cannot independently explain the credit result.</p>
+  <table>
+    <thead><tr><th>Area</th><th>Executive control</th></tr></thead>
+    <tbody>
+      <tr><td>Credit / ECOA / Reg B</td><td>Specific adverse-action reasons, file traceability, explainability, and monitored outcome gaps.</td></tr>
+      <tr><td>Model-like processes</td><td>SR 26-2 where applicable; validation and monitoring scaled to risk, size, complexity, and use.</td></tr>
+      <tr><td>Vendor AI</td><td>Interagency TPRM: due diligence, contract terms, data use, monitoring, exit, and incident notice.</td></tr>
+      <tr><td>Data protection</td><td>GLBA / safeguards expectations, data classification, approved environments, logging, and retention.</td></tr>
+      <tr><td>Board oversight</td><td>Inventory, owner, risk tier, incidents, pilot metrics, and decisions recorded in minutes.</td></tr>
+    </tbody>
+  </table>
+</section>
 
-  <h3>Why the window is now</h3>
+<section class="page">
+  <div class="section-kicker">Board self-assessment</div>
+  <h2>Three questions directors can ask in plain English</h2>
+  <table>
+    <thead><tr><th>Ask</th><th>Answer standard</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>[ ] Where are we using AI?</td><td>Management can show all approved, piloting, proposed, and retired use cases by risk tier.</td><td>AI use-case inventory by risk tier.</td></tr>
+      <tr><td>[ ] How do we keep NPI out?</td><td>Management can state the data line, identify approved tools, and show exception tracking.</td><td>Data-line card, approved tools list, exception log.</td></tr>
+      <tr><td>[ ] What happens if AI goes wrong?</td><td>Management can name the kill-switch owner, stop triggers, incident path, and board escalation rule.</td><td>Kill-switch owner, stop triggers, incident log.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="label">Board posture</div>
+    <p>If management cannot show these artifacts, the institution does not yet have AI governance. It has AI activity.</p>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Copy the Lakeshore Pattern</div>
+  <h2>One example your executive team can imitate</h2>
+  <p><strong>Lakeshore Community Bank</strong> is a $900M-asset community bank with 140 employees. It chooses one internal lending-operations pilot and deliberately keeps AI away from the credit decision.</p>
+  <table>
+    <thead><tr><th>Element</th><th>Lakeshore decision</th></tr></thead>
+    <tbody>
+      <tr><td>Outcome</td><td>Reduce loan-document review time without affecting eligibility, pricing, approval, or adverse action.</td></tr>
+      <tr><td>Data line</td><td>Customer NPI only in the contracted enterprise AI environment; no public or personal AI tools.</td></tr>
+      <tr><td>Owner</td><td>COO owns the pilot; Compliance and Lending Ops review outputs.</td></tr>
+      <tr><td>Pilot</td><td>90-day document-summary pilot, fixed budget, time-saved and correction-rate thresholds.</td></tr>
+      <tr><td>Evidence</td><td>Inventory row, pilot memo, reviewer log, correction-rate report, incident log, board dashboard.</td></tr>
+    </tbody>
+  </table>
+  <div class="principle">Governance and defensibility are the same work done once: scope, data line, owner, pilot, evidence.</div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Pilot memo</div>
+  <h2>Authorize one pilot with a kill switch</h2>
+  <p>A pilot does not need to be profitable in 90 days. It needs to prove whether the use case is worth scaling.</p>
+  <table>
+    <thead><tr><th>Field</th><th>Board-ready entry</th></tr></thead>
+    <tbody>
+      <tr><td>Use case</td><td>[Narrow internal workflow; not a final credit, AML, fraud, or customer-impact decision.]</td></tr>
+      <tr><td>Owner</td><td>[Named executive] owns results, exceptions, and stop decision.</td></tr>
+      <tr><td>Budget / window</td><td>[$X] for [60 / 90] days.</td></tr>
+      <tr><td>Data boundary</td><td>Approved environment only; prohibited data classes named.</td></tr>
+      <tr><td>Success metric</td><td>Hours saved, cycle-time reduction, correction rate, or backlog reduction.</td></tr>
+      <tr><td>Stop triggers</td><td>NPI exception, customer-impacting error, correction rate above threshold, vendor control gap, or incident.</td></tr>
+      <tr><td>Quarter-end decision</td><td>Scale, extend, stop, or redesign based on evidence.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Dashboard</div>
+  <h2>The quarterly AI board report</h2>
+  <p>Use the same dashboard every quarter so the board can see trend, drift, and decisions. Avoid demos as oversight. Demos are optional; the dashboard is the control.</p>
+  <table>
+    <thead><tr><th>Dashboard line</th><th>Current quarter</th><th>Board question</th></tr></thead>
+    <tbody>
+      <tr><td>AI use cases by tier</td><td>Green [ ], Yellow [ ], Red [ ]</td><td>Where is AI actually used?</td></tr>
+      <tr><td>Approved tools</td><td>[List / changes]</td><td>Where may staff go?</td></tr>
+      <tr><td>Data-line exceptions</td><td>[# and status]</td><td>Did sensitive data go where it should not?</td></tr>
+      <tr><td>Pilot results</td><td>Hours saved, correction rate, cost, incidents</td><td>Is the pilot worth scaling?</td></tr>
+      <tr><td>Vendor status</td><td>Due diligence, contract, monitoring, next review</td><td>Can we rely on the vendor?</td></tr>
+      <tr><td>Decisions needed</td><td>Approve, note, stop, extend, or direct</td><td>What should the board do today?</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">ROI scorecard</div>
+  <h2>Prove value without overstating it</h2>
+  <p>The CFO test is simple: did the pilot reduce measurable work, preserve quality, and avoid new risk? Count license, integration, oversight, and human-review time. Do not count "AI enthusiasm" as ROI.</p>
+  <table>
+    <thead><tr><th>Line</th><th>Measure</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Baseline</td><td>Manual work before pilot</td><td>120 document-review hours / week</td></tr>
+      <tr><td>AI-assisted result</td><td>Total time after AI + human review</td><td>84 hours / week</td></tr>
+      <tr><td>Quality</td><td>Correction rate</td><td>4.5%, threshold is 5%</td></tr>
+      <tr><td>Control</td><td>Data exceptions / incidents</td><td>0</td></tr>
+      <tr><td>Cost</td><td>License + integration + review time</td><td>[$X]</td></tr>
+      <tr><td>Verdict</td><td>Scale / extend / stop</td><td>Extend 30 days; scale only if correction rate stays below threshold.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><div class="label">Executive rule</div><p>A good pilot may be a "not yet." The value is knowing with evidence, not proving the purchase was right.</p></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Template list</div>
+  <h2>The companion assets this kit points to</h2>
+  <p>Keep the core PDF short and attach these as editable companion templates. They are the operating artifacts management updates after the board decision.</p>
   <div class="two-col">
     <div class="card">
-      <h4>The upside is real and near-term</h4>
+      <h4>Governance templates</h4>
       <ul>
-        <li>Operational efficiency through automation of repetitive back-office work.</li>
-        <li>Faster, more consistent member and customer service.</li>
-        <li>Better fraud detection in a year when 40%+ of banks and ~50% of credit unions reported higher fraud losses (Cornerstone, 2026).</li>
-        <li>Hyper-personalized experiences that smaller institutions can finally afford.</li>
+        <li>AI Risk-Appetite Statement.</li>
+        <li>AI Governance Committee Charter.</li>
+        <li>Quarterly Board AI Report.</li>
+        <li>Examiner Evidence Index.</li>
       </ul>
     </div>
     <div class="card">
-      <h4>The downside is also real</h4>
+      <h4>Pilot and sourcing templates</h4>
       <ul>
-        <li>Biased or unexplainable credit decisions (ECOA / Reg B exposure).</li>
-        <li>Customer NPI leaking into free, unvetted tools.</li>
-        <li>Vendor lock-in and exit risk on unproven AI platforms.</li>
-        <li>Spending on pilots that never produce measurable return.</li>
+        <li>Pilot Authorization Memo with Kill Switch.</li>
+        <li>Pilot ROI Scorecard.</li>
+        <li>AI Sourcing Decision Memo.</li>
+        <li>AI Use-Case Inventory Row.</li>
       </ul>
     </div>
   </div>
-
-  <h3>The honest caveat</h3>
-  <p>There is no comprehensive federal AI law for banking. In its May 2025 report (GAO-25-107197), the U.S. Government Accountability Office found that federal financial regulators primarily oversee AI using <em>existing</em> laws, regulations, guidance, and risk-based examinations, supplemented by some AI-specific guidance. The absence of a single AI statute does not mean the absence of rules — it means your existing obligations (fair lending, model risk, third-party risk, BSA/AML, privacy) all already apply to AI. The executive cannot wait for a law that may never come; the executive must govern under the rules that already exist.</p>
 </section>
 
-<!-- Section 3 -->
 <section class="page">
-  <div class="section-kicker">Section 3 · The 2026 governance landscape</div>
-  <h2>The rules that already apply to your AI</h2>
-  <p>You will not find an "AI Act" in the U.S. bank examiner's handbook. Instead, examiners apply the frameworks below to AI use. Every one of these predates generative AI, and every one of them already binds your institution.</p>
-
-  <table>
-    <thead><tr><th>Framework</th><th>What it governs</th><th>What it means for AI</th></tr></thead>
-    <tbody>
-      <tr><td><strong>SR 11-7</strong> (Federal Reserve / OCC model risk guidance)</td><td>The lifecycle of any model used in decisions.</td><td>An AI model used for credit, pricing, fraud, or risk scoring is a model. It needs development standards, validation, and ongoing monitoring.</td></tr>
-      <tr><td><strong>Interagency TPRM Guidance</strong> (Fed/OCC/FDIC, 2023)</td><td>Third-party relationships and vendor risk.</td><td>An AI vendor is a third party. Due diligence, contracts, data handling, and ongoing monitoring all apply.</td></tr>
-      <tr><td><strong>ECOA / Regulation B</strong></td><td>Fair, non-discriminatory credit.</td><td>An AI credit model must be explainable enough to issue accurate adverse-action reasons and must not produce disparate impact.</td></tr>
-      <tr><td><strong>BSA / AML</strong></td><td>Suspicious activity monitoring and reporting.</td><td>AI used in transaction monitoring or alert triage must be tuned, documented, and defensible; humans still own the SAR decision.</td></tr>
-      <tr><td><strong>GLBA / Regulation P</strong></td><td>Customer financial-information privacy.</td><td>Customer NPI in an AI tool is still covered NPI. Safeguards and vendor terms must reflect that.</td></tr>
-      <tr><td><strong>UDAAP</strong></td><td>Unfair, deceptive, or abusive acts.</td><td>AI-generated customer communications and chatbots can create UDAAP exposure if inaccurate or misleading.</td></tr>
-    </tbody>
-  </table>
-
-  <h3>The new shared vocabulary: the AIEOG AI Lexicon</h3>
-  <p>In February 2026, the U.S. Treasury's Artificial Intelligence Executive Oversight Group (AIEOG) — a public-private partnership with the FBIIC and FSSCC — published the <strong>AI Lexicon</strong>, a standardized vocabulary of AI risk and technical terms for financial services, alongside a companion <strong>Financial Services AI Risk Management Framework (FS AI RMF)</strong>. Both are voluntary and explicitly <em>not</em> for use in legal interpretation or supervisory reports. Their value to leadership is practical: they give your board, your examiners, and your vendors a common language so a "model," an "agent," and "human-in-the-loop review" mean the same thing in every conversation.</p>
-  <div class="callout">
-    <div class="label">Executive takeaway</div>
-    <p>Adopt the AIEOG AI Lexicon as your institution's official AI vocabulary in your board materials and policy. It costs nothing, signals diligence, and prevents the most common governance failure: people debating AI risk while meaning different things by the same words.</p>
-  </div>
-</section>
-
-<!-- Section 4 -->
-<section class="page">
-  <div class="section-kicker">Section 4 · Board governance questions</div>
-  <h2>Six questions every board must be able to answer</h2>
-  <p>A board does not need to understand transformers. It needs to be able to answer six questions in plain English. If management cannot give the board these answers, the institution does not yet have AI governance — it has AI activity.</p>
-
-  <div class="threat">
-    <h4>1 · Where are we using AI, and where are we prohibited from using it?</h4>
-    <p>There must be a current inventory of AI use cases mapped to data classes and risk tiers. "We don't really use AI" is almost always wrong and is itself a red flag.</p>
-  </div>
-  <div class="threat">
-    <h4>2 · Who owns AI, and what is our stated risk appetite?</h4>
-    <p>One accountable executive owner, and a written, board-approved AI risk-appetite statement that says what the institution will and will not do with AI.</p>
-  </div>
-  <div class="threat">
-    <h4>3 · How do we keep customer NPI out of unapproved tools?</h4>
-    <p>A published data line, an approved-tool path, and technical or policy controls — not just a hope that staff will be careful.</p>
-  </div>
-  <div class="threat">
-    <h4>4 · Where is a human in the loop on every consequential decision?</h4>
-    <p>Credit, fraud, AML, account closure, and customer-facing communications must have documented human review. No model decides alone.</p>
-  </div>
-  <div class="threat">
-    <h4>5 · How do we know our AI is actually working — and fair?</h4>
-    <p>Adoption, accuracy/correction rate, and fair-lending monitoring metrics reported on a cadence, not anecdotes from the last demo.</p>
-  </div>
-  <div class="threat">
-    <h4>6 · What is our kill switch, and who can pull it?</h4>
-    <p>Every AI deployment must have a named owner who can pause or disable it, and a documented trigger for doing so.</p>
-  </div>
-</section>
-
-<!-- Section 5 -->
-<section class="page">
-  <div class="section-kicker">Section 5 · The executive AI operating model</div>
-  <h2>Five executive moves, in order</h2>
-  <p>The executive's contribution to AI is not technical depth. It is a disciplined sequence of five governing decisions. Done in order, they convert scattered enthusiasm into a program a board can stand behind.</p>
-
-  <h3>1 · Set the scope</h3>
-  <p>Name the one or two business outcomes AI should move this year — and explicitly name what is out of scope. Scope discipline is the difference between a focused program and a dozen orphaned experiments.</p>
-
-  <h3>2 · Set the data line</h3>
-  <p>Declare, in one sentence the whole institution can repeat, what data may go into which class of AI tool. The data line is the single most important control an executive sets, because it is the one staff act on daily.</p>
-
-  <h3>3 · Name an owner</h3>
-  <p>Assign one accountable executive owner for AI adoption and one governance body (an AI committee) to oversee it. Diffuse ownership is no ownership.</p>
-
-  <h3>4 · Fund a pilot — with a kill switch</h3>
-  <p>Fund one well-scoped pilot with a defined budget, a success threshold, a review date, and a named person who can stop it. A pilot you cannot stop is not a pilot; it is an unmanaged commitment.</p>
-
-  <h3>5 · Demand evidence</h3>
-  <p>Require the same small set of metrics from every pilot and review them on a fixed cadence. Scale or stop on evidence, never on enthusiasm.</p>
-
-  <div class="principle">Scope, data line, owner, funded pilot, evidence. Five decisions. Everything else is implementation, and implementation is not your job.</div>
-</section>
-
-<!-- Section 6 -->
-<section class="page">
-  <div class="section-kicker">Section 6 · Worked example</div>
-  <h2>Lakeshore Community Bank applies the model</h2>
-  <p>To make the operating model concrete, here is a single illustrative example threaded through the rest of this playbook. <strong>Lakeshore Community Bank</strong> is a $900M-asset community bank with 140 employees. Its CEO has decided 2026 is the year AI moves from "people are using ChatGPT on their phones" to a governed program.</p>
-
-  <table>
-    <thead><tr><th>Move</th><th>Lakeshore's decision</th></tr></thead>
-    <tbody>
-      <tr><td><strong>1 · Scope</strong></td><td>Outcome for 2026: cut loan-document review time in lending operations. Explicitly out of scope: any AI that makes or influences the credit decision itself.</td></tr>
-      <tr><td><strong>2 · Data line</strong></td><td>"Customer NPI may only be used in our contracted enterprise AI environment — never in free or personal AI tools." Published to all staff on a one-page card.</td></tr>
-      <tr><td><strong>3 · Owner</strong></td><td>The COO is the accountable AI owner. A standing AI Governance Committee (COO, CRO, CISO, Compliance, Lending) meets monthly.</td></tr>
-      <tr><td><strong>4 · Funded pilot</strong></td><td>$60,000 for a 90-day loan-document-summarization pilot in lending ops. Success threshold: 30% time reduction with a correction rate under 5%. Kill switch: the COO can pause it; trigger is any NPI-handling exception or correction rate above 10%.</td></tr>
-      <tr><td><strong>5 · Evidence</strong></td><td>Two metrics on every status report — hours saved and correction rate — plus an exceptions log. Reviewed monthly by the committee, quarterly by the board.</td></tr>
-    </tbody>
-  </table>
-
-  <h3>What this buys Lakeshore</h3>
-  <p>When the bank's examiner asks about AI, the CEO does not improvise. She points to a scoped use case, a published data line, a named owner, a funded pilot with a kill switch, and a metrics trail. The same artifacts that govern the pilot are the artifacts that satisfy the exam. Governance and defensibility are the same work done once.</p>
-</section>
-
-<!-- Section 7 — Plays intro + Play 1 -->
-<section class="page">
-  <div class="section-kicker">Section 7 · Five executive plays</div>
-  <div class="play-head">
-    <div class="num">Play 1</div>
-    <h2>Set the AI risk appetite</h2>
-    <div class="sub">Write down, and have the board approve, what the institution will and will not do with AI.</div>
-  </div>
-
-  <h3>Why it matters</h3>
-  <p>Without a stated risk appetite, every AI decision is re-litigated from scratch and the institution drifts toward whatever the loudest vendor or the boldest employee wants. A risk-appetite statement is the executive's single most leveraged artifact: it pre-decides the hard calls.</p>
-
-  <h3>What to do</h3>
+  <div class="section-kicker">90-minute sprint</div>
+  <h2>Next step: Run the 90-Minute Executive AI Governance Sprint</h2>
+  <p>In one session, define your AI scope, data line, accountable owner, first pilot, kill switch, and first board dashboard.</p>
   <ol>
-    <li>Draft a one-page AI risk-appetite statement covering data, decisions, vendors, and human oversight.</li>
-    <li>Tie it to existing frameworks (SR 11-7, TPRM, ECOA, GLBA) so it inherits their authority.</li>
-    <li>Take it to the board for formal approval and minute the vote.</li>
-    <li>Review it annually or when the technology or regulation materially shifts.</li>
+    <li>First 15 minutes: name the business outcome and what is out of scope.</li>
+    <li>Next 15 minutes: write the data line and approved-tool boundary.</li>
+    <li>Next 15 minutes: name the accountable owner and committee cadence.</li>
+    <li>Next 20 minutes: draft the first pilot memo, success metric, and stop triggers.</li>
+    <li>Next 15 minutes: fill the first dashboard lines and evidence index.</li>
+    <li>Final 10 minutes: decide what the board must approve, note, or direct.</li>
   </ol>
-
-  <div class="adopt">
-    <span class="adopt-label">Adopt-verbatim — AI risk-appetite statement</span>
-    <p>"[Institution] adopts AI to improve efficiency, service, and risk management, within a conservative risk appetite. We will not place customer non-public information into any AI tool that is not contractually approved for it. We will not allow any AI system to make a final credit, fraud, account-closure, or adverse-action decision without documented human review. We will only adopt AI vendors that meet our third-party risk standards, including data handling, security, and exit terms. We will measure every AI deployment for performance and fairness, and we will pause or discontinue any deployment that cannot demonstrate both. The [COO] is accountable for AI; the AI Governance Committee oversees it; the Board reviews AI risk no less than quarterly."</p>
-  </div>
-
-  <p class="play-meta"><strong>Artifact:</strong> Board-approved AI Risk-Appetite Statement. <strong>Metrics:</strong> statement approved · review date set · exceptions to appetite logged and escalated.</p>
-</section>
-
-<!-- Play 2 -->
-<section class="page">
-  <div class="play-head">
-    <div class="num">Play 2</div>
-    <h2>Stand up the AI governance committee</h2>
-    <div class="sub">Create one accountable body that owns AI decisions, oversight, and reporting.</div>
-  </div>
-
-  <h3>Why it matters</h3>
-  <p>AI risk crosses every function: technology, security, compliance, lending, operations, and finance. If no single body owns it, it falls between chairs until something breaks. A standing committee is how a small institution governs a cross-functional risk without hiring a Chief AI Officer.</p>
-
-  <h3>What to do</h3>
-  <ol>
-    <li>Charter a standing AI Governance Committee with a named executive chair (typically the COO or CRO).</li>
-    <li>Seat technology/security, compliance, lending/operations, and finance.</li>
-    <li>Give it explicit authority: approve use cases, approve vendors, maintain the AI inventory, set the data line, and report to the board.</li>
-    <li>Set a monthly cadence and a standing board-reporting slot.</li>
-  </ol>
-
-  <div class="adopt">
-    <span class="adopt-label">Adopt-verbatim — board motion to charter the committee</span>
-    <p>"RESOLVED, that the Board hereby establishes the AI Governance Committee, chaired by the [Chief Operating Officer], with authority to approve AI use cases and vendors, maintain the institution's AI use-case inventory, set and enforce the institution's AI data-use standards, and report the institution's AI risk posture to the Board no less than quarterly; and that management is directed to adopt a written AI Governance Committee charter consistent with this resolution within 60 days."</p>
-  </div>
-
-  <h3>Committee standing agenda</h3>
-  <ul class="small-checklist">
-    <li>New AI use-case requests and verdicts.</li>
-    <li>New or renewing AI vendors (TPRM status).</li>
-    <li>Active pilot metrics and exceptions.</li>
-    <li>Data-line incidents and shadow-AI reports.</li>
-    <li>Regulatory and framework changes.</li>
-    <li>Items to escalate to the board.</li>
-  </ul>
-
-  <p class="play-meta"><strong>Artifact:</strong> AI Governance Committee Charter. <strong>Metrics:</strong> committee chartered · meeting cadence held · use cases and vendors reviewed · board reports delivered.</p>
-</section>
-
-<!-- Play 3 -->
-<section class="page">
-  <div class="play-head">
-    <div class="num">Play 3</div>
-    <h2>Fund the first pilot with a kill switch</h2>
-    <div class="sub">Commit real money to one scoped use case — and define, up front, how and when you stop it.</div>
-  </div>
-
-  <h3>Why it matters</h3>
-  <p>Unfunded AI is a hobby; unbounded AI is a liability. A pilot with a budget, a success threshold, a review date, and a named owner who can pull the plug is the executive's mechanism for taking a real shot at value while capping the downside. The kill switch is what makes the bet responsible.</p>
-
-  <h3>What to do</h3>
-  <ol>
-    <li>Pick one narrow, internal, non-credit use case with a clear before/after measure.</li>
-    <li>Set a fixed budget and a defined pilot window (60–90 days).</li>
-    <li>Define the success threshold and the stop triggers in writing before launch.</li>
-    <li>Name the owner who can pause or kill it, and the conditions that force that call.</li>
-  </ol>
-
-  <div class="adopt">
-    <span class="adopt-label">Filled example — Lakeshore pilot authorization</span>
-    <p>"Approved: 90-day loan-document-summarization pilot in Lending Operations. Budget: $60,000. Success threshold: ≥30% reduction in document-review hours with a correction rate ≤5%. Data: contracted enterprise AI environment only; no NPI in any other tool. Owner with kill authority: COO. Stop triggers: any NPI-handling exception, correction rate >10%, or any customer-impacting error. Review: monthly committee, board at 90 days; decision is scale, extend, or stop on the evidence."</p>
-  </div>
-
-  <p class="play-meta"><strong>Artifact:</strong> Pilot Authorization Memo (with kill switch). <strong>Metrics:</strong> budget vs. spend · success threshold met (Y/N) · stop triggers hit · scale/extend/stop decision recorded.</p>
-</section>
-
-<!-- Play 4 -->
-<section class="page">
-  <div class="play-head">
-    <div class="num">Play 4</div>
-    <h2>Build the board reporting rhythm</h2>
-    <div class="sub">Give the board a consistent, plain-English AI report on a fixed cadence.</div>
-  </div>
-
-  <h3>Why it matters</h3>
-  <p>Boards govern through rhythm and repetition. An AI update that appears once, in a panic, after an incident is not oversight. A short, standardized AI report every quarter is how directors build the institutional memory that lets them ask sharp questions — and how the institution proves, later, that the board was engaged.</p>
-
-  <h3>What to do</h3>
-  <ol>
-    <li>Add a standing AI item to the quarterly board (or risk-committee) agenda.</li>
-    <li>Use the same one-page template every time so trends are visible.</li>
-    <li>Always show: use-case inventory, risk posture, pilot results, incidents, and the next decision.</li>
-    <li>Minute the discussion and any decisions.</li>
-  </ol>
-
-  <h3>The quarterly board AI report — five fixed sections</h3>
-  <table>
-    <thead><tr><th>Section</th><th>What it answers</th></tr></thead>
-    <tbody>
-      <tr><td><strong>1 · Where we use AI</strong></td><td>Current inventory by use case, data class, and risk tier.</td></tr>
-      <tr><td><strong>2 · Risk posture</strong></td><td>Red/yellow/green against the risk appetite; open exceptions.</td></tr>
-      <tr><td><strong>3 · Results</strong></td><td>Pilot metrics: time saved, correction rate, return vs. spend.</td></tr>
-      <tr><td><strong>4 · Incidents</strong></td><td>Data-line breaches, near misses, vendor issues, and remediation.</td></tr>
-      <tr><td><strong>5 · Decisions</strong></td><td>What the board is being asked to note, approve, or direct.</td></tr>
-    </tbody>
-  </table>
-
-  <p class="play-meta"><strong>Artifact:</strong> Quarterly Board AI Report (one page, fixed format). <strong>Metrics:</strong> reports delivered on cadence · risk posture trend · board decisions recorded.</p>
-</section>
-
-<!-- Play 5 -->
-<section class="page">
-  <div class="play-head">
-    <div class="num">Play 5</div>
-    <h2>Make the buy-vs-build-vs-wait call</h2>
-    <div class="sub">Decide deliberately whether to buy an AI capability, build on a platform, or hold — and write down why.</div>
-  </div>
-
-  <h3>Why it matters</h3>
-  <p>Most AI spending mistakes are sourcing mistakes: buying a flashy point solution that duplicates a core-provider feature, building on an unproven startup with no exit plan, or waiting so long that staff fill the gap with shadow AI. A simple, documented decision frame turns a vendor's urgency into your deliberation.</p>
-
-  <h3>The decision frame</h3>
-  <table>
-    <thead><tr><th>Option</th><th>Choose it when</th><th>Watch for</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Buy</strong> (vendor or core add-on)</td><td>The capability is commoditized, the vendor meets TPRM standards, and it integrates with your core.</td><td>Data handling, retention, exit/portability, and overlap with what your core already offers.</td></tr>
-      <tr><td><strong>Build</strong> (on an enterprise platform)</td><td>The use case is differentiating, the data is sensitive, and you have or can rent the talent.</td><td>Ongoing maintenance, key-person risk, and model-risk/validation burden.</td></tr>
-      <tr><td><strong>Wait</strong></td><td>The use case is high-risk (credit, AML) and the controls or evidence are not yet mature.</td><td>Shadow AI filling the gap; set an explicit re-evaluation date so "wait" doesn't become "ignore."</td></tr>
-    </tbody>
-  </table>
-
-  <div class="callout">
-    <div class="label">The cost of waiting on the wrong thing</div>
-    <p>"Wait" is a legitimate, often wise choice for high-risk use cases — but only if it is a decision, with a date, not a vacuum. An undecided gap does not stay empty; staff fill it with personal tools and bank data. Every "wait" needs a "revisit on [date]."</p>
-  </div>
-
-  <p class="play-meta"><strong>Artifact:</strong> AI Sourcing Decision Memo. <strong>Metrics:</strong> decisions documented with rationale · vendors scored against TPRM · revisit dates set for every "wait."</p>
-</section>
-
-<!-- Section 8 — risk posture -->
-<section class="page">
-  <div class="section-kicker">Section 8 · Board-ready risk posture</div>
-  <h2>A one-glance view of where AI risk sits</h2>
-  <p>Boards reason well in red / yellow / green. Translate your AI program into a simple posture view that a director can read in thirty seconds and that maps directly to your risk appetite.</p>
-
-  <div class="risk-band green">
-    <div class="head"><span class="dot"></span><h4>Green · Governed and measured</h4></div>
-    <p class="note">Use case is in the inventory, data line is enforced, an owner is named, metrics are reported, and a kill switch exists. Example: Lakeshore's internal document-summarization pilot.</p>
-  </div>
-  <div class="risk-band yellow">
-    <div class="head"><span class="dot"></span><h4>Yellow · In flight, controls maturing</h4></div>
-    <p class="note">Approved and useful, but one control is still thin — metrics not yet consistent, vendor review pending, or human-review step not yet documented. Acceptable short-term with a remediation date.</p>
-  </div>
-  <div class="risk-band red">
-    <div class="head"><span class="dot"></span><h4>Red · Ungoverned or out of appetite</h4></div>
-    <p class="note">Shadow AI, NPI in unapproved tools, any AI influencing a credit or AML decision without documented human review, or a vendor that fails TPRM. Must be stopped or remediated immediately.</p>
-  </div>
-
-  <h3>The data line, stated for the board</h3>
-  <div class="principle">No customer NPI in any AI tool that is not contractually approved for it. No AI making a consequential decision without a human who owns the outcome.</div>
-</section>
-
-<!-- Section 9 — examiners -->
-<section class="page">
-  <div class="section-kicker">Section 9 · What examiners ask</div>
-  <h2>Be ready for the AI exam conversation</h2>
-  <p>Because regulators apply existing frameworks rather than a single AI rule (GAO-25-107197), the AI exam conversation is really a set of familiar questions pointed at a new technology. If you can answer these, you are ready.</p>
-
-  <table>
-    <thead><tr><th>The examiner asks…</th><th>You should be able to show…</th></tr></thead>
-    <tbody>
-      <tr><td>Where do you use AI?</td><td>A current AI use-case inventory mapped to data classes and risk tiers.</td></tr>
-      <tr><td>Who is accountable for AI?</td><td>A named executive owner, a chartered governance committee, and board minutes.</td></tr>
-      <tr><td>Is any AI a "model"? How is it validated?</td><td>SR 11-7-aligned development, validation, and monitoring for decision models.</td></tr>
-      <tr><td>How do you manage AI vendors?</td><td>TPRM due diligence, contracts addressing data and exit, and ongoing monitoring.</td></tr>
-      <tr><td>How do you protect customer NPI?</td><td>A published data line, an approved-tool path, and evidence of enforcement.</td></tr>
-      <tr><td>Is AI involved in credit decisions?</td><td>Explainability, adverse-action accuracy, and fair-lending (ECOA) monitoring — or documentation that AI is out of scope for credit.</td></tr>
-      <tr><td>How do you know it works and is fair?</td><td>Performance and fairness metrics reported on a cadence to the committee and board.</td></tr>
-      <tr><td>What happens when it goes wrong?</td><td>A kill switch, an incident process, and a documented near-miss/incident log.</td></tr>
-    </tbody>
-  </table>
-
-  <div class="callout">
-    <div class="label">Note on supervisory materials</div>
-    <p>Supervisory expectations for AI continue to evolve and are largely delivered through existing guidance and examination, not a dedicated AI rulebook. Treat specific control choices as adaptable to your regulator's current guidance; route final exam-facing positions through compliance and legal.</p>
-  </div>
-</section>
-
-<!-- Section 10 — ROI scorecard -->
-<section class="page">
-  <div class="section-kicker">Section 10 · Pilot ROI scorecard</div>
-  <h2>Make the return defensible, not anecdotal</h2>
-  <p>A pilot's value claim must survive a skeptical CFO and a skeptical board. The scorecard below uses Lakeshore's loan-document pilot with illustrative numbers to show the shape of a defensible ROI case. Replace the figures with your own; keep the structure.</p>
-
-  <table>
-    <thead><tr><th>Line</th><th>Measure</th><th>Example (illustrative)</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Baseline</strong></td><td>Hours/week on loan-document review (pre-pilot)</td><td>120 hrs/week</td></tr>
-      <tr><td><strong>Post-pilot</strong></td><td>Hours/week after AI summarization</td><td>78 hrs/week</td></tr>
-      <tr><td><strong>Time saved</strong></td><td>Reduction</td><td>42 hrs/week (35%)</td></tr>
-      <tr><td><strong>Annualized labor value</strong></td><td>42 hrs × 50 wks × $40 fully-loaded/hr</td><td>$84,000 / yr</td></tr>
-      <tr><td><strong>Quality</strong></td><td>Correction rate (errors needing rework)</td><td>4.2% (threshold ≤5%)</td></tr>
-      <tr><td><strong>Cost</strong></td><td>Pilot + annualized license &amp; oversight</td><td>$60,000 (pilot) + $30,000/yr</td></tr>
-      <tr><td><strong>Net Year-1 return</strong></td><td>Value − cost</td><td>≈ −$6,000 (Y1), ≈ +$54,000 (Y2+)</td></tr>
-      <tr><td><strong>Risk events</strong></td><td>NPI exceptions / incidents</td><td>0</td></tr>
-      <tr><td><strong>Verdict</strong></td><td>Scale / extend / stop</td><td><strong>Scale</strong> — threshold met, no risk events, payback &lt;18 months</td></tr>
-    </tbody>
-  </table>
-
-  <div class="callout">
-    <div class="label">CFO discipline</div>
-    <p>Count the costs honestly: license, integration, oversight time, and the human-review step you must keep. A pilot that "saves time" but adds an unfunded review burden has not saved anything. A negative Year-1 with a clear Year-2 payback is a normal, fundable result — say so plainly rather than overstating Year-1.</p>
-  </div>
-</section>
-
-<!-- Section 11 — 30/60/90 -->
-<section class="page">
-  <div class="section-kicker">Section 11 · 30 / 60 / 90-day executive plan</div>
-  <h2>Decide, govern, fund, prove</h2>
-
-  <h3>Days 1–30 — Decide and own</h3>
-  <p><strong>Outcomes:</strong> AI risk-appetite statement drafted and taken to the board; one accountable AI owner named; AI Governance Committee chartered; the data line written and published to all staff; an initial AI use-case inventory started (including known shadow AI).<br>
-  <strong>Artifacts:</strong> risk-appetite statement · committee charter · one-page data-line card · draft AI inventory.</p>
-
-  <h3>Days 31–60 — Govern and fund</h3>
-  <p><strong>Outcomes:</strong> committee holds its first two meetings; approved-tool path published; one scoped, non-credit pilot authorized with a budget, success threshold, and kill switch; vendor for the pilot run through TPRM; board sees the first AI risk-posture view.<br>
-  <strong>Artifacts:</strong> pilot authorization memo · approved-tool list · TPRM verdict · first board AI report.</p>
-
-  <h3>Days 61–90 — Measure and decide</h3>
-  <p><strong>Outcomes:</strong> pilot reports time-saved and correction-rate metrics; ROI scorecard completed; exceptions log reviewed; a scale / extend / stop decision made on the evidence; next quarter's AI plan set.<br>
-  <strong>Artifacts:</strong> completed pilot ROI scorecard · scale/stop decision memo · refreshed AI inventory · quarterly board report.</p>
-
-  <div class="principle">In 90 days you should be able to say, with documents to back it: here is what we do with AI, who owns it, what it costs, what it returns, and how we stop it if it goes wrong.</div>
-</section>
-
-<!-- Section 12 — measurement -->
-<section class="page">
-  <div class="section-kicker">Section 12 · Measurement model</div>
-  <h2>Adoption, risk, and governance metrics</h2>
-  <p>Executives are accountable for three categories of AI metric. Adoption shows whether the program is real, risk shows whether it is safe, and governance shows whether it is controlled. Report all three; do not let an adoption number stand in for a risk number.</p>
-
-  <div class="two-col">
-    <div class="card">
-      <h4>Adoption metrics</h4>
-      <ul>
-        <li>Staff using the approved path.</li>
-        <li>Active vs. retired use cases.</li>
-        <li>Hours saved / cycle-time reduced.</li>
-        <li>Departments covered.</li>
-        <li>Pilots scaled to production.</li>
-      </ul>
-      <h4 style="margin-top:10pt;">Risk metrics</h4>
-      <ul>
-        <li>Data-line exceptions (NPI events).</li>
-        <li>Correction / error rate on AI output.</li>
-        <li>Fair-lending monitoring flags (if AI touches credit).</li>
-        <li>Shadow-AI reports.</li>
-        <li>Incidents and near misses.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h4>Governance metrics</h4>
-      <ul>
-        <li>Use cases in the inventory with named owners.</li>
-        <li>Vendors with current TPRM verdicts.</li>
-        <li>Committee meetings held on cadence.</li>
-        <li>Board reports delivered on cadence.</li>
-        <li>Risk-appetite exceptions escalated and closed.</li>
-        <li>Models under SR 11-7-aligned validation.</li>
-        <li>Kill switches defined per deployment.</li>
-      </ul>
-    </div>
-  </div>
-
-  <h3>The two metrics that travel on every report</h3>
-  <p>If a board can only carry two numbers between meetings, make them <strong>hours saved</strong> (is it working?) and <strong>correction rate</strong> (is it safe?). Every pilot reports the same two, so the board compares like with like across the program.</p>
-</section>
-
-<!-- Section 13 + 14 — what good looks like + mistakes -->
-<section class="page">
-  <div class="section-kicker">Section 13 · What good looks like</div>
-  <h2>Ten things a governed institution can show at day 90</h2>
-  <ol>
-    <li>A board-approved AI risk-appetite statement.</li>
-    <li>One accountable executive owner for AI.</li>
-    <li>A chartered AI Governance Committee meeting on cadence.</li>
-    <li>A current AI use-case inventory mapped to data classes.</li>
-    <li>A published data line every employee can repeat.</li>
-    <li>An approved-tool path that is easier than shadow AI.</li>
-    <li>At least one funded pilot with a kill switch.</li>
-    <li>The same two metrics on every pilot report.</li>
-    <li>A quarterly board AI report in a fixed format.</li>
-    <li>A documented scale / extend / stop decision made on evidence.</li>
-  </ol>
-
-  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
-
-  <div class="section-kicker">Section 14 · Common executive mistakes</div>
-  <h2>Eight ways leadership gets AI wrong</h2>
-  <ul>
-    <li><strong>Banning AI.</strong> A ban does not stop usage; it drives it onto personal phones and into bank data, invisibly.</li>
-    <li><strong>Delegating the risk appetite.</strong> Letting IT or a vendor define what's acceptable is abdicating a governance duty.</li>
-    <li><strong>Funding everything.</strong> A dozen unscoped pilots produce a dozen orphans and zero defensible return.</li>
-    <li><strong>No kill switch.</strong> Deploying AI you cannot quickly pause turns a pilot into an unmanaged commitment.</li>
-    <li><strong>Confusing activity with governance.</strong> A demo is not an inventory; enthusiasm is not a metric.</li>
-    <li><strong>Reporting anecdotes to the board.</strong> "Everyone loves it" is not oversight; it is theater.</li>
-    <li><strong>Ignoring the data line.</strong> The fastest path to an incident is letting NPI flow into free tools.</li>
-    <li><strong>Waiting for the law.</strong> There is no comprehensive AI law coming soon; your existing obligations already apply.</li>
-  </ul>
-</section>
-
-<!-- Section 15 — copy-paste artifacts -->
-<section class="page">
-  <div class="section-kicker">Section 15 · Copy-paste governance artifacts</div>
-  <h2>Reusable executive templates</h2>
-
-  <h3>Template 1 · AI use-case inventory row</h3>
-  <table>
-    <thead><tr><th>Field</th><th>Entry</th></tr></thead>
-    <tbody>
-      <tr><td>Use case</td><td></td></tr>
-      <tr><td>Business owner</td><td></td></tr>
-      <tr><td>Data class(es) touched</td><td></td></tr>
-      <tr><td>Is it a "model" (decisioning)?</td><td>Yes / No</td></tr>
-      <tr><td>Vendor / platform</td><td></td></tr>
-      <tr><td>Human-review step</td><td></td></tr>
-      <tr><td>Risk tier</td><td>Green / Yellow / Red</td></tr>
-      <tr><td>Kill-switch owner</td><td></td></tr>
-      <tr><td>Metrics tracked</td><td></td></tr>
-      <tr><td>Next review date</td><td></td></tr>
-    </tbody>
-  </table>
-
-  <h3>Template 2 · Quarterly board AI report</h3>
-  <table>
-    <thead><tr><th>Section</th><th>Entry</th></tr></thead>
-    <tbody>
-      <tr><td>Where we use AI (inventory count by tier)</td><td></td></tr>
-      <tr><td>Risk posture (R/Y/G + open exceptions)</td><td></td></tr>
-      <tr><td>Results (hours saved, correction rate, ROI)</td><td></td></tr>
-      <tr><td>Incidents &amp; near misses</td><td></td></tr>
-      <tr><td>Decisions requested of the board</td><td></td></tr>
-    </tbody>
-  </table>
+  <div class="principle">By the end, leadership should have a board-ready decision set, not a list of AI ideas.</div>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 15 · Copy-paste governance artifacts · continued</div>
-  <h2>More reusable templates</h2>
-
-  <h3>Template 3 · Pilot authorization memo</h3>
-  <table>
-    <thead><tr><th>Field</th><th>Entry</th></tr></thead>
-    <tbody>
-      <tr><td>Use case</td><td></td></tr>
-      <tr><td>Sponsor / owner</td><td></td></tr>
-      <tr><td>Budget</td><td></td></tr>
-      <tr><td>Pilot window</td><td></td></tr>
-      <tr><td>Success threshold</td><td></td></tr>
-      <tr><td>Data environment allowed</td><td></td></tr>
-      <tr><td>Kill-switch owner</td><td></td></tr>
-      <tr><td>Stop triggers</td><td></td></tr>
-      <tr><td>Review cadence</td><td></td></tr>
-      <tr><td><strong>Decision at end</strong></td><td>Scale / Extend / Stop</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Template 4 · AI sourcing decision memo</h3>
-  <table>
-    <thead><tr><th>Field</th><th>Entry</th></tr></thead>
-    <tbody>
-      <tr><td>Capability needed</td><td></td></tr>
-      <tr><td>Decision</td><td>Buy / Build / Wait</td></tr>
-      <tr><td>Rationale</td><td></td></tr>
-      <tr><td>TPRM status (if buy)</td><td></td></tr>
-      <tr><td>Data handling &amp; retention</td><td></td></tr>
-      <tr><td>Exit / portability</td><td></td></tr>
-      <tr><td>Revisit date (if wait)</td><td></td></tr>
-    </tbody>
-  </table>
-
-  <h3>Template 5 · Board minute language (AI oversight)</h3>
-  <div class="adopt">
-    <span class="adopt-label">Adopt-verbatim — board minute</span>
-    <p>"The Board reviewed management's quarterly AI report, including the AI use-case inventory, risk posture against the approved AI risk appetite, pilot results, and any incidents. The Board [noted / approved / directed] the following: [____]. The next AI review is scheduled for [date]."</p>
-  </div>
-</section>
-
-<!-- Section 16 + 17 -->
-<section class="page">
-  <div class="section-kicker">Section 16 · Recommended AiBI path</div>
-  <h2>From assessment to operating rhythm</h2>
-  <ol>
-    <li>Take the AI Readiness Assessment to baseline where the institution stands.</li>
-    <li>Have the executive team complete the Foundation Course so leadership shares a vocabulary.</li>
-    <li>Adopt the AIEOG AI Lexicon as the institution's official AI vocabulary.</li>
-    <li>Draft and board-approve the AI risk-appetite statement (Play 1).</li>
-    <li>Charter the AI Governance Committee (Play 2).</li>
-    <li>Publish the data line and the approved-tool path.</li>
-    <li>Fund one pilot with a kill switch (Play 3).</li>
-    <li>Stand up the quarterly board reporting rhythm (Play 4).</li>
-    <li>Reassess after 90 days and set the next quarter's plan.</li>
-  </ol>
-
-  <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
-
-  <div class="section-kicker">Section 17 · Final operating principle</div>
+  <div class="section-kicker">Sources and adaptation</div>
   <h2>Govern the program, not the prompt</h2>
-  <p>The executive's job in the AI era is not to master the technology. It is to make sure the institution uses AI on purpose: with a stated appetite, a named owner, a clear data line, funded and bounded experiments, honest metrics, and a board that can see all of it. Do that, and AI becomes a governed source of efficiency and service. Skip it, and AI becomes an ungoverned source of risk you will discover only after it has cost you something.</p>
-  <ul>
-    <li>Set the scope.</li>
-    <li>Set the data line.</li>
-    <li>Name the owner.</li>
-    <li>Fund the pilot.</li>
-    <li>Build the kill switch.</li>
-    <li>Demand the evidence.</li>
-    <li>Report to the board.</li>
-    <li>Scale or stop on proof.</li>
-  </ul>
-  <div class="principle">Everyone in 2026 will have a pilot. The institutions that win will be the ones whose leadership can prove, on paper, that their AI is governed, measured, and worth the money.</div>
-
+  <p>The executive's job is not to master the technology. It is to make sure the institution uses AI on purpose: with a stated scope, a data line, a named owner, funded and bounded experiments, honest metrics, and a board that can see all of it.</p>
   <div class="cite">
-    Sources: Jack Henry 2025 Strategy Benchmark Study (AI is the top planned technology investment); Cornerstone Advisors, What's Going On in Banking 2026 (operationalize AI with discipline); U.S. GAO, Artificial Intelligence: Use and Oversight in Financial Services, GAO-25-107197 (May 2025) (no comprehensive federal AI banking law; regulators apply existing frameworks); SR 11-7 Model Risk Management Guidance (Federal Reserve / OCC); Interagency Guidance on Third-Party Relationships: Risk Management (2023); ECOA / Regulation B; BSA / AML; GLBA / Regulation P; UDAAP; AIEOG AI Lexicon and Financial Services AI Risk Management Framework (U.S. Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
-    <p>This playbook is a starter artifact, not legal advice or an examiner-approved governance program. Adapt before adoption and route final risk-appetite statements, board motions, and exam-facing positions through legal, compliance, risk, and governance review.</p>
+    Sources: Federal Reserve SR 26-2 and parallel 2026 agency model-risk updates where applicable; Interagency Third-Party Risk Management Guidance; ECOA / Regulation B and CFPB adverse-action guidance; GLBA information-security obligations and safeguards expectations; U.S. GAO, Artificial Intelligence: Use and Oversight in Financial Services, GAO-25-107197 (May 2025); AIEOG AI Lexicon and Financial Services AI Risk Management Framework (U.S. Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
+    <p>This kit is a starter artifact, not legal advice or an examiner-approved governance program. Adapt before adoption and route final risk-appetite statements, board motions, pilot authorizations, and exam-facing positions through legal, compliance, risk, and governance review.</p>
   </div>
 </section>
 

@@ -8,7 +8,7 @@ describe('resourceMeta', () => {
       category: 'Role playbooks',
     });
     expect(resourceMeta('executive-playbook')).toEqual({
-      label: 'Executive AI Board Packet',
+      label: 'The Executive AI Governance Kit for Community Banks',
       category: 'Role playbooks',
     });
   });
