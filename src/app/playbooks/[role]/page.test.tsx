@@ -20,4 +20,16 @@ describe('/playbooks/[role]', () => {
       screen.getByRole('button', { name: /Get PDF for Compliance Officer Playbook/i }),
     ).toBeTruthy();
   });
+
+  it('links the BSA/AML SAR narrative scaffold from the assets tab', async () => {
+    render(await PlaybookPage({ params: Promise.resolve({ role: 'bsa-aml' }) }));
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Assets' }));
+
+    expect(
+      screen
+        .getByRole('link', { name: /The BSA\/AML SAR Narrative Scaffold/i })
+        .getAttribute('href'),
+    ).toBe('/playbooks/bsa-aml/sar-narrative-template');
+  });
 });
