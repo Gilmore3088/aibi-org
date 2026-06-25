@@ -83,6 +83,26 @@ const PROMPT_HELPERS: { label: string; addition: string }[] = [
 ];
 
 const INITIAL_OUTPUT = 'Run the scenario to generate a capped live-model draft output.';
+// Shown when the capped public demo is unavailable (daily budget reached, or the
+// model key / Supabase budget store not configured in this environment) so the
+// page demonstrates the shape of safe-AI output instead of a dead error box.
+const FALLBACK_OUTPUT = [
+  'DRAFT — sample output (the live demo is busy)',
+  '',
+  'Summary',
+  '  - A plain-language version of the task, drafted from the synthetic sample only.',
+  '',
+  'Draft work product',
+  '  - Numbered steps with clear ownership and any exceptions called out.',
+  '',
+  'Review notes',
+  '  - Verify every fact against the source before use.',
+  '  - No customer or confidential data was used.',
+  '',
+  'Escalation / verification checklist',
+  '  - Confirm the policy meaning is unchanged.',
+  '  - Route to the named human reviewer for approval before this is used.',
+].join('\n');
 
 export default function PracticeSandboxPage() {
   const [role, setRole] = useState<Role>('Operations');
@@ -93,11 +113,13 @@ export default function PracticeSandboxPage() {
   const [saved, setSaved] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
+  const [usedFallback, setUsedFallback] = useState(false);
 
   const scenarioList = SCENARIOS[role];
   const scenario = scenarioList.find((s) => s.id === scenarioId) ?? scenarioList[0];
   const reviewComplete = checked.length === REVIEW_ITEMS.length;
-  const hasLiveOutput = output !== INITIAL_OUTPUT && !error;
+  // Save stays gated on a real live run — a sample fallback is not the visitor's work.
+  const hasLiveOutput = output !== INITIAL_OUTPUT && !error && !usedFallback;
   const canSave = reviewComplete && hasLiveOutput && !running;
 
   function changeRole(r: Role) {
@@ -109,6 +131,7 @@ export default function PracticeSandboxPage() {
     setChecked([]);
     setSaved(false);
     setError('');
+    setUsedFallback(false);
   }
   function changeScenario(id: string) {
     const next = scenarioList.find((s) => s.id === id) ?? scenarioList[0];
@@ -118,6 +141,7 @@ export default function PracticeSandboxPage() {
     setChecked([]);
     setSaved(false);
     setError('');
+    setUsedFallback(false);
   }
   function applyHelper(addition: string) {
     setPrompt((cur) => cur + addition);
@@ -128,6 +152,7 @@ export default function PracticeSandboxPage() {
     setRunning(true);
     setSaved(false);
     setError('');
+    setUsedFallback(false);
     setOutput('Running the capped public model...');
     try {
       const response = await fetch('/api/playground/run', {
@@ -145,10 +170,11 @@ export default function PracticeSandboxPage() {
       }
       setOutput(json.text);
       setChecked([]);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'The demo could not run. Please try again.';
-      setError(message);
-      setOutput(message);
+    } catch {
+      // Graceful fallback instead of a dead error box — show the shape of a
+      // safe-AI draft. Save stays gated (hasLiveOutput excludes fallback).
+      setOutput(FALLBACK_OUTPUT);
+      setUsedFallback(true);
     } finally {
       setRunning(false);
     }
@@ -359,6 +385,23 @@ export default function PracticeSandboxPage() {
                       </Button>
                     </div>
                   </div>
+                  {usedFallback && (
+                    <p
+                      role="status"
+                      style={{
+                        margin: '0 0 10px',
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: 'var(--gold-deep)',
+                        background: 'var(--gold-a10)',
+                        border: '1px solid var(--gold-a30)',
+                        borderRadius: 'var(--r-lg)',
+                        padding: '10px 12px',
+                      }}
+                    >
+                      The live demo is busy right now — here&apos;s a sample of the output it produces.
+                    </p>
+                  )}
                   <pre className="mk-pr-output">{output}</pre>
                   {error && (
                     <p style={{ color: 'var(--red-700)', fontSize: 13, margin: '10px 0 0' }}>
@@ -418,6 +461,7 @@ export default function PracticeSandboxPage() {
                     setChecked([]);
                     setSaved(false);
                     setError('');
+                    setUsedFallback(false);
                   }}
                 >
                   <RefreshIcon className="mk-ic" />

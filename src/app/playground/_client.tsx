@@ -91,7 +91,7 @@ const WB: Record<WBKey, { title: string; input: string; output: string; outLabel
   procedure: {
     title: 'Procedure Cleanup · Compliance',
     input:
-      'All KYC refresh requests for accounts opened prior to 2022 shall undergo a documentation review per BSA §1020.220, including but not limited to government-issued ID, secondary address verification, and any updated beneficial ownership disclosures for legal entity customers as required under FinCEN\'s CDD rule...',
+      'All KYC refresh requests for accounts opened prior to 2022 shall undergo a documentation review per BSA §1020.220. Required items: government-issued ID, secondary address verification, and, for legal-entity customers, updated beneficial-ownership disclosures under FinCEN\'s CDD rule. Confirm each item is on file and document any exception before closing the review.',
     output:
       "**KYC Refresh: Quick Guide**\n\nFor accounts opened before 2022, collect three items:\n  1. Government-issued ID\n  2. Secondary address proof\n  3. For business accounts, updated beneficial-ownership info\n\n**If unsure:** route to Compliance review before continuing.",
     outLabel: 'Output · frontline job aid',
@@ -137,6 +137,7 @@ export default function PlaygroundPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string>('');
+  const [usedFallback, setUsedFallback] = useState(false);
 
   function load(k: WBKey) {
     setWbKey(k);
@@ -146,6 +147,7 @@ export default function PlaygroundPage() {
     setTags([]);
     setSaved(false);
     setError('');
+    setUsedFallback(false);
   }
 
   async function run() {
@@ -153,6 +155,7 @@ export default function PlaygroundPage() {
     setRunning(true);
     setSaved(false);
     setError('');
+    setUsedFallback(false);
     setOutputHtml('');
     try {
       const response = await fetch('/api/playground/run', {
@@ -170,8 +173,14 @@ export default function PlaygroundPage() {
       }
       setOutputHtml(renderMarkup(json.text));
       setHasRun(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'The demo could not run. Please try again.');
+    } catch {
+      // Graceful fallback: the capped public demo can be unavailable (daily
+      // budget hit, or the model key / Supabase budget store not configured in
+      // this environment). Rather than a dead error box, show the pre-baked
+      // sample so the page still demonstrates safe-AI output. Save stays gated
+      // since this is an example, not the visitor's own run.
+      setOutputHtml(renderMarkup(WB[wbKey].output));
+      setUsedFallback(true);
     } finally {
       setRunning(false);
     }
@@ -248,7 +257,26 @@ export default function PlaygroundPage() {
                 <div className="mk-input">{d.input}</div>
               </div>
               <div className="mk-right">
-                <div className="mk-k">{hasRun ? d.outLabel : 'Output · ready to run'}</div>
+                <div className="mk-k">
+                  {usedFallback ? 'Output · sample (live demo busy)' : hasRun ? d.outLabel : 'Output · ready to run'}
+                </div>
+                {usedFallback && (
+                  <p
+                    role="status"
+                    style={{
+                      margin: '0 0 8px',
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: 'var(--gold-deep)',
+                      background: 'var(--gold-a10)',
+                      border: '1px solid var(--gold-a30)',
+                      borderRadius: 'var(--r-md, 10px)',
+                      padding: '8px 10px',
+                    }}
+                  >
+                    The live demo is busy right now — here&apos;s a sample of the output it produces.
+                  </p>
+                )}
                 <div className={`mk-out${running ? ' is-running' : ''}`}>
                   {outputHtml ? (
                     <span dangerouslySetInnerHTML={{ __html: outputHtml }} />
