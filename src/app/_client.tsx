@@ -44,6 +44,12 @@ const CheckSquareIcon = (p: IconProps) => (
     <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
   </svg>
 );
+const ShieldCheckIcon = (p: IconProps) => (
+  <svg {...sw(p)}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
 const LayersIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
@@ -114,20 +120,25 @@ const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [stri
   },
 };
 
-type PromptSegment = { text: string; flagged?: boolean };
-type RedlinePhase = 'typing' | 'caught' | 'flags';
+type PiiField = { label: string; value: string; sensitive: boolean };
+type RedlinePhase = 'risk' | 'redact' | 'safe';
 
-const HOME_PROMPT_SEGMENTS: PromptSegment[] = [
-  { text: 'Draft an overdraft-fee response for ' },
-  {
-    text: 'John Smith using account #0042871, recent deposits, and the complaint notes below',
-    flagged: true,
-  },
-  { text: '. Make it final and email-ready.' },
+// The risky paste vs. the sanitized version. The animation strikes every
+// sensitive field one by one, then swaps the task line for the safe phrasing and
+// flips the card to "Safe for AI" — teaching "what you paste", not "AI is bad".
+const HOME_TASK_RISKY = 'Summarize this customer complaint and draft a response.';
+const HOME_TASK_SAFE =
+  'Summarize this customer complaint and draft a professional response using the details below.';
+const HOME_PII_FIELDS: PiiField[] = [
+  { label: 'Customer', value: 'John Smith', sensitive: true },
+  { label: 'DOB', value: '04/12/1981', sensitive: true },
+  { label: 'Account #', value: '0042871', sensitive: true },
+  { label: 'SSN', value: '•••–••–4829', sensitive: true },
+  { label: 'Phone', value: '(555) 123-4567', sensitive: true },
+  { label: 'Available balance', value: '$83.17', sensitive: true },
+  { label: 'Complaint notes', value: 'Charged 3 overdraft fees in one day; wants them reversed.', sensitive: false },
 ];
-
-const HOME_PROMPT_LEN = HOME_PROMPT_SEGMENTS.reduce((total, segment) => total + segment.text.length, 0);
-const HOME_PROMPT_FLAGS = ['Customer data pasted', 'No review step', 'Public tool boundary unknown'];
+const HOME_SENSITIVE_COUNT = HOME_PII_FIELDS.filter((field) => field.sensitive).length;
 
 function prefersReducedMotion(): boolean {
   return (
@@ -156,10 +167,11 @@ export default function HomePage() {
           <div>
             <p className="mk-kicker mk-kicker-gold-soft">For community banks and credit unions</p>
             <h1>
-              Find your institution&apos;s AI readiness gap in <span className="mk-hero-accent">three minutes.</span>
+              AI adoption is accelerating. <span className="mk-hero-accent">Judgment isn&apos;t.</span>
             </h1>
             <p className="mk-lede">
-              See where your AI use needs stronger guardrails, then start with the workflow habits and first artifact your role needs most.
+              Most employees know how to ask AI a question. Few know what should never be pasted into it.
+              Find your institution&apos;s AI readiness gap in three minutes.
             </p>
             <p className="mk-hero-role-note">
               Built for frontline tellers, branch teams, lenders, operations, compliance, and marketing roles.
@@ -268,8 +280,11 @@ export default function HomePage() {
 }
 
 function HomeRedlinePrompt() {
-  const [typed, setTyped] = useState(HOME_PROMPT_LEN);
-  const [phase, setPhase] = useState<RedlinePhase>('flags');
+  // Resting state (SSR / no-JS / reduced-motion) is the resolved "safe" frame:
+  // sensitive fields struck, safe prompt shown, green badge — the message lands
+  // even if the animation never runs.
+  const [phase, setPhase] = useState<RedlinePhase>('safe');
+  const [struck, setStruck] = useState(HOME_SENSITIVE_COUNT);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -284,19 +299,20 @@ function HomeRedlinePrompt() {
 
     async function play() {
       while (!cancelled) {
-        setPhase('typing');
-        for (let n = 0; n <= HOME_PROMPT_LEN; n++) {
+        setPhase('risk');
+        setStruck(0);
+        await wait(1300);
+        if (cancelled) return;
+        setPhase('redact');
+        for (let n = 1; n <= HOME_SENSITIVE_COUNT; n++) {
           if (cancelled) return;
-          setTyped(n);
-          await wait(26);
+          setStruck(n);
+          await wait(460);
         }
-        await wait(450);
+        await wait(750);
         if (cancelled) return;
-        setPhase('caught');
-        await wait(900);
-        if (cancelled) return;
-        setPhase('flags');
-        await wait(4400);
+        setPhase('safe');
+        await wait(4200);
       }
     }
 
@@ -305,8 +321,8 @@ function HomeRedlinePrompt() {
     const begin = () => {
       if (started) return;
       started = true;
-      setTyped(0);
-      setPhase('typing');
+      setPhase('risk');
+      setStruck(0);
       void play();
     };
 
@@ -328,14 +344,14 @@ function HomeRedlinePrompt() {
     };
   }, []);
 
-  let remaining = typed;
-  const caught = phase !== 'typing';
+  const isSafe = phase === 'safe';
+  let sensitiveSeen = 0;
 
   return (
     <div
       ref={rootRef}
-      className={`mk-redline-prompt${caught ? ' is-caught' : ''}${phase === 'flags' ? ' is-flagged' : ''}`}
-      aria-label="A banker pastes customer data into a public chatbot; customer data, missing review, and unknown tool boundary are flagged."
+      className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}
+      aria-label="A banking task pasted into a public chatbot with customer name, DOB, account number, SSN, phone, and balance. Each sensitive field is struck through, leaving a sanitized prompt marked safe for AI."
     >
       <div className="mk-redline-head">
         <span className="mk-redline-dots" aria-hidden="true">
@@ -343,35 +359,45 @@ function HomeRedlinePrompt() {
           <i />
           <i />
         </span>
-        <span>Public chatbot</span>
-        <span className="mk-redline-badge">Untrained use</span>
+        <span>{isSafe ? 'Sanitized prompt' : 'Public chatbot'}</span>
+        <span className={`mk-redline-badge${isSafe ? ' is-safe' : ''}`}>
+          {isSafe ? (
+            <>
+              <ShieldCheckIcon size={13} /> Safe for AI
+            </>
+          ) : (
+            <>
+              <AlertIcon size={13} /> Unsafe paste
+            </>
+          )}
+        </span>
       </div>
       <div className="mk-redline-body">
-        <p>
-          {HOME_PROMPT_SEGMENTS.map((segment, index) => {
-            const shown = Math.max(0, Math.min(segment.text.length, remaining));
-            remaining -= segment.text.length;
-            const visible = segment.text.slice(0, shown);
-            if (segment.flagged) {
-              return (
-                <mark key={index} className="mk-redline-mark">
-                  {visible}
-                </mark>
-              );
+        <p className="mk-redline-task">{isSafe ? HOME_TASK_SAFE : HOME_TASK_RISKY}</p>
+        <dl className="mk-redline-fields">
+          {HOME_PII_FIELDS.map((field) => {
+            let isStruck = false;
+            if (field.sensitive) {
+              sensitiveSeen += 1;
+              isStruck = isSafe || (phase === 'redact' && sensitiveSeen <= struck);
             }
-            return <span key={index}>{visible}</span>;
+            return (
+              <div
+                key={field.label}
+                className={`mk-redline-field${field.sensitive ? ' is-sensitive' : ''}${isStruck ? ' is-struck' : ''}`}
+              >
+                <dt>{field.label}</dt>
+                <dd>{field.value}</dd>
+              </div>
+            );
           })}
-          {phase === 'typing' && <span className="mk-redline-caret" />}
-        </p>
+        </dl>
       </div>
-      <div className="mk-redline-flags" aria-hidden={!caught}>
-        {HOME_PROMPT_FLAGS.map((label) => (
-          <span key={label} className="mk-redline-flag">
-            <AlertIcon size={13} /> {label}
-          </span>
-        ))}
+      <div className="mk-redline-foot">
+        {isSafe
+          ? 'AI isn’t the problem — what you paste into it is.'
+          : 'A real banking task, about to be pasted into a public tool.'}
       </div>
-      <div className="mk-redline-foot">A real banking task, moved into a tool no one governed.</div>
     </div>
   );
 }
