@@ -573,6 +573,7 @@ button.rx-featured-item {
 }
 .mockup-scope .rx-pb-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: .5rem;
   margin-top: auto;
@@ -586,10 +587,15 @@ button.rx-featured-item {
   justify-content: center;
   flex: none;
 }
+/* When a download gate opens its email form, it must claim its own full-width
+   line instead of being squished beside the sibling buttons (which overflowed
+   the card). The form then lays out cleanly: input on top, submit below. */
+.mockup-scope .rx-pb-actions > .mk-download-gate-form {
+  flex: 1 0 100%;
+  width: 100%;
+  margin-top: .25rem;
+}
 @media (max-width: 767px) {
-  .mockup-scope .rx-pb-actions {
-    flex-wrap: wrap;
-  }
   .mockup-scope .rx-pb-actions .mk-btn:not(.rx-download-icon-btn) {
     padding: 0 12px;
   }
