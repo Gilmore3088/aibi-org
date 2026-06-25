@@ -45,11 +45,11 @@ export const TEMPLATE_INDEX = [
   },
   {
     slug: 'board-briefing-checklist',
-    title: 'Board / Leadership Briefing Checklist',
-    dek: 'What to put in front of your board before, during, and after AI rollout. Twelve items, three categories.',
+    title: 'The AI Board Briefing Checklist',
+    dek: 'Four facts, four motions, and four evidence items for a controlled bank AI rollout.',
     audience: 'C-suite preparing AI briefings for board or executive committee',
-    readMinutes: 5,
-    preview: ['Before the briefing', 'During the briefing', 'After the briefing'],
+    readMinutes: 7,
+    preview: ['Four facts', 'Four motions', 'Board memo', 'Evidence items'],
   },
   {
     slug: 'cdfi-grant-ai-evidence-checklist',
