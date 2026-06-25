@@ -12,7 +12,7 @@
       "variants": { "pdf": "safe-ai-use-checklist.pdf", "word": "/api/resources/safe-ai-use-checklist/word", "zip": null, "largePrintPdf": "/api/resources/safe-ai-use-checklist/large-print" },
       "zipMembership": ["governance-starter-kit", "frontline-enablement-kit"],
       "canonicalRoute": "/api/resources/safe-ai-use-checklist/download",
-      "sourceCitations": ["NIST AI RMF", "Interagency Third-Party Risk Guidance", "AIEOG AI Lexicon"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": {
         "roles": ["compliance", "operations", "training-hr"],
