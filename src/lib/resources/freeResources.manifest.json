@@ -195,7 +195,7 @@
     },
     {
       "slug": "marketing-playbook",
-      "title": "Marketing Playbook",
+      "title": "The Bank Marketing AI Control Kit",
       "audience": ["Marketing"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -204,7 +204,7 @@
       "variants": { "pdf": "marketing-playbook.pdf", "word": "/api/resources/marketing-playbook/word", "zip": null },
       "zipMembership": ["marketing-review-kit"],
       "canonicalRoute": "/api/resources/marketing-playbook/download",
-      "sourceCitations": ["CFPB Reg B", "NIST AI RMF"],
+      "sourceCitations": ["Reg DD", "Reg Z", "ECOA / Reg B", "Fair Housing Act", "CAN-SPAM", "TCPA", "GLBA / Reg P", "Interagency TPRM"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["marketing"], "tierLabels": [], "topGaps": ["claim-review"] },
       "status": "public"

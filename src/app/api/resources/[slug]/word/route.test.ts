@@ -155,6 +155,28 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain('Disparate impact signals');
   });
 
+  it('returns the bank marketing AI control kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/marketing-playbook/word'),
+      contextFor('marketing-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Marketing-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank Marketing AI Control Kit');
+    expect(body).toContain('The Five Controls for AI-Assisted Bank Marketing');
+    expect(body).toContain('Marketing compliance source map');
+    expect(body).toContain('Reg DD / Truth in Savings');
+    expect(body).toContain('TCPA consent checkpoint');
+    expect(body).toContain('Marketing AI Assistant Registry');
+    expect(body).toContain('Marketing Claim Control Matrix');
+    expect(body).toContain('Segment Approval Log');
+    expect(body).toContain('Next step: Run the 45-Minute AI Campaign Control Sprint');
+    expect(body).not.toContain("The Marketing Leader's AI-Native Playbook");
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),
