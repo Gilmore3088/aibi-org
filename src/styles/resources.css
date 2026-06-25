@@ -1419,6 +1419,9 @@ button.rx-featured-item {
   gap: 12px;
   margin-top: 28px;
 }
+.prompt-simple-scope .prompt-preview-hero {
+  padding-bottom: 56px;
+}
 .prompt-simple-scope .prompt-simple-method {
   background: #fff;
   border-radius: 8px;
@@ -1526,6 +1529,83 @@ button.rx-featured-item {
   color: var(--slate-600);
   line-height: 1.6;
   max-width: 420px;
+}
+.prompt-simple-scope .prompt-toolbox-preview {
+  align-items: stretch;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 920px) {
+  .prompt-simple-scope .prompt-toolbox-preview {
+    grid-template-columns: minmax(0, .8fr) minmax(420px, 1fr);
+  }
+}
+.prompt-simple-scope .prompt-toolbox-preview-copy {
+  align-self: center;
+}
+.prompt-simple-scope .prompt-toolbox-preview-copy h2 {
+  font-size: clamp(2rem, 4vw, 3.35rem);
+  font-weight: 740;
+  letter-spacing: 0;
+  line-height: .98;
+  margin-top: 8px;
+  max-width: 620px;
+}
+.prompt-simple-scope .prompt-toolbox-preview-copy p {
+  color: var(--slate-600);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 16px 0 22px;
+  max-width: 540px;
+}
+.prompt-simple-scope .prompt-preview-artifact {
+  background: #fff;
+  border: 1px solid rgba(7, 26, 47, .1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.prompt-simple-scope .prompt-preview-artifact-head {
+  align-items: center;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+.prompt-simple-scope .prompt-preview-artifact-head span {
+  color: var(--slate-600);
+  font-size: 12px;
+  font-weight: 820;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.prompt-simple-scope .prompt-preview-artifact-head strong {
+  background: #D1FAE5;
+  border-radius: 999px;
+  color: #065F46;
+  font-size: 12px;
+  font-weight: 850;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+.prompt-simple-scope .prompt-preview-artifact pre {
+  background: var(--ink);
+  color: #E9EEF6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: .86rem;
+  line-height: 1.55;
+  margin: 0;
+  min-height: 230px;
+  overflow: auto;
+  padding: 18px;
+  white-space: pre-wrap;
+}
+.prompt-simple-scope .prompt-preview-lock {
+  color: var(--slate-600);
+  font-size: .9rem;
+  font-weight: 680;
+  line-height: 1.45;
+  padding: 14px 16px;
 }
 .prompt-simple-scope .prompt-example-split {
   display: grid;
