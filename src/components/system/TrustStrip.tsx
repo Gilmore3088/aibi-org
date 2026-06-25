@@ -9,6 +9,7 @@
  *   <TrustStrip prefix="Curriculum aligned with" />
  */
 
+import Link from "next/link";
 import { REGULATIONS } from "@content/regulations";
 import { cn } from "@/lib/utils/cn";
 
@@ -41,11 +42,21 @@ export function TrustStrip({
         {prefix}
       </span>
       {REGULATIONS.map((reg) => (
-        <span key={reg.slug} className="font-medium">
+        <Link
+          key={reg.slug}
+          href={`/references#${reg.slug}`}
+          className="font-medium underline decoration-dotted underline-offset-4 hover:decoration-solid"
+        >
           <span className="sr-only">Aligned with </span>
           {reg.short}
-        </span>
+        </Link>
       ))}
+      <Link
+        href="/references"
+        className={cn("font-mono text-label-sm uppercase tracking-widest underline underline-offset-4", labelClass)}
+      >
+        All sources
+      </Link>
     </div>
   );
 }

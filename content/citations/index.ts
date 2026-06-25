@@ -78,6 +78,7 @@ export const CITATIONS: readonly Citation[] = [
     publisher: "FDIC",
     year: 2024,
     short: "FDIC Quarterly Banking Profile, Q4 2024",
+    url: "https://www.fdic.gov/analysis/quarterly-banking-profile/",
   },
   {
     slug: "personetics-switch-for-ai",
@@ -114,6 +115,7 @@ export const CITATIONS: readonly Citation[] = [
     publisher: "FDIC",
     year: 2024,
     short: "FDIC, Q4 2024",
+    url: "https://banks.data.fdic.gov/bankfind-suite/",
   },
 ] as const;
 

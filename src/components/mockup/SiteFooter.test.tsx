@@ -11,6 +11,14 @@ describe('SiteFooter', () => {
     );
   });
 
+  it('links to the centralized sources & references page', () => {
+    render(<SiteFooter />);
+
+    expect(screen.getByRole('link', { name: /Sources & references/i }).getAttribute('href')).toBe(
+      '/references',
+    );
+  });
+
   it('links buyers to the consolidated pricing map', () => {
     render(<SiteFooter />);
 
