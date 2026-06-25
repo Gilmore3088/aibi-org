@@ -120,22 +120,25 @@ const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [stri
   },
 };
 
-type PiiField = { label: string; value: string; sensitive: boolean };
+type PiiField = { label: string; value: string; sensitive: boolean; placeholder?: string };
 type RedlinePhase = 'risk' | 'redact' | 'safe';
 
-// The risky paste vs. the sanitized version. The animation strikes every
-// sensitive field one by one, then swaps the task line for the safe phrasing and
-// flips the card to "Safe for AI" — teaching "what you paste", not "AI is bad".
+// The risky paste vs. the reusable template. The animation strikes every
+// sensitive field one by one, then swaps each real value for a bracketed
+// placeholder and the task line for the templated phrasing — flipping the card
+// to "Safe for AI". The lesson: write the prompt as a reusable template with
+// placeholders; the real customer data stays in your systems and never gets
+// pasted into a public tool.
 const HOME_TASK_RISKY = 'Summarize this customer complaint and draft a response.';
 const HOME_TASK_SAFE =
-  'Summarize this customer complaint and draft a professional response using the details below.';
+  'Draft a professional response to this customer complaint. Fill the placeholders from your core system — never paste real customer data here.';
 const HOME_PII_FIELDS: PiiField[] = [
-  { label: 'Customer', value: 'John Smith', sensitive: true },
-  { label: 'DOB', value: '04/12/1981', sensitive: true },
-  { label: 'Account #', value: '0042871', sensitive: true },
-  { label: 'SSN', value: '•••–••–4829', sensitive: true },
-  { label: 'Phone', value: '(555) 123-4567', sensitive: true },
-  { label: 'Available balance', value: '$83.17', sensitive: true },
+  { label: 'Customer', value: 'John Smith', sensitive: true, placeholder: '[customer name]' },
+  { label: 'DOB', value: '04/12/1981', sensitive: true, placeholder: '[date of birth]' },
+  { label: 'Account #', value: '0042871', sensitive: true, placeholder: '[account number]' },
+  { label: 'SSN', value: '•••–••–4829', sensitive: true, placeholder: '[not needed]' },
+  { label: 'Phone', value: '(555) 123-4567', sensitive: true, placeholder: '[phone]' },
+  { label: 'Available balance', value: '$83.17', sensitive: true, placeholder: '[amount]' },
   { label: 'Complaint notes', value: 'Charged 3 overdraft fees in one day; wants them reversed.', sensitive: false },
 ];
 const HOME_SENSITIVE_COUNT = HOME_PII_FIELDS.filter((field) => field.sensitive).length;
@@ -351,7 +354,7 @@ function HomeRedlinePrompt() {
     <div
       ref={rootRef}
       className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}
-      aria-label="A banking task pasted into a public chatbot with customer name, DOB, account number, SSN, phone, and balance. Each sensitive field is struck through, leaving a sanitized prompt marked safe for AI."
+      aria-label="A banking task pasted into a public chatbot with customer name, DOB, account number, SSN, phone, and balance. Each sensitive field is struck through and replaced with a bracketed placeholder, leaving a reusable prompt template marked safe for AI."
     >
       <div className="mk-redline-head">
         <span className="mk-redline-dots" aria-hidden="true">
@@ -359,7 +362,7 @@ function HomeRedlinePrompt() {
           <i />
           <i />
         </span>
-        <span>{isSafe ? 'Sanitized prompt' : 'Public chatbot'}</span>
+        <span>{isSafe ? 'Reusable template' : 'Public chatbot'}</span>
         <span className={`mk-redline-badge${isSafe ? ' is-safe' : ''}`}>
           {isSafe ? (
             <>
@@ -377,17 +380,22 @@ function HomeRedlinePrompt() {
         <dl className="mk-redline-fields">
           {HOME_PII_FIELDS.map((field) => {
             let isStruck = false;
+            let showPlaceholder = false;
             if (field.sensitive) {
               sensitiveSeen += 1;
-              isStruck = isSafe || (phase === 'redact' && sensitiveSeen <= struck);
+              if (isSafe) {
+                showPlaceholder = Boolean(field.placeholder);
+              } else if (phase === 'redact') {
+                isStruck = sensitiveSeen <= struck;
+              }
             }
             return (
               <div
                 key={field.label}
-                className={`mk-redline-field${field.sensitive ? ' is-sensitive' : ''}${isStruck ? ' is-struck' : ''}`}
+                className={`mk-redline-field${field.sensitive ? ' is-sensitive' : ''}${isStruck ? ' is-struck' : ''}${showPlaceholder ? ' is-placeholder' : ''}`}
               >
                 <dt>{field.label}</dt>
-                <dd>{field.value}</dd>
+                <dd>{showPlaceholder ? field.placeholder : field.value}</dd>
               </div>
             );
           })}
@@ -395,7 +403,7 @@ function HomeRedlinePrompt() {
       </div>
       <div className="mk-redline-foot">
         {isSafe
-          ? 'AI isn’t the problem — what you paste into it is.'
+          ? 'One reusable template, any customer — real data stays in your systems.'
           : 'A real banking task, about to be pasted into a public tool.'}
       </div>
     </div>

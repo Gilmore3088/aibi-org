@@ -611,6 +611,18 @@ section.mk-std { padding: 56px 0; }
 .mk-redline-field.is-struck.is-sensitive dd::after {
   transform: scaleX(1);
 }
+/* Safe phase: the real value is swapped for a bracketed placeholder token,
+   rendered as a green pill — a reusable template slot, not redacted data. */
+.mk-redline-field.is-placeholder {
+  background: #ECFDF3;
+}
+.mk-redline-field.is-placeholder dd {
+  color: #047857;
+  font-weight: 600;
+}
+.mk-redline-field.is-placeholder.is-sensitive dd::after {
+  transform: scaleX(0);
+}
 .mk-redline-foot {
   margin-top: 14px;
   padding: 12px 22px;
