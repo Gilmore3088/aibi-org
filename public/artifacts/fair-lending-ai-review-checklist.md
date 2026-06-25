@@ -1,93 +1,106 @@
-# Fair-Lending Review Checklist for AI-Assisted Processes
+# The Fair-Lending AI Review Checklist
 
-For institutions that have, or are about to have, AI in or near a credit
-decision. Run this before deployment, then again on a recurring cadence.
+A pre-deployment and recurring-review card for AI-assisted credit decisions, pricing, eligibility, triage, marketing eligibility, and adverse-action support.
 
-## Why this exists
+Use one review per workflow, product line, or vendor configuration. Keep the completed checklist with the decision record, model-risk file, or compliance review packet.
 
-ECOA and Regulation B do not have an "AI exception." Disparate-impact
-obligations attach to any process that influences a credit decision,
-whether the influence comes from a human, a static model, or an AI tool.
-The institutions that run this review before being asked are positioned
-to defend the program; the ones that don't are positioned to explain why.
+## Current-law framing
+
+ECOA and Regulation B do not have an "AI exception." AI-assisted credit processes still need documented fair-lending review, adverse-action explainability, human accountability, and outcome monitoring. Although current CFPB rulemaking states that ECOA does not recognize disparate-impact liability, banks should still test AI-assisted credit workflows for protected-basis outcome gaps, proxy-variable risk, and explainability issues as part of fair-lending, model-risk, mortgage/housing, reputation, and governance controls.
+
+Current model-risk guidance, including SR 26-2 where applicable, should be considered when AI supports scoring, recommendations, pricing, decisioning, or other model-like credit processes.
 
 ## Scope this review
 
-Identify every AI-assisted process that:
+| Field | Review note |
+| --- | --- |
+| Product line | |
+| AI-assisted workflow | Credit decision, pricing, eligibility, triage, marketing eligibility, adverse-action support, or other |
+| Tool / vendor / model | |
+| Review type | Pre-deployment, material-change review, periodic monitoring, or issue remediation |
+| Mortgage / housing-related credit in scope? | If yes, include applicable Fair Housing Act categories |
+| Review owner | |
+| Compliance reviewer | |
+| Next review date | |
 
-- Generates, recommends, or filters credit decisions
-- Sets pricing tiers, terms, or limits
-- Determines marketing eligibility for credit products
-- Triages applicants for human review
-- Drafts adverse-action reasoning or supporting documentation
+Protected-basis variables identified for testing only, not used as decision inputs unless legally permitted or required. ECOA / Regulation B: race, color, religion, national origin, sex, marital status, age, receipt of public assistance, and exercise of rights under the Consumer Credit Protection Act. Mortgage / housing-related credit: also evaluate Fair Housing Act categories, including disability and familial status where applicable.
 
-Each one needs its own review. The same process may need separate reviews
-for each product line.
+Protected-basis and proxy-variable analysis is performed for compliance testing, monitoring, and review; protected-basis variables are not used as decision inputs unless specifically permitted by law and approved by Compliance.
 
-## Pre-deployment checklist
+## Pre-deployment review
 
 ### Data and design
 
-- [ ] Training or input data documented, including the date range,
-      source systems, and any known gaps
-- [ ] Protected-class indicators identified in the data layer (race, sex,
-      age, marital status, national origin, disability, familial status,
-      receipt of public assistance, exercise of ECOA rights)
-- [ ] Proxy variables flagged (ZIP code, surname, neighborhood markers
-      that may correlate with protected class)
-- [ ] Decisions documented end-to-end: what data goes in, what comes out,
-      who acts on it
+- [ ] Inputs are limited to approved credit, customer, transaction, or collateral data.
+- [ ] No prohibited-basis variable is used as a decision input unless specifically permitted by law and approved by Compliance.
+- [ ] Proxy-variable candidates are documented and reviewed by Compliance, Fair Lending, or Model Risk.
+- [ ] Data lineage, retention location, and vendor access are documented.
+- [ ] The intended human reviewer and approval authority are named.
 
-### Disparate-impact testing
+### Outcome-gap and proxy-risk testing
 
-- [ ] Approval-rate gap measured across protected classes
-- [ ] Score / recommendation distribution compared across protected
-      classes
-- [ ] Outcome variance (loan performance, default, prepay) compared
-      across protected classes
-- [ ] Results compared to the non-AI baseline (same process without the
-      AI tool)
-- [ ] Documented threshold for what constitutes a material gap, and the
-      action triggered at the threshold
+- [ ] Population tested:
+- [ ] Date range:
+- [ ] Product line:
+- [ ] Sample size:
+- [ ] Protected bases tested:
+- [ ] Proxy methodology used:
+- [ ] Benchmark / non-AI baseline:
+- [ ] Materiality threshold:
+- [ ] Owner of remediation:
+- [ ] Date of next review:
 
-### Explainability
+### Adverse-action explainability
 
-- [ ] Adverse-action reasoning can be produced for any AI-assisted
-      decision in a form that satisfies Regulation B
-- [ ] Principal reasons map to specific input factors, not opaque scores
-- [ ] Documentation is reviewable by a compliance officer without
-      vendor assistance
+- [ ] Reasons are specific, accurate, and traceable to factors actually considered.
+- [ ] Reasons are not generic labels such as "model score," "internal policy," or "AI recommendation."
+- [ ] Reason codes map to approved adverse-action language and can be reviewed by a human before use.
+- [ ] Compliance reviewed sample adverse-action notices generated or influenced by the AI process.
+- [ ] Any vendor-generated explanation is tested against the bank's notice standards before use.
 
-### Governance
+### Governance and accountability
 
-- [ ] Named owner for the AI-assisted process
-- [ ] Named compliance reviewer
-- [ ] Documented oversight level (automated / sampled / mandatory)
-- [ ] Escalation path when a metric crosses an internal threshold
-- [ ] Logged in the institution's AI use-case inventory
+- [ ] The business owner, compliance reviewer, model-risk reviewer, and vendor owner are recorded.
+- [ ] Approval criteria, exception handling, overrides, and escalation paths are documented.
+- [ ] Monitoring cadence is set before launch.
+- [ ] Required evidence is stored in the control file, model-risk file, or compliance review packet.
 
-## Recurring review checklist
+## Recurring review
 
-Run quarterly at minimum. Annually if the process is low-volume.
+- [ ] Re-pull protected-basis outcome-gap metrics and compare against the prior period.
+- [ ] Review portfolio monitoring indicators such as performance, default, prepayment, override, exception, and pricing patterns where applicable.
+- [ ] Recheck proxy-variable risk when data sources, model logic, prompts, cutoffs, policies, or vendor settings change.
+- [ ] Sample adverse-action notices generated or influenced by the AI process and confirm reasons remain specific, accurate, and traceable.
+- [ ] Re-run the full review after vendor model updates, policy changes, new product lines, or material population shifts.
+- [ ] Log findings, accepted risks, remediation owners, due dates, and the next review date.
+- [ ] Report material findings to the fair-lending, compliance, model-risk, or governance forum named in policy.
 
-- [ ] Re-pull disparate-impact metrics
-- [ ] Compare to the prior period — flag any worsening trend
-- [ ] Verify the AI tool has not been materially updated by the vendor
-      since the last review; if it has, re-run the full pre-deployment
-      review
-- [ ] Review adverse-action samples for explainability
-- [ ] Report results to the same forum that receives the institution's
-      standard fair-lending program reporting
+## Review disposition
 
-## Decisions log
+| Decision | Use when |
+| --- | --- |
+| Approved for controlled use | Controls, monitoring, and notice review are complete. |
+| Approved with remediation | Use may proceed only under documented conditions, owners, and due dates. |
+| Hold for revision | Testing, explainability, governance, or evidence is incomplete. |
+| Do not use | The process creates unresolved protected-basis, explainability, governance, or legal risk. |
 
-Maintain a short log of decisions made under this review: dates, who
-signed off, what changed. The log is what an examiner reads first.
+## Stronger review kit
 
-## Citations
+For a complete implementation packet, pair this checklist with The Fair-Lending AI Review Kit:
 
-- Equal Credit Opportunity Act (15 U.S.C. § 1691)
-- Regulation B (12 CFR Part 1002), CFPB
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- GAO-25-107197, US GAO, May 2025
+- Fair-lending AI checklist PDF
+- Editable testing worksheet
+- Adverse-action sample review log
+- Recurring monitoring template
+
+Download the editable worksheet: `/downloads/artifact-fair-lending-ai-review-worksheet.xlsx`
+
+## Sources: cite in the review file
+
+- Equal Credit Opportunity Act
+- Regulation B, 12 CFR Part 1002
+- CFPB Circular 2022-03, adverse-action notification requirements for complex algorithms
+- CFPB Circular 2023-03, adverse-action notice requirements and specific reasons
+- SR 26-2 Revised Guidance on Model Risk Management, where applicable
+- Fair Housing Act, where mortgage / housing-related credit is in scope
+- AIEOG AI Lexicon and Financial Services AI Risk Management Framework

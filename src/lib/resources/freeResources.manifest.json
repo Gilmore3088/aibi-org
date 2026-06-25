@@ -143,7 +143,7 @@
     },
     {
       "slug": "artifact-fair-lending-ai-review-checklist",
-      "title": "Fair-Lending AI Review Checklist",
+      "title": "The Fair-Lending AI Review Checklist",
       "audience": ["Lending", "Compliance", "Risk"],
       "category": "artifact",
       "funnelSegment": "lending-review",
@@ -152,7 +152,7 @@
       "variants": { "pdf": "artifact-fair-lending-ai-review-checklist.pdf", "word": "/api/resources/artifact-fair-lending-ai-review-checklist/word", "zip": null, "largePrintPdf": "/api/resources/artifact-fair-lending-ai-review-checklist/large-print" },
       "zipMembership": ["lending-review-kit"],
       "canonicalRoute": "/api/resources/artifact-fair-lending-ai-review-checklist/download",
-      "sourceCitations": ["CFPB Reg B", "NIST AI RMF"],
+      "sourceCitations": ["Equal Credit Opportunity Act", "Regulation B", "CFPB Circular 2022-03", "CFPB Circular 2023-03", "Federal Reserve SR 26-2", "Fair Housing Act", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": {
         "roles": ["lending", "compliance"],

@@ -66,11 +66,12 @@ const KITS = {
       'For lending and credit teams reviewing AI-assisted denials, decisions, and adverse-action notices with documented human checks.',
     pdfs: [
       ['lending-playbook.pdf',               'Role playbook for safe lending AI use: adverse-action tuner, decision summaries, fair-lending pre-checks.'],
-      ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for fair-lending and disparate-impact concerns on AI-assisted decisions.'],
+      ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for AI-assisted credit decisions, protected-basis outcome-gap checks, adverse-action explainability, and recurring monitoring.'],
       ['artifact-ai-use-case-inventory.pdf', 'One-page AI use-case inventory card for owners, data classes, risk tiers, vendor controls, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
     ],
     files: [
+      ['artifact-fair-lending-ai-review-worksheet.xlsx', 'Editable testing worksheet for population, sample, protected bases, proxy methodology, baseline, materiality threshold, remediation owner, adverse-action review, and next review date.'],
       ['artifact-ai-use-case-inventory-spreadsheet.xlsx', 'Editable spreadsheet companion for maintaining owner, data class, risk tier, vendor status, human review, evidence retained, and next review date.'],
     ],
     markdowns: [],
