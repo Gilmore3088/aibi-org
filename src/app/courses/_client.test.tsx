@@ -3,21 +3,15 @@ import { describe, expect, it } from 'vitest';
 import CoursesIndexPage from './_client';
 
 describe('CoursesIndexPage', () => {
-  it('explains what the AiBI-Foundation certificate proves and does not prove', () => {
+  it('centers the saved packet instead of overselling the certificate', () => {
     render(<CoursesIndexPage />);
 
-    expect(screen.getByRole('heading', { name: /this is not a webinar certificate/i })).toBeTruthy();
-    expect(screen.getByText(/earned after packet completion/i)).toBeTruthy();
-    expect(screen.getByText(/public authenticity URL/i)).toBeTruthy();
-    expect(screen.getByText(/evidence behind the badge/i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /the packet is the useful part/i })).toBeTruthy();
+    expect(screen.getAllByText(/saved work products/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/manager-readable evidence/i)).toBeTruthy();
+    expect(screen.getAllByText(/simple completion record/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/the packet carries the substance/i)).toBeTruthy();
     expect(screen.getByText(/not a license, regulator approval/i)).toBeTruthy();
-
-    expect(screen.getByRole('link', { name: /read credential details/i }).getAttribute('href')).toBe(
-      '/certifications',
-    );
-    expect(screen.getByRole('link', { name: /open verification lookup/i }).getAttribute('href')).toBe(
-      '/verify',
-    );
   });
 
   it('leads with Foundation outcomes and keeps the enrollment CTA focused', () => {

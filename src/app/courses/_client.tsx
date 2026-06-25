@@ -1,6 +1,6 @@
 'use client';
 
-import { SiteHeader, Section, SectionHead, Button, StickyMobileCta } from '@/components/mockup';
+import { SiteHeader, Section, SectionHead, Button } from '@/components/mockup';
 
 type IconProps = { className?: string; size?: number };
 
@@ -41,9 +41,9 @@ function buildPricingBullets(facts: CoursesOverviewFacts) {
     `${facts.artifactCount}-piece Foundation Packet`,
     'Prompt Builder, Skill Builder, and workflow-map practice',
     'Review notes and transfer plans in every module',
-    'Final packet submission and certificate',
-    'Public certificate verification URL',
+    'Final packet submission',
     'Ongoing access to purchased materials under current offer',
+    'Simple completion record when needed',
   ];
 }
 
@@ -54,7 +54,7 @@ function buildOutcomeStats(facts: CoursesOverviewFacts) {
     { value: String(facts.artifactCount), label: 'packet artifacts' },
     { value: '4', label: 'builder modes' },
     { value: '1', label: 'Foundation Packet' },
-    { value: 'Cert', label: 'public verification' },
+    { value: 'Review', label: 'notes + reuse rules' },
   ];
 }
 
@@ -128,20 +128,20 @@ const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: Icon
   },
 ];
 
-const CREDENTIAL_PROOF: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
+const COURSE_EVIDENCE: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
-    title: 'Earned after packet completion',
-    desc: 'All modules are complete and the final Foundation Packet is submitted.',
+    title: 'Saved work products',
+    desc: 'Prompt cards, workflow maps, skill templates, review notes, and safe-use boundaries stay in the packet.',
     icon: CheckCircleIcon,
   },
   {
-    title: 'Public authenticity URL',
-    desc: 'An employer or reviewer can verify the holder, credential, and issued date.',
+    title: 'Manager-readable evidence',
+    desc: 'The packet shows what was drafted, what was checked, and what still needs human review before reuse.',
     icon: FileIcon,
   },
   {
-    title: 'Evidence behind the badge',
-    desc: 'Prompts, outputs, edits, workflow maps, review notes, and safety boundaries stay with the packet.',
+    title: 'Simple completion record',
+    desc: 'A verification page can confirm completion when needed. The packet carries the substance.',
     icon: ClipboardIcon,
   },
   {
@@ -185,7 +185,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               </Button>
             </div>
             <p className="mk-course-proofline">
-              {facts.moduleCount} modules · {facts.totalMinutes} minutes · {facts.artifactCount}-piece Foundation Packet · Certificate with public verification
+              {facts.moduleCount} modules · {facts.totalMinutes} minutes · {facts.artifactCount}-piece Foundation Packet · completion record
             </p>
           </div>
 
@@ -260,112 +260,91 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </div>
       </Section>
 
-      <Section variant="std" surface="white" id="lesson-preview">
-        <SectionHead
-          kicker="Preview one lesson"
-          heading={<>Turn a weak prompt into a reusable strategy.</>}
-          lede={
-            <>
-              One module shows the rhythm: start with a rough banking prompt, add guardrails,
-              then save a reviewed First Prompt Card.
-            </>
-          }
-        />
-        <LessonPreview />
-      </Section>
-
-      <Section variant="std">
-        <div className="mk-data-band">
+      <Section variant="std" surface="white" id="lesson-preview" className="mk-course-bottom">
+        <div className="mk-course-bottom-head">
           <div>
-            <p className="mk-data-kicker">How data is handled</p>
-            <h2>Practice with sample facts. Keep sensitive data out.</h2>
+            <p className="mk-course-bottom-kicker">Course preview</p>
+            <h2>Preview the work before you enroll.</h2>
           </div>
-          <div className="mk-data-list">
-            <p>Synthetic or sanitized banking examples are enough to complete the course.</p>
-            <p>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</p>
-            <p>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</p>
-          </div>
-          <Button variant="ghost-light" href="/security/data-handling">
-            Read the data-handling summary
-          </Button>
+          <p>
+            The course is built around small, reviewed outputs. This sample shows the rhythm:
+            turn a loose prompt into a reusable banking asset, then save the proof.
+          </p>
         </div>
-      </Section>
 
-      <Section variant="std">
-        <SectionHead
-          kicker="Credential value"
-          heading={<>This is not a webinar certificate.</>}
-          lede={
-            <>
-              AiBI Foundation is earned by completing the course and submitting
-              evidence of reviewed work, not by attending a webinar or passing
-              through a marketing gate.
-            </>
-          }
-        />
-        <div className="mk-credential">
-          {CREDENTIAL_PROOF.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.title} className="mk-credential-row">
-                <span className="mk-pic-ink-gold">
-                  <Icon size={20} />
-                </span>
-                <div>
-                  <p className="mk-k">{item.title}</p>
-                  <p className="mk-v">{item.desc}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mk-credential-actions">
-          <Button variant="ghost-dark" href="/certifications">
-            Read credential details
-          </Button>
-          <Button variant="ghost-dark" href="/verify">
-            Open verification lookup
-          </Button>
-        </div>
-      </Section>
+        <div className="mk-course-bottom-grid">
+          <LessonPreview />
 
-      <Section variant="std">
-        <div className="mk-pricing-wrap">
-          <div className="mk-pricing-card">
-            <header>
-              <p className="mk-k">One-time · No subscription</p>
-              <h3>AiBI Foundation</h3>
-            </header>
-            <div className="mk-pricing-amount">
-              <p className="mk-k">Individual enrollment</p>
-              <p className="mk-pricing-value">{facts.individualPriceLabel}</p>
-              <p>{facts.moduleCount} modules · {facts.totalMinutes} minutes · Foundation Packet · certificate</p>
-            </div>
-            <ul className="mk-pricing-bullets">
-              {pricingBullets.map((item) => (
-                <li key={item}>
-                  <CheckCircleIcon size={18} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mk-pricing-ctas">
-              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll in Foundation
-              </Button>
-              <Button variant="ghost-light" size="lg" href="/for-institutions">
-                Ask about team enrollment
+          <aside className="mk-course-trust-panel" aria-label="Course data and packet rules">
+            <div className="mk-course-trust-block">
+              <p className="mk-k">Data rule</p>
+              <h3>Practice with sample facts.</h3>
+              <ul className="mk-course-trust-list">
+                <li>Synthetic or sanitized banking examples are enough to complete the course.</li>
+                <li>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</li>
+                <li>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</li>
+              </ul>
+              <Button variant="ghost-dark" href="/security/data-handling">
+                Read data-handling summary
               </Button>
             </div>
+
+            <div className="mk-course-trust-block">
+              <p className="mk-k">What gets saved</p>
+              <h3>The packet is the useful part.</h3>
+              <ul className="mk-course-proof-list">
+                {COURSE_EVIDENCE.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.title}>
+                      <Icon size={18} />
+                      <span>
+                        <strong>{item.title}</strong>
+                        <em>{item.desc}</em>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </aside>
+        </div>
+
+        <div className="mk-course-enroll-panel">
+          <div className="mk-course-enroll-copy">
+            <p className="mk-k">Foundation enrollment</p>
+            <h2>Start with one course that produces real work.</h2>
+            <p>
+              Individual access includes all modules, the Foundation Packet, final
+              submission, and ongoing access to purchased materials.
+            </p>
+          </div>
+
+          <div className="mk-course-enroll-price">
+            <span>One-time</span>
+            <strong>{facts.individualPriceLabel}</strong>
+            <em>No subscription</em>
+          </div>
+
+          <ul className="mk-course-enroll-list">
+            {pricingBullets.slice(0, 6).map((item) => (
+              <li key={item}>
+                <CheckCircleIcon size={18} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mk-course-enroll-actions">
+            <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
+              Enroll in Foundation
+            </Button>
+            <Button variant="ghost-light" size="lg" href="/for-institutions">
+              Ask about team enrollment
+            </Button>
           </div>
         </div>
       </Section>
-
-      <StickyMobileCta
-        label={`Enroll · ${facts.individualPriceLabel}`}
-        href="/courses/foundation/program/purchase"
-        source="courses-sticky"
-      />
     </div>
   );
 }
@@ -377,7 +356,7 @@ function HeroOutcomeCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
     'Skill Builder practice',
     'Workflow map practice',
     'Foundation Packet',
-    'Certificate + public verification URL',
+    'Review and transfer notes',
   ];
 
   return (
