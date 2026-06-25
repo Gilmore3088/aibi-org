@@ -88,7 +88,7 @@ describe('/api/resources/[slug]/word', () => {
     expect(response.status).toBe(404);
   });
 
-  it('returns a Word-compatible document for a newly promoted role playbook', async () => {
+  it('returns the executive AI governance kit as a Word-compatible document', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/executive-playbook/word'),
       contextFor('executive-playbook'),
@@ -98,8 +98,16 @@ describe('/api/resources/[slug]/word', () => {
     expect(response.headers.get('content-disposition')).toContain('Executive-Playbook.doc');
 
     const body = await response.text();
-    expect(body).toContain('The Executive / Leadership AI-Native Playbook');
-    expect(body).toContain('The executive AI operating model');
+    expect(body).toContain('The Executive AI Governance Kit for Community Banks');
+    expect(body).toContain('Five board decisions, one funded pilot, one data line, and one evidence dashboard');
+    expect(body).toContain('The Five Decisions Your Board Needs This Quarter');
+    expect(body).toContain('Current model-risk guidance, including SR 26-2 where applicable');
+    expect(body).toContain('Copy the Lakeshore Pattern');
+    expect(body).toContain('Next step: Run the 90-Minute Executive AI Governance Sprint');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain('The Executive / Leadership AI-Native Playbook');
+    expect(body).not.toContain('Adopt-verbatim');
+    expect(body).not.toContain('SR 11-7');
   });
 
   it('rejects unknown slugs', async () => {
