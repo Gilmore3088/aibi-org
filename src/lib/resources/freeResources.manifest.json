@@ -103,7 +103,7 @@
     },
     {
       "slug": "artifact-ai-use-case-inventory",
-      "title": "AI Use-Case Inventory",
+      "title": "The Bank AI Use-Case Inventory Template",
       "audience": ["Compliance", "Operations", "Risk"],
       "category": "artifact",
       "funnelSegment": "governance",
@@ -112,7 +112,7 @@
       "variants": { "pdf": "artifact-ai-use-case-inventory.pdf", "word": "/api/resources/templates/ai-use-case-inventory/word", "zip": null },
       "zipMembership": ["governance-starter-kit", "lending-review-kit"],
       "canonicalRoute": "/api/resources/artifact-ai-use-case-inventory/download",
-      "sourceCitations": ["AIEOG AI Lexicon", "Interagency Third-Party Risk Guidance"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "NIST AI RMF", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": {
         "roles": ["compliance", "operations"],

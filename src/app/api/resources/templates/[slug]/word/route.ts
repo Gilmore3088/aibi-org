@@ -28,6 +28,37 @@ function renderList(items: readonly string[] | undefined, tag: 'ul' | 'ol'): str
   return `<${tag}>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</${tag}>`;
 }
 
+function renderTables(
+  tables:
+    | readonly {
+        readonly caption?: string;
+        readonly headers: readonly string[];
+        readonly rows: readonly (readonly string[])[];
+      }[]
+    | undefined,
+): string {
+  if (!tables || tables.length === 0) return '';
+
+  return tables
+    .map((table) => {
+      const caption = table.caption ? `<p class="table-caption">${escapeHtml(table.caption)}</p>` : '';
+      const header = `<thead><tr>${table.headers
+        .map((cell) => `<th>${escapeHtml(cell)}</th>`)
+        .join('')}</tr></thead>`;
+      const rows = `<tbody>${table.rows
+        .map(
+          (row) =>
+            `<tr>${row
+              .map((cell) => `<td>${escapeHtml(cell)}</td>`)
+              .join('')}</tr>`,
+        )
+        .join('')}</tbody>`;
+
+      return `${caption}<table>${header}${rows}</table>`;
+    })
+    .join('');
+}
+
 function renderSourceBox(sources: readonly string[]): string {
   if (sources.length === 0) return '';
 
@@ -123,6 +154,30 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     li { margin: 0 0 6pt; color: #475569; }
     strong { color: #071a2f; }
     ul, ol { margin-top: 6pt; margin-bottom: 12pt; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10pt 0 16pt;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1pt solid #e2e8f0;
+      padding: 6pt 7pt;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #f7f3ea;
+      color: #071a2f;
+      font-weight: 700;
+    }
+    td { color: #475569; }
+    .table-caption {
+      margin: 12pt 0 5pt;
+      color: #071a2f;
+      font-weight: 700;
+      font-size: 10pt;
+    }
     .source-box {
       margin-top: 26pt;
       padding: 13pt 15pt;
@@ -166,7 +221,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
       .map((section) => {
         return `<section><h2>${escapeHtml(section.heading)}</h2>${
           section.intro ? `<p>${escapeHtml(section.intro)}</p>` : ''
-        }${renderList(section.items, 'ul')}${renderList(section.steps, 'ol')}</section>`;
+        }${renderTables(section.tables)}${renderList(section.items, 'ul')}${renderList(section.steps, 'ol')}</section>`;
       })
       .join('')}
     ${renderSourceBox(template.sourcedFrom)}

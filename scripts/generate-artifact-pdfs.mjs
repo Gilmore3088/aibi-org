@@ -28,7 +28,7 @@ const ARTIFACTS = [
   {
     slug: 'ai-use-case-inventory',
     resourceSlug: 'artifact-ai-use-case-inventory',
-    title: 'AI Use-Case Inventory',
+    title: 'The Bank AI Use-Case Inventory Template',
     writeSourceHtml: false,
   },
   {

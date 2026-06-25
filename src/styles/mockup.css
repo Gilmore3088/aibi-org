@@ -5309,6 +5309,39 @@ section.mk-std { padding: 56px 0; }
   font-size: 15px; line-height: 1.6; color: var(--slate-600);
   padding-left: 4px; margin-bottom: 6px;
 }
+.mk-tpl-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 14px 0 20px;
+}
+.mk-tpl-table-caption {
+  font-size: 13px !important;
+  font-weight: 700;
+  color: var(--ink) !important;
+  margin: 0 0 8px !important;
+}
+.mk-tpl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 620px;
+}
+.mk-tpl-table th,
+.mk-tpl-table td {
+  border: 1px solid var(--slate-200);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.mk-tpl-table th {
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+.mk-tpl-table td {
+  color: var(--slate-600);
+  line-height: 1.45;
+}
 .mk-tpl-sources {
   margin-top: 40px; padding: 20px 24px;
   background: var(--cream); border-radius: var(--r-md);

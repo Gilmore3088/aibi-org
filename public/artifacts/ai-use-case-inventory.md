@@ -1,146 +1,159 @@
-# AI Use-Case Inventory
+# The Bank AI Use-Case Inventory Template
 
-The single register of every place AI touches your institution: what it does,
-who owns it, what data it sees, and how closely a human watches it. Maintain
-it. Bring it to your AI committee. Hand it to your examiner before they ask —
-because they will ask for this one first.
+A fillable register for tracking AI tools, data, owners, human review, risk
+tier, vendor controls, evidence, approval status, and re-review cadence.
 
-## Why this is the artifact examiners ask for first
+Use one row per AI use case. A use case is the workflow, not just the tool
+name. If one vendor supports three workflows, record three rows.
 
-There is still no comprehensive AI-specific banking law. Federal financial
-regulators supervise AI through existing frameworks — model risk management,
-third-party risk management, fair lending, BSA/AML, and consumer protection —
-applied through risk-based examinations (GAO-25-107197, May 2025). That has a
-direct consequence: an examiner cannot ask "are you following the AI rule,"
-so they ask the next best question — "show me everything you're doing with AI
-and how you govern it." The inventory is that answer in one document.
+## Intake questions
 
-It is also a baseline expectation in its own right. The AIEOG AI Lexicon (US
-Treasury / FBIIC / FSSCC) names the "AI use case inventory" as a foundational
-governance practice for institutions of any size. And model risk management
-guidance has long expected a complete inventory of models in use, under
-development, or recently retired. The revised interagency guidance, SR 26-2
-(Federal Reserve / OCC / FDIC, April 17, 2026), superseded SR 11-7 and SR 21-8
-and made the framework explicitly risk-based and tailored to an institution's
-size and model risk profile. It is described as most relevant to banks over
-$30 billion in assets, but the agencies note it can still apply to smaller
-institutions where model use is significant — and supervisory focus expressly
-includes whether the inventory captures all material models and third-party
-tools. For a community bank or credit union, the inventory is the cheapest,
-highest-leverage examiner-readiness move you can make.
+Ask these before opening a row:
 
-If you do nothing else with AI governance this year, keep this list current.
+- What business problem does this solve?
+- What tool or vendor will be used, and is it institution-provisioned?
+- What data enters the tool?
+- Does customer/NPI, regulated, examination-sensitive, privileged, or security
+  control information enter the tool?
+- What output is produced?
+- Could the output affect a customer, examiner, control, report, or regulated
+  decision?
+- Who signs off before use?
+- What evidence will be retained?
 
-## The column schema
+## Fillable register fields
 
-One row per use case. These are the fields an examiner expects to see, each
-with a one-line definition.
+Build the register as a spreadsheet or table with these columns.
 
-| Column | What goes in it |
-|--------|-----------------|
-| Use case | The actual task in plain language — what the AI does, not the product name (e.g., "draft BSA SAR narratives"). |
-| Owner | A named person accountable for this use case. Not "the committee," not a department. |
-| Business purpose | Why the institution does this — the outcome it serves (efficiency, service, detection, compliance). |
-| Tool & vendor | The specific product, version, and vendor (e.g., "Microsoft 365 Copilot, Microsoft"). Note "in-house" if built internally. |
-| Data classes touched | The data the use case can see: Green (public), Yellow (internal, non-NPI), Red (NPI / PII / loan files). |
-| Risk tier | Low / Medium / High, assigned with the rubric below. |
-| Human-in-the-loop? | Yes / No — whether a person reviews or approves output before it has effect. For "Yes," note the control (mandatory / sampled). |
-| Regulatory touchpoints | The rules the use case implicates (e.g., ECOA/Reg B, BSA/AML, GLBA, UDAAP, fair lending, Reg E). |
-| Validation status | Validated / In review / Not validated / Vendor-attested — the state of independent testing of the tool for this use. |
-| Review cadence | How often this row is re-examined (e.g., quarterly, annually). Higher tier means more frequent. |
-| Last reviewed | The date a human last verified the row still describes how the use case actually runs (YYYY-MM-DD). |
-| Status | Production / Pilot / Proposed / Retired. |
+| Column | What to fill in |
+|---|---|
+| Use Case ID | Stable ID such as AI-OPS-001 or AI-LEND-003. |
+| Use Case Name | Plain-English workflow name, not the product name. |
+| Business Purpose | The operational, risk, compliance, or customer reason this use case exists. |
+| Department | Business line or function that owns the workflow. |
+| Named Owner | One accountable person, not a committee. |
+| Status | Proposed, intake review, sandbox, approved, restricted, blocked, or retired. |
+| Tool/Vendor | Product, vendor, version if known, and whether the tool is public, enterprise, private, or embedded. |
+| Deployment Type | Public AI, approved enterprise account, vendor feature, private deployment, or internal model. |
+| Approved Tool Status | Approved, pending review, exception, prohibited, or not yet assessed. |
+| Data Class | Public, internal, confidential/NPI, regulated, examination-sensitive, or privileged. |
+| Customer/NPI Involved | Yes, no, de-identified, tokenized, or approved private environment only. |
+| Regulated Process Involved | Credit, fraud, BSA/AML, sanctions, complaints, regulatory reporting, HR, legal, or none. |
+| Output Type | Draft, summary, classification, recommendation, score, customer-facing content, report, code, or action. |
+| Human Reviewer | Named role that reviews before use, plus whether review is mandatory or sampled. |
+| Risk Tier | Low, medium, high, or blocked using the guide below. |
+| Required Controls | Approved tool, data limit, human review, validation, monitoring, recordkeeping, escalation, or other controls. |
+| Evidence Retained | Prompt, output, reviewer note, ticket, approval, validation memo, vendor review, or incident link. |
+| Approval Date | Date approved for sandbox or production use. |
+| Next Review Date | Quarterly for high-risk rows; at least annually for medium/low rows. |
+| Re-review Trigger | Tool change, data class change, policy change, vendor update, incident, complaint, or move to production. |
+| Incident/Exception Link | Ticket, exception log, risk acceptance, or incident record if applicable. |
+| Vendor Review Link | Third-party due diligence, contract review, SOC report, or vendor monitoring file. |
 
-## Risk-tiering rubric
+## Vendor lifecycle fields
 
-Tier on the highest factor that applies — if any single row pushes High, the
-use case is High. A banker should be able to tier a use case in 30 seconds.
+Use these fields whenever the row involves a vendor, embedded vendor feature,
+hosted model, or third-party AI capability.
 
-| Factor | Low | Medium | High |
-|--------|-----|--------|------|
-| Data touched | Green only | Yellow | Red (NPI / PII / loan or member files) |
-| Effect of output | Internal draft, human rewrites fully | Customer-facing after review; operational input | Influences a credit, account, BSA/AML, or adverse-action decision |
-| Autonomy | Output always rewritten by a person | Output edited/approved by a person | Output can act or post with no human check |
-| Regulated domain | None | Indirect (marketing, internal ops) | Lending, BSA/AML, deposits, collections, fair lending |
-| Customer impact if wrong | Negligible | Recoverable inconvenience | Financial, legal, or fair-lending harm |
+| Lifecycle stage | Inventory question |
+|---|---|
+| Planning rationale | What business problem does the AI tool solve, and why is a third party needed? |
+| Due diligence status | Has InfoSec, Compliance, Risk, and the business owner reviewed the tool for this use? |
+| Contract review status | Does the agreement cover confidentiality, audit, regulatory access, breach notice, and use limits? |
+| Data-use terms | May the vendor use prompts, outputs, or bank data for model training or product improvement? |
+| Model-training restriction | Is training on bank/customer data prohibited or opt-out confirmed in writing? |
+| Retention/deletion terms | How long are prompts and outputs retained, and how are they deleted? |
+| Subcontractor/fourth-party review | What subprocessors, hosted models, or infrastructure providers are involved? |
+| Breach-notice terms | What notice timeline and evidence preservation requirements apply? |
+| Monitoring owner | Who reviews performance, incidents, complaints, and vendor changes? |
+| Next vendor review date | When is the next monitoring review due? |
+| Termination/data-return plan | How will access be revoked and bank data returned or deleted? |
 
-Rule of thumb: anything that touches Red data, or sits in or near a
-credit / account / BSA-AML decision, is **High** and should run with a
-human-in-the-loop. Marketing copy on public facts with a human editor is
-typically **Low**.
+## Risk-tier guide
 
-## Filled example inventory
+Tier on the highest factor that applies. The purpose is consistency across
+departments, not false precision.
 
-A worked example across departments. Use it to see exactly how to complete a
-row. Dates and vendors are illustrative.
+| Tier | Definition |
+|---|---|
+| Low | Internal drafting, public data, no customer impact, no regulated decision, approved tool, and human review before use. |
+| Medium | Internal process support, customer-facing draft content, confidential internal data, or operational workflow support where human review is required. |
+| High | Decision support for credit, fraud, BSA/AML, sanctions, complaints, regulatory reporting, customer-impacting workflows, or NPI used only in approved private environments. |
+| Blocked | Public AI tool with NPI, SAR/AML detail, examination-sensitive information, privileged material, security controls, or final regulated decisions. |
 
-| Use case | Owner | Business purpose | Tool & vendor | Data classes | Risk tier | HITL? | Regulatory touchpoints | Validation status | Cadence | Last reviewed | Status |
-|----------|-------|------------------|---------------|--------------|-----------|-------|------------------------|-------------------|---------|---------------|--------|
-| Pre-screen consumer loan applications for completeness and route to underwriters | Dana Whitfield, VP Lending | Faster, more consistent intake triage | Underwriting Assist, LendingCoVendor | Red | High | Yes (mandatory — underwriter reviews every routing) | ECOA / Reg B, fair lending, FCRA | In review | Quarterly | 2026-05-12 | Pilot |
-| Draft BSA/AML SAR narratives from analyst-supplied facts | Marcus Reyes, BSA Officer | Reduce narrative drafting time, improve consistency | In-house GPT on approved tenant | Red | High | Yes (mandatory — BSA Officer edits and signs) | BSA / AML, SAR confidentiality | Validated | Quarterly | 2026-06-01 | Production |
-| Summarize internal policy documents for staff training | Priya Nair, L&D Manager | Speed up training content development | Microsoft 365 Copilot, Microsoft | Yellow | Medium | Yes (sampled — reviewer spot-checks) | Internal policy accuracy | Vendor-attested | Annually | 2026-04-20 | Production |
-| Generate marketing email copy on public product features | Sam Ortiz, Marketing Director | Faster campaign drafting | Jasper, Jasper AI | Green | Low | Yes (mandatory — editor reviews before send) | UDAAP, advertising / Reg DD claims | Not validated | Annually | 2026-03-15 | Production |
-| Classify and route inbound member service emails | Lee Tran, Ops Manager | Reduce response time, route to right queue | ServiceRouter AI, OpsVendor | Yellow | Medium | No (auto-routes; misroutes corrected downstream) | GLBA (data handling), Reg E (if disputes) | In review | Quarterly | 2026-05-28 | Production |
-| Chatbot answering general account FAQs on the website | Jordan Kim, Digital Banking | Self-service for common questions | ChatAssist, FinChatVendor | Yellow | High | Yes (escalates to human; no transactional actions) | UDAAP, GLBA, Reg E | In review | Quarterly | 2026-06-10 | Pilot |
+Model-risk note: use current model-risk guidance and principles, including
+SR 26-2 where applicable, for AI use cases that inform quantitative,
+customer-impacting, or regulated decisions. Do not imply every generative AI
+use case at every institution is automatically subject to the same model-risk
+regime.
 
-## How to stand it up and maintain it
+## Approval workflow
 
-1. **Assign one owner of the inventory itself** — typically a named officer in
-   risk or compliance. The inventory needs a person, not a committee, on the
-   hook for keeping it current.
-2. **Survey every department.** Ask the same two questions everywhere: "Are you
-   using AI for any work task?" and "Is any vendor giving you AI-powered
-   features you may not have classified as AI?" The second question is how you
-   catch shadow AI buried in tools you already license.
-3. **Capture one row per use case**, even when one tool covers several use
-   cases. Tier each row with the rubric. Most community institutions surface
-   9–14 use cases on the first pass.
-4. **Set cadence by tier.** Review High-tier rows quarterly, Medium and Low at
-   least annually. Re-review any row immediately when the vendor materially
-   updates the tool, the data classes change, or the use case moves from pilot
-   to production.
-5. **Feed board reporting.** Each cycle, roll the inventory into a short summary
-   for the board or its risk committee: count of use cases by tier, what's new
-   since last period, what's in pilot, any High-tier row without completed
-   validation, and any open issues. The inventory is the source of record;
-   the board summary is its quarterly read-out.
+Move each row through this path:
 
-## Common mistakes
+1. Proposed - department submits intake questions and draft row.
+2. Intake review - AI Program Owner confirms the row is a use case and names
+   an owner.
+3. Data classification - InfoSec or data owner confirms the highest data class
+   and prohibited inputs.
+4. Vendor/tool review - TPRM, InfoSec, and Compliance confirm approved-tool and
+   contract status.
+5. Risk tier assigned - Compliance/Risk assigns low, medium, high, or blocked.
+6. Human review control defined - owner names reviewer, review standard, and
+   evidence retained.
+7. Approved, restricted, or blocked - approval is recorded with date,
+   conditions, and next review date.
+8. Quarterly or annual re-review - cadence follows the tier and any trigger
+   event.
 
-- **"The committee" as owner.** Accountability has to land on a person. A
-  committee can govern; it cannot be the owner of a use case.
-- **Shadow AI not captured.** The biggest gaps are AI features inside tools you
-  already use — CRM, core, productivity suites, fraud tools. If you only list
-  tools you bought "for AI," the inventory is incomplete.
-- **No last-reviewed date, or a stale one.** An undated row is an unverified
-  row. Examiners read the dates first.
-- **Listing tools instead of use cases.** "Microsoft 365 Copilot" is not a
-  row. "Draft BSA SAR narratives in Copilot" is. One tool can generate many
-  rows, each with its own tier and oversight.
-- **Treating pilots as off-inventory.** Pilots touching Red data are exactly
-  what examiners want to see governed. Log them with status = Pilot.
-- **No human-in-the-loop on High-tier rows.** Any use case influencing a
-  credit, account, or BSA/AML decision should show how a person checks it.
-- **One-and-done.** An inventory built for an exam and never updated is worse
-  than none — it documents that you know what you have and stopped watching.
+## Sample rows
+
+Use these to calibrate the first pass.
+
+| Example | Use case | Data/tool | Tier | Required control |
+|---|---|---|---|---|
+| Green/Low | Summarize public regulator press releases for internal training. | Public data in an approved tool. | Low | Human editor confirms accuracy before training use. |
+| Yellow/Medium | Draft customer email language using approved templates and no customer data. | Internal templates in an approved enterprise tool. | Medium | Marketing and Compliance review before sending. |
+| Red/Blocked | Enter loan-file details or SAR investigation notes into a public AI tool. | NPI, loan file, SAR/AML, or examination-sensitive content in a public tool. | Blocked | Do not use. Escalate to AI Program Owner and Compliance if attempted. |
+
+## Maintenance cadence
+
+- High-risk rows: review at least quarterly and whenever the tool, model,
+  vendor, data class, workflow, or applicable guidance changes.
+- Medium and low rows: review at least annually and on any material trigger
+  event.
+- Board or committee reporting: summarize count of use cases by tier, new
+  rows, blocked rows, open exceptions, incidents, and overdue reviews.
+- Retired rows: keep enough history to show when use stopped, who approved
+  retirement, and where records were retained.
+
+## Next step: AI Use-Case Inventory Workshop
+
+Use this template to run a 60-minute workshop that identifies shadow AI use,
+classifies risk tiers, assigns owners, and produces the first board-ready
+inventory.
+
+Bring Compliance, Risk, InfoSec, Operations, Lending, BSA/AML, Marketing, and
+the AI Program Owner. Start with tools staff already use, then ask where
+vendors have added AI features inside existing systems. Leave with at least
+three completed rows, blocked uses named, owners assigned, and review dates
+scheduled.
 
 ## Adapt before adoption
 
-This template is a starting point, not a policy. Tier definitions, cadence,
-data classes, and ownership should be adapted to your institution's size, risk
-profile, charter, and regulator before adoption. This artifact is general
-information, not legal or compliance advice; confirm specifics with your own
-counsel and compliance function.
+This template is a starting point, not legal or compliance advice. Adapt tier
+definitions, approval roles, cadence, data classes, and vendor-control fields
+to your institution's size, complexity, charter, regulator, data standards,
+and third-party risk program before adoption.
 
 ## Sources
 
-- AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC
+- AIEOG AI Lexicon and Financial Services AI Risk Management Framework, US
+  Treasury / FBIIC / FSSCC, February 2026
 - SR 26-2, Revised Guidance on Model Risk Management, Federal Reserve / OCC /
-  FDIC, April 17, 2026 (supersedes SR 11-7, April 4, 2011, and SR 21-8)
+  FDIC, April 17, 2026
 - Interagency Guidance on Third-Party Relationships: Risk Management, Federal
   Reserve / OCC / FDIC, June 2023
-- GAO-25-107197, Artificial Intelligence: Use and Oversight in Financial
-  Services, US GAO, May 2025
-- Equal Credit Opportunity Act (15 U.S.C. § 1691) and Regulation B (12 CFR
-  Part 1002), CFPB
-- Gramm-Leach-Bliley Act Privacy Rule (Title V, Subtitle A)
+- NIST AI Risk Management Framework (AI RMF 1.0)
+- ECOA / Regulation B and CFPB adverse-action guidance for credit-related use
+  cases

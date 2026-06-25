@@ -38,7 +38,7 @@ const KITS = {
     pdfs: [
       ['safe-ai-use-checklist.pdf',          'Staff-facing habits before using AI: strip data, ask clearly, fact-check, escalate.'],
       ['red-yellow-green-use-card.pdf',      'Ten-second classification card for safe, review-required, and prohibited AI uses.'],
-      ['artifact-ai-use-case-inventory.pdf', 'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
+      ['artifact-ai-use-case-inventory.pdf', 'Fillable AI use-case register with owners, data classes, vendor controls, risk tiers, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
     ],
     markdowns: [],
@@ -64,7 +64,7 @@ const KITS = {
     pdfs: [
       ['lending-playbook.pdf',               'Role playbook for safe lending AI use: adverse-action tuner, decision summaries, fair-lending pre-checks.'],
       ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for fair-lending and disparate-impact concerns on AI-assisted decisions.'],
-      ['artifact-ai-use-case-inventory.pdf', 'Working register for AI use cases, data classes, risk tiers, reviewers, and review cadence.'],
+      ['artifact-ai-use-case-inventory.pdf', 'Fillable AI use-case register with owners, data classes, vendor controls, risk tiers, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
     ],
     markdowns: [],
