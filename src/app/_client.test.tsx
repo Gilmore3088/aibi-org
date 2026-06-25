@@ -19,7 +19,7 @@ describe('HomePage', () => {
 
     expect(screen.getByText(/For community banks and credit unions/i)).toBeTruthy();
     const heading = screen.getByRole('heading', {
-      name: /AI adoption is accelerating\. Judgment isn.t\./i,
+      name: /AI is already here\. Let.s make sure your team is ready\./i,
     });
     expect(heading).toBeTruthy();
     expect(screen.getByText(/Free .* 12 questions .* 3 minutes .* first artifact/i)).toBeTruthy();

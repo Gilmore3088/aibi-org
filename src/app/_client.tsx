@@ -180,11 +180,12 @@ export default function HomePage() {
           <div>
             <p className="mk-kicker mk-kicker-gold-soft">For community banks and credit unions</p>
             <h1>
-              AI adoption is accelerating. <span className="mk-hero-accent">Judgment isn&apos;t.</span>
+              AI is already here. <span className="mk-hero-accent">Let&apos;s make sure your team is ready.</span>
             </h1>
             <p className="mk-lede">
-              Most employees know how to ask AI a question. Few know what should never be pasted into it.
-              Find your institution&apos;s AI readiness gap in three minutes.
+              Give your staff a practical way to use AI with clear data boundaries,
+              checked sources, and the right human review. See where your
+              institution is ready in three minutes.
             </p>
             <p className="mk-hero-role-note">
               Built for frontline tellers, branch teams, lenders, operations, compliance, and marketing roles.
