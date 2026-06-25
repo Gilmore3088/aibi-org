@@ -8,7 +8,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
       { href: '/assessment/take', label: 'Free assessment' },
       { href: '/pricing', label: 'Pricing' },
       { href: '/assessment/in-depth', label: 'In-depth assessment' },
-      { href: '/courses', label: 'AiBI-Foundation course' },
+      { href: '/courses', label: 'AiBI Foundation course' },
       { href: '/for-institutions', label: 'For institutions' },
     ],
   },

@@ -6,119 +6,120 @@ export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
   title: 'Pricing | The AI Banking Institute',
   description:
-    'Compare the free assessment, $99 In-Depth Assessment, $295 AiBI-Foundation course, and institution rollout options.',
+    'Choose between the free AI Readiness Snapshot, In-Depth Assessment, AiBI Foundation, and institution rollout paths.',
 };
 
 const TIERS = [
   {
-    eyebrow: 'Free',
     name: 'AI Readiness Snapshot',
     price: '$0',
-    cadence: '12 questions · about 3 minutes',
-    bestFor: 'A banker who wants a fast starting point before buying anything.',
-    output: 'Score, maturity tier, top gap, starter prompt, and role playbook path.',
-    action: 'Take free assessment',
+    cadence: 'Free start',
+    badge: null,
+    bestFor: 'A banker who wants a quick starting point before buying anything.',
+    bullets: ['12-question snapshot', 'Maturity tier and top gap', 'Starter prompt and recommended path'],
+    action: 'Start free',
     href: '/assessment/take',
-    featured: false,
-    notes: ['No credit card', 'Email optional for summary view', 'Good first step for teams'],
   },
   {
-    eyebrow: 'Individual report',
     name: 'In-Depth Assessment',
     price: '$99',
-    cadence: 'One-time payment',
-    bestFor: 'A manager, executive, or specialist who needs a written readiness plan.',
-    output: '48-question diagnostic, eight scores, peer-band comparison, and 90-day action register.',
-    action: 'Get the full report',
+    cadence: 'One-time',
+    badge: 'Best first paid step',
+    bestFor: 'A manager or executive who needs a written readiness plan.',
+    bullets: ['48-question diagnostic', 'Eight readiness scores and peer-band context', '90-day action register'],
+    action: 'Get the report',
     href: '/assessment/in-depth',
-    featured: true,
-    notes: ['Report in about 20 minutes', 'Retake by request within 12 months', '7-day refund if unused'],
   },
   {
-    eyebrow: 'Capability build',
-    name: 'AiBI-Foundation',
+    name: 'AiBI Foundation',
     price: '$295',
-    cadence: 'One-time enrollment',
-    bestFor: 'An individual learner who needs reusable work products, not just a score.',
-    output: '18 modules, saved prompts, workflow templates, reviewed artifacts, and Foundation Packet.',
-    action: 'Explore course',
+    cadence: 'One-time',
+    badge: 'Best for individual capability',
+    bestFor: 'An individual learner who wants reusable AI work products, not just a score.',
+    bullets: ['18 modules and saved prompts', 'Workflow templates and reviewed artifacts', 'Certificate with public authenticity URL'],
+    action: 'Enroll in Foundation',
     href: '/courses/foundation/program/purchase',
-    featured: false,
-    notes: ['Self-paced course', 'Public authenticity URL after completion', '7-day refund if unused'],
   },
   {
-    eyebrow: 'Teams',
     name: 'Institution Rollout',
     price: 'Custom',
     cadence: 'Scoped before rollout',
-    bestFor: 'A department, cohort, institution, or partner channel that needs seats, reporting, and support.',
-    output: 'Assisted rollout planning, partner/channel scope, cohort setup, reporting scope, support path, and optional briefing.',
-    action: 'Request institution or partner plan',
+    badge: null,
+    bestFor: 'Departments, cohorts, institutions, associations, or partner channels.',
+    bullets: ['Rollout planning and cohort setup', 'Reporting scope and support path', 'Optional briefing'],
+    action: 'Request a rollout plan',
     href: '/for-institutions',
-    featured: false,
-    notes: ['Team Assessment stays assisted', 'Partner/association rollout by request', 'SSO/invoicing discussed before quote'],
   },
+] as const;
+
+const PATH_STEPS = [
+  ['Snapshot', 'Free start'],
+  ['Report', 'Written plan'],
+  ['Foundation', 'Individual capability'],
+  ['Rollout', 'Team implementation'],
 ] as const;
 
 const COMPARISON_ROWS = [
   {
-    label: 'Primary question',
-    values: [
-      'Where should I start?',
-      'What is my full readiness profile?',
-      'How do I build repeatable AI skill?',
-      'How do we roll this out with a team?',
-    ],
+    need: 'Where should I start?',
+    option: 'Snapshot',
+    outcome: 'Fast score and recommended path',
   },
   {
-    label: 'Core deliverable',
-    values: [
-      'Snapshot and starter artifact',
-      'Written diagnostic report',
-      'Reusable work products and certificate',
-      'Scoped cohort plan and reporting path',
-    ],
+    need: 'What is our readiness profile?',
+    option: 'In-Depth Assessment',
+    outcome: 'Written diagnostic and 90-day action register',
   },
   {
-    label: 'Credential / proof',
-    values: [
-      'No credential',
-      'Diagnostic report only',
-      'AiBI-Foundation certificate with public authenticity URL',
-      'Cohort reporting scope agreed before rollout',
-    ],
+    need: 'How do I build practical AI skill?',
+    option: 'Foundation',
+    outcome: 'Course, templates, work products, certificate',
   },
   {
-    label: 'Payment',
-    values: ['Free', '$99 one-time', '$295 one-time', 'Quote by cohort'],
-  },
-  {
-    label: 'Best next step',
-    values: [
-      'Complete the 12-question assessment',
-      'Buy the In-Depth Assessment',
-      'Enroll in Foundation',
-      'Submit an institution inquiry',
-    ],
+    need: 'How do we roll this out with a team?',
+    option: 'Institution Rollout',
+    outcome: 'Scoped cohort plan, reporting, support',
   },
 ] as const;
 
+const PROOF_ROWS = [
+  ['Snapshot', '$0', 'Summary view'],
+  ['In-Depth Assessment', '$99', 'Diagnostic report'],
+  ['Foundation', '$295', 'Certificate + authenticity URL'],
+  ['Institution Rollout', 'Custom', 'Cohort reporting scope'],
+] as const;
+
 const DECISION_RULES = [
+  'Start free if you need a quick read.',
+  'Buy the $99 report if a decision is waiting.',
+  'Choose Foundation if you need skill, templates, and reusable work products.',
+  'Contact us if seats, reporting, invoicing, SSO, or partner rollout matter.',
+] as const;
+
+const PURCHASE_RULES = [
+  'Individual products are one-time purchases.',
+  'No subscription is required for Snapshot, In-Depth Assessment, or Foundation.',
+  'Paid self-service products have a 7-day refund window if unused.',
+  'Team, institution, association, and partner rollouts are scoped before checkout.',
+  'SSO, invoicing, reporting, and support are discussed before quote.',
+] as const;
+
+const EMPHASIZED_CARD_TERMS = [
   {
-    title: 'Start free when risk is low.',
-    body: 'Use the snapshot when you need a fast read before choosing a paid product.',
+    label: 'free snapshot',
+    href: '/assessment/take',
   },
   {
-    title: 'Buy the $99 report when a decision is waiting.',
-    body: 'Use In-Depth when leadership needs eight-dimension evidence and a 90-day register.',
+    label: 'written report',
+    href: '/assessment/in-depth',
   },
   {
-    title: 'Choose Foundation when staff need capability.',
-    body: 'Use the course when the outcome needs saved prompts, templates, and reviewed artifacts.',
+    label: 'Foundation course',
+    href: '/courses/foundation/program/purchase',
   },
   {
-    title: 'Talk to us before buying for a team.',
-    body: 'Team rollout, reporting, SSO, invoicing, and volume pricing are scoped before checkout.',
+    label: 'team rollout',
+    href: '/for-institutions',
   },
 ] as const;
 
@@ -130,33 +131,27 @@ export default function PricingPage() {
         <section className="mk-pricing-hero">
           <div className="mk-pricing-hero-copy">
             <p className="mk-k">Pricing</p>
-            <h1>Four paths. One clear buyer map.</h1>
+            <h1>Choose your AI banking path.</h1>
             <p>
-              Compare the free snapshot, individual report, Foundation course,
-              and assisted institution rollout before you reach checkout.
+              Start with a free readiness snapshot. Upgrade when you need a
+              written plan, reusable work products, or a team rollout.
             </p>
             <div className="mk-pricing-hero-actions">
               <Button variant="gold" size="lg" href="/assessment/take">
                 Start free <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#compare">
-                Compare options
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/#roi-calculator">
-                Run ROI calculator
+                Compare plans
               </Button>
             </div>
           </div>
 
-          <div className="mk-pricing-visual" aria-label="Pricing ladder">
-            {TIERS.map((tier, index) => (
-              <div
-                key={tier.name}
-                className={`mk-pricing-visual-row${tier.featured ? ' is-featured' : ''}`}
-              >
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{tier.name}</strong>
-                <em>{tier.price}</em>
+          <div className="mk-pricing-path" aria-label="Pricing path">
+            {PATH_STEPS.map(([name, outcome], index) => (
+              <div key={name} className="mk-pricing-path-step">
+                <span>{index + 1}</span>
+                <strong>{name}</strong>
+                <em>{outcome}</em>
               </div>
             ))}
           </div>
@@ -164,21 +159,23 @@ export default function PricingPage() {
 
         <section className="mk-pricing-tier-grid" aria-label="Pricing options">
           {TIERS.map((tier) => (
-            <article
-              key={tier.name}
-              className={`mk-pricing-tier${tier.featured ? ' is-featured' : ''}`}
-            >
-              <p className="mk-k">{tier.eyebrow}</p>
+            <article key={tier.name} className="mk-pricing-tier">
+              {tier.badge ? <p className="mk-pricing-tier-badge">{tier.badge}</p> : null}
               <h2>{tier.name}</h2>
               <div className="mk-pricing-tier-price">
                 <strong>{tier.price}</strong>
                 <span>{tier.cadence}</span>
               </div>
-              <p className="mk-pricing-tier-best">{tier.bestFor}</p>
-              <p className="mk-pricing-tier-output">{tier.output}</p>
+              <div className="mk-pricing-tier-copy">
+                <span className="mk-pricing-tier-label">Best for</span>
+                <p>{tier.bestFor}</p>
+              </div>
+              <div className="mk-pricing-tier-copy">
+                <span className="mk-pricing-tier-label">You get</span>
+              </div>
               <ul>
-                {tier.notes.map((note) => (
-                  <li key={note}>{note}</li>
+                {tier.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
               <Link href={tier.href} className="mk-pricing-tier-link">
@@ -188,28 +185,59 @@ export default function PricingPage() {
           ))}
         </section>
 
+        <section className="mk-pricing-rules" aria-labelledby="pricing-rules-heading">
+          <div className="mk-pricing-section-head">
+            <p className="mk-k">Decision rules</p>
+            <h2 id="pricing-rules-heading">Not sure what to choose?</h2>
+          </div>
+          <ul className="mk-pricing-rule-list">
+            {DECISION_RULES.map((rule) => (
+              <li key={rule}>{rule}</li>
+            ))}
+          </ul>
+        </section>
+
         <section id="compare" className="mk-pricing-compare" aria-labelledby="compare-heading">
           <div className="mk-pricing-section-head">
             <p className="mk-k">Compare</p>
-            <h2 id="compare-heading">What each option is for.</h2>
+            <h2 id="compare-heading">Choose by the work you need done.</h2>
           </div>
           <div className="mk-pricing-table-wrap">
             <table className="mk-pricing-table">
               <thead>
                 <tr>
-                  <th scope="col">Decision point</th>
-                  {TIERS.map((tier) => (
-                    <th key={tier.name} scope="col">{tier.name}</th>
-                  ))}
+                  <th scope="col">Need</th>
+                  <th scope="col">Best option</th>
+                  <th scope="col">What you get</th>
                 </tr>
               </thead>
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
-                  <tr key={row.label}>
-                    <th scope="row">{row.label}</th>
-                    {row.values.map((value) => (
-                      <td key={value}>{value}</td>
-                    ))}
+                  <tr key={row.need}>
+                    <th scope="row">{row.need}</th>
+                    <td data-label="Best option">{row.option}</td>
+                    <td data-label="What you get">{row.outcome}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mk-pricing-proof-table-wrap">
+            <table className="mk-pricing-proof-table" aria-label="Price and proof by option">
+              <thead>
+                <tr>
+                  <th scope="col">Option</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Proof</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PROOF_ROWS.map(([option, price, proof]) => (
+                  <tr key={option}>
+                    <th scope="row">{option}</th>
+                    <td data-label="Price">{price}</td>
+                    <td data-label="Proof">{proof}</td>
                   </tr>
                 ))}
               </tbody>
@@ -217,40 +245,59 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="mk-pricing-rules" aria-labelledby="pricing-rules-heading">
-          <div className="mk-pricing-section-head">
-            <p className="mk-k">Decision rules</p>
-            <h2 id="pricing-rules-heading">Choose by the work you need done.</h2>
+        <section className="mk-pricing-rollout" aria-labelledby="pricing-rollout-heading">
+          <div>
+            <p className="mk-k">Institution rollout</p>
+            <h2 id="pricing-rollout-heading">Custom pricing is scoped before checkout.</h2>
+            <p>
+              When seats, reporting, invoicing, SSO, partner rollout, or
+              support matter, pricing depends on scope. Use the ROI calculator
+              when you are sizing a team case, then request a rollout plan.
+            </p>
           </div>
-          <div className="mk-pricing-rule-list">
-            {DECISION_RULES.map((rule) => (
-              <article key={rule.title}>
-                <h3>{rule.title}</h3>
-                <p>{rule.body}</p>
-              </article>
-            ))}
+          <div className="mk-pricing-rollout-actions">
+            <Button variant="ink" size="lg" href="/#roi-calculator">
+              Run ROI calculator
+            </Button>
+            <Button variant="ghost-light" size="lg" href="/for-institutions">
+              Request a rollout plan
+            </Button>
           </div>
         </section>
 
         <section className="mk-pricing-support" aria-labelledby="pricing-support-heading">
           <div>
             <p className="mk-k">Support and refunds</p>
-            <h2 id="pricing-support-heading">No hidden self-serve team checkout.</h2>
-            <p>
-              Individual products use one-time checkout. Team buying stays
-              assisted until scope, reporting, support, and rollout risk are
-              clear. Partner or association rollout requests use the same
-              inquiry path. Refund eligibility and purchase help are handled
-              through the support path.
-            </p>
+            <h2 id="pricing-support-heading">Simple purchase rules</h2>
+            <ul className="mk-pricing-purchase-rules">
+              {PURCHASE_RULES.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
           </div>
           <div className="mk-pricing-support-actions">
             <Button variant="ink" size="lg" href="/support/purchase-help">
               Purchase help
             </Button>
-            <Button variant="ghost-dark" size="lg" href="/for-institutions">
+            <Button variant="ghost-light" size="lg" href="/for-institutions">
               Institution / partner inquiry
             </Button>
+          </div>
+        </section>
+
+        <section className="mk-pricing-final" aria-labelledby="pricing-final-heading">
+          <p className="mk-k">Next step</p>
+          <h2 id="pricing-final-heading">Start free, then choose the path that matches the work.</h2>
+          <p>
+            A quick read costs nothing. A written report, Foundation course, or
+            team rollout comes later.
+          </p>
+          <div className="mk-pricing-final-links" aria-label="Pricing story">
+            {EMPHASIZED_CARD_TERMS.map((term) => (
+              <Link key={term.label} href={term.href}>
+                {term.label} <ArrowGlyph size={14} />
+              </Link>
+            ))}
           </div>
         </section>
       </main>
