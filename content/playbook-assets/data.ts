@@ -38,6 +38,7 @@ export interface AssetSection {
   readonly heading: string;
   readonly intro?: string;
   readonly items?: readonly string[];
+  readonly fields?: readonly { readonly label: string; readonly help: string }[];
   /** Numbered list — use for step-by-step procedures. */
   readonly steps?: readonly string[];
   /** Optional monospace prompt block, rendered with PDF-style dark surface. */
@@ -72,44 +73,105 @@ export interface PlaybookAsset {
 const STUB_NOTICE =
   'This template is structured. The working copy is being finalized by our subject-matter editors — directionally accurate today, refined shortly.';
 
-const PRINCIPLE_REVIEW =
-  'Every AI-assisted artifact in this playbook is human-reviewed before it leaves your institution. The template enforces structure; the reviewer signs.';
-
 // BSA / AML — 4 Ready
 const BSA_AML: readonly PlaybookAsset[] = [
   {
     slug: 'sar-narrative-template',
     playbook: 'bsa-aml',
-    title: 'SAR Narrative Template',
+    title: 'The BSA/AML SAR Narrative Scaffold',
     kind: 'Template',
-    dek: 'A starter narrative shell that enforces the FinCEN five-element structure (who, what, where, when, why) and prompts the reviewer signature line.',
-    audience: 'BSA / AML analysts and officers',
-    readMinutes: 6,
+    dek: 'A human-reviewed template for who, what, when, where, why, how, missing facts, and evidence retention.',
+    audience: 'BSA/AML analysts and officers',
+    readMinutes: 8,
     sourcedFrom: [
-      'FinCEN SAR narrative typology vocabulary',
-      'BSA / AML Examination Manual (FFIEC)',
+      'FinCEN SAR Narrative Guidance Package',
+      'FFIEC BSA/AML Manual - SAR Quality Guidance',
+      '31 CFR 1020.320 (SAR filing, confidentiality, and retention)',
     ],
     sections: [
       {
-        heading: 'What this template helps you do',
-        intro: STUB_NOTICE,
-        items: [
-          'Open the narrative with a one-line summary of the activity (the "what").',
-          'Walk through the five elements in the order FinCEN expects: who, what, where, when, why.',
-          'Keep customer PII out of the AI prompt; the template prompts you to use customer reference codes only.',
-          'Capture the reviewer signature line and filing-deadline tracker separately so the narrative itself stays self-contained.',
+        heading: 'SAR confidentiality warning',
+        principle:
+          'Do not enter real SAR narratives, SAR drafts, SAR-supporting facts, investigation notes, customer transaction detail, alert detail, or anything that would reveal SAR existence into any public AI tool. Use this template with fictional, synthetic, public, or institution-approved redacted facts only, unless BSA, Compliance, Legal, and Information Security have approved the specific enterprise AI environment and use case.',
+      },
+      {
+        heading: 'SAR Narrative Scaffold',
+        intro:
+          'Use these fields as the working shell for analyst drafting and reviewer cleanup. The scaffold organizes facts; it does not make the suspicious-activity judgment or filing decision.',
+        fields: [
+          {
+            label: '1. One-line activity summary',
+            help: 'What happened, during what period, and why it appears unusual.',
+          },
+          {
+            label: '2. Who is involved',
+            help: 'Subject/customer reference codes, roles, relationship to the institution, counterparties, business type, and relevant profile context. No real identifiers in AI prompts.',
+          },
+          {
+            label: '3. What occurred',
+            help: 'Activity type, instruments, transaction pattern, amount ranges, frequency, products used, and suspicious indicators.',
+          },
+          {
+            label: '4. When it occurred',
+            help: 'Date range, key event dates, escalation date, review period, and filing deadline tracker.',
+          },
+          {
+            label: '5. Where it occurred',
+            help: 'Branch, channel, geography, account type, online/mobile channel, ATM, wire, ACH, cash, card, or other location/method context.',
+          },
+          {
+            label: '6. How the activity operated',
+            help: 'Method of operation or typology: structuring, layering, funnel account, rapid movement of funds, business-purpose mismatch, third-party transfer ring, unusual cash activity, or other pattern.',
+          },
+          {
+            label: '7. Why it is suspicious',
+            help: 'What changed from expected behavior, what does not fit the customer profile, what source evidence supports concern, and what reasonable explanation was unavailable or insufficient.',
+          },
+          {
+            label: '8. Source evidence used',
+            help: 'Alert ID, case note reference, transaction report reference, customer profile reference, CDD/EDD source, analyst notes, and supporting-documentation location.',
+          },
+          {
+            label: '9. Missing facts / verify before filing',
+            help: 'Open questions, unsupported claims, AI-introduced language to remove, and facts requiring analyst confirmation.',
+          },
+          {
+            label: '10. Reviewer sign-off',
+            help: 'Analyst, reviewer, BSA officer or designee, review date, final filing decision, retention location, and deadline.',
+          },
         ],
       },
       {
         heading: 'When to use it',
         items: [
-          'Drafting a SAR narrative on a structuring pattern, third-party transfer ring, or layered cash deposit case.',
-          'Recovering a narrative your reviewer kicked back for missing one of the five elements.',
+          'Drafting a human-reviewed SAR narrative scaffold from fictional, synthetic, public, or institution-approved redacted facts.',
+          'Recovering a narrative your reviewer kicked back for missing who, what, when, where, why, how, source evidence, or missing-fact analysis.',
+          'Separating reviewer sign-off, filing-deadline tracking, and retention evidence from the narrative body.',
         ],
       },
       {
-        heading: 'Reviewer principle',
-        principle: PRINCIPLE_REVIEW,
+        heading: 'SAR Narrative Review Checklist',
+        items: [
+          'The narrative explains who, what, when, where, why, and how.',
+          'Every factual claim is supported by source documentation.',
+          'No AI-generated fact remains unsupported.',
+          'No real SAR, SAR draft, SAR-supporting fact, customer, account, transaction, alert, or investigation detail was entered into a public AI tool.',
+          'The analyst owns the suspicious-activity judgment.',
+          'The BSA officer or designated reviewer approved the final narrative.',
+          'Supporting documentation and final review evidence are retained according to policy.',
+        ],
+      },
+      {
+        heading: 'Source evidence and retention fields',
+        intro:
+          'Banks must retain SARs and supporting documentation for five years from the filing date and make supporting documentation available to FinCEN or appropriate agencies upon request. Use these fields to make the evidence location explicit.',
+        fields: [
+          { label: 'Alert / case reference', help: 'Internal alert ID, case ID, or investigation reference.' },
+          { label: 'Supporting-documentation location', help: 'Repository, case-management folder, or system path where source evidence is retained.' },
+          { label: 'Final narrative reviewer', help: 'Name and role of the analyst, reviewer, BSA officer, or designee.' },
+          { label: 'Filing decision and date', help: 'Final file / do not file / continue review decision and approval date.' },
+          { label: 'Retention owner', help: 'Person or team responsible for preserving the final narrative, support file, and review evidence.' },
+        ],
       },
     ],
   },

@@ -36,6 +36,14 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
       const items = section.items
         ? `<ul>${section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
         : '';
+      const fields = section.fields
+        ? `<table>${section.fields
+            .map(
+              (field) =>
+                `<tr><th>${escapeHtml(field.label)}</th><td>${escapeHtml(field.help)}</td></tr>`,
+            )
+            .join('')}</table>`
+        : '';
       const steps = section.steps
         ? `<ol>${section.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ol>`
         : '';
@@ -43,7 +51,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
       const principle = section.principle
         ? `<p class="principle">${escapeHtml(section.principle)}</p>`
         : '';
-      return `<h2>${escapeHtml(section.heading)}</h2>${intro}${items}${steps}${prompt}${principle}`;
+      return `<h2>${escapeHtml(section.heading)}</h2>${intro}${items}${fields}${steps}${prompt}${principle}`;
     })
     .join('');
 
@@ -65,6 +73,9 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     h2 { font-size: 15pt; margin: 22pt 0 8pt; color: #071a2f; }
     p { margin: 0 0 10pt; }
     li { margin: 0 0 6pt; }
+    table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt; }
+    th, td { border: 1pt solid #d9cba9; padding: 7pt 8pt; text-align: left; vertical-align: top; }
+    th { width: 34%; background: #f5f0e6; }
     pre { white-space: pre-wrap; background: #f5f0e6; padding: 10pt; border: 1pt solid #d9cba9; }
     .meta { color: #54627a; font-size: 10pt; margin-bottom: 18pt; }
     .principle { border-left: 3pt solid #c8a24a; padding-left: 10pt; color: #071a2f; }

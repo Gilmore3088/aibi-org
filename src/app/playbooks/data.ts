@@ -338,7 +338,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
       'Prompt, output, reviewer, final version, and retention location are saved',
     ],
     assets: [
-      { name: 'SAR Narrative Scaffold', type: 'Template', status: 'Ready' },
+      { name: 'The BSA/AML SAR Narrative Scaffold', type: 'Template', status: 'Ready' },
       { name: 'Alert Triage Worksheet', type: 'Worksheet', status: 'Ready' },
       { name: 'CDD Baseline Library Entry', type: 'Template', status: 'Ready' },
       { name: 'Synthetic Scenario Trainer Sheet', type: 'Worksheet', status: 'Ready' },

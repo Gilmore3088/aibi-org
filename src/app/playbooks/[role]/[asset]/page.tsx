@@ -63,6 +63,9 @@ function playbookLabel(slug: string): string {
 
 function sectionPreviewLines(section: AssetSection): string[] {
   if (section.items && section.items.length > 0) return section.items.slice(0, 3);
+  if (section.fields && section.fields.length > 0) {
+    return section.fields.slice(0, 3).map((field) => `${field.label}: ${field.help}`);
+  }
   if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
   if (section.principle) return [section.principle];
   if (section.intro) return [section.intro];
@@ -367,6 +370,48 @@ function AssetSectionBlock({
               </li>
             ))}
           </ul>
+        )}
+
+        {section.fields && (
+          <div
+            style={{
+              display: 'grid',
+              gap: 10,
+              marginTop: section.items ? 18 : 0,
+            }}
+          >
+            {section.fields.map((field) => (
+              <div
+                key={field.label}
+                style={{
+                  border: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
+                  borderRadius: 10,
+                  padding: '12px 14px',
+                  background: '#FFFFFF',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: 'var(--ink)',
+                    marginBottom: 4,
+                  }}
+                >
+                  {field.label}
+                </div>
+                <div
+                  style={{
+                    color: 'var(--slate-600)',
+                    fontSize: 14,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {field.help}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         {section.steps && (

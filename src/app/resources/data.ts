@@ -290,10 +290,10 @@ const genericTemplates: Template[] = TEMPLATE_INDEX.map((template) => {
 const roleSpecificTemplates: Template[] = [
   {
     slug: 'sar-narrative-template',
-    title: 'SAR Narrative Template',
+    title: 'The BSA/AML SAR Narrative Scaffold',
     format: 'Template · BSA/AML',
-    desc: 'A FinCEN five-element narrative shell with reviewer flags, signature line, and no-customer-PII prompt boundary.',
-    preview: ['Who / what / where / when / why', 'Reviewer flags', 'Signature line', 'No customer PII'],
+    desc: 'A human-reviewed template for who, what, when, where, why, how, missing facts, and evidence retention.',
+    preview: ['Who / what / when / where / why / how', 'Missing facts', 'Reviewer sign-off', 'Evidence retention'],
     href: '/playbooks/bsa-aml/sar-narrative-template',
     download: '/api/playbooks/bsa-aml/sar-narrative-template/word',
     roles: ['bsa-aml'],

@@ -80,19 +80,19 @@ describe('ResourcesExperience', () => {
 
     fireEvent.click(screen.getAllByRole('button', { name: 'BSA/AML' })[0]);
 
-    const sarHeading = screen.getByRole('heading', { name: 'SAR Narrative Template' });
+    const sarHeading = screen.getByRole('heading', { name: 'The BSA/AML SAR Narrative Scaffold' });
     const sarCard = sarHeading.closest('article');
 
     expect(sarCard).toBeTruthy();
     expect(
-      within(sarCard as HTMLElement).getByText(/FinCEN five-element narrative shell/i),
+      within(sarCard as HTMLElement).getByText(/who, what, when, where, why, how/i),
     ).toBeTruthy();
     expect(within(sarCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
       '/playbooks/bsa-aml/sar-narrative-template',
     );
     expect(
       within(sarCard as HTMLElement)
-        .getByRole('button', { name: /Get Word for SAR Narrative Template/i }),
+        .getByRole('button', { name: /Get Word for The BSA\/AML SAR Narrative Scaffold/i }),
     ).toBeTruthy();
   });
 });
