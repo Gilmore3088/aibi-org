@@ -8977,7 +8977,7 @@ section.mk-std { padding: 56px 0; }
   }
   .mk-nav-mobile {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: .95fr .95fr .9fr 1.25fr .85fr;
     gap: 4px;
     padding: 6px;
     overflow-x: visible;

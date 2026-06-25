@@ -3,6 +3,20 @@ import { describe, expect, it } from 'vitest';
 import { SiteHeader } from './SiteHeader';
 
 describe('SiteHeader', () => {
+  it('places Pricing after Institutions in the desktop navigation', () => {
+    render(<SiteHeader activePath="/pricing" />);
+
+    const desktopNav = screen.getByRole('navigation', { name: /^Primary$/i });
+    expect(within(desktopNav).getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'Home',
+      'Assessment',
+      'Learn',
+      'Resources',
+      'Institutions',
+      'Pricing',
+    ]);
+  });
+
   it('promotes Resources into the mobile primary navigation', () => {
     render(<SiteHeader activePath="/resources" />);
 

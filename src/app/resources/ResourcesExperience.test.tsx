@@ -3,6 +3,29 @@ import { describe, expect, it } from 'vitest';
 import { ResourcesExperience } from './ResourcesExperience';
 
 describe('ResourcesExperience', () => {
+  it('combines the resource orientation and quick-start choices in the hero', () => {
+    render(<ResourcesExperience />);
+
+    const heroHeading = screen.getByRole('heading', {
+      name: /Find the right AI artifact for the job in front of you/i,
+    });
+    const hero = heroHeading.closest('section');
+
+    expect(hero).toBeTruthy();
+    expect(
+      within(hero as HTMLElement).getByRole('heading', { name: /Pick the work you need/i }),
+    ).toBeTruthy();
+    expect(
+      within(hero as HTMLElement).getByRole('link', { name: /I need AI rules/i }).getAttribute('href'),
+    ).toBe('/resources/templates/ai-use-policy-starter');
+    expect(
+      within(hero as HTMLElement).getByRole('link', { name: /I need a safe prompt/i }).getAttribute('href'),
+    ).toBe('/resources/prompting-foundation');
+    expect(
+      within(hero as HTMLElement).getByRole('link', { name: /I just took the assessment/i }).getAttribute('href'),
+    ).toBe('#preview-paid');
+  });
+
   it('surfaces security and governance review paths from the resources hub', () => {
     render(<ResourcesExperience />);
 

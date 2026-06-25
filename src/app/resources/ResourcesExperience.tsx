@@ -243,31 +243,31 @@ export function ResourcesExperience() {
       <ResourceSkipLinks />
       <SiteHeader activePath="/resources" />
 
-      <section className="mk-hero">
+      <section className="mk-hero rx-hero" id="start-here">
         <div className="mk-deco">
           <div className="mk-deco-ring" />
           <div className="mk-deco-blur" />
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <h1>Start with the artifact, not a blank page.</h1>
+            <p className="mk-k rx-hero-kicker">AI Banking Resources</p>
+            <h1>Find the right AI artifact for the job in front of you.</h1>
             <p className="mk-lede">
-              Policy starters, role playbooks, workflow SOPs, review checklists, and desk cards —
-              built for banking teams. Filter by your role, or search.
+              Preview practical bank AI resources first. Download the editable versions when
+              you are ready to put them to work.
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="#resources-main">
                 Browse resources <ArrowRight size={16} />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="/assessment">
+              <Button variant="ghost-dark" size="lg" href="/assessment/take">
                 Get readiness score
               </Button>
             </div>
           </div>
+          <HeroStartPanel />
         </div>
       </section>
-
-      <StartHereChooser />
 
       <FilterBar filters={filters} setFilters={setFilters} resultCount={visibleResourceCount} />
 
@@ -417,28 +417,30 @@ function ResourceSkipLinks() {
   );
 }
 
-function StartHereChooser() {
+function HeroStartPanel() {
   return (
-    <Section variant="std" surface="white" id="start-here">
-      <div className="rx-start-grid" aria-labelledby="rx-start-here-heading">
-        <div className="rx-start-copy">
+    <div className="rx-hero-start" aria-labelledby="rx-hero-start-heading">
+      <div className="rx-hero-start-head">
+        <div>
           <div className="mk-k">Start here</div>
-          <h2 id="rx-start-here-heading">Pick the work you need.</h2>
+          <h2 id="rx-hero-start-heading">Pick the work you need.</h2>
+          <p>Choose a path, preview the artifact, then download the editable version when it is useful.</p>
         </div>
-        <div className="rx-start-cards">
-          {START_HERE_CHOICES.map((choice) => {
-            const Icon = choice.icon;
-            return (
-              <a key={choice.label} className="rx-mini-card" href={choice.href}>
-                <Icon size={24} className="rx-mini-icon" />
-                <div className="rx-mini-title">{choice.label}</div>
-                <p className="rx-mini-sub">{choice.desc}</p>
-              </a>
-            );
-          })}
-        </div>
+        <Sparkles size={22} className="rx-hero-start-icon" />
       </div>
-    </Section>
+      <div className="rx-hero-start-grid">
+        {START_HERE_CHOICES.map((choice) => {
+          const Icon = choice.icon;
+          return (
+            <a key={choice.label} className="rx-hero-start-card" href={choice.href}>
+              <Icon size={21} className="rx-hero-start-card-icon" />
+              <span>{choice.label}</span>
+              <p>{choice.desc}</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

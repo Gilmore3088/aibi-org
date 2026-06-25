@@ -445,39 +445,150 @@ button.rx-featured-item {
   }
 }
 
-/* Hero layout override — two columns on desktop */
-.mockup-scope .mk-hero-inner { display: grid; gap: 2.5rem; }
-@media (min-width: 1024px) {
-  .mockup-scope .mk-hero-inner { grid-template-columns: 0.78fr 1.22fr; align-items: center; }
-}
-
-/* Start-here chooser */
-.mockup-scope .rx-start-grid {
+/* Resources hero — combines the old hero and "Start here" chooser. */
+.mockup-scope .rx-hero .mk-hero-inner {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-  align-items: start;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-block: clamp(2.25rem, 5vw, 4.5rem);
 }
 @media (min-width: 1024px) {
-  .mockup-scope .rx-start-grid {
-    grid-template-columns: minmax(220px, 0.28fr) minmax(0, 0.72fr);
+  .mockup-scope .rx-hero .mk-hero-inner {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    align-items: center;
   }
 }
-.mockup-scope .rx-start-copy h2 {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
+.mockup-scope .rx-hero h1 {
+  max-width: 15ch;
+}
+.mockup-scope .rx-hero .mk-lede {
+  max-width: 39ch;
+}
+.mockup-scope .rx-hero-kicker {
+  color: var(--gold-soft);
+}
+.mockup-scope .rx-hero-start {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-hero);
+  color: var(--ink);
+  overflow: hidden;
+}
+.mockup-scope .rx-hero-start-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--slate-200);
+}
+.mockup-scope .rx-hero-start-head .mk-k {
+  color: var(--gold-deep);
+}
+.mockup-scope .rx-hero-start-head h2 {
   margin-top: .35rem;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.05;
 }
-.mockup-scope .rx-start-cards {
+.mockup-scope .rx-hero-start-head p {
+  max-width: 46ch;
+  margin-top: .45rem;
+  color: var(--slate-600);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+.mockup-scope .rx-hero-start-icon {
+  flex: 0 0 auto;
+  color: var(--gold-deep);
+  margin-top: .2rem;
+}
+.mockup-scope .rx-hero-start-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: .85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .6rem;
+  padding: 1rem;
 }
-@media (min-width: 640px) {
-  .mockup-scope .rx-start-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 700px) {
+  .mockup-scope .rx-hero-start-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
-@media (min-width: 1180px) {
-  .mockup-scope .rx-start-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.mockup-scope .rx-hero-start-card {
+  display: grid;
+  align-content: start;
+  gap: .42rem;
+  min-height: 126px;
+  padding: .9rem;
+  border: 1px solid rgba(7, 26, 47, .08);
+  border-radius: var(--r-md);
+  background: var(--cream);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.mockup-scope .rx-hero-start-card:hover {
+  background: var(--cream-2);
+  border-color: rgba(200, 162, 74, .45);
+  transform: translateY(-2px);
+}
+.mockup-scope .rx-hero-start-card:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.mockup-scope .rx-hero-start-card-icon {
+  color: var(--gold-deep);
+}
+.mockup-scope .rx-hero-start-card span {
+  display: block;
+  font-size: .95rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.mockup-scope .rx-hero-start-card p {
+  color: var(--slate-600);
+  font-size: .82rem;
+  line-height: 1.42;
+}
+@media (max-width: 640px) {
+  .mockup-scope .rx-hero h1 {
+    max-width: 13ch;
+  }
+  .mockup-scope .rx-hero .mk-lede {
+    max-width: 31ch;
+  }
+  .mockup-scope .rx-hero .mk-ctas > * {
+    padding-inline: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .mockup-scope .rx-hero-start {
+    border-radius: var(--r-lg);
+  }
+  .mockup-scope .rx-hero-start-head {
+    padding: 1rem;
+  }
+  .mockup-scope .rx-hero-start-icon {
+    display: none;
+  }
+  .mockup-scope .rx-hero-start-grid {
+    grid-template-columns: 1fr;
+    gap: .55rem;
+    padding: .75rem;
+  }
+  .mockup-scope .rx-hero-start-card {
+    min-height: 0;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: .65rem;
+    padding: .8rem;
+  }
+  .mockup-scope .rx-hero-start-card p {
+    grid-column: 2;
+  }
 }
 
 /* Legacy chooser panel */

@@ -12,10 +12,10 @@ import { Wordmark } from '@/components/brand';
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Assessment', href: '/assessment' },
-  { label: 'Pricing', href: '/pricing' },
   { label: 'Learn', href: '/courses' },
   { label: 'Resources', href: '/resources' },
   { label: 'Institutions', href: '/for-institutions' },
+  { label: 'Pricing', href: '/pricing' },
 ];
 
 // Mobile primary nav — core routes + a "More" overflow. Labels shortened
@@ -30,8 +30,8 @@ const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
 ];
 
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
-  { label: 'Pricing', href: '/pricing', helper: 'Compare free, individual, course, and team options' },
   { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
+  { label: 'Pricing', href: '/pricing', helper: 'Compare free, individual, course, and team options' },
 ];
 
 export interface SiteHeaderProps {
