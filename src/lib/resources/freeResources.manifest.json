@@ -62,6 +62,86 @@
       "status": "public"
     },
     {
+      "slug": "prompting-foundation-guide",
+      "title": "AI Prompting Foundation Guide",
+      "audience": ["All roles"],
+      "category": "artifact",
+      "funnelSegment": "skill-building",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "prompting-foundation-guide.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "prompting-foundation-guide.pdf", "word": "/api/resources/prompting-foundation-guide/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/prompting-foundation-guide/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI safe-use curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["prompt-quality", "staff-enablement", "data-handling"]
+      },
+      "status": "public"
+    },
+    {
+      "slug": "banker-prompt-formula-card",
+      "title": "Banker Prompt Formula Card",
+      "audience": ["All roles"],
+      "category": "artifact",
+      "funnelSegment": "skill-building",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "banker-prompt-formula-card.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "banker-prompt-formula-card.pdf", "word": "/api/resources/banker-prompt-formula-card/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/banker-prompt-formula-card/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI safe-use curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["prompt-quality", "review"]
+      },
+      "status": "public"
+    },
+    {
+      "slug": "safe-prompt-placeholder-card",
+      "title": "Safe Prompt Placeholder Card",
+      "audience": ["All roles", "Training", "Compliance"],
+      "category": "artifact",
+      "funnelSegment": "data-handling",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "safe-prompt-placeholder-card.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "safe-prompt-placeholder-card.pdf", "word": "/api/resources/safe-prompt-placeholder-card/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/safe-prompt-placeholder-card/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI data-handling curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage"],
+        "topGaps": ["data-handling", "approved-tools"]
+      },
+      "status": "public"
+    },
+    {
+      "slug": "prompt-output-review-checklist",
+      "title": "Prompt Output Review Checklist",
+      "audience": ["All roles", "Managers", "Compliance"],
+      "category": "artifact",
+      "funnelSegment": "review",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "prompt-output-review-checklist.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "prompt-output-review-checklist.pdf", "word": "/api/resources/prompt-output-review-checklist/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/prompt-output-review-checklist/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI workflow SOP curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["review", "documentation"]
+      },
+      "status": "public"
+    },
+    {
       "slug": "regulatory-cheatsheet",
       "title": "Regulatory Cheat Sheet",
       "audience": ["Compliance", "Risk", "Executive"],
@@ -457,6 +537,26 @@
       "sourceCitations": ["NIST AI RMF", "Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "GLBA / Reg P", "UDAAP", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["operations", "retail", "compliance", "infosec", "executive"], "tierLabels": ["Starting Point", "Early Stage"], "topGaps": ["workflow", "governance", "data-handling"] },
+      "status": "public"
+    },
+    {
+      "slug": "prompting-foundation-kit",
+      "title": "The AI Prompting Foundation Kit",
+      "audience": ["All roles", "Training", "Managers"],
+      "category": "starter-kit",
+      "funnelSegment": "skill-building",
+      "visibleSurfaces": ["resources", "starter-kit"],
+      "download": { "filePath": "prompting-foundation-kit.zip", "fileType": "zip", "tierRequired": "free" },
+      "variants": { "pdf": null, "word": null, "zip": "prompting-foundation-kit.zip" },
+      "zipMembership": [],
+      "canonicalRoute": "/api/resources/prompting-foundation-kit/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI safe-use curriculum", "AiBI workflow SOP curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["prompt-quality", "staff-enablement", "data-handling", "review"]
+      },
       "status": "public"
     },
     {

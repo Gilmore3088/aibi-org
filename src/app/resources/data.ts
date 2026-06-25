@@ -87,6 +87,12 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
     zipSize: '1.3 MB',
     icon: Workflow,
   },
+  'prompting-foundation-kit': {
+    id: 'prompting',
+    desc: 'Turn vague AI requests into safe, structured, reviewable banker prompts with placeholders and review rules.',
+    zipSize: '1.1 MB',
+    icon: Sparkles,
+  },
   'frontline-enablement-kit': {
     id: 'frontline',
     desc: 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',

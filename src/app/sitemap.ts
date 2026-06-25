@@ -47,6 +47,7 @@ const ROUTES = [
   { path: '/certifications', priority: 0.6, changeFrequency: 'monthly' as const },
   { path: '/verify', priority: 0.45, changeFrequency: 'monthly' as const },
   { path: '/resources', priority: 0.85, changeFrequency: 'weekly' as const },
+  { path: '/resources/prompting-foundation', priority: 0.72, changeFrequency: 'monthly' as const },
   { path: '/playbooks', priority: 0.8, changeFrequency: 'monthly' as const },
   ...PLAYBOOK_INDEX.map((playbook) => ({
     path: `/playbooks/${playbook.slug}`,

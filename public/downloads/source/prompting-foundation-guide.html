@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Prompting Foundation Guide - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .cover h1 { font-size: 38pt; max-width: 6.5in; }
+  .cover .lede { max-width: 6.3in; }
+  .page h2 { font-size: 20pt; }
+  .page p, .page li { font-size: 10pt; line-height: 1.5; }
+  .formula { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9pt; margin: 12pt 0; }
+  .formula .card { padding: 10pt 12pt; }
+  .prompt-box {
+    background: var(--ink);
+    color: #E9EEF6;
+    border-radius: 10pt;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt;
+    line-height: 1.45;
+    margin: 10pt 0;
+    padding: 10pt 12pt;
+    white-space: pre-wrap;
+  }
+  .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt 14pt; margin: 10pt 0; }
+  .checklist li { list-style: none; margin: 0; padding-left: 16pt; position: relative; }
+  .checklist li::before { content: "□"; color: var(--gold-deep); font-weight: 800; left: 0; position: absolute; }
+  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
+  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+  table { font-size: 9pt; }
+  th, td { padding: 6pt 7pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Foundation guide - v1</div>
+    <h1>The AI Prompting Foundation Kit</h1>
+    <p class="lede">Prompt types, safe placeholders, reusable formats, and review habits for bankers using AI at work. Ask clearly. Strip the data. Verify before use.</p>
+  </div>
+  <div class="footer-row">
+    <div>The AI Banking Institute - 2026</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 1 - Operating principle</div>
+  <h2>AI prepares. Bankers decide. Evidence proves.</h2>
+  <div class="callout">
+    <div class="label">Core rule</div>
+    <p><strong>AI can draft, summarize, convert, compare, and critique.</strong> A banker owns the input, the approved source, the human review, the final use, and the retained evidence.</p>
+  </div>
+  <p>This guide is not generic prompt engineering. It is banker prompting: choose the right prompt type, use approved source material, replace sensitive facts with placeholders, ask for draft support instead of decisions, mark uncertainty with [VERIFY], and route higher-risk work through review.</p>
+  <p>Use this foundation before a one-off prompt becomes a repeatable team asset. If the prompt is reused by others, move it into the Workflow SOP Builder so the tool, allowed inputs, reviewer, approval checkpoint, escalation path, and retention rule are documented.</p>
+
+  <h3>The Banker Prompt Formula</h3>
+  <div class="formula">
+    <div class="card"><div class="num">Role</div><h4>Who should AI act as?</h4><p>Name the banking role or review lens.</p></div>
+    <div class="card"><div class="num">Task</div><h4>What should it produce?</h4><p>Ask for draft support, not a final decision.</p></div>
+    <div class="card"><div class="num">Source</div><h4>What approved material should it use?</h4><p>Point to public, internal, redacted, or synthetic source material.</p></div>
+    <div class="card"><div class="num">Constraints</div><h4>What must it not do?</h4><p>No invented facts, rates, fees, legal conclusions, or policy changes.</p></div>
+    <div class="card"><div class="num">Output</div><h4>What format should it use?</h4><p>Choose bullets, table, checklist, email, memo, SOP, or FAQ.</p></div>
+    <div class="card"><div class="num">Verify and escalate</div><h4>What needs review?</h4><p>Mark uncertain items [VERIFY] and name the escalation trigger.</p></div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 2 - Prompt types</div>
+  <h2>Pick the work before writing the prompt.</h2>
+  <p>Most banker prompts fit one of these types. Each type should state safe inputs, prohibited inputs, output format, review rule, and example language.</p>
+  <table>
+    <thead><tr><th>Prompt type</th><th>Use it for</th><th>Bank-safe caution</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Draft</strong></td><td>Emails, memos, scripts, huddle notes, board summaries, campaign copy, and internal updates.</td><td>Draft only. A qualified human approves before customer, examiner, board, or retained use.</td></tr>
+      <tr><td><strong>Summarize</strong></td><td>Public guidance, internal procedures, de-identified themes, training material, and meeting notes.</td><td>No customer data in public tools. Check facts against the source.</td></tr>
+      <tr><td><strong>Rewrite</strong></td><td>Plain-English versions, tone adjustments, shorter versions, and branch-friendly job aids.</td><td>Preserve meaning. Do not add requirements or soften compliance language.</td></tr>
+      <tr><td><strong>Extract</strong></td><td>Action items, dates, risks, missing facts, open questions, and checklist items.</td><td>AI extraction is not verification. Reviewer checks against source.</td></tr>
+      <tr><td><strong>Compare</strong></td><td>Policies, vendor responses, product options, or draft versus source language.</td><td>Ask for differences and uncertainties, not final legal conclusions.</td></tr>
+      <tr><td><strong>Checklist</strong></td><td>Review, handoff, QA, training, or launch readiness workflows.</td><td>Reviewer confirms steps match the approved procedure.</td></tr>
+      <tr><td><strong>Critique</strong></td><td>Unsupported claims, missing disclosures, vague language, unclear steps, and risk flags.</td><td>AI flags issues. It does not approve or reject.</td></tr>
+      <tr><td><strong>Scenario</strong></td><td>Fictional training examples and role-play practice.</td><td>No real customer, employee, vendor, or case details.</td></tr>
+      <tr><td><strong>Data-to-narrative</strong></td><td>Plain-English summaries of approved aggregate metrics.</td><td>Use de-identified or aggregate data only unless the tool is approved for the data class.</td></tr>
+      <tr><td><strong>Builder brief</strong></td><td>Turning workflow pain into a problem statement, user, constraints, and test plan.</td><td>Keep it internal and review before build or reuse.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 3 - Safe inputs and placeholders</div>
+  <h2>Replace real specifics before the prompt.</h2>
+  <p>The safest prompting habit is to strip sensitive specifics before asking AI for help. Use uppercase bracketed placeholders consistently across the bank's prompt library.</p>
+  <table>
+    <thead><tr><th>Sensitive item</th><th>Use placeholder</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Customer name</td><td>[CUSTOMER]</td><td>Use fictional names only in training scenarios.</td></tr>
+      <tr><td>Account number</td><td>[ACCOUNT_NUMBER] or [ACCOUNT_LAST4]</td><td>Never paste the real account number into a public tool.</td></tr>
+      <tr><td>Balance or amount</td><td>[BALANCE], [AMOUNT], [AMOUNT_RANGE]</td><td>Ranges are safer than exact values for examples.</td></tr>
+      <tr><td>Transaction</td><td>[TRANSACTION] or [TRANSACTION_PATTERN]</td><td>Use aggregate or pattern-level language where possible.</td></tr>
+      <tr><td>Complaint</td><td>[COMPLAINT_SUMMARY]</td><td>Remove identity, account, and specific event details unless the tool is approved.</td></tr>
+      <tr><td>Credit reason</td><td>[HUMAN_PROVIDED_REASONS]</td><td>AI may clarify language; it does not choose principal reasons.</td></tr>
+      <tr><td>BSA/AML case facts</td><td>[SYNTHETIC_CASE_FACTS]</td><td>Use fictional facts for training. Do not paste real SAR, alert, or investigation facts into public tools.</td></tr>
+      <tr><td>Credentials</td><td>[CREDENTIAL]</td><td>Passwords, API keys, tokens, and authentication details are Red.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Default stop rule</h4></div>
+    <p>If the prompt contains a real customer, account, transaction, complaint, SAR/AML detail, credential, examiner-sensitive fact, or regulated decision, stop and classify higher before using AI.</p>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 4 - Risk lanes</div>
+  <h2>Classify before generating the final prompt.</h2>
+  <div class="risk-band green">
+    <div class="head"><div class="dot"></div><h4>Green - allow prompt generation</h4></div>
+    <p>Public, synthetic, or non-sensitive internal work. No real customer data. No regulated decision. Output stays internal or receives routine human review.</p>
+  </div>
+  <div class="risk-band yellow">
+    <div class="head"><div class="dot"></div><h4>Yellow - approved tool plus named reviewer</h4></div>
+    <p>De-identified or internal data, customer-facing draft, examiner-facing draft, policy, risk, procedure, or retained business record. Generate only after the user confirms approved tool, reviewer, and output review.</p>
+  </div>
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Red - block public-tool prompting</h4></div>
+    <p>Public tool with NPI, account records, SAR/AML detail, credit decisions, adverse action, authentication, fraud conclusion, legal/compliance determination, credentials, or production access. Route to an approved enterprise workflow or specialist review.</p>
+  </div>
+
+  <h3>Safe versus unsafe examples</h3>
+  <table>
+    <thead><tr><th>Unsafe</th><th>Safer</th></tr></thead>
+    <tbody>
+      <tr><td>Summarize a named customer's checking account dispute with account number, balance, and debit card transactions.</td><td>Using placeholders, draft an internal service summary. Do not decide. Mark missing facts [VERIFY]. Customer: [CUSTOMER]. Account: [ACCOUNT_TYPE]. Issue: [DISPUTE_SUMMARY].</td></tr>
+      <tr><td>Write an adverse-action notice and decide the best reason to deny the loan.</td><td>Using only human-provided principal reasons, draft clearer language. Do not add reasons or infer facts. Flag unsupported reasons as [VERIFY].</td></tr>
+      <tr><td>Improve a real SAR narrative from the case system.</td><td>Using fictional case facts only, organize a SAR narrative training example into who, what, when, where, why, how, missing facts, and reviewer checklist.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 5 - Copy-ready working prompt</div>
+  <h2>Use this pattern for safe first drafts.</h2>
+  <div class="prompt-box">You are assisting [ROLE] with [TASK].
+
+Use only this source material: [PUBLIC / INTERNAL / REDACTED / SYNTHETIC SOURCE DESCRIPTION].
+
+Do not use or request customer names, account numbers, balances, transaction-level details, SSNs, DOBs, complaint specifics, SAR/AML case details, authentication details, credentials, production system details, or examiner-sensitive material.
+
+Produce: [BULLETS / TABLE / CHECKLIST / EMAIL DRAFT / SCRIPT / FAQ / SOP / MEMO].
+
+Constraints: Do not invent facts. Do not make a decision. Do not add requirements. Preserve source meaning. Mark uncertain or unsupported items as [VERIFY]. Label output as draft pending review.
+
+Human review: [REVIEWER] confirms source accuracy, data handling, unclear items, and final-use approval.
+
+Escalate if customer impact, credit, BSA/AML, fraud, authentication, complaints, examiner-facing material, legal/compliance interpretation, or prohibited data appears.</div>
+
+  <h3>Review checklist before copying output downstream</h3>
+  <ul class="checklist">
+    <li>Sensitive data was removed or replaced with placeholders.</li>
+    <li>The tool is approved for the data class used.</li>
+    <li>The prompt asked for draft support, not a final decision.</li>
+    <li>The output is in the requested format.</li>
+    <li>Numbers, dates, citations, policy claims, and procedural steps were checked against source documents.</li>
+    <li>Uncertain items are marked [VERIFY].</li>
+    <li>Customer-facing, examiner-facing, regulated, or retained output has a named human reviewer.</li>
+    <li>Escalation triggers are clear.</li>
+    <li>Final version and evidence are retained where required.</li>
+  </ul>
+
+  <div class="source-box">
+    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI safe-use/control-plane curriculum.</p>
+    <p><strong>Adapt before adoption:</strong> This guide is a training and implementation aid, not legal advice or an examiner-approved policy. Adapt before adopting it to your institution's approved tools, data classifications, retention schedule, review authority, and escalation procedures.</p>
+  </div>
+</section>
+
+</body>
+</html>

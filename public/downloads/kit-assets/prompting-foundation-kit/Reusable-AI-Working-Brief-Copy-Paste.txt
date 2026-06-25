@@ -1,0 +1,33 @@
+# Reusable AI Working Brief
+
+Workflow / task: [NAME]
+Approved tool: [APPROVED TOOL]
+Owner: [OWNER]
+Human reviewer: [REVIEWER]
+
+Role for AI:
+You are assisting [ROLE] with [TASK].
+
+Allowed inputs:
+[PUBLIC / INTERNAL / REDACTED / APPROVED SAMPLE DATA]
+
+Prohibited inputs:
+Customer names, account numbers, balances, transaction-level details, SSNs, DOBs, complaint specifics, SAR/AML case details, authentication details, examiner-sensitive material, passwords, API keys, or access tokens.
+
+Task:
+[WHAT TO PRODUCE]
+
+Constraints:
+Do not invent facts. Do not make a decision. Do not add requirements. Preserve source meaning. Mark uncertain items as [VERIFY]. Label output as draft pending review.
+
+Output format:
+[CHECKLIST / TABLE / EMAIL DRAFT / SUMMARY / SOP / MEMO]
+
+Human review:
+[REVIEWER] confirms source accuracy, data handling, unclear items, and final-use approval.
+
+Escalate if:
+Customer impact, credit, BSA/AML, fraud, authentication, complaints, examiner-facing material, legal/compliance interpretation, or prohibited data appears.
+
+Evidence retained:
+[FINAL VERSION / SOURCE REFERENCE / REVIEWER NOTE / APPROVAL RECORD / RETENTION LOCATION]
