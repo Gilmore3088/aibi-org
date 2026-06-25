@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The Operations AI-Native Playbook - The AI Banking Institute</title>
+<title>The Bank Operations AI Workflow Kit - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page h2 { font-size: 20pt; }
@@ -18,6 +18,17 @@
   .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
   table { font-size: 9.5pt; }
   th { font-size: 8.5pt; }
+  .template-table { font-size: 8.7pt; margin: 7pt 0 10pt; }
+  .template-table th { font-size: 7.8pt; }
+  .template-table th,
+  .template-table td { padding: 4.8pt 8pt; vertical-align: top; }
+  .prompt {
+    background: var(--ink); color: #E9EEF6;
+    border-radius: 10pt; padding: 11pt 14pt; margin: 8pt 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8.5pt; line-height: 1.5; white-space: pre-wrap;
+  }
+  .prompt .label { display:block; font-size:8pt; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); font-weight:700; margin-bottom: 6pt; font-family: 'Inter', sans-serif; }
 </style>
 </head>
 <body>
@@ -31,9 +42,9 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · Operations · v1.0</div>
-    <h1>The Operations AI-Native Playbook</h1>
-    <p class="lede">Turn useful AI shortcuts into documented workflows a colleague can run. This playbook helps operations teams move from ad hoc AI use to repeatable, reviewable work.</p>
+    <div class="kicker">Role workflow kit - Operations - v2.0</div>
+    <h1>The Bank Operations AI Workflow Kit</h1>
+    <p class="lede">Turn one useful AI shortcut into a documented SOP your team can run, review, measure, and hand off.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -43,59 +54,24 @@
 
 <section class="page">
   <div class="section-kicker">Section 1 · Executive snapshot</div>
-  <h2>The operating principle</h2>
-  <div class="principle">A shortcut is not an operating improvement until someone else can run it, review it, and measure it.</div>
+  <h2>From prompt to procedure</h2>
+  <div class="principle">A shortcut is not an operating improvement until someone else can run it, review it, measure it, and hand it off.</div>
   <p>Operations teams often find the first practical AI wins: procedure cleanup, checklist drafts, handoff summaries, ticket triage, exception notes, and recurring internal briefs. The risk is that the win stays trapped in one person's prompt history. Operational value appears when the workflow is documented, reviewed, handed off, and measured.</p>
 
   <div class="toc">
     <div class="section-kicker" style="margin-top:0;">What's inside</div>
     <ol>
       <li>Executive snapshot</li>
-      <li>Immediate operations use cases</li>
-      <li>Repeatable workflow model</li>
-      <li>Operations checklist</li>
-      <li>Toolbox artifacts</li>
-      <li>30-day implementation path</li>
+      <li>Bank operations workflow examples</li>
+      <li>Completed ACH exception handoff example</li>
+      <li>Workflow SOP template</li>
+      <li>Reusable AI working brief</li>
+      <li>Review checkpoint worksheet</li>
+      <li>Time-saved tracking sheet</li>
+      <li>Handoff readiness card</li>
+      <li>45-minute operations sprint</li>
       <li>Source basis</li>
     </ol>
-  </div>
-
-  <h3>Operations enablement map</h3>
-  <table>
-    <thead><tr><th>Dimension</th><th>Operating decision</th></tr></thead>
-    <tbody>
-      <tr><td>Primary goal</td><td>Repeatable workflows</td></tr>
-      <tr><td>Core artifact</td><td>Workflow SOP</td></tr>
-      <tr><td>Risk focus</td><td>Consistency, handoff readiness, review, and measurement</td></tr>
-      <tr><td>Recommended path</td><td>Free Assessment -> Foundation Course -> Workflow SOP -> Sandbox Practice</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<section class="page">
-  <div class="section-kicker">Section 2 · Immediate operations use cases</div>
-  <h2>Where operations can use AiBI immediately</h2>
-  <div class="two-col">
-    <div class="card">
-      <h4>Document a recurring task</h4>
-      <p>Capture the input, AI draft, review, and output steps for a task your team repeats weekly.</p>
-      <p><strong>Artifact:</strong> Workflow SOP.</p>
-    </div>
-    <div class="card">
-      <h4>Build a reusable working brief</h4>
-      <p>Turn a one-off prompt into a fill-in-the-blank template the whole team can run.</p>
-      <p><strong>Artifact:</strong> Reusable AI brief.</p>
-    </div>
-    <div class="card">
-      <h4>Define the review step</h4>
-      <p>Make explicit who checks the AI output, against what, before it is used.</p>
-      <p><strong>Artifact:</strong> Review checkpoint.</p>
-    </div>
-    <div class="card">
-      <h4>Measure the time saved</h4>
-      <p>Baseline the manual version, then track draft time and correction rate on the AI version.</p>
-      <p><strong>Artifact:</strong> Time-saved log.</p>
-    </div>
   </div>
 
   <h3>The risk line</h3>
@@ -103,51 +79,164 @@
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 3 · Repeatable workflow model</div>
-  <h2>A rhythm that survives turnover</h2>
-  <ol>
-    <li><strong>Map.</strong> Pick one recurring, low-risk task and write down how it actually gets done today. Artifact: Current-state map.</li>
-    <li><strong>Draft.</strong> Build the AI step in the sandbox with a reusable brief and a named review checkpoint. Artifact: Workflow SOP draft.</li>
-    <li><strong>Test.</strong> Run it on real work for a week. Track draft time, correction rate, and where it breaks. Artifact: Test log.</li>
-    <li><strong>Hand off.</strong> Give the SOP to a colleague cold. If they can run it unaided, it is done. Save it to the Toolbox. Artifact: Handoff-ready SOP.</li>
-  </ol>
+  <div class="section-kicker">Section 2 · Bank operations workflow examples</div>
+  <h2>Where operations can use AI immediately</h2>
+  <div class="two-col">
+    <div class="card"><h4>Deposit ops procedure update</h4><p>Turn a policy change into a draft procedure update and checklist for human review.</p></div>
+    <div class="card"><h4>ACH exception handoff</h4><p>Summarize exception status, open items, and next shift action from approved notes.</p></div>
+    <div class="card"><h4>Debit dispute checklist</h4><p>Draft an internal checklist from approved procedure language.</p></div>
+    <div class="card"><h4>Wire callback script</h4><p>Create a script from approved wire policy and escalation rules.</p></div>
+    <div class="card"><h4>Branch opening / closing checklist</h4><p>Convert procedure text into a step-by-step job aid.</p></div>
+    <div class="card"><h4>Loan ops missing-doc summary</h4><p>Summarize missing items from permitted file notes for staff review.</p></div>
+    <div class="card"><h4>Call-center FAQ refresh</h4><p>Draft updated answers from approved product and procedure sources.</p></div>
+    <div class="card"><h4>Audit remediation status summary</h4><p>Summarize owner, due date, status, and blockers from approved tracker data.</p></div>
+    <div class="card"><h4>Vendor ticket triage</h4><p>Classify tickets by owner, urgency, and next action without exposing prohibited data.</p></div>
+    <div class="card"><h4>Monthly ops dashboard narrative</h4><p>Draft a concise narrative from approved KPI data and manager notes.</p></div>
+  </div>
+</section>
 
-  <h3>Operations checklist</h3>
+<section class="page">
+  <div class="section-kicker">Section 3 · Completed example</div>
+  <h2>ACH exception handoff summary</h2>
+  <table class="template-table">
+    <thead><tr><th>Step</th><th>Completed example</th></tr></thead>
+    <tbody>
+      <tr><td>Current state</td><td>ACH exceptions are tracked in an internal queue. The outgoing associate writes a free-form handoff note, and the next associate rereads the queue to identify unresolved items.</td></tr>
+      <tr><td>AI step</td><td>Using only approved, redacted queue notes, AI drafts a shift handoff summary with exception ID, current status, missing information, next action, owner, and escalation flag.</td></tr>
+      <tr><td>Human review</td><td>The outgoing associate verifies every item against the queue, marks uncertain items [VERIFY], removes any prohibited data, and approves the final handoff note.</td></tr>
+      <tr><td>Output</td><td>A one-page handoff summary saved in the approved team location with date, reviewer, and queue reference.</td></tr>
+      <tr><td>Metrics</td><td>Manual baseline minutes, AI draft minutes, human review minutes, correction count, material correction count, and whether the next associate completed the handoff without follow-up.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Repeatable workflow model</h3>
+  <ol>
+    <li><strong>Map.</strong> Pick one recurring internal task and write down how it actually gets done today.</li>
+    <li><strong>Brief.</strong> Convert the prompt into a reusable AI working brief with allowed inputs, prohibited inputs, and output format.</li>
+    <li><strong>Review.</strong> Name the human checkpoint and the criteria for approve / reject / revise.</li>
+    <li><strong>Measure.</strong> Track baseline time, AI-assisted time, correction rate, and defects after use.</li>
+    <li><strong>Hand off.</strong> Give the SOP to a colleague cold. If they can run it unaided, it is ready.</li>
+  </ol>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 4 · Workflow SOP template</div>
+  <h2>Document the work so the team can run it</h2>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Workflow name</td><td></td></tr>
+      <tr><td>Department</td><td></td></tr>
+      <tr><td>Owner and backup</td><td></td></tr>
+      <tr><td>Frequency</td><td></td></tr>
+      <tr><td>Current manual process</td><td></td></tr>
+      <tr><td>Approved AI tool</td><td></td></tr>
+      <tr><td>Permitted inputs</td><td></td></tr>
+      <tr><td>Prohibited inputs</td><td></td></tr>
+      <tr><td>Prompt / working brief</td><td></td></tr>
+      <tr><td>Review checkpoint and criteria</td><td></td></tr>
+      <tr><td>Final output</td><td></td></tr>
+      <tr><td>Save location and retention rule</td><td></td></tr>
+      <tr><td>Time baseline and correction-rate target</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+      <tr><td>Last reviewed / next reviewed</td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 5 · Reusable AI working brief</div>
+  <h2>Make the prompt reusable</h2>
+  <div class="prompt"><span class="label">Reusable AI working brief</span>Role:
+[WHO THE AI IS HELPING]
+
+Task:
+[WHAT THE AI SHOULD DRAFT, SUMMARIZE, CLASSIFY, OR ORGANIZE]
+
+Inputs allowed:
+[APPROVED SOURCE MATERIAL ONLY]
+
+Inputs prohibited:
+[CUSTOMER DATA, COMPLAINT DETAILS, CONFIDENTIAL ACCOUNT DATA, REGULATED DECISIONING MATERIAL, OR OTHER RESTRICTED DATA]
+
+Source material:
+[PASTE OR ATTACH APPROVED SOURCE MATERIAL]
+
+Output format:
+[TABLE, CHECKLIST, HANDOFF NOTE, DRAFT SOP, STATUS SUMMARY]
+
+Constraints:
+[DO NOT INVENT FACTS. MARK UNCERTAIN ITEMS [VERIFY]. DO NOT MAKE DECISIONS. USE ONLY THE SOURCE MATERIAL.]
+
+Human review:
+[NAME REVIEWER, CHECKPOINT, AND APPROVE / REJECT / REVISE CRITERIA]</div>
+
+  <h3>Review checkpoint worksheet</h3>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Reviewer and authority</td><td></td></tr>
+      <tr><td>Source checked</td><td></td></tr>
+      <tr><td>Facts verified</td><td></td></tr>
+      <tr><td>[VERIFY] items resolved</td><td></td></tr>
+      <tr><td>Corrections made</td><td></td></tr>
+      <tr><td>Escalated issues</td><td></td></tr>
+      <tr><td>Approve / reject / revise</td><td></td></tr>
+      <tr><td>Final-use location</td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 6 · Measurement and handoff</div>
+  <h2>Track the value and the stop trigger</h2>
+  <h3>Time-Saved Tracking Sheet</h3>
+  <table class="template-table">
+    <thead><tr><th>Metric</th><th>Formula or entry</th></tr></thead>
+    <tbody>
+      <tr><td>Manual baseline minutes</td><td>Entry</td></tr>
+      <tr><td>AI draft minutes</td><td>Entry</td></tr>
+      <tr><td>Human review minutes</td><td>Entry</td></tr>
+      <tr><td>Total AI-assisted minutes</td><td>AI draft minutes + human review minutes</td></tr>
+      <tr><td>Net minutes saved</td><td>Manual baseline minutes - total AI-assisted minutes</td></tr>
+      <tr><td>Correction count</td><td>Entry</td></tr>
+      <tr><td>Material correction count</td><td>Entry</td></tr>
+      <tr><td>Correction rate</td><td>Correction count / total AI outputs reviewed</td></tr>
+      <tr><td>Handoff success</td><td>Yes / No</td></tr>
+      <tr><td>Defect after use</td><td>Yes / No</td></tr>
+    </tbody>
+  </table>
+
+  <div class="principle">Stop trigger: pause if material corrections exceed X% for two consecutive runs, prohibited data enters the AI step, or a colleague cannot run the SOP without help.</div>
+
+  <h3>Handoff Readiness Card</h3>
   <ul class="small-checklist">
-    <li>The task is internal and low-risk to start.</li>
-    <li>No real customer data enters the AI step.</li>
-    <li>A named human review checkpoint exists.</li>
-    <li>The SOP names inputs, the AI step, the review, and the output.</li>
-    <li>A colleague could run it without you in the room.</li>
-    <li>Time saved and correction rate are tracked.</li>
+    <li>Can a colleague run the SOP without the original prompt author in the room?</li>
+    <li>Are permitted and prohibited inputs obvious?</li>
+    <li>Is the review checkpoint named and specific?</li>
+    <li>Can the reviewer find the source material and final-use location?</li>
+    <li>Are escalation triggers clear?</li>
+    <li>Were time saved, correction rate, handoff success, and post-use defects tracked?</li>
   </ul>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 4 · Artifacts and implementation path</div>
-  <h2>Toolbox artifacts</h2>
-  <table>
-    <thead><tr><th>Artifact</th><th>Use it for</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Workflow SOP Template</td><td>Document inputs, AI step, review, output, and retention.</td><td>Ready</td></tr>
-      <tr><td>Reusable AI Working Brief</td><td>Make one prompt reusable by the full team.</td><td>Ready</td></tr>
-      <tr><td>Review Checkpoint Worksheet</td><td>Name reviewer, criteria, and escalation path.</td><td>Ready</td></tr>
-      <tr><td>Time-Saved Tracking Sheet</td><td>Track baseline, draft time, correction rate, and defects.</td><td>Ready</td></tr>
-      <tr><td>Handoff Readiness Card</td><td>Check whether the workflow can survive a colleague handoff.</td><td>Draft</td></tr>
-    </tbody>
-  </table>
+  <div class="section-kicker">Section 7 · 45-minute operations sprint</div>
+  <h2>Next step: Run the 45-Minute Operations AI Workflow Sprint</h2>
+  <p>Pick one recurring internal task, map the current process, build the reusable AI brief, define the human review checkpoint, test it for one week, and create a handoff-ready SOP.</p>
 
-  <h3>30-day operations path</h3>
   <ol>
-    <li>Week 1: Select one recurring internal task and map current state.</li>
-    <li>Week 2: Draft the workflow SOP and reviewer checkpoint.</li>
-    <li>Week 3: Test on real work with permitted data and track results.</li>
-    <li>Week 4: Hand the SOP to a colleague and fix every unclear step.</li>
+    <li>Select one weekly internal task with low data sensitivity.</li>
+    <li>Write the current manual process in five to ten steps.</li>
+    <li>Complete the reusable AI working brief.</li>
+    <li>Name the reviewer, authority, and source-check criteria.</li>
+    <li>Run the workflow for one week and track the time-saved sheet.</li>
+    <li>Hand it to a colleague and revise anything unclear.</li>
   </ol>
 
   <div class="callout">
     <div class="label">Source basis</div>
-    <p>Built from the AiBI readiness assessment, NIST AI Risk Management Framework, AIEOG AI Lexicon concepts for human-in-the-loop review, and practical workflow control expectations from model risk and third-party risk governance. Adapt before adoption.</p>
+    <p>Built from the AiBI readiness assessment, NIST AI RMF Govern / Map / Measure / Manage concepts, AIEOG human-review and AI-use inventory terminology, internal-control principles for documented procedures, third-party risk expectations where vendor AI features are used, and institution data-classification rules. Adapt before adoption.</p>
   </div>
 </section>
 

@@ -509,7 +509,7 @@
     },
     {
       "slug": "operations-playbook",
-      "title": "Operations Workflow Documentation Kit",
+      "title": "The Bank Operations AI Workflow Kit",
       "audience": ["Operations"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -518,7 +518,7 @@
       "variants": { "pdf": "operations-playbook.pdf", "word": "/api/resources/operations-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/operations-playbook/download",
-      "sourceCitations": ["NIST AI RMF", "AIEOG AI Lexicon"],
+      "sourceCitations": ["NIST AI RMF", "AIEOG AI Lexicon", "Internal controls", "Interagency TPRM", "Data classification"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["operations"], "tierLabels": ["Early Stage", "Building Momentum"], "topGaps": ["workflow"] },
       "status": "public"

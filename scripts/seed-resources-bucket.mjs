@@ -57,7 +57,7 @@ const META = {
   'marketing-playbook':         { title: 'The Bank Marketing AI Control Kit', category: 'playbook', order: 14 },
   'retail-playbook':            { title: 'Branch / Retail Playbook',    category: 'playbook',     order: 15 },
   'executive-playbook':         { title: 'The Executive AI Governance Kit for Community Banks', category: 'playbook', order: 16 },
-  'operations-playbook':        { title: 'Operations Playbook',          category: 'playbook',     order: 17 },
+  'operations-playbook':        { title: 'The Bank Operations AI Workflow Kit', category: 'playbook', order: 17 },
   'training-hr-playbook':       { title: 'Training / HR Playbook',       category: 'playbook',     order: 18 },
   'in-depth-playbook':          { title: 'In-Depth Assessment Playbook',category: 'paid-preview', order: 20 },
   // Starter kits (ZIPs)
@@ -92,7 +92,7 @@ const DESCRIPTIONS = {
   'marketing-playbook': 'Campaign velocity, brand consistency, and compliance review discipline for community banks and credit unions.',
   'retail-playbook': 'Frontline summaries, service replies, coaching cards, huddle scripts, and customer signal reports.',
   'executive-playbook': 'Five board decisions, one funded pilot, one data line, and one evidence dashboard.',
-  'operations-playbook': 'Recurring task maps, reusable working briefs, review checkpoints, and handoff-ready workflow SOPs.',
+  'operations-playbook': 'Turn one useful AI shortcut into a documented SOP your team can run, review, measure, and hand off.',
   'training-hr-playbook': 'Role-specific training paths, safe-use onboarding, scenario packs, and capability tracking.',
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
   'governance-starter-kit': 'Start here if your team is beginning to allow AI tools.',
