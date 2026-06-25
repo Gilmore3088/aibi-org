@@ -80,10 +80,40 @@ Open `src/scenes.tsx`, find `IntroScene`, and change the title text or
 `fontSize`. With `npm run studio` running, it updates instantly. Then change a
 score in `src/data.ts` and watch the bars and ring re-animate.
 
+## The three videos
+
+| Composition id | What it is |
+|---|---|
+| `AssessmentResults` | Data-driven: assessment scores → animated ring + dimension bars. |
+| `ScriptedExplainer` | Caption-style script engine (kept as a reference). |
+| `AiReadyExplainer` | **Voice-first, visual-first explainer** — the current approach. The narrator explains; the screen shows (bubbles, pillars, an 8-node constellation, a score gauge). Minimal on-screen text. |
+
+Render any of them: `npx remotion render src/index.ts <id> out/<name>.mp4`.
+
+## Add voiceover (the script builder → spoken video)
+
+The `AiReadyExplainer` script (`src/scripts/whats-ai-ready.ts`) has a
+`narration` line per section. Generating audio is one command — **but it needs
+network access to the TTS provider**, which the Claude Code *web* environment
+blocks by policy. Run it where your network is open (your laptop, or a web
+environment whose network policy allows `api.elevenlabs.io`):
+
+```bash
+export ELEVENLABS_API_KEY=sk_...          # recommended (or OPENAI_API_KEY)
+bash scripts/make-voiced-video.sh         # generate narration + render → out/whats-ai-ready.mp4
+```
+
+What happens: `generate-voiceover.ts` calls ElevenLabs (or OpenAI) once per
+section, writes the clips to `public/narration/`, measures each one, and writes
+a manifest. The video then **re-times every scene to its measured narration
+length**, so picture and voice stay locked. Until you run it, the video renders
+silent. Pick a voice with `ELEVENLABS_VOICE_ID=...`.
+
 ## Where this can go next
 
 - More compositions in `src/Root.tsx`: course-module intros, a landing-page
   stat reel, branded social cuts.
-- Add narration: drop an MP3 in `public/` and use Remotion's `<Audio>`.
-- Add AI-generated content later (script/voiceover/footage) — that's what
-  OpenMontage layers on top of exactly this kind of Remotion project.
+- Point the explainer at a new topic: copy `src/scripts/whats-ai-ready.ts`,
+  rewrite the narration + visuals, register it in `src/Root.tsx`.
+- Add AI-generated content later (image/footage) — that's what OpenMontage
+  layers on top of exactly this kind of Remotion project.
