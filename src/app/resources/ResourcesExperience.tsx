@@ -27,6 +27,7 @@ import {
   Download,
   LockKeyhole,
   ShieldCheck,
+  Sparkles,
   Users,
 } from './icons';
 import {
@@ -83,6 +84,12 @@ const START_HERE_CHOICES = [
     desc: 'Open the policy starter and use-case review path.',
     href: '/resources/templates/ai-use-policy-starter',
     icon: ShieldCheck,
+  },
+  {
+    label: 'I need a safe prompt',
+    desc: 'Build a banker prompt with placeholders and review rules.',
+    href: '/resources/prompting-foundation',
+    icon: Sparkles,
   },
   {
     label: 'I need a role playbook',

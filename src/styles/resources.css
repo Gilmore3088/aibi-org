@@ -822,6 +822,98 @@ button.rx-featured-item {
   font-size: .875rem; line-height: 1.5; color: var(--slate-600); margin-top: .5rem;
 }
 
+/* ─── /resources/prompting-foundation builder ──────────────────────── */
+
+.prompt-scope .prompt-lane {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: .75rem;
+  border-radius: 999px;
+  padding: .4rem .8rem;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.prompt-scope .prompt-lane-green,
+.prompt-scope .prompt-risk-green {
+  background: #ECFDF5;
+  color: var(--emerald-800);
+}
+.prompt-scope .prompt-lane-yellow,
+.prompt-scope .prompt-risk-yellow {
+  background: #FEF3C7;
+  color: #92400E;
+}
+.prompt-scope .prompt-lane-red,
+.prompt-scope .prompt-risk-red {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+.prompt-scope .prompt-type-grid {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: 1fr;
+  margin-top: 1.5rem;
+}
+@media (min-width: 640px) {
+  .prompt-scope .prompt-type-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.prompt-scope .prompt-type-card {
+  min-height: 92px;
+  border: 1px solid rgba(7, 26, 47, .1);
+  border-radius: 1rem;
+  background: var(--cream);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  justify-content: flex-start;
+  padding: 1rem;
+  text-align: left;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.prompt-scope .prompt-type-card:hover {
+  border-color: rgba(200, 162, 74, .7);
+  transform: translateY(-1px);
+}
+.prompt-scope .prompt-type-card:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.prompt-scope .prompt-type-card.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.prompt-scope .prompt-type-card span {
+  font-size: .95rem;
+  font-weight: 800;
+}
+.prompt-scope .prompt-type-card small {
+  color: inherit;
+  font-size: .78rem;
+  line-height: 1.35;
+  opacity: .78;
+}
+.prompt-scope .prompt-risk-callout {
+  border-radius: 1rem;
+  margin-top: 1.25rem;
+  padding: .9rem 1rem;
+  font-size: .9rem;
+  line-height: 1.45;
+}
+.prompt-scope .prompt-md-red {
+  background: #2D0C0C;
+  color: #FEE2E2;
+}
+.prompt-scope .sop-preview-actions button:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
 /* Kit card split: button body (selects + previews) + zip download footer */
 .mockup-scope .rx-kit-card { padding: 0; cursor: default; }
 .mockup-scope .rx-kit-card-body {

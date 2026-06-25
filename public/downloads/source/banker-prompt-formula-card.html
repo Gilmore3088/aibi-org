@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Banker Prompt Formula Card - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .cover h1 { font-size: 38pt; max-width: 6.4in; }
+  .cover .lede { max-width: 6.2in; }
+  .page h2 { font-size: 20pt; }
+  .formula { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10pt; margin: 12pt 0; }
+  .formula .card { min-height: 1.2in; padding: 11pt 12pt; }
+  .prompt-box { background: var(--ink); color: #E9EEF6; border-radius: 10pt; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8.8pt; line-height: 1.45; margin: 10pt 0; padding: 10pt 12pt; white-space: pre-wrap; }
+  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
+  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text"><div class="seal-name">The AI Banking Institute</div><div class="seal-tag">Turning Bankers into Builders</div></div>
+  </div>
+  <div>
+    <div class="kicker">Desk reference - v1</div>
+    <h1>The Banker Prompt Formula</h1>
+    <p class="lede">A one-page structure for turning vague AI requests into safe, reviewable banker prompts.</p>
+  </div>
+  <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Prompt structure</div>
+  <h2>Role. Task. Source. Constraints. Output. Verify. Escalate.</h2>
+  <p>Use this formula before every work prompt. It helps the banker define the job, strip sensitive inputs, require a useful format, and keep responsibility with a human reviewer.</p>
+  <div class="formula">
+    <div class="card"><div class="num">Role</div><h4>Who should AI act as?</h4><p>Example: "You are assisting a branch operations trainer." Do not ask AI to act as the final approver, lender, investigator, compliance officer, or legal authority.</p></div>
+    <div class="card"><div class="num">Task</div><h4>What should it produce?</h4><p>Draft, summarize, rewrite, extract, compare, checklist, critique, scenario, data-to-narrative, or builder brief. Use draft support, not decisions.</p></div>
+    <div class="card"><div class="num">Source</div><h4>What approved material should it use?</h4><p>Name the public, internal, redacted, or synthetic source. If the source contains sensitive data, stop and reclassify before prompting.</p></div>
+    <div class="card"><div class="num">Constraints</div><h4>What must it not do?</h4><p>Do not invent facts, rates, fees, dates, policy requirements, legal conclusions, fraud findings, or credit reasons.</p></div>
+    <div class="card"><div class="num">Output</div><h4>What format should the answer use?</h4><p>Bullets, table, checklist, email draft, script, FAQ, SOP, memo, markdown, or evidence packet. Pick the format before generating.</p></div>
+    <div class="card"><div class="num">Verify and escalate</div><h4>What needs human review?</h4><p>Mark uncertain items [VERIFY]. Escalate customer impact, credit, BSA/AML, fraud, authentication, complaints, examiner-facing material, legal/compliance interpretation, or prohibited data.</p></div>
+  </div>
+
+  <h3>Copy-ready starter</h3>
+  <div class="prompt-box">You are assisting [ROLE] with [TASK].
+Use only [APPROVED SOURCE].
+Do not use or request prohibited data.
+Return [OUTPUT FORMAT].
+Do not invent facts or make a decision. Preserve source meaning. Mark uncertain items [VERIFY].
+[REVIEWER] will review before final use.
+Escalate if [TRIGGER] appears.</div>
+
+  <div class="source-box">
+    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI safe-use curriculum.</p>
+    <p><strong>Adapt before adoption:</strong> This card is a training aid, not legal advice or an examiner-approved policy. Adapt before adopting it to your institution's approved AI tools, data classes, review authority, and retention rules.</p>
+  </div>
+</section>
+
+</body>
+</html>

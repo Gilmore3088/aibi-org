@@ -149,6 +149,90 @@ const KITS = {
       },
     ],
   },
+  'prompting-foundation-kit': {
+    title: 'The AI Prompting Foundation Kit',
+    lede:
+      'Turn a vague AI request into a safe, structured, reviewable banker prompt with placeholders, output format, and human review.',
+    forWhom:
+      'For bankers, managers, analysts, trainers, marketers, lenders, operations teams, and compliance reviewers who want useful AI support without leaking sensitive data, skipping review, or letting AI make decisions.',
+    startHereName: '00-Start-Here.pdf',
+    steps: [
+      'Read the Prompting Foundation Guide and teach the Banker Prompt Formula.',
+      'Use the Placeholder Card before anyone pastes source material into an AI tool.',
+      'Open /resources/prompting-foundation to assemble a prompt from structured fields.',
+      'Use the Prompt Library for role-specific examples, then adapt with placeholders.',
+      'Complete the Output Review Checklist before output moves downstream.',
+      'If a prompt becomes repeatable team practice, move it into the Reusable AI Working Brief and then the Workflow SOP Builder.',
+    ],
+    assets: [
+      {
+        source: 'prompting-foundation-guide.pdf',
+        target: '01-Prompting-Foundation-Guide.pdf',
+        description:
+          'Foundation guide for prompt types, safe placeholders, output formats, Green/Yellow/Red lanes, examples, and review habits.',
+      },
+      {
+        source: 'banker-prompt-formula-card.pdf',
+        target: '02-Banker-Prompt-Formula-Card.pdf',
+        description:
+          'One-page prompt formula reference: role, task, source, constraints, output, verify, and escalate.',
+      },
+      {
+        source: 'safe-prompt-placeholder-card.pdf',
+        target: '03-Safe-Prompt-Placeholder-Card.pdf',
+        description:
+          'Reference card for replacing customer, account, transaction, complaint, credit, BSA/AML, and security details before prompting.',
+      },
+      {
+        source: 'prompt-output-review-checklist.pdf',
+        target: '04-Prompt-Output-Review-Checklist.pdf',
+        description:
+          'Checklist for verifying source accuracy, placeholder use, [VERIFY] items, review ownership, escalation, and retained evidence before downstream use.',
+      },
+      {
+        source: 'kit-assets/prompting-foundation-kit/Prompt-Library.docx',
+        target: '05-Prompt-Library.docx',
+        description:
+          'Editable role-specific prompt examples for retail, operations, marketing, lending, BSA/AML, compliance, training, and executive use.',
+      },
+      {
+        source: 'kit-assets/prompting-foundation-kit/Reusable-AI-Working-Brief.docx',
+        target: '06-Reusable-AI-Working-Brief.docx',
+        description:
+          'Editable working brief for turning a useful one-off prompt into a shared team prompt with owner, reviewer, data boundary, escalation, and evidence fields.',
+      },
+      {
+        source: 'kit-assets/prompting-foundation-kit/Reusable-AI-Working-Brief-Copy-Paste.txt',
+        target: '07-Reusable-AI-Working-Brief-Copy-Paste.txt',
+        description:
+          'Plain-text copy/paste template for moving the prompt brief into an internal ticket, toolkit entry, or SOP draft.',
+      },
+      {
+        source: 'template-ai-workflow-sop.pdf',
+        target: '08-Workflow-SOP-Next-Step.pdf',
+        description:
+          'Downstream SOP template for documenting approved AI-assisted workflows before repeatable team use.',
+      },
+      {
+        source: 'safe-ai-use-checklist.pdf',
+        target: '09-Before-You-Paste-Safe-AI-Checklist.pdf',
+        description:
+          'Four safe-use habits that sit underneath the prompt foundation: strip sensitive data, ask clearly, fact-check, and escalate.',
+      },
+      {
+        source: 'red-yellow-green-use-card.pdf',
+        target: '10-Red-Yellow-Green-AI-Use-Card.pdf',
+        description:
+          'Risk classification reference for allowed, review-required, and prohibited AI use cases.',
+      },
+      {
+        source: 'kit-assets/prompting-foundation-kit/Prompting-Foundation-Design-Dev-Brief.docx',
+        target: '11-Design-Dev-Handoff-Brief.docx',
+        description:
+          'Designer/developer handoff brief for the Prompting Foundation product, prompt builder flow, data model, and acceptance criteria.',
+      },
+    ],
+  },
   'frontline-enablement-kit': {
     title: 'The Frontline AI Enablement Kit',
     lede: 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',

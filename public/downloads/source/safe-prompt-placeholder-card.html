@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Safe Prompt Placeholder Card - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .cover h1 { font-size: 38pt; max-width: 6.4in; }
+  .cover .lede { max-width: 6.2in; }
+  table { font-size: 9pt; }
+  th, td { padding: 6pt 7pt; }
+  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
+  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text"><div class="seal-name">The AI Banking Institute</div><div class="seal-tag">Turning Bankers into Builders</div></div>
+  </div>
+  <div>
+    <div class="kicker">Desk reference - v1</div>
+    <h1>Safe Prompt Placeholder Card</h1>
+    <p class="lede">Replace real customer, account, transaction, complaint, credit, BSA/AML, and internal data before asking AI for draft support.</p>
+  </div>
+  <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Before you paste</div>
+  <h2>Use uppercase brackets instead of real specifics.</h2>
+  <p>The safest prompting habit is to remove sensitive facts before the prompt. Use consistent placeholders so reviewers can see what was stripped and what must be verified before final use.</p>
+
+  <table>
+    <thead><tr><th>Sensitive item</th><th>Use placeholder</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Customer name</td><td>[CUSTOMER]</td><td>Use fictional names only in training scenarios.</td></tr>
+      <tr><td>Account number</td><td>[ACCOUNT_NUMBER] or [ACCOUNT_LAST4]</td><td>Never paste the real account number into a public AI tool.</td></tr>
+      <tr><td>Account type</td><td>[ACCOUNT_TYPE]</td><td>Example: checking, savings, CD, HELOC.</td></tr>
+      <tr><td>Balance</td><td>[BALANCE]</td><td>Avoid exact amounts unless in an approved environment.</td></tr>
+      <tr><td>Amount</td><td>[AMOUNT] or [AMOUNT_RANGE]</td><td>Ranges are safer than exact values for examples.</td></tr>
+      <tr><td>Transaction</td><td>[TRANSACTION] or [TRANSACTION_PATTERN]</td><td>Use pattern-level language where possible.</td></tr>
+      <tr><td>Date</td><td>[DATE] or [DATE_RANGE]</td><td>Use if timing matters but identity does not.</td></tr>
+      <tr><td>Dispute or complaint</td><td>[DISPUTE_SUMMARY] or [COMPLAINT_SUMMARY]</td><td>Remove identity, account, and event details unless the tool is approved.</td></tr>
+      <tr><td>Credit reasons</td><td>[HUMAN_PROVIDED_REASONS]</td><td>AI may clarify; it does not choose, infer, rank, approve, deny, or decide.</td></tr>
+      <tr><td>SAR / AML facts</td><td>[SYNTHETIC_CASE_FACTS]</td><td>No real SAR, alert, transaction, or investigation facts in public tools.</td></tr>
+      <tr><td>Employee or personnel facts</td><td>[EMPLOYEE_SCENARIO]</td><td>No medical, accommodation, performance, or protected-class details in public tools.</td></tr>
+      <tr><td>Vendor or security facts</td><td>[VENDOR_SUMMARY] or [SECURITY_REQUIREMENT]</td><td>Do not paste credentials, API keys, tokens, configurations, or production access details.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Default stop rule</h4></div>
+    <p>If the prompt contains a real customer, real account, real transaction, real complaint, real SAR/AML detail, real credential, or examiner-sensitive fact, stop and classify higher before using AI.</p>
+  </div>
+
+  <div class="source-box">
+    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI data-handling curriculum.</p>
+    <p><strong>Adapt before adoption:</strong> This card is a training aid, not legal advice or an examiner-approved policy. Adapt before adopting it to your institution's approved tools, data classifications, privacy rules, and retention procedures.</p>
+  </div>
+</section>
+
+</body>
+</html>
