@@ -2,6 +2,13 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 
 export const PUBLIC_PLAYGROUND_FEATURE_ID = 'playground-public';
 export const PUBLIC_PLAYGROUND_COURSE_SLUG = 'public-playground';
+
+// Provider + model for the public playground demo. These two constants are the
+// single source of truth: the run route reads them to pick the LLM client and
+// price the call, so the env key that must be set is provider-driven —
+// 'openai' requires OPENAI_API_KEY, 'anthropic' requires ANTHROPIC_API_KEY.
+// The chosen provider must stay in sync with whichever key is configured in
+// Vercel for the production playground.
 export const PUBLIC_PLAYGROUND_PROVIDER = 'openai' as const;
 export const PUBLIC_PLAYGROUND_MODEL = 'gpt-4o-mini';
 

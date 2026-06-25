@@ -16,7 +16,13 @@ vi.mock('@/lib/supabase/client', () => ({
 
 import { runAbandonedAssessmentMonitor } from './abandoned-drafts';
 
-function serviceClient() {
+type DraftRowOverrides = Partial<{
+  last_sent_at: string | null;
+  last_resumed_at: string | null;
+  reminder_sent_at: string | null;
+}>;
+
+function serviceClient(overrides: DraftRowOverrides = {}) {
   const updateEq = vi.fn().mockResolvedValue({ error: null });
   const update = vi.fn(() => ({ eq: updateEq }));
   const query = {
@@ -38,9 +44,11 @@ function serviceClient() {
           phase: 'questions',
           updated_at: '2026-06-22T08:00:00.000Z',
           expires_at: '2026-07-23T00:00:00.000Z',
+          last_sent_at: null,
           last_resumed_at: null,
           reminder_sent_at: null,
           reminder_count: 0,
+          ...overrides,
         },
       ],
       error: null,
@@ -94,5 +102,22 @@ describe('runAbandonedAssessmentMonitor', () => {
       reminder_count: 1,
     });
     expect(updateEq).toHaveBeenCalledWith('id', 'draft-59');
+  });
+
+  it('never rotates token_hash or re-sends for a draft that already has a link emailed (last_sent_at set)', async () => {
+    // The POST flow stamps last_sent_at the moment it emails a resume link.
+    // The cron must treat that draft as already-served — minting a new token
+    // here would overwrite token_hash and silently invalidate the link the
+    // user already received. Guards the token-rotation regression.
+    const { client, update } = serviceClient({ last_sent_at: '2026-06-22T09:00:00.000Z' });
+
+    const result = await runAbandonedAssessmentMonitor(
+      { now: new Date('2026-06-23T09:00:00.000Z') },
+      client as never,
+    );
+
+    expect(result.sentReminders).toEqual([]);
+    expect(mocks.sendAssessmentResumeLink).not.toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
   });
 });

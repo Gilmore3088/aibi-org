@@ -1,0 +1,176 @@
+// Builds the remediation + verification report comparing this round's work
+// against the prior 20/50/100 persona reviews. Emits:
+//   - docs/persona-audit-live-100-2026-06-23/remediation.html
+//   - docs/persona-audit-live-100-2026-06-23/03-remediation-report.md
+// Data is authored here (the verified outcome); no external inputs.
+
+import { writeFile, mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
+const OUT_DIR = resolve(process.cwd(), 'docs/persona-audit-live-100-2026-06-23');
+
+const KPIS = [
+  ['Fixes integrated', '6'],
+  ['Commits over main', '8'],
+  ['Unit tests', '634/634'],
+  ['No-seed e2e', '447 pass'],
+  ['Local sweep issues', '0/100'],
+  ['Real-browser fixes proven', '4'],
+];
+
+// status: STALE (resolved/no-longer-true) | OUTSTANDING | NEW
+const RESOLVED = [
+  ['Certificate issuance chain', '100-persona GAP1 (P0)', 'Chain was already implemented on main (review_status set in 3 places, idempotent issuance, PDF via Puppeteer — NOT @react-pdf). Removed the dead @react-pdf cert component; added unit + tracing-guard tests. Seeded end-to-end e2e written but blocked locally (see env item).'],
+  ['Gated PDF downloads (500)', '100-persona GAP6 (P0)', 'PR #517 static-PDF fix PROVEN: e2e asserts /api/prompt-cards/download and /api/guides/safe-ai-use both return valid %PDF bytes (in the 447-pass run). Audit: zero live @react-pdf renderToBuffer calls remain in src/ — the production "@react-pdf 500" launch blocker is eliminated.'],
+  ['Retention loop + token bug', '100-persona GAP3 (P0)', 'Loop was already built (crons + cross-device resume). Fixed a real bug: the abandoned-assessment cron rotated a draft token and silently invalidated the first emailed resume link — now guarded and unit-tested.'],
+  ['Paid-buyer login stranding', '100-persona GAP2 (P0)', 'Happy path works (auto-trust on magic-link). Fixed the dead resend on /auth/confirm-device-pending by surfacing #517\'s sessionless recovery forms and forwarding the real destination. Auth-recovery e2e PASSED in a real browser with real Supabase.'],
+  ['"Fake" interactive demos', '100-persona GAP5 (P1)', 'Already wired to live, rate-limited AI by de73600f (caps + PII filters); the "Enrolled-only" mislabel and dead files were already gone. Removed residual dead canned-output strings and added a run-route gate e2e. Provider choice pending owner (see outstanding).'],
+  ['/resources hydration (React #418)', 'Live sweep (NEW last round)', 'Root-caused to the GLOBAL layout deriving chrome from the x-pathname request header (non-deterministic across SSR vs RSC). Fixed by deriving chrome from usePathname() in a client LayoutChrome. Proven by an e2e soft-navigation test AND a clean 0/100 local persona sweep.'],
+  ['Foundation purchase dead-ends', '20-persona P2/P17', 'Zero dead-ends across both the production and local 100-persona sweeps (the 20-persona sweep had 3 here).'],
+  ['"Deploy-pending" pages now live', '20/100-persona', '/pricing, /security/data-handling, /security/it-approval, /about, /verify all confirmed reachable in the production sweep coverage.'],
+];
+
+const OUTSTANDING = [
+  ['Live-money smoke tests', 'OWNER', '20/50', 'Real Stripe checkout -> webhook -> entitlement -> refund must be run with real money. Cannot be automated safely.'],
+  ['MailerLite nurture activation', 'OWNER', '20/50/100', 'Paste/seed/domain-auth/enable the automations in your MailerLite dashboard. No code can do this.'],
+  ['Rotate exposed STRIPE_SECRET_KEY', 'OWNER', '20', 'Security: rotate the previously exposed live key in Stripe + Vercel.'],
+  ['Physical iPhone/Safari QA', 'OWNER', '20/50', 'Emulated mobile passes; a real-device pass is still needed.'],
+  ['Named advisors / public proof', 'OWNER', '20/50', 'Approve named people, quotes, or logos for the credibility surfaces.'],
+  ['Legal / counsel signoff', 'OWNER', '50', 'Privacy + terms need counsel review.'],
+  ['Demo AI provider choice', 'OWNER JUDGMENT', 'NEW', 'The public playground calls OpenAI gpt-4o-mini; you named the Anthropic key. Decide which, and I will switch it.'],
+  ['Auth email deliverability (SPF/DKIM/DMARC)', 'OWNER', 'GAP2 owner-half', 'The code recovery path is fixed; bank-gateway deliverability of the magic link is an email-auth/allowlisting task.'],
+  ['Local SUPABASE_SERVICE_ROLE_KEY', 'ENV', 'NEW', 'Your local .env.local holds a 39-char placeholder (the real ~200-char key lives in Vercel). Add the real key to .env.local to run the seeded certificate + assessment-resume e2e against real Supabase.'],
+  ['Abandoned-cron re-nudge policy', 'OWNER DECISION', '100', 'Should the abandoned cron re-nudge drafts that already had a resume link emailed? If yes it needs a reusable token (a schema change), split out separately.'],
+  ['Wave-2 P1/P2 cleanups', 'DEFERRED', '100', 'Mostly already addressed (need only regression guards). The "delete SiteNav/SiteFooter" item is now MOOT — the hydration fix renders them as layout slots, so deleting them would break the chrome.'],
+];
+
+const NEW = [
+  ['e2e used networkidle on dev', 'FIXED', 'The new resume specs called waitForLoadState(networkidle), which never settles on a Next dev server (HMR socket) and hung to the 30s timeout despite correct rendering. Removed.'],
+  ['Cert e2e 30s timeout too short', 'FIXED', 'A cold dev compile + first Chromium PDF launch exceeds 30s; raised to 120s.'],
+  ['Integration type + path bugs', 'FIXED', 'The retention change made last_sent_at required (existing fixture updated); the cert guard used import.meta.url which is not a file:// URL under vitest (resolve from cwd instead).'],
+  ['.env.local service-role placeholder', 'SURFACED', 'Discovered while wiring the seeded e2e — see the ENV outstanding item.'],
+];
+
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const BADGE = { OWNER: '#9A1B2F', 'OWNER JUDGMENT': '#9A7A2F', 'OWNER DECISION': '#9A7A2F', ENV: '#475569', DEFERRED: '#475569', FIXED: '#047857', SURFACED: '#9A7A2F' };
+
+async function main() {
+  await mkdir(OUT_DIR, { recursive: true });
+  const kpiHtml = KPIS.map(([k, v]) => `<div class="kpi"><div class="kpi-v">${esc(v)}</div><div class="kpi-k">${esc(k)}</div></div>`).join('');
+  const resolvedHtml = RESOLVED.map(([t, src, ev]) => `<tr><td><strong>${esc(t)}</strong></td><td class="muted">${esc(src)}</td><td>${esc(ev)}</td></tr>`).join('\n');
+  const outstandingHtml = OUTSTANDING.map(([t, type, src, note]) => `<tr><td><strong>${esc(t)}</strong></td><td><span class="badge" style="background:${BADGE[type] || '#475569'}">${esc(type)}</span></td><td class="muted">${esc(src)}</td><td>${esc(note)}</td></tr>`).join('\n');
+  const newHtml = NEW.map(([t, status, note]) => `<tr><td><strong>${esc(t)}</strong></td><td><span class="badge" style="background:${BADGE[status] || '#475569'}">${esc(status)}</span></td><td>${esc(note)}</td></tr>`).join('\n');
+
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Persona Remediation + Verification Report — The AI Banking Institute</title>
+<style>
+  :root{--ink:#071A2F;--ink2:#0B2745;--gold:#C8A24A;--gold-deep:#9A7A2F;--cream:#F7F3EA;--cream2:#EFE7D7;--s2:#E2E8F0;--s5:#64748B;--s6:#475569;--emer:#047857;--crit:#9A1B2F;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  header{background:var(--ink);color:var(--cream);padding:46px 0 38px}
+  header .kick{color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+  header h1{margin:.3em 0 .2em;font-size:32px;line-height:1.1}
+  header .meta{color:#cdd7e2;font-size:14px}
+  .verdict{background:var(--ink2);border-left:4px solid var(--gold);padding:18px 20px;border-radius:10px;margin-top:22px;color:#eef3f8}
+  .verdict strong{color:var(--gold)}
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:-26px 0 0}
+  .kpi{background:#fff;border:1px solid var(--s2);border-radius:14px;padding:16px 12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .kpi-v{font-size:23px;font-weight:800}.kpi-k{font-size:10.5px;color:var(--s5);text-transform:uppercase;letter-spacing:.03em;margin-top:4px}
+  section{padding:36px 0 6px}
+  h2{font-size:21px;margin:0 0 6px}
+  h2 .sub{font-weight:400;color:var(--s5);font-size:14px}
+  .lead{color:var(--s6);max-width:78ch;margin:0 0 16px}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--s2);border-radius:12px;overflow:hidden;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--s2);vertical-align:top}
+  th{background:var(--cream2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--s6)}
+  tr:last-child td{border-bottom:none}
+  .muted{color:var(--s5);font-size:12px}
+  .badge{display:inline-block;color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap}
+  .pill{display:inline-block;border-radius:999px;padding:3px 11px;font-size:12px;font-weight:700}
+  .pill.stale{background:#e7f6ef;color:#0a5c41}.pill.out{background:#fbeaec;color:var(--crit)}.pill.new{background:var(--cream2);color:var(--gold-deep)}
+  .note{background:var(--cream2);border-radius:10px;padding:14px 16px;color:var(--s6);font-size:13px}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#fff;border:1px solid var(--s2);border-radius:5px;padding:1px 5px}
+  footer{color:var(--s5);font-size:12px;padding:30px 0 50px;text-align:center}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<header><div class="wrap">
+  <div class="kick">Remediation + verification · vs the 20 / 50 / 100-persona reviews</div>
+  <h1>Persona Remediation Report</h1>
+  <div class="meta">Branch <code>feat/persona-remediation-wave1</code> · 8 commits over <code>main</code> · 2026-06-24</div>
+  <div class="verdict">The prior reviews scored an older codebase. On current <code>main</code> the bottom-of-funnel was <strong>already largely built</strong> — so this round was small real bug-fixes plus the real tests that prove the flows. <strong>6 fixes integrated, tsc clean, 634/634 unit tests pass, 447 no-seed e2e pass, and the fixed build walks 100 personas with 0 issues.</strong> Four fixes are proven in a real browser; two seeded flows are unit-verified and blocked from full e2e only by a local service-role key placeholder.</div>
+</div></header>
+<div class="wrap">
+  <div class="kpis">${kpiHtml}</div>
+
+  <section>
+    <h2><span class="pill stale">STALE / RESOLVED</span> &nbsp;Prior findings now closed</h2>
+    <p class="lead">Each was an open finding in a prior review. It is now fixed or was already true — so the prior finding is stale. Evidence is the verification actually run this round.</p>
+    <table><thead><tr><th>Finding</th><th>From</th><th>What changed / how verified</th></tr></thead><tbody>${resolvedHtml}</tbody></table>
+  </section>
+
+  <section>
+    <h2><span class="pill out">OUTSTANDING</span> &nbsp;Still open — mostly yours, not mine</h2>
+    <p class="lead">These are not code I can close: owner gates (secrets, dashboards, real money, legal, proof), an owner judgment call, one environment item, and one deferred cleanup.</p>
+    <table><thead><tr><th>Item</th><th>Type</th><th>From</th><th>Note</th></tr></thead><tbody>${outstandingHtml}</tbody></table>
+  </section>
+
+  <section>
+    <h2><span class="pill new">NEW</span> &nbsp;Surfaced this round</h2>
+    <p class="lead">Issues that did not exist in the prior reviews — found and (mostly) fixed while building the real tests.</p>
+    <table><thead><tr><th>Item</th><th>Status</th><th>Detail</th></tr></thead><tbody>${newHtml}</tbody></table>
+  </section>
+
+  <section>
+    <h2>Verification detail</h2>
+    <div class="note">
+      <strong>Unit:</strong> 634/634 pass (162 files), tsc --noEmit clean.<br>
+      <strong>e2e (no seed, real browser):</strong> 447 pass — including the new <em>"no hydration mismatch reaching /resources via in-app navigation"</em> and the gated <em>"prompt-cards / safe-ai-use returns a valid attachment PDF"</em>.<br>
+      <strong>e2e (seeded, real Supabase):</strong> auth-recovery PASS; resume malformed/unknown-token PASS; saved-draft round-trip + certificate chain blocked locally by the placeholder service-role key (unit-verified).<br>
+      <strong>Persona sweep (fixed local build):</strong> 100 personas, 750 steps, 66 pages, <strong>0 broken / 0 dead-ends / 0 JS-error pages</strong> — the production sweep's one defect (<code>/resources</code> #418) is gone.
+    </div>
+  </section>
+
+  <section>
+    <h2>To ship</h2>
+    <p class="lead">The work sits on <code>feat/persona-remediation-wave1</code> (not merged, not deployed). Recommended order: (1) you decide the demo provider; (2) optionally add the real service-role key to <code>.env.local</code> and I run the two seeded flows for full e2e proof; (3) merge to main; (4) work the owner checklist above (live-money smoke, MailerLite, key rotation, device QA, proof, legal).</p>
+  </section>
+</div>
+<footer>The AI Banking Institute · remediation verification · 2026-06-24</footer>
+</body></html>`;
+  await writeFile(resolve(OUT_DIR, 'remediation.html'), html);
+
+  const mdSection = (rows, cols) => `| ${cols.join(' | ')} |\n|${cols.map(() => '---').join('|')}|\n` + rows.map((r) => `| ${r.join(' | ')} |`).join('\n');
+  const md = `# Persona Remediation + Verification Report — 2026-06-24
+
+Branch \`feat/persona-remediation-wave1\` (8 commits over main). Compares this round against the 20/50/100-persona reviews. See \`remediation.html\` for the visual version, \`01-consolidation.md\` for the pre-remediation ledger.
+
+## Verdict
+The prior reviews scored an older codebase; the bottom-of-funnel was already largely built. This round = small real bug-fixes + the real tests that prove the flows. 6 fixes integrated, tsc clean, 634/634 unit pass, 447 no-seed e2e pass, fixed-build sweep 0/100 issues.
+
+## STALE / RESOLVED (prior findings now closed)
+${mdSection(RESOLVED.map((r) => [r[0], r[1], r[2]]), ['Finding', 'From', 'What changed / how verified'])}
+
+## OUTSTANDING (mostly owner, not code)
+${mdSection(OUTSTANDING.map((r) => [r[0], r[1], r[2], r[3]]), ['Item', 'Type', 'From', 'Note'])}
+
+## NEW (surfaced this round)
+${mdSection(NEW.map((r) => [r[0], r[1], r[2]]), ['Item', 'Status', 'Detail'])}
+
+## Verification detail
+- Unit: 634/634 pass (162 files); tsc clean.
+- e2e no-seed (real browser): 447 pass (incl. /resources hydration soft-nav + gated PDF byte checks).
+- e2e seeded (real Supabase): auth-recovery PASS; resume malformed/unknown PASS; saved-draft + certificate chain blocked by local placeholder service-role key (unit-verified).
+- Persona sweep (fixed local build): 100 personas, 0 broken / 0 dead-ends / 0 JS-error pages (prod sweep's /resources #418 gone).
+
+## To ship
+On \`feat/persona-remediation-wave1\` (not merged/deployed). Order: decide demo provider -> optionally add real service-role key + run seeded flows -> merge to main -> owner checklist.
+`;
+  await writeFile(resolve(OUT_DIR, '03-remediation-report.md'), md);
+  console.log(`Wrote ${resolve(OUT_DIR, 'remediation.html')}`);
+  console.log(`Wrote ${resolve(OUT_DIR, '03-remediation-report.md')}`);
+  console.log(`Resolved: ${RESOLVED.length} · Outstanding: ${OUTSTANDING.length} · New: ${NEW.length}`);
+}
+
+main().catch((e) => { console.error(e); process.exit(1); });

@@ -156,6 +156,31 @@ test.describe('Resource delivery - template pages', () => {
   }
 });
 
+test.describe('Gated lead-capture PDF downloads', () => {
+  // These two slugs serve committed static PDFs (not request-time renders),
+  // so they live in freeResources.manifest.json as logging entries only and
+  // are NOT enumerated by the manifest-driven routes above. The mocked unit
+  // tests prove response shaping but cannot prove the committed asset exists,
+  // is non-empty, and starts with the PDF magic header — this does.
+  const gated = [
+    { path: '/api/prompt-cards/download', filename: 'AiBI-Prompt-Cards.pdf' },
+    { path: '/api/guides/safe-ai-use', filename: 'AiBI-Safe-AI-Use-Guide.pdf' },
+  ];
+
+  for (const { path, filename } of gated) {
+    test(`GET ${path} returns a valid attachment PDF`, async ({ request }) => {
+      const res = await request.get(path);
+      expect(res.status(), `${path} should return 200`).toBe(200);
+      expect(res.headers()['content-type'] ?? '').toContain('application/pdf');
+      expect(res.headers()['content-disposition'] ?? '').toContain('attachment');
+      expect(res.headers()['content-disposition'] ?? '').toContain(filename);
+      const body = await res.body();
+      expect(body.byteLength, `${path} body too small`).toBeGreaterThan(10_000);
+      expect(body.subarray(0, 5).toString('utf8'), `${path} not a PDF`).toBe('%PDF-');
+    });
+  }
+});
+
 test.describe('Resource delivery - download API input validation', () => {
   test('unknown slug returns 404 or service-unavailable, not 500', async ({ request }) => {
     const res = await request.get('/api/resources/this-slug-does-not-exist-xyz/download');

@@ -270,4 +270,29 @@ test.describe('/resources page', () => {
     );
     expect(fatal).toEqual([]);
   });
+
+  // The document-load path above (page.goto) passes today. The bug surfaced
+  // only on the SOFT-NAVIGATION / prefetch path, where the RSC payload the
+  // client reconciles against could carry a divergent x-pathname and toggle a
+  // different chrome subtree than the server streamed — React #418. Exercise
+  // that path explicitly so the regression cannot slip past CI again.
+  test('no hydration mismatch reaching /resources via in-app navigation', async ({ page }) => {
+    const fatal: string[] = [];
+    page.on('pageerror', (e) => fatal.push(String(e)));
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') fatal.push(msg.text());
+    });
+    await page.goto('/'); // land on a page that links to /resources
+    await page.waitForLoadState('networkidle');
+    await page.getByRole('link', { name: 'Resources' }).first().click(); // soft nav -> RSC fetch
+    await expect(page).toHaveURL(/\/resources$/);
+    await expect(
+      page.getByRole('heading', { level: 1, name: /Start with the artifact/i }),
+    ).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    const hydration = fatal.filter((e) =>
+      /Hydration failed|did not match|Minified React error #(418|421|423|425)|hydrat/i.test(e),
+    );
+    expect(hydration).toEqual([]);
+  });
 });

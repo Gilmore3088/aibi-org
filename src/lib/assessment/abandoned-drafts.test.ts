@@ -16,6 +16,7 @@ const baseDraft: AssessmentDraftReminderRow = {
   updated_at: '2026-06-22T08:00:00.000Z',
   expires_at: '2026-07-01T00:00:00.000Z',
   last_resumed_at: null,
+  last_sent_at: null,
   reminder_sent_at: null,
   reminder_count: 0,
 };

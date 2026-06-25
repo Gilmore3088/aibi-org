@@ -4,8 +4,9 @@
 // Per CERT-04: learner can download PDF from this page.
 //
 // Ported to the mockup design system 2026-05-27 (Inter, ink/cream/gold).
-// PDF rendering pathway is independent (src/lib/pdf/CertificateDocument)
-// and intentionally unchanged.
+// PDF rendering is independent of this page: buildCertificatePdfBuffer
+// (src/lib/certificates/pdf.ts) renders /verify/[certificateId]/print via
+// Puppeteer/Chromium. There is no @react-pdf path in the certificate chain.
 
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
