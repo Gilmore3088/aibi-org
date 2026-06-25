@@ -58,7 +58,7 @@ const META = {
   'retail-playbook':            { title: 'The Bank Retail AI Service Kit', category: 'playbook',   order: 15 },
   'executive-playbook':         { title: 'The Executive AI Governance Kit for Community Banks', category: 'playbook', order: 16 },
   'operations-playbook':        { title: 'The Bank Operations AI Workflow Kit', category: 'playbook', order: 17 },
-  'training-hr-playbook':       { title: 'Training / HR Playbook',       category: 'playbook',     order: 18 },
+  'training-hr-playbook':       { title: 'The Bank AI Role Readiness Kit', category: 'playbook',     order: 18 },
   'in-depth-playbook':          { title: 'In-Depth Assessment Playbook',category: 'paid-preview', order: 20 },
   // Starter kits (ZIPs)
   'governance-starter-kit':     { title: 'AI Governance Starter Kit',   category: 'starter-kit',  order: 30 },
@@ -93,7 +93,7 @@ const DESCRIPTIONS = {
   'retail-playbook': 'Five frontline workflows for faster replies, better coaching, cleaner handoffs, and safer customer service.',
   'executive-playbook': 'Five board decisions, one funded pilot, one data line, and one evidence dashboard.',
   'operations-playbook': 'Turn one useful AI shortcut into a documented SOP your team can run, review, measure, and hand off.',
-  'training-hr-playbook': 'Role-specific training paths, safe-use onboarding, scenario packs, and capability tracking.',
+  'training-hr-playbook': 'Turn generic AI awareness into role-specific practice, safe-use scenarios, and visible readiness tracking.',
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
   'governance-starter-kit': 'Start here if your team is beginning to allow AI tools.',
   'frontline-enablement-kit': 'Give branch and contact center teams safer AI practice routines.',

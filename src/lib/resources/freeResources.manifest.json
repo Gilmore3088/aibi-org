@@ -525,7 +525,7 @@
     },
     {
       "slug": "training-hr-playbook",
-      "title": "Training-HR AI Enablement Kit",
+      "title": "The Bank AI Role Readiness Kit",
       "audience": ["Training/HR"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -534,7 +534,7 @@
       "variants": { "pdf": "training-hr-playbook.pdf", "word": "/api/resources/training-hr-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/training-hr-playbook/download",
-      "sourceCitations": ["NIST AI RMF"],
+      "sourceCitations": ["EEOC / ADA / Title VII", "NIST AI RMF", "Treasury AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["training-hr"], "tierLabels": ["Starting Point", "Early Stage"], "topGaps": ["staff-enablement"] },
       "status": "public"
