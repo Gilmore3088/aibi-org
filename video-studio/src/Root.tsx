@@ -5,7 +5,9 @@ import { Composition } from "remotion";
 import { AssessmentResults, TOTAL_FRAMES } from "./AssessmentResults";
 import { sampleResult } from "./data";
 import { ScriptedExplainer } from "./ScriptedExplainer";
+import { AiReadyExplainer } from "./AiReadyExplainer";
 import { safeAiUseScript } from "./scripts/safe-ai-use";
+import { whatsAiReadyScript } from "./scripts/whats-ai-ready";
 import { totalFrames } from "./scripted/types";
 
 export const RemotionRoot: React.FC = () => {
@@ -22,8 +24,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ result: sampleResult }}
       />
 
-      {/* Video 2 — script-driven explainer. The timeline length is computed
-          from the script, so a longer/shorter script just works. */}
+      {/* Video 2 — caption-style script engine (kept as a reference). */}
       <Composition
         id="ScriptedExplainer"
         component={ScriptedExplainer}
@@ -33,6 +34,20 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ script: safeAiUseScript }}
         calculateMetadata={({ props }) => ({
           durationInFrames: totalFrames(props.script ?? safeAiUseScript),
+        })}
+      />
+
+      {/* Video 3 — voice-first, visual-first explainer. The voice explains;
+          the screen shows. This is the current approach. */}
+      <Composition
+        id="AiReadyExplainer"
+        component={AiReadyExplainer}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{ script: whatsAiReadyScript }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: totalFrames(props.script ?? whatsAiReadyScript),
         })}
       />
     </>

@@ -8,10 +8,19 @@
 
 export type Zone = "green" | "yellow" | "red";
 
+/** Visual-first scene types. The voice explains; these SHOW the idea, with
+ *  little or no on-screen text. Used by the AiReadyExplainer composition. */
+export type VisualKind =
+  | "statement" // one short punchy line, voice-synced
+  | "prompt-chaos" // chat bubbles multiplying = "everyone's using AI"
+  | "pillars" // three labelled pillars rising
+  | "constellation" // N nodes in a ring lighting up
+  | "gauge"; // a score ring filling to a number
+
 export interface ScriptSection {
   /** Stable id (used as React key). */
   id: string;
-  /** Visual treatment. "scenario" sections get a zone color + ghost watermark. */
+  /** Visual treatment for the caption-style engine. */
   kind: "hook" | "frame" | "scenario" | "recap";
   /** Optional risk zone — drives accent color and the big background letter. */
   zone?: Zone;
@@ -19,6 +28,18 @@ export interface ScriptSection {
   kicker?: string;
   /** The big on-screen line (serif). */
   headline?: string;
+
+  // ── visual-first fields (AiReadyExplainer) ──
+  /** Which animated visual to show. */
+  visual?: VisualKind;
+  /** A short on-screen line (a few words — NOT a paragraph). */
+  line?: string;
+  /** Optional small sub-line. */
+  sub?: string;
+  /** Labels for pillars / constellation visuals. */
+  labels?: string[];
+  /** Target number for the gauge visual. */
+  value?: number;
   /** The narration — spoken aloud (when you add voiceover) AND shown as
    *  kinetic captions. This is the script. */
   narration: string;
