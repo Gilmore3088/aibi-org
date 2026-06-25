@@ -141,7 +141,7 @@ function SectionBlock(section: TemplateSection, index: number) {
   (section.items ?? []).forEach((item, i) =>
     children.push(
       el(View, { style: s.bulletRow, key: `b${i}`, wrap: false },
-        el(Text, { style: s.bulletDot }, '▪'),
+        el(Text, { style: s.bulletDot }, '-'),
         el(Text, { style: s.itemText }, item),
       ),
     ),

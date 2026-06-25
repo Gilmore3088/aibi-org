@@ -339,7 +339,7 @@
     },
     {
       "slug": "template-ai-use-policy-starter",
-      "title": "AI Use Policy Starter",
+      "title": "The Banker's AI Use Policy Starter",
       "audience": ["Compliance", "Risk", "Executive"],
       "category": "template",
       "funnelSegment": "governance",
@@ -348,7 +348,7 @@
       "variants": { "pdf": "template-ai-use-policy-starter.pdf", "word": "/api/resources/templates/ai-use-policy-starter/word", "zip": null },
       "zipMembership": ["marketing-review-kit"],
       "canonicalRoute": "/resources/templates/ai-use-policy-starter",
-      "sourceCitations": ["AIEOG AI Lexicon", "SR 11-7", "Interagency Third-Party Risk Guidance"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "CFPB Circular 2023-03", "NIST AI RMF", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["compliance", "executive"], "tierLabels": ["Starting Point"], "topGaps": ["policy"] },
       "status": "public"

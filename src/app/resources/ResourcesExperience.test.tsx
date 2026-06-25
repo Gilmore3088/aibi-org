@@ -38,19 +38,19 @@ describe('ResourcesExperience', () => {
   it('surfaces the compliance policy template with a Word download', () => {
     render(<ResourcesExperience />);
 
-    const policyHeading = screen.getByRole('heading', { name: 'AI Use Policy Starter' });
+    const policyHeading = screen.getByRole('heading', { name: "The Banker's AI Use Policy Starter" });
     const policyCard = policyHeading.closest('article');
 
     expect(policyCard).toBeTruthy();
     expect(
-      within(policyCard as HTMLElement).getByText(/adopt-and-adapt acceptable-use policy/i),
+      within(policyCard as HTMLElement).getByText(/editable clause language/i),
     ).toBeTruthy();
     expect(within(policyCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
       '/resources/templates/ai-use-policy-starter',
     );
     expect(
       within(policyCard as HTMLElement)
-        .getByRole('button', { name: /Get Word for AI Use Policy Starter/i }),
+        .getByRole('button', { name: /Get Word for The Banker's AI Use Policy Starter/i }),
     ).toBeTruthy();
   });
 

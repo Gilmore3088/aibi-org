@@ -66,7 +66,7 @@ const META = {
   'marketing-review-kit':       { title: 'Marketing Review Kit',        category: 'starter-kit',  order: 32 },
   'lending-review-kit':         { title: 'Lending Review Kit',          category: 'starter-kit',  order: 33 },
   // Templates
-  'template-ai-use-policy-starter':       { title: 'AI Use Policy Starter',           category: 'template', order: 40 },
+  'template-ai-use-policy-starter':       { title: "The Banker's AI Use Policy Starter", category: 'template', order: 40 },
   'template-ai-workflow-sop':             { title: 'AI Workflow SOP',                 category: 'template', order: 41 },
   'template-board-briefing-checklist':    { title: 'Board / Leadership Briefing Checklist', category: 'template', order: 42 },
   'template-gtm-plan':                    { title: 'AI GTM Plan',                     category: 'template', order: 43 },
@@ -99,7 +99,7 @@ const DESCRIPTIONS = {
   'frontline-enablement-kit': 'Give branch and contact center teams safer AI practice routines.',
   'marketing-review-kit': 'Create faster campaign drafts without skipping claims and disclosure review.',
   'lending-review-kit': 'Keep adverse-action, fair-lending, and decision packet work traceable.',
-  'template-ai-use-policy-starter': 'A practical starter policy defining tools, data, review, incidents, and ownership.',
+  'template-ai-use-policy-starter': 'Editable starter clauses defining tools, data, review, incidents, and ownership.',
   'template-ai-workflow-sop': 'Capture tool, input, output, reviewer, approval checkpoint, and retention rule.',
   'template-board-briefing-checklist': 'What to show before, during, and after an AI rollout conversation.',
   'template-gtm-plan': 'AI go-to-market plan template.',

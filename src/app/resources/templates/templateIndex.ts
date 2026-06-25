@@ -29,10 +29,10 @@ export const TEMPLATE_INDEX = [
   },
   {
     slug: 'ai-use-policy-starter',
-    title: 'AI Use Policy Starter',
-    dek: 'An adopt-and-adapt acceptable-use policy for generative AI, with verbatim clause language, a worked data-classification matrix, and the controls examiners expect.',
+    title: "The Banker's AI Use Policy Starter",
+    dek: 'Editable clause language, data-classification rules, and governance control areas for safe generative AI adoption.',
     audience: 'Compliance, risk, and senior management',
-    readMinutes: 14,
+    readMinutes: 15,
     preview: ['Purpose & scope', 'Governance & accountability', 'Approved tools', 'Data classification'],
   },
   {

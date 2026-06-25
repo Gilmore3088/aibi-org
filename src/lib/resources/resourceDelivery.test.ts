@@ -22,7 +22,7 @@ describe('resolveDeliverableResource', () => {
   it('falls back to the by-slug endpoint for page-canonical templates', () => {
     expect(resolveDeliverableResource('template-ai-use-policy-starter')).toEqual({
       slug: 'template-ai-use-policy-starter',
-      title: 'AI Use Policy Starter',
+      title: "The Banker's AI Use Policy Starter",
       downloadUrl:
         'https://aibankinginstitute.com/api/resources/template-ai-use-policy-starter/download',
     });
