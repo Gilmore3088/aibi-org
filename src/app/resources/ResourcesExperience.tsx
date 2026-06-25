@@ -21,10 +21,13 @@ import {
 import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
 import {
   ArrowRight,
+  BarChart3,
+  BookOpen,
   ClipboardCheck,
   Download,
   LockKeyhole,
   ShieldCheck,
+  Users,
 } from './icons';
 import {
   type DeskCard as DeskCardData,
@@ -71,6 +74,41 @@ interface FilterState {
 }
 
 const EMPTY_FILTERS: FilterState = { roles: new Set(), search: '' };
+
+// "Start here" — task-based quick picks. Distinct from the role filter: this
+// answers "what am I trying to do?" and jumps straight to the artifact/section.
+const START_HERE_CHOICES = [
+  {
+    label: 'I need AI rules',
+    desc: 'Open the policy starter and use-case review path.',
+    href: '/resources/templates/ai-use-policy-starter',
+    icon: ShieldCheck,
+  },
+  {
+    label: 'I need a role playbook',
+    desc: 'Jump to the nine role-specific playbooks.',
+    href: '#role-playbooks',
+    icon: Users,
+  },
+  {
+    label: 'I need a board artifact',
+    desc: 'Open the leadership briefing checklist.',
+    href: '/resources/templates/board-briefing-checklist',
+    icon: BarChart3,
+  },
+  {
+    label: 'I need staff training',
+    desc: 'Start with the safe-use desk cards.',
+    href: '#desk-cards',
+    icon: BookOpen,
+  },
+  {
+    label: 'I just took the assessment',
+    desc: 'Preview the report and next-step path.',
+    href: '#preview-paid',
+    icon: ClipboardCheck,
+  },
+] as const;
 
 const GOVERNANCE_LINKS = [
   {
@@ -222,6 +260,8 @@ export function ResourcesExperience() {
         </div>
       </section>
 
+      <StartHereChooser />
+
       <FilterBar filters={filters} setFilters={setFilters} resultCount={visibleResourceCount} />
 
       <div id="resources-main">
@@ -363,9 +403,35 @@ export function ResourcesExperience() {
 function ResourceSkipLinks() {
   return (
     <nav className="rx-skip-links" aria-label="Resource page shortcuts">
+      <a href="#start-here">Skip to start here</a>
       <a href="#resource-filters">Skip to filters</a>
       <a href="#resources-main">Skip to resources</a>
     </nav>
+  );
+}
+
+function StartHereChooser() {
+  return (
+    <Section variant="std" surface="white" id="start-here">
+      <div className="rx-start-grid" aria-labelledby="rx-start-here-heading">
+        <div className="rx-start-copy">
+          <div className="mk-k">Start here</div>
+          <h2 id="rx-start-here-heading">Pick the work you need.</h2>
+        </div>
+        <div className="rx-start-cards">
+          {START_HERE_CHOICES.map((choice) => {
+            const Icon = choice.icon;
+            return (
+              <a key={choice.label} className="rx-mini-card" href={choice.href}>
+                <Icon size={24} className="rx-mini-icon" />
+                <div className="rx-mini-title">{choice.label}</div>
+                <p className="rx-mini-sub">{choice.desc}</p>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </Section>
   );
 }
 
