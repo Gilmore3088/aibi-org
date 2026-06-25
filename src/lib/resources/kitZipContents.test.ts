@@ -47,17 +47,19 @@ describe('starter kit ZIP contents', () => {
   it('packages the prompting foundation kit as an ordered working kit', () => {
     expect(zipEntries('prompting-foundation-kit.zip')).toEqual([
       '00-Start-Here.pdf',
-      '01-Prompting-Foundation-Guide.pdf',
+      '01-Prompt-Like-A-Banker-Foundation-Guide.pdf',
       '02-Banker-Prompt-Formula-Card.pdf',
       '03-Safe-Prompt-Placeholder-Card.pdf',
-      '04-Prompt-Output-Review-Checklist.pdf',
-      '05-Prompt-Library.docx',
-      '06-Reusable-AI-Working-Brief.docx',
-      '07-Reusable-AI-Working-Brief-Copy-Paste.txt',
-      '08-Workflow-SOP-Next-Step.pdf',
-      '09-Before-You-Paste-Safe-AI-Checklist.pdf',
-      '10-Red-Yellow-Green-AI-Use-Card.pdf',
-      '11-Design-Dev-Handoff-Brief.docx',
+      '04-Banker-Prompt-Types-Cheat-Sheet.pdf',
+      '05-Safe-vs-Unsafe-Prompt-Examples.pdf',
+      '06-Prompt-Output-Review-Checklist.pdf',
+      '07-Prompt-Library.docx',
+      '08-Reusable-AI-Working-Brief.docx',
+      '09-Reusable-AI-Working-Brief-Copy-Paste.txt',
+      '10-Workflow-SOP-Next-Step.pdf',
+      '11-Before-You-Paste-Safe-AI-Checklist.pdf',
+      '12-Red-Yellow-Green-AI-Use-Card.pdf',
+      '13-Design-Dev-Handoff-Brief.docx',
       'README.md',
     ]);
   });
