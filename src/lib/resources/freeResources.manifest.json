@@ -371,7 +371,7 @@
     },
     {
       "slug": "template-board-briefing-checklist",
-      "title": "Board Briefing Checklist",
+      "title": "The AI Board Briefing Checklist",
       "audience": ["Executive", "Board", "Risk"],
       "category": "template",
       "funnelSegment": "leadership",
@@ -380,7 +380,7 @@
       "variants": { "pdf": "template-board-briefing-checklist.pdf", "word": "/api/resources/templates/board-briefing-checklist/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/resources/templates/board-briefing-checklist",
-      "sourceCitations": ["GAO 25-107197", "AIEOG AI Lexicon"],
+      "sourceCitations": ["GAO 25-107197", "Federal Reserve SR 26-2", "OCC Bulletin 2026-13", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["executive"], "tierLabels": ["Building Momentum", "Ready to Scale"], "topGaps": ["board-readiness"] },
       "status": "public"

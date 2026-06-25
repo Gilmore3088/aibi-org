@@ -68,7 +68,7 @@ const META = {
   // Templates
   'template-ai-use-policy-starter':       { title: "The Banker's AI Use Policy Starter", category: 'template', order: 40 },
   'template-ai-workflow-sop':             { title: 'AI Workflow SOP',                 category: 'template', order: 41 },
-  'template-board-briefing-checklist':    { title: 'Board / Leadership Briefing Checklist', category: 'template', order: 42 },
+  'template-board-briefing-checklist':    { title: 'The AI Board Briefing Checklist', category: 'template', order: 42 },
   'template-gtm-plan':                    { title: 'AI GTM Plan',                     category: 'template', order: 43 },
   // Artifacts
   'artifact-ai-use-case-inventory':         { title: 'The Bank AI Use-Case Inventory Template', category: 'artifact', order: 50 },
@@ -101,7 +101,7 @@ const DESCRIPTIONS = {
   'lending-review-kit': 'Keep adverse-action, fair-lending, and decision packet work traceable.',
   'template-ai-use-policy-starter': 'Editable starter clauses defining tools, data, review, incidents, and ownership.',
   'template-ai-workflow-sop': 'Capture tool, input, output, reviewer, approval checkpoint, and retention rule.',
-  'template-board-briefing-checklist': 'What to show before, during, and after an AI rollout conversation.',
+  'template-board-briefing-checklist': 'Four facts, four motions, and four evidence items for a controlled bank AI rollout.',
   'template-gtm-plan': 'AI go-to-market plan template.',
   'artifact-ai-use-case-inventory': 'Fillable register for AI tools, owners, data classes, vendor controls, risk tiers, and review cadence.',
   'artifact-data-handling-reference-card': 'Data classification, allowed tools, and escalation paths at a glance.',

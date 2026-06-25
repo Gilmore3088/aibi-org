@@ -61,6 +61,25 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).toContain('Financial Services AI Risk Management Framework');
   });
 
+  it('renders the board briefing checklist with current model-risk framing', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/board-briefing-checklist/word'),
+      contextFor('board-briefing-checklist'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Board-Briefing-Checklist.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The AI Board Briefing Checklist');
+    expect(body).toContain('Before the briefing: four facts');
+    expect(body).toContain('[ ] Readiness baseline');
+    expect(body).toContain('OCC Bulletin 2026-13');
+    expect(body).toContain('not be used to make, explain, or rubber-stamp credit or adverse-action decisions');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain('Most institutions our size still have no AI governance framework');
+  });
+
   it('returns the CDFI Grant AI Evidence Checklist as a Word-compatible document', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/templates/cdfi-grant-ai-evidence-checklist/word'),
