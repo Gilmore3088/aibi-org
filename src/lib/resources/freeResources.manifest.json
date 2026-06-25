@@ -227,7 +227,7 @@
     },
     {
       "slug": "bsa-aml-playbook",
-      "title": "BSA / AML Playbook",
+      "title": "The BSA/AML Officer's AI-Native Playbook",
       "audience": ["BSA/AML"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -236,7 +236,17 @@
       "variants": { "pdf": "bsa-aml-playbook.pdf", "word": "/api/resources/bsa-aml-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/bsa-aml-playbook/download",
-      "sourceCitations": ["FFIEC BSA/AML Manual", "NIST AI RMF"],
+      "sourceCitations": [
+        "31 CFR 1020.320",
+        "FinCEN SAR Narrative Guidance Package",
+        "FFIEC BSA/AML Manual",
+        "OFAC Framework for Compliance Commitments",
+        "Federal Reserve SR 26-2",
+        "OCC Bulletin 2026-13",
+        "Interagency Third-Party Risk Guidance",
+        "NIST AI RMF",
+        "Financial Services AI Risk Management Framework"
+      ],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["bsa-aml"], "tierLabels": [], "topGaps": ["documentation", "review"] },
       "status": "public"

@@ -50,7 +50,7 @@ const BUCKET = 'resources';
 /** Per-file metadata: slug → { title, category, tier_required, display_order } */
 const META = {
   // Sector playbooks
-  'bsa-aml-playbook':           { title: 'BSA / AML Playbook',          category: 'playbook',     order: 10 },
+  'bsa-aml-playbook':           { title: "The BSA/AML Officer's AI-Native Playbook", category: 'playbook', order: 10 },
   'compliance-playbook':        { title: 'Compliance Playbook',         category: 'playbook',     order: 11 },
   'infosec-playbook':           { title: 'IT / InfoSec Playbook',       category: 'playbook',     order: 12 },
   'lending-playbook':           { title: 'Lending Playbook',            category: 'playbook',     order: 13 },
@@ -85,7 +85,7 @@ const META = {
 };
 
 const DESCRIPTIONS = {
-  'bsa-aml-playbook': 'SAR scaffolds, CDD baselines, synthetic typology training, and alert patterning SOPs.',
+  'bsa-aml-playbook': 'Five controlled AI plays for safer narratives, cleaner documentation, analyst training, and evidence-ready oversight.',
   'compliance-playbook': 'Governance, use-case review, workflow SOPs, evidence packets, and board update rhythm.',
   'infosec-playbook': 'Data classes, approved tools, AI vetting memos, gateway rules, and AgentSecOps controls.',
   'lending-playbook': 'Adverse-action traceability, fair-lending checks, decision packet indexes, and language coaching.',
