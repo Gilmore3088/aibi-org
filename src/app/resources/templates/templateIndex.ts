@@ -37,11 +37,11 @@ export const TEMPLATE_INDEX = [
   },
   {
     slug: 'ai-workflow-sop',
-    title: 'AI Workflow SOP Template',
-    dek: 'A standard operating procedure that documents a single AI-assisted workflow with enough model-risk discipline that an examiner can read it and know exactly what the AI does, who checks it, and when it gets shut off.',
+    title: 'The Bank AI Workflow SOP Template',
+    dek: 'A fillable operating procedure for documenting AI-assisted work, human review, data handling, vendor controls, monitoring, and shutoff triggers.',
     audience: 'Operations, compliance, lending, any team running AI-assisted work',
-    readMinutes: 14,
-    preview: ['Workflow identity', 'Scope & prohibited uses', 'Human-in-the-loop', 'Validation & monitoring'],
+    readMinutes: 18,
+    preview: ['Fillable front page', 'Human review', 'Vendor lifecycle', 'Shutoff triggers'],
   },
   {
     slug: 'board-briefing-checklist',

@@ -41,6 +41,30 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).toContain('Human review &amp; model-risk discipline');
   });
 
+  it('renders the AI workflow SOP with current controls and model-risk framing', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-workflow-sop/word'),
+      contextFor('ai-workflow-sop'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Ai-Workflow-Sop.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank AI Workflow SOP Template');
+    expect(body).toContain('Part 1: blank AI workflow SOP template');
+    expect(body).toContain('Workflow ID');
+    expect(body).toContain('Human review, decision controls, and model-risk considerations');
+    expect(body).toContain('OCC Bulletin 2026-13');
+    expect(body).toContain('Generative AI workflows used for drafting, summarization, or workflow support');
+    expect(body).toContain('commercial credit workflow; ECOA / Regulation B and fair-lending considerations still apply');
+    expect(body).toContain('AI-generated adverse-action language may not be used');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain('Human review &amp; model risk (SR 11-7)');
+    expect(body).not.toContain('Commercial credit only; no consumer/ECOA-covered lending');
+    expect(body).not.toContain('Adopt verbatim');
+  });
+
   it('renders the AI use-case inventory as a fillable register template', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-use-case-inventory/word'),

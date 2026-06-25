@@ -67,7 +67,7 @@ const META = {
   'lending-review-kit':         { title: 'Lending Review Kit',          category: 'starter-kit',  order: 33 },
   // Templates
   'template-ai-use-policy-starter':       { title: "The Banker's AI Use Policy Starter", category: 'template', order: 40 },
-  'template-ai-workflow-sop':             { title: 'AI Workflow SOP',                 category: 'template', order: 41 },
+  'template-ai-workflow-sop':             { title: 'The Bank AI Workflow SOP Template', category: 'template', order: 41 },
   'template-board-briefing-checklist':    { title: 'The AI Board Briefing Checklist', category: 'template', order: 42 },
   'template-gtm-plan':                    { title: 'AI GTM Plan',                     category: 'template', order: 43 },
   // Artifacts
@@ -100,7 +100,7 @@ const DESCRIPTIONS = {
   'marketing-review-kit': 'Create faster campaign drafts without skipping claims and disclosure review.',
   'lending-review-kit': 'Keep adverse-action, fair-lending, and decision packet work traceable.',
   'template-ai-use-policy-starter': 'Editable starter clauses defining tools, data, review, incidents, and ownership.',
-  'template-ai-workflow-sop': 'Capture tool, input, output, reviewer, approval checkpoint, and retention rule.',
+  'template-ai-workflow-sop': 'Document AI-assisted work, human review, data handling, vendor controls, monitoring, and shutoff triggers.',
   'template-board-briefing-checklist': 'Four facts, four motions, and four evidence items for a controlled bank AI rollout.',
   'template-gtm-plan': 'AI go-to-market plan template.',
   'artifact-ai-use-case-inventory': 'Fillable register for AI tools, owners, data classes, vendor controls, risk tiers, and review cadence.',
