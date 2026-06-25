@@ -21,11 +21,11 @@ export interface TemplateIndexEntry {
 export const TEMPLATE_INDEX = [
   {
     slug: 'ai-use-case-inventory',
-    title: 'AI Use-Case Inventory',
-    dek: 'A register for documenting every approved, restricted, and proposed AI use case before it becomes normal work.',
+    title: 'The Bank AI Use-Case Inventory Template',
+    dek: 'A fillable register for tracking AI tools, data, owners, human review, risk tier, vendor controls, and re-review cadence.',
     audience: 'Compliance, risk, operations, and AI program owners',
-    readMinutes: 6,
-    preview: ['Use case', 'Tool and vendor', 'Data class', 'Human review'],
+    readMinutes: 12,
+    preview: ['Register columns', 'Risk tier guide', 'Approval workflow', 'Sample rows'],
   },
   {
     slug: 'ai-use-policy-starter',

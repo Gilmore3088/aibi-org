@@ -41,6 +41,26 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).toContain('Human review &amp; model-risk discipline');
   });
 
+  it('renders the AI use-case inventory as a fillable register template', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-use-case-inventory/word'),
+      contextFor('ai-use-case-inventory'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Ai-Use-Case-Inventory.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank AI Use-Case Inventory Template');
+    expect(body).toContain('<table>');
+    expect(body).toContain('Use Case ID');
+    expect(body).toContain('Vendor Review Link');
+    expect(body).toContain('Planning rationale');
+    expect(body).toContain('Red/Blocked');
+    expect(body).toContain('SR 26-2 where applicable');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+  });
+
   it('returns the CDFI Grant AI Evidence Checklist as a Word-compatible document', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/templates/cdfi-grant-ai-evidence-checklist/word'),

@@ -21,6 +21,11 @@ interface PageProps {
 }
 
 function templatePreviewLines(section: Template['sections'][number]): string[] {
+  if (section.tables && section.tables.length > 0) {
+    return section.tables[0].rows
+      .slice(0, 3)
+      .map((row) => `${row[0]}: ${row[1] ?? ''}`);
+  }
   if (section.items && section.items.length > 0) return section.items.slice(0, 3);
   if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
   if (section.intro) return [section.intro];
@@ -123,6 +128,29 @@ export default async function TemplatePage(props: PageProps) {
             <section key={s.heading} className="mk-tpl-section">
               <h2>{s.heading}</h2>
               {s.intro && <p>{s.intro}</p>}
+              {s.tables?.map((table) => (
+                <div key={table.caption ?? table.headers.join('-')} className="mk-tpl-table-wrap">
+                  {table.caption && <p className="mk-tpl-table-caption">{table.caption}</p>}
+                  <table className="mk-tpl-table">
+                    <thead>
+                      <tr>
+                        {table.headers.map((header) => (
+                          <th key={header}>{header}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {table.rows.map((row) => (
+                        <tr key={row.join('|')}>
+                          {row.map((cell, cellIndex) => (
+                            <td key={`${cellIndex}-${cell}`}>{cell}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
               {s.items && (
                 <ul>
                   {s.items.map((item) => (

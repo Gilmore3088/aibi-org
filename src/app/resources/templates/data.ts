@@ -21,6 +21,13 @@ export interface TemplateSection {
   readonly items?: readonly string[];
   /** Numbered (ordered) list — used for step-by-step sections. */
   readonly steps?: readonly string[];
+  readonly tables?: readonly TemplateTable[];
+}
+
+export interface TemplateTable {
+  readonly caption?: string;
+  readonly headers: readonly string[];
+  readonly rows: readonly (readonly string[])[];
 }
 
 export interface Template {
@@ -50,59 +57,153 @@ export const TEMPLATES: readonly Template[] = [
   {
     ...templateBase('ai-use-case-inventory'),
     sourcedFrom: [
-      'AIEOG AI Lexicon — AI governance, AI use case inventory',
-      'SR 11-7 Model Risk Management Guidance',
-      'Interagency TPRM Guidance',
+      'AIEOG AI Lexicon and Financial Services AI Risk Management Framework - US Treasury / FBIIC / FSSCC (Feb 19, 2026)',
+      'Current model-risk guidance and principles, including SR 26-2 where applicable, for AI use cases that inform quantitative, customer-impacting, or regulated decisions',
+      'Interagency Guidance on Third-Party Relationships: Risk Management (FRB / FDIC / OCC, June 6, 2023)',
+      'NIST AI Risk Management Framework (AI RMF 1.0): Govern, Map, Measure, Manage',
     ],
     sections: [
       {
-        heading: 'Use case',
+        heading: 'Intake questions',
         intro:
-          'Name the AI-assisted work in plain language. The title should tell a reviewer what staff are trying to accomplish without needing a demo.',
+          'Use these questions before adding a row. They make the interview with a department head concrete and keep the inventory from becoming a generic tool list.',
         items: [
-          'Business purpose: the operational, member, risk, or compliance reason this use case exists.',
-          'Owning department and named owner.',
-          'Current status: proposed, sandbox, approved, restricted, retired.',
+          'What business problem does this solve?',
+          'What tool or vendor will be used, and is it institution-provisioned?',
+          'What data enters the tool, including whether customer/NPI, regulated, or examination-sensitive information is involved?',
+          'What output is produced, and could that output affect a customer, examiner, control, report, or regulated decision?',
+          'Who signs off before use, and what evidence will be retained?',
         ],
       },
       {
-        heading: 'Tool and vendor',
+        heading: 'Fillable register columns',
         intro:
-          'Record the exact tool being used, including whether it is a public AI service, a vendor feature, or a private deployment.',
-        items: [
-          'Tool name, vendor, and version if known.',
-          'Approved-list status and approval date.',
-          'Vendor agreement, retention setting, and review owner.',
+          'Create one row per AI use case. A use case is the actual workflow, not just the product name. If one vendor supports three workflows, use three rows.',
+        tables: [
+          {
+            caption: 'Core register fields',
+            headers: ['Column', 'What to capture'],
+            rows: [
+              ['Use Case ID', 'Stable ID such as AI-OPS-001 or AI-LEND-003.'],
+              ['Use Case Name', 'Plain-English task name, such as "Draft customer email language."'],
+              ['Business Purpose', 'The operational, risk, compliance, or customer reason this use case exists.'],
+              ['Department', 'Business line or function that owns the workflow.'],
+              ['Named Owner', 'One accountable person, not a committee.'],
+              ['Status', 'Proposed, intake review, sandbox, approved, restricted, blocked, retired.'],
+              ['Tool/Vendor', 'Product, vendor, version if known, and whether the tool is public, enterprise, private, or embedded.'],
+              ['Deployment Type', 'Public AI, approved enterprise account, vendor feature, private deployment, or internal model.'],
+              ['Approved Tool Status', 'Approved, pending review, exception, prohibited, or not yet assessed.'],
+              ['Data Class', 'Public, internal, confidential/NPI, regulated, examination-sensitive, or privileged.'],
+              ['Customer/NPI Involved', 'Yes, no, de-identified, tokenized, or approved private environment only.'],
+              ['Regulated Process Involved', 'Credit, fraud, BSA/AML, sanctions, complaints, regulatory reporting, HR, legal, or none.'],
+              ['Output Type', 'Draft, summary, classification, recommendation, score, customer-facing content, report, code, or action.'],
+              ['Human Reviewer', 'Named role that reviews before use, plus whether review is mandatory or sampled.'],
+              ['Risk Tier', 'Low, medium, high, or blocked using the guide below.'],
+              ['Required Controls', 'Approved tool, data limit, human review, validation, monitoring, recordkeeping, escalation, or other controls.'],
+              ['Evidence Retained', 'Prompt, output, reviewer note, ticket, approval, validation memo, vendor review, or incident link.'],
+              ['Approval Date', 'Date approved for sandbox or production use.'],
+              ['Next Review Date', 'Quarterly for high-risk rows; at least annually for medium/low rows.'],
+              ['Re-review Trigger', 'Tool change, data class change, policy change, vendor update, incident, complaint, or move to production.'],
+              ['Incident/Exception Link', 'Ticket, exception log, risk acceptance, or incident record if applicable.'],
+              ['Vendor Review Link', 'Third-party due diligence, contract review, SOC report, or vendor monitoring file.'],
+            ],
+          },
         ],
       },
       {
-        heading: 'Data class',
+        heading: 'Vendor lifecycle fields',
         intro:
-          'Document the highest-risk data that may enter the workflow. If the workflow can operate without confidential or regulated data, say so explicitly.',
-        items: [
-          'Public, internal, confidential, NPI, regulated, or examination-sensitive.',
-          'Whether customer-identifying data is prohibited, restricted, or allowed only in an approved private tool.',
-          'Sanitization rule before any prompt is used.',
+          'AI tools should mirror the third-party lifecycle: planning, due diligence, contracting, monitoring, and termination. Use these fields when the row involves a vendor, embedded vendor feature, or hosted model.',
+        tables: [
+          {
+            caption: 'Third-party AI control fields',
+            headers: ['Lifecycle stage', 'Inventory question'],
+            rows: [
+              ['Planning rationale', 'What business problem does the AI tool solve, and why is a third party needed?'],
+              ['Due diligence status', 'Has InfoSec, Compliance, Risk, and the business owner reviewed the tool for this use?'],
+              ['Contract review status', 'Does the agreement cover confidentiality, audit, regulatory access, breach notice, and use limits?'],
+              ['Data-use terms', 'May the vendor use prompts, outputs, or bank data for model training or product improvement?'],
+              ['Model-training restriction', 'Is training on bank/customer data prohibited or opt-out confirmed in writing?'],
+              ['Retention/deletion terms', 'How long are prompts and outputs retained, and how are they deleted?'],
+              ['Subcontractor/fourth-party review', 'What subprocessors, hosted models, or infrastructure providers are involved?'],
+              ['Breach-notice terms', 'What notice timeline and evidence preservation requirements apply?'],
+              ['Monitoring owner', 'Who reviews performance, incidents, complaints, and vendor changes?'],
+              ['Next vendor review date', 'When is the next monitoring review due?'],
+              ['Termination/data-return plan', 'How will access be revoked and bank data returned or deleted?'],
+            ],
+          },
         ],
       },
       {
-        heading: 'Human review',
+        heading: 'Risk-tier guide',
         intro:
-          'Every reusable AI workflow needs a named review point before output is relied on, sent, filed, or shared.',
+          'Tier on the highest factor that applies. The goal is consistency across departments, not false precision.',
+        tables: [
+          {
+            caption: 'Simple tier definitions',
+            headers: ['Tier', 'Definition'],
+            rows: [
+              ['Low', 'Internal drafting, public data, no customer impact, no regulated decision, approved tool, and human review before use.'],
+              ['Medium', 'Internal process support, customer-facing draft content, confidential internal data, or operational workflow support where human review is required.'],
+              ['High', 'Decision support for credit, fraud, BSA/AML, sanctions, complaints, regulatory reporting, customer-impacting workflows, or NPI used only in approved private environments.'],
+              ['Blocked', 'Public AI tool with NPI, SAR/AML detail, examination-sensitive information, privileged material, security controls, or final regulated decisions.'],
+            ],
+          },
+        ],
         items: [
-          'Reviewer role and backup reviewer.',
-          'Review criteria: accuracy, data handling, regulatory references, tone, and final-use approval.',
-          'Evidence retained: prompt, output, reviewer notation, or ticket reference.',
+          'Model-risk note: use current model-risk guidance and principles, including SR 26-2 where applicable, for AI use cases that inform quantitative, customer-impacting, or regulated decisions. Do not imply every generative AI use case at every institution is automatically subject to the same model-risk regime.',
         ],
       },
       {
-        heading: 'Risk tier and cadence',
+        heading: 'Approval workflow',
         intro:
-          'Assign a risk tier and a review cadence so the inventory remains useful after the first approval conversation.',
+          'Use the workflow to move a row from idea to governed use. A row can stop at any stage if the risk is too high or the controls are incomplete.',
+        steps: [
+          'Proposed - department submits intake questions and draft row.',
+          'Intake review - AI Program Owner confirms the row is a use case and names an owner.',
+          'Data classification - InfoSec or data owner confirms the highest data class and prohibited inputs.',
+          'Vendor/tool review - TPRM, InfoSec, and Compliance confirm approved-tool and contract status.',
+          'Risk tier assigned - Compliance/Risk assigns low, medium, high, or blocked using the tier guide.',
+          'Human review control defined - owner names reviewer, review standard, and evidence retained.',
+          'Approved, restricted, or blocked - approval is recorded with date, conditions, and next review date.',
+          'Quarterly or annual re-review - cadence follows the risk tier and any trigger event.',
+        ],
+      },
+      {
+        heading: 'Sample rows',
+        intro:
+          'Use these examples to calibrate the first pass. They are deliberately simple so reviewers can see why the tier changes.',
+        tables: [
+          {
+            caption: 'Starter examples',
+            headers: ['Example', 'Use case', 'Data/tool', 'Tier', 'Required control'],
+            rows: [
+              ['Green/Low', 'Summarize public regulator press releases for internal training.', 'Public data in an approved tool.', 'Low', 'Human editor confirms accuracy before training use.'],
+              ['Yellow/Medium', 'Draft customer email language using approved templates and no customer data.', 'Internal templates in an approved enterprise tool.', 'Medium', 'Marketing and Compliance review before sending.'],
+              ['Red/Blocked', 'Enter loan-file details or SAR investigation notes into a public AI tool.', 'NPI, loan file, SAR/AML, or examination-sensitive content in a public tool.', 'Blocked', 'Do not use. Escalate to AI Program Owner and Compliance if attempted.'],
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Maintenance cadence',
+        intro:
+          'The inventory is only useful if it stays current after the first workshop.',
         items: [
-          'Low, medium, high, or blocked with reason.',
-          'Re-review trigger: tool change, policy change, incident, vendor update, or annual cycle.',
-          'Next review date and accountable owner.',
+          'High-risk rows: review at least quarterly and whenever the tool, model, vendor, data class, workflow, or applicable guidance changes.',
+          'Medium and low rows: review at least annually and on any material trigger event.',
+          'Board or committee reporting: summarize count of use cases by tier, new rows, blocked rows, open exceptions, incidents, and overdue reviews.',
+          'Retired rows: keep enough history to show when use stopped, who approved retirement, and where records were retained.',
+        ],
+      },
+      {
+        heading: 'Next step: AI Use-Case Inventory Workshop',
+        intro:
+          'Use this template to run a 60-minute workshop that identifies shadow AI use, classifies risk tiers, assigns owners, and produces the first board-ready inventory.',
+        items: [
+          'Bring Compliance, Risk, InfoSec, Operations, Lending, BSA/AML, Marketing, and the AI Program Owner.',
+          'Start with tools staff already use, then ask where vendors have added AI features inside existing systems.',
+          'Leave with at least three completed rows, owners assigned, blocked uses named, and review dates scheduled.',
         ],
       },
     ],
