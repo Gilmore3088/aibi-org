@@ -163,7 +163,7 @@
     },
     {
       "slug": "compliance-playbook",
-      "title": "Compliance Playbook",
+      "title": "The Compliance Officer's AI Governance Playbook",
       "audience": ["Compliance"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -172,7 +172,7 @@
       "variants": { "pdf": "compliance-playbook.pdf", "word": "/api/resources/compliance-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/compliance-playbook/download",
-      "sourceCitations": ["NIST AI RMF", "Interagency Third-Party Risk Guidance"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "GLBA information-security obligations", "FTC Safeguards Rule", "SAR confidentiality rules", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["compliance"], "tierLabels": [], "topGaps": ["governance", "review"] },
       "status": "public"
