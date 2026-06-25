@@ -1,282 +1,244 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MockupShell } from '@/components/mockup';
+import { ArrowGlyph, Button, CtaBand, SiteHeader } from '@/components/mockup';
 import { BRAND, PRINCIPLES } from '@content/copy';
 import { REGULATIONS } from '@content/regulations';
 
 export const metadata: Metadata = {
   title: 'About — The AI Banking Institute',
   description:
-    'Who operates The AI Banking Institute, how the curriculum is built, and the trust boundaries behind its AI readiness work.',
+    'How The AI Banking Institute helps community banks and credit unions turn AI interest into safe, reviewable work.',
   alternates: { canonical: '/about' },
 };
-
-const TRUST_BOUNDARIES = [
-  'No regulator issues, approves, recognizes, or endorses AiBI credentials.',
-  'No named advisor, customer, or testimonial appears without explicit public-attribution approval.',
-  'No ROI estimate is presented as guaranteed savings or a projected efficiency-ratio change.',
-  'No learner needs to paste customer PII or confidential records into course practice prompts.',
-] as const;
-
-const EVIDENCE_STANDARDS = [
-  {
-    title: 'Source-linked curriculum',
-    body:
-      'Lessons and artifacts map to named public references, including model risk, third-party risk, fair-lending, and cross-industry AI vocabulary.',
-  },
-  {
-    title: 'Reviewed work products',
-    body:
-      'The course asks learners to produce artifacts a manager, compliance partner, risk officer, or IT reviewer can inspect.',
-  },
-  {
-    title: 'Plain-price purchase paths',
-    body:
-      'Individual pricing, refund rules, and support contact paths are published before a buyer reaches checkout.',
-  },
-] as const;
-
-const PROOF_STANDARDS = [
-  {
-    title: 'Artifact proof',
-    body:
-      'Synthetic and anonymized examples show the shape of learner work before purchase. Real learner artifacts require redaction and permission before public use.',
-    href: '/courses/foundation/gallery',
-    hrefLabel: 'Browse artifact examples',
-  },
-  {
-    title: 'People proof',
-    body:
-      'Founder, advisor, customer, and learner attribution appears only after the exact name, role, institution, quote, and usage context are approved.',
-    href: '/about',
-    hrefLabel: 'Current public posture',
-  },
-  {
-    title: 'Outcome proof',
-    body:
-      'Launch proof will come from live purchase evidence, saved artifacts, support outcomes, refunds, and approved first-user quotes, not placeholder logos.',
-    href: '/support/purchase-help',
-    hrefLabel: 'Support path',
-  },
-] as const;
 
 const PRESS_MAILTO =
   `mailto:${BRAND.emails.contact}?subject=Press%20%2F%20media%20inquiry%20%E2%80%94%20The%20AI%20Banking%20Institute`;
 
-function FounderAside() {
-  return (
-    <aside
-      style={{
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.18)',
-        borderRadius: 24,
-        padding: 28,
-        color: '#fff',
-      }}
-      aria-label="Founder and contact"
-    >
-      <p
-        style={{
-          fontSize: 12,
-          fontWeight: 700,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: 'var(--gold-soft)',
-          margin: '0 0 12px',
-        }}
-      >
-        Operator
-      </p>
-      <h2
-        style={{
-          fontSize: 28,
-          fontWeight: 600,
-          lineHeight: 1.15,
-          margin: '0 0 12px',
-          color: '#fff',
-        }}
-      >
-        {BRAND.founder.name}
-      </h2>
-      <p
-        style={{
-          fontSize: 14,
-          lineHeight: 1.6,
-          color: 'rgba(255,255,255,0.82)',
-          margin: '0 0 20px',
-        }}
-      >
-        {BRAND.founder.role}. The named operator behind the launch, support inbox,
-        curriculum direction, and public standards on this site.
-      </p>
-      <Link
-        href={`mailto:${BRAND.emails.contact}`}
-        style={{
-          color: 'var(--gold-soft)',
-          fontSize: 14,
-          fontWeight: 700,
-          textDecoration: 'none',
-        }}
-      >
-        {BRAND.emails.contact}
-      </Link>
-    </aside>
-  );
-}
+const READINESS_PATH = [
+  {
+    title: 'Pick one workflow',
+    body: 'Start with a real banking task instead of a generic AI demo.',
+  },
+  {
+    title: 'Set the boundaries',
+    body: 'Classify the use, remove sensitive data, and name the human owner.',
+  },
+  {
+    title: 'Leave a usable artifact',
+    body: 'Produce something a manager, compliance partner, risk officer, or IT reviewer can inspect.',
+  },
+] as const;
+
+const OPERATING_STANDARDS = [
+  {
+    title: 'Public source map',
+    body: 'Curriculum references point to named public guidance. They are not presented as regulator approval.',
+  },
+  {
+    title: 'Synthetic practice data',
+    body: 'Labs and examples do not require customer PII or confidential records.',
+  },
+  {
+    title: 'Reviewable work',
+    body: 'Learners produce use cards, SOPs, briefs, and checklists that can move through a bank review.',
+  },
+  {
+    title: 'Plain attribution',
+    body: 'No advisor, customer, learner, or institution appears as proof without explicit public approval.',
+  },
+] as const;
+
+const TRUST_BOUNDARIES = [
+  'No regulator issues, approves, recognizes, or endorses AiBI credentials.',
+  'No ROI estimate is presented as guaranteed savings or a projected efficiency-ratio change.',
+  'No learner needs to paste customer PII or confidential records into course practice prompts.',
+  'No named person, quote, or logo appears without explicit public-attribution approval.',
+] as const;
 
 export default function AboutPage() {
   return (
-    <MockupShell
-      activePath="/about"
-      eyebrow="Institute · Operating standards"
-      title={<>Built for practical AI readiness in banking.</>}
-      lede={
-        <>
-          {BRAND.name} is a founder-led education company for community banks
-          and credit unions. It teaches disciplined AI use through assessments,
-          curriculum, practice scenarios, and reviewable work products.
-        </>
-      }
-      heroActions={[
-        { label: 'Start the assessment', href: '/assessment/take', variant: 'gold' },
-        { label: 'View security standards', href: '/security', variant: 'ghost-dark' },
-      ]}
-      heroAside={<FounderAside />}
-      sections={[
-        {
-          kicker: 'How we work',
-          heading: <>The operating principles are intentionally public.</>,
-          body: (
-            <div className="mk-reg-ref-grid">
+    <div className="mockup-scope aibi-about">
+      <SiteHeader activePath="/about" />
+
+      <header className="aibi-about-hero">
+        <div className="mk-container aibi-about-hero-inner">
+          <div className="aibi-about-hero-copy">
+            <p className="aibi-about-kicker">About the Institute</p>
+            <h1>Practical AI training for banks that need more than a demo.</h1>
+            <p>
+              {BRAND.name} helps community banks and credit unions turn AI
+              interest into safe, reviewable work: clear use cases, clean data
+              boundaries, checked sources, and human ownership.
+            </p>
+            <div className="aibi-about-actions">
+              <Button href="/assessment/take" variant="gold" size="lg">
+                Start the assessment <ArrowGlyph />
+              </Button>
+              <Button href="/security" variant="ghost-dark" size="lg">
+                View security standards
+              </Button>
+            </div>
+          </div>
+
+          <div className="aibi-about-origin" aria-label="Why this exists">
+            <p className="aibi-about-kicker">Why this exists</p>
+            <h2>AI showed up before many smaller institutions had a plan.</h2>
+            <p>
+              The idea started at a banking conference where AI was everywhere,
+              but many community bank and credit union teams still did not have
+              a practical strategy for use cases, controls, or ownership.
+            </p>
+            <p>
+              AiBI exists to make that next step approachable: help the people
+              who know the workflow turn one useful idea into something their
+              institution can review, run, and improve.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section className="aibi-about-section">
+          <div className="mk-container aibi-about-split">
+            <div>
+              <p className="aibi-about-kicker">What we are building</p>
+              <h2>Turn bankers into builders, safely.</h2>
+              <p>
+                The goal is not to make every banker a software engineer. The
+                goal is to give ideas people a safe, practical way to define a
+                problem, shape a solution, and hand off work that can survive
+                review.
+              </p>
+            </div>
+            <div className="aibi-about-path" aria-label="Readiness path">
+              {READINESS_PATH.map((step, index) => (
+                <div key={step.title} className="aibi-about-path-step">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="aibi-about-section aibi-about-section-white">
+          <div className="mk-container">
+            <div className="aibi-about-section-head">
+              <p className="aibi-about-kicker">Operating principles</p>
+              <h2>Clear standards, short enough to remember.</h2>
+              <p>
+                These principles keep the curriculum focused on useful bank work,
+                not generic AI talking points.
+              </p>
+            </div>
+            <div className="aibi-about-principles">
               {PRINCIPLES.map((principle) => (
-                <div key={principle.number}>
-                  <strong>{principle.number} · {principle.title}</strong>
+                <article key={principle.number} className="aibi-about-principle">
+                  <span>{principle.number}</span>
+                  <h3>{principle.title}</h3>
                   <p>{principle.body}</p>
-                </div>
+                </article>
               ))}
             </div>
-          ),
-        },
-        {
-          kicker: 'Evidence standards',
-          heading: <>Credibility is built through artifacts, sources, and restraint.</>,
-          body: (
-            <div className="mk-reg-ref-grid">
-              {EVIDENCE_STANDARDS.map((standard) => (
-                <div key={standard.title}>
-                  <strong>{standard.title}</strong>
+          </div>
+        </section>
+
+        <section className="aibi-about-section">
+          <div className="mk-container aibi-about-standards">
+            <div className="aibi-about-section-head">
+              <p className="aibi-about-kicker">How the work stays grounded</p>
+              <h2>Designed for review, not just completion.</h2>
+            </div>
+            <div className="aibi-about-standard-grid">
+              {OPERATING_STANDARDS.map((standard) => (
+                <article key={standard.title} className="aibi-about-standard">
+                  <h3>{standard.title}</h3>
                   <p>{standard.body}</p>
-                </div>
+                </article>
               ))}
             </div>
-          ),
-          surface: 'white',
-        },
-        {
-          kicker: 'Press and research',
-          heading: <>Need a source, quote, or background?</>,
-          lede: (
-            <>
-              Journalists, analysts, podcasters, and researchers can send press
-              questions to {BRAND.emails.contact}. Include your deadline, outlet,
-              topic, and whether you need founder comment, source background, or
-              artifact context.
-            </>
-          ),
-          body: (
-            <div className="mk-reg-ref-grid">
-              <div>
-                <strong>Media contact</strong>
-                <p>
-                  The same operator-owned inbox handles press questions so public
-                  claims, attribution, and endorsement boundaries stay consistent.
-                </p>
-                <p>
-                  <Link href={PRESS_MAILTO} style={{ color: 'var(--gold-deep)', fontWeight: 800 }}>
-                    Email press inquiry
-                  </Link>
-                </p>
-              </div>
-              <div>
-                <strong>Attribution boundary</strong>
-                <p>
-                  The Institute will not imply regulator, customer, advisor, or
-                  learner endorsement without explicit public-attribution approval.
-                </p>
-              </div>
+          </div>
+        </section>
+
+        <section className="aibi-about-section aibi-about-section-white">
+          <div className="mk-container aibi-about-reference-row">
+            <div>
+              <p className="aibi-about-kicker">Public reference map</p>
+              <h2>Sources are named. Endorsement is not implied.</h2>
+              <p>
+                The curriculum uses public references as source material for
+                disciplined AI work in banking. Those references do not approve
+                the Institute, the curriculum, or the credential.
+              </p>
+              <Link className="aibi-about-text-link" href="/references">
+                See every source we cite
+              </Link>
             </div>
-          ),
-        },
-        {
-          kicker: 'Proof standards',
-          heading: <>The proof layer will use real artifacts and approved attribution.</>,
-          lede: (
-            <>
-              Until named people, quotes, or customer outcomes are approved for
-              public use, the site uses founder/operator context, source-linked
-              references, and synthetic artifact examples. No fake logos, no
-              anonymous endorsements, and no stock trust signals.
-            </>
-          ),
-          body: (
-            <div className="mk-reg-ref-grid">
-              {PROOF_STANDARDS.map((standard) => (
-                <div key={standard.title}>
-                  <strong>{standard.title}</strong>
-                  <p>{standard.body}</p>
-                  <p>
-                    <Link href={standard.href} style={{ color: 'var(--gold-deep)', fontWeight: 800 }}>
-                      {standard.hrefLabel}
-                    </Link>
-                  </p>
-                </div>
-              ))}
-            </div>
-          ),
-        },
-        {
-          kicker: 'Public references',
-          heading: <>The curriculum maps to public references. It does not imply endorsement.</>,
-          lede: (
-            <>
-              These references are used as public source material for bank review
-              discipline. They are not presented as approvals of the Institute,
-              the curriculum, or the credential.
-            </>
-          ),
-          body: (
-            <div className="mk-reg-ref-grid">
+            <div className="aibi-about-reference-list">
               {REGULATIONS.map((reference) => (
-                <div key={reference.slug}>
+                <Link key={reference.slug} href={`/references#${reference.slug}`}>
                   <strong>{reference.short}</strong>
-                  <p>{reference.long}</p>
-                  <p>{reference.issuer}</p>
-                </div>
+                  <span>{reference.issuer}</span>
+                </Link>
               ))}
             </div>
-          ),
-        },
-        {
-          kicker: 'What we will not overclaim',
-          heading: <>Trust boundaries matter more than polish.</>,
-          body: (
-            <div className="mk-reg-ref-grid">
+          </div>
+        </section>
+
+        <section className="aibi-about-section aibi-about-guardrails">
+          <div className="mk-container">
+            <div className="aibi-about-section-head">
+              <p className="aibi-about-kicker">Trust boundaries</p>
+              <h2>What we will not overclaim.</h2>
+            </div>
+            <div className="aibi-about-boundaries">
               {TRUST_BOUNDARIES.map((boundary) => (
-                <div key={boundary}>{boundary}</div>
+                <p key={boundary}>{boundary}</p>
               ))}
             </div>
-          ),
-          surface: 'white',
-        },
-      ]}
-      ctaBand={{
-        heading: <>Start with a readiness score. Then inspect the work.</>,
-        body: <>The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.</>,
-        actions: [
+          </div>
+        </section>
+
+        <section className="aibi-about-section aibi-about-section-white">
+          <div className="mk-container aibi-about-contact">
+            <div>
+              <p className="aibi-about-kicker">Press and research</p>
+              <h2>Need a source, quote, or background?</h2>
+              <p>
+                Journalists, analysts, podcasters, and researchers can send
+                questions to {BRAND.emails.contact}. Include your deadline,
+                outlet, topic, and whether you need source background or
+                artifact context.
+              </p>
+            </div>
+            <div className="aibi-about-contact-panel">
+              <h3>Attribution boundary</h3>
+              <p>
+                The Institute will not imply regulator, customer, advisor,
+                learner, or institution endorsement without explicit
+                public-attribution approval.
+              </p>
+              <Button href={PRESS_MAILTO} variant="ink">
+                Email press inquiry
+              </Button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <CtaBand
+        heading={<>Start with a readiness score. Then inspect the work.</>}
+        body={
+          <>The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.</>
+        }
+        actions={[
           { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
           { label: 'View the course', href: '/courses', variant: 'ghost-dark' },
-        ],
-      }}
-    />
+        ]}
+      />
+    </div>
   );
 }
