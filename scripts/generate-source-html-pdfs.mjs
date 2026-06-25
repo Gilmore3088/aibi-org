@@ -38,7 +38,12 @@ async function main() {
   const slugs = onlyArg ? all.filter((s) => onlyArg.includes(s)) : all;
   console.log(`▸ rendering ${slugs.length} HTML source(s) → PDF\n`);
 
-  const browser = await chromium.launch();
+  // PW_EXECUTABLE_PATH lets a caller render against a specific pre-installed
+  // Chromium (e.g. a sandbox where the bundled browser version differs from the
+  // @playwright/test pin). Unset in CI → Playwright uses its managed browser.
+  const browser = await chromium.launch(
+    process.env.PW_EXECUTABLE_PATH ? { executablePath: process.env.PW_EXECUTABLE_PATH } : {},
+  );
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
 

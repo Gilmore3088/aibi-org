@@ -175,7 +175,12 @@ async function main() {
     ? ARTIFACTS.filter((artifact) => onlyArg.includes(artifact.slug) || onlyArg.includes(artifact.resourceSlug))
     : ARTIFACTS;
 
-  const browser = await chromium.launch();
+  // PW_EXECUTABLE_PATH: render against a specific pre-installed Chromium when
+  // the bundled browser version differs from the @playwright/test pin. Unset in
+  // CI → Playwright uses its managed browser.
+  const browser = await chromium.launch(
+    process.env.PW_EXECUTABLE_PATH ? { executablePath: process.env.PW_EXECUTABLE_PATH } : {},
+  );
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
 
