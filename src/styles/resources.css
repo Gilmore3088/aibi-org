@@ -1376,6 +1376,529 @@ button.rx-featured-item {
   border-radius: .75rem;
 }
 
+/* Prompt Like a Banker simplified wizard */
+.prompt-simple-scope {
+  background: #F7F3EA;
+  color: var(--ink);
+  min-height: 100vh;
+}
+.prompt-simple-scope .prompt-simple-hero {
+  background: var(--ink);
+  color: #fff;
+  padding: 72px 0 64px;
+}
+.prompt-simple-scope .prompt-simple-hero-inner {
+  align-items: center;
+  display: grid;
+  gap: 36px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 980px) {
+  .prompt-simple-scope .prompt-simple-hero-inner {
+    grid-template-columns: minmax(0, .84fr) minmax(360px, .72fr);
+  }
+}
+.prompt-simple-scope .prompt-simple-hero-copy h1 {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: .95;
+  margin: 18px 0 0;
+  max-width: 10ch;
+}
+.prompt-simple-scope .prompt-simple-hero-copy p {
+  color: #D8E0EA;
+  font-size: clamp(1rem, 1.6vw, 1.22rem);
+  line-height: 1.6;
+  margin-top: 18px;
+  max-width: 640px;
+}
+.prompt-simple-scope .prompt-simple-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+.prompt-simple-scope .prompt-simple-method {
+  background: #fff;
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 24px;
+}
+.prompt-simple-scope .prompt-simple-method > span {
+  color: var(--gold-deep);
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.prompt-simple-scope .prompt-simple-method ol {
+  counter-reset: prompt-line;
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+.prompt-simple-scope .prompt-simple-method li {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--slate-200);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 28px minmax(0, 1fr);
+  line-height: 1.45;
+  padding-bottom: 12px;
+}
+.prompt-simple-scope .prompt-simple-method li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.prompt-simple-scope .prompt-simple-method li::before {
+  background: var(--cream);
+  border-radius: 999px;
+  color: var(--gold-deep);
+  content: counter(prompt-line);
+  counter-increment: prompt-line;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  height: 28px;
+  justify-content: center;
+  line-height: 28px;
+  width: 28px;
+}
+.prompt-simple-scope .prompt-simple-main {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding: 42px 0 72px;
+}
+.prompt-simple-scope .prompt-simple-principles {
+  border-bottom: 1px solid rgba(7, 26, 47, .13);
+  border-top: 1px solid rgba(7, 26, 47, .13);
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 800px) {
+  .prompt-simple-scope .prompt-simple-principles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.prompt-simple-scope .prompt-simple-principles div {
+  padding: 22px 0;
+}
+@media (min-width: 800px) {
+  .prompt-simple-scope .prompt-simple-principles div {
+    border-right: 1px solid rgba(7, 26, 47, .13);
+    padding: 22px 24px;
+  }
+  .prompt-simple-scope .prompt-simple-principles div:first-child { padding-left: 0; }
+  .prompt-simple-scope .prompt-simple-principles div:last-child { border-right: 0; padding-right: 0; }
+}
+.prompt-simple-scope .prompt-simple-principles h2 {
+  font-size: 1.12rem;
+  font-weight: 760;
+}
+.prompt-simple-scope .prompt-simple-principles p {
+  color: var(--slate-600);
+  line-height: 1.55;
+  margin-top: 6px;
+}
+.prompt-simple-scope .prompt-example-head,
+.prompt-simple-scope .prompt-wizard-head {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+.prompt-simple-scope .prompt-example-head h2,
+.prompt-simple-scope .prompt-wizard-head h2 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 740;
+  letter-spacing: 0;
+  line-height: .98;
+  margin-top: 8px;
+  max-width: 720px;
+}
+.prompt-simple-scope .prompt-wizard-head p {
+  color: var(--slate-600);
+  line-height: 1.6;
+  max-width: 420px;
+}
+.prompt-simple-scope .prompt-example-split {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+  margin-top: 22px;
+}
+@media (min-width: 820px) {
+  .prompt-simple-scope .prompt-example-split { grid-template-columns: 1fr 1fr; }
+}
+.prompt-simple-scope .prompt-example-split > div {
+  border-radius: 8px;
+  padding: 18px;
+}
+.prompt-simple-scope .prompt-example-split > div:first-child {
+  background: #FFF1F2;
+  color: #881337;
+}
+.prompt-simple-scope .prompt-example-split > div:last-child {
+  background: #ECFDF5;
+  color: #064E3B;
+}
+.prompt-simple-scope .prompt-example-split span {
+  display: block;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.prompt-simple-scope .prompt-example-split p {
+  line-height: 1.55;
+  margin-top: 8px;
+}
+.prompt-simple-scope .prompt-wizard-section {
+  scroll-margin-top: 96px;
+}
+.prompt-simple-scope .prompt-wizard-shell {
+  background: #fff;
+  border: 1px solid rgba(7, 26, 47, .1);
+  border-radius: 8px;
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr;
+  margin-top: 24px;
+  overflow: hidden;
+}
+@media (min-width: 960px) {
+  .prompt-simple-scope .prompt-wizard-shell {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+}
+.prompt-simple-scope .prompt-stepper {
+  background: var(--cream);
+  border-bottom: 1px solid var(--slate-200);
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+@media (min-width: 960px) {
+  .prompt-simple-scope .prompt-stepper {
+    align-content: start;
+    border-bottom: 0;
+    border-right: 1px solid var(--slate-200);
+    min-height: 620px;
+  }
+}
+.prompt-simple-scope .prompt-stepper button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--slate-600);
+  cursor: pointer;
+  display: grid;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 720;
+  gap: 10px;
+  grid-template-columns: 28px minmax(0, 1fr);
+  padding: 10px;
+  text-align: left;
+}
+.prompt-simple-scope .prompt-stepper button span {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: .78rem;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+.prompt-simple-scope .prompt-stepper button.is-active {
+  background: var(--ink);
+  color: #fff;
+}
+.prompt-simple-scope .prompt-stepper button.is-active span {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.prompt-simple-scope .prompt-wizard-panel {
+  padding: 18px;
+}
+@media (min-width: 760px) {
+  .prompt-simple-scope .prompt-wizard-panel { padding: 28px; }
+}
+.prompt-simple-scope .prompt-wizard-status {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-bottom: 18px;
+}
+.prompt-simple-scope .prompt-wizard-status p {
+  color: var(--slate-600);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+.prompt-simple-scope .prompt-wizard-step {
+  margin-top: 24px;
+}
+.prompt-simple-scope .prompt-wizard-step-head span {
+  color: var(--gold-deep);
+  display: block;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.prompt-simple-scope .prompt-wizard-step-head h3 {
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  font-weight: 730;
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin-top: 6px;
+}
+.prompt-simple-scope .prompt-choice-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  margin-top: 18px;
+}
+@media (min-width: 700px) {
+  .prompt-simple-scope .prompt-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.prompt-simple-scope .prompt-choice-grid button {
+  background: var(--cream);
+  border: 1px solid rgba(7, 26, 47, .08);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 86px;
+  padding: 14px;
+  text-align: left;
+}
+.prompt-simple-scope .prompt-choice-grid button strong,
+.prompt-simple-scope .prompt-choice-grid button span {
+  display: block;
+}
+.prompt-simple-scope .prompt-choice-grid button strong {
+  font-size: 1rem;
+  font-weight: 800;
+}
+.prompt-simple-scope .prompt-choice-grid button span {
+  color: var(--slate-600);
+  font-size: .9rem;
+  line-height: 1.4;
+  margin-top: 5px;
+}
+.prompt-simple-scope .prompt-choice-grid button.is-selected {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.prompt-simple-scope .prompt-choice-grid button.is-selected span {
+  color: rgba(255,255,255,.78);
+}
+.prompt-simple-scope .prompt-field-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+  margin-top: 18px;
+}
+@media (min-width: 760px) {
+  .prompt-simple-scope .prompt-field-grid { grid-template-columns: 1fr 1fr; }
+}
+.prompt-simple-scope .prompt-simple-field {
+  display: block;
+  margin-top: 16px;
+}
+.prompt-simple-scope .prompt-field-grid .prompt-simple-field {
+  margin-top: 0;
+}
+.prompt-simple-scope .prompt-simple-field span {
+  color: var(--slate-600);
+  display: block;
+  font-size: .86rem;
+  font-weight: 750;
+  margin-bottom: 7px;
+}
+.prompt-simple-scope .prompt-simple-field input,
+.prompt-simple-scope .prompt-simple-field select,
+.prompt-simple-scope .prompt-simple-field textarea {
+  background: var(--cream);
+  border: 1px solid rgba(7, 26, 47, .1);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: .95rem;
+  font-weight: 600;
+  min-height: 44px;
+  outline: none;
+  padding: 10px 12px;
+  width: 100%;
+}
+.prompt-simple-scope .prompt-simple-field textarea {
+  font-weight: 500;
+  line-height: 1.45;
+  min-height: 96px;
+  resize: vertical;
+}
+.prompt-simple-scope .prompt-simple-field input:focus,
+.prompt-simple-scope .prompt-simple-field select:focus,
+.prompt-simple-scope .prompt-simple-field textarea:focus {
+  border-color: var(--gold);
+}
+.prompt-simple-scope .prompt-placeholder-menu {
+  background: var(--cream);
+  border: 1px solid rgba(7, 26, 47, .08);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 14px;
+}
+.prompt-simple-scope .prompt-placeholder-menu p {
+  color: var(--slate-600);
+  font-size: .86rem;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+.prompt-simple-scope .prompt-placeholder-menu div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.prompt-simple-scope .prompt-placeholder-menu button {
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .75rem;
+  font-weight: 800;
+  padding: 6px 8px;
+}
+.prompt-simple-scope .prompt-blocked-simple,
+.prompt-simple-scope .prompt-blocked-result {
+  align-items: flex-start;
+  background: #FEE2E2;
+  border: 1px solid rgba(153, 27, 27, .2);
+  border-radius: 8px;
+  color: #7F1D1D;
+  display: flex;
+  gap: 12px;
+  line-height: 1.5;
+  margin-top: 18px;
+  padding: 14px;
+}
+.prompt-simple-scope .prompt-blocked-result {
+  display: block;
+}
+.prompt-simple-scope .prompt-blocked-simple p,
+.prompt-simple-scope .prompt-blocked-result p {
+  margin-top: 4px;
+}
+.prompt-simple-scope .prompt-result-box {
+  background: var(--ink);
+  border-radius: 8px;
+  color: #E9EEF6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 18px 0 0;
+  max-height: 420px;
+  overflow: auto;
+  padding: 16px;
+  white-space: pre-wrap;
+}
+.prompt-simple-scope .prompt-review-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.prompt-simple-scope .prompt-review-list label {
+  align-items: flex-start;
+  background: var(--cream);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  line-height: 1.45;
+  padding: 10px 12px;
+}
+.prompt-simple-scope .prompt-review-list input {
+  accent-color: var(--gold);
+  margin-top: 4px;
+}
+.prompt-simple-scope .prompt-export-row,
+.prompt-simple-scope .prompt-wizard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.prompt-simple-scope .prompt-wizard-nav {
+  border-top: 1px solid var(--slate-200);
+  justify-content: space-between;
+  padding-top: 18px;
+}
+.prompt-simple-scope .prompt-export-row button:disabled,
+.prompt-simple-scope .prompt-wizard-nav button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+.prompt-simple-scope .prompt-team-downloads {
+  border-top: 1px solid rgba(7, 26, 47, .12);
+  padding-top: 42px;
+}
+.prompt-simple-scope .prompt-download-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+.prompt-simple-scope .prompt-download-row {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(7, 26, 47, .1);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 14px;
+}
+@media (min-width: 700px) {
+  .prompt-simple-scope .prompt-download-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+}
+.prompt-simple-scope .prompt-download-row > svg {
+  color: var(--gold-deep);
+}
+.prompt-simple-scope .prompt-download-row h3 {
+  font-size: 1rem;
+  font-weight: 760;
+}
+.prompt-simple-scope .prompt-download-row p {
+  color: var(--slate-600);
+  font-size: .9rem;
+  line-height: 1.45;
+  margin-top: 4px;
+}
+@media (max-width: 699px) {
+  .prompt-simple-scope .prompt-download-row .fr-download-gate {
+    grid-column: 1 / -1;
+  }
+}
+
 /* Kit card split: button body (selects + previews) + zip download footer */
 .mockup-scope .rx-kit-card { padding: 0; cursor: default; }
 .mockup-scope .rx-kit-card-body {

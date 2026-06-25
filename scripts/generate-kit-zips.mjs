@@ -157,7 +157,7 @@ const KITS = {
       'For bankers, managers, analysts, trainers, marketers, lenders, operations teams, and compliance reviewers who want useful AI support without leaking sensitive data, skipping review, or letting AI make decisions.',
     startHereName: '00-Start-Here.pdf',
     steps: [
-      'Read the Prompt Like a Banker Foundation Guide and teach the Banker Prompt Formula.',
+      'Read the Prompt Like a Banker Prompt Card and teach the 5-line banker prompt.',
       'Use the Placeholder Card before anyone pastes source material into an AI tool.',
       'Use the Prompt Types Cheat Sheet to choose the work before writing the prompt.',
       'Review the Safe vs. Unsafe Prompt Examples before teams write customer, credit, BSA/AML, or examiner-facing prompts.',
@@ -169,9 +169,9 @@ const KITS = {
     assets: [
       {
         source: 'prompting-foundation-guide.pdf',
-        target: '01-Prompt-Like-A-Banker-Foundation-Guide.pdf',
+        target: '01-Prompt-Like-A-Banker-Prompt-Card.pdf',
         description:
-          'Foundation guide for prompt types, safe placeholders, output formats, Green/Yellow/Red lanes, examples, and review habits.',
+          'Three-page prompt card for the 5-line prompt method, data line, placeholders, examples, and review checks.',
       },
       {
         source: 'banker-prompt-formula-card.pdf',
