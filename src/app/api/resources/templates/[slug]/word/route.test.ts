@@ -53,7 +53,7 @@ describe('/api/resources/templates/[slug]/word', () => {
     );
     expect(body).toContain('CDFI Grant AI Evidence Checklist');
     expect(body).toContain('CDFI, MDI, community development, grants, and impact teams');
-    expect(body).toContain('Fairness and mission check');
+    expect(body).toContain('Fair-lending and access guardrails (ECOA / Regulation B)');
   });
 
   it('returns 404 for unknown template slugs', async () => {

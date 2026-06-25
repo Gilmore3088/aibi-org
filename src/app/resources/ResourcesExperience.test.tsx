@@ -62,7 +62,9 @@ describe('ResourcesExperience', () => {
 
     expect(cdfiCard).toBeTruthy();
     expect(
-      within(cdfiCard as HTMLElement).getByText(/grant, impact, and community-development evidence files/i),
+      within(cdfiCard as HTMLElement).getByText(
+        /document where AI assisted your grant, certification, and impact files/i,
+      ),
     ).toBeTruthy();
     expect(within(cdfiCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
       '/resources/templates/cdfi-grant-ai-evidence-checklist',

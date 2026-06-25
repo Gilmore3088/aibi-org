@@ -245,84 +245,115 @@ export const TEMPLATES: readonly Template[] = [
   {
     ...templateBase('ai-workflow-sop'),
     sourcedFrom: [
-      'SR 11-7 Model Risk Management Guidance',
-      'AIEOG AI Lexicon — AI use case inventory, HITL',
+      'SR 11-7 — Supervisory Guidance on Model Risk Management (Federal Reserve / OCC); note the 2026 SR 26-2 risk-based modernization the institution may be transitioning to',
+      'NIST AI Risk Management Framework (AI RMF 1.0): Govern, Map, Measure, Manage',
+      'Interagency Guidance on Third-Party Relationships: Risk Management (FRB / FDIC / OCC, June 2023)',
+      'AIEOG AI Lexicon — AI use case inventory, human-in-the-loop (US Treasury / FBIIC / FSSCC, Feb 2026)',
     ],
     sections: [
       {
-        heading: 'Workflow name',
+        heading: 'Workflow identity & inventory entry',
         intro:
-          'Short, specific. "AI-assisted procedure cleanup for KYC refresh" — not "AI for compliance."',
+          'Before describing how the AI works, pin down what this workflow is and register it. The AIEOG Lexicon defines an AI use-case inventory as a maintained record of where and how AI is used and the outputs it produces; this SOP is one row in that inventory. An examiner’s first question is "show me your inventory."',
+        items: [
+          'Workflow name & ID — Recommended: give every AI workflow a stable ID and a plain-English name a director understands. Example: "AI-LEND-001 — AI-assisted commercial loan-memo drafting."',
+          'Business purpose & output — Recommended: one sentence on the job plus the concrete artifact. Example: "Generate a first-draft credit memo (narrative sections only) from approved underwriting inputs; output is a Word draft an analyst edits and a credit officer approves."',
+          'Owner & accountable executive — Recommended: name one accountable owner (a person, not a committee) and the senior executive who owns the risk. Example: "Owner: VP Commercial Credit; accountable executive: Chief Credit Officer."',
+          'AI/model type — Recommended: state plainly whether this is generative AI, a vendor feature, or an internal model; this drives which controls apply. Example: "Third-party generative AI accessed via the LOS vendor’s add-on; vendor-hosted."',
+          'Inventory status & tier — Recommended: record date added and risk tier. Example: "Added 2026-03-01; Tier: Moderate — assists a credit decision but produces no automated decision or score."',
+        ],
       },
       {
-        heading: 'Owner',
-        intro: 'Named person and role. One owner per workflow.',
-      },
-      {
-        heading: 'Purpose',
+        heading: 'Scope, boundaries & prohibited uses',
         intro:
-          'One sentence on what this workflow produces and why it exists. The business outcome, not the tooling.',
-      },
-      {
-        heading: 'Inputs',
-        intro: 'Every input named, classified, and bounded:',
+          'The single most useful thing this SOP does is draw a hard line around what the AI may and may not do — that line prevents scope creep and is what an examiner tests.',
         items: [
-          'Data sources (named systems, named files, or named buckets).',
-          'Data class (public / internal / confidential / regulated).',
-          'Volume — typical and maximum per run.',
-          'Refresh cadence — when inputs are pulled fresh.',
+          'In scope — Recommended: list the specific tasks, narrowly. Example: "Drafting the narrative/qualitative sections of the memo from analyst-supplied facts and approved templates."',
+          'Out of scope / prohibited — Adopt verbatim: "This tool does not make or recommend credit decisions, does not assign or influence risk ratings, does not calculate ratios or covenants, does not communicate with the borrower, and is not a system of record. Numbers, ratings, and conclusions are produced by staff, not the AI."',
+          'Population & volume — Recommended: state who/what flows through and rough volume. Example: "All C&I and CRE requests over $250k; ~30 memos/month."',
+          'Fair-lending boundary — Recommended: state explicitly whether it touches protected-class-sensitive decisions, even if the answer is no. Example: "Commercial credit only; no consumer/ECOA-covered lending; no protected-class or proxy variables provided; adverse-action language drafted by staff, not the AI."',
         ],
       },
       {
-        heading: 'AI tool',
-        intro: 'The approved tool used in this workflow:',
-        items: [
-          'Tool name and version.',
-          'Approved-list reference and approval date.',
-          'Prompt template ID — the saved prompt this workflow runs.',
-        ],
-      },
-      {
-        heading: 'Output',
-        intro: 'What the workflow produces:',
-        items: [
-          'Artifact type (document, summary, decision draft, etc.).',
-          'Destination — where the output is stored.',
-          'Intended consumer — who downstream uses it.',
-        ],
-      },
-      {
-        heading: 'Human review',
-        intro: 'The HITL checkpoint:',
-        items: [
-          'Reviewer role.',
-          'Review criteria — what the reviewer is checking for.',
-          'Review evidence — how the reviewer’s attestation is captured (signature, ticket, notation on the artifact).',
-        ],
-      },
-      {
-        heading: 'Retention',
-        intro: 'Per [Institution]’s records retention schedule:',
-        items: [
-          'Input retention period.',
-          'Output retention period.',
-          'Prompt / model interaction log retention period.',
-          'Reviewer attestation retention period.',
-        ],
-      },
-      {
-        heading: 'Exceptions',
+        heading: 'Inputs, data sources & data handling',
         intro:
-          'What triggers an exception, who decides, and how the exception is documented. Default behavior on exception: stop the workflow and route to the owner.',
+          'SR 11-7 treats data quality as part of model soundness. Name every source, classify the data, and state what may leave the building.',
+        items: [
+          'Data sources — Recommended: name each system and the exact data, not categories. Example: "Borrower financials/tax returns (analyst-uploaded), spreading output from [core], prior memos from [LOS], analyst-selected public industry data."',
+          'Data classification & NPI handling — Adopt verbatim: "Inputs include Confidential and Nonpublic Personal Information. No customer NPI is used to train, fine-tune, or improve any vendor or public model; inputs and outputs are not retained outside the bank’s contracted, access-controlled environment."',
+          'Prohibited inputs — Recommended: name what must never be entered. Example: "Do not paste full SSNs, account numbers, or consumer credit-report data; redact before upload."',
+          'Input validation — Recommended: require a human to confirm inputs are complete and from approved sources before running. Example: "Analyst confirms the spreading is final and statements are the signed versions before generating."',
+        ],
       },
       {
-        heading: 'Review schedule',
-        intro: 'When this SOP is re-reviewed:',
+        heading: 'Process steps & human-in-the-loop control',
+        intro:
+          'This is the heart of the SOP. The AIEOG Lexicon defines human-in-the-loop as a human integrated into the system’s decision-making; SR 11-7 stresses models inform but do not replace informed human judgment. Write the steps so the human checkpoint is a required, evidenced action.',
+        steps: [
+          'Prepare & validate inputs — the analyst assembles approved inputs and confirms completeness.',
+          'Generate draft — run the AI using the approved prompt/template only; ad-hoc prompting outside the template is out of scope.',
+          'Human review & correction (the HITL control) — Adopt verbatim: "A qualified analyst reviews every AI-generated section line by line for factual accuracy, hallucinated figures or citations, completeness, and tone before it is used; the analyst is responsible for the content as if they had written it."',
+          'Independent approval — a second, more senior role signs off before the memo advances (the "effective challenge" SR 11-7 expects); approval is logged.',
+          'Record & retain — retain the final human-approved artifact (and, where feasible, the AI draft) per the retention schedule.',
+        ],
         items: [
-          'Annually.',
-          'On tool version change.',
-          'On a regulatory change applicable to the workflow.',
-          'On any incident involving this workflow.',
+          'Authority to override — Recommended: state staff may discard the AI draft and write manually at any time, no justification required.',
+        ],
+      },
+      {
+        heading: 'Vendor / third-party management (if applicable)',
+        intro:
+          'If the AI is bought, not built, the 2023 Interagency TPRM guidance governs it across the life cycle — planning, due diligence/selection, contract, ongoing monitoring, termination — scaled to risk and criticality. Skip only if fully internal.',
+        items: [
+          'Vendor & criticality — Recommended: name the vendor, hosting model, and whether the relationship is "critical." Example: "LOS provider AI add-on; SaaS; not critical — workflow can run manually if unavailable."',
+          'Due-diligence evidence on file — Recommended: list the artifacts you actually hold (SOC 2, model/data-use documentation, security review, financial condition).',
+          'Key contract terms — Adopt verbatim: "The contract prohibits use of bank or customer data to train or improve the vendor’s models, grants the bank and its regulators audit and examination access, and defines data return/deletion at termination."',
+          'Ongoing monitoring & continuity — Recommended: state cadence, re-review triggers, and the fallback if the vendor fails. Example: "Annual review; re-review on any model-version change; fallback = manual drafting."',
+        ],
+      },
+      {
+        heading: 'Validation, monitoring & performance metrics',
+        intro:
+          'SR 11-7 validation rests on conceptual soundness, ongoing monitoring, and outcomes analysis; NIST’s Measure function is how you know controls work and catch drift. For a moderate-tier HITL workflow, validation can be proportionate — but it must exist and be evidenced.',
+        items: [
+          'Pre-deployment check — Recommended: document the initial test that established fitness. Example: "Before go-live, 20 historical deals were drafted with the tool and compared to the original memos; coverage and accuracy signed off by the CCO."',
+          'Ongoing metrics — Recommended: pick 2-4 metrics with owners and frequency. Example: "Monthly: hallucination/error rate found in review; % of drafts needing material rework; any factual error that reached committee (target zero)."',
+          'Threshold & escalation — Adopt verbatim: "If the material-error rate exceeds the established threshold for two consecutive months, the workflow owner escalates to the accountable executive and use of the tool is paused pending review."',
+          'Independent review & cadence — Recommended: name who reviews independently of the owner and how often; full SOP review annually plus event triggers (vendor version change, material error, scope change).',
+        ],
+      },
+      {
+        heading: 'Risk tiering & governance approval',
+        intro:
+          'NIST’s Govern function is the cross-cutting layer — who approves the use case and how oversight is resourced. Tiering sets how much control intensity the workflow earns; proportionality is the point of the risk-based approach.',
+        items: [
+          'Risk tier & rationale — Recommended: a simple Low/Moderate/High keyed to decision impact and autonomy. Example: "Moderate — influences a memo that feeds a human decision; no automated decision, score, or customer-facing output. (High if it scored or auto-decisioned credit.)"',
+          'Control intensity by tier — Recommended: state what each tier requires so the rating has teeth (e.g., Moderate = named owner, HITL on every output, annual independent review, monitoring; High adds formal independent validation pre-deployment and board reporting).',
+          'Approvals on record & policy linkage — Recommended: list approvals/dates and cite the governing internal policies (AI Use Policy, Model Risk Policy, Third-Party Risk Policy).',
+          'Change management — Adopt verbatim: "Material changes to inputs, scope, the underlying model/version, or the vendor require re-approval through this governance process before continued use; changes are version-logged on this SOP."',
+        ],
+      },
+      {
+        heading: 'Incident response, recovery & retirement',
+        intro:
+          'NIST’s Manage function covers response, incident handling, and recovery. Decide in advance what happens when the AI gets it wrong and how the workflow is wound down.',
+        items: [
+          'Failure modes — Recommended: name the realistic ways it goes wrong (hallucinated figures, fabricated citations, outdated data, outage, data exposure).',
+          'Incident response — Recommended: define who to notify and the immediate containment. Example: "On a material error reaching committee or any data-exposure event, the owner notifies the accountable executive and the CISO/incident function the same business day; tool use paused if exposure is suspected."',
+          'Recovery / fallback — Recommended: confirm the manual path keeps the business running; reprocess affected items through full human review.',
+          'Retirement — Recommended: state how it is decommissioned — disable vendor access, confirm data deletion/return per contract, archive the SOP, mark the use case "Retired" with date and reason.',
+        ],
+      },
+      {
+        heading: 'What good looks like / common mistakes',
+        intro:
+          'A quick self-check before handing this to an examiner. The difference between a credible SOP and a checkbox is whether the controls are actually happening and evidenced.',
+        items: [
+          'What good looks like — a reader who has never seen the tool can state in a minute what it does, what it’s forbidden to do, who checks every output, and what shuts it off; every control claim is backed by a producible record.',
+          'Common mistake — listing capabilities but not prohibitions; the out-of-scope language is what limits risk, so write it first.',
+          'Common mistake — "we monitor performance" with no threshold or owner; set a number that triggers a pause and name who watches it.',
+          'Common mistake — vague data handling that leaves open whether NPI trains a public model; state the no-training and retention rules and tie them to the contract.',
+          'Common mistake — letting the SOP go stale; an un-updated SOP after a vendor model upgrade is itself a finding. Date it, version it, re-review on the triggers above.',
         ],
       },
     ],
@@ -395,78 +426,106 @@ export const TEMPLATES: readonly Template[] = [
     ],
   },
   {
-    slug: 'cdfi-grant-ai-evidence-checklist',
-    title: 'CDFI Grant AI Evidence Checklist',
-    dek: 'A mission-first checklist for documenting AI-assisted work in grant, impact, and community-development evidence files.',
-    audience: 'CDFI, MDI, community development, grants, and impact teams',
-    readMinutes: 7,
+    ...templateBase('cdfi-grant-ai-evidence-checklist'),
     sourcedFrom: [
-      'AIEOG AI Lexicon — AI governance, AI use case inventory',
-      'Your grant agreement, award conditions, and reporting instructions',
-      'Institution records retention policy',
+      'CDFI Fund (US Treasury) — CDFI Certification reporting: Annual Certification and Data Collection Report (ACR) and Transaction Level Report (TLR)',
+      'CDFI Fund — award compliance and reporting obligations (Assistance/Allocation Agreement, Performance Progress Report, Material Events; CCME Help Desk)',
+      'CFPB guidance on adverse-action notices when using AI/complex credit models (ECOA / Regulation B; Circular 2022-03)',
+      '12 CFR Part 1805 — Community Development Financial Institutions Program',
+      'AIEOG AI Lexicon — AI governance, AI use case inventory (US Treasury / FBIIC / FSSCC, Feb 2026)',
+      'Your grant agreement, award conditions, and reporting instructions; institution records-retention policy',
     ],
     sections: [
       {
-        heading: 'Grant or impact goal',
+        heading: 'Why an AI evidence file matters for mission lenders',
         intro:
-          'Name the mission outcome the AI-assisted work supports. Keep the language tied to the grant, program, or community-development plan rather than the tool.',
+          'Your CDFI certification, awards, and impact reporting rest on a chain of attestations to the CDFI Fund and, ultimately, to the communities you serve. When AI assists the drafting or analysis behind those attestations, an evidence file proves a human owned the judgment — protecting both your certification and your mission credibility. This is a mission-integrity control, not a tech disclosure: the question a reviewer or examiner asks is "who decided, and on what basis?"',
         items: [
-          'Program, grant, or internal initiative name.',
-          'Target community, member, borrower, or small-business segment.',
-          'Outcome being supported: access, speed, language clarity, documentation quality, or staff capacity.',
+          'Scope it to documents that feed obligations: the ACR, the TLR, Performance Progress Reports for applicable awards, impact narratives, and community-development outreach summaries.',
+          'Recommended: keep one lightweight evidence row per AI-assisted deliverable — enough to reconstruct what AI touched and who verified it — rather than logging every keystroke.',
+          'Adopt-verbatim file-purpose statement: "This evidence file records where AI tools assisted in preparing materials submitted to or relied upon for the CDFI Fund and for community-impact reporting. AI assistance does not replace the certifying official’s independent review; all figures, claims, and certifications reflect human verification."',
+          'Not legal advice — confirm specifics against your Award/Assistance/Allocation Agreement and your award reporting instructions.',
         ],
       },
       {
-        heading: 'AI-assisted task',
+        heading: 'Build (and reuse) an AI use-case inventory',
         intro:
-          'Describe the exact staff task where AI helps. The task should be internal and reviewable before any member, borrower, funder, or examiner sees the output.',
-        items: [
-          'Drafting narrative, summarizing outreach notes, organizing evidence, or improving plain-language explanations.',
-          'Approved tool and owner.',
-          'Human reviewer and backup reviewer.',
-        ],
-      },
-      {
-        heading: 'Data boundary',
-        intro:
-          'State what may and may not enter the AI tool. If real member, borrower, or applicant data is not allowed, write that plainly.',
-        items: [
-          'Allowed inputs: public program language, internal templates, de-identified summaries, or synthetic examples.',
-          'Blocked inputs: NPI, account numbers, loan details, full applications, demographic data, or examination-sensitive material unless an approved private tool and agreement cover it.',
-          'Sanitization step before prompting.',
-        ],
-      },
-      {
-        heading: 'Evidence retained',
-        intro:
-          'Keep enough evidence to show the work was controlled without turning the file into a tool log dump.',
-        items: [
-          'Prompt or working brief used.',
-          'Source material referenced.',
-          'AI draft or summary, if retained under policy.',
-          'Reviewer note, correction, and final-use decision.',
-          'Where the final artifact is stored.',
-        ],
-      },
-      {
-        heading: 'Fairness and mission check',
-        intro:
-          'Before using the output, ask whether the AI-assisted work could narrow access, confuse applicants, or hide a policy decision.',
-        items: [
-          'Does the output preserve the institution’s mission and plain-language standard?',
-          'Could any member, borrower, or applicant group be disadvantaged by the wording or process?',
-          'Did a human verify that the output matches approved program criteria?',
-        ],
-      },
-      {
-        heading: 'Reporting note',
-        intro:
-          'When the work supports a grant file or impact report, add a short note that separates AI assistance from the institution’s final judgment.',
+          'Before logging individual documents, list the AI uses you actually permit in mission work. A short inventory turns ad hoc tool use into governed, repeatable practice and gives you a stable vocabulary for every downstream evidence row. The AIEOG Lexicon frames AI governance as the policies, roles, and oversight that direct how AI is adopted and monitored.',
         steps: [
-          'Describe the human-owned decision or final artifact.',
-          'Name the AI-assisted support task.',
-          'Name the reviewer and date.',
-          'Reference the retained evidence file.',
+          'List each approved AI use case in plain language (e.g., "draft impact-narrative first version," "summarize small-business outreach notes," "check ACR narrative for internal consistency").',
+          'For each, record the tool/model, the data category it may touch, and the explicit prohibition line (e.g., "no borrower PII," "no protected-class inferences," "no auto-generated certification language submitted without review").',
+          'Assign a human owner accountable for each use case and the verification step required before the output is used.',
+          'Note where outputs land (ACR narrative, PPR, impact report, outreach summary) so the inventory cross-references your evidence rows.',
+          'Review the inventory at least annually — align the cycle with your CDFI Fund reporting calendar so it is current when attestations are due.',
+        ],
+        items: [
+          'Recommended default prohibitions for mission lenders: no AI-generated eligibility or adverse-action reasoning, no synthetic statistics in impact claims, and no AI text inserted into a certification without a named reviewer’s sign-off.',
+        ],
+      },
+      {
+        heading: 'Separate AI assistance from human judgment in the record',
+        intro:
+          'The single most valuable thing your file does is draw a clean line between what AI produced and what a person decided — the same principle CFPB enforces in lending (an institution cannot hide behind a model), applied to documentation.',
+        items: [
+          'Default rule: every AI-assisted deliverable carries a one-line attribution note naming the AI role, the human reviewer, and the verification performed.',
+          'Adopt-verbatim reporting note (working files or cover memo): "Portions of this document were drafted with AI assistance. All data, eligibility determinations, impact claims, and certifications were independently reviewed and verified by [name/title] on [date]. The institution takes full responsibility for the accuracy of the final content."',
+          'Distinguish three AI roles so reviewers know the stakes: drafting (low — language only), summarizing (medium — verify against sources), and analysis/recommendation (high — requires documented human re-derivation).',
+          'Never let AI generate the certification or attestation language itself; the certifying official’s words and accountability must be human-authored.',
+        ],
+      },
+      {
+        heading: 'Fair-lending and access guardrails (ECOA / Regulation B)',
+        intro:
+          'Mission lending lives or dies on equitable access, and AI introduces concrete fair-lending exposure. Per CFPB guidance, ECOA and Regulation B do not permit creditors to use technology so complex they cannot provide specific and accurate reasons for an adverse action — complexity is not an excuse. Your file should show AI never became a black box between an applicant and a specific, accurate reason.',
+        items: [
+          'Recommended: AI is permitted for drafting and summarizing, but credit decisions, eligibility calls, and adverse-action reasons must be human-determined and independently documented.',
+          'Do not rely on generic checkbox reasons when AI or complex models are involved; reasons must accurately describe the factors actually considered.',
+          'Log a fair-lending check on any AI-assisted analytical output: confirm no protected-class proxy entered the inputs and that conclusions are reproducible by a human without the tool.',
+          'Adopt-verbatim guardrail note: "No AI output was used to determine applicant eligibility, pricing, or adverse-action reasons. AI assistance was limited to language drafting and summarization of human-verified content; all decisioning rationale is human-authored and specific to the individual circumstances."',
+        ],
+      },
+      {
+        heading: 'Map AI evidence to CDFI Fund reporting instruments',
+        intro:
+          'Your obligations flow through named instruments and your individual agreement; AI-assisted preparation of any of them belongs in the evidence file. The point is traceability from the submitted attestation back to the human who verified it.',
+        items: [
+          'ACR (Annual Certification and Data Collection Report): if AI helped draft narrative responses, log the row and confirm the certifying official reviewed every certification statement.',
+          'TLR (Transaction Level Report): AI must not generate or alter transaction-level data — if used at all (e.g., formatting QA), record it explicitly and verify against source systems.',
+          'Performance Progress Report and other award reports: for active recipients, log AI assistance on aggregate performance narratives and reconcile figures to systems of record.',
+          'Material Events: where AI assisted in drafting a notification, ensure timeliness (commonly within 30 days, or as your agreement specifies) and human verification of the underlying facts.',
+          'Recommended: for anything submitted to the CDFI Fund, the evidence row must name a human certifier; when an instrument or deadline is uncertain, defer to your grant agreement and reporting instructions and the CCME Help Desk rather than assuming.',
+        ],
+      },
+      {
+        heading: 'Worked example — AI-assisted annual impact narrative',
+        intro: 'Here is the practice in miniature. Use this filled row as your template.',
+        items: [
+          'Scenario: the Director of Impact uses an approved AI tool to turn de-identified, aggregate small-business lending data and field notes into a first-draft impact narrative for the certified Investment Area, plus a one-paragraph outreach summary from staff notes.',
+          'Verification performed: the Director reconciled every figure to the loan-origination system, removed two AI phrasings that overstated job-creation outcomes, confirmed no borrower-level or protected-class data was used, and the certifying official independently approved the final narrative.',
+          'Sample filled evidence row — Document: FY2025 Annual Impact Narrative (supports ACR) | AI role: first-draft drafting + summarization | Tool: [approved internal AI assistant] | Data: de-identified aggregate program data; staff field notes | AI prohibited from: borrower PII, certification language, impact statistics | Reviewer: Director of Impact | Verification: figure-to-source reconciliation; overstatement removed; fair-lending data check passed | Certifying sign-off: CEO, 2026-03-04 | Retention: 5 years from submission (per agreement).',
+        ],
+      },
+      {
+        heading: 'Retention, access, and audit-readiness',
+        intro:
+          'Evidence is only useful if it survives staff turnover and can be produced on request. Tie retention to your reporting cycle and keep the file simple enough that anyone can reconstruct what happened.',
+        items: [
+          'Recommended retention: keep AI evidence rows and supporting drafts for the longer of (a) the period required by your Award/Assistance/Allocation Agreement or (b) your standard records-retention schedule — commonly several years past the related submission; confirm the exact term in your agreement.',
+          'Store evidence rows alongside the submitted instrument (ACR/TLR/PPR/impact report) so a reviewer can move from attestation to verification in one step.',
+          'Control access: restrict the file to staff with a need to know, and never store borrower PII or protected-class data in it.',
+          'Adopt-verbatim retention note: "AI evidence records for this reporting period are retained for [X] years consistent with our records-retention policy and our agreement with the CDFI Fund, and are available to authorized reviewers and examiners upon request."',
+        ],
+      },
+      {
+        heading: 'What good looks like / common mistakes',
+        intro:
+          'A strong AI evidence file reads like a mission-integrity ledger: clear human ownership, clean separation of AI from judgment, and no fair-lending or access blind spots. Most failures come from over- or under-documenting in the wrong places.',
+        items: [
+          'What good looks like: every AI-assisted submission has a named human certifier, AI’s role is described in one honest line, figures are reconciled to source, and fair-lending/access checks are recorded.',
+          'Common mistake (transparency): omitting AI involvement entirely, or burying it so a reviewer cannot tell what AI touched.',
+          'Common mistake (fair lending): letting AI generate or influence eligibility or adverse-action reasoning, then being unable to give a specific, accurate, human-verifiable reason.',
+          'Common mistake (access/accuracy): letting AI inflate impact or reach figures without reconciling to source data.',
+          'Common mistake (over-documentation): storing borrower PII or protected-class data in the evidence file itself — keep the ledger about the process, not the people.',
         ],
       },
     ],
@@ -474,65 +533,114 @@ export const TEMPLATES: readonly Template[] = [
   {
     ...templateBase('gtm-plan'),
     sourcedFrom: [
-      'Apiture — Digital Loyalty Dividend (2025)',
-      'Apiture — Digital Transformation for Community Banks (2025)',
+      'Jack Henry Strategy Benchmark (AI named a top planned technology investment among community banks and credit unions)',
+      'Cornerstone Advisors, "What’s Going On in Banking" (AI adoption; no AI strategy without a credible data strategy)',
+      'Apiture / Harris Poll consumer banking studies (personalized, responsive service as a switching driver to community institutions)',
+      'CFPB Issue Spotlight, "Chatbots in Consumer Finance"',
+      'CFPB Circulars 2022-03 / 2023-03 — adverse-action notices for AI/complex credit models (ECOA / Regulation B)',
+      'UDAAP examination guidance (CFPB / NCUA / FDIC / OCC)',
     ],
     sections: [
       {
-        heading: 'Audience',
+        heading: 'Define the launch and the audience',
         intro:
-          'Who this is for, in concrete terms. Avoid "all customers" or "all employees." Name the segment, role, or branch tier.',
+          'A GTM plan fails when "AI" is the product instead of the outcome. Name one concrete capability, the job it does, and exactly who you’re rolling it out to internally and announcing to externally — narrow scope is what makes a launch compliant, measurable, and finishable.',
         items: [
-          'Internal audience: which roles, which branches, which department.',
-          'External audience: which member segment, which channel they engage through.',
-          'Influencers: examiners, board members, partner credit unions.',
+          'Recommended default: pick an internal-efficiency or human-in-the-loop use case first, not a member-facing autonomous one — the 2026 differentiator is who operationalizes AI with discipline, not who ships the flashiest feature.',
+          'Split the audience into two tracks: the internal audience who must adopt it (for the worked example, ~25 contact-center agents, 3 team leads, 1 compliance reviewer) and the external audience who will hear about it (members who contact support).',
+          'Decision rule: announce to members only when the AI materially changes their experience or when silence would be misleading; a back-office drafting aid a human approves usually needs internal change management, not a press release.',
+          'Adopt-verbatim internal framing line: "This tool drafts; you decide. Nothing reaches a member until a person on our team reads it and approves it."',
         ],
       },
       {
-        heading: 'Promise',
-        intro: 'One sentence the audience can repeat without your help.',
+        heading: 'The promise (positioning & value proposition)',
+        intro:
+          'Your promise is the one sentence that justifies the launch to the people who must adopt it and the members who experience it. It should describe a member or staff outcome, never the technology, and it must be something you can actually deliver and substantiate.',
         items: [
-          'What changes for them.',
-          'When it changes.',
-          'What is not changing (the reassurance side of the promise).',
+          'Write it as "[audience] gets [outcome] because [what we changed]" — outcome first, mechanism second; the word "AI" is optional and often better left out of member-facing copy.',
+          'Internal promise for the worked example: "Agents resolve member questions faster and with more consistent, on-brand answers, because AI drafts a first reply they can edit in seconds instead of writing from scratch."',
+          'Member-facing angle (when warranted): lead with responsiveness and personal service — the attributes research identifies as why consumers switch to community institutions — anchored to your existing trust advantage, not novelty.',
+          'Hard constraint: every adjective must be provable. "Faster" needs a baseline and a measured delta; "more accurate" needs QA data. If you can’t measure it, don’t claim it.',
+          'Adopt-verbatim member-facing line (use only if you announce): "We’ve added new tools that help our team answer your questions more quickly — and a real person on our team still reviews every response before you get it."',
         ],
       },
       {
-        heading: 'Proof',
-        intro: 'What evidence supports the promise, sourced.',
+        heading: 'The proof (evidence, pilot & substantiation)',
+        intro:
+          'Proof is both a marketing asset and a compliance shield. Under UDAAP, any performance claim must be substantiated before you make it — so the pilot that proves the value is the same data that protects the claim. No claim ships ahead of its evidence.',
+        steps: [
+          'Run a time-boxed pilot (2-4 weeks) with a subset of the internal audience — for the worked example, 5 agents using AI-drafted replies while the rest serve as a control group.',
+          'Capture a clean before/after baseline on the metrics you intend to claim: handle time, first-contact resolution, QA accuracy/error rate, and satisfaction.',
+          'Have compliance/QA review a sample of AI-drafted-then-approved replies for accuracy, tone, and prohibited claims (e.g., "instant approval," "no fees," "best rate") — the failure mode the CFPB chatbot spotlight flagged.',
+          'Lock the substantiation file: the specific numbers, date range, sample size, and who approved them — this authorizes any external claim and is what you produce if examined.',
+        ],
         items: [
-          'Internal: pilot results, time savings, sample artifacts produced.',
-          'External: named industry sources, peer evidence, sourced consumer expectations.',
-          'Regulatory: the governance and review structure under the capability.',
+          'Recommended default: do not publish a numeric claim ("answers 30% faster") unless the pilot produced that exact number under documented conditions; if directional, make the qualitative point with no figure.',
+          'Adopt-verbatim internal talking point: "Before we tell a single member anything, we have to show the numbers behind it. The pilot is how we earn the right to make the claim."',
         ],
       },
       {
-        heading: 'Channels',
-        intro: 'Where the message lands.',
+        heading: 'Channels & messaging (internal + external)',
+        intro:
+          'Channels split by audience: internal channels drive adoption and confidence; external channels set member expectations. Match the message to the channel and never let an external claim outrun your substantiation file.',
         items: [
-          'Internal: all-hands, team huddles, intranet, manager talking points.',
-          'External (members): app, email, branch signage, statement inserts as appropriate.',
-          'External (industry): peer associations, your regulator relationship, ecosystem partners.',
+          'Internal channels for the worked example: a hands-on training session, a one-page "draft, edit, approve" quick reference, a pinned chat message, and a standing huddle item for the first month.',
+          'External channels (only if announcing): in-app/online-banking message, a short FAQ or help-center article, branch talking points, and a plain-language explanation for any member who asks.',
+          'Recommended disclosure default: be transparent and plain — consumer comfort with AI rises when a specific benefit is explained and a human-oversight role is named; vague "AI-powered" labeling erodes the trust community institutions depend on.',
+          'Adopt-verbatim branch/phone talking point: "Yes — our team uses tools that help us draft answers faster, but a person here always reviews and approves what you receive. Your information stays protected and you can always reach a real person."',
+          'Hard rule: do not imply members are talking to a human when they’re talking to a bot, and do not imply a bot can do something it can’t — both are direct UDAAP risks.',
         ],
       },
       {
-        heading: 'Launch timeline',
-        intro: 'Concrete dates. Without dates, this is not a plan.',
+        heading: 'Compliance review & guardrails',
+        intro:
+          'Compliance is a gate in the plan, not a sign-off at the end. Build the review into the timeline so compliance shapes claims and disclosures before launch, with extra scrutiny on anything touching credit. (Operational guidance, not legal advice — route final decisions through your compliance counsel.)',
         items: [
-          'Internal soft launch (small named group).',
-          'Internal full launch (institution-wide).',
-          'External announcement window — and explicit pre-announce silence period.',
-          'First metrics review date.',
+          'Map the use case to its risk tier: back-office drafting with human approval (lower risk) vs. anything that influences a credit decision, eligibility, pricing, or adverse action (high risk, additional rules apply).',
+          'Scope guardrail for the worked example: AI-drafted replies must not state credit decisions, approval odds, rates, or eligibility — lending questions route to the proper process rather than letting a drafted reply make a representation.',
+          'Reg B / ECOA guardrail: CFPB Circulars 2022-03 / 2023-03 require specific, accurate reasons for adverse action regardless of technology; a creditor may not hide behind black-box AI. Keep AI out of adverse-action messaging unless you can meet this.',
+          'Adopt-verbatim agent escalation rule: "If a drafted reply mentions a rate, an approval, eligibility, or a denial, do not send it — escalate it. AI never delivers a credit decision."',
+          'Recommended: require compliance sign-off on three artifacts before launch — the member-facing announcement copy, the FAQ/disclosure language, and the substantiation file behind any claim.',
         ],
       },
       {
-        heading: 'Metrics',
-        intro: 'Three to five measurable signals. Defined before launch, not after.',
+        heading: 'Timeline & rollout sequence',
+        intro:
+          'A realistic first launch runs roughly 6-10 weeks. Sequence it so compliance and substantiation precede any external word, and so internal adoption is solid before members are involved.',
+        steps: [
+          'Weeks 1-2 — Define & align: lock scope, audiences, the promise, success metrics, and the prohibited-claims list; open the compliance workstream.',
+          'Weeks 3-4 — Pilot: run it, capture baseline vs. results, assemble the substantiation file.',
+          'Week 5 — Compliance review & decision: review pilot output and draft copy; decide whether a member announcement is warranted; sign off on the three artifacts.',
+          'Weeks 6-7 — Internal rollout: train the full internal audience, publish the quick reference, require the draft/edit/approve workflow.',
+          'Week 8 — External announcement (if warranted): publish in-app message and FAQ, brief branch staff, turn on monitoring.',
+          'Weeks 9-10 — Monitor & adjust: track metrics and complaints weekly; fix or pull anything that misses the bar before scaling.',
+        ],
         items: [
-          'Adoption — who is using it, at what cadence.',
-          'Quality — what proportion of outputs pass review on first pass.',
-          'Risk — incidents per period, with severity.',
-          'Outcome — the business metric the capability is meant to move.',
+          'Gate rule: no external announcement ships until the substantiation file is signed and internal adoption is confirmed — an unevenly adopted tool plus a public promise invites complaints.',
+        ],
+      },
+      {
+        heading: 'Metrics & success criteria',
+        intro:
+          'Define success before launch or you’ll declare victory by anecdote. Pick a small set of metrics tied to the promise, set baselines, and name the threshold that would make you pause, fix, or roll back.',
+        items: [
+          'For the worked example, track four: average handle time, first-contact resolution, QA accuracy/error rate on sent replies, and member CSAT — plus a guardrail metric: AI-related complaints or escalations.',
+          'Set the success threshold in advance: e.g., "handle time down with no drop in QA accuracy and no rise in complaints"; a speed gain that increases errors is a failure, not a win.',
+          'Define a kill/rollback trigger: e.g., QA error rate rises above the pre-launch baseline, or member complaints referencing inaccurate/"robotic" responses exceed a set count in a week — pull or pause and remediate.',
+          'Adopt-verbatim leadership update line: "We measured it before we scaled it: [metric] moved from [baseline] to [result] with no increase in errors or complaints — here’s the data."',
+        ],
+      },
+      {
+        heading: 'What good looks like / common mistakes',
+        intro:
+          'The difference between a launch that compounds and one that creates risk is discipline: scoped capability, substantiated claims, human oversight, transparent disclosure, and a metric that can fail.',
+        items: [
+          'What good looks like: one narrow capability with a human in the loop; a promise stated as an outcome; every claim backed by a dated substantiation file; plain-language disclosure naming the benefit and the human-review role; compliance signed off before any external word; a defined success threshold with a rollback trigger.',
+          'Common mistake (overpromising): claiming "instant," "guaranteed," "best rate," or a percentage you didn’t measure — the CFPB chatbot spotlight flags AI generating unsubstantiated specifics, which map straight to deceptive-acts claims.',
+          'Common mistake (UDAAP): marketing that doesn’t match the fine print, implying a member is talking to a human when it’s a bot, or omitting AI’s role where a member would have needed to know it.',
+          'Common mistake (Reg B/ECOA): letting AI touch credit messaging or adverse-action reasons without being able to give specific, accurate reasons; "the model decided" is not a permissible reason.',
+          'Common mistake (no metric): launching without a baseline, threshold, or kill switch, so you can’t tell whether it worked or defend the claim later.',
+          'Common mistake (leading with the tech): marketing "AI" instead of the outcome, trading away the trust advantage that is exactly why members choose community institutions.',
         ],
       },
     ],
