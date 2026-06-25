@@ -132,6 +132,29 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain('SR 11-7');
   });
 
+  it('returns the lending AI control kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/lending-playbook/word'),
+      contextFor('lending-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Lending-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Lending AI Control Kit');
+    expect(body).toContain('The Five Lending AI Controls');
+    expect(body).toContain('Current model-risk guidance, including SR 26-2 where applicable');
+    expect(body).toContain('AI may not select, infer, rank, or invent principal reasons');
+    expect(body).toContain('Alternative data review worksheet');
+    expect(body).toContain('Human review sign-off log');
+    expect(body).toContain('Next step: Run the 45-Minute Lending AI Control Sprint');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain("The Lending Leader's AI-Native Playbook");
+    expect(body).not.toContain('SR 11-7');
+    expect(body).not.toContain('Disparate impact signals');
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),

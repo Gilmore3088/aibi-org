@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The Lending Leader's AI-Native Playbook — The AI Banking Institute</title>
+<title>The Lending AI Control Kit - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page { padding-bottom: 0.95in; }
@@ -60,6 +60,10 @@
   .vs .good .label { color: var(--emerald-700); }
   .play-meta { font-size: 9pt; line-height: 1.5; margin: 10pt 0 4pt; color: var(--slate-600); border-top: 1px solid var(--slate-200); padding-top: 6pt; }
   .play-meta strong { color: var(--ink-2); }
+  .template-table { font-size: 8.6pt; margin: 7pt 0 10pt; }
+  .template-table th { font-size: 7.8pt; }
+  .template-table th,
+  .template-table td { padding: 4.8pt 8pt; }
 </style>
 </head>
 <body>
@@ -73,9 +77,9 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · Lending · v2.0</div>
-    <h1>The Lending Leader's AI-Native Playbook</h1>
-    <p class="lede">Defensible decisions, faster — without turning credit into a black box. A practical operating playbook for lending leaders, credit officers, compliance partners, underwriters, and risk teams using AI to improve lending workflows while preserving explainability, fair-lending controls, file traceability, and human accountability.</p>
+    <div class="kicker">Role control kit - Lending - v2.1</div>
+    <h1>The Lending AI Control Kit</h1>
+    <p class="lede">Five controls for using AI in lending without losing explainability, file support, or human accountability.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -90,25 +94,38 @@
   <div class="principle">AI prepares the workbench. The human underwriter owns the decision. The file proves the reason.</div>
   <p>AI can extract, summarize, compare, calculate, draft, and organize. It cannot become the unreviewed decision-maker in a credit workflow.</p>
 
+  <h3>The Five Lending AI Controls</h3>
+  <table>
+    <thead><tr><th>#</th><th>Control</th><th>Evidence to retain</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>No AI credit decisioning without formal review.</td><td>Approved use case, model/tool review, decision authority, control owner.</td></tr>
+      <tr><td>2</td><td>Every principal reason traces to the file.</td><td>Principal reason table, source document, reviewer sign-off.</td></tr>
+      <tr><td>3</td><td>AI drafts only from human-provided facts.</td><td>Prompt, approved input set, AI output, reviewer edits.</td></tr>
+      <tr><td>4</td><td>Every customer-facing or credit-impacting output has human review.</td><td>Review checklist, final approval, escalation log.</td></tr>
+      <tr><td>5</td><td>Every pilot has evidence, metrics, and stop trigger.</td><td>Pilot scorecard, exception log, scale / revise / stop decision.</td></tr>
+    </tbody>
+  </table>
+
   <div class="toc">
     <div class="section-kicker" style="margin-top:0;">What's inside</div>
     <ol>
       <li>Executive snapshot</li>
+      <li>The Five Lending AI Controls</li>
       <li>Why lending is different</li>
-      <li>The AI-native lending operating model</li>
+      <li>The governed lending operating model</li>
       <li>Prepare vs. decide matrix</li>
       <li>Modern AI lending architecture</li>
       <li>Alternative data guardrails</li>
       <li>Explainability &amp; adverse action</li>
-      <li>Fair lending &amp; algorithmic bias controls</li>
+      <li>Fair lending governance controls</li>
       <li>Model risk &amp; continuous monitoring</li>
       <li>Human-in-the-loop &amp; fallbacks</li>
       <li>Five lending plays</li>
-      <li>Copy-paste templates</li>
+      <li>Editable templates</li>
       <li>30-day lending pilot plan</li>
       <li>Measurement model</li>
       <li>What good looks like</li>
-      <li>Recommended AiBI path</li>
+      <li>45-minute control sprint</li>
       <li>Final operating principle</li>
     </ol>
   </div>
@@ -160,7 +177,7 @@
     <li><strong>Layer 3 · Policy and eligibility checks.</strong> AI may compare file facts against policy, but the system must not silently decide eligibility. Checks must be traceable, source-linked, reviewed, flagged when uncertain, and retained.</li>
     <li><strong>Layer 4 · Human decision gate.</strong> A qualified human underwriter, credit officer, or authorized decision-maker makes the final approval, denial, counteroffer, or condition decision.</li>
     <li><strong>Layer 5 · Explainability and evidence.</strong> Every adverse decision must be supported by specific principal reasons grounded in the file. Retain file source, principal reasons, reviewer sign-off, AI draft if used, human edits, final adverse-action language, fair-lending review result.</li>
-    <li><strong>Layer 6 · Monitoring and validation.</strong> If AI or models are used in credit-related workflows, monitoring must be risk-based and ongoing — performance stability, overrides, drift indicators, adverse-action reason patterns, protected-class impact testing where applicable, exception rates, data quality, vendor changes.</li>
+    <li><strong>Layer 6 · Monitoring and validation.</strong> If AI or models are used in credit-related workflows, monitoring must be risk-based and ongoing: performance stability, overrides, drift indicators, adverse-action reason patterns, protected-basis outcome gaps where applicable, exception rates, data quality, vendor changes.</li>
   </ul>
 </section>
 
@@ -264,8 +281,8 @@
     <li>The data has independent predictive value.</li>
     <li>The data is permitted by policy and law.</li>
     <li>The data source is reliable and documented.</li>
-    <li>The data is explainable to the applicant if it contributes to adverse action.</li>
-    <li>The data is tested for disparate impact or proxy risk.</li>
+    <li>If this data contributes to denial, pricing, terms, or conditions, can we explain it to the applicant and trace it to a file source?</li>
+    <li>The data is reviewed for protected-basis outcome gaps, proxy-variable risk, explainability, privacy, and state-law concerns where applicable.</li>
     <li>The data is subject to model-risk review if used in a decisioning model.</li>
     <li>Human review and override are documented.</li>
   </ul>
@@ -274,6 +291,7 @@
 
   <div class="section-kicker">Section 7 · Explainability &amp; adverse action</div>
   <h2>Required adverse-action workflow</h2>
+  <div class="principle">AI may not select, infer, rank, or invent principal reasons. AI may only help express principal reasons already identified by a qualified human reviewer and supported by the file.</div>
   <ol>
     <li>Human underwriter identifies the actual principal reasons from the file.</li>
     <li>AI may draft clearer wording using only those reasons.</li>
@@ -297,7 +315,7 @@
 
 <!-- Section 8 + 9 -->
 <section class="page">
-  <div class="section-kicker">Section 8 · Fair lending &amp; algorithmic bias</div>
+  <div class="section-kicker">Section 8 · Fair lending governance</div>
   <h2>What can go wrong</h2>
   <ul>
     <li>Historical bias is learned by the model.</li>
@@ -308,8 +326,8 @@
     <li>Protected-class impact is not monitored.</li>
   </ul>
 
-  <h3>Testing approach</h3>
-  <p>Depending on the model and workflow, fair-lending testing may include disparate impact analysis, comparative file review, marginal effects analysis, conditional marginal effects testing, proxy-variable review, adverse-action reason distribution review, override pattern analysis, exception rate review, and protected-class impact monitoring where legally and operationally appropriate.</p>
+  <h3>Review approach</h3>
+  <p>For AI-assisted lending workflows, monitor for protected-basis outcome gaps, proxy-variable risk, adverse-action reason patterns, override patterns, and explainability issues as part of fair-lending governance, reputation risk, state-law, Fair Housing Act, mortgage, and institution-specific control review where applicable.</p>
 
   <div class="principle">If a variable cannot be explained, defended, tested, and translated into a specific principal reason when relevant, it should not drive an adverse action.</div>
 
@@ -352,7 +370,7 @@
   </div>
 
   <h3>Important qualification</h3>
-  <p>Not every AI-assisted lending workflow requires the same model validation machinery. A prompt used to rewrite a human-provided plain-English explanation is not the same risk as a model that scores applications. Controls should be proportional to whether the tool influences a decision, processes customer data, creates customer-facing output, can affect terms / pricing / approval / denial / conditions, and whether the output becomes a retained business record.</p>
+  <p>Current model-risk guidance, including SR 26-2 where applicable, should be considered when AI supports scoring, pricing, risk ranking, eligibility, fraud, or other model-like decision processes. Generative AI used for drafting, summarization, file organization, or language support should still be governed through approved-tool controls, data boundaries, human review, evidence retention, vendor oversight, and incident response.</p>
 </section>
 
 <!-- Section 10 -->
@@ -603,11 +621,11 @@ Examples:
 
 <!-- Section 12 templates -->
 <section class="page">
-  <div class="section-kicker">Section 12 · Copy-paste templates</div>
-  <h2>Five reusable lending artifacts</h2>
+  <div class="section-kicker">Section 12 · Editable templates</div>
+  <h2>Eight reusable lending artifacts</h2>
 
   <h3>Template 1 · AI lending use-case intake form</h3>
-  <table>
+  <table class="template-table">
     <thead><tr><th>Field</th><th>Response</th></tr></thead>
     <tbody>
       <tr><td>Use case name</td><td></td></tr>
@@ -620,6 +638,7 @@ Examples:
       <tr><td>Does it influence approval, denial, pricing, or terms?</td><td>Yes / No</td></tr>
       <tr><td>Customer-facing output?</td><td>Yes / No</td></tr>
       <tr><td>Adverse action involved?</td><td>Yes / No</td></tr>
+      <tr><td>If denial, pricing, terms, or conditions are affected, can each factor be explained and traced to the file?</td><td>Yes / No / TBD</td></tr>
       <tr><td>Model risk review required?</td><td>Yes / No / TBD</td></tr>
       <tr><td>Fair-lending review required?</td><td>Yes / No / TBD</td></tr>
       <tr><td>Human reviewer</td><td></td></tr>
@@ -631,21 +650,47 @@ Examples:
   </table>
 
   <h3>Template 2 · Principal reason traceability table</h3>
-  <table>
+  <table class="template-table">
     <thead><tr><th>Principal reason</th><th>File source</th><th>AI draft sentence</th><th>Human reviewer edit</th><th>Final language</th></tr></thead>
     <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+  </table>
+
+  <h3>Template 3 · Adverse-action AI review checklist</h3>
+  <table class="template-table">
+    <thead><tr><th>Checkpoint</th><th>Owner</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Principal reasons were identified by a qualified human reviewer.</td><td></td><td></td><td></td></tr>
+      <tr><td>Each reason has file support.</td><td></td><td></td><td></td></tr>
+      <tr><td>AI did not add, rank, infer, or remove reasons.</td><td></td><td></td><td></td></tr>
+      <tr><td>Customer-facing language matches approved template standards.</td><td></td><td></td><td></td></tr>
+      <tr><td>Final notice and evidence packet are retained.</td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 4 · Alternative data review worksheet</h3>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Data source and owner</td><td></td></tr>
+      <tr><td>Decision element affected</td><td>Denial / Pricing / Terms / Conditions / Other</td></tr>
+      <tr><td>File source and applicant explanation</td><td></td></tr>
+      <tr><td>Protected-basis / proxy-variable review completed</td><td>Yes / No / TBD</td></tr>
+      <tr><td>FCRA, FHA, GLBA, and state-law checkpoints considered where applicable</td><td>Yes / No / TBD</td></tr>
+      <tr><td>Human override and exception path</td><td></td></tr>
+    </tbody>
   </table>
 </section>
 
 <section class="page">
-  <h3>Template 3 · Fair-lending phrase screen</h3>
-  <table>
+  <div class="section-kicker">Section 12 · Editable templates · continued</div>
+  <h3>Template 5 · Fair-lending phrase screen</h3>
+  <table class="template-table">
     <thead><tr><th>Phrase</th><th>Concern</th><th>Source support needed?</th><th>Suggested neutral language</th><th>Reviewer decision</th></tr></thead>
     <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
   </table>
 
-  <h3>Template 4 · Decision packet index</h3>
-  <table>
+  <h3>Template 6 · Decision packet index</h3>
+  <table class="template-table">
     <thead><tr><th>Packet section</th><th>Source document</th><th>Owner</th><th>Status</th><th>Notes</th></tr></thead>
     <tbody>
       <tr><td>Application snapshot</td><td></td><td></td><td></td><td></td></tr>
@@ -656,13 +701,30 @@ Examples:
       <tr><td>Reviewer sign-off</td><td></td><td></td><td></td><td></td></tr>
     </tbody>
   </table>
-
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 12 · Copy-paste templates · continued</div>
-  <h2>Template 5 · Lending AI evidence packet</h2>
-  
+  <div class="section-kicker">Section 12 · Editable templates · continued</div>
+  <h3>Template 7 · Human review sign-off log</h3>
+  <table class="template-table">
+    <thead><tr><th>Date</th><th>Workflow</th><th>Reviewer</th><th>Decision authority</th><th>Approve / revise / reject</th><th>Retention location</th></tr></thead>
+    <tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+  </table>
+
+  <h3>Template 8 · 30-day lending AI pilot scorecard</h3>
+  <table class="template-table">
+    <thead><tr><th>Metric</th><th>Baseline</th><th>Target</th><th>Actual</th><th>Scale / revise / stop note</th></tr></thead>
+    <tbody>
+      <tr><td>Files tested</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Minutes saved per file</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Reviewer correction rate</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Unsupported AI phrases removed</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Traceability completeness</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Stop trigger reached?</td><td>No</td><td>No</td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Lending AI evidence packet</h3>
   <p>For each AI-supported lending workflow, retain:</p>
   <ul class="small-checklist">
     <li>Use-case intake form.</li>
@@ -733,7 +795,7 @@ Examples:
         <li>Model / tool incidents.</li>
         <li>Override rate.</li>
         <li>Customer complaints.</li>
-        <li>Disparate impact signals.</li>
+        <li>Protected-basis outcome gap signals.</li>
         <li>Source traceability completeness.</li>
       </ul>
       <h4 style="margin-top: 10pt;">Adoption</h4>
@@ -769,8 +831,9 @@ Examples:
 
   <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
 
-  <div class="section-kicker">Section 16 · Recommended AiBI path</div>
-  <h2>From assessment to operating rhythm</h2>
+  <div class="section-kicker">Section 16 · 45-minute control sprint</div>
+  <h2>Next step: Run the 45-Minute Lending AI Control Sprint</h2>
+  <p>Pick one lending workflow, classify the data, define the human gate, map principal reasons to the file, build the evidence packet, and decide whether the pilot is safe to launch.</p>
   <ol>
     <li>Take the AI Readiness Assessment.</li>
     <li>Assign lending, credit, and compliance leads to the Foundation Course.</li>
@@ -790,8 +853,8 @@ Examples:
   <div class="principle">AI prepares. Humans decide. The file proves.</div>
 
   <div class="cite">
-    Sources: ECOA / Regulation B; CFPB Circular 2022-03 on adverse action and complex algorithms; SR 11-7 (Federal Reserve model risk management); Interagency Third-Party Risk Management Guidance; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); GAO-25-107197 (May 2025); AiBI Foundations curriculum.
-    <p>This playbook is a starter artifact, not legal advice or an examiner-approved lending procedure. Adapt before adoption and route final lending, adverse-action, and fair-lending language through compliance, credit, legal, and risk review.</p>
+    Sources: ECOA / Regulation B; CFPB Circular 2022-03 on adverse action and complex algorithms; FCRA; Fair Housing Act where mortgage or housing-related lending is involved; GLBA and customer information safeguards; SR 26-2 where applicable; Interagency Third-Party Risk Management Guidance; Financial Services AI Risk Management Framework; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); GAO-25-107197 (May 2025); AiBI Foundations curriculum.
+    <p>This kit is a starter artifact, not legal advice or an examiner-approved lending procedure. Adapt before adoption and route final lending, adverse-action, and fair-lending language through compliance, credit, legal, and risk review.</p>
   </div>
 </section>
 

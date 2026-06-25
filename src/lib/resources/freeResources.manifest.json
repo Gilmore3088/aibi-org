@@ -211,7 +211,7 @@
     },
     {
       "slug": "lending-playbook",
-      "title": "Lending Playbook",
+      "title": "The Lending AI Control Kit",
       "audience": ["Lending"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -220,7 +220,7 @@
       "variants": { "pdf": "lending-playbook.pdf", "word": "/api/resources/lending-playbook/word", "zip": null },
       "zipMembership": ["lending-review-kit"],
       "canonicalRoute": "/api/resources/lending-playbook/download",
-      "sourceCitations": ["CFPB Reg B", "NIST AI RMF"],
+      "sourceCitations": ["CFPB Reg B", "FCRA", "Fair Housing Act", "GLBA", "SR 26-2", "FS AI RMF"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["lending"], "tierLabels": [], "topGaps": ["fair-lending", "review"] },
       "status": "public"
