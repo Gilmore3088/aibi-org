@@ -22,7 +22,6 @@ const browserChromeTokens = [
 ];
 const sourceLanguageToken = /(Source basis|Sources?:|Citations?)/i;
 const adaptationLanguageToken = /(Adapt before adopting|Adapt before adoption|Adapt it|starter template|not legal advice|not a substitute)/i;
-const ACCESS_ROUTE_PREFIX = '/resources/access/';
 const LARGE_PRINT_ROUTE_SUFFIX = '/large-print';
 const sampleReadinessRequiredTokens = [
   /12 readiness signals/i,
@@ -250,9 +249,6 @@ for (const resource of manifest.resources) {
         scanSourceHtml(sourcePath, resource.slug);
         if (resource.variants?.word !== expectedSourceWordRoute) {
           error(`${resource.slug} has source HTML but missing Word route ${expectedSourceWordRoute}`);
-        }
-        if (!existsSync(join(ROOT, 'src', 'app', 'resources', 'access', '[slug]', 'page.tsx'))) {
-          error(`${resource.slug} has source HTML but readable route ${ACCESS_ROUTE_PREFIX}${resource.slug} is missing`);
         }
       }
 

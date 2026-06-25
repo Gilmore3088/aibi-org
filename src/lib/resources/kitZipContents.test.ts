@@ -34,7 +34,7 @@ describe('starter kit ZIP contents', () => {
       '05-Prototype-Test-Plan.docx',
       '06-Launch-And-Handoff-Checklist.docx',
       '07-Safe-First-Builds-Menu.pdf',
-      '08-Builder-Brief-Markdown-Export-Template.md',
+      '08-Builder-Brief-Copy-Paste-Template.txt',
       '09-Workflow-SOP-Next-Step.pdf',
       '10-Operations-AI-Workflow-Kit.pdf',
       '11-Red-Yellow-Green-AI-Use-Card.pdf',

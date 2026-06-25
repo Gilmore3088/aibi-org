@@ -112,10 +112,10 @@ const KITS = {
           'Curated menu of low-risk first builds such as job-aid builders, handoff summaries, review checklists, evidence packets, training scenarios, and issue trackers.',
       },
       {
-        source: 'kit-assets/banker-builder-brief-kit/Builder-Brief-Markdown-Export-Template.md',
-        target: '08-Builder-Brief-Markdown-Export-Template.md',
+        source: 'kit-assets/banker-builder-brief-kit/Builder-Brief-Copy-Paste-Template.txt',
+        target: '08-Builder-Brief-Copy-Paste-Template.txt',
         description:
-          'Markdown export pattern for copying the final Builder Brief into an internal ticket, review packet, or handoff note.',
+          'Plain-text copy/paste pattern for moving the final Builder Brief into an internal ticket, review packet, or handoff note.',
       },
       {
         source: 'template-ai-workflow-sop.pdf',
