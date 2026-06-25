@@ -56,4 +56,21 @@ describe('starter kit ZIP contents', () => {
       'README.md',
     ]);
   });
+
+  it('packages the marketing review kit as an ordered working kit', () => {
+    expect(zipEntries('marketing-review-kit.zip')).toEqual([
+      '00-Start-Here.pdf',
+      '01-Marketing-AI-Playbook.pdf',
+      '02-Marketing-Prompt-Cheat-Sheet.pdf',
+      '03-Campaign-Intake-Form.docx',
+      '04-Marketing-Claim-Control-Matrix.xlsx',
+      '05-AI-Marketing-Review-Checklist.docx',
+      '06-Segment-Approval-Log.xlsx',
+      '07-Channel-Review-Grid.xlsx',
+      '08-Campaign-Evidence-Packet.docx',
+      '09-AI-Campaign-Workflow-SOP.docx',
+      '10-Governance-Appendix-AI-Use-Policy-Starter.pdf',
+      'README.md',
+    ]);
+  });
 });

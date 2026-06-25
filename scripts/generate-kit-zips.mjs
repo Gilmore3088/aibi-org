@@ -105,17 +105,79 @@ const KITS = {
     ],
   },
   'marketing-review-kit': {
-    title: 'Marketing Review Kit',
-    lede: 'Brand-safe, disclosure-clean AI marketing.',
+    title: 'The Bank Marketing AI Review Kit',
+    lede: 'Draft faster. Verify every claim. Review every disclosure. Retain every campaign decision.',
     forWhom:
-      'For marketing and member-service teams drafting campaigns, plain-language translations, and member communications with reviewer-friendly outputs.',
-    pdfs: [
-      ['marketing-playbook.pdf',             'Role playbook for safe marketing AI use: campaign briefs, disclosure review, plain-language translation.'],
-      ['prompt-strategy-cheat-sheet.pdf',    'Prompt pattern for useful, safe, reviewable AI output.'],
-      ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
-      ['template-ai-use-policy-starter.pdf', 'Starter AI use policy a team can adapt in an afternoon.'],
+      'For marketing, product, compliance, and review teams that need campaign briefs, claim source support, disclosure checks, segment approval, compliance sign-off, and retained evidence before AI-assisted copy goes live.',
+    startHereName: '00-Start-Here.pdf',
+    steps: [
+      'Choose one campaign and complete the Campaign Intake Form before prompting.',
+      'Draft with the Bank Marketing Prompt Cheat Sheet using only approved source terms.',
+      'Run claims, disclosures, channel, and segment review before approval.',
+      'Save the Campaign Evidence Packet with source terms, AI draft, edits, approvals, final copy, send date, audience, metrics, complaint flags, and retention location.',
+      'Keep the AI Use Policy Starter as governance appendix material, not the headline workflow.',
     ],
-    markdowns: [],
+    assets: [
+      {
+        source: 'marketing-playbook.pdf',
+        target: '01-Marketing-AI-Playbook.pdf',
+        description:
+          'Context guide for campaign controls, marketing red lines, source support, disclosure review, and evidence retention.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Marketing-Prompt-Cheat-Sheet.pdf',
+        target: '02-Marketing-Prompt-Cheat-Sheet.pdf',
+        description:
+          'Marketing-specific prompt patterns for product campaigns, deposit education, social posts, segment variants, disclosure review, and executive reporting.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Campaign-Intake-Form.docx',
+        target: '03-Campaign-Intake-Form.docx',
+        description:
+          'Editable intake form for campaign owner, audience, channel, approved source terms, claims, compliance reviewer, and evidence location.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Marketing-Claim-Control-Matrix.xlsx',
+        target: '04-Marketing-Claim-Control-Matrix.xlsx',
+        description:
+          'Editable claim register for claim, offer term, source document, product owner, disclosure requirement, reviewer, approval date, and final copy location.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/AI-Marketing-Review-Checklist.docx',
+        target: '05-AI-Marketing-Review-Checklist.docx',
+        description:
+          'Pre-publication review checklist with Reg DD, Reg Z, CAN-SPAM, Reg B discouragement, and Fair Housing checkpoints.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Segment-Approval-Log.xlsx',
+        target: '06-Segment-Approval-Log.xlsx',
+        description:
+          'Editable log for campaign audience, selection basis, credit/deposit targeting, excluded-group review, reviewer, approval date, and evidence location.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Channel-Review-Grid.xlsx',
+        target: '07-Channel-Review-Grid.xlsx',
+        description:
+          'Channel-by-channel grid for copy assets, source checks, disclosure checks, audience/consent review, approval status, and final asset location.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/Campaign-Evidence-Packet.docx',
+        target: '08-Campaign-Evidence-Packet.docx',
+        description:
+          'Evidence packet for campaign brief, source terms, AI draft, edits, approval, final copy, send date, audience, metrics, complaint flags, and retention location.',
+      },
+      {
+        source: 'kit-assets/marketing-review-kit/AI-Campaign-Workflow-SOP.docx',
+        target: '09-AI-Campaign-Workflow-SOP.docx',
+        description:
+          'Marketing-specific workflow SOP for choosing the campaign, verifying source terms, drafting with AI, reviewing claims/disclosures, approving audience, and retaining evidence.',
+      },
+      {
+        source: 'template-ai-use-policy-starter.pdf',
+        target: '10-Governance-Appendix-AI-Use-Policy-Starter.pdf',
+        description: 'Governance appendix policy starter for tool, data, review, incident, and ownership rules.',
+      },
+    ],
   },
 };
 

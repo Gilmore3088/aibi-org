@@ -89,8 +89,8 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
   },
   'marketing-review-kit': {
     id: 'marketing',
-    desc: 'Create faster campaign drafts without skipping claims and disclosure review.',
-    zipSize: '1.5 MB',
+    desc: 'Draft faster, verify every claim, review every disclosure, and retain every campaign decision.',
+    zipSize: '808 KB',
     icon: Megaphone,
   },
   'lending-review-kit': {
