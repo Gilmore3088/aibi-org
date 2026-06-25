@@ -120,28 +120,37 @@ const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [stri
   },
 };
 
-type PiiField = { label: string; value: string; sensitive: boolean; placeholder?: string };
+type PiiToken = {
+  /** Plain text that precedes this token in the run-on prompt. */
+  lead: string;
+  /** The real PII, the way a careless user actually types it (the "before"). */
+  value: string;
+  /**
+   * Template replacement for the "after". When omitted, the token AND its lead
+   * text drop out of the template entirely — teaching "don't even include what
+   * you don't need": a fee-reversal reply never needs a DOB, SSN, or phone.
+   */
+  placeholder?: string;
+};
 type RedlinePhase = 'risk' | 'redact' | 'safe';
 
-// The risky paste vs. the reusable template. The animation strikes every
-// sensitive field one by one, then swaps each real value for a bracketed
-// placeholder and the task line for the templated phrasing — flipping the card
-// to "Safe for AI". The lesson: write the prompt as a reusable template with
-// placeholders; the real customer data stays in your systems and never gets
-// pasted into a public tool.
-const HOME_TASK_RISKY = 'Summarize this customer complaint and draft a response.';
-const HOME_TASK_SAFE =
-  'Draft a professional response to this customer complaint. Fill the placeholders from your core system — never paste real customer data here.';
-const HOME_PII_FIELDS: PiiField[] = [
-  { label: 'Customer', value: 'John Smith', sensitive: true, placeholder: '[customer name]' },
-  { label: 'DOB', value: '04/12/1981', sensitive: true, placeholder: '[date of birth]' },
-  { label: 'Account #', value: '0042871', sensitive: true, placeholder: '[account number]' },
-  { label: 'SSN', value: '•••–••–4829', sensitive: true, placeholder: '[not needed]' },
-  { label: 'Phone', value: '(555) 123-4567', sensitive: true, placeholder: '[phone]' },
-  { label: 'Available balance', value: '$83.17', sensitive: true, placeholder: '[amount]' },
-  { label: 'Complaint notes', value: 'Charged 3 overdraft fees in one day; wants them reversed.', sensitive: false },
+// The "before" is a real, sloppy prompt — the way someone genuinely pastes into
+// a public chatbot: the actual customer's name and account plus a pile of PII
+// that has nothing to do with the task, all dumped inline. The animation strikes
+// each PII token, then the prompt resolves into a reusable template: placeholders
+// for the few things the reply needs, and the irrelevant PII (DOB, SSN, phone)
+// dropped entirely.
+const HOME_PROMPT_TOKENS: PiiToken[] = [
+  { lead: 'write a quick reply to ', value: 'John Smith', placeholder: '[customer name]' },
+  { lead: ' — he’s furious we charged him ', value: '3 overdraft fees', placeholder: '[number] overdraft fees' },
+  { lead: ' in one day on account ', value: '0042871', placeholder: '[account number]' },
+  { lead: '. dob ', value: '04/12/1981' },
+  { lead: ', ssn ', value: '•••–••–4829' },
+  { lead: ', cell ', value: '(555) 123-4567' },
+  { lead: '. balance is ', value: '$83.17', placeholder: '[amount]' },
 ];
-const HOME_SENSITIVE_COUNT = HOME_PII_FIELDS.filter((field) => field.sensitive).length;
+const HOME_PROMPT_TRAILING = '. wants them reversed';
+const HOME_TOKEN_COUNT = HOME_PROMPT_TOKENS.length;
 
 function prefersReducedMotion(): boolean {
   return (
@@ -287,7 +296,7 @@ function HomeRedlinePrompt() {
   // sensitive fields struck, safe prompt shown, green badge — the message lands
   // even if the animation never runs.
   const [phase, setPhase] = useState<RedlinePhase>('safe');
-  const [struck, setStruck] = useState(HOME_SENSITIVE_COUNT);
+  const [struck, setStruck] = useState(HOME_TOKEN_COUNT);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -307,10 +316,10 @@ function HomeRedlinePrompt() {
         await wait(1300);
         if (cancelled) return;
         setPhase('redact');
-        for (let n = 1; n <= HOME_SENSITIVE_COUNT; n++) {
+        for (let n = 1; n <= HOME_TOKEN_COUNT; n++) {
           if (cancelled) return;
           setStruck(n);
-          await wait(460);
+          await wait(380);
         }
         await wait(750);
         if (cancelled) return;
@@ -348,13 +357,12 @@ function HomeRedlinePrompt() {
   }, []);
 
   const isSafe = phase === 'safe';
-  let sensitiveSeen = 0;
 
   return (
     <div
       ref={rootRef}
       className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}
-      aria-label="A banking task pasted into a public chatbot with customer name, DOB, account number, SSN, phone, and balance. Each sensitive field is struck through and replaced with a bracketed placeholder, leaving a reusable prompt template marked safe for AI."
+      aria-label="A real customer-service prompt typed into a public chatbot, with the customer’s name, account number, DOB, SSN, phone, and balance pasted inline. Each piece of personal data is struck through; the prompt then resolves into a reusable template with placeholders and the unnecessary personal data removed, marked safe for AI."
     >
       <div className="mk-redline-head">
         <span className="mk-redline-dots" aria-hidden="true">
@@ -376,35 +384,30 @@ function HomeRedlinePrompt() {
         </span>
       </div>
       <div className="mk-redline-body">
-        <p className="mk-redline-task">{isSafe ? HOME_TASK_SAFE : HOME_TASK_RISKY}</p>
-        <dl className="mk-redline-fields">
-          {HOME_PII_FIELDS.map((field) => {
-            let isStruck = false;
-            let showPlaceholder = false;
-            if (field.sensitive) {
-              sensitiveSeen += 1;
-              if (isSafe) {
-                showPlaceholder = Boolean(field.placeholder);
-              } else if (phase === 'redact') {
-                isStruck = sensitiveSeen <= struck;
-              }
-            }
+        <p className="mk-redline-prompt-text">
+          {HOME_PROMPT_TOKENS.map((token, i) => {
+            const dropped = isSafe && !token.placeholder;
+            if (dropped) return null;
+            const showPlaceholder = isSafe && Boolean(token.placeholder);
+            const isStruck = phase === 'redact' && i < struck;
+            const tokenClass = `mk-pii${token.placeholder ? '' : ' is-droppable'}${
+              isStruck ? ' is-struck' : ''
+            }${showPlaceholder ? ' is-placeholder' : ''}`;
             return (
-              <div
-                key={field.label}
-                className={`mk-redline-field${field.sensitive ? ' is-sensitive' : ''}${isStruck ? ' is-struck' : ''}${showPlaceholder ? ' is-placeholder' : ''}`}
-              >
-                <dt>{field.label}</dt>
-                <dd>{showPlaceholder ? field.placeholder : field.value}</dd>
-              </div>
+              <span key={i}>
+                <span className="mk-redline-lead">{token.lead}</span>
+                <span className={tokenClass}>{showPlaceholder ? token.placeholder : token.value}</span>
+              </span>
             );
           })}
-        </dl>
+          <span className="mk-redline-lead">{HOME_PROMPT_TRAILING}</span>
+          {!isSafe && <span className="mk-redline-caret" aria-hidden="true" />}
+        </p>
       </div>
       <div className="mk-redline-foot">
         {isSafe
           ? 'One reusable template, any customer — real data stays in your systems.'
-          : 'A real banking task, about to be pasted into a public tool.'}
+          : 'Real customer data, about to be pasted into a public chatbot.'}
       </div>
     </div>
   );

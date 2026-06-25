@@ -552,76 +552,75 @@ section.mk-std { padding: 56px 0; }
 .mk-redline-body {
   padding: 20px 22px 6px;
 }
-.mk-redline-task {
-  margin: 0 0 16px;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 600;
+/* The prompt reads like a message someone is typing into a chatbot — a run-on,
+   lowercase sentence with real customer data pasted inline. */
+.mk-redline-prompt-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 500;
   color: var(--ink);
 }
-.mk-redline-fields {
-  margin: 0;
-  display: grid;
-  gap: 2px;
+.mk-redline-lead {
+  color: var(--slate-700);
 }
-.mk-redline-field {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 12px;
-  align-items: baseline;
-  padding: 6px 10px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-}
-.mk-redline-field dt {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--slate-500);
-}
-.mk-redline-field dd {
-  margin: 0;
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 13.5px;
-  color: var(--ink);
+/* Each pasted PII value: highlighted amber in the "before" to flag it as
+   sensitive data that should never have been typed here. */
+.mk-pii {
   position: relative;
-  width: fit-content;
-  transition: color 0.3s ease;
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 1px;
+  font-weight: 600;
+  color: #B54708;
+  background: #FEF0C7;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: color 0.3s ease, background 0.3s ease;
 }
-/* The red strike bar wipes across the value as each field is redacted. */
-.mk-redline-field.is-sensitive dd::after {
+/* The red strike bar wipes across each value as it is redacted. */
+.mk-pii::after {
   content: '';
   position: absolute;
-  left: -2px;
-  right: -2px;
+  left: 2px;
+  right: 2px;
   top: 50%;
   height: 2px;
   background: #D92D20;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.mk-redline-field.is-struck {
-  background: #FEF3F2;
-}
-.mk-redline-field.is-struck dd {
+.mk-pii.is-struck {
   color: #B42318;
+  background: #FEE4E2;
 }
-.mk-redline-field.is-struck.is-sensitive dd::after {
+.mk-pii.is-struck::after {
   transform: scaleX(1);
 }
-/* Safe phase: the real value is swapped for a bracketed placeholder token,
-   rendered as a green pill — a reusable template slot, not redacted data. */
-.mk-redline-field.is-placeholder {
-  background: #ECFDF3;
-}
-.mk-redline-field.is-placeholder dd {
+/* Safe phase: a needed value becomes a green bracketed placeholder — a reusable
+   template slot, not redacted data. (Unneeded PII drops out entirely in JSX.) */
+.mk-pii.is-placeholder {
   color: #047857;
-  font-weight: 600;
+  background: #ECFDF3;
+  font-weight: 700;
 }
-.mk-redline-field.is-placeholder.is-sensitive dd::after {
+.mk-pii.is-placeholder::after {
   transform: scaleX(0);
+}
+/* Blinking caret at the end of the "before" — reinforces "someone is typing". */
+.mk-redline-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--gold-deep, #B54708);
+  animation: mk-redline-blink 1s step-end infinite;
+}
+@keyframes mk-redline-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 .mk-redline-foot {
   margin-top: 14px;
@@ -646,16 +645,9 @@ section.mk-std { padding: 56px 0; }
   .mk-redline-body {
     padding: 18px 16px 6px;
   }
-  .mk-redline-task {
-    font-size: 15.5px;
-  }
-  .mk-redline-field {
-    grid-template-columns: 104px 1fr;
-    gap: 10px;
-    padding: 6px 8px;
-  }
-  .mk-redline-field dd {
-    font-size: 12.5px;
+  .mk-redline-prompt-text {
+    font-size: 15px;
+    line-height: 1.65;
   }
   .mk-redline-foot {
     padding: 12px 16px;
@@ -664,11 +656,13 @@ section.mk-std { padding: 56px 0; }
 @media (prefers-reduced-motion: reduce) {
   .mk-redline-prompt,
   .mk-redline-badge,
-  .mk-redline-field,
-  .mk-redline-field dd,
-  .mk-redline-field.is-sensitive dd::after,
+  .mk-pii,
+  .mk-pii::after,
   .mk-redline-foot {
     transition: none;
+  }
+  .mk-redline-caret {
+    animation: none;
   }
 }
 
