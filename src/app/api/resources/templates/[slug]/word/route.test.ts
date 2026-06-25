@@ -65,7 +65,7 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).not.toContain('Adopt verbatim');
   });
 
-  it('renders the AI use-case inventory as a fillable register template', async () => {
+  it('renders the AI use-case inventory as a card with spreadsheet companion', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/templates/ai-use-case-inventory/word'),
       contextFor('ai-use-case-inventory'),
@@ -75,14 +75,20 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(response.headers.get('content-disposition')).toContain('Ai-Use-Case-Inventory.doc');
 
     const body = await response.text();
-    expect(body).toContain('The Bank AI Use-Case Inventory Template');
+    expect(body).toContain('The Bank AI Use-Case Inventory Card');
     expect(body).toContain('<table>');
-    expect(body).toContain('Use Case ID');
-    expect(body).toContain('Vendor Review Link');
-    expect(body).toContain('Planning rationale');
-    expect(body).toContain('Red/Blocked');
+    expect(body).toContain('Core register columns');
+    expect(body).toContain('Data Class');
+    expect(body).toContain('Risk Tier');
+    expect(body).toContain('Customer impact?');
+    expect(body).toContain('Vendor-control add-on');
+    expect(body).toContain('OCC Bulletin 2026-13');
+    expect(body).toContain('Download the editable AI Use-Case Inventory Spreadsheet');
+    expect(body).toContain('/downloads/artifact-ai-use-case-inventory-spreadsheet.xlsx');
     expect(body).toContain('SR 26-2 where applicable');
     expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain('SR 11-7');
+    expect(body).not.toContain('Red/Blocked');
   });
 
   it('renders the board briefing checklist with current model-risk framing', async () => {

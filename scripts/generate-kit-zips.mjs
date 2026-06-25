@@ -1,8 +1,8 @@
 // generate-kit-zips.mjs — rebuild the 4 downloadable kit ZIPs in brand v1.
 //
-// Each kit ZIP bundles brand-v1 PDFs + a per-kit START-HERE.pdf
-// (regenerated brand v1) + a README.md. Core kit assets ship as PDFs so the
-// public downloads are branded, readable, and consistent.
+// Each kit ZIP bundles brand-v1 PDFs, optional companion files, a per-kit
+// START-HERE.pdf (regenerated brand v1), and a README.md. Core kit assets ship
+// as PDFs so the public downloads are branded, readable, and consistent.
 //
 // PDF sources: prefer committed files in public/downloads; fall back to the
 // production download endpoint when a local file is not present.
@@ -38,8 +38,11 @@ const KITS = {
     pdfs: [
       ['safe-ai-use-checklist.pdf',          'Staff-facing habits before using AI: strip data, ask clearly, fact-check, escalate.'],
       ['red-yellow-green-use-card.pdf',      'Ten-second classification card for safe, review-required, and prohibited AI uses.'],
-      ['artifact-ai-use-case-inventory.pdf', 'Fillable AI use-case register with owners, data classes, vendor controls, risk tiers, and review cadence.'],
+      ['artifact-ai-use-case-inventory.pdf', 'One-page AI use-case inventory card for owners, data classes, risk tiers, vendor controls, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
+    ],
+    files: [
+      ['artifact-ai-use-case-inventory-spreadsheet.xlsx', 'Editable spreadsheet companion for maintaining owner, data class, risk tier, vendor status, human review, evidence retained, and next review date.'],
     ],
     markdowns: [],
   },
@@ -64,8 +67,11 @@ const KITS = {
     pdfs: [
       ['lending-playbook.pdf',               'Role playbook for safe lending AI use: adverse-action tuner, decision summaries, fair-lending pre-checks.'],
       ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for fair-lending and disparate-impact concerns on AI-assisted decisions.'],
-      ['artifact-ai-use-case-inventory.pdf', 'Fillable AI use-case register with owners, data classes, vendor controls, risk tiers, and review cadence.'],
+      ['artifact-ai-use-case-inventory.pdf', 'One-page AI use-case inventory card for owners, data classes, risk tiers, vendor controls, and review cadence.'],
       ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
+    ],
+    files: [
+      ['artifact-ai-use-case-inventory-spreadsheet.xlsx', 'Editable spreadsheet companion for maintaining owner, data class, risk tier, vendor status, human review, evidence retained, and next review date.'],
     ],
     markdowns: [],
   },
@@ -92,9 +98,14 @@ async function fetchToBuffer(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
+function kitFiles(kit) {
+  return kit.files ?? [];
+}
+
 function renderStartHereHtml(kitSlug, kit) {
   const items = [
     ...kit.pdfs.map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
+    ...kitFiles(kit).map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
     ...kit.markdowns.map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
   ].join('');
   return `<!doctype html><html lang="en"><head>
@@ -145,6 +156,7 @@ function renderReadmeMd(kit) {
     '## Included files',
     '',
     ...kit.pdfs.map(([f, d]) => `- \`${f}\` — ${d}`),
+    ...kitFiles(kit).map(([f, d]) => `- \`${f}\` — ${d}`),
     ...kit.markdowns.map(([f, d]) => `- \`${f}\` — ${d}`),
     '',
     '## Recommended first step',
@@ -188,13 +200,21 @@ async function buildKit(browser, kitSlug, kit) {
     console.log(`${buf.length.toLocaleString()}b`);
   }
 
-  // 3. README.md
+  // 3. Companion files — copy from public/downloads
+  for (const [filename] of kitFiles(kit)) {
+    process.stdout.write(`  file ${filename} ... `);
+    const buf = await readFile(resolve(OUT_DIR, filename));
+    await writeFile(resolve(kitWork, filename), buf);
+    console.log(`${buf.length.toLocaleString()}b`);
+  }
+
+  // 4. README.md
   process.stdout.write(`  doc  README.md ... `);
   const readme = renderReadmeMd(kit);
   await writeFile(resolve(kitWork, 'README.md'), readme);
   console.log(`${Buffer.byteLength(readme).toLocaleString()}b`);
 
-  // 4. START-HERE.pdf — Playwright render
+  // 5. START-HERE.pdf — Playwright render
   process.stdout.write(`  doc  START-HERE.pdf ... `);
   const html = renderStartHereHtml(kitSlug, kit);
   const tmpHtml = resolve(kitWork, '_start-here.html');
@@ -211,13 +231,14 @@ async function buildKit(browser, kitSlug, kit) {
   console.log(`${pdf.length.toLocaleString()}b`);
   await page.close();
 
-  // 5. Bundle ZIP via the system `zip` command — no JS dep needed.
+  // 6. Bundle ZIP via the system `zip` command — no JS dep needed.
   const zipPath = resolve(OUT_DIR, `${kitSlug}.zip`);
   process.stdout.write(`  zip  → ${zipPath.replace(ROOT + '/', '')} ... `);
   await rm(zipPath, { force: true });
   await rm(resolve(kitWork, '_start-here.html'), { force: true });
   const fileList = [
     ...kit.pdfs.map(([f]) => f),
+    ...kitFiles(kit).map(([f]) => f),
     ...kit.markdowns.map(([f]) => f),
     'START-HERE.pdf',
     'README.md',
