@@ -32,7 +32,7 @@
       "variants": { "pdf": "red-yellow-green-use-card.pdf", "word": "/api/resources/red-yellow-green-use-card/word", "zip": null, "largePrintPdf": "/api/resources/red-yellow-green-use-card/large-print" },
       "zipMembership": ["governance-starter-kit"],
       "canonicalRoute": "/api/resources/red-yellow-green-use-card/download",
-      "sourceCitations": ["NIST AI RMF", "AIEOG AI Lexicon"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": {
         "roles": ["retail", "training-hr"],

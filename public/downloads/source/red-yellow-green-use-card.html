@@ -2,8 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Red / Yellow / Green AI Use Card — The AI Banking Institute</title>
+<title>The Banker's Red / Yellow / Green AI Use Card - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
+<style>
+  .lane-page h2 {
+    margin-bottom: 4pt;
+  }
+  .lane-page > p {
+    font-size: 10pt;
+    line-height: 1.42;
+    margin-bottom: 9pt;
+  }
+  .lane-page .risk-band {
+    border-radius: 10pt;
+    padding: 10pt 12pt;
+    margin: 8pt 0;
+  }
+  .lane-page .risk-band .head {
+    gap: 8pt;
+    margin-bottom: 4pt;
+  }
+  .lane-page .risk-band .dot {
+    width: 15pt;
+    height: 15pt;
+  }
+  .lane-page .risk-band h4 {
+    font-size: 14pt;
+    line-height: 1.16;
+  }
+  .lane-page ul {
+    margin: 4pt 0 5pt 17pt;
+  }
+  .lane-page li {
+    font-size: 9pt;
+    line-height: 1.28;
+    margin: 2.5pt 0;
+  }
+  .lane-page .note {
+    font-size: 8.3pt;
+    line-height: 1.3;
+    margin: 4pt 0 0;
+  }
+  .back-page h3 {
+    font-size: 11.5pt;
+    margin: 12pt 0 4pt;
+  }
+  .back-page p,
+  .back-page li {
+    font-size: 9.3pt;
+    line-height: 1.38;
+  }
+  .back-page ul,
+  .back-page ol {
+    margin-bottom: 7pt;
+  }
+  .approved-tool-box,
+  .next-step-box {
+    border: 1px solid var(--slate-200);
+    border-left: 4pt solid var(--gold);
+    border-radius: 8pt;
+    padding: 8pt 10pt;
+    margin: 8pt 0;
+  }
+  .approved-tool-box p,
+  .next-step-box p {
+    margin: 0;
+  }
+  .source-note {
+    color: var(--slate-500);
+    font-size: 8pt;
+    line-height: 1.35;
+    margin-top: 6pt;
+  }
+</style>
 </head>
 <body>
 
@@ -17,8 +88,8 @@
   </div>
   <div>
     <div class="kicker">Team Huddle Card · v1.0</div>
-    <h1>Red, Yellow, Green: a one-glance AI use card</h1>
-    <p class="lede">A two-page team huddle card. Print it. Tape it next to the coffee machine. Everyone in your bank should be able to classify an AI use case in under ten seconds.</p>
+    <h1>The Banker's Red / Yellow / Green AI Use Card</h1>
+    <p class="lede">A 10-second guide for deciding what belongs in AI, what needs review, and what does not belong in a public AI tool. Print the next two pages front/back for a team huddle.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -26,48 +97,45 @@
   </div>
 </section>
 
-<section class="page">
+<section class="page lane-page">
   <div class="section-kicker">Decide in ten seconds</div>
   <h2>The three lanes</h2>
-  <p>Every use case your team brings to AI fits in one of three lanes. The lanes are not about what AI <em style="font-style:normal; font-weight:600;">can</em> do — they are about what your bank will let it do without a second pair of human eyes.</p>
+  <p>The lanes are not about what AI <em style="font-style:normal; font-weight:600;">can</em> do. They are about what your bank will let it do without a second pair of human eyes.</p>
 
   <div class="risk-band green">
-    <div class="head"><div class="dot"></div><h4>Green — usually safe with no sensitive data</h4></div>
+    <div class="head"><div class="dot"></div><h4>Green - usually safe</h4></div>
     <ul>
-      <li>Drafting internal memos that do not name customers.</li>
-      <li>Brainstorming training scenarios and discussion questions.</li>
-      <li>Summarizing public documents — FFIEC bulletins, regulator press releases, your own published policies.</li>
-      <li>Building reusable templates with <code>[CUSTOMER]</code>, <code>[ACCOUNT TYPE]</code>, <code>[DATE]</code> placeholders.</li>
+      <li>Public or sanitized material: training ideas, agendas, discussion questions, template shells.</li>
+      <li>Published sources: FFIEC bulletins, regulator press releases, website copy, approved policies.</li>
+      <li>Reusable templates with <code>[CUSTOMER]</code>, <code>[ACCOUNT]</code>, <code>[DATE]</code>, and <code>[AMOUNT]</code> placeholders.</li>
     </ul>
-    <p class="note">Rule: if you'd be comfortable putting it on a whiteboard in the break room, it is green.</p>
+    <p class="note">Rule: no sensitive data, no confidential records, no decisions, no customer or examiner impact.</p>
   </div>
 
   <div class="risk-band yellow">
-    <div class="head"><div class="dot"></div><h4>Yellow — approved tool only, strip sensitive data, human review before use</h4></div>
+    <div class="head"><div class="dot"></div><h4>Yellow - approved bank tool + review</h4></div>
     <ul>
-      <li>Customer-facing draft language — emails, voicemail scripts, branch signage copy.</li>
-      <li>Internal summaries of policies or examiner correspondence.</li>
-      <li>Operational checklists and procedure drafts.</li>
-      <li>First-pass financial or risk analysis where AI is the calculator, not the decision-maker.</li>
+      <li>Customer-facing draft language after PII, NPI, and confidential details are removed.</li>
+      <li>Internal summaries of non-sensitive policies or approved-source documents.</li>
+      <li>Operational checklists, procedure drafts, and first-pass analysis verified by a qualified human.</li>
     </ul>
-    <p class="note">Rule: if a customer or examiner could read it, it is yellow. A qualified human signs off before it leaves the building.</p>
+    <p class="note">Rule: use only an approved tool for the data and use case. A qualified human reviews before use.</p>
   </div>
 
   <div class="risk-band red">
-    <div class="head"><div class="dot"></div><h4>Red — do not use public AI tools</h4></div>
+    <div class="head"><div class="dot"></div><h4>Red - do not use public AI</h4></div>
     <ul>
-      <li>Customer PII, NPI, account records, balances, transaction-level data.</li>
-      <li>Credit decisions, adverse action reasoning, or anything in the ECOA / Reg B path.</li>
-      <li>Legal, regulatory, or compliance determinations.</li>
-      <li>Authentication, fraud workflows, or any record tied to a security control.</li>
+      <li>Customer records, examiner correspondence, confidential supervisory information, or security controls.</li>
+      <li>Credit decisions, adverse action, fraud, AML, sanctions, regulated reporting, or legal/compliance conclusions.</li>
+      <li>Any AI use that approves, denies, ranks, classifies, or decides something requiring documented governance.</li>
     </ul>
-    <p class="note">Rule: if a regulator would expect a documented model under SR 11-7, it does not belong in a public chat tool.</p>
+    <p class="note">Rule: high data risk or decision risk is red even when the audience is internal.</p>
   </div>
 
   <div class="page-footer"><div class="brand">The AI Banking Institute · Turning Bankers into Builders</div><div>Page 1 of 2</div></div>
 </section>
 
-<section class="page">
+<section class="page back-page">
   <div class="section-kicker">Apply it on Monday</div>
   <h2>The review rule</h2>
   <p>If an AI output could affect a customer, an examiner, a policy, a control, or a financial decision, a qualified human must review it before use. No exceptions.</p>
@@ -82,18 +150,24 @@
   <h3>Three questions to ask before you paste</h3>
   <ol>
     <li><strong>Whose data is in this prompt?</strong> If the answer involves a real customer, escalate or strip.</li>
-    <li><strong>Who is the audience for the output?</strong> Internal-only is yellow at worst. Customer or examiner is yellow with mandatory review.</li>
+    <li><strong>Which tool is being used?</strong> If the tool is not approved for this data class and use case, classify it red.</li>
     <li><strong>What happens if the AI is confidently wrong?</strong> If the answer is "we lose a customer," "we miss a control," or "we file an inaccurate report," classify it red and use an approved internal workflow.</li>
   </ol>
 
-  <div class="callout">
-    <div class="label">Citations</div>
-    <p>This card aligns with the AIEOG AI Lexicon definitions for AI governance, human-in-the-loop, and third-party AI risk (US Treasury / FBIIC / FSSCC, Feb 2026), and with the Federal Reserve guidance on model risk management (SR 11-7).</p>
-    <p>This card is a starter artifact, not legal advice or an examiner-approved policy. Adapt before adoption and confirm final red/yellow/green classifications against your institution's own data policy, approved-tool list, and review workflow.</p>
+  <h3>What "approved tool" means</h3>
+  <div class="approved-tool-box">
+    <p>An approved tool is named by the bank for that data class and use case, covered by vendor/data terms, access controls, retention expectations, and a review workflow. Public chat tools are not approved for sensitive or decisioning work unless your bank has explicitly approved that exact path.</p>
   </div>
 
   <h3>When in doubt</h3>
-  <p>Classify higher. A yellow use treated like a green use is how banks end up in front of examiners. A red use treated like a yellow use is how banks end up in the press. There is no penalty for being conservative with a tool your team is still learning.</p>
+  <p>Classify higher. Internal-only may reduce audience risk, but data risk and decision risk can still make the use case red.</p>
+
+  <h3>Next step</h3>
+  <div class="next-step-box">
+    <p>Download the companion Safe AI Use Checklist at <strong>AIBankingInstitute.com/resources</strong>, then run a 10-minute team huddle using one green, one yellow, and one red example from your own department.</p>
+  </div>
+
+  <p class="source-note">Source basis: informed by SR 26-2 revised model risk management guidance; the AIEOG AI Lexicon and Financial Services AI Risk Management Framework released by Treasury, FBIIC, and FSSCC in February 2026; Interagency Third-Party Risk Management guidance; and ECOA / Regulation B expectations for credit-related uses. Starter artifact only; not legal advice or an examiner-approved policy. Adapt before adoption.</p>
 
   <div class="page-footer"><div class="brand">AIBankingInstitute.com</div><div>Page 2 of 2</div></div>
 </section>
