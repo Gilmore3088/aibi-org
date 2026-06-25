@@ -39,6 +39,25 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).toContain('Before you paste anything');
   });
 
+  it('returns the revised fair-lending checklist without stale legal framing', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/artifact-fair-lending-ai-review-checklist/word'),
+      contextFor('artifact-fair-lending-ai-review-checklist'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-type')).toContain('application/msword');
+
+    const body = await response.text();
+    expect(body).toContain('The Fair-Lending AI Review Checklist');
+    expect(body).toContain('current CFPB rulemaking states that ECOA does not recognize disparate-impact liability');
+    expect(body).toContain('Protected-basis variables identified for testing only');
+    expect(body).toContain('CFPB Circular 2022-03');
+    expect(body).toContain('SR 26-2');
+    expect(body).not.toContain('Disparate-impact obligations attach');
+    expect(body).not.toContain('SR 11-7 Guidance on Model Risk Management');
+  });
+
   it('rejects public resources that do not have a manifest Word variant', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/artifact-ai-use-case-inventory/word'),

@@ -34,7 +34,7 @@ const ARTIFACTS = [
   {
     slug: 'fair-lending-ai-review-checklist',
     resourceSlug: 'artifact-fair-lending-ai-review-checklist',
-    title: 'Fair-Lending AI Review Checklist',
+    title: 'The Fair-Lending AI Review Checklist',
     writeSourceHtml: true,
   },
 ];

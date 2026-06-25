@@ -219,6 +219,7 @@ table {
   font-size: 13.5pt !important;
   line-height: 1.38 !important;
 }
+.footer,
 .page-footer {
   display: none !important;
 }

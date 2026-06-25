@@ -28,7 +28,7 @@ try {
       process.env[m[1]] = val;
     }
   }
-} catch (e) {
+} catch {
   // .env.local optional; the env vars may already be set in the shell
 }
 
@@ -73,7 +73,7 @@ const META = {
   // Artifacts
   'artifact-ai-use-case-inventory':         { title: 'The Bank AI Use-Case Inventory Card', category: 'artifact', order: 50 },
   'artifact-data-handling-reference-card':  { title: 'Data Handling Reference Card',  category: 'artifact', order: 51 },
-  'artifact-fair-lending-ai-review-checklist': { title: 'Fair-Lending AI Review Checklist', category: 'artifact', order: 52 },
+  'artifact-fair-lending-ai-review-checklist': { title: 'The Fair-Lending AI Review Checklist', category: 'artifact', order: 52 },
   // Desk cards / references
   'red-yellow-green-use-card':  { title: 'Red / Yellow / Green Use Card',     category: 'desk-card', order: 60 },
   'safe-ai-use-checklist':      { title: 'Safe AI Use Checklist',             category: 'desk-card', order: 61 },
@@ -105,7 +105,7 @@ const DESCRIPTIONS = {
   'template-gtm-plan': 'AI go-to-market plan template.',
   'artifact-ai-use-case-inventory': 'One-page register and editable spreadsheet for AI workflows, owners, data classes, risk tiers, vendor controls, and review cadence.',
   'artifact-data-handling-reference-card': 'Data classification, allowed tools, and escalation paths at a glance.',
-  'artifact-fair-lending-ai-review-checklist': 'Fair-lending review checklist for AI-assisted lending decisions.',
+  'artifact-fair-lending-ai-review-checklist': 'Pre-deployment and recurring-review card plus worksheet for AI-assisted credit decisions, pricing, eligibility, triage, and adverse-action support.',
   'red-yellow-green-use-card': 'Classify AI use cases in ten seconds.',
   'safe-ai-use-checklist': 'Strip data, ask clearly, fact-check, escalate.',
   'prompt-strategy-cheat-sheet': 'Write prompts with role, context, format, constraints, and review.',

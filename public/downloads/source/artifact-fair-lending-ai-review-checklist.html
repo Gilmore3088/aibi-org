@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Fair-Lending AI Review Checklist</title>
+<title>The Fair-Lending AI Review Checklist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
@@ -60,8 +60,13 @@ body {
 .body h2 {
   font-size: 13pt; margin: 22pt 0 8pt;
   padding-bottom: 4pt; border-bottom: 1pt solid var(--slate-200);
+  page-break-after: avoid; break-after: avoid;
 }
 .body h3 { font-size: 11pt; margin: 16pt 0 4pt; color: var(--gold-deep); text-transform: uppercase; letter-spacing: .12em; }
+.body h2 + p, .body h2 + table, .body h2 + ul, .body h2 + ol,
+.body h3 + p, .body h3 + table, .body h3 + ul, .body h3 + ol {
+  page-break-before: avoid; break-before: avoid;
+}
 .body p, .body li { color: var(--slate-600); }
 .body p { margin: 10pt 0; }
 .body strong { color: var(--ink); }
@@ -81,6 +86,7 @@ body {
   border: 0; border-top: 1pt solid var(--slate-200); margin: 20pt 0;
 }
 .body table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 10pt; }
+.body table, .body tr { page-break-inside: avoid; break-inside: avoid; }
 .body th, .body td { border: 1pt solid var(--slate-200); padding: 6pt 8pt; text-align: left; vertical-align: top; }
 .body th { background: var(--cream); color: var(--ink); font-weight: 600; }
 .body blockquote {
@@ -99,91 +105,147 @@ body {
   <div class="wrap">
     <header class="cover">
       <span class="aibi-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span><span class="full">Banking Institute</span></span>
-      <h1>Fair-Lending AI Review Checklist</h1>
+      <h1>The Fair-Lending AI Review Checklist</h1>
       <div class="meta">Reference card · For community banks and credit unions</div>
     </header>
-    <main class="body"><p>For institutions that have, or are about to have, AI in or near a credit
-decision. Run this before deployment, then again on a recurring cadence.</p>
-<h2>Why this exists</h2>
-<p>ECOA and Regulation B do not have an &quot;AI exception.&quot; Disparate-impact
-obligations attach to any process that influences a credit decision,
-whether the influence comes from a human, a static model, or an AI tool.
-The institutions that run this review before being asked are positioned
-to defend the program; the ones that don&#39;t are positioned to explain why.</p>
+    <main class="body"><p>A pre-deployment and recurring-review card for AI-assisted credit decisions, pricing, eligibility, triage, marketing eligibility, and adverse-action support.</p>
+<p>Use one review per workflow, product line, or vendor configuration. Keep the completed checklist with the decision record, model-risk file, or compliance review packet.</p>
+<h2>Current-law framing</h2>
+<p>ECOA and Regulation B do not have an &quot;AI exception.&quot; AI-assisted credit processes still need documented fair-lending review, adverse-action explainability, human accountability, and outcome monitoring. Although current CFPB rulemaking states that ECOA does not recognize disparate-impact liability, banks should still test AI-assisted credit workflows for protected-basis outcome gaps, proxy-variable risk, and explainability issues as part of fair-lending, model-risk, mortgage/housing, reputation, and governance controls.</p>
+<p>Current model-risk guidance, including SR 26-2 where applicable, should be considered when AI supports scoring, recommendations, pricing, decisioning, or other model-like credit processes.</p>
 <h2>Scope this review</h2>
-<p>Identify every AI-assisted process that:</p>
-<ul>
-<li>Generates, recommends, or filters credit decisions</li>
-<li>Sets pricing tiers, terms, or limits</li>
-<li>Determines marketing eligibility for credit products</li>
-<li>Triages applicants for human review</li>
-<li>Drafts adverse-action reasoning or supporting documentation</li>
-</ul>
-<p>Each one needs its own review. The same process may need separate reviews
-for each product line.</p>
-<h2>Pre-deployment checklist</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Review note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product line</td>
+<td></td>
+</tr>
+<tr>
+<td>AI-assisted workflow</td>
+<td>Credit decision, pricing, eligibility, triage, marketing eligibility, adverse-action support, or other</td>
+</tr>
+<tr>
+<td>Tool / vendor / model</td>
+<td></td>
+</tr>
+<tr>
+<td>Review type</td>
+<td>Pre-deployment, material-change review, periodic monitoring, or issue remediation</td>
+</tr>
+<tr>
+<td>Mortgage / housing-related credit in scope?</td>
+<td>If yes, include applicable Fair Housing Act categories</td>
+</tr>
+<tr>
+<td>Review owner</td>
+<td></td>
+</tr>
+<tr>
+<td>Compliance reviewer</td>
+<td></td>
+</tr>
+<tr>
+<td>Next review date</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Protected-basis variables identified for testing only, not used as decision inputs unless legally permitted or required. ECOA / Regulation B: race, color, religion, national origin, sex, marital status, age, receipt of public assistance, and exercise of rights under the Consumer Credit Protection Act. Mortgage / housing-related credit: also evaluate Fair Housing Act categories, including disability and familial status where applicable.</p>
+<p>Protected-basis and proxy-variable analysis is performed for compliance testing, monitoring, and review; protected-basis variables are not used as decision inputs unless specifically permitted by law and approved by Compliance.</p>
+<h2>Pre-deployment review</h2>
 <h3>Data and design</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Training or input data documented, including the date range,
-source systems, and any known gaps</li>
-<li><input disabled="" type="checkbox"> Protected-class indicators identified in the data layer (race, sex,
-age, marital status, national origin, disability, familial status,
-receipt of public assistance, exercise of ECOA rights)</li>
-<li><input disabled="" type="checkbox"> Proxy variables flagged (ZIP code, surname, neighborhood markers
-that may correlate with protected class)</li>
-<li><input disabled="" type="checkbox"> Decisions documented end-to-end: what data goes in, what comes out,
-who acts on it</li>
+<li><input disabled="" type="checkbox"> Inputs are limited to approved credit, customer, transaction, or collateral data.</li>
+<li><input disabled="" type="checkbox"> No prohibited-basis variable is used as a decision input unless specifically permitted by law and approved by Compliance.</li>
+<li><input disabled="" type="checkbox"> Proxy-variable candidates are documented and reviewed by Compliance, Fair Lending, or Model Risk.</li>
+<li><input disabled="" type="checkbox"> Data lineage, retention location, and vendor access are documented.</li>
+<li><input disabled="" type="checkbox"> The intended human reviewer and approval authority are named.</li>
 </ul>
-<h3>Disparate-impact testing</h3>
+<h3>Outcome-gap and proxy-risk testing</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Approval-rate gap measured across protected classes</li>
-<li><input disabled="" type="checkbox"> Score / recommendation distribution compared across protected
-classes</li>
-<li><input disabled="" type="checkbox"> Outcome variance (loan performance, default, prepay) compared
-across protected classes</li>
-<li><input disabled="" type="checkbox"> Results compared to the non-AI baseline (same process without the
-AI tool)</li>
-<li><input disabled="" type="checkbox"> Documented threshold for what constitutes a material gap, and the
-action triggered at the threshold</li>
+<li><input disabled="" type="checkbox"> Population tested:</li>
+<li><input disabled="" type="checkbox"> Date range:</li>
+<li><input disabled="" type="checkbox"> Product line:</li>
+<li><input disabled="" type="checkbox"> Sample size:</li>
+<li><input disabled="" type="checkbox"> Protected bases tested:</li>
+<li><input disabled="" type="checkbox"> Proxy methodology used:</li>
+<li><input disabled="" type="checkbox"> Benchmark / non-AI baseline:</li>
+<li><input disabled="" type="checkbox"> Materiality threshold:</li>
+<li><input disabled="" type="checkbox"> Owner of remediation:</li>
+<li><input disabled="" type="checkbox"> Date of next review:</li>
 </ul>
-<h3>Explainability</h3>
+<h3>Adverse-action explainability</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Adverse-action reasoning can be produced for any AI-assisted
-decision in a form that satisfies Regulation B</li>
-<li><input disabled="" type="checkbox"> Principal reasons map to specific input factors, not opaque scores</li>
-<li><input disabled="" type="checkbox"> Documentation is reviewable by a compliance officer without
-vendor assistance</li>
+<li><input disabled="" type="checkbox"> Reasons are specific, accurate, and traceable to factors actually considered.</li>
+<li><input disabled="" type="checkbox"> Reasons are not generic labels such as &quot;model score,&quot; &quot;internal policy,&quot; or &quot;AI recommendation.&quot;</li>
+<li><input disabled="" type="checkbox"> Reason codes map to approved adverse-action language and can be reviewed by a human before use.</li>
+<li><input disabled="" type="checkbox"> Compliance reviewed sample adverse-action notices generated or influenced by the AI process.</li>
+<li><input disabled="" type="checkbox"> Any vendor-generated explanation is tested against the bank&#39;s notice standards before use.</li>
 </ul>
-<h3>Governance</h3>
+<h3>Governance and accountability</h3>
 <ul>
-<li><input disabled="" type="checkbox"> Named owner for the AI-assisted process</li>
-<li><input disabled="" type="checkbox"> Named compliance reviewer</li>
-<li><input disabled="" type="checkbox"> Documented oversight level (automated / sampled / mandatory)</li>
-<li><input disabled="" type="checkbox"> Escalation path when a metric crosses an internal threshold</li>
-<li><input disabled="" type="checkbox"> Logged in the institution&#39;s AI use-case inventory</li>
+<li><input disabled="" type="checkbox"> The business owner, compliance reviewer, model-risk reviewer, and vendor owner are recorded.</li>
+<li><input disabled="" type="checkbox"> Approval criteria, exception handling, overrides, and escalation paths are documented.</li>
+<li><input disabled="" type="checkbox"> Monitoring cadence is set before launch.</li>
+<li><input disabled="" type="checkbox"> Required evidence is stored in the control file, model-risk file, or compliance review packet.</li>
 </ul>
-<h2>Recurring review checklist</h2>
-<p>Run quarterly at minimum. Annually if the process is low-volume.</p>
+<h2>Recurring review</h2>
 <ul>
-<li><input disabled="" type="checkbox"> Re-pull disparate-impact metrics</li>
-<li><input disabled="" type="checkbox"> Compare to the prior period — flag any worsening trend</li>
-<li><input disabled="" type="checkbox"> Verify the AI tool has not been materially updated by the vendor
-since the last review; if it has, re-run the full pre-deployment
-review</li>
-<li><input disabled="" type="checkbox"> Review adverse-action samples for explainability</li>
-<li><input disabled="" type="checkbox"> Report results to the same forum that receives the institution&#39;s
-standard fair-lending program reporting</li>
+<li><input disabled="" type="checkbox"> Re-pull protected-basis outcome-gap metrics and compare against the prior period.</li>
+<li><input disabled="" type="checkbox"> Review portfolio monitoring indicators such as performance, default, prepayment, override, exception, and pricing patterns where applicable.</li>
+<li><input disabled="" type="checkbox"> Recheck proxy-variable risk when data sources, model logic, prompts, cutoffs, policies, or vendor settings change.</li>
+<li><input disabled="" type="checkbox"> Sample adverse-action notices generated or influenced by the AI process and confirm reasons remain specific, accurate, and traceable.</li>
+<li><input disabled="" type="checkbox"> Re-run the full review after vendor model updates, policy changes, new product lines, or material population shifts.</li>
+<li><input disabled="" type="checkbox"> Log findings, accepted risks, remediation owners, due dates, and the next review date.</li>
+<li><input disabled="" type="checkbox"> Report material findings to the fair-lending, compliance, model-risk, or governance forum named in policy.</li>
 </ul>
-<h2>Decisions log</h2>
-<p>Maintain a short log of decisions made under this review: dates, who
-signed off, what changed. The log is what an examiner reads first.</p>
-<h2>Citations</h2>
+<h2>Review disposition</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Approved for controlled use</td>
+<td>Controls, monitoring, and notice review are complete.</td>
+</tr>
+<tr>
+<td>Approved with remediation</td>
+<td>Use may proceed only under documented conditions, owners, and due dates.</td>
+</tr>
+<tr>
+<td>Hold for revision</td>
+<td>Testing, explainability, governance, or evidence is incomplete.</td>
+</tr>
+<tr>
+<td>Do not use</td>
+<td>The process creates unresolved protected-basis, explainability, governance, or legal risk.</td>
+</tr>
+</tbody></table>
+<h2>Stronger review kit</h2>
+<p>For a complete implementation packet, pair this checklist with The Fair-Lending AI Review Kit:</p>
 <ul>
-<li>Equal Credit Opportunity Act (15 U.S.C. § 1691)</li>
-<li>Regulation B (12 CFR Part 1002), CFPB</li>
-<li>SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC</li>
-<li>AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026</li>
-<li>GAO-25-107197, US GAO, May 2025</li>
+<li>Fair-lending AI checklist PDF</li>
+<li>Editable testing worksheet</li>
+<li>Adverse-action sample review log</li>
+<li>Recurring monitoring template</li>
+</ul>
+<p>Download the editable worksheet: <code>/downloads/artifact-fair-lending-ai-review-worksheet.xlsx</code></p>
+<h2>Sources: cite in the review file</h2>
+<ul>
+<li>Equal Credit Opportunity Act</li>
+<li>Regulation B, 12 CFR Part 1002</li>
+<li>CFPB Circular 2022-03, adverse-action notification requirements for complex algorithms</li>
+<li>CFPB Circular 2023-03, adverse-action notice requirements and specific reasons</li>
+<li>SR 26-2 Revised Guidance on Model Risk Management, where applicable</li>
+<li>Fair Housing Act, where mortgage / housing-related credit is in scope</li>
+<li>AIEOG AI Lexicon and Financial Services AI Risk Management Framework</li>
 </ul>
 </main>
     <div class="footer">aibankinginstitute.com · Adapt before adopting.</div>
