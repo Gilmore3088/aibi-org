@@ -199,6 +199,28 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain('Where operations can use AiBI immediately');
   });
 
+  it('returns the retail AI service kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/retail-playbook/word'),
+      contextFor('retail-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Retail-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank Retail AI Service Kit');
+    expect(body).toContain('Frontline Data Boundary Card');
+    expect(body).toContain('The Five Frontline AI Controls');
+    expect(body).toContain('Procedure-to-Job-Aid Prompt');
+    expect(body).toContain('Service Recovery Script Builder');
+    expect(body).toContain('30-Day Rollout Tracker');
+    expect(body).toContain('Reg E 12 CFR 1005.11');
+    expect(body).toContain('Next step: Run the 45-Minute Retail AI Service Sprint');
+    expect(body).not.toContain("The Retail / Branch Leader's AI-Native Playbook");
+    expect(body).not.toContain('Tokenized deposits and programmable money');
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),

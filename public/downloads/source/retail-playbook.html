@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The Retail / Branch Leader's AI-Native Playbook — The AI Banking Institute</title>
+<title>The Bank Retail AI Service Kit - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page h2 { font-size: 20pt; }
   .page h3 { font-size: 12pt; margin: 10pt 0 4pt; }
   .page h4 { font-size: 10.5pt; margin: 8pt 0 4pt; }
   .page p, .page li { font-size: 10pt; line-height: 1.55; }
-  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:14pt 18pt; box-shadow:var(--shadow-soft); margin: 8pt 0 14pt; }
+  .toc { background:#fff; border:1px solid var(--slate-200); border-radius:14pt; padding:10pt 14pt; box-shadow:var(--shadow-soft); margin: 8pt 0 14pt; }
   .toc ol { columns: 2; column-gap: 22pt; margin: 4pt 0 0 18pt; }
-  .toc li { margin: 2pt 0; font-size: 10pt; }
+  .toc li { margin: 1pt 0; font-size: 8.8pt; line-height: 1.32; }
   .play-head { background: var(--ink); color:#fff; border-radius: 14pt; padding: 10pt 14pt; margin: 10pt 0 8pt; }
   .play-head .num { font-size: 8.5pt; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); font-weight: 700; }
   .play-head h2 { color:#fff; margin: 3pt 0 0; font-size: 16pt; }
@@ -31,6 +31,10 @@
   .two-col .card li { font-size: 9.5pt; }
   table { font-size: 9.5pt; }
   th { font-size: 8.5pt; }
+  .template-table { font-size: 8.7pt; margin: 7pt 0 10pt; }
+  .template-table th { font-size: 7.8pt; }
+  .template-table th,
+  .template-table td { padding: 4.8pt 8pt; vertical-align: top; }
   .risk-band { padding: 12pt 16pt; }
   .risk-band h4 { font-size: 11pt; }
   .risk-band ul { margin-left: 16pt; }
@@ -52,9 +56,9 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · Retail / Branch · v2.0</div>
-    <h1>The Retail / Branch Leader's AI-Native Playbook</h1>
-    <p class="lede">Frontline productivity. Better customer experiences. Safer service workflows. A practical operating playbook for retail banking, branch operations, contact centers, and frontline managers using AI to reduce daily bottlenecks, improve customer service, coach staff, and build more consistent operating routines without putting customer data at risk.</p>
+    <div class="kicker">Role service kit - Retail / Branch - v2.1</div>
+    <h1>The Bank Retail AI Service Kit</h1>
+    <p class="lede">Five frontline workflows for faster replies, better coaching, cleaner handoffs, and safer customer service.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -69,28 +73,58 @@
   <div class="principle">AI supports the banker. The banker owns the customer moment. The system retains the evidence.</div>
   <p>AI can summarize, draft, route, coach, translate, cluster, and prepare. It should not provide unapproved advice, make credit decisions, disclose account-specific information, or replace the banker's judgment in customer-impacting interactions.</p>
 
+  <h3>Frontline Data Boundary Card</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Prohibited public-tool inputs</h4>
+      <ul>
+        <li>Customer names, account numbers, balances, transaction details.</li>
+        <li>SSNs, DOBs, addresses, complaint records tied to real customers.</li>
+        <li>Loan / credit details, authentication details, fraud details.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Safe placeholders</h4>
+      <ul>
+        <li>[CUSTOMER], [ACCOUNT TYPE], [DATE], [AMOUNT].</li>
+        <li>[PRODUCT], [BRANCH], [NEXT STEP].</li>
+        <li>Fictional scenarios, redacted notes, approved sample data.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>The Five Frontline AI Controls</h3>
+  <table class="template-table">
+    <thead><tr><th>#</th><th>Control</th><th>Evidence to retain</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>No real customer data in public tools.</td><td>Data boundary card, approved tool, prohibited-input reminders.</td></tr>
+      <tr><td>2</td><td>AI drafts; bankers personalize.</td><td>Template, AI draft, human edits, final message if retained by procedure.</td></tr>
+      <tr><td>3</td><td>Escalate risky topics.</td><td>Escalation rule, owner, disposition.</td></tr>
+      <tr><td>4</td><td>Use approved templates.</td><td>Template version, review owner, approval date.</td></tr>
+      <tr><td>5</td><td>Save evidence.</td><td>Use-case intake, output, review, retention location.</td></tr>
+    </tbody>
+  </table>
+
   <div class="toc">
     <div class="section-kicker" style="margin-top:0;">What's inside</div>
     <ol>
       <li>Executive snapshot</li>
-      <li>Why retail goes first</li>
-      <li>The AI-native retail operating model</li>
-      <li>Prepare vs. own matrix</li>
-      <li>Risk tiers for retail AI use</li>
-      <li>Hyper-personalized service without losing control</li>
-      <li>Frictionless onboarding with exception controls</li>
-      <li>The branch staff toolkit</li>
-      <li>Future-state retail: tokenized deposits</li>
+      <li>Frontline data boundary and five controls</li>
+      <li>Controlled operating model and risk lanes</li>
+      <li>Personalized service and onboarding controls</li>
+      <li>Procedure-to-job-aid translator</li>
       <li>Five retail plays</li>
-      <li>Copy-paste templates</li>
-      <li>30-day retail implementation path</li>
-      <li>Measurement model</li>
-      <li>What good looks like</li>
-      <li>Recommended AiBI path</li>
-      <li>Final operating principle</li>
+      <li>Editable templates</li>
+      <li>30-day rollout and measurement</li>
+      <li>45-minute retail service sprint</li>
+      <li>Source basis and final operating principle</li>
     </ol>
   </div>
 
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 1 · Executive snapshot · continued</div>
   <h3>Who this is for</h3>
   <ul>
     <li>Heads of Retail Banking, Branch Operations leaders, Contact Center leaders.</li>
@@ -253,8 +287,8 @@
 
 <!-- Section 6 -->
 <section class="page">
-  <div class="section-kicker">Section 6 · Hyper-personalized service without losing control</div>
-  <h2>"Personalized" must never mean uncontrolled</h2>
+  <div class="section-kicker">Section 6 · Personalized Service Support Without Losing Control</div>
+  <h2>Personalized service support without losing control</h2>
 
   <div class="two-col">
     <div class="card">
@@ -313,6 +347,7 @@
   <h2>AI prepares and routes. The institution owns the decision.</h2>
 
   <p>Retail onboarding is highly standardized, which makes it a strong candidate for AI support. AI can help with OCR / document extraction, missing information detection, identity document quality checks, application status summaries, onboarding checklist generation, customer next-step messages, and exception routing.</p>
+  <p>AI may prepare onboarding checklists, missing-item flags, and customer next-step drafts. It may not resolve identity mismatches, clear fraud alerts, approve exceptions, override CIP/KYC controls, or determine eligibility without the institution's approved workflow.</p>
   <p>But straight-through processing should be limited to workflows where rules are clear, confidence is high, data sources are approved, exceptions are defined, review gates exist, output is logged, and customer harm risk is low.</p>
 
   <h3>Onboarding fallback triggers — route to human review when</h3>
@@ -364,17 +399,27 @@
 
   <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
 
-  <div class="section-kicker">Section 9 · Future-state retail</div>
-  <h2>Tokenized deposits and programmable money — watch and prepare</h2>
-  <p>Tokenized deposits, stablecoins, and programmable money may reshape retail banking over time. But for most community banks and credit unions, this is not the first AI play. It belongs in the "watch and prepare" lane.</p>
+  <div class="section-kicker">Section 9 · Procedure-to-job-aid translator</div>
+  <h2>Turn procedure text into a frontline job aid</h2>
+  <p>Retail teams need clear role-specific job aids, not long procedure excerpts pasted into a huddle. AI can translate approved source procedure into a short, reviewed job aid that keeps the policy meaning intact.</p>
 
-  <h3>What to monitor</h3>
-  <p>24/7 settlement expectations; cross-border remittance demand; tokenized deposit pilots; stablecoin payment rails; digital wallet adoption; smart-contract escrow alternatives; regulatory guidance on digital assets; fraud and consumer-protection implications.</p>
+  <div class="prompt"><span class="label">Prompt template · Procedure-to-job-aid translator</span>You are helping a branch manager turn approved procedure text into a frontline job aid.
 
-  <h3>Near-term retail implication</h3>
-  <p>The practical question is not "how do we launch tokenized deposits next month?" — it is "how do we prepare frontline staff to explain emerging digital money products clearly, safely, and without overpromising?"</p>
+Use only the source procedure below. Do not change policy meaning. Do not add steps. Mark unclear items [VERIFY]. Include escalation triggers.
 
-  <p>AI can help create staff education briefs, customer FAQs, branch huddle scripts, "what we know / what we do not know" explainers, and escalation guidance. Controls: no investment advice; no product promises; no legal or tax interpretation; compliance review before customer use.</p>
+Output:
+  1. Who this applies to
+  2. What staff should do
+  3. What staff should not do
+  4. Customer-facing wording
+  5. Escalation triggers
+  6. Source procedure references
+  7. Manager review checklist
+
+Source procedure:
+[INSERT APPROVED PROCEDURE TEXT]</div>
+
+  <p class="play-meta"><strong>Output:</strong> reviewed job aid · escalation triggers · manager checklist. <strong>Review:</strong> retail manager and procedure owner confirm source meaning. <strong>Evidence:</strong> source procedure · AI draft · manager edits · final job aid. <strong>Metrics:</strong> procedure training time saved · fewer repeated questions · first-pass manager approval rate.</p>
 </section>
 
 <!-- Play 1 -->
@@ -643,11 +688,20 @@ Data:
 
 <!-- Templates -->
 <section class="page">
-  <div class="section-kicker">Section 11 · Copy-paste templates</div>
-  <h2>Five reusable retail artifacts</h2>
+  <div class="section-kicker">Section 11 · Editable templates</div>
+  <h2>The Bank Retail AI Service Kit templates</h2>
 
-  <h3>Template 1 · Branch style brief</h3>
-  <table>
+  <h3>Template 1 · Frontline Data Boundary Card</h3>
+  <table class="template-table">
+    <thead><tr><th>Never paste into public tools</th><th>Use instead</th></tr></thead>
+    <tbody>
+      <tr><td>Customer names, account numbers, balances, transaction details, SSNs, DOBs, addresses.</td><td>[CUSTOMER], [ACCOUNT TYPE], [AMOUNT], [DATE], [PRODUCT], [BRANCH].</td></tr>
+      <tr><td>Complaint records tied to real customers, loan / credit details, authentication details, fraud details.</td><td>Fictional scenarios, redacted notes, approved sample data, source procedure text.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 2 · Branch Style Brief</h3>
+  <table class="template-table">
     <thead><tr><th>Field</th><th>Response</th></tr></thead>
     <tbody>
       <tr><td>Branch / team</td><td></td></tr>
@@ -663,8 +717,81 @@ Data:
     </tbody>
   </table>
 
-  <h3>Template 2 · Retail AI use-case intake form</h3>
-  <table>
+  <h3>Template 3 · First-Draft Reply Library</h3>
+  <table class="template-table">
+    <thead><tr><th>Scenario</th><th>Draft purpose</th><th>Required placeholders</th><th>Review owner</th><th>Approved?</th></tr></thead>
+    <tbody>
+      <tr><td>Appointment confirmation</td><td>Confirm meeting and documents needed</td><td>[CUSTOMER], [DATE], [DOCUMENTS]</td><td>Branch manager</td><td></td></tr>
+      <tr><td>Document request</td><td>Ask for missing items</td><td>[CUSTOMER], [DOCUMENTS], [DUE DATE]</td><td>Branch manager</td><td></td></tr>
+      <tr><td>Follow-up thank you</td><td>Thank customer and confirm next step</td><td>[CUSTOMER], [NEXT STEP]</td><td>Branch manager</td><td></td></tr>
+      <tr><td>Service recovery</td><td>Acknowledge issue and route next step</td><td>[CUSTOMER], [ISSUE], [OWNER]</td><td>Manager + compliance if needed</td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 11 · Editable templates · continued</div>
+  <h3>Template 4 · Procedure-to-Job-Aid Prompt</h3>
+  <div class="prompt"><span class="label">Procedure-to-job-aid prompt</span>Use only the approved source procedure below. Do not change policy meaning. Mark unclear items [VERIFY].
+
+Output:
+  1. Staff role
+  2. Plain-English steps
+  3. Do / do-not list
+  4. Customer-facing wording
+  5. Escalation triggers
+  6. Source procedure references
+  7. Manager review checklist
+
+Source procedure:
+[INSERT APPROVED PROCEDURE]</div>
+
+  <h3>Template 5 · Service Recovery Script Builder</h3>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Service issue category</td><td></td></tr>
+      <tr><td>Approved acknowledgement language</td><td></td></tr>
+      <tr><td>What staff may promise</td><td></td></tr>
+      <tr><td>What staff may not promise</td><td></td></tr>
+      <tr><td>Escalation owner</td><td></td></tr>
+      <tr><td>Required evidence / retention</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 6 · Branch Coaching Card</h3>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Scenario</td><td></td></tr>
+      <tr><td>Banker objective</td><td></td></tr>
+      <tr><td>Customer emotion</td><td></td></tr>
+      <tr><td>Recommended language</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+      <tr><td>Manager coaching note</td><td></td></tr>
+      <tr><td>Practice follow-up</td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 11 · Editable templates · continued</div>
+  <h3>Template 7 · Customer Voice Report Template</h3>
+  <table class="template-table">
+    <thead><tr><th>Section</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Source set and date range</td><td></td></tr>
+      <tr><td>Top themes</td><td></td></tr>
+      <tr><td>Operational friction points</td><td></td></tr>
+      <tr><td>Training opportunities</td><td></td></tr>
+      <tr><td>Complaint-process escalations</td><td></td></tr>
+      <tr><td>Recommended actions</td><td></td></tr>
+      <tr><td>Reviewer approval</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Template 8 · Retail AI Use-Case Intake Form</h3>
+  <table class="template-table">
     <thead><tr><th>Field</th><th>Response</th></tr></thead>
     <tbody>
       <tr><td>Use case name</td><td></td></tr>
@@ -685,37 +812,8 @@ Data:
 </section>
 
 <section class="page">
-  <h3>Template 3 · First-draft reply library</h3>
-  <table>
-    <thead><tr><th>Scenario</th><th>Draft purpose</th><th>Required placeholders</th><th>Review owner</th><th>Approved?</th></tr></thead>
-    <tbody>
-      <tr><td>Appointment confirmation</td><td>Confirm meeting and documents needed</td><td>[CUSTOMER], [DATE], [DOCUMENTS]</td><td>Branch manager</td><td></td></tr>
-      <tr><td>Document request</td><td>Ask for missing items</td><td>[CUSTOMER], [DOCUMENTS], [DUE DATE]</td><td>Branch manager</td><td></td></tr>
-      <tr><td>Follow-up thank you</td><td>Thank customer and confirm next step</td><td>[CUSTOMER], [NEXT STEP]</td><td>Branch manager</td><td></td></tr>
-      <tr><td>Service recovery</td><td>Acknowledge issue and route next step</td><td>[CUSTOMER], [ISSUE], [OWNER]</td><td>Manager + compliance if needed</td><td></td></tr>
-    </tbody>
-  </table>
-
-  <h3>Template 4 · Branch coaching card</h3>
-  <table>
-    <thead><tr><th>Field</th><th>Response</th></tr></thead>
-    <tbody>
-      <tr><td>Scenario</td><td></td></tr>
-      <tr><td>Banker objective</td><td></td></tr>
-      <tr><td>Customer emotion</td><td></td></tr>
-      <tr><td>Recommended language</td><td></td></tr>
-      <tr><td>Escalation trigger</td><td></td></tr>
-      <tr><td>Manager coaching note</td><td></td></tr>
-      <tr><td>Practice follow-up</td><td></td></tr>
-    </tbody>
-  </table>
-
-
-</section>
-
-<section class="page">
-  <div class="section-kicker">Section 11 · Copy-paste templates · continued</div>
-  <h2>Template 5 · Retail evidence packet</h2>
+  <div class="section-kicker">Section 11 · Editable templates · continued</div>
+  <h3>Template 9 · Retail Evidence Packet</h3>
   <p>For every AI-assisted retail workflow, retain:</p>
   <ul class="small-checklist">
     <li>Use-case intake form.</li>
@@ -729,6 +827,19 @@ Data:
     <li>Metric tracked.</li>
     <li>Next review date.</li>
   </ul>
+
+  <h3>Template 10 · 30-Day Rollout Tracker</h3>
+  <table class="template-table">
+    <thead><tr><th>Milestone</th><th>Owner</th><th>Due date</th><th>Complete?</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Data boundary card published</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+      <tr><td>Branch style brief approved</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+      <tr><td>Three reply templates approved</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+      <tr><td>Procedure job aid drafted</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+      <tr><td>Escalation rule published</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+      <tr><td>Evidence packet completed</td><td></td><td></td><td>Yes / No</td><td></td></tr>
+    </tbody>
+  </table>
 </section>
 
 <!-- 30-day path -->
@@ -827,8 +938,9 @@ Data:
 
   <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
 
-  <div class="section-kicker">Section 15 · Recommended AiBI path</div>
-  <h2>From assessment to operating rhythm</h2>
+  <div class="section-kicker">Section 15 · 45-minute retail service sprint</div>
+  <h2>Next step: Run the 45-Minute Retail AI Service Sprint</h2>
+  <p>Pick one branch workflow, set the data boundary, build the branch style brief, draft three approved reply templates, define the escalation rule, and create the first evidence packet.</p>
   <ol>
     <li>Take the AI Readiness Assessment.</li>
     <li>Assign branch managers and contact center leads to the Foundation Course.</li>
@@ -848,8 +960,8 @@ Data:
   <div class="principle">AI drafts. Bankers personalize. Managers review. Customers feel the difference.</div>
 
   <div class="cite">
-    Sources: GLBA / Regulation P; UDAAP guidance; Interagency Third-Party Risk Management Guidance; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
-    <p>This playbook is a starter artifact, not legal advice or an examiner-approved retail procedure. Adapt before adoption and route final customer-facing, coaching, complaint, and service-recovery language through the institution's normal review process.</p>
+    Sources: Reg DD / Truth in Savings; Reg E 12 CFR 1005.11 for EFT error-resolution routing; ECOA / Regulation B for credit-adjacent conversations and adverse-action boundaries; GLBA / Regulation P; UDAAP guidance; Interagency Third-Party Risk Management Guidance; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
+    <p>This kit is a starter artifact, not legal advice or an examiner-approved retail procedure. Adapt before adoption and route final customer-facing, coaching, complaint, error-resolution, credit-adjacent, and service-recovery language through the institution's normal review process.</p>
   </div>
 </section>
 
