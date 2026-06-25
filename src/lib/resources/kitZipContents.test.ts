@@ -41,4 +41,19 @@ describe('starter kit ZIP contents', () => {
       'README.md',
     ]);
   });
+
+  it('packages the lending review kit as an ordered working kit', () => {
+    expect(zipEntries('lending-review-kit.zip')).toEqual([
+      '00-Start-Here.pdf',
+      '01-Lending-AI-Control-Playbook.pdf',
+      '02-Lending-AI-Use-Case-Register.xlsx',
+      '03-Fair-Lending-AI-Review-Checklist.pdf',
+      '04-Fair-Lending-AI-Review-Worksheet.xlsx',
+      '05-Principal-Reason-Traceability-Table.xlsx',
+      '06-Adverse-Action-AI-Review-Log.xlsx',
+      '07-Lending-Workflow-SOP-Template.docx',
+      '08-Decision-Packet-Evidence-Index.docx',
+      'README.md',
+    ]);
+  });
 });

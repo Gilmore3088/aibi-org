@@ -477,7 +477,7 @@
     },
     {
       "slug": "lending-review-kit",
-      "title": "Lending Review Kit",
+      "title": "The Lending AI Review Kit",
       "audience": ["Lending", "Compliance"],
       "category": "starter-kit",
       "funnelSegment": "lending-review",
@@ -486,7 +486,7 @@
       "variants": { "pdf": null, "word": null, "zip": "lending-review-kit.zip" },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/lending-review-kit/download",
-      "sourceCitations": ["CFPB Reg B", "NIST AI RMF"],
+      "sourceCitations": ["CFPB Reg B", "FCRA", "Fair Housing Act", "Federal Reserve SR 26-2", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["lending", "compliance"], "tierLabels": ["Early Stage", "Building Momentum"], "topGaps": ["fair-lending"] },
       "status": "public"

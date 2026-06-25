@@ -81,21 +81,28 @@ const KITS = {
     ],
   },
   'lending-review-kit': {
-    title: 'Lending Review Kit',
-    lede: 'Reviewable AI for the lending desk.',
+    title: 'The Lending AI Review Kit',
+    lede: 'Four tools to review AI-assisted credit workflows before they touch decisions, adverse action, or customer-facing explanations.',
     forWhom:
-      'For lending and credit teams reviewing AI-assisted denials, decisions, and adverse-action notices with documented human checks.',
-    pdfs: [
-      ['lending-playbook.pdf',               'Role playbook for safe lending AI use: adverse-action tuner, decision summaries, fair-lending pre-checks.'],
-      ['artifact-fair-lending-ai-review-checklist.pdf', 'Reviewer checklist for AI-assisted credit decisions, protected-basis outcome-gap checks, adverse-action explainability, and recurring monitoring.'],
-      ['artifact-ai-use-case-inventory.pdf', 'One-page AI use-case inventory card for owners, data classes, risk tiers, vendor controls, and review cadence.'],
-      ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
+      'For lending, credit, and compliance teams reviewing one AI-assisted workflow and proving the decision stayed human, explainable, fair-lending aware, and file-supported.',
+    startHereName: '00-Start-Here.pdf',
+    steps: [
+      'Choose one lending AI workflow and log it in the Lending AI Use-Case Register.',
+      'Run the fair-lending and adverse-action review before reuse.',
+      'Complete the Principal Reason Traceability Table whenever adverse-action language is involved.',
+      'Document the workflow in the Lending Workflow SOP Template.',
+      'Save the Decision Packet Evidence Index with source documents, AI output, reviewer edits, approval, final notice, and retention location.',
     ],
-    files: [
-      ['artifact-fair-lending-ai-review-worksheet.xlsx', 'Editable testing worksheet for population, sample, protected bases, proxy methodology, baseline, materiality threshold, remediation owner, adverse-action review, and next review date.'],
-      ['artifact-ai-use-case-inventory-spreadsheet.xlsx', 'Editable spreadsheet companion for maintaining owner, data class, risk tier, vendor status, human review, evidence retained, and next review date.'],
+    assets: [
+      { source: 'lending-playbook.pdf', target: '01-Lending-AI-Control-Playbook.pdf', description: 'Context guide for safe lending AI controls, adverse-action support, decision packets, and human accountability.' },
+      { source: 'kit-assets/lending-review-kit/Lending-AI-Use-Case-Register.xlsx', target: '02-Lending-AI-Use-Case-Register.xlsx', description: 'Editable lending register with product line, decision influence, adverse-action involvement, customer-facing output, principal-reason traceability, review requirements, and packet location.' },
+      { source: 'artifact-fair-lending-ai-review-checklist.pdf', target: '03-Fair-Lending-AI-Review-Checklist.pdf', description: 'Reviewer checklist for AI-assisted credit workflows, adverse-action explainability, protected-basis outcome-gap monitoring, proxy risk, and recurring review.' },
+      { source: 'artifact-fair-lending-ai-review-worksheet.xlsx', target: '04-Fair-Lending-AI-Review-Worksheet.xlsx', description: 'Editable worksheet for population, sample, protected bases, proxy methodology, baseline, materiality threshold, remediation owner, adverse-action review, and next review date.' },
+      { source: 'kit-assets/lending-review-kit/Principal-Reason-Traceability-Table.xlsx', target: '05-Principal-Reason-Traceability-Table.xlsx', description: 'Trace each principal reason to source file evidence, human reviewer, AI draft use, unsupported language removal, final language, and retention location.' },
+      { source: 'kit-assets/lending-review-kit/Adverse-Action-AI-Review-Log.xlsx', target: '06-Adverse-Action-AI-Review-Log.xlsx', description: 'Track each AI-assisted adverse-action drafting or review instance with reviewer, notice location, exception, and escalation notes.' },
+      { source: 'kit-assets/lending-review-kit/Lending-Workflow-SOP-Template.docx', target: '07-Lending-Workflow-SOP-Template.docx', description: 'Editable lending-native SOP for approved tool, allowed inputs, prohibited inputs, AI may/may-not boundaries, review, evidence, and current model-risk source language.' },
+      { source: 'kit-assets/lending-review-kit/Decision-Packet-Evidence-Index.docx', target: '08-Decision-Packet-Evidence-Index.docx', description: 'Checklist for source documents, AI output, reviewer edits, final memo or notice, approval, and retention location.' },
     ],
-    markdowns: [],
   },
   'marketing-review-kit': {
     title: 'Marketing Review Kit',
