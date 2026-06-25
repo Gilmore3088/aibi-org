@@ -177,6 +177,28 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain("The Marketing Leader's AI-Native Playbook");
   });
 
+  it('returns the operations AI workflow kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/operations-playbook/word'),
+      contextFor('operations-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Operations-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank Operations AI Workflow Kit');
+    expect(body).toContain('ACH exception handoff summary');
+    expect(body).toContain('Workflow SOP template');
+    expect(body).toContain('Reusable AI working brief');
+    expect(body).toContain('Review checkpoint worksheet');
+    expect(body).toContain('Time-Saved Tracking Sheet');
+    expect(body).toContain('Handoff Readiness Card');
+    expect(body).toContain('Next step: Run the 45-Minute Operations AI Workflow Sprint');
+    expect(body).not.toContain('The Operations AI-Native Playbook');
+    expect(body).not.toContain('Where operations can use AiBI immediately');
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),
