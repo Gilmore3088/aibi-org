@@ -87,7 +87,7 @@ const START_HERE_CHOICES = [
   },
   {
     label: 'I need a safe prompt',
-    desc: 'Build a banker prompt with placeholders and review rules.',
+    desc: 'Preview the banker prompt method and open the Toolbox builder.',
     href: '/resources/prompting-foundation',
     icon: Sparkles,
   },

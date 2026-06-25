@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { EyebrowChip, SiteHeader } from '@/components/mockup';
 import { FreeResourceDownloadGate } from '@/components/resources/FreeResourceDownloadGate';
+import { readRememberedFreeResourceCapture } from '@/lib/resources/freeResourceCapture';
 import { CheckCircle, Download, LockKeyhole, Sparkles } from '../icons';
 
 type PromptType = 'Draft' | 'Summarize' | 'Rewrite' | 'Extract' | 'Compare' | 'Checklist';
@@ -196,6 +197,65 @@ function stepLabel(step: WizardStep): string {
 }
 
 export function PromptingFoundationBuilder() {
+  return (
+    <div className="mockup-scope prompt-scope prompt-simple-scope">
+      <SiteHeader activePath="/resources" />
+
+      <section className="prompt-simple-hero prompt-preview-hero">
+        <div className="mk-container prompt-simple-hero-inner">
+          <div className="prompt-simple-hero-copy">
+            <EyebrowChip icon={<Sparkles size={16} />}>Toolbox preview</EyebrowChip>
+            <h1>Prompt Like a Banker</h1>
+            <p>
+              Write one safe, review-ready AI prompt without crossing the data line. Preview the
+              method here, then build the working prompt in your Toolbox.
+            </p>
+            <div className="prompt-simple-actions">
+              <ToolboxBuilderGate />
+              <FreeResourceDownloadGate
+                title="Prompt Like a Banker prompt card"
+                href="/api/resources/prompting-foundation-guide/download"
+                slug="prompting-foundation-guide"
+                source="prompt-like-preview-card"
+                actionLabel="Get prompt card"
+                capturedLabel="Download prompt card"
+                buttonVariant="ghost-dark"
+                buttonSize="lg"
+              >
+                Download prompt card <Download size={16} />
+              </FreeResourceDownloadGate>
+            </div>
+          </div>
+
+          <MethodCard />
+        </div>
+      </section>
+
+      <main className="prompt-simple-main">
+        <section className="mk-container prompt-simple-principles" aria-label="Prompting rules">
+          <div>
+            <h2>Choose the work</h2>
+            <p>Draft, summarize, rewrite, extract, compare, or checklist.</p>
+          </div>
+          <div>
+            <h2>Protect the data</h2>
+            <p>Use placeholders like [CUSTOMER], [ACCOUNT_NUMBER], [AMOUNT], and [VERIFY].</p>
+          </div>
+          <div>
+            <h2>Review before use</h2>
+            <p>AI drafts. A qualified human checks before the output is used.</p>
+          </div>
+        </section>
+
+        <ExampleLesson />
+        <PromptBuilderPreview />
+        <TeamDownloads />
+      </main>
+    </div>
+  );
+}
+
+export function PromptLikeBankerToolboxBuilder() {
   const [form, setForm] = useState<PromptForm>(DEFAULT_FORM);
   const [step, setStep] = useState<WizardStep>(0);
   const [checked, setChecked] = useState<string[]>([]);
@@ -256,20 +316,20 @@ export function PromptingFoundationBuilder() {
 
   return (
     <div className="mockup-scope prompt-scope prompt-simple-scope">
-      <SiteHeader activePath="/resources" />
+      <SiteHeader activePath="/my-toolbox" cta={{ label: 'Resources', href: '/resources/prompting-foundation' }} />
 
       <section className="prompt-simple-hero">
         <div className="mk-container prompt-simple-hero-inner">
           <div className="prompt-simple-hero-copy">
-            <EyebrowChip icon={<Sparkles size={16} />}>Prompt builder</EyebrowChip>
+            <EyebrowChip icon={<Sparkles size={16} />}>Toolbox tool</EyebrowChip>
             <h1>Prompt Like a Banker</h1>
             <p>
-              Build one safe AI prompt in five minutes. Choose the work, protect the data, set the
-              format, and name the reviewer before anything gets copied.
+              Build one safe AI prompt in five minutes. The preview page teaches the pattern; this
+              Toolbox tool turns it into something you can copy, download, and reuse.
             </p>
             <div className="prompt-simple-actions">
               <a className="mk-btn mk-btn-gold mk-btn-lg" href="#prompt-builder">
-                Build a prompt
+                Start builder
               </a>
               <FreeResourceDownloadGate
                 title="Prompt Like a Banker prompt card"
@@ -286,16 +346,7 @@ export function PromptingFoundationBuilder() {
             </div>
           </div>
 
-          <div className="prompt-simple-method" aria-label="The 5-line banker prompt">
-            <span>The 5-line banker prompt</span>
-            <ol>
-              <li>You are helping a [ROLE].</li>
-              <li>Use only [SOURCE].</li>
-              <li>Create [OUTPUT FORMAT].</li>
-              <li>Do not invent facts, make decisions, expose data, or add unsupported claims.</li>
-              <li>Mark uncertain items as [VERIFY]. Label the output as draft for [REVIEWER].</li>
-            </ol>
-          </div>
+          <MethodCard />
         </div>
       </section>
 
@@ -399,6 +450,120 @@ export function PromptingFoundationBuilder() {
         <TeamDownloads />
       </main>
     </div>
+  );
+}
+
+export function PromptLikeBankerToolboxEntry() {
+  const [unlocked, setUnlocked] = useState(false);
+
+  useEffect(() => {
+    setUnlocked(Boolean(readRememberedFreeResourceCapture()));
+  }, []);
+
+  if (unlocked) return <PromptLikeBankerToolboxBuilder />;
+
+  return (
+    <div className="mockup-scope prompt-scope prompt-simple-scope">
+      <SiteHeader activePath="/my-toolbox" cta={{ label: 'Preview', href: '/resources/prompting-foundation' }} />
+
+      <section className="prompt-simple-hero prompt-toolbox-gate-hero">
+        <div className="mk-container prompt-simple-hero-inner">
+          <div className="prompt-simple-hero-copy">
+            <EyebrowChip icon={<Sparkles size={16} />}>Toolbox tool</EyebrowChip>
+            <h1>Prompt Like a Banker</h1>
+            <p>
+              Enter a work email to open the full builder. The preview stays public; the working
+              Toolbox tool unlocks when someone shows intent to use it.
+            </p>
+            <div className="prompt-simple-actions">
+              <FreeResourceDownloadGate
+                title="Prompt Like a Banker Toolbox Builder"
+                slug="prompting-foundation-guide"
+                source="prompt-like-toolbox-direct"
+                format="Toolbox"
+                actionLabel="Open builder"
+                capturedLabel="Open builder"
+                submitLabel="Open builder"
+                stayInteractiveAfterUnlock
+                onUnlock={() => setUnlocked(true)}
+                buttonVariant="gold"
+                buttonSize="lg"
+              />
+            </div>
+          </div>
+
+          <MethodCard />
+        </div>
+      </section>
+
+      <main className="prompt-simple-main">
+        <ExampleLesson />
+      </main>
+    </div>
+  );
+}
+
+function MethodCard() {
+  return (
+    <div className="prompt-simple-method" aria-label="The 5-line banker prompt">
+      <span>The 5-line banker prompt</span>
+      <ol>
+        <li>You are helping a [ROLE].</li>
+        <li>Use only [SOURCE].</li>
+        <li>Create [OUTPUT FORMAT].</li>
+        <li>Do not invent facts, make decisions, expose data, or add unsupported claims.</li>
+        <li>Mark uncertain items as [VERIFY]. Label the output as draft for [REVIEWER].</li>
+      </ol>
+    </div>
+  );
+}
+
+function ToolboxBuilderGate() {
+  return (
+    <FreeResourceDownloadGate
+      title="Prompt Like a Banker Toolbox Builder"
+      href="/my-toolbox/prompt-like-a-banker"
+      slug="prompting-foundation-guide"
+      source="prompt-like-toolbox-handoff"
+      format="Toolbox"
+      actionLabel="Open Toolbox builder"
+      capturedLabel="Open Toolbox builder"
+      submitLabel="Open builder"
+      buttonVariant="gold"
+      buttonSize="lg"
+    >
+      Build in Toolbox
+    </FreeResourceDownloadGate>
+  );
+}
+
+function PromptBuilderPreview() {
+  return (
+    <section className="mk-container prompt-toolbox-preview" aria-label="Prompt Like a Banker preview">
+      <div className="prompt-toolbox-preview-copy">
+        <div className="mk-k">Toolbox preview</div>
+        <h2>See the output. Build the real one in Toolbox.</h2>
+        <p>
+          The public page shows the method and one banker-safe example. The working builder lives in
+          Toolbox, where copy and download are unlocked after email capture.
+        </p>
+        <ToolboxBuilderGate />
+      </div>
+      <div className="prompt-preview-artifact" aria-label="Sample generated prompt">
+        <div className="prompt-preview-artifact-head">
+          <span>Sample prompt</span>
+          <strong>Green</strong>
+        </div>
+        <pre>{`You are helping a branch operations manager.
+Use only the approved staffing notes with [CUSTOMER] and [ACCOUNT_NUMBER] removed.
+Create memo using a summarize approach for this task: summarize the monthly staffing update.
+Do not invent facts, make decisions, expose data, or add unsupported claims.
+Mark uncertain items as [VERIFY]. Label the output as draft for Manager review.`}</pre>
+        <div className="prompt-preview-lock">
+          Copy, download, and reusable exports open in Toolbox after work email capture.
+        </div>
+      </div>
+    </section>
   );
 }
 
