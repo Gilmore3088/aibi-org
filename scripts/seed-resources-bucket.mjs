@@ -62,9 +62,10 @@ const META = {
   'in-depth-playbook':          { title: 'In-Depth Assessment Playbook',category: 'paid-preview', order: 20 },
   // Starter kits (ZIPs)
   'governance-starter-kit':     { title: 'The Bank AI Governance Starter Kit', category: 'starter-kit',  order: 30 },
-  'frontline-enablement-kit':   { title: 'The Frontline AI Enablement Kit', category: 'starter-kit',  order: 31 },
-  'marketing-review-kit':       { title: 'The Bank Marketing AI Review Kit', category: 'starter-kit',  order: 32 },
-  'lending-review-kit':         { title: 'The Lending AI Review Kit', category: 'starter-kit',  order: 33 },
+  'banker-builder-brief-kit':   { title: 'The Banker Builder Brief Kit', category: 'starter-kit',  order: 31 },
+  'frontline-enablement-kit':   { title: 'The Frontline AI Enablement Kit', category: 'starter-kit',  order: 32 },
+  'marketing-review-kit':       { title: 'The Bank Marketing AI Review Kit', category: 'starter-kit',  order: 33 },
+  'lending-review-kit':         { title: 'The Lending AI Review Kit', category: 'starter-kit',  order: 34 },
   // Templates
   'template-ai-use-policy-starter':       { title: "The Banker's AI Use Policy Starter", category: 'template', order: 40 },
   'template-ai-workflow-sop':             { title: 'The Bank AI Workflow SOP Template', category: 'template', order: 41 },
@@ -96,6 +97,7 @@ const DESCRIPTIONS = {
   'training-hr-playbook': 'Turn generic AI awareness into role-specific practice, safe-use scenarios, and visible readiness tracking.',
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
   'governance-starter-kit': 'Four tools to set the data line, classify AI use, start the inventory, and document your first workflow.',
+  'banker-builder-brief-kit': 'Turn one workflow problem into a Builder Brief, safe build path, test plan, and handoff checklist.',
   'frontline-enablement-kit': 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',
   'marketing-review-kit': 'Draft faster, verify every claim, review every disclosure, and retain every campaign decision.',
   'lending-review-kit': 'Review one AI-assisted lending workflow and prove the decision stayed human, explainable, fair-lending aware, and file-supported.',

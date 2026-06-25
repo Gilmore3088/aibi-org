@@ -1,4 +1,4 @@
-// generate-kit-zips.mjs — rebuild the 4 downloadable kit ZIPs in brand v1.
+// generate-kit-zips.mjs — rebuild the downloadable kit ZIPs in brand v1.
 //
 // Each kit ZIP bundles brand-v1 PDFs, optional companion files, a per-kit
 // START-HERE.pdf (regenerated brand v1), and a README.md. Core kit assets ship
@@ -13,7 +13,7 @@
 // rest of the regenerated PDFs).
 //
 // Usage:
-//   node scripts/generate-kit-zips.mjs               # build all 4
+//   node scripts/generate-kit-zips.mjs               # build all kits
 //   node scripts/generate-kit-zips.mjs --only <slug> # build one kit
 //   node scripts/generate-kit-zips.mjs --upload      # also upload to Supabase
 
@@ -51,6 +51,102 @@ const KITS = {
       { source: 'kit-assets/governance-starter-kit/AI-Use-Case-Inventory.xlsx', target: '04-AI-Use-Case-Inventory.xlsx', description: 'Editable portfolio register for status, department, purpose, tool approval, data class, risk tier, customer impact, reviewer, evidence, and review dates.' },
       { source: 'template-ai-workflow-sop.pdf', target: '05-AI-Workflow-SOP-Template.pdf', description: 'Reference PDF for documenting an individual AI-assisted workflow before reuse.' },
       { source: 'kit-assets/governance-starter-kit/AI-Workflow-SOP-Builder.docx', target: '06-AI-Workflow-SOP-Builder.docx', description: 'Editable workflow SOP builder with approved tool, allowed inputs, prohibited inputs, review standard, approval checkpoint, retention rule, and escalation triggers.' },
+    ],
+  },
+  'banker-builder-brief-kit': {
+    title: 'The Banker Builder Brief Kit',
+    lede:
+      'In 45 minutes, turn one workflow problem into a one-page Builder Brief, safe build path, test plan, and launch checklist.',
+    forWhom:
+      'For operations, branch, compliance, risk, IT, and executive teams that want bankers to turn one annoying workflow into a specific, reviewable internal solution plan before it becomes shadow IT.',
+    startHereName: '00-Start-Here.pdf',
+    steps: [
+      'Read the Banker Builder Guide and complete the Should We Build This? Scorecard.',
+      'Complete the Banker Builder Brief before prompting, tracking, automating, or asking IT for a build.',
+      'Use the Build Path Selector and Risk Gate to choose the smallest safe path and catch Red triggers early.',
+      'Run the Prototype Test Plan with permitted test data and a named reviewer.',
+      'Complete the Launch and Handoff Checklist before reuse.',
+      'If the workflow becomes repeatable, move it into the AI Workflow SOP Builder.',
+    ],
+    assets: [
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Banker-Builder-Guide.pdf',
+        target: '01-Banker-Builder-Guide.pdf',
+        description:
+          'Plain-language guide for turning workflow pain into a build/no-build decision, Builder Brief, safe path, test plan, and handoff.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Should-We-Build-This-Scorecard.xlsx',
+        target: '02-Should-We-Build-This-Scorecard.xlsx',
+        description:
+          'Editable scorecard with yes/no questions, live score, verdict, recommended action, reviewer notes, and evidence location.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Banker-Builder-Brief.docx',
+        target: '03-Banker-Builder-Brief.docx',
+        description:
+          'One-page PRD-style banker brief for problem, user, current workflow, proposed solution, must-do items, must-not-do boundaries, data, review, evidence, and handoff.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Build-Path-And-Risk-Gate.xlsx',
+        target: '04-Build-Path-And-Risk-Gate.xlsx',
+        description:
+          'Editable build-path ladder and data/risk gate workbook with Green, Yellow, Red logic and escalation prompts.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Prototype-Test-Plan.docx',
+        target: '05-Prototype-Test-Plan.docx',
+        description:
+          'Three-user prototype test plan with permitted test data, acceptance criteria, failure modes, reviewer checks, and final decision.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Launch-And-Handoff-Checklist.docx',
+        target: '06-Launch-And-Handoff-Checklist.docx',
+        description:
+          'Launch and handoff checklist for owner, backup owner, access, support, version, review date, evidence, retention, pause triggers, and kill switch.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Safe-First-Builds-Menu.pdf',
+        target: '07-Safe-First-Builds-Menu.pdf',
+        description:
+          'Curated menu of low-risk first builds such as job-aid builders, handoff summaries, review checklists, evidence packets, training scenarios, and issue trackers.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Builder-Brief-Markdown-Export-Template.md',
+        target: '08-Builder-Brief-Markdown-Export-Template.md',
+        description:
+          'Markdown export pattern for copying the final Builder Brief into an internal ticket, review packet, or handoff note.',
+      },
+      {
+        source: 'template-ai-workflow-sop.pdf',
+        target: '09-Workflow-SOP-Next-Step.pdf',
+        description:
+          'Downstream SOP template for documenting approved AI-assisted workflows before repeatable team use.',
+      },
+      {
+        source: 'operations-playbook.pdf',
+        target: '10-Operations-AI-Workflow-Kit.pdf',
+        description:
+          'Operations playbook context for turning a useful shortcut into something someone else can run, review, measure, and hand off.',
+      },
+      {
+        source: 'red-yellow-green-use-card.pdf',
+        target: '11-Red-Yellow-Green-AI-Use-Card.pdf',
+        description:
+          'Risk classification reference for allowed, review-required, and prohibited AI use cases.',
+      },
+      {
+        source: 'infosec-playbook.pdf',
+        target: '12-InfoSec-AI-Control-Plane-Kit.pdf',
+        description:
+          'InfoSec reference for routing, inspecting, logging, gating, and governing AI traffic before shadow AI becomes architecture.',
+      },
+      {
+        source: 'kit-assets/banker-builder-brief-kit/Design-Dev-Handoff-Brief.docx',
+        target: '13-Design-Dev-Handoff-Brief.docx',
+        description:
+          'Scrubbed designer/developer handoff brief for the future interactive Builder Brief experience.',
+      },
     ],
   },
   'frontline-enablement-kit': {
