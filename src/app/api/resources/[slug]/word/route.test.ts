@@ -110,6 +110,28 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain('SR 11-7');
   });
 
+  it('returns the InfoSec AI control plane kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/infosec-playbook/word'),
+      contextFor('infosec-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Infosec-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank InfoSec AI Control Plane Kit');
+    expect(body).toContain('The 30-Day AI Security Control Plane');
+    expect(body).toContain('Current model-risk guidance, including SR 26-2 where applicable');
+    expect(body).toContain('Runtime Guardrail Test Set');
+    expect(body).toContain('Agent Permission Register');
+    expect(body).toContain('AI Code Review Checklist');
+    expect(body).toContain('Next step: Run the 60-Minute AI Security Control Plane Sprint');
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain("The IT / InfoSec Leader's AI-Native Playbook");
+    expect(body).not.toContain('SR 11-7');
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),

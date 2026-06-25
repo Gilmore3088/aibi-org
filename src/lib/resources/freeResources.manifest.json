@@ -253,7 +253,7 @@
     },
     {
       "slug": "infosec-playbook",
-      "title": "IT / InfoSec Playbook",
+      "title": "The Bank InfoSec AI Control Plane Kit",
       "audience": ["IT/InfoSec"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -262,7 +262,7 @@
       "variants": { "pdf": "infosec-playbook.pdf", "word": "/api/resources/infosec-playbook/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/infosec-playbook/download",
-      "sourceCitations": ["OWASP GenAI Top 10", "Interagency Third-Party Risk Guidance", "NIST AI RMF"],
+      "sourceCitations": ["OWASP Top 10 for LLM Applications", "NIST AI 600-1", "NIST AI RMF", "FFIEC AIO", "GLBA information-security obligations", "FTC Safeguards Rule", "Interagency Third-Party Risk Guidance", "Federal Reserve SR 26-2", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["infosec"], "tierLabels": [], "topGaps": ["data-handling", "vendor-risk"] },
       "status": "public"
