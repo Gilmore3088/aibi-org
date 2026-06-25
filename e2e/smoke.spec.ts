@@ -9,9 +9,9 @@ test.describe('marketing smoke', () => {
   test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // Current persona-remediated hero H1.
+    // Current hero H1 — the "what you paste into AI" judgment hook.
     await expect(
-      page.getByRole('heading', { level: 1, name: /Find your institution.s AI readiness gap in three minutes/i }),
+      page.getByRole('heading', { level: 1, name: /AI adoption is accelerating\. Judgment isn.t\./i }),
     ).toBeVisible();
   });
 

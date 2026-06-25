@@ -493,6 +493,11 @@ section.mk-std { padding: 56px 0; }
   box-shadow: var(--shadow-hero);
   overflow: hidden;
   border: 1px solid var(--on-dark-08);
+  border-top: 3px solid #D92D20;
+  transition: border-top-color 0.5s ease;
+}
+.mk-redline-prompt.is-safe {
+  border-top-color: #047857;
 }
 .mk-redline-head {
   display: flex;
@@ -502,7 +507,7 @@ section.mk-std { padding: 56px 0; }
   border-bottom: 1px solid var(--slate-200);
   background: var(--slate-50);
 }
-.mk-redline-head span {
+.mk-redline-head > span:not(.mk-redline-dots):not(.mk-redline-badge) {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -523,123 +528,135 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-redline-head .mk-redline-badge {
   margin-left: auto;
-  color: #B42318;
-  background: #FEF3F2;
-  border: 1px solid #FECDCA;
-  border-radius: var(--r-pill);
-  padding: 3px 10px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.mk-redline-body {
-  min-height: 132px;
-  padding: 22px 22px 8px;
-  display: flex;
-  align-items: center;
-}
-.mk-redline-body p {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.6;
-}
-.mk-redline-mark {
-  color: inherit;
-  background: linear-gradient(#FEE4E2, #FEE4E2) no-repeat;
-  background-size: 0% 100%;
-  border-radius: 4px;
-  padding: 0 3px;
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: transparent;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  transition:
-    background-size 0.45s ease,
-    color 0.3s ease 0.25s,
-    text-decoration-color 0.3s ease 0.3s;
-}
-.mk-redline-prompt.is-caught .mk-redline-mark {
-  background-size: 100% 100%;
-  color: #912018;
-  text-decoration-color: #D92D20;
-}
-.mk-redline-caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  vertical-align: text-bottom;
-  margin-left: 1px;
-  background: var(--ink);
-  animation: mk-redline-blink 1.05s steps(1) infinite;
-}
-@keyframes mk-redline-blink { 50% { opacity: 0; } }
-.mk-redline-flags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 18px 22px 22px;
-  min-height: 60px;
-}
-.mk-redline-flag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  font-weight: 600;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #B42318;
   background: #FEF3F2;
   border: 1px solid #FECDCA;
   border-radius: var(--r-pill);
-  padding: 5px 11px;
-  opacity: 0;
-  transform: translateY(7px) scale(0.96);
-  transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 4px 11px;
+  white-space: nowrap;
+  transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease;
 }
-.mk-redline-prompt.is-flagged .mk-redline-flag {
-  opacity: 1;
-  transform: none;
+.mk-redline-head .mk-redline-badge.is-safe {
+  color: #047857;
+  background: #ECFDF3;
+  border-color: #A6F4C5;
 }
-.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(1) { transition-delay: 0.05s; }
-.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(2) { transition-delay: 0.20s; }
-.mk-redline-prompt.is-flagged .mk-redline-flag:nth-child(3) { transition-delay: 0.35s; }
-.mk-redline-flag svg {
-  width: 13px;
-  height: 13px;
+.mk-redline-badge svg { width: 13px; height: 13px; }
+.mk-redline-body {
+  padding: 20px 22px 6px;
+}
+.mk-redline-task {
+  margin: 0 0 16px;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--ink);
+}
+.mk-redline-fields {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.mk-redline-field {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.mk-redline-field dt {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-redline-field dd {
+  margin: 0;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13.5px;
+  color: var(--ink);
+  position: relative;
+  width: fit-content;
+  transition: color 0.3s ease;
+}
+/* The red strike bar wipes across the value as each field is redacted. */
+.mk-redline-field.is-sensitive dd::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 2px;
+  background: #D92D20;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mk-redline-field.is-struck {
+  background: #FEF3F2;
+}
+.mk-redline-field.is-struck dd {
+  color: #B42318;
+}
+.mk-redline-field.is-struck.is-sensitive dd::after {
+  transform: scaleX(1);
 }
 .mk-redline-foot {
+  margin-top: 14px;
   padding: 12px 22px;
   border-top: 1px solid var(--slate-200);
   background: var(--slate-50);
   font-size: 12.5px;
+  font-weight: 600;
   color: var(--slate-500);
+  transition: color 0.4s ease, background 0.4s ease;
+}
+.mk-redline-prompt.is-safe .mk-redline-foot {
+  color: #047857;
+  background: #ECFDF3;
+  border-top-color: #A6F4C5;
 }
 @media (max-width: 640px) {
   .mk-redline-head {
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
   }
   .mk-redline-body {
-    min-height: 142px;
-    padding: 20px 18px 8px;
+    padding: 18px 16px 6px;
   }
-  .mk-redline-body p {
-    font-size: 16px;
-    line-height: 1.55;
+  .mk-redline-task {
+    font-size: 15.5px;
   }
-  .mk-redline-flags {
-    padding: 16px 18px 20px;
+  .mk-redline-field {
+    grid-template-columns: 104px 1fr;
+    gap: 10px;
+    padding: 6px 8px;
+  }
+  .mk-redline-field dd {
+    font-size: 12.5px;
   }
   .mk-redline-foot {
-    padding: 12px 18px;
+    padding: 12px 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mk-redline-mark,
-  .mk-redline-flag {
+  .mk-redline-prompt,
+  .mk-redline-badge,
+  .mk-redline-field,
+  .mk-redline-field dd,
+  .mk-redline-field.is-sensitive dd::after,
+  .mk-redline-foot {
     transition: none;
-  }
-  .mk-redline-caret {
-    animation: none;
   }
 }
 
