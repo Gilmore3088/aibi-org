@@ -128,6 +128,7 @@ test.describe('Foundation certificate approval -> issuance -> PDF chain', () => 
     context,
     baseURL,
   }) => {
+    test.setTimeout(120_000); // cold dev compile + first Chromium PDF launch needs headroom
     const schemaStatus = await getCourseE2ESchemaStatus();
     test.skip(
       !schemaStatus.available,

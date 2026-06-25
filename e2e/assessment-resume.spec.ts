@@ -54,8 +54,6 @@ test.describe('free assessment — cross-device resume round-trip', () => {
     const page = await context.newPage();
     try {
       await page.goto(`/assessment/take?resume=${encodeURIComponent(draft.token)}`);
-      await page.waitForLoadState('networkidle');
-
       // The restore handler reports success inline once the GET round-trip and
       // restoreDraft() complete.
       await expect(page.getByText('Your saved assessment is restored.')).toBeVisible({
@@ -88,8 +86,6 @@ test.describe('free assessment — cross-device resume round-trip', () => {
     const page = await context.newPage();
     try {
       await page.goto(`/assessment/take?resume=${bogusToken}`);
-      await page.waitForLoadState('networkidle');
-
       await expect(
         page.getByText(/Resume link not found\.|could not be opened/i),
       ).toBeVisible({ timeout: 15_000 });
@@ -109,8 +105,6 @@ test.describe('free assessment — cross-device resume round-trip', () => {
     const page = await context.newPage();
     try {
       await page.goto('/assessment/take?resume=short');
-      await page.waitForLoadState('networkidle');
-
       await expect(page.getByRole('button').first()).toBeVisible({ timeout: 15_000 });
       // No saved-assessment success banner for a token that was never valid.
       await expect(page.getByText('Your saved assessment is restored.')).toHaveCount(0);
