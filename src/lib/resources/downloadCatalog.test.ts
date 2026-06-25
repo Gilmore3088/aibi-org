@@ -30,6 +30,8 @@ describe('downloadCatalog', () => {
       'banker-prompt-formula-card',
       'safe-prompt-placeholder-card',
       'prompt-output-review-checklist',
+      'banker-prompt-types-cheat-sheet',
+      'safe-vs-unsafe-prompt-examples',
       'regulatory-cheatsheet',
       'platform-feature-reference-card',
       'artifact-ai-use-case-inventory',

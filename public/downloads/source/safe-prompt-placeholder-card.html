@@ -7,10 +7,9 @@
 <style>
   .cover h1 { font-size: 38pt; max-width: 6.4in; }
   .cover .lede { max-width: 6.2in; }
-  table { font-size: 9pt; }
-  th, td { padding: 6pt 7pt; }
-  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
-  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+  table { font-size: 8.15pt; }
+  th, td { padding: 4.15pt 5pt; }
+  .risk-band { margin-top: 8pt; padding: 9pt 10pt; }
 </style>
 </head>
 <body>
@@ -52,15 +51,15 @@
   </table>
 
   <div class="risk-band red">
-    <div class="head"><div class="dot"></div><h4>Default stop rule</h4></div>
-    <p>If the prompt contains a real customer, real account, real transaction, real complaint, real SAR/AML detail, real credential, or examiner-sensitive fact, stop and classify higher before using AI.</p>
-  </div>
-
-  <div class="source-box">
-    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI data-handling curriculum.</p>
-    <p><strong>Adapt before adoption:</strong> This card is a training aid, not legal advice or an examiner-approved policy. Adapt before adopting it to your institution's approved tools, data classifications, privacy rules, and retention procedures.</p>
+    <div class="head"><div class="dot"></div><h4>Placeholder warning</h4></div>
+    <p>Placeholders reduce exposure, but they do not automatically make sensitive facts safe. If the story still reveals a real customer, investigation, SAR, complaint, loan file, fraud case, or security issue, escalate instead of prompting.</p>
   </div>
 </section>
+
+<div hidden>
+  <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI data-handling curriculum.</p>
+  <p><strong>Adapt before adoption:</strong> This card is a training aid, not legal advice or an examiner-approved policy. Adapt it to your institution's approved tools, data classifications, privacy rules, and retention procedures.</p>
+</div>
 
 </body>
 </html>

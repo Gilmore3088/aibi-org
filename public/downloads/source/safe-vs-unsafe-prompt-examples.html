@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Safe vs. Unsafe Prompt Examples - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .cover h1 { font-size: 38pt; max-width: 6.5in; }
+  .cover .lede { max-width: 6.2in; }
+  .page h2 { font-size: 20pt; }
+  table { font-size: 8.8pt; }
+  th, td { padding: 6pt 7pt; vertical-align: top; }
+  .unsafe strong { color: #991B1B; }
+  .safe strong { color: #047857; }
+  .pattern { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; margin: 12pt 0; }
+  .pattern .card { min-height: 1.35in; }
+  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
+  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text"><div class="seal-name">The AI Banking Institute</div><div class="seal-tag">Turning Bankers into Builders</div></div>
+  </div>
+  <div>
+    <div class="kicker">Examples - v1</div>
+    <h1>Safe vs. Unsafe Prompt Examples</h1>
+    <p class="lede">Use these examples to teach bankers how to strip sensitive data, ask for draft support, mark uncertainty, and route risky output to review.</p>
+  </div>
+  <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Example pairs</div>
+  <h2>The safer prompt changes the input, the job, and the review rule.</h2>
+  <table>
+    <thead><tr><th>Unsafe prompt</th><th>Safer prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="unsafe"><strong>Customer service:</strong> Summarize John Smith's account issue and draft a response about why his debit card transaction was denied.</td>
+        <td class="safe"><strong>Customer service:</strong> Using only the redacted facts below, draft a customer-service response template. Do not include account numbers, balances, transaction details, eligibility decisions, fraud conclusions, or promises. Mark missing facts as [VERIFY]. Output as a draft pending banker review.</td>
+      </tr>
+      <tr>
+        <td class="unsafe"><strong>Credit:</strong> Write the adverse-action notice and decide the best reason to deny this applicant.</td>
+        <td class="safe"><strong>Credit:</strong> Using only [HUMAN_PROVIDED_REASONS], rewrite the draft explanation for clarity. Do not add, infer, rank, approve, deny, or decide. Mark unsupported language as [VERIFY].</td>
+      </tr>
+      <tr>
+        <td class="unsafe"><strong>BSA/AML:</strong> Improve this real SAR narrative from the case system and make it more persuasive.</td>
+        <td class="safe"><strong>BSA/AML:</strong> Using [SYNTHETIC_CASE_FACTS] only, create a fictional training example organized by who, what, when, where, why, how, missing facts, and reviewer checklist.</td>
+      </tr>
+      <tr>
+        <td class="unsafe"><strong>Complaints:</strong> Use these complaint notes to tell me what we should offer the customer.</td>
+        <td class="safe"><strong>Complaints:</strong> Using [COMPLAINT_SUMMARY], draft a neutral issue summary and list missing facts. Do not determine fault, offer remediation, or promise outcomes. Route to [REVIEWER].</td>
+      </tr>
+      <tr>
+        <td class="unsafe"><strong>Marketing:</strong> Make this ad more persuasive and add claims about how much customers will save.</td>
+        <td class="safe"><strong>Marketing:</strong> Rewrite this approved campaign draft for clarity. Do not add performance claims, rates, fees, guarantees, eligibility promises, testimonials, or disclosures. Mark unsupported claims as [VERIFY].</td>
+      </tr>
+      <tr>
+        <td class="unsafe"><strong>Operations:</strong> Review these real wire details and tell me whether the payment is suspicious.</td>
+        <td class="safe"><strong>Operations:</strong> Using [APPROVED_PROCEDURE_SUMMARY], create a staff checklist for routing wire-review questions. Do not assess a real transaction or make a fraud conclusion. Escalate exceptions to [REVIEWER].</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Pattern</div>
+  <h2>What the safe prompt does differently.</h2>
+  <div class="pattern">
+    <div class="card"><div class="num">1</div><h4>It replaces specifics.</h4><p>Real customers, accounts, transactions, complaints, SAR facts, credentials, and examiner-sensitive facts become placeholders or are removed.</p></div>
+    <div class="card"><div class="num">2</div><h4>It narrows the job.</h4><p>The prompt asks for draft support, not a decision, approval, denial, investigation, filing, or final answer.</p></div>
+    <div class="card"><div class="num">3</div><h4>It controls the output.</h4><p>The prompt names the format and forbids invented facts, unsupported claims, promises, and sensitive details.</p></div>
+    <div class="card"><div class="num">4</div><h4>It names review.</h4><p>Uncertain items are marked [VERIFY], and the reviewer or escalation trigger is named before downstream use.</p></div>
+  </div>
+
+  <div class="risk-band red">
+    <div class="head"><div class="dot"></div><h4>Stop rule</h4></div>
+    <p>If the prompt still reveals a real customer, investigation, SAR, complaint, loan file, fraud case, security issue, credential, or production detail, escalate instead of prompting.</p>
+  </div>
+
+  <div class="source-box">
+    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI safe-use curriculum.</p>
+    <p><strong>Adapt before adoption:</strong> These examples are training aids, not legal advice or examiner-approved procedures. Adapt them to your institution's approved tools, data classifications, review authority, and escalation rules.</p>
+  </div>
+</section>
+
+</body>
+</html>

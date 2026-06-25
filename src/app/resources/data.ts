@@ -89,8 +89,8 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
   },
   'prompting-foundation-kit': {
     id: 'prompting',
-    desc: 'Turn vague AI requests into safe, structured, reviewable banker prompts with placeholders and review rules.',
-    zipSize: '1.1 MB',
+    desc: 'Prompt like a banker with formula cards, placeholders, safe examples, review rules, and the interactive builder.',
+    zipSize: '1.4 MB',
     icon: Sparkles,
   },
   'frontline-enablement-kit': {

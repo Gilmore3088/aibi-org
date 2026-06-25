@@ -7,11 +7,10 @@
 <style>
   .cover h1 { font-size: 38pt; max-width: 6.4in; }
   .cover .lede { max-width: 6.2in; }
-  .checklist { display: grid; grid-template-columns: 1fr; gap: 7pt; margin: 10pt 0; }
-  .checklist li { list-style: none; margin: 0; padding: 8pt 10pt 8pt 28pt; border: 1px solid var(--slate-200); border-radius: 10pt; position: relative; color: var(--ink); }
+  .checklist { display: grid; grid-template-columns: 1fr; gap: 5pt; margin: 8pt 0; }
+  .checklist li { list-style: none; margin: 0; padding: 6pt 9pt 6pt 26pt; border: 1px solid var(--slate-200); border-radius: 10pt; position: relative; color: var(--ink); }
   .checklist li::before { content: "□"; color: var(--gold-deep); font-weight: 800; left: 10pt; position: absolute; }
-  .source-box { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 12pt; margin-top: 14pt; padding: 10pt 12pt; }
-  .source-box p { font-size: 8.8pt; margin: 3pt 0; }
+  .callout { margin-top: 10pt; padding: 10pt 12pt; }
 </style>
 </head>
 <body>
@@ -24,38 +23,35 @@
   <div>
     <div class="kicker">Review checklist - v1</div>
     <h1>Prompt Output Review Checklist</h1>
-    <p class="lede">Use this before AI-assisted output moves into a customer message, examiner response, board packet, retained record, workflow, or team asset.</p>
+    <p class="lede">Use this before a banker copies, downloads, sends, files, publishes, retains, or reuses AI-assisted output.</p>
   </div>
   <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Before downstream use</div>
-  <h2>Review the input, the output, and the final-use risk.</h2>
-  <p>A good AI answer is still a draft. The reviewer must confirm that the input was safe, the output is accurate, uncertainty is marked, and final use is allowed for the risk lane.</p>
+  <div class="section-kicker">Before copy or download</div>
+  <h2>Require all six checks before output moves downstream.</h2>
+  <p>A good AI answer is still a draft. The reviewer must confirm that the input was safe, the tool was allowed, uncertainty is marked, and final use is allowed for the risk lane.</p>
 
   <ul class="checklist">
-    <li><strong>Sensitive data removed:</strong> Customer names, account numbers, balances, transaction details, SSNs, DOBs, complaint specifics, SAR/AML case facts, credentials, and examiner-sensitive material were removed or replaced with placeholders.</li>
-    <li><strong>Tool approved:</strong> The AI tool is approved for the data class and intended output.</li>
-    <li><strong>Draft support only:</strong> The prompt asked for draft, summary, rewrite, extraction, comparison, checklist, critique, or scenario support, not a final decision.</li>
-    <li><strong>Format controlled:</strong> The output is in the requested format: bullets, table, checklist, email draft, script, FAQ, SOP, memo, markdown, or evidence packet.</li>
-    <li><strong>Facts verified:</strong> Numbers, dates, citations, policy claims, product terms, procedural steps, and compliance references were checked against source documents.</li>
-    <li><strong>[VERIFY] resolved:</strong> Uncertain or unsupported items are marked [VERIFY], then confirmed, corrected, escalated, or removed before final use.</li>
-    <li><strong>Reviewer named:</strong> Customer-facing, examiner-facing, regulated, retained, or operational output has a named human reviewer.</li>
-    <li><strong>Escalation triggers clear:</strong> Customer impact, credit, BSA/AML, fraud, authentication, complaints, examiner-facing material, legal/compliance interpretation, or prohibited data routes to the right owner.</li>
-    <li><strong>Evidence retained:</strong> Final version, source reference, reviewer note, approval record, and exception notes are retained where required.</li>
+    <li><strong>Sensitive data removed:</strong> Customer names, account numbers, balances, transaction details, SSNs, DOBs, complaint specifics, SAR/AML case facts, credentials, and examiner-sensitive material were removed or replaced with approved placeholders.</li>
+    <li><strong>Tool approved:</strong> The AI tool is approved for this data class.</li>
+    <li><strong>Draft support only:</strong> The prompt asked for draft support, not a final decision.</li>
+    <li><strong>Format clear:</strong> The prompt named the output format: bullets, table, checklist, email draft, script, FAQ, SOP, memo, markdown, or evidence packet.</li>
+    <li><strong>[VERIFY] required:</strong> Uncertain, unsupported, missing, or source-dependent items must be marked [VERIFY].</li>
+    <li><strong>Reviewer and escalation named:</strong> The human reviewer and escalation trigger are clear before downstream use.</li>
   </ul>
 
   <div class="callout">
     <div class="label">Move to SOP when repeated</div>
     <p>If the same prompt becomes a team practice, move it into the Workflow SOP Builder. A reusable prompt needs an approved tool, allowed inputs, prohibited inputs, reviewer, approval checkpoint, escalation path, and retention rule.</p>
   </div>
-
-  <div class="source-box">
-    <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI workflow SOP curriculum.</p>
-    <p><strong>Adapt before adoption:</strong> This checklist is a training aid, not legal advice or an examiner-approved policy. Adapt before adopting it to your institution's data classification, records-retention schedule, review authority, and escalation procedures.</p>
-  </div>
 </section>
+
+<div hidden>
+  <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, Interagency Guidance on Third-Party Relationships, CFPB Regulation B, CFPB Regulation P, FFIEC BSA/AML Manual risk concepts, and AiBI workflow SOP curriculum.</p>
+  <p><strong>Adapt before adoption:</strong> This checklist is a training aid, not legal advice or an examiner-approved policy. Adapt it to your institution's data classification, records-retention schedule, review authority, and escalation procedures.</p>
+</div>
 
 </body>
 </html>

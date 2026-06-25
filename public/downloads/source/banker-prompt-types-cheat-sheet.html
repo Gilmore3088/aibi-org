@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Banker Prompt Types Cheat Sheet - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .cover h1 { font-size: 38pt; max-width: 6.4in; }
+  .cover .lede { max-width: 6.2in; }
+  .page h2 { font-size: 20pt; }
+  table { font-size: 8.35pt; }
+  th, td { padding: 4.2pt 5pt; }
+  .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9pt; margin: 12pt 0; }
+  .type-grid .card { min-height: .9in; padding: 8pt 10pt; }
+  .type-grid .card p { font-size: 9.4pt; line-height: 1.4; }
+  .callout { margin-top: 8pt; padding: 10pt 12pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text"><div class="seal-name">The AI Banking Institute</div><div class="seal-tag">Turning Bankers into Builders</div></div>
+  </div>
+  <div>
+    <div class="kicker">Desk reference - v1</div>
+    <h1>Banker Prompt Types Cheat Sheet</h1>
+    <p class="lede">Choose the work first, then write the prompt. Each type needs an allowed source, output format, reviewer, and data boundary.</p>
+  </div>
+  <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Basic prompt types</div>
+  <h2>Start with the six common jobs.</h2>
+  <div class="type-grid">
+    <div class="card"><div class="num">Draft</div><h4>Create first-pass language.</h4><p>Use for emails, scripts, summaries, huddle notes, and internal updates. Human approves before use.</p></div>
+    <div class="card"><div class="num">Summarize</div><h4>Condense approved material.</h4><p>Use for public guidance, procedures, meeting notes, or de-identified themes. Check facts against the source.</p></div>
+    <div class="card"><div class="num">Rewrite</div><h4>Adjust tone, clarity, or length.</h4><p>Preserve meaning. Do not add requirements, soften compliance language, or change product terms.</p></div>
+    <div class="card"><div class="num">Extract</div><h4>Pull actions and open items.</h4><p>Use for dates, risks, owners, evidence, missing facts, and review questions. Extraction is not verification.</p></div>
+    <div class="card"><div class="num">Compare</div><h4>Show differences and uncertainty.</h4><p>Use for draft versus source, versions, vendor responses, or policy options. Do not ask for legal conclusions.</p></div>
+    <div class="card"><div class="num">Checklist</div><h4>Turn work into steps.</h4><p>Use for handoff, QA, training, review, and launch readiness. Reviewer confirms steps match approved source.</p></div>
+  </div>
+
+  <h3>Advanced types</h3>
+  <table>
+    <thead><tr><th>Type</th><th>Use it for</th><th>Bank-safe caution</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Critique</strong></td><td>Flag unsupported claims, vague language, missing disclosures, unclear steps, or risk flags.</td><td>AI flags possible issues. It does not approve or reject.</td></tr>
+      <tr><td><strong>Scenario</strong></td><td>Create fictional training examples, role plays, quiz cases, or coaching material.</td><td>No real customer, employee, vendor, alert, complaint, or investigation details.</td></tr>
+      <tr><td><strong>Data-to-narrative</strong></td><td>Explain approved aggregate metrics in plain English.</td><td>Use aggregate or de-identified data unless the tool is approved for the data class.</td></tr>
+      <tr><td><strong>Solution brief</strong></td><td>Turn workflow pain into a problem, user, constraint, test, and handoff note.</td><td>Keep it internal and move buildable ideas into the Banker Builder Brief Kit.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Prompt rule</div>
+    <p><strong>If the type asks AI to decide, approve, deny, file, send, publish, investigate, or retain final output, rewrite it.</strong> The prompt should ask for draft support and require human review.</p>
+  </div>
+</section>
+
+<div hidden>
+  <p><strong>Source basis:</strong> NIST AI Risk Management Framework, OWASP GenAI Top 10, and AiBI safe-use curriculum.</p>
+  <p><strong>Adapt before adoption:</strong> This card is a training aid, not legal advice or an examiner-approved policy. Adapt it to your approved tools, data classes, and review procedures.</p>
+</div>
+
+</body>
+</html>

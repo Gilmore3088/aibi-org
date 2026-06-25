@@ -63,7 +63,7 @@
     },
     {
       "slug": "prompting-foundation-guide",
-      "title": "AI Prompting Foundation Guide",
+      "title": "Prompt Like a Banker Foundation Guide",
       "audience": ["All roles"],
       "category": "artifact",
       "funnelSegment": "skill-building",
@@ -138,6 +138,46 @@
         "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
         "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
         "topGaps": ["review", "documentation"]
+      },
+      "status": "public"
+    },
+    {
+      "slug": "banker-prompt-types-cheat-sheet",
+      "title": "Banker Prompt Types Cheat Sheet",
+      "audience": ["All roles", "Training", "Managers"],
+      "category": "artifact",
+      "funnelSegment": "skill-building",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "banker-prompt-types-cheat-sheet.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "banker-prompt-types-cheat-sheet.pdf", "word": "/api/resources/banker-prompt-types-cheat-sheet/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/banker-prompt-types-cheat-sheet/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "AiBI safe-use curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["prompt-quality", "staff-enablement"]
+      },
+      "status": "public"
+    },
+    {
+      "slug": "safe-vs-unsafe-prompt-examples",
+      "title": "Safe vs. Unsafe Prompt Examples",
+      "audience": ["All roles", "Training", "Managers", "Compliance"],
+      "category": "artifact",
+      "funnelSegment": "skill-building",
+      "visibleSurfaces": ["starter-kit"],
+      "download": { "filePath": "safe-vs-unsafe-prompt-examples.pdf", "fileType": "pdf", "tierRequired": "free" },
+      "variants": { "pdf": "safe-vs-unsafe-prompt-examples.pdf", "word": "/api/resources/safe-vs-unsafe-prompt-examples/word", "zip": null },
+      "zipMembership": ["prompting-foundation-kit"],
+      "canonicalRoute": "/api/resources/safe-vs-unsafe-prompt-examples/download",
+      "sourceCitations": ["NIST AI RMF", "OWASP GenAI Top 10", "CFPB Regulation B", "CFPB Regulation P", "FFIEC BSA/AML Manual risk concepts", "AiBI safe-use curriculum"],
+      "gatePolicy": "free-email-gated",
+      "assessmentMapping": {
+        "roles": ["retail", "marketing", "lending", "operations", "compliance", "training-hr"],
+        "tierLabels": ["Starting Point", "Early Stage", "Building Momentum"],
+        "topGaps": ["prompt-quality", "data-handling", "review"]
       },
       "status": "public"
     },
@@ -541,7 +581,7 @@
     },
     {
       "slug": "prompting-foundation-kit",
-      "title": "The AI Prompting Foundation Kit",
+      "title": "Prompt Like a Banker Kit",
       "audience": ["All roles", "Training", "Managers"],
       "category": "starter-kit",
       "funnelSegment": "skill-building",

@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import { PromptingFoundationBuilder } from './PromptingFoundationBuilder';
 
 export const metadata: Metadata = {
-  title: 'AI Prompting Foundation Kit | The AI Banking Institute',
+  title: 'Prompt Like a Banker | The AI Banking Institute',
   description:
-    'A banker-specific prompt builder for safe placeholders, prompt types, output formats, review rules, and escalation triggers.',
+    'A banker-specific prompt builder and foundation kit for safe placeholders, output formats, review rules, and escalation triggers.',
   alternates: { canonical: 'https://www.aibankinginstitute.com/resources/prompting-foundation' },
   openGraph: {
-    title: 'AI Prompting Foundation Kit',
+    title: 'Prompt Like a Banker',
     description:
-      'Turn vague AI requests into safe, structured, reviewable banker prompts without exposing sensitive data.',
+      'Build safe, structured, review-ready banker prompts without exposing sensitive data.',
     url: 'https://www.aibankinginstitute.com/resources/prompting-foundation',
     type: 'website',
   },
