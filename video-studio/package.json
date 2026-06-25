@@ -7,6 +7,8 @@
     "studio": "remotion studio",
     "render": "remotion render src/index.ts AssessmentResults out/assessment-results.mp4",
     "render-props": "remotion render src/index.ts AssessmentResults out/custom.mp4 --props=./props.json",
+    "render-explainer": "remotion render src/index.ts ScriptedExplainer out/safe-ai-use.mp4",
+    "voiceover": "tsx scripts/generate-voiceover.ts",
     "still": "remotion still src/index.ts AssessmentResults out/frame.png --frame=300",
     "upgrade": "remotion upgrade"
   },
@@ -18,6 +20,9 @@
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
-    "typescript": "^5.6.3"
+    "music-metadata": "^10.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "undici": "^6.21.0"
   }
 }

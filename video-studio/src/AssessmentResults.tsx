@@ -31,9 +31,10 @@ export const TOTAL_FRAMES =
   SCENES.outro;
 
 // Props let you swap the data without touching code (props.json / studio panel).
-export interface AssessmentResultsProps {
+// `type` (not `interface`) so it satisfies Remotion's Record<string, unknown>.
+export type AssessmentResultsProps = {
   result: AssessmentResult;
-}
+};
 
 export const AssessmentResults: React.FC<AssessmentResultsProps> = ({
   result = sampleResult,
