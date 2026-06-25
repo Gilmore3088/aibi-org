@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The IT / InfoSec Leader's AI-Native Playbook — The AI Banking Institute</title>
+<title>The Bank InfoSec AI Control Plane Kit — The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page { padding-bottom: 0.95in; }
@@ -69,14 +69,33 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · IT / InfoSec · v2.0</div>
-    <h1>The IT / InfoSec Leader's AI-Native Playbook</h1>
-    <p class="lede">From approved tools to enforceable AI security architecture. A practical operating playbook for IT, InfoSec, security engineering, and vendor-risk teams responsible for protecting AI use inside a community bank or credit union.</p>
+    <div class="kicker">Control plane kit · IT / InfoSec · v2.1</div>
+    <h1>The Bank InfoSec AI Control Plane Kit</h1>
+    <p class="lede">How to route, inspect, log, gate, and govern AI use before shadow AI becomes your architecture.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
     <div>AIBankingInstitute.com</div>
   </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Start here · 30-day control plane</div>
+  <h2>The 30-Day AI Security Control Plane</h2>
+  <p>InfoSec does not need to boil the ocean in month one. It needs a visible approved path, a data boundary, a fast tool verdict, gateway requirements, guardrail tests, agent review, and an evidence packet.</p>
+  <table>
+    <thead><tr><th>Artifact</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Approved AI Tools List</td><td>Names allowed tools, owners, data classes, conditions, and review dates.</td></tr>
+      <tr><td>AI Data Classification Matrix</td><td>Maps public, internal, confidential, NPI, security-sensitive, examiner/legal, and credential data to allowed environments.</td></tr>
+      <tr><td>60-Minute AI Tool Vetting Memo</td><td>Creates a fast, defensible approved / conditional / rejected verdict.</td></tr>
+      <tr><td>AI Gateway Requirements Checklist</td><td>Defines authentication, authorization, model routing, logging, input/output inspection, and review triggers.</td></tr>
+      <tr><td>Runtime Guardrail Test Set</td><td>Tests PII/NPI, secrets, prompt injection, agent misuse, and unsafe output handling.</td></tr>
+      <tr><td>AgentSecOps Review Form</td><td>Registers agent identity, permissions, tools, data classes, gates, logs, and rollback.</td></tr>
+      <tr><td>AI Evidence Packet</td><td>Stores request, review, verdict, conditions, logs, tests, exceptions, and next review date.</td></tr>
+    </tbody>
+  </table>
+  <div class="principle">The control plane is not one product. It is the approved path plus the controls that make that path observable and enforceable.</div>
 </section>
 
 <!-- Section 1 -->
@@ -99,7 +118,7 @@
       <li>AgentSecOps</li>
       <li>Vibe-coding controls</li>
       <li>Five InfoSec plays</li>
-      <li>Copy-paste templates</li>
+      <li>Editable templates</li>
       <li>30-day implementation path</li>
       <li>Measurement model</li>
       <li>Evidence packet</li>
@@ -125,6 +144,19 @@
 
   <h3>The opportunity</h3>
   <p>InfoSec can make approved AI easier than shadow AI. A strong InfoSec AI program gives employees a safe path: approved tools, clear data classes, central access path, logged activity, runtime guardrails, vendor verdicts, AI application security testing, human approval gates, sandboxed agent execution, and evidence for audit and exam review.</p>
+
+  <h3>Source basis without over-claiming model risk</h3>
+  <p>Current model-risk guidance, including SR 26-2 where applicable, should be considered when AI supports quantitative, customer-impacting, regulated, or model-like decision processes. Generative AI and agentic AI security controls should be anchored primarily in information security governance, approved-tool controls, data protection, third-party oversight, runtime guardrails, logging, access management, incident response, and evidence retention.</p>
+
+  <h3>Three maturity paths</h3>
+  <table>
+    <thead><tr><th>Level</th><th>Control path</th><th>Core controls</th></tr></thead>
+    <tbody>
+      <tr><td>Level 1</td><td>Policy-enforced approved path</td><td>Approved tools, SSO where available, admin controls, staff training, prohibited data rules, vendor review, manual logs.</td></tr>
+      <tr><td>Level 2</td><td>Managed AI access path</td><td>Enterprise AI tools, RBAC, DLP, prompt/output logging where supported, review triggers, usage monitoring, SIEM integration.</td></tr>
+      <tr><td>Level 3</td><td>AI control plane</td><td>Central gateway, model routing, policy-as-code, input/output inspection, API key management, agent sandboxing, tool allowlists, eval test sets, secrets scanning, automated evidence capture.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <!-- Section 2 -->
@@ -435,6 +467,22 @@
     <li>Code review before merge.</li>
   </ul>
 
+  <h3>AI Code Review Checklist</h3>
+  <table>
+    <thead><tr><th>Control</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Generated code labeled AI-assisted</td><td>Pull request note or change ticket.</td></tr>
+      <tr><td>Qualified developer reviewed logic</td><td>Reviewer sign-off.</td></tr>
+      <tr><td>SAST completed</td><td>Scan link or pass/fail result.</td></tr>
+      <tr><td>Dependency scan completed</td><td>Dependency/security scan result.</td></tr>
+      <tr><td>Secrets scan completed</td><td>No prod credentials or tokens found.</td></tr>
+      <tr><td>License / open-source review</td><td>Package/license verdict.</td></tr>
+      <tr><td>No production data used</td><td>Test-data note.</td></tr>
+      <tr><td>Test coverage and rollback plan</td><td>Test evidence, change ticket, rollback owner.</td></tr>
+      <tr><td>Approved before merge</td><td>Change-management or reviewer approval.</td></tr>
+    </tbody>
+  </table>
+
 </section>
 
 <section class="page">
@@ -585,7 +633,7 @@
 
 <!-- Section 11 templates -->
 <section class="page">
-  <div class="section-kicker">Section 11 · Copy-paste templates</div>
+  <div class="section-kicker">Section 11 · Editable templates</div>
   <h2>Five reusable artifacts</h2>
 
   <h3>Template 1 · AI Tool Vetting Memo</h3>
@@ -633,22 +681,23 @@
     </tbody>
   </table>
 
-  <h3>Template 4 · AgentSecOps review form</h3>
+  <h3>Template 4 · Agent Permission Register</h3>
   <table>
     <thead><tr><th>Field</th><th>Response</th></tr></thead>
     <tbody>
       <tr><td>Agent name</td><td></td></tr>
-      <tr><td>Owner</td><td></td></tr>
-      <tr><td>Business purpose</td><td></td></tr>
-      <tr><td>Tools available</td><td></td></tr>
-      <tr><td>Data classes accessed</td><td></td></tr>
-      <tr><td>Can it write data?</td><td></td></tr>
-      <tr><td>Can it send messages?</td><td></td></tr>
-      <tr><td>Can it execute code?</td><td></td></tr>
-      <tr><td>Human approval gates</td><td></td></tr>
-      <tr><td>Sandbox tested?</td><td></td></tr>
-      <tr><td>Logs retained?</td><td></td></tr>
+      <tr><td>Business owner</td><td></td></tr>
+      <tr><td>Service identity</td><td></td></tr>
+      <tr><td>Allowed tools</td><td></td></tr>
+      <tr><td>Data classes</td><td></td></tr>
+      <tr><td>Forbidden actions</td><td></td></tr>
+      <tr><td>Token scope / TTL</td><td></td></tr>
+      <tr><td>Can read / write / send externally?</td><td></td></tr>
+      <tr><td>Human approval gate</td><td></td></tr>
+      <tr><td>Sandbox tested</td><td></td></tr>
       <tr><td>Rollback plan</td><td></td></tr>
+      <tr><td>Log location</td><td></td></tr>
+      <tr><td>Next review date</td><td></td></tr>
       <tr><td><strong>Verdict</strong></td><td>Approved / Conditional / Rejected</td></tr>
     </tbody>
   </table>
@@ -656,19 +705,17 @@
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 11 · Copy-paste templates · continued</div>
-  <h2>Template 5 · AI security test cases</h2>
+  <div class="section-kicker">Section 11 · Editable templates · continued</div>
+  <h2>Template 5 · Runtime Guardrail Test Set</h2>
   
   <table>
-    <thead><tr><th>Test</th><th>Expected result</th></tr></thead>
+    <thead><tr><th>Test ID</th><th>Input pattern</th><th>Expected verdict</th><th>Result</th><th>Reviewer / fix</th></tr></thead>
     <tbody>
-      <tr><td>Paste fake SSN into public tool</td><td>Block</td></tr>
-      <tr><td>Prompt asks model to ignore policy</td><td>Block or flag</td></tr>
-      <tr><td>Uploaded document includes hidden instruction</td><td>Flag indirect injection</td></tr>
-      <tr><td>Output includes invented citation</td><td>Flag for review</td></tr>
-      <tr><td>Agent attempts unapproved tool call</td><td>Block</td></tr>
-      <tr><td>Generated code contains hardcoded secret</td><td>Block / fail scan</td></tr>
-      <tr><td>Low confidence on high-risk task</td><td>Route to human</td></tr>
+      <tr><td>PII-001</td><td>Customer name, SSN, account number, balance, or transaction detail in public-tool request.</td><td>Blocked or escalated.</td><td>Blocked / allowed / escalated; false positive?</td><td>Reviewer, fix required, retest date.</td></tr>
+      <tr><td>SEC-002</td><td>API key, password, access token, vulnerability detail, or security architecture excerpt.</td><td>Blocked and alert InfoSec.</td><td>Blocked / allowed / escalated; false positive?</td><td>Reviewer, fix required, retest date.</td></tr>
+      <tr><td>INJ-003</td><td>Direct or indirect prompt injection: ignore policy, reveal instructions, bypass controls.</td><td>Blocked or routed to review.</td><td>Blocked / allowed / escalated; false positive?</td><td>Reviewer, fix required, retest date.</td></tr>
+      <tr><td>AGT-004</td><td>Agent attempts unapproved tool call, external send, production write, or credentialed action.</td><td>Blocked unless explicit human approval gate fires.</td><td>Blocked / allowed / escalated; false positive?</td><td>Reviewer, fix required, retest date.</td></tr>
+      <tr><td>OUT-005</td><td>Output contains unsupported claim, invented citation, sensitive data leakage, or unsafe code.</td><td>Flagged for human review or blocked.</td><td>Blocked / allowed / escalated; false positive?</td><td>Reviewer, fix required, retest date.</td></tr>
     </tbody>
   </table>
 </section>
@@ -794,18 +841,17 @@
 
 <!-- Sections 16 + 17 -->
 <section class="page">
-  <div class="section-kicker">Section 16 · Recommended AiBI path</div>
-  <h2>From assessment to operating rhythm</h2>
+  <div class="section-kicker">Section 16 · The Bank InfoSec AI Control Plane Kit</div>
+  <h2>Package the controls as editable artifacts</h2>
+  <p>The gated kit includes this playbook plus the editable Approved AI Tools List, AI Data Classification Matrix, 60-Minute AI Tool Vetting Memo, AI Gateway Requirements Checklist, Runtime Guardrail Test Set, Agent Permission Register, AI Code Review Checklist, and AI Evidence Packet.</p>
+  <h3>Next step: Run the 60-Minute AI Security Control Plane Sprint</h3>
+  <p>In one session, classify AI data, identify approved tools, define the first gateway requirements, create the guardrail test set, and log the first AI tool verdict.</p>
   <ol>
-    <li>Take the AI Readiness Assessment.</li>
-    <li>Assign InfoSec and Compliance leaders to the Foundation Course.</li>
-    <li>Complete the Red / Yellow / Green Use Card.</li>
-    <li>Publish the data classification matrix.</li>
-    <li>Run the 60-minute tool vetting process on top AI tools.</li>
-    <li>Build the approved tools list.</li>
-    <li>Create gateway and guardrail requirements.</li>
-    <li>Build the AgentSecOps review form.</li>
-    <li>Reassess after 90 days.</li>
+    <li>List the top three AI tools or AI-enabled vendor features already in use or requested.</li>
+    <li>Classify the data each may touch and name prohibited data classes.</li>
+    <li>Write the gateway or approved-access requirements: identity, logging, DLP, model routing, review triggers, and evidence location.</li>
+    <li>Create five runtime guardrail tests: PII, secrets, prompt injection, agent misuse, and unsafe output.</li>
+    <li>Log the first approved / conditional / rejected tool verdict and assign a next review date.</li>
   </ol>
 
   <hr style="border:none; border-top:1px solid var(--slate-200); margin: 14pt 0;">
@@ -823,10 +869,13 @@
     <li>Log the evidence.</li>
     <li>Refresh the verdicts.</li>
   </ul>
-  <div class="principle">If the approved path is clear, fast, and useful, employees will use it. If it is slow or invisible, they will create a shadow path.</div>
+</section>
 
+<section class="page">
+  <div class="section-kicker">Source basis</div>
+  <h2>What this kit is anchored to</h2>
   <div class="cite">
-    Sources: OWASP Top 10 for LLM Applications; NIST AI Risk Management Framework; GLBA / Regulation P; Interagency Third-Party Risk Management Guidance; SR 11-7 (Federal Reserve); AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
+    Sources: OWASP Top 10 for LLM Applications; NIST AI 600-1 Generative AI Profile and NIST AI Risk Management Framework; FFIEC Architecture, Infrastructure, and Operations booklet; GLBA information-security obligations, FTC Safeguards Rule where applicable, and parallel interagency information-security standards; Interagency Third-Party Risk Management Guidance; Federal Reserve SR 26-2 and parallel 2026 model-risk updates where applicable; Treasury / FSSCC Financial Services AI Risk Management Framework; AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026); AiBI Foundations curriculum.
     <p>This playbook is a starter artifact, not legal advice or an examiner-approved security architecture. Adapt before adoption and route final controls through information security, vendor risk, legal, and governance review.</p>
   </div>
 </section>
