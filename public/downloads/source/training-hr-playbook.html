@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The Training / HR AI-Native Playbook - The AI Banking Institute</title>
+<title>The Bank AI Role Readiness Kit - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .page h2 { font-size: 20pt; }
@@ -18,6 +18,10 @@
   .small-checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
   table { font-size: 9.5pt; }
   th { font-size: 8.5pt; }
+  .template-table { font-size: 8.7pt; margin: 7pt 0 10pt; }
+  .template-table th { font-size: 7.8pt; }
+  .template-table th,
+  .template-table td { padding: 4.8pt 8pt; vertical-align: top; }
 </style>
 </head>
 <body>
@@ -31,9 +35,9 @@
     </div>
   </div>
   <div>
-    <div class="kicker">Role playbook · Training / HR · v1.0</div>
-    <h1>The Training / HR AI-Native Playbook</h1>
-    <p class="lede">Replace generic AI awareness with role-specific practice and visible readiness tracking. This playbook helps Training and HR make adoption measurable.</p>
+    <div class="kicker">Role readiness kit - Training / HR - v2.0</div>
+    <h1>The Bank AI Role Readiness Kit</h1>
+    <p class="lede">Turn generic AI awareness into role-specific practice, safe-use scenarios, and visible readiness tracking.</p>
   </div>
   <div class="footer-row">
     <div>The AI Banking Institute · 2026</div>
@@ -43,111 +47,159 @@
 
 <section class="page">
   <div class="section-kicker">Section 1 · Executive snapshot</div>
-  <h2>The operating principle</h2>
-  <div class="principle">AI training is not complete when staff hear the rules. It is complete when each role can practice safely and readiness is visible.</div>
+  <h2>Role readiness, not generic awareness</h2>
+  <div class="principle">AI training is complete when each role can practice safely, show the skill, and know when to stop.</div>
   <p>AI adoption fails when training stays generic. Staff need to know which AI tasks are safe for their role, which data boundaries apply, which approved tools to use, where to escalate, and how to practice without real customer data. Training and HR make readiness observable instead of assumed.</p>
+
+  <h3>Training Data Boundary Card</h3>
+  <p>Do not use real customer stories, complaint records, employee performance details, medical information, or live personnel records in AI practice prompts.</p>
+
+  <div class="principle">AI may support training-path design, fictional scenarios, role practice, and readiness tracking. AI may not rank employees, evaluate performance, recommend discipline, screen applicants, determine accommodations, infer protected characteristics, or make employment-related decisions unless the use case has been separately reviewed and approved by HR, Legal, Compliance, and Information Security.</div>
 
   <div class="toc">
     <div class="section-kicker" style="margin-top:0;">What's inside</div>
     <ol>
-      <li>Executive snapshot</li>
-      <li>Immediate training and HR use cases</li>
-      <li>Capability operating model</li>
-      <li>Readiness checklist</li>
-      <li>Toolbox artifacts</li>
-      <li>30-day enablement path</li>
-      <li>Source basis</li>
+      <li>Training data boundary and employment firewall</li>
+      <li>What AI-ready means</li>
+      <li>Role training path examples</li>
+      <li>Role capability spec</li>
+      <li>Role training path template</li>
+      <li>Safe-use one-pager</li>
+      <li>Practice scenario pack</li>
+      <li>Capability tracker and manager sign-off</li>
+      <li>30-day enablement runbook</li>
+      <li>45-minute role readiness sprint</li>
     </ol>
   </div>
+</section>
 
-  <h3>Training / HR enablement map</h3>
-  <table>
-    <thead><tr><th>Dimension</th><th>Training decision</th></tr></thead>
+<section class="page">
+  <div class="section-kicker">Section 2 · Readiness definition</div>
+  <h2>What AI-ready means</h2>
+  <ul class="small-checklist">
+    <li>Can classify a prompt by data risk.</li>
+    <li>Can choose the approved tool.</li>
+    <li>Can use a role prompt safely.</li>
+    <li>Can remove prohibited data.</li>
+    <li>Can mark uncertain output [VERIFY].</li>
+    <li>Can identify the human review point.</li>
+    <li>Can escalate a red use case.</li>
+    <li>Can complete a fictional scenario.</li>
+    <li>Can pass manager review.</li>
+  </ul>
+
+  <h3>Role path examples</h3>
+  <table class="template-table">
+    <thead><tr><th>Role</th><th>Safe practice tasks</th><th>Required boundary</th></tr></thead>
     <tbody>
-      <tr><td>Primary goal</td><td>Staff readiness</td></tr>
-      <tr><td>Core artifact</td><td>Role training path</td></tr>
-      <tr><td>Risk focus</td><td>Safe-use literacy, role practice, approved tools, capability tracking</td></tr>
-      <tr><td>Recommended path</td><td>Maturity Assessment -> Foundation Course -> Role Training Path -> Capability Tracker</td></tr>
+      <tr><td>Branch / Retail</td><td>Draft placeholder replies; translate procedures into job aids.</td><td>No real customer/account data in practice prompts.</td></tr>
+      <tr><td>Lending</td><td>Draft language from human-provided facts; map principal reasons to file support.</td><td>No AI-selected reasons or unreviewed credit-impacting output.</td></tr>
+      <tr><td>BSA/AML</td><td>Summarize fictional alerts; draft QA checklists.</td><td>No SAR, SAR existence, or live investigative details in practice tools.</td></tr>
+      <tr><td>Operations</td><td>Build reusable working briefs; create handoff SOPs.</td><td>No prohibited data in sandbox workflows.</td></tr>
+      <tr><td>Marketing</td><td>Draft campaign kits; verify source claims.</td><td>No customer-level data or unverified offer terms.</td></tr>
+      <tr><td>Compliance</td><td>Review use-case intake; identify review checkpoints.</td><td>No legal conclusions without qualified review.</td></tr>
+      <tr><td>IT / InfoSec</td><td>Classify tools; define data and access controls.</td><td>No secrets, credentials, or production data in practice prompts.</td></tr>
+      <tr><td>Executives</td><td>Read pilot scorecards; ask evidence questions.</td><td>No adoption decision without owner, metric, data boundary, and stop trigger.</td></tr>
     </tbody>
   </table>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 2 · Immediate training use cases</div>
-  <h2>Where training and HR can use AiBI immediately</h2>
-  <div class="two-col">
-    <div class="card">
-      <h4>Build a role-specific training path</h4>
-      <p>Turn generic AI awareness into the two or three things a given role needs to do safely.</p>
-      <p><strong>Artifact:</strong> Role training path.</p>
-    </div>
-    <div class="card">
-      <h4>Write a safe-use one-pager</h4>
-      <p>Give every new hire the green/yellow/red data rules and the approved-tool list on one sheet.</p>
-      <p><strong>Artifact:</strong> Safe-use reference.</p>
-    </div>
-    <div class="card">
-      <h4>Create practice scenarios</h4>
-      <p>Draft realistic, fictional scenarios staff can rehearse in the sandbox - never real customer stories.</p>
-      <p><strong>Artifact:</strong> Scenario pack.</p>
-    </div>
-    <div class="card">
-      <h4>Track who is ready</h4>
-      <p>Define what "trained" means per role and record who has cleared the bar.</p>
-      <p><strong>Artifact:</strong> Capability tracker.</p>
-    </div>
-  </div>
+  <div class="section-kicker">Section 3 · Kit templates</div>
+  <h2>Role Capability Spec</h2>
+  <table class="template-table">
+    <thead><tr><th>Field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Role</td><td></td></tr>
+      <tr><td>Two safe AI tasks staff may perform</td><td></td></tr>
+      <tr><td>Approved tools</td><td></td></tr>
+      <tr><td>Allowed inputs</td><td></td></tr>
+      <tr><td>Prohibited inputs</td><td></td></tr>
+      <tr><td>Human review point</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+      <tr><td>Pass criteria</td><td></td></tr>
+    </tbody>
+  </table>
 
-  <h3>The risk line</h3>
-  <p>Training examples must use fictional or sanitized scenarios. Do not use real customer stories, complaint records, employee performance details, medical information, or live personnel records in AI practice prompts.</p>
+  <h3>Role Training Path Template</h3>
+  <table class="template-table">
+    <thead><tr><th>Path element</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Safe-use rule</td><td></td></tr>
+      <tr><td>Role prompt</td><td></td></tr>
+      <tr><td>Fictional scenario</td><td></td></tr>
+      <tr><td>Sandbox exercise</td><td></td></tr>
+      <tr><td>Review checklist</td><td></td></tr>
+      <tr><td>Completion criteria</td><td></td></tr>
+      <tr><td>Refresh cadence</td><td></td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 3 · Capability operating model</div>
-  <h2>From one-time training to sustained capability</h2>
-  <ol>
-    <li><strong>Scope.</strong> For one role, name the two or three AI tasks they should be able to do safely. Artifact: Role capability spec.</li>
-    <li><strong>Build.</strong> Assemble the path: the rules, the examples, and a sandbox exercise tied to real role work. Artifact: Role training path.</li>
-    <li><strong>Run.</strong> Deliver it to one cohort. Capture where people get stuck and what questions recur. Artifact: Cohort feedback log.</li>
-    <li><strong>Track.</strong> Record who has cleared the bar, refresh on a cadence, and feed gaps back into the path. Artifact: Capability tracker.</li>
-  </ol>
-
-  <h3>Readiness checklist</h3>
+  <div class="section-kicker">Section 4 · Practice and tracking</div>
+  <h2>Safe-Use One-Pager</h2>
   <ul class="small-checklist">
-    <li>Training is tied to specific role tasks, not general awareness.</li>
-    <li>Green/yellow/red data rules are covered explicitly.</li>
-    <li>Approved-tool list is part of every path.</li>
-    <li>Practice uses fictional scenarios, never real customer data.</li>
-    <li>"Trained" is defined and measurable per role.</li>
-    <li>There is a named person to ask when staff get stuck.</li>
+    <li>Use only approved tools.</li>
+    <li>Remove prohibited data before prompting.</li>
+    <li>Use fictional scenarios for practice.</li>
+    <li>Mark uncertain output [VERIFY].</li>
+    <li>Route customer-facing, credit-impacting, employment-related, or regulated output to human review.</li>
+    <li>Escalate red use cases before trying them.</li>
+  </ul>
+
+  <h3>Practice Scenario Pack</h3>
+  <table class="template-table">
+    <thead><tr><th>Scenario field</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>Role</td><td></td></tr>
+      <tr><td>Fictional setup</td><td></td></tr>
+      <tr><td>Approved source material</td><td></td></tr>
+      <tr><td>Prompt to run</td><td></td></tr>
+      <tr><td>Expected safe output</td><td></td></tr>
+      <tr><td>[VERIFY] items</td><td></td></tr>
+      <tr><td>Escalation trigger</td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="page">
+  <div class="section-kicker">Section 5 · Capability tracking</div>
+  <h2>Capability Tracker</h2>
+  <div class="principle">Track completion, demonstrated safe-use skill, scenario results, refresh date, and manager sign-off. Do not enter employee medical, accommodation, performance, disciplinary, protected-class, or subjective AI evaluations into AI tools or training trackers.</div>
+  <table class="template-table">
+    <thead><tr><th>Role</th><th>Safe-use skill shown</th><th>Scenario result</th><th>Refresh date</th><th>Manager sign-off</th></tr></thead>
+    <tbody><tr><td></td><td></td><td>Pass / Retry</td><td></td><td></td></tr></tbody>
+  </table>
+
+  <h3>Manager Sign-Off Card</h3>
+  <ul class="small-checklist">
+    <li>Staff member used approved tool.</li>
+    <li>Staff member removed prohibited data.</li>
+    <li>Staff member used role prompt correctly.</li>
+    <li>Staff member marked uncertain output [VERIFY].</li>
+    <li>Staff member identified human review and escalation point.</li>
+    <li>Staff member completed fictional scenario and met pass criteria.</li>
   </ul>
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 4 · Artifacts and implementation path</div>
-  <h2>Toolbox artifacts</h2>
-  <table>
-    <thead><tr><th>Artifact</th><th>Use it for</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Role Training Path Template</td><td>Define task, rule, example, practice, and completion criteria.</td><td>Ready</td></tr>
-      <tr><td>Safe-Use One-Pager</td><td>Publish data rules and approved-tool rules for staff.</td><td>Ready</td></tr>
-      <tr><td>Practice Scenario Pack</td><td>Create fictional scenario drills by role.</td><td>Ready</td></tr>
-      <tr><td>Capability Tracker</td><td>Record who has completed the role-specific bar.</td><td>Ready</td></tr>
-      <tr><td>Data Rules Reference Card</td><td>Reinforce green/yellow/red AI data handling.</td><td>Draft</td></tr>
-    </tbody>
-  </table>
-
-  <h3>30-day enablement path</h3>
+  <div class="section-kicker">Section 6 · 30-day enablement runbook</div>
+  <h2>Build one role path and prove it works</h2>
+  <p>By day 30, publish one role capability spec, one safe-use one-pager, three fictional scenarios, one sandbox exercise, a manager sign-off card, a capability tracker, and a readiness dashboard.</p>
   <ol>
-    <li>Week 1: Pick one role and define the two AI tasks they should safely perform.</li>
-    <li>Week 2: Build the role path with data rules, approved tools, and one sandbox exercise.</li>
-    <li>Week 3: Run a small cohort and record where the path breaks.</li>
-    <li>Week 4: Publish the path and start tracking capability by role.</li>
+    <li>Week 1: Pick one role and define the two AI tasks staff may safely perform.</li>
+    <li>Week 2: Set the data boundary and write three fictional scenarios.</li>
+    <li>Week 3: Run one sandbox exercise and capture common failure points.</li>
+    <li>Week 4: Publish the capability tracker and manager sign-off card.</li>
   </ol>
+
+  <h3>Next step: Run the 45-Minute AI Role Readiness Sprint</h3>
+  <p>Pick one role, define the two AI tasks staff may safely perform, set the data boundary, build one fictional scenario, define the pass criteria, and publish the first capability tracker.</p>
 
   <div class="callout">
     <div class="label">Source basis</div>
-    <p>Built from the AiBI readiness assessment, NIST AI Risk Management Framework, AIEOG AI Lexicon concepts for AI literacy and human review, and financial-institution data handling expectations. Adapt before adoption.</p>
+    <p>Sources: EEOC / ADA / Title VII considerations for any AI near employment decisions; NIST AI RMF; Treasury AI Lexicon / AIEOG terminology; Financial Services AI Risk Management Framework; AiBI Foundations curriculum. This kit is a training-readiness starter artifact, not legal advice or an approved HR decision procedure.</p>
   </div>
 </section>
 

@@ -221,6 +221,29 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).not.toContain('Tokenized deposits and programmable money');
   });
 
+  it('returns the bank AI role readiness kit as a Word-compatible document', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/training-hr-playbook/word'),
+      contextFor('training-hr-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Training-Hr-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain('The Bank AI Role Readiness Kit');
+    expect(body).toContain('Training Data Boundary Card');
+    expect(body).toContain('AI may support training-path design');
+    expect(body).toContain('What AI-ready means');
+    expect(body).toContain('Role Capability Spec');
+    expect(body).toContain('Capability Tracker');
+    expect(body).toContain('Manager Sign-Off Card');
+    expect(body).toContain('Next step: Run the 45-Minute AI Role Readiness Sprint');
+    expect(body).toContain('EEOC / ADA / Title VII');
+    expect(body).not.toContain('The Training / HR AI-Native Playbook');
+    expect(body).not.toContain('Where training and HR can use AiBI immediately');
+  });
+
   it('rejects unknown slugs', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/nope/word'),
