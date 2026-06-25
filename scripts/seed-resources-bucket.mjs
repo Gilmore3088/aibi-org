@@ -51,7 +51,7 @@ const BUCKET = 'resources';
 const META = {
   // Sector playbooks
   'bsa-aml-playbook':           { title: "The BSA/AML Officer's AI-Native Playbook", category: 'playbook', order: 10 },
-  'compliance-playbook':        { title: 'Compliance Playbook',         category: 'playbook',     order: 11 },
+  'compliance-playbook':        { title: "The Compliance Officer's AI Governance Playbook", category: 'playbook', order: 11 },
   'infosec-playbook':           { title: 'IT / InfoSec Playbook',       category: 'playbook',     order: 12 },
   'lending-playbook':           { title: 'Lending Playbook',            category: 'playbook',     order: 13 },
   'marketing-playbook':         { title: 'Marketing Playbook',          category: 'playbook',     order: 14 },
@@ -86,7 +86,7 @@ const META = {
 
 const DESCRIPTIONS = {
   'bsa-aml-playbook': 'Five controlled AI plays for safer narratives, cleaner documentation, analyst training, and evidence-ready oversight.',
-  'compliance-playbook': 'Governance, use-case review, workflow SOPs, evidence packets, and board update rhythm.',
+  'compliance-playbook': 'Five controls for moving from AI policy to inventory, architecture, human review, evidence, and board reporting.',
   'infosec-playbook': 'Data classes, approved tools, AI vetting memos, gateway rules, and AgentSecOps controls.',
   'lending-playbook': 'Adverse-action traceability, fair-lending checks, decision packet indexes, and language coaching.',
   'marketing-playbook': 'Brand voice, campaign kits, disclosure flags, reporting narratives, and segment-safe messaging.',

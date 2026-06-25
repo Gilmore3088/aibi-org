@@ -39,6 +39,27 @@ describe('/api/resources/[slug]/word', () => {
     expect(body).toContain('Before you paste anything');
   });
 
+  it('returns the compliance playbook with current governance controls', async () => {
+    const response = await GET(
+      new Request('https://www.aibankinginstitute.com/api/resources/compliance-playbook/word'),
+      contextFor('compliance-playbook'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-disposition')).toContain('Compliance-Playbook.doc');
+
+    const body = await response.text();
+    expect(body).toContain("The Compliance Officer's AI Governance Playbook");
+    expect(body).toContain('Current model-risk guidance, including SR 26-2 where applicable');
+    expect(body).toContain('AI may not select, infer, or invent principal reasons');
+    expect(body).toContain('No SAR, SAR draft, SAR existence');
+    expect(body).toContain('Model-training restriction');
+    expect(body).toContain("The Compliance Officer's AI Governance Starter Kit");
+    expect(body).toContain('Financial Services AI Risk Management Framework');
+    expect(body).not.toContain('The Compliance Officer&#39;s AI-Native Playbook');
+    expect(body).not.toContain('SR 11-7');
+  });
+
   it('returns the revised fair-lending checklist without stale legal framing', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/artifact-fair-lending-ai-review-checklist/word'),

@@ -4,7 +4,7 @@ import { resourceMeta, RESOURCE_CATEGORY_ORDER } from './resourceMeta';
 describe('resourceMeta', () => {
   it('maps role playbooks', () => {
     expect(resourceMeta('compliance-playbook')).toEqual({
-      label: 'Compliance Playbook',
+      label: "The Compliance Officer's AI Governance Playbook",
       category: 'Role playbooks',
     });
     expect(resourceMeta('executive-playbook')).toEqual({
