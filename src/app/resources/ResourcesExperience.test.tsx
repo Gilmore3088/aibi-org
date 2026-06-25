@@ -43,7 +43,7 @@ describe('ResourcesExperience', () => {
 
     expect(policyCard).toBeTruthy();
     expect(
-      within(policyCard as HTMLElement).getByText(/starter policy your team can adapt/i),
+      within(policyCard as HTMLElement).getByText(/adopt-and-adapt acceptable-use policy/i),
     ).toBeTruthy();
     expect(within(policyCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
       '/resources/templates/ai-use-policy-starter',

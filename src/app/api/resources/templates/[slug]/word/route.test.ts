@@ -23,7 +23,7 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).toContain('Editable starter template');
     expect(body).toContain('Document status:');
     expect(body).toContain('Source basis');
-    expect(body).toContain('Interagency TPRM Guidance');
+    expect(body).toContain('Interagency Guidance on Third-Party Relationships');
     expect(body).toContain('Adapt it to your institution');
   });
 
@@ -34,9 +34,9 @@ describe('/api/resources/templates/[slug]/word', () => {
     );
 
     const body = await response.text();
-    expect(body).toContain('<h2>Allowed data</h2>');
-    expect(body).toContain('<ul><li>Public information: allowed without restriction.</li>');
-    expect(body).toContain('Human-in-the-loop requirement');
+    expect(body).toContain('<h2>Data classification &amp; permitted inputs</h2>');
+    expect(body).toContain('Public (rate sheets, published marketing copy');
+    expect(body).toContain('Human review &amp; model risk (SR 11-7)');
   });
 
   it('returns the CDFI Grant AI Evidence Checklist as a Word-compatible document', async () => {

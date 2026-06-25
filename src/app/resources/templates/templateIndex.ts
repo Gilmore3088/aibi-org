@@ -30,10 +30,10 @@ export const TEMPLATE_INDEX = [
   {
     slug: 'ai-use-policy-starter',
     title: 'AI Use Policy Starter',
-    dek: 'A starter policy your team can adapt in an afternoon. Defines allowed tools, allowed data, review requirements, and an incident path.',
+    dek: 'An adopt-and-adapt acceptable-use policy for generative AI, with verbatim clause language, a worked data-classification matrix, and the controls examiners expect.',
     audience: 'Compliance, risk, and senior management',
-    readMinutes: 8,
-    preview: ['Purpose', 'Allowed tools', 'Allowed data', 'Human review'],
+    readMinutes: 14,
+    preview: ['Purpose & scope', 'Governance & accountability', 'Approved tools', 'Data classification'],
   },
   {
     slug: 'ai-workflow-sop',
