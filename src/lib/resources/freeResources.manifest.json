@@ -445,7 +445,7 @@
     },
     {
       "slug": "frontline-enablement-kit",
-      "title": "Frontline Enablement Kit",
+      "title": "The Frontline AI Enablement Kit",
       "audience": ["Retail", "Branch", "Training"],
       "category": "starter-kit",
       "funnelSegment": "frontline-enablement",
@@ -454,7 +454,7 @@
       "variants": { "pdf": null, "word": null, "zip": "frontline-enablement-kit.zip" },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/frontline-enablement-kit/download",
-      "sourceCitations": ["NIST AI RMF"],
+      "sourceCitations": ["NIST AI RMF", "Reg E 12 CFR 1005.11", "GLBA / Reg P", "UDAAP", "Interagency Third-Party Risk Guidance"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["retail", "training-hr"], "tierLabels": ["Starting Point", "Early Stage"], "topGaps": ["staff-enablement"] },
       "status": "public"

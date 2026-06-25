@@ -62,7 +62,7 @@ const META = {
   'in-depth-playbook':          { title: 'In-Depth Assessment Playbook',category: 'paid-preview', order: 20 },
   // Starter kits (ZIPs)
   'governance-starter-kit':     { title: 'The Bank AI Governance Starter Kit', category: 'starter-kit',  order: 30 },
-  'frontline-enablement-kit':   { title: 'Frontline Enablement Kit',    category: 'starter-kit',  order: 31 },
+  'frontline-enablement-kit':   { title: 'The Frontline AI Enablement Kit', category: 'starter-kit',  order: 31 },
   'marketing-review-kit':       { title: 'Marketing Review Kit',        category: 'starter-kit',  order: 32 },
   'lending-review-kit':         { title: 'Lending Review Kit',          category: 'starter-kit',  order: 33 },
   // Templates
@@ -96,7 +96,7 @@ const DESCRIPTIONS = {
   'training-hr-playbook': 'Turn generic AI awareness into role-specific practice, safe-use scenarios, and visible readiness tracking.',
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
   'governance-starter-kit': 'Four tools to set the data line, classify AI use, start the inventory, and document your first workflow.',
-  'frontline-enablement-kit': 'Give branch and contact center teams safer AI practice routines.',
+  'frontline-enablement-kit': 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',
   'marketing-review-kit': 'Create faster campaign drafts without skipping claims and disclosure review.',
   'lending-review-kit': 'Keep adverse-action, fair-lending, and decision packet work traceable.',
   'template-ai-use-policy-starter': 'Editable starter clauses defining tools, data, review, incidents, and ownership.',
