@@ -18,14 +18,15 @@
 // screenshots of every issue page and each persona's final page.
 
 import { chromium, devices } from '@playwright/test';
-import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { buildPersonas, loadRoster, rng, DEFAULT_ROSTER_MD } from './lib/persona-roster.mjs';
 
 const BASE = process.env.BASE_URL || 'https://www.aibankinginstitute.com';
 const DATE = process.env.SWEEP_DATE || '2026-06-23';
 const OUT_DIR = resolve(process.cwd(), `docs/handoffs/persona-sweep-100-${DATE}`);
 const SHOT_DIR = resolve(OUT_DIR, 'shots');
-const ROSTER_MD = resolve(process.cwd(), 'docs/persona-audit-2026-06-23/01-persona-roster.md');
+const ROSTER_MD = DEFAULT_ROSTER_MD;
 
 const CONCURRENCY = Number(process.env.CONCURRENCY || 5);
 const PERSONA_LIMIT = Number(process.env.PERSONA_LIMIT || 0); // 0 = all
@@ -53,80 +54,9 @@ function eligibleHref(href) {
   return true;
 }
 
-// mulberry32 seeded PRNG — reproducible per persona, varies by index.
-function rng(seed) {
-  let a = seed >>> 0;
-  return () => {
-    a |= 0; a = (a + 0x6D2B79F5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-// --- roster parsing -------------------------------------------------------
-async function loadRoster() {
-  const md = await readFile(ROSTER_MD, 'utf8');
-  const rows = [];
-  for (const line of md.split('\n')) {
-    if (!line.trim().startsWith('|')) continue;
-    const cells = line.split('|').map((c) => c.trim());
-    // | # | Archetype | FI type | Role | Personality | Source | Goal | Journey | Completion |
-    if (!/^\d+$/.test(cells[1] || '')) continue; // skip header + separator
-    rows.push({
-      n: Number(cells[1]), archetype: cells[2], fiType: cells[3], role: cells[4],
-      personality: cells[5], source: cells[6], goal: cells[7], journey: cells[8], completion: cells[9],
-    });
-  }
-  return rows;
-}
-
-// --- intent mapping (journey/goal/role -> start, keywords, device) --------
-function startFor(journey) {
-  const j = (journey || '').toLowerCase();
-  const first = j.split('→')[0].trim();
-  if (/re-?login/.test(j)) return '/courses/foundation/program/purchase';
-  if (/re-?enter|resume/.test(j)) return '/assessment';
-  if (first.includes('roi')) return '/';
-  if (first.includes('home') || first.includes('lands home')) return '/';
-  if (first.includes('free')) return '/assessment';
-  if (first.includes('resources')) return '/resources';
-  if (first.includes('security')) return '/security';
-  if (first.includes('foundation')) return '/courses/foundation/program/purchase';
-  if (first.includes('verify')) return '/certifications';
-  if (first.includes('team')) return '/assessment/team';
-  if (first.includes('pricing')) return '/';
-  if (first.includes('$99')) return '/assessment/in-depth';
-  if (first.includes('$295')) return '/courses/foundation/program/purchase';
-  return '/';
-}
-
-function keywordsFor(goal, role, journey) {
-  const s = `${goal} ${role} ${journey}`.toLowerCase();
-  const kw = new Set();
-  const add = (...xs) => xs.forEach((x) => kw.add(x));
-  if (/ready/.test(s)) add('assessment', 'readiness', 'report', 'score');
-  if (/cert|certif/.test(s)) add('certificate', 'foundation', 'course', 'module');
-  if (/template|artifact|exam|policy/.test(s)) add('template', 'resource', 'download', 'policy', 'guide');
-  if (/roi|compar|pricing|cost/.test(s)) add('roi', 'pricing', 'foundation', 'cost');
-  if (/team|cohort|whole team|pilot|upskill team/.test(s)) add('team', 'institution', 'cohort', 'seats');
-  if (/refund|money back/.test(s)) add('refund', 'support', 'help');
-  if (/verify/.test(s)) add('verify', 'certificate', 'credential');
-  if (/playground|practice|sandbox|\btry\b|tool/.test(s)) add('playground', 'practice', 'tool', 'sandbox');
-  if (/data handling|\bvet\b|security/.test(s)) add('security', 'data', 'privacy', 'guide');
-  if (/brows/.test(s)) add('resource', 'about', 'education');
-  if (/compliance|bsa|aml|audit|risk|examiner|counsel|cco/.test(s)) add('compliance', 'risk', 'governance');
-  if (/lend|credit/.test(s)) add('lending', 'credit');
-  if (/hr|l&d|training/.test(s)) add('education', 'course', 'foundation', 'cohort');
-  if (/ceo|cfo|coo|president|board|cro|cio|ciso|cmo|chro|strateg/.test(s)) add('about', 'roi', 'institutions');
-  if (kw.size === 0) add('assessment', 'education', 'resource');
-  return [...kw];
-}
-
-function deviceFor(personality, journey) {
-  const s = `${personality} ${journey}`.toLowerCase();
-  return /mobile|\(mobile\)|on (the )?phone/.test(s) ? 'mobile' : 'desktop';
-}
+// Roster parsing + intent mapping now live in ./lib/persona-roster.mjs so the
+// authenticated post-login sweep (persona-sweep-auth-100.mjs) walks the exact
+// same roster and never drifts from this one.
 
 // --- gather links on the current page ------------------------------------
 async function gatherLinks(page) {
@@ -223,21 +153,12 @@ async function runPool(items, worker, concurrency) {
 
 async function main() {
   await mkdir(SHOT_DIR, { recursive: true });
-  let roster = await loadRoster();
+  let roster = await loadRoster(ROSTER_MD);
   if (PERSONA_LIMIT) roster = roster.slice(0, PERSONA_LIMIT);
-  const personas = roster.map((r, i) => ({
-    id: `P${String(r.n).padStart(3, '0')}-${r.archetype.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
-    archetype: r.archetype, role: r.role, fiType: r.fiType, source: r.source,
-    goal: r.goal, journey: r.journey, completion: r.completion,
-    start: startFor(r.journey),
-    keywords: keywordsFor(r.goal, r.role, r.journey),
-    device: deviceFor(r.personality, r.journey),
-    steps: STEPS_MIN + (i % (STEPS_MAX - STEPS_MIN + 1)),
-    seed: 100000 + i * 101,
-  }));
+  const personas = buildPersonas(roster, { stepsMin: STEPS_MIN, stepsMax: STEPS_MAX });
 
   console.log(`Persona sweep — ${personas.length} personas vs ${BASE} (concurrency ${CONCURRENCY})\n`);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined, proxy: process.env.PLAYWRIGHT_PROXY_SERVER ? { server: process.env.PLAYWRIGHT_PROXY_SERVER } : undefined });
   const results = await runPool(personas, (p) => runPersona(browser, p), CONCURRENCY);
   await browser.close();
 

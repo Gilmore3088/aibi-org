@@ -494,6 +494,56 @@ export async function seedFoundationLearner(
   return { ...user, trustedDevice };
 }
 
+export interface ProvisioningByEmail {
+  readonly enrollment: { id: string; product: string; stripe_session_id: string | null } | null;
+  readonly entitlement: { id: string; product: string; tier: string | null; active: boolean } | null;
+}
+
+/**
+ * Look up what a Stripe webhook provisioned for a buyer email: the
+ * course_enrollments row and the matching active entitlement. Used by the
+ * payments-provisioning E2E to assert the full checkout -> webhook ->
+ * enrollment -> entitlement chain landed, then poll for it (provisioning is
+ * async relative to the post-checkout redirect).
+ */
+export async function getProvisioningByEmail(
+  email: string,
+  product?: string,
+): Promise<ProvisioningByEmail> {
+  const supabase = getServiceRoleClient();
+  let enrollmentQuery = supabase
+    .from('course_enrollments')
+    .select('id, product, stripe_session_id, user_id')
+    .eq('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  if (product) enrollmentQuery = enrollmentQuery.eq('product', product);
+  const { data: enrollmentRows } = await enrollmentQuery;
+  const enrollment = (enrollmentRows?.[0] as
+    | { id: string; product: string; stripe_session_id: string | null; user_id: string | null }
+    | undefined) ?? null;
+
+  let entitlement: ProvisioningByEmail['entitlement'] = null;
+  if (enrollment?.user_id) {
+    let entQuery = supabase
+      .from('entitlements')
+      .select('id, product, tier, active')
+      .eq('user_id', enrollment.user_id)
+      .eq('active', true)
+      .limit(1);
+    if (product) entQuery = entQuery.eq('product', product);
+    const { data: entRows } = await entQuery;
+    entitlement = (entRows?.[0] as ProvisioningByEmail['entitlement']) ?? null;
+  }
+
+  return {
+    enrollment: enrollment
+      ? { id: enrollment.id, product: enrollment.product, stripe_session_id: enrollment.stripe_session_id }
+      : null,
+    entitlement,
+  };
+}
+
 /**
  * Delete every user with the `e2e+...@aibankinginstitute.test` pattern.
  * Cascades to user_profiles, course_enrollments, entitlements via FK.
