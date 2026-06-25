@@ -11,7 +11,6 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseBuffer } from "music-metadata";
 import { safeAiUseScript } from "../src/scripts/safe-ai-use";
 import { whatsAiReadyScript } from "../src/scripts/whats-ai-ready";
 import type { VideoScript } from "../src/scripted/types";
@@ -34,6 +33,34 @@ const root = join(here, "..");
 const audioDir = join(root, "public", "narration", SCRIPT_ID);
 const manifestPath = join(root, "src", "scripts", `${SCRIPT_ID}.narration.json`);
 const TAIL_PAD_SECONDS = 0.6; // breathing room after each line
+
+// Measure an MP3's length straight from the bytes — no dependency. Reads the
+// first MPEG audio frame header for bitrate/sample-rate (ElevenLabs returns CBR
+// MPEG-1 Layer III at 128 kbps, so this is exact; for other CBR streams it
+// reads the real bitrate; VBR is approximate, which the tail-pad absorbs).
+const BITRATES_V1L3 = [
+  0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0,
+];
+function mp3DurationSeconds(buf: Buffer): number {
+  let i = 0;
+  // skip an ID3v2 tag if present (syncsafe size)
+  if (buf.length > 10 && buf.toString("latin1", 0, 3) === "ID3") {
+    const size =
+      ((buf[6] & 0x7f) << 21) |
+      ((buf[7] & 0x7f) << 14) |
+      ((buf[8] & 0x7f) << 7) |
+      (buf[9] & 0x7f);
+    i = 10 + size;
+  }
+  // find the first frame sync (11 set bits)
+  while (i < buf.length - 4) {
+    if (buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0) break;
+    i++;
+  }
+  const bitrate = BITRATES_V1L3[(buf[i + 2] >> 4) & 0x0f] || 128; // kbps
+  const audioBytes = buf.length - i;
+  return audioBytes * 8 / (bitrate * 1000);
+}
 
 // ── route through the agent proxy if present (Node fetch needs this) ────────
 async function configureProxy() {
@@ -109,8 +136,7 @@ async function main() {
     const mp3 = await speak(s.narration);
     const file = join(audioDir, `${s.id}.mp3`);
     await writeFile(file, mp3);
-    const { format } = await parseBuffer(mp3, "audio/mpeg");
-    const seconds = Number(((format.duration ?? 3) + TAIL_PAD_SECONDS).toFixed(2));
+    const seconds = Number((mp3DurationSeconds(mp3) + TAIL_PAD_SECONDS).toFixed(2));
     sections[s.id] = { seconds, audio: `narration/${SCRIPT_ID}/${s.id}.mp3` };
     console.log(`${seconds}s`);
   }
