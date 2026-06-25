@@ -429,7 +429,7 @@
     },
     {
       "slug": "governance-starter-kit",
-      "title": "AI Governance Starter Kit",
+      "title": "The Bank AI Governance Starter Kit",
       "audience": ["Compliance", "Risk", "Executive"],
       "category": "starter-kit",
       "funnelSegment": "governance",
@@ -438,7 +438,7 @@
       "variants": { "pdf": null, "word": null, "zip": "governance-starter-kit.zip" },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/governance-starter-kit/download",
-      "sourceCitations": ["NIST AI RMF", "Interagency Third-Party Risk Guidance"],
+      "sourceCitations": ["NIST AI RMF", "Federal Reserve SR 26-2", "Interagency Third-Party Risk Guidance", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["compliance", "executive"], "tierLabels": ["Starting Point", "Early Stage"], "topGaps": ["governance"] },
       "status": "public"
