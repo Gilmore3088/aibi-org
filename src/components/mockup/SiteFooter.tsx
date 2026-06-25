@@ -29,6 +29,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
       { href: '/about', label: 'About the Institute' },
       { href: '/faq', label: 'FAQ' },
       { href: '/security', label: 'Security & governance' },
+      { href: '/references', label: 'Sources & references' },
       { href: '/security/data-handling', label: 'LLM data handling' },
       { href: '/security/it-approval', label: 'IT review packet' },
       { href: '/certifications', label: 'Certifications' },
