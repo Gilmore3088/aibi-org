@@ -222,6 +222,9 @@ table {
 .page-footer {
   display: none !important;
 }
+.signoff-block {
+  display: none !important;
+}
 `;
 
 function expectedLargePrintRoute(slug) {
