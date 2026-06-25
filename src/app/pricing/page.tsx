@@ -14,7 +14,7 @@ const TIERS = [
     name: 'AI Readiness Snapshot',
     price: '$0',
     cadence: 'Free start',
-    badge: null,
+    badge: 'Start here',
     bestFor: 'A banker who wants a quick starting point before buying anything.',
     bullets: ['12-question snapshot', 'Maturity tier and top gap', 'Starter prompt and recommended path'],
     action: 'Start free',
@@ -44,7 +44,7 @@ const TIERS = [
     name: 'Institution Rollout',
     price: 'Custom',
     cadence: 'Scoped before rollout',
-    badge: null,
+    badge: 'For teams',
     bestFor: 'Departments, cohorts, institutions, associations, or partner channels.',
     bullets: ['Rollout planning and cohort setup', 'Reporting scope and support path', 'Optional briefing'],
     action: 'Request a rollout plan',
@@ -160,7 +160,7 @@ export default function PricingPage() {
         <section className="mk-pricing-tier-grid" aria-label="Pricing options">
           {TIERS.map((tier) => (
             <article key={tier.name} className="mk-pricing-tier">
-              {tier.badge ? <p className="mk-pricing-tier-badge">{tier.badge}</p> : null}
+              <p className="mk-pricing-tier-badge">{tier.badge}</p>
               <h2>{tier.name}</h2>
               <div className="mk-pricing-tier-price">
                 <strong>{tier.price}</strong>

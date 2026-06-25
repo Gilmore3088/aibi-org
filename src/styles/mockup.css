@@ -5694,9 +5694,9 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-tier {
   display: flex;
   min-width: 0;
-  min-height: 430px;
+  min-height: 456px;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   padding: 24px;
   background: #fff;
   border: 1px solid var(--ink-a10);
@@ -5705,15 +5705,18 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-pricing-tier h2 {
   margin: 0;
+  min-height: 58px;
   color: inherit;
   font-size: 24px;
   font-weight: 680;
   line-height: 1.12;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 .mk-pricing-tier-badge {
   align-self: flex-start;
-  margin: 0 0 2px;
+  min-height: 26px;
+  margin: 0;
   padding: 6px 9px;
   border: 1px solid rgba(174,124,31,0.28);
   border-radius: 999px;
@@ -5726,12 +5729,18 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-tier-price {
   display: grid;
   gap: 6px;
+  min-height: 74px;
+  align-content: start;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--ink-a10);
 }
 .mk-pricing-tier-price strong {
+  display: flex;
+  min-height: 42px;
+  align-items: flex-end;
   font-size: 42px;
   font-weight: 640;
+  font-variant-numeric: tabular-nums;
   line-height: 0.95;
   letter-spacing: 0;
 }
@@ -5744,6 +5753,9 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-tier-copy {
   display: grid;
   gap: 6px;
+}
+.mk-pricing-tier-copy:first-of-type {
+  min-height: 92px;
 }
 .mk-pricing-tier-copy p {
   margin: 0;
@@ -5761,6 +5773,7 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-tier ul {
   display: grid;
   gap: 8px;
+  min-height: 78px;
   margin: -6px 0 0;
   padding: 0;
   list-style: none;
@@ -6057,6 +6070,12 @@ section.mk-std { padding: 56px 0; }
     border-bottom: 0;
   }
   .mk-pricing-tier {
+    min-height: 0;
+  }
+  .mk-pricing-tier h2,
+  .mk-pricing-tier-price,
+  .mk-pricing-tier-copy:first-of-type,
+  .mk-pricing-tier ul {
     min-height: 0;
   }
   .mk-pricing-tier-grid,
