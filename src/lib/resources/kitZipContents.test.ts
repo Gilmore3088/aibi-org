@@ -47,7 +47,7 @@ describe('starter kit ZIP contents', () => {
   it('packages the prompting foundation kit as an ordered working kit', () => {
     expect(zipEntries('prompting-foundation-kit.zip')).toEqual([
       '00-Start-Here.pdf',
-      '01-Prompt-Like-A-Banker-Foundation-Guide.pdf',
+      '01-Prompt-Like-A-Banker-Prompt-Card.pdf',
       '02-Banker-Prompt-Formula-Card.pdf',
       '03-Safe-Prompt-Placeholder-Card.pdf',
       '04-Banker-Prompt-Types-Cheat-Sheet.pdf',
