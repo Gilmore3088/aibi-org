@@ -5845,52 +5845,33 @@ section.mk-std { padding: 56px 0; }
   min-width: 720px;
   border-collapse: collapse;
 }
-.mk-pricing-proof-table {
-  width: 100%;
-  min-width: 620px;
-  border-collapse: collapse;
-}
 .mk-pricing-table th,
-.mk-pricing-table td,
-.mk-pricing-proof-table th,
-.mk-pricing-proof-table td {
+.mk-pricing-table td {
   padding: 18px;
   border-bottom: 1px solid var(--ink-a10);
   border-right: 1px solid var(--ink-a10);
   text-align: left;
   vertical-align: top;
 }
-.mk-pricing-table th,
-.mk-pricing-proof-table th {
+.mk-pricing-table th {
   color: var(--ink);
   font-size: 13px;
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
 }
-.mk-pricing-table td,
-.mk-pricing-proof-table td {
+.mk-pricing-table td {
   color: var(--slate-700);
   font-size: 14px;
   line-height: 1.5;
 }
 .mk-pricing-table tr:last-child th,
-.mk-pricing-table tr:last-child td,
-.mk-pricing-proof-table tr:last-child th,
-.mk-pricing-proof-table tr:last-child td {
+.mk-pricing-table tr:last-child td {
   border-bottom: 0;
 }
 .mk-pricing-table th:last-child,
-.mk-pricing-table td:last-child,
-.mk-pricing-proof-table th:last-child,
-.mk-pricing-proof-table td:last-child {
+.mk-pricing-table td:last-child {
   border-right: 0;
-}
-.mk-pricing-proof-table-wrap {
-  margin-top: 16px;
-  overflow-x: auto;
-  border: 1px solid var(--ink-a10);
-  background: #fff;
 }
 .mk-pricing-rule-list {
   display: grid;
@@ -6092,60 +6073,46 @@ section.mk-std { padding: 56px 0; }
   .mk-pricing-final h2 {
     font-size: 32px;
   }
-  .mk-pricing-table-wrap,
-  .mk-pricing-proof-table-wrap {
+  .mk-pricing-table-wrap {
     overflow-x: visible;
   }
   .mk-pricing-table,
-  .mk-pricing-proof-table,
   .mk-pricing-table tbody,
-  .mk-pricing-proof-table tbody,
   .mk-pricing-table tr,
-  .mk-pricing-proof-table tr,
   .mk-pricing-table th,
-  .mk-pricing-proof-table th,
-  .mk-pricing-table td,
-  .mk-pricing-proof-table td {
+  .mk-pricing-table td {
     display: block;
     width: 100%;
     min-width: 0;
   }
-  .mk-pricing-table thead,
-  .mk-pricing-proof-table thead {
+  .mk-pricing-table thead {
     display: none;
   }
-  .mk-pricing-table tr,
-  .mk-pricing-proof-table tr {
+  .mk-pricing-table tr {
     padding: 16px;
     border-bottom: 1px solid var(--ink-a10);
   }
-  .mk-pricing-table tr:last-child,
-  .mk-pricing-proof-table tr:last-child {
+  .mk-pricing-table tr:last-child {
     border-bottom: 0;
   }
   .mk-pricing-table th,
-  .mk-pricing-proof-table th,
-  .mk-pricing-table td,
-  .mk-pricing-proof-table td {
+  .mk-pricing-table td {
     padding: 0;
     border: 0;
   }
-  .mk-pricing-table tbody th,
-  .mk-pricing-proof-table tbody th {
+  .mk-pricing-table tbody th {
     margin-bottom: 10px;
     font-size: 12px;
     line-height: 1.35;
   }
-  .mk-pricing-table td,
-  .mk-pricing-proof-table td {
+  .mk-pricing-table td {
     display: grid;
     grid-template-columns: 104px minmax(0, 1fr);
     gap: 12px;
     align-items: start;
     padding-top: 8px;
   }
-  .mk-pricing-table td::before,
-  .mk-pricing-proof-table td::before {
+  .mk-pricing-table td::before {
     content: attr(data-label);
     color: var(--ink);
     font-size: 11px;

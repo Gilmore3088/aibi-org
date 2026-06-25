@@ -82,13 +82,6 @@ const COMPARISON_ROWS = [
   },
 ] as const;
 
-const PROOF_ROWS = [
-  ['Snapshot', '$0', 'Summary view'],
-  ['In-Depth Assessment', '$99', 'Diagnostic report'],
-  ['Foundation', '$295', 'Certificate + authenticity URL'],
-  ['Institution Rollout', 'Custom', 'Cohort reporting scope'],
-] as const;
-
 const DECISION_RULES = [
   'Start free if you need a quick read.',
   'Buy the $99 report if a decision is waiting.',
@@ -217,27 +210,6 @@ export default function PricingPage() {
                     <th scope="row">{row.need}</th>
                     <td data-label="Best option">{row.option}</td>
                     <td data-label="What you get">{row.outcome}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mk-pricing-proof-table-wrap">
-            <table className="mk-pricing-proof-table" aria-label="Price and proof by option">
-              <thead>
-                <tr>
-                  <th scope="col">Option</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Proof</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PROOF_ROWS.map(([option, price, proof]) => (
-                  <tr key={option}>
-                    <th scope="row">{option}</th>
-                    <td data-label="Price">{price}</td>
-                    <td data-label="Proof">{proof}</td>
                   </tr>
                 ))}
               </tbody>

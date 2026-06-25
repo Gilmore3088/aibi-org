@@ -20,7 +20,7 @@ describe('PricingPage', () => {
     expect(screen.getByText(/best for individual capability/i)).toBeTruthy();
     expect(screen.getByText(/not sure what to choose/i)).toBeTruthy();
     expect(screen.getByText(/where should i start/i)).toBeTruthy();
-    expect(screen.getByText(/certificate \+ authenticity URL/i)).toBeTruthy();
+    expect(screen.getByText(/certificate with public authenticity URL/i)).toBeTruthy();
     expect(screen.getByText(/simple purchase rules/i)).toBeTruthy();
     expect(screen.getByText(/no subscription is required/i)).toBeTruthy();
   });
