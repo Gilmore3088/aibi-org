@@ -61,7 +61,7 @@ const META = {
   'training-hr-playbook':       { title: 'The Bank AI Role Readiness Kit', category: 'playbook',     order: 18 },
   'in-depth-playbook':          { title: 'In-Depth Assessment Playbook',category: 'paid-preview', order: 20 },
   // Starter kits (ZIPs)
-  'governance-starter-kit':     { title: 'AI Governance Starter Kit',   category: 'starter-kit',  order: 30 },
+  'governance-starter-kit':     { title: 'The Bank AI Governance Starter Kit', category: 'starter-kit',  order: 30 },
   'frontline-enablement-kit':   { title: 'Frontline Enablement Kit',    category: 'starter-kit',  order: 31 },
   'marketing-review-kit':       { title: 'Marketing Review Kit',        category: 'starter-kit',  order: 32 },
   'lending-review-kit':         { title: 'Lending Review Kit',          category: 'starter-kit',  order: 33 },
@@ -95,7 +95,7 @@ const DESCRIPTIONS = {
   'operations-playbook': 'Turn one useful AI shortcut into a documented SOP your team can run, review, measure, and hand off.',
   'training-hr-playbook': 'Turn generic AI awareness into role-specific practice, safe-use scenarios, and visible readiness tracking.',
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
-  'governance-starter-kit': 'Start here if your team is beginning to allow AI tools.',
+  'governance-starter-kit': 'Four tools to set the data line, classify AI use, start the inventory, and document your first workflow.',
   'frontline-enablement-kit': 'Give branch and contact center teams safer AI practice routines.',
   'marketing-review-kit': 'Create faster campaign drafts without skipping claims and disclosure review.',
   'lending-review-kit': 'Keep adverse-action, fair-lending, and decision packet work traceable.',

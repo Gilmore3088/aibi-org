@@ -14,6 +14,7 @@
 //
 // Usage:
 //   node scripts/generate-kit-zips.mjs               # build all 4
+//   node scripts/generate-kit-zips.mjs --only <slug> # build one kit
 //   node scripts/generate-kit-zips.mjs --upload      # also upload to Supabase
 
 import { chromium } from '@playwright/test';
@@ -31,20 +32,26 @@ const SRC_HTML_DIR = resolve(ROOT, 'public/downloads/source');
 
 const KITS = {
   'governance-starter-kit': {
-    title: 'Governance Starter Kit',
-    lede: 'First 30 days of governing AI tool use.',
+    title: 'The Bank AI Governance Starter Kit',
+    lede: 'Four tools to set the data line, classify AI use, start the inventory, and document your first workflow.',
     forWhom:
-      'For compliance, risk, and executive teams establishing the first approved AI path: rules, staff safety, use-case inventory, and workflow documentation.',
-    pdfs: [
-      ['safe-ai-use-checklist.pdf',          'Staff-facing habits before using AI: strip data, ask clearly, fact-check, escalate.'],
-      ['red-yellow-green-use-card.pdf',      'Ten-second classification card for safe, review-required, and prohibited AI uses.'],
-      ['artifact-ai-use-case-inventory.pdf', 'One-page AI use-case inventory card for owners, data classes, risk tiers, vendor controls, and review cadence.'],
-      ['template-ai-workflow-sop.pdf',       'Template for documenting tool, input, output, review, approval, and retention.'],
+      'For compliance, risk, operations, and executive teams establishing the first approved AI path: publish safe-use habits, classify use cases, start the inventory, and document one reusable workflow.',
+    startHereName: '00-Start-Here.pdf',
+    steps: [
+      'Set the data line with the Before-You-Paste Safe AI Checklist.',
+      'Classify three current AI uses with the Red / Yellow / Green AI Use Card.',
+      'Start the editable AI Use-Case Inventory with owner, data class, risk tier, human review, evidence, and next review date.',
+      'Use the Workflow SOP Builder before any AI workflow becomes repeatable team practice.',
+      'Run the 45-Minute AI Governance Starter Sprint: set the data line, classify three current AI uses, start the inventory, and document one workflow SOP.',
     ],
-    files: [
-      ['artifact-ai-use-case-inventory-spreadsheet.xlsx', 'Editable spreadsheet companion for maintaining owner, data class, risk tier, vendor status, human review, evidence retained, and next review date.'],
+    assets: [
+      { source: 'safe-ai-use-checklist.pdf', target: '01-Before-You-Paste-Safe-AI-Checklist.pdf', description: 'What staff should do before using AI: strip sensitive data, ask clearly, fact-check outputs, and escalate risky decisions.' },
+      { source: 'red-yellow-green-use-card.pdf', target: '02-Red-Yellow-Green-AI-Use-Card.pdf', description: 'How to classify an AI use case as allowed, review-required, or prohibited before work begins.' },
+      { source: 'artifact-ai-use-case-inventory.pdf', target: '03-AI-Use-Case-Inventory-Card.pdf', description: 'Quick reference for logging AI workflows, owners, data classes, risk tiers, vendor controls, and review cadence.' },
+      { source: 'kit-assets/governance-starter-kit/AI-Use-Case-Inventory.xlsx', target: '04-AI-Use-Case-Inventory.xlsx', description: 'Editable portfolio register for status, department, purpose, tool approval, data class, risk tier, customer impact, reviewer, evidence, and review dates.' },
+      { source: 'template-ai-workflow-sop.pdf', target: '05-AI-Workflow-SOP-Template.pdf', description: 'Reference PDF for documenting an individual AI-assisted workflow before reuse.' },
+      { source: 'kit-assets/governance-starter-kit/AI-Workflow-SOP-Builder.docx', target: '06-AI-Workflow-SOP-Builder.docx', description: 'Editable workflow SOP builder with approved tool, allowed inputs, prohibited inputs, review standard, approval checkpoint, retention rule, and escalation triggers.' },
     ],
-    markdowns: [],
   },
   'frontline-enablement-kit': {
     title: 'Frontline Enablement Kit',
@@ -99,27 +106,47 @@ async function fetchToBuffer(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-function kitFiles(kit) {
-  return kit.files ?? [];
+function kitAssets(kit) {
+  if (kit.assets) return kit.assets;
+
+  return [
+    ...kit.pdfs.map(([source, description]) => ({ source, target: source, description })),
+    ...(kit.files ?? []).map(([source, description]) => ({ source, target: source, description })),
+    ...kit.markdowns.map(([source, description]) => ({
+      source: `public/artifacts/${source}`,
+      target: source,
+      description,
+    })),
+  ];
 }
 
 function renderStartHereHtml(kitSlug, kit) {
-  const items = [
-    ...kit.pdfs.map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
-    ...kitFiles(kit).map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
-    ...kit.markdowns.map(([f, d]) => `<li><strong>${f}</strong><br><span class="d">${d}</span></li>`),
-  ].join('');
+  const items = kitAssets(kit)
+    .map(({ target, description }) => `<li><strong>${target}</strong><br><span class="d">${description}</span></li>`)
+    .join('');
+  const steps = (kit.steps ?? [
+    'Read this page first.',
+    'Read the playbook PDF for context.',
+    'Adapt the template and inventory files to your institution.',
+    'Replace anything in [brackets] before adoption.',
+  ])
+    .map((step) => `<li>${step}</li>`)
+    .join('');
+
   return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><title>${kit.title} — Start here</title>
 <link rel="stylesheet" href="file://${SRC_HTML_DIR}/_brand.css">
 <style>
   .page { padding: 0; }
   .cover { padding: 0.9in 0.85in; }
-  .kit-body { padding: 0.6in 0.85in; }
-  .kit-body h2 { margin: 0 0 6pt; font-size: 18pt; }
-  .kit-body p { margin: 6pt 0 14pt; font-size: 11pt; color: #475569; }
-  .kit-body ol { padding-left: 16pt; font-size: 10.5pt; line-height: 1.55; color: #475569; }
-  .kit-body ol > li { margin: 8pt 0; }
+  .kit-body { padding: 0.52in 0.85in; }
+  .kit-body h2 { margin: 0 0 5pt; font-size: 18pt; }
+  .kit-body p { margin: 5pt 0 11pt; font-size: 10.6pt; color: #475569; }
+  .kit-body ol { padding-left: 16pt; font-size: 10.1pt; line-height: 1.42; color: #475569; }
+  .kit-body ol > li { margin: 5pt 0; }
+  .asset-list { columns: 2; column-gap: 24pt; }
+  .asset-list > li { break-inside: avoid; }
+  .steps-list { columns: 1; }
   .kit-body strong { color: #071A2F; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10pt; }
   .kit-body .d { display: block; margin-top: 2pt; }
 </style></head>
@@ -139,9 +166,9 @@ function renderStartHereHtml(kitSlug, kit) {
   <section class="page kit-body">
     <h2>Inside this kit</h2>
     <p>${kit.forWhom}</p>
-    <ol>${items}</ol>
+    <ol class="asset-list">${items}</ol>
     <h2 style="margin-top:28pt">How to use this kit</h2>
-    <p>Read this page first. Then read the playbook PDF for context. Then adapt the template and inventory files to your institution — replace anything in [brackets] before adoption.</p>
+    <ol class="steps-list">${steps}</ol>
   </section>
 </body></html>`;
 }
@@ -156,13 +183,15 @@ function renderReadmeMd(kit) {
     '',
     '## Included files',
     '',
-    ...kit.pdfs.map(([f, d]) => `- \`${f}\` — ${d}`),
-    ...kitFiles(kit).map(([f, d]) => `- \`${f}\` — ${d}`),
-    ...kit.markdowns.map(([f, d]) => `- \`${f}\` — ${d}`),
+    ...kitAssets(kit).map(({ target, description }) => `- \`${target}\` — ${description}`),
     '',
     '## Recommended first step',
     '',
-    'Open `START-HERE.pdf` first.',
+    `Open \`${kit.startHereName ?? 'START-HERE.pdf'}\` first.`,
+    '',
+    '## Use sequence',
+    '',
+    ...((kit.steps ?? ['Read this page first.']).map((step, index) => `${index + 1}. ${step}`)),
     '',
   ];
   return lines.join('\n');
@@ -175,48 +204,37 @@ async function buildKit(browser, kitSlug, kit) {
   const kitWork = resolve(WORK_DIR, kitSlug);
   await mkdir(kitWork, { recursive: true });
 
-  // 1. PDFs — prefer committed artifacts, then fall back to production.
+  // 1. Assets — prefer committed artifacts, then fall back to production for PDFs.
   const seen = new Set();
-  for (const [filename] of kit.pdfs) {
-    if (seen.has(filename)) continue;
-    seen.add(filename);
-    const slug = filename.replace(/\.pdf$/, '');
+  for (const { source, target } of kitAssets(kit)) {
+    if (seen.has(target)) continue;
+    seen.add(target);
+    const sourcePath = source.startsWith('public/')
+      ? resolve(ROOT, source)
+      : resolve(OUT_DIR, source);
+    const slug = source.split('/').pop().replace(/\.pdf$/, '');
     const url = `${BASE}/api/resources/${slug}/download`;
-    process.stdout.write(`  pdf  ${filename} ... `);
+    process.stdout.write(`  file ${target} ... `);
     let buf;
     try {
-      buf = await readFile(resolve(OUT_DIR, filename));
+      buf = await readFile(sourcePath);
     } catch {
+      if (!source.endsWith('.pdf')) throw new Error(`missing kit asset ${sourcePath}`);
       buf = await fetchToBuffer(url);
     }
-    await writeFile(resolve(kitWork, filename), buf);
+    await writeFile(resolve(kitWork, target), buf);
     console.log(`${buf.length.toLocaleString()}b`);
   }
 
-  // 2. Markdowns — copy from public/artifacts
-  for (const [filename] of kit.markdowns) {
-    process.stdout.write(`  md   ${filename} ... `);
-    const buf = await readFile(resolve(ROOT, 'public/artifacts', filename));
-    await writeFile(resolve(kitWork, filename), buf);
-    console.log(`${buf.length.toLocaleString()}b`);
-  }
-
-  // 3. Companion files — copy from public/downloads
-  for (const [filename] of kitFiles(kit)) {
-    process.stdout.write(`  file ${filename} ... `);
-    const buf = await readFile(resolve(OUT_DIR, filename));
-    await writeFile(resolve(kitWork, filename), buf);
-    console.log(`${buf.length.toLocaleString()}b`);
-  }
-
-  // 4. README.md
+  // 2. README.md
   process.stdout.write(`  doc  README.md ... `);
   const readme = renderReadmeMd(kit);
   await writeFile(resolve(kitWork, 'README.md'), readme);
   console.log(`${Buffer.byteLength(readme).toLocaleString()}b`);
 
-  // 5. START-HERE.pdf — Playwright render
-  process.stdout.write(`  doc  START-HERE.pdf ... `);
+  // 3. START-HERE.pdf — Playwright render
+  const startHereName = kit.startHereName ?? 'START-HERE.pdf';
+  process.stdout.write(`  doc  ${startHereName} ... `);
   const html = renderStartHereHtml(kitSlug, kit);
   const tmpHtml = resolve(kitWork, '_start-here.html');
   await writeFile(tmpHtml, html);
@@ -228,20 +246,18 @@ async function buildKit(browser, kitSlug, kit) {
     margin: { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' },
     printBackground: true,
   });
-  await writeFile(resolve(kitWork, 'START-HERE.pdf'), pdf);
+  await writeFile(resolve(kitWork, startHereName), pdf);
   console.log(`${pdf.length.toLocaleString()}b`);
   await page.close();
 
-  // 6. Bundle ZIP via the system `zip` command — no JS dep needed.
+  // 4. Bundle ZIP via the system `zip` command — no JS dep needed.
   const zipPath = resolve(OUT_DIR, `${kitSlug}.zip`);
   process.stdout.write(`  zip  → ${zipPath.replace(ROOT + '/', '')} ... `);
   await rm(zipPath, { force: true });
   await rm(resolve(kitWork, '_start-here.html'), { force: true });
   const fileList = [
-    ...kit.pdfs.map(([f]) => f),
-    ...kitFiles(kit).map(([f]) => f),
-    ...kit.markdowns.map(([f]) => f),
-    'START-HERE.pdf',
+    startHereName,
+    ...kitAssets(kit).map(({ target }) => target),
     'README.md',
   ];
   execFileSync('zip', ['-9j', zipPath, ...fileList.map((f) => resolve(kitWork, f))], {
@@ -272,9 +288,14 @@ async function main() {
   await mkdir(WORK_DIR, { recursive: true });
   await mkdir(OUT_DIR, { recursive: true });
   const upload = process.argv.includes('--upload');
+  const onlyIndex = process.argv.indexOf('--only');
+  const only = onlyIndex >= 0 ? process.argv[onlyIndex + 1] : null;
+  if (only && !KITS[only]) {
+    throw new Error(`Unknown kit slug for --only: ${only}`);
+  }
   const browser = await chromium.launch();
   const built = [];
-  for (const [slug, def] of Object.entries(KITS)) {
+  for (const [slug, def] of Object.entries(KITS).filter(([slug]) => !only || slug === only)) {
     built.push(await buildKit(browser, slug, def));
   }
   await browser.close();

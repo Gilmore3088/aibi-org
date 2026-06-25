@@ -15,7 +15,7 @@ describe('resourceMeta', () => {
 
   it('maps starter kits', () => {
     expect(resourceMeta('governance-starter-kit').category).toBe('Starter kits');
-    expect(resourceMeta('governance-starter-kit').label).toBe('AI Governance Starter Kit');
+    expect(resourceMeta('governance-starter-kit').label).toBe('The Bank AI Governance Starter Kit');
   });
 
   it('maps desk cards', () => {

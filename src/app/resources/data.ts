@@ -77,8 +77,8 @@ export interface StarterKit {
 const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly desc: string; readonly zipSize: string; readonly icon: IconType }> = {
   'governance-starter-kit': {
     id: 'governance',
-    desc: 'Start here if your team is beginning to allow AI tools.',
-    zipSize: '853 KB',
+    desc: 'Set the data line, classify AI use, start the inventory, and document your first workflow.',
+    zipSize: '612 KB',
     icon: ShieldCheck,
   },
   'frontline-enablement-kit': {
