@@ -17,13 +17,21 @@ import {
 /* ── Model ──────────────────────────────────────────────────────────── */
 
 interface SopForm {
+  workflowId: string;
   workflowName: string;
   department: string;
   owner: string;
+  accountableExecutive: string;
   riskTier: 'Green' | 'Yellow' | 'Red';
   status: 'Draft' | 'Reviewed' | 'Approved';
   purpose: string;
   approvedTool: string;
+  deploymentType: string;
+  dataClass: string;
+  customerDataInvolved: string;
+  regulatedProcessInvolved: string;
+  approvalDate: string;
+  nextReviewDate: string;
   allowedInputs: string;
   prohibitedInputs: string;
   promptInstructions: string;
@@ -32,18 +40,33 @@ interface SopForm {
   reviewStandard: string;
   approvalCheckpoint: string;
   retentionRule: string;
+  materialErrorThreshold: string;
+  customerImpactingErrorThreshold: string;
+  pauseTrigger: string;
+  restartApproval: string;
+  fallbackProcess: string;
+  recordsRetained: string;
+  lastVersionReviewed: string;
   escalationTriggers: string;
 }
 
 const EMPTY_FORM: SopForm = {
+  workflowId: 'AI-OPS-001',
   workflowName: 'AI-Assisted Procedure Summary Workflow',
   department: 'Operations',
   owner: 'Department lead',
+  accountableExecutive: 'Chief Operating Officer',
   riskTier: 'Yellow',
   status: 'Draft',
   purpose:
     'Use an approved AI tool to convert internal procedure text into a plain-English draft summary for staff review.',
   approvedTool: 'Approved AI writing assistant',
+  deploymentType: 'Approved enterprise AI account',
+  dataClass: 'Internal procedure text; no customer NPI',
+  customerDataInvolved: 'No',
+  regulatedProcessInvolved: 'None unless the source procedure touches a regulated process',
+  approvalDate: 'YYYY-MM-DD',
+  nextReviewDate: 'YYYY-MM-DD',
   allowedInputs:
     'Approved internal procedure text, role/audience, process owner, known exceptions, review owner.',
   prohibitedInputs:
@@ -59,6 +82,13 @@ const EMPTY_FORM: SopForm = {
     'The output may be distributed only after the human reviewer approves the final version.',
   retentionRule:
     'Save only the reviewed final version and source reference in the approved internal repository or toolbox. Do not retain unreviewed drafts as official records.',
+  materialErrorThreshold: 'More than 5% of reviewed outputs require material correction in a month.',
+  customerImpactingErrorThreshold: 'Any customer-impacting error.',
+  pauseTrigger: 'Any prohibited input, data exposure, severe error, vendor model change, or two consecutive months over the material error threshold.',
+  restartApproval: 'Workflow owner plus Compliance and Risk approval.',
+  fallbackProcess: 'Complete the procedure summary manually using the approved source document and review checklist.',
+  recordsRetained: 'Final reviewed output, source reference, reviewer note, approval record, and any exception or incident ticket.',
+  lastVersionReviewed: 'Version/date/reviewer',
   escalationTriggers:
     'Escalate to Compliance, Legal, InfoSec, or Risk if the workflow touches customer impact, credit, BSA/AML, fraud, authentication, complaints, examiner-facing material, confidential records, or uncertain regulatory interpretation.',
 };
@@ -76,21 +106,53 @@ const DEPARTMENTS = [
 ];
 
 const REVIEW_ITEMS = [
+  'Front-page control fields are complete',
   'Business purpose is clear',
   'Approved tool is named',
   'Allowed inputs are defined',
   'Prohibited inputs are explicit',
   'Human reviewer is identified',
+  'Monitoring thresholds are written',
+  'Pause and restart approvals are defined',
   'Approval checkpoint is documented',
-  'Retention rule is defined',
+  'Records retained are defined',
   'Escalation triggers are listed',
 ];
 
 function buildMarkdown(form: SopForm): string {
   return `# ${form.workflowName}
 
+## SOP Front Page
+
+| Field | Response |
+|---|---|
+| Workflow ID | ${form.workflowId} |
+| Workflow Name | ${form.workflowName} |
+| Department | ${form.department} |
+| Named Owner | ${form.owner} |
+| Accountable Executive | ${form.accountableExecutive} |
+| Tool/Vendor | ${form.approvedTool} |
+| Deployment Type | ${form.deploymentType} |
+| Data Class | ${form.dataClass} |
+| Customer Data Involved | ${form.customerDataInvolved} |
+| Regulated Process Involved | ${form.regulatedProcessInvolved} |
+| Risk Tier | ${form.riskTier} |
+| Status | ${form.status} |
+| Approval Date | ${form.approvalDate} |
+| Next Review Date | ${form.nextReviewDate} |
+| Material Error Threshold | ${form.materialErrorThreshold} |
+| Customer-Impacting Error Threshold | ${form.customerImpactingErrorThreshold} |
+| Pause Trigger | ${form.pauseTrigger} |
+| Restart Approval | ${form.restartApproval} |
+| Fallback Process | ${form.fallbackProcess} |
+| Records Retained | ${form.recordsRetained} |
+| Last Version Reviewed | ${form.lastVersionReviewed} |
+
+---
+
 **Department:** ${form.department}
 **Workflow owner:** ${form.owner}
+**Accountable executive:** ${form.accountableExecutive}
 **Risk tier:** ${form.riskTier}
 **Status:** ${form.status}
 
@@ -105,6 +167,8 @@ ${form.purpose}
 ## 2. Approved Tool
 
 ${form.approvedTool}
+
+**Deployment type:** ${form.deploymentType}
 
 ---
 
@@ -154,21 +218,35 @@ ${form.approvalCheckpoint}
 
 ${form.retentionRule}
 
+**Records retained:** ${form.recordsRetained}
+
 ---
 
-## 11. Escalation Triggers
+## 11. Monitoring Thresholds And Shutoff Triggers
+
+| Field | Response |
+|---|---|
+| Material error threshold | ${form.materialErrorThreshold} |
+| Customer-impacting error threshold | ${form.customerImpactingErrorThreshold} |
+| Pause trigger | ${form.pauseTrigger} |
+| Restart approval | ${form.restartApproval} |
+| Fallback process | ${form.fallbackProcess} |
+
+---
+
+## 12. Escalation Triggers
 
 ${form.escalationTriggers}
 
 ---
 
-## 12. Review Checklist
+## 13. Review Checklist
 
 ${REVIEW_ITEMS.map((item) => `- [ ] ${item}`).join('\n')}
 
 ---
 
-## 13. Final Approval
+## 14. Final Approval
 
 | Field | Response |
 |---|---|
@@ -248,14 +326,14 @@ export function WorkflowSopBuilder() {
         <div className="mk-container mk-hero-inner">
           <div>
             <EyebrowChip icon={<Workflow size={16} />}>Working markdown template</EyebrowChip>
-            <h1>Document one AI-assisted workflow end to end.</h1>
+            <h1>Document one AI-assisted workflow with controls.</h1>
             <p className="mk-lede">
-              Capture the tool, allowed inputs, output, reviewer, approval checkpoint, escalation
-              path, and retention rule before an AI workflow is reused.
+              Capture the tool, data boundary, reviewer, vendor controls, monitoring thresholds,
+              fallback process, and retained evidence before an AI workflow is reused.
             </p>
             <div className="mk-ctas">
               <FreeResourceDownloadGate
-                title="AI Workflow SOP Markdown"
+                title="Bank AI Workflow SOP Markdown"
                 slug="template-ai-workflow-sop"
                 source="resources-ai-workflow-sop-copy"
                 format="Markdown"
@@ -263,13 +341,13 @@ export function WorkflowSopBuilder() {
                 capturedLabel={copied ? 'Copied' : 'Copy Markdown'}
                 buttonVariant="gold"
                 buttonSize="lg"
-                formAriaLabel="Enter your email to use the AI Workflow SOP Markdown"
+                formAriaLabel="Enter your email to use the Bank AI Workflow SOP Markdown"
                 submitLabel="Continue"
                 stayInteractiveAfterUnlock
                 onUnlock={copyMarkdown}
               />
               <FreeResourceDownloadGate
-                title="AI Workflow SOP Markdown file"
+                title="Bank AI Workflow SOP Markdown file"
                 slug="template-ai-workflow-sop-md"
                 source="resources-ai-workflow-sop-download"
                 format="Markdown"
@@ -277,7 +355,7 @@ export function WorkflowSopBuilder() {
                 capturedLabel="Download .md"
                 buttonVariant="ghost-dark"
                 buttonSize="lg"
-                formAriaLabel="Enter your email to download the AI Workflow SOP Markdown file"
+                formAriaLabel="Enter your email to download the Bank AI Workflow SOP Markdown file"
                 stayInteractiveAfterUnlock
                 onUnlock={downloadMarkdown}
               />
@@ -336,7 +414,7 @@ function HeroSnapshot({
   copied: boolean;
 }) {
   const stats = [
-    { label: 'Completeness', value: `${completeness}%`, Icon: ClipboardCheck },
+    { label: 'Workflow ID', value: form.workflowId, Icon: ClipboardCheck },
     { label: 'Risk tier', value: form.riskTier, Icon: ShieldCheck },
     { label: 'Status', value: form.status, Icon: BadgeCheck },
     { label: 'Reviewer', value: form.humanReviewer, Icon: Users },
@@ -400,6 +478,7 @@ function TemplateConfig({
       </p>
 
       <div className="sop-grid-2">
+        <TextField label="Workflow ID" value={form.workflowId} onChange={(v) => updateField('workflowId', v)} />
         <SelectField
           label="Department"
           value={form.department}
@@ -419,11 +498,38 @@ function TemplateConfig({
           onChange={(v) => updateField('status', v as SopForm['status'])}
         />
         <TextField label="Workflow owner" value={form.owner} onChange={(v) => updateField('owner', v)} />
+        <TextField
+          label="Accountable executive"
+          value={form.accountableExecutive}
+          onChange={(v) => updateField('accountableExecutive', v)}
+        />
+        <TextField
+          label="Approval date"
+          value={form.approvalDate}
+          onChange={(v) => updateField('approvalDate', v)}
+        />
+        <TextField
+          label="Next review date"
+          value={form.nextReviewDate}
+          onChange={(v) => updateField('nextReviewDate', v)}
+        />
       </div>
 
       <TextField label="Workflow name" value={form.workflowName} onChange={(v) => updateField('workflowName', v)} />
       <TextField label="Business purpose" value={form.purpose} onChange={(v) => updateField('purpose', v)} textarea />
-      <TextField label="Approved tool" value={form.approvedTool} onChange={(v) => updateField('approvedTool', v)} />
+      <TextField label="Tool / vendor" value={form.approvedTool} onChange={(v) => updateField('approvedTool', v)} />
+      <TextField label="Deployment type" value={form.deploymentType} onChange={(v) => updateField('deploymentType', v)} />
+      <TextField label="Data class" value={form.dataClass} onChange={(v) => updateField('dataClass', v)} />
+      <TextField
+        label="Customer data involved"
+        value={form.customerDataInvolved}
+        onChange={(v) => updateField('customerDataInvolved', v)}
+      />
+      <TextField
+        label="Regulated process involved"
+        value={form.regulatedProcessInvolved}
+        onChange={(v) => updateField('regulatedProcessInvolved', v)}
+      />
       <TextField label="Allowed inputs" value={form.allowedInputs} onChange={(v) => updateField('allowedInputs', v)} textarea />
       <TextField label="Prohibited inputs" value={form.prohibitedInputs} onChange={(v) => updateField('prohibitedInputs', v)} textarea />
       <TextField label="Prompt / task instructions" value={form.promptInstructions} onChange={(v) => updateField('promptInstructions', v)} textarea />
@@ -432,6 +538,27 @@ function TemplateConfig({
       <TextField label="Review standard" value={form.reviewStandard} onChange={(v) => updateField('reviewStandard', v)} textarea />
       <TextField label="Approval checkpoint" value={form.approvalCheckpoint} onChange={(v) => updateField('approvalCheckpoint', v)} textarea />
       <TextField label="Retention rule" value={form.retentionRule} onChange={(v) => updateField('retentionRule', v)} textarea />
+      <TextField
+        label="Material error threshold"
+        value={form.materialErrorThreshold}
+        onChange={(v) => updateField('materialErrorThreshold', v)}
+        textarea
+      />
+      <TextField
+        label="Customer-impacting error threshold"
+        value={form.customerImpactingErrorThreshold}
+        onChange={(v) => updateField('customerImpactingErrorThreshold', v)}
+        textarea
+      />
+      <TextField label="Pause trigger" value={form.pauseTrigger} onChange={(v) => updateField('pauseTrigger', v)} textarea />
+      <TextField label="Restart approval" value={form.restartApproval} onChange={(v) => updateField('restartApproval', v)} textarea />
+      <TextField label="Fallback process" value={form.fallbackProcess} onChange={(v) => updateField('fallbackProcess', v)} textarea />
+      <TextField label="Records retained" value={form.recordsRetained} onChange={(v) => updateField('recordsRetained', v)} textarea />
+      <TextField
+        label="Last version reviewed"
+        value={form.lastVersionReviewed}
+        onChange={(v) => updateField('lastVersionReviewed', v)}
+      />
       <TextField label="Escalation triggers" value={form.escalationTriggers} onChange={(v) => updateField('escalationTriggers', v)} textarea />
     </section>
   );
@@ -566,27 +693,27 @@ function MarkdownPreview({
         </div>
         <div className="sop-preview-actions">
           <FreeResourceDownloadGate
-            title="AI Workflow SOP Markdown"
+            title="Bank AI Workflow SOP Markdown"
             slug="template-ai-workflow-sop"
             source="resources-ai-workflow-sop-preview-copy"
             format="Markdown"
             actionLabel="Get Markdown"
             capturedLabel={copied ? 'Copied' : 'Copy'}
             buttonVariant="ghost-light"
-            formAriaLabel="Enter your email to use the AI Workflow SOP Markdown"
+            formAriaLabel="Enter your email to use the Bank AI Workflow SOP Markdown"
             submitLabel="Continue"
             stayInteractiveAfterUnlock
             onUnlock={copyMarkdown}
           />
           <FreeResourceDownloadGate
-            title="AI Workflow SOP Markdown file"
+            title="Bank AI Workflow SOP Markdown file"
             slug="template-ai-workflow-sop-md"
             source="resources-ai-workflow-sop-preview-download"
             format="Markdown"
             actionLabel="Get .md"
             capturedLabel="Download .md"
             buttonVariant="ink"
-            formAriaLabel="Enter your email to download the AI Workflow SOP Markdown file"
+            formAriaLabel="Enter your email to download the Bank AI Workflow SOP Markdown file"
             stayInteractiveAfterUnlock
             onUnlock={downloadMarkdown}
           />
@@ -602,7 +729,7 @@ function UseGuide() {
     { title: 'Use for repeatable work', desc: 'If the workflow will be reused, document it before scaling.', Icon: Workflow },
     { title: 'Name the reviewer', desc: 'Medium and high-risk outputs need a clear accountable human owner.', Icon: Users },
     { title: 'Define the data boundary', desc: 'Allowed and prohibited inputs should be clear before anyone runs the prompt.', Icon: LockKeyhole },
-    { title: 'Retain the reviewed version', desc: 'Save final reviewed outputs, not messy draft exchanges, as the business record.', Icon: FileText },
+    { title: 'Write the shutoff trigger', desc: 'The SOP should say exactly when use pauses and who can restart it.', Icon: FileText },
   ];
   return (
     <section className="sop-card">

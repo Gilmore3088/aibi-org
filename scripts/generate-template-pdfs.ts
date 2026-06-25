@@ -116,6 +116,14 @@ const s = StyleSheet.create({
   stepNum: { fontFamily: 'DMMono', fontSize: 8, color: TERRA, width: 16, marginTop: 1 },
   itemText: { fontFamily: 'DMSans', fontSize: 9, color: INK, lineHeight: 1.5, flex: 1 },
   divider: { borderBottomWidth: 0.5, borderBottomColor: BORDER, marginVertical: 14 },
+  tableWrap: { borderWidth: 0.5, borderColor: BORDER, marginTop: 6, marginBottom: 7 },
+  tableCaption: { fontFamily: 'DMSans', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 4 },
+  tableRow: { flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: BORDER },
+  tableRowLast: { flexDirection: 'row' },
+  tableHeaderCell: { flex: 1, backgroundColor: '#EEF2F6', padding: '5 6' },
+  tableCell: { flex: 1, padding: '5 6' },
+  tableHeaderText: { fontFamily: 'DMSans', fontSize: 7.2, fontWeight: 700, color: INK_2, lineHeight: 1.35 },
+  tableCellText: { fontFamily: 'DMSans', fontSize: 7.2, color: INK, lineHeight: 1.35 },
 
   sourceBox: { borderLeftWidth: 3, borderLeftColor: INK_2, backgroundColor: '#EEF2F6', padding: '9 12', marginTop: 6 },
   sourceLabel: { fontFamily: 'DMSans', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 3 },
@@ -154,6 +162,35 @@ function SectionBlock(section: TemplateSection, index: number) {
       ),
     ),
   );
+  (section.tables ?? []).forEach((table, tableIndex) => {
+    if (table.caption) {
+      children.push(el(Text, { style: s.tableCaption, key: `tc${tableIndex}` }, table.caption));
+    }
+    children.push(
+      el(View, { style: s.tableWrap, key: `t${tableIndex}` },
+        el(View, { style: s.tableRow, wrap: false },
+          ...table.headers.map((header, headerIndex) =>
+            el(View, { style: s.tableHeaderCell, key: `h${headerIndex}` },
+              el(Text, { style: s.tableHeaderText }, header),
+            ),
+          ),
+        ),
+        ...table.rows.map((row, rowIndex) =>
+          el(View, {
+            style: rowIndex === table.rows.length - 1 ? s.tableRowLast : s.tableRow,
+            key: `r${rowIndex}`,
+            wrap: false,
+          },
+            ...row.map((cell, cellIndex) =>
+              el(View, { style: s.tableCell, key: `c${cellIndex}` },
+                el(Text, { style: s.tableCellText }, cell),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  });
   return el(View, { style: s.sectionWrap, key: index, wrap: false }, ...children);
 }
 

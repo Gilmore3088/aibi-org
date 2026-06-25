@@ -355,7 +355,7 @@
     },
     {
       "slug": "template-ai-workflow-sop",
-      "title": "AI Workflow SOP",
+      "title": "The Bank AI Workflow SOP Template",
       "audience": ["Operations", "Compliance", "Lending"],
       "category": "template",
       "funnelSegment": "workflow",
@@ -364,7 +364,7 @@
       "variants": { "pdf": "template-ai-workflow-sop.pdf", "word": "/api/resources/templates/ai-workflow-sop/word", "zip": null },
       "zipMembership": ["governance-starter-kit", "lending-review-kit", "marketing-review-kit"],
       "canonicalRoute": "/resources/templates/ai-workflow-sop",
-      "sourceCitations": ["SR 11-7", "AIEOG AI Lexicon"],
+      "sourceCitations": ["Federal Reserve SR 26-2", "OCC Bulletin 2026-13", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "CFPB Circular 2023-03", "NIST AI RMF", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["operations", "compliance", "lending"], "tierLabels": ["Early Stage"], "topGaps": ["workflow"] },
       "status": "public"
