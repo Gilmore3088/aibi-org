@@ -4,48 +4,61 @@ import { BRAND } from '@content/copy';
 import Link from 'next/link';
 
 const TRUST_POINTS = [
-  'Every curriculum claim maps to a named public reference — never implied regulator approval.',
-  'Practice data is synthetic or sanitized; customer PII is never required for the labs.',
-  'Named advisors appear only after explicit, written public-attribution approval.',
+  'Public references guide the curriculum; they do not imply regulator approval.',
+  'Practice work uses synthetic or sanitized data. Customer PII is never required.',
+  'The goal is reviewable AI work a manager, compliance partner, risk officer, or IT reviewer can sign.',
 ] as const;
 
-// The reference map: the public sources the curriculum is built on, each
-// deep-linking to its full citation on /references. Frameworks first
-// (supervisory guidance), then standards & government reports.
+const CORE_REFERENCE_SLUGS = new Set<string>([
+  'sr-11-7',
+  'tprm',
+  'ecoa-reg-b',
+  'aieog',
+  'nist-ai-rmf',
+  'glba-safeguards',
+] as const);
+
+// The homepage map stays intentionally short. The full /references page owns
+// every citation; this section only anchors the trust story.
 const REFERENCE_MAP: ReadonlyArray<{ slug: string; short: string; issuer: string }> = [
   ...REGULATIONS.map((r) => ({ slug: r.slug, short: r.short, issuer: r.issuer })),
   ...REFERENCE_SOURCES.map((s) => ({ slug: s.slug, short: s.short, issuer: s.issuer })),
-];
+].filter((reference) => CORE_REFERENCE_SLUGS.has(reference.slug));
 
 export function TrustAnchor(): JSX.Element {
   return (
     <section className="mk-trust-anchor" aria-labelledby="trust-anchor-title">
       <div>
-        <p className="mk-trust-anchor-k">Who builds this</p>
-        <h2 id="trust-anchor-title">Built to pass a bank review, not just a demo.</h2>
+        <p className="mk-trust-anchor-k">Why this exists</p>
+        <h2 id="trust-anchor-title">Built for bankers who need a real AI plan.</h2>
         <p>
-          {BRAND.name} is founder-led by {BRAND.founder.name}, built for the way
-          community banks and credit unions actually adopt technology: under
-          examination, with a paper trail. We teach staff to produce AI work that
-          holds up to scrutiny — clear data boundaries, a named human owner,
-          checked sources, and artifacts a manager, compliance partner, risk
-          officer, or IT reviewer can sign.
+          AI is moving into banking faster than many small institutions can
+          staff, budget, or govern. This started after an industry conference
+          where AI was everywhere, but many community bank and credit union
+          teams still had no practical plan for use cases, controls, or
+          ownership.
         </p>
         <p>
-          Nothing here implies regulator endorsement. Every claim is mapped to a
-          public source you can open yourself, and every figure on the site is
-          listed with its citation.
+          {BRAND.name} exists to close that gap. We teach bankers to turn ideas
+          into small, reviewable internal solutions: define the workflow, set
+          data boundaries, check sources, name the human owner, and leave behind
+          an artifact someone else can run, review, and improve.
+        </p>
+        <p>
+          It is founder-led, but not founder-centered. The work is about giving
+          smaller institutions a way to build capability without pretending a
+          demo is a strategy.
         </p>
         <p className="mk-trust-anchor-cta">
-          <Link href="/about">Read the operating standards</Link>
-          <Link href="/references">See every source we cite</Link>
+          <Link href="/about">Read how we work</Link>
         </p>
       </div>
       <div className="mk-trust-anchor-panel">
         <div>
-          <p className="mk-trust-anchor-panel-k">Reference map</p>
+          <p className="mk-trust-anchor-panel-k">Standards map</p>
           <p className="mk-trust-anchor-panel-sub">
-            The public frameworks, standards, and reports the curriculum is built on.
+            A short map of the public guidance used to shape the curriculum.
+            The full source library stays open for review.
           </p>
         </div>
         <ul>
@@ -58,6 +71,9 @@ export function TrustAnchor(): JSX.Element {
             </li>
           ))}
         </ul>
+        <Link href="/references" className="mk-trust-anchor-panel-action">
+          Open the full reference library
+        </Link>
         <div className="mk-trust-anchor-rules">
           {TRUST_POINTS.map((point) => (
             <p key={point}>{point}</p>

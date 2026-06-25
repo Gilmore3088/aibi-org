@@ -6212,7 +6212,11 @@ section.mk-std { padding: 56px 0; }
   font-size: 12.5px;
   line-height: 1.35;
 }
-/* The two text links under the founder copy. */
+.mk-trust-anchor a.mk-trust-anchor-panel-action {
+  justify-self: start;
+  font-size: 14px;
+}
+/* The text link under the founder copy. */
 .mk-trust-anchor-cta {
   display: flex;
   flex-wrap: wrap;
