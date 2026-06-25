@@ -179,7 +179,7 @@
     },
     {
       "slug": "retail-playbook",
-      "title": "Branch / Retail Playbook",
+      "title": "The Bank Retail AI Service Kit",
       "audience": ["Retail", "Branch"],
       "category": "playbook",
       "funnelSegment": "role-playbook",
@@ -188,7 +188,7 @@
       "variants": { "pdf": "retail-playbook.pdf", "word": "/api/resources/retail-playbook/word", "zip": null },
       "zipMembership": ["frontline-enablement-kit"],
       "canonicalRoute": "/api/resources/retail-playbook/download",
-      "sourceCitations": ["NIST AI RMF"],
+      "sourceCitations": ["Reg DD", "Reg E 1005.11", "ECOA / Reg B", "GLBA / Reg P", "UDAAP", "Interagency TPRM"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["retail"], "tierLabels": [], "topGaps": ["staff-enablement"] },
       "status": "public"
