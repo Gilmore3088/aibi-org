@@ -24,6 +24,26 @@ describe('starter kit ZIP contents', () => {
     ]);
   });
 
+  it('packages the banker builder brief kit as an ordered working kit', () => {
+    expect(zipEntries('banker-builder-brief-kit.zip')).toEqual([
+      '00-Start-Here.pdf',
+      '01-Banker-Builder-Guide.pdf',
+      '02-Should-We-Build-This-Scorecard.xlsx',
+      '03-Banker-Builder-Brief.docx',
+      '04-Build-Path-And-Risk-Gate.xlsx',
+      '05-Prototype-Test-Plan.docx',
+      '06-Launch-And-Handoff-Checklist.docx',
+      '07-Safe-First-Builds-Menu.pdf',
+      '08-Builder-Brief-Markdown-Export-Template.md',
+      '09-Workflow-SOP-Next-Step.pdf',
+      '10-Operations-AI-Workflow-Kit.pdf',
+      '11-Red-Yellow-Green-AI-Use-Card.pdf',
+      '12-InfoSec-AI-Control-Plane-Kit.pdf',
+      '13-Design-Dev-Handoff-Brief.docx',
+      'README.md',
+    ]);
+  });
+
   it('packages the frontline enablement kit as an ordered working kit', () => {
     expect(zipEntries('frontline-enablement-kit.zip')).toEqual([
       '00-Start-Here.pdf',

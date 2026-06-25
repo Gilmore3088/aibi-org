@@ -1,0 +1,43 @@
+# Banker Builder Brief
+
+## Build verdict
+- Decision:
+- Recommended build path:
+- Risk tier:
+- Required reviewers:
+
+## Problem
+- Workflow pain:
+- User or team:
+- Current workflow steps:
+- Pain evidence:
+
+## Proposed solution
+- Plain-language solution:
+- Must do:
+- Must not do:
+- Success metric within 30 days:
+
+## Data boundary
+- Allowed inputs:
+- Prohibited inputs:
+- Customer NPI involved: No / Escalate
+- Production write access involved: No / Escalate
+
+## Prototype test plan
+- Test users:
+- Permitted test data:
+- Acceptance criteria:
+- Failure modes:
+- Result decision: stop / revise / prototype / pilot / escalate
+
+## Launch and handoff
+- Owner:
+- Backup owner:
+- Access rules:
+- Evidence location:
+- Retention rule:
+- Support contact:
+- Kill switch owner:
+- Pause triggers:
+- Next review date:

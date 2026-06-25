@@ -32,6 +32,7 @@ describe('downloadCatalog', () => {
       'artifact-data-handling-reference-card',
       'artifact-fair-lending-ai-review-checklist',
       'governance-starter-kit',
+      'banker-builder-brief-kit',
       'frontline-enablement-kit',
       'marketing-review-kit',
       'lending-review-kit',

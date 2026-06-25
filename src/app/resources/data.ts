@@ -81,6 +81,12 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
     zipSize: '612 KB',
     icon: ShieldCheck,
   },
+  'banker-builder-brief-kit': {
+    id: 'builder',
+    desc: 'Turn one workflow problem into a Builder Brief, safe build path, test plan, and handoff checklist.',
+    zipSize: '1.3 MB',
+    icon: Workflow,
+  },
   'frontline-enablement-kit': {
     id: 'frontline',
     desc: 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',
