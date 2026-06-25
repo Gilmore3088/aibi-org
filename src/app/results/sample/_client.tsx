@@ -324,7 +324,7 @@ export default function ResultsPage() {
               <StarIcon className="mk-ic-xl" size={24} />
               <h3>Practice in Sandbox</h3>
               <p>Use a safe compliance scenario before applying AI to real work.</p>
-              <Link className="mk-link" href="/playground">
+              <Link className="mk-link" href="/practice">
                 Open sandbox <ArrowR className="mk-ic" />
               </Link>
             </div>

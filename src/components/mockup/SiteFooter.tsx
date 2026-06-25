@@ -19,7 +19,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
       { href: '/prompt-cards', label: 'Prompt cards' },
       { href: '/resources/templates/ai-use-policy-starter', label: 'Templates' },
       { href: '/playbooks', label: 'Role playbooks' },
-      { href: '/playground', label: 'AI demo sandbox' },
+      { href: '/practice', label: 'AI practice sandbox' },
       { href: '/for-institutions/samples/efficiency-ratio-workbook', label: 'Efficiency ratio workbook' },
     ],
   },
