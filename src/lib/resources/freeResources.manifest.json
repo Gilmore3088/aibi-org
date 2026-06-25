@@ -397,7 +397,7 @@
     },
     {
       "slug": "template-cdfi-grant-ai-evidence-checklist",
-      "title": "CDFI Grant AI Evidence Checklist",
+      "title": "The CDFI AI Evidence File Checklist",
       "audience": ["CDFI", "MDI", "Community Development", "Grants"],
       "category": "template",
       "funnelSegment": "mission-documentation",
@@ -406,7 +406,7 @@
       "variants": { "pdf": "template-cdfi-grant-ai-evidence-checklist.pdf", "word": "/api/resources/templates/cdfi-grant-ai-evidence-checklist/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/resources/templates/cdfi-grant-ai-evidence-checklist",
-      "sourceCitations": ["AIEOG AI Lexicon", "Grant agreement reporting instructions", "Records retention policy"],
+      "sourceCitations": ["CDFI Fund AMIS reporting instructions", "CDFI Fund Award / Assistance / Allocation Agreement", "2 CFR 200.334", "ECOA / Reg B", "AIEOG AI Lexicon", "Financial Services AI Risk Management Framework"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["executive", "operations", "marketing"], "tierLabels": ["Early Stage", "Building Momentum"], "topGaps": ["documentation", "governance"] },
       "status": "public"

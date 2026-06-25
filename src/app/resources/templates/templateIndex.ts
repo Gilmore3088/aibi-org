@@ -53,11 +53,11 @@ export const TEMPLATE_INDEX = [
   },
   {
     slug: 'cdfi-grant-ai-evidence-checklist',
-    title: 'CDFI Grant AI Evidence Checklist',
-    dek: 'A mission-first, audit-ready way to document where AI assisted your grant, certification, and impact files — so human judgment, fair-lending integrity, and community outcomes stay clearly attributable and defensible.',
+    title: 'The CDFI AI Evidence File Checklist',
+    dek: 'A fillable ledger for documenting AI-assisted grant, certification, impact, and award-reporting materials.',
     audience: 'CDFI, MDI, community development, grants, and impact teams',
-    readMinutes: 12,
-    preview: ['Why it matters', 'AI use-case inventory', 'Separate AI from judgment', 'Fair-lending guardrails'],
+    readMinutes: 15,
+    preview: ['Evidence row template', 'Reporting map', 'Fair-lending/access guardrails', 'Certifier sign-off'],
   },
   {
     slug: 'gtm-plan',

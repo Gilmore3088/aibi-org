@@ -57,13 +57,13 @@ describe('ResourcesExperience', () => {
   it('surfaces a CDFI grant evidence template with a Word download', () => {
     render(<ResourcesExperience />);
 
-    const cdfiHeading = screen.getByRole('heading', { name: 'CDFI Grant AI Evidence Checklist' });
+    const cdfiHeading = screen.getByRole('heading', { name: 'The CDFI AI Evidence File Checklist' });
     const cdfiCard = cdfiHeading.closest('article');
 
     expect(cdfiCard).toBeTruthy();
     expect(
       within(cdfiCard as HTMLElement).getByText(
-        /document where AI assisted your grant, certification, and impact files/i,
+        /fillable ledger for documenting AI-assisted grant, certification, impact, and award-reporting materials/i,
       ),
     ).toBeTruthy();
     expect(within(cdfiCard as HTMLElement).getByRole('link', { name: 'Open' }).getAttribute('href')).toBe(
@@ -71,7 +71,7 @@ describe('ResourcesExperience', () => {
     );
     expect(
       within(cdfiCard as HTMLElement)
-        .getByRole('button', { name: /Get Word for CDFI Grant AI Evidence Checklist/i }),
+        .getByRole('button', { name: /Get Word for The CDFI AI Evidence File Checklist/i }),
     ).toBeTruthy();
   });
 
