@@ -25,9 +25,9 @@ const BUNDLE_TO_ROUTE: Record<string, string> = {
   'My Toolbox v3.html': '/my-toolbox',
   'My Toolbox v4.html': '/my-toolbox',
   'My Toolbox v5.html': '/my-toolbox',
-  'Playground.html': '/playground',
-  'Playground v1.html': '/playground',
-  'Playground v2.html': '/playground',
+  'Playground.html': '/practice',
+  'Playground v1.html': '/practice',
+  'Playground v2.html': '/practice',
 };
 
 export function rewriteBundleLinks(html: string): string {

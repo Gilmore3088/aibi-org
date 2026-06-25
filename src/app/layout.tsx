@@ -29,7 +29,6 @@ const CHROMELESS_PATHS: readonly string[] = [
   '/results',
   '/pricing',
   '/courses',
-  '/playground',
   '/practice',
   '/my-toolbox',
   '/for-institutions',

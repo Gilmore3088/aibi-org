@@ -3,11 +3,11 @@ import { describe, expect, it } from 'vitest';
 import { SiteFooter } from './SiteFooter';
 
 describe('SiteFooter', () => {
-  it('links evaluators to the public AI demo sandbox', () => {
+  it('links evaluators to the public AI practice sandbox', () => {
     render(<SiteFooter />);
 
-    expect(screen.getByRole('link', { name: /AI demo sandbox/i }).getAttribute('href')).toBe(
-      '/playground',
+    expect(screen.getByRole('link', { name: /AI practice sandbox/i }).getAttribute('href')).toBe(
+      '/practice',
     );
   });
 

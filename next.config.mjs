@@ -142,6 +142,11 @@ const nextConfig = {
       { source: '/research/:path*', destination: '/resources/:path*', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
+      // 2026-06-25: the public /playground sandbox was consolidated into the
+      // richer /practice sandbox (role → scenario → review → save). Redirect so
+      // old links and the footer/sample CTAs resolve to the single surface.
+      { source: '/playground', destination: '/practice', permanent: true },
+      { source: '/playground/:path*', destination: '/practice', permanent: true },
       // 2026-05-28: /assessment/in-depth/dashboard renamed to /access.
       // The page is a gated cohort-leader view; "dashboard" implied a live
       // analytics surface it wasn't. Permanent redirect so external links
