@@ -23,4 +23,22 @@ describe('starter kit ZIP contents', () => {
       'README.md',
     ]);
   });
+
+  it('packages the frontline enablement kit as an ordered working kit', () => {
+    expect(zipEntries('frontline-enablement-kit.zip')).toEqual([
+      '00-Start-Here.pdf',
+      '01-Frontline-Data-Handling-Card.pdf',
+      '02-Before-You-Paste-Safe-AI-Checklist.pdf',
+      '03-Prompt-Strategy-Cheat-Sheet.pdf',
+      '04-Retail-Branch-Manager-Guide.pdf',
+      '05-Branch-Style-Brief-Template.docx',
+      '06-First-Draft-Reply-Library.docx',
+      '07-Procedure-to-Job-Aid-Prompt.docx',
+      '08-Branch-Coaching-Scenario-Pack.docx',
+      '09-Customer-Voice-Report-Template.docx',
+      '10-Retail-AI-Evidence-Packet.docx',
+      '11-30-Day-Frontline-Rollout-Tracker.xlsx',
+      'README.md',
+    ]);
+  });
 });

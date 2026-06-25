@@ -83,8 +83,8 @@ const STARTER_KIT_PRESENTATION: Record<string, { readonly id: string; readonly d
   },
   'frontline-enablement-kit': {
     id: 'frontline',
-    desc: 'Give branch and contact center teams safer AI practice routines.',
-    zipSize: '1.1 MB',
+    desc: 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',
+    zipSize: '1.2 MB',
     icon: Users,
   },
   'marketing-review-kit': {
