@@ -461,7 +461,7 @@
     },
     {
       "slug": "marketing-review-kit",
-      "title": "Marketing Review Kit",
+      "title": "The Bank Marketing AI Review Kit",
       "audience": ["Marketing", "Compliance"],
       "category": "starter-kit",
       "funnelSegment": "marketing-review",
@@ -470,7 +470,7 @@
       "variants": { "pdf": null, "word": null, "zip": "marketing-review-kit.zip" },
       "zipMembership": [],
       "canonicalRoute": "/api/resources/marketing-review-kit/download",
-      "sourceCitations": ["CFPB Reg B", "NIST AI RMF"],
+      "sourceCitations": ["Reg DD / Truth in Savings", "Reg Z", "CFPB Reg B", "Fair Housing Act", "CAN-SPAM", "TCPA", "GLBA / Reg P", "UDAAP", "Interagency Third-Party Risk Guidance"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["marketing", "compliance"], "tierLabels": ["Early Stage", "Building Momentum"], "topGaps": ["claim-review"] },
       "status": "public"

@@ -63,7 +63,7 @@ const META = {
   // Starter kits (ZIPs)
   'governance-starter-kit':     { title: 'The Bank AI Governance Starter Kit', category: 'starter-kit',  order: 30 },
   'frontline-enablement-kit':   { title: 'The Frontline AI Enablement Kit', category: 'starter-kit',  order: 31 },
-  'marketing-review-kit':       { title: 'Marketing Review Kit',        category: 'starter-kit',  order: 32 },
+  'marketing-review-kit':       { title: 'The Bank Marketing AI Review Kit', category: 'starter-kit',  order: 32 },
   'lending-review-kit':         { title: 'The Lending AI Review Kit', category: 'starter-kit',  order: 33 },
   // Templates
   'template-ai-use-policy-starter':       { title: "The Banker's AI Use Policy Starter", category: 'template', order: 40 },
@@ -97,7 +97,7 @@ const DESCRIPTIONS = {
   'in-depth-playbook': 'How the $99 report turns assessment results into a 90-day AI win.',
   'governance-starter-kit': 'Four tools to set the data line, classify AI use, start the inventory, and document your first workflow.',
   'frontline-enablement-kit': 'Desk cards, prompts, and manager tools for safer branch and contact-center AI use.',
-  'marketing-review-kit': 'Create faster campaign drafts without skipping claims and disclosure review.',
+  'marketing-review-kit': 'Draft faster, verify every claim, review every disclosure, and retain every campaign decision.',
   'lending-review-kit': 'Review one AI-assisted lending workflow and prove the decision stayed human, explainable, fair-lending aware, and file-supported.',
   'template-ai-use-policy-starter': 'Editable starter clauses defining tools, data, review, incidents, and ownership.',
   'template-ai-workflow-sop': 'Document AI-assisted work, human review, data handling, vendor controls, monitoring, and shutoff triggers.',
