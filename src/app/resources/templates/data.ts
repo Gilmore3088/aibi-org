@@ -558,12 +558,14 @@ export const TEMPLATES: readonly Template[] = [
   {
     ...templateBase('cdfi-grant-ai-evidence-checklist'),
     sourcedFrom: [
-      'CDFI Fund (US Treasury) — CDFI Certification reporting: Annual Certification and Data Collection Report (ACR) and Transaction Level Report (TLR)',
-      'CDFI Fund — award compliance and reporting obligations (Assistance/Allocation Agreement, Performance Progress Report, Material Events; CCME Help Desk)',
+      'CDFI Fund (US Treasury) — CDFI Certification reporting through AMIS, including the Annual Certification and Data Collection Report (ACR) and Transaction Level Report (TLR); latest templates and instructions should be pulled from AMIS.',
+      'CDFI Fund — award compliance and reporting obligations, including Performance Progress Reports, Material Events forms, and the applicable Award / Assistance / Allocation Agreement.',
       'CFPB guidance on adverse-action notices when using AI/complex credit models (ECOA / Regulation B; Circular 2022-03)',
       '12 CFR Part 1805 — Community Development Financial Institutions Program',
-      'AIEOG AI Lexicon — AI governance, AI use case inventory (US Treasury / FBIIC / FSSCC, Feb 2026)',
-      'Your grant agreement, award conditions, and reporting instructions; institution records-retention policy',
+      '2 CFR 200.334 — Uniform Guidance record-retention rules.',
+      'AIEOG AI Lexicon — AI governance and AI use-case inventory terminology (US Treasury / FBIIC / FSSCC, Feb 2026)',
+      'Financial Services AI Risk Management Framework — financial-sector AI lifecycle governance and evidence discipline.',
+      'Your Award / Assistance / Allocation Agreement, agency instructions, institution retention schedule, and any audit, litigation, or agency hold.',
     ],
     sections: [
       {
@@ -573,8 +575,32 @@ export const TEMPLATES: readonly Template[] = [
         items: [
           'Scope it to documents that feed obligations: the ACR, the TLR, Performance Progress Reports for applicable awards, impact narratives, and community-development outreach summaries.',
           'Recommended: keep one lightweight evidence row per AI-assisted deliverable — enough to reconstruct what AI touched and who verified it — rather than logging every keystroke.',
-          'Adopt-verbatim file-purpose statement: "This evidence file records where AI tools assisted in preparing materials submitted to or relied upon for the CDFI Fund and for community-impact reporting. AI assistance does not replace the certifying official’s independent review; all figures, claims, and certifications reflect human verification."',
+          'Suggested file language: "This evidence file records where AI tools assisted in preparing materials submitted to or relied upon for the CDFI Fund and for community-impact reporting. AI assistance does not replace the certifying official’s independent review; all figures, claims, and certifications reflect human verification."',
           'Not legal advice — confirm specifics against your Award/Assistance/Allocation Agreement and your award reporting instructions.',
+        ],
+      },
+      {
+        heading: 'AI Evidence Row Template',
+        intro:
+          'Use one row per AI-assisted deliverable. The ledger should be simple enough to complete during normal file preparation and detailed enough to show source records, human review, verification, and reuse limits.',
+        tables: [
+          {
+            caption: 'Fill one row for each AI-assisted grant, certification, impact, or award-reporting deliverable',
+            headers: ['Field', 'What to Record'],
+            rows: [
+              ['Submission / deliverable', 'ACR narrative, TLR QA, PPR, impact report, outreach summary, Material Event notice, or other named file.'],
+              ['AI role', 'Drafting, summarization, consistency check, formatting QA, analysis/recommendation, or other approved role.'],
+              ['Tool used', 'Approved tool name, version if available, and deployment type (enterprise, internal, vendor feature, or other approved environment).'],
+              ['Input data class', 'Public, aggregate, de-identified, internal, NPI, protected-class data, award-sensitive, or other institution-defined class.'],
+              ['Prohibited inputs confirmed', 'Borrower PII, protected-class inferences, transaction-level records, certification language, synthetic statistics, or unsupported impact claims.'],
+              ['Source records', 'LOS/core report, grant file, outreach notes, AMIS report, board-approved data source, or other system of record.'],
+              ['Human reviewer', 'Name, title, date, and whether the person had authority to approve the final use.'],
+              ['Verification performed', 'Figure-to-source reconciliation, overstatement removed, fair-lending/access check, certifier review, or other documented check.'],
+              ['Final use', 'Submitted, retained only, revised, rejected, or escalated.'],
+              ['Retention location', 'Folder, path, system, ticket, or grant-file location where the evidence row and support can be found.'],
+              ['Next review / reuse limit', 'Date, trigger, reporting cycle, or condition before the AI-assisted content may be reused.'],
+            ],
+          },
         ],
       },
       {
@@ -591,6 +617,18 @@ export const TEMPLATES: readonly Template[] = [
         items: [
           'Recommended default prohibitions for mission lenders: no AI-generated eligibility or adverse-action reasoning, no synthetic statistics in impact claims, and no AI text inserted into a certification without a named reviewer’s sign-off.',
         ],
+        tables: [
+          {
+            caption: 'Risk labels for CDFI AI use cases',
+            headers: ['Risk Label', 'Use Case'],
+            rows: [
+              ['Low', 'Drafting from public or aggregate source material.'],
+              ['Medium', 'Summarizing internal outreach notes or de-identified program data.'],
+              ['High', 'Analytical output that could influence eligibility, impact claims, demographic reporting, or award compliance.'],
+              ['Blocked', 'AI-generated eligibility decisions, adverse-action reasons, certification statements, synthetic statistics, borrower-level protected-class inferences, or unsupported impact claims.'],
+            ],
+          },
+        ],
       },
       {
         heading: 'Separate AI assistance from human judgment in the record',
@@ -598,7 +636,7 @@ export const TEMPLATES: readonly Template[] = [
           'The single most valuable thing your file does is draw a clean line between what AI produced and what a person decided — the same principle CFPB enforces in lending (an institution cannot hide behind a model), applied to documentation.',
         items: [
           'Default rule: every AI-assisted deliverable carries a one-line attribution note naming the AI role, the human reviewer, and the verification performed.',
-          'Adopt-verbatim reporting note (working files or cover memo): "Portions of this document were drafted with AI assistance. All data, eligibility determinations, impact claims, and certifications were independently reviewed and verified by [name/title] on [date]. The institution takes full responsibility for the accuracy of the final content."',
+          'Suggested file language: "Portions of this document were drafted with AI assistance. All data, eligibility determinations, impact claims, and certifications were independently reviewed and verified by [name/title] on [date]. The institution takes full responsibility for the accuracy of the final content."',
           'Distinguish three AI roles so reviewers know the stakes: drafting (low — language only), summarizing (medium — verify against sources), and analysis/recommendation (high — requires documented human re-derivation).',
           'Never let AI generate the certification or attestation language itself; the certifying official’s words and accountability must be human-authored.',
         ],
@@ -606,23 +644,23 @@ export const TEMPLATES: readonly Template[] = [
       {
         heading: 'Fair-lending and access guardrails (ECOA / Regulation B)',
         intro:
-          'Mission lending lives or dies on equitable access, and AI introduces concrete fair-lending exposure. Per CFPB guidance, ECOA and Regulation B do not permit creditors to use technology so complex they cannot provide specific and accurate reasons for an adverse action — complexity is not an excuse. Your file should show AI never became a black box between an applicant and a specific, accurate reason.',
+          'AI-assisted mission-lending documentation should preserve fair-lending and access integrity. For credit-related use, AI may not determine eligibility, pricing, adverse-action reasons, or certification language. Any protected-basis, demographic, Target Market, or proxy-variable data used for reporting or monitoring must be handled under approved reporting, compliance, and privacy controls — not casually introduced into AI prompts.',
         items: [
-          'Recommended: AI is permitted for drafting and summarizing, but credit decisions, eligibility calls, and adverse-action reasons must be human-determined and independently documented.',
-          'Do not rely on generic checkbox reasons when AI or complex models are involved; reasons must accurately describe the factors actually considered.',
-          'Log a fair-lending check on any AI-assisted analytical output: confirm no protected-class proxy entered the inputs and that conclusions are reproducible by a human without the tool.',
-          'Adopt-verbatim guardrail note: "No AI output was used to determine applicant eligibility, pricing, or adverse-action reasons. AI assistance was limited to language drafting and summarization of human-verified content; all decisioning rationale is human-authored and specific to the individual circumstances."',
+          'Recommended: AI is permitted for drafting and summarizing, but credit decisions, eligibility calls, pricing, and adverse-action reasons must be human-determined and independently documented.',
+          'For credit-adjacent work, reasons must be specific, accurate, and traceable to the file; AI may not invent, infer, rank, or rewrite the principal reasons actually determined by a qualified human reviewer.',
+          'Log a fair-lending/access check on any AI-assisted analytical output: confirm protected-basis, Target Market, demographic, and proxy-variable data were used only under approved reporting, compliance, and privacy controls.',
+          'Adaptable clause language: "No AI output was used to determine applicant eligibility, pricing, adverse-action reasons, or certification language. AI assistance was limited to drafting, summarization, consistency checking, or formatting QA of human-verified content."',
         ],
       },
       {
         heading: 'Map AI evidence to CDFI Fund reporting instruments',
         intro:
-          'Your obligations flow through named instruments and your individual agreement; AI-assisted preparation of any of them belongs in the evidence file. The point is traceability from the submitted attestation back to the human who verified it.',
+          'Your obligations flow through named instruments, AMIS workflows, and your individual agreement; AI-assisted preparation of any of them belongs in the evidence file. CDFI Fund website templates can be useful references, but the latest templates and instructions should be pulled from AMIS and your award documents.',
         items: [
-          'ACR (Annual Certification and Data Collection Report): if AI helped draft narrative responses, log the row and confirm the certifying official reviewed every certification statement.',
-          'TLR (Transaction Level Report): AI must not generate or alter transaction-level data — if used at all (e.g., formatting QA), record it explicitly and verify against source systems.',
-          'Performance Progress Report and other award reports: for active recipients, log AI assistance on aggregate performance narratives and reconcile figures to systems of record.',
-          'Material Events: where AI assisted in drafting a notification, ensure timeliness (commonly within 30 days, or as your agreement specifies) and human verification of the underlying facts.',
+          'ACR (Annual Certification and Data Collection Report): Certified CDFIs must submit the ACR to maintain certification. If AI helped draft narrative responses, log the row and confirm the certifying official reviewed every certification statement.',
+          'TLR (Transaction Level Report): the TLR applies to new applicants and currently certified CDFIs; the version depends on award status, and active Assistance Agreement recipients continue the full-length TLR. AI must not generate or alter transaction-level data — if used at all (e.g., formatting QA), record it explicitly and verify against source systems.',
+          'Performance Progress Report (PPR): active recipients generally submit the PPR in AMIS annually three months after fiscal year end; the CDFI Fund uses it to determine compliance with applicable Performance Goals in the Assistance Agreement.',
+          'Material Events: active award or allocation recipients submit the Material Events form and supporting documentation within 30 days or as specified in the Award, Assistance, or Allocation Agreement. If AI assisted in drafting a notice, document human verification of the underlying facts and deadline.',
           'Recommended: for anything submitted to the CDFI Fund, the evidence row must name a human certifier; when an instrument or deadline is uncertain, defer to your grant agreement and reporting instructions and the CCME Help Desk rather than assuming.',
         ],
       },
@@ -632,7 +670,7 @@ export const TEMPLATES: readonly Template[] = [
         items: [
           'Scenario: the Director of Impact uses an approved AI tool to turn de-identified, aggregate small-business lending data and field notes into a first-draft impact narrative for the certified Investment Area, plus a one-paragraph outreach summary from staff notes.',
           'Verification performed: the Director reconciled every figure to the loan-origination system, removed two AI phrasings that overstated job-creation outcomes, confirmed no borrower-level or protected-class data was used, and the certifying official independently approved the final narrative.',
-          'Sample filled evidence row — Document: FY2025 Annual Impact Narrative (supports ACR) | AI role: first-draft drafting + summarization | Tool: [approved internal AI assistant] | Data: de-identified aggregate program data; staff field notes | AI prohibited from: borrower PII, certification language, impact statistics | Reviewer: Director of Impact | Verification: figure-to-source reconciliation; overstatement removed; fair-lending data check passed | Certifying sign-off: CEO, 2026-03-04 | Retention: 5 years from submission (per agreement).',
+          'Sample filled evidence row — Document: FY2025 Annual Impact Narrative (supports ACR) | AI role: first-draft drafting + summarization | Tool: [approved internal AI assistant] | Data: de-identified aggregate program data; staff field notes | AI prohibited from: borrower PII, certification language, synthetic statistics | Reviewer: Director of Impact | Verification: figure-to-source reconciliation; overstatement removed; fair-lending/access check passed | Certifying sign-off: CEO, 2026-03-04 | Retention: [X years] under the applicable agreement, Uniform Guidance record-retention rules, institution retention schedule, and any audit, litigation, or agency hold.',
         ],
       },
       {
@@ -640,10 +678,10 @@ export const TEMPLATES: readonly Template[] = [
         intro:
           'Evidence is only useful if it survives staff turnover and can be produced on request. Tie retention to your reporting cycle and keep the file simple enough that anyone can reconstruct what happened.',
         items: [
-          'Recommended retention: keep AI evidence rows and supporting drafts for the longer of (a) the period required by your Award/Assistance/Allocation Agreement or (b) your standard records-retention schedule — commonly several years past the related submission; confirm the exact term in your agreement.',
+          'Retention: [X years] under the applicable Award / Assistance / Allocation Agreement, Uniform Guidance record-retention rules, institution retention schedule, and any audit, litigation, or agency hold.',
           'Store evidence rows alongside the submitted instrument (ACR/TLR/PPR/impact report) so a reviewer can move from attestation to verification in one step.',
           'Control access: restrict the file to staff with a need to know, and never store borrower PII or protected-class data in it.',
-          'Adopt-verbatim retention note: "AI evidence records for this reporting period are retained for [X] years consistent with our records-retention policy and our agreement with the CDFI Fund, and are available to authorized reviewers and examiners upon request."',
+          'Suggested file language: "AI evidence records for this reporting period are retained under the applicable Award / Assistance / Allocation Agreement, Uniform Guidance record-retention rules, institution retention schedule, and any audit, litigation, or agency hold, and are available to authorized reviewers and examiners upon request."',
         ],
       },
       {
@@ -656,6 +694,15 @@ export const TEMPLATES: readonly Template[] = [
           'Common mistake (fair lending): letting AI generate or influence eligibility or adverse-action reasoning, then being unable to give a specific, accurate, human-verifiable reason.',
           'Common mistake (access/accuracy): letting AI inflate impact or reach figures without reconciling to source data.',
           'Common mistake (over-documentation): storing borrower PII or protected-class data in the evidence file itself — keep the ledger about the process, not the people.',
+        ],
+      },
+      {
+        heading: 'The CDFI AI Evidence File Kit',
+        intro:
+          'Use this checklist as the front door to a practical kit: the checklist, an editable evidence ledger, a CDFI reporting-instrument map, a source-reconciliation log, a fair-lending/access guardrail sheet, and a certifier sign-off page.',
+        items: [
+          'Next step: Run the 30-minute CDFI AI Evidence File Review.',
+          'Pick one AI-assisted grant, certification, or impact deliverable; identify what AI touched; reconcile claims to source records; assign the human certifier; and create the first evidence row.',
         ],
       },
     ],

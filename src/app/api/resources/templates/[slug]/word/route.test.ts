@@ -110,7 +110,7 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(body).not.toContain('Most institutions our size still have no AI governance framework');
   });
 
-  it('returns the CDFI Grant AI Evidence Checklist as a Word-compatible document', async () => {
+  it('returns the CDFI AI Evidence File Checklist as a Word-compatible document', async () => {
     const response = await GET(
       new Request('https://www.aibankinginstitute.com/api/resources/templates/cdfi-grant-ai-evidence-checklist/word'),
       contextFor('cdfi-grant-ai-evidence-checklist'),
@@ -122,9 +122,15 @@ describe('/api/resources/templates/[slug]/word', () => {
     expect(response.headers.get('content-disposition')).toContain(
       'Cdfi-Grant-Ai-Evidence-Checklist.doc',
     );
-    expect(body).toContain('CDFI Grant AI Evidence Checklist');
+    expect(body).toContain('The CDFI AI Evidence File Checklist');
+    expect(body).toContain('A fillable ledger for documenting AI-assisted grant, certification, impact, and award-reporting materials.');
     expect(body).toContain('CDFI, MDI, community development, grants, and impact teams');
+    expect(body).toContain('AI Evidence Row Template');
     expect(body).toContain('Fair-lending and access guardrails (ECOA / Regulation B)');
+    expect(body).toContain('Material Events form');
+    expect(body).toContain('Uniform Guidance record-retention rules');
+    expect(body).not.toContain('Adopt-verbatim');
+    expect(body).not.toContain('Retention: 5 years');
   });
 
   it('returns 404 for unknown template slugs', async () => {
