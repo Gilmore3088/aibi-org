@@ -784,6 +784,9 @@ button.rx-featured-item {
 
 /* Tighter section-head visual rhythm to match mockup */
 .mockup-scope .mk-section-head .k { color: var(--gold-deep); }
+.mockup-scope.rx-resources-page .mk-section-head .mk-section-lede {
+  max-width: 90ch;
+}
 
 /* ─── /resources/templates/ai-workflow-sop builder ─────────────────── */
 

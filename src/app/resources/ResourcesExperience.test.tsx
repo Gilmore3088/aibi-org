@@ -26,6 +26,18 @@ describe('ResourcesExperience', () => {
     ).toBe('#preview-paid');
   });
 
+  it('uses the simplified starter kits section copy without a lede', () => {
+    render(<ResourcesExperience />);
+
+    const starterHeading = screen.getByRole('heading', {
+      name: /Get started today with our starter kits/i,
+    });
+    const sectionHead = starterHeading.closest('.mk-section-head');
+
+    expect(sectionHead).toBeTruthy();
+    expect(within(sectionHead as HTMLElement).queryByText(/Each kit groups the artifacts/i)).toBeNull();
+  });
+
   it('surfaces security and governance review paths from the resources hub', () => {
     render(<ResourcesExperience />);
 

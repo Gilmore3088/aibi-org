@@ -239,7 +239,7 @@ export function ResourcesExperience() {
   const nothingMatches = visibleResourceCount === 0;
 
   return (
-    <div className="mockup-scope" style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
+    <div className="mockup-scope rx-resources-page" style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
       <ResourceSkipLinks />
       <SiteHeader activePath="/resources" />
 
@@ -280,8 +280,7 @@ export function ResourcesExperience() {
           <Section variant="std" id="starter-kits">
             <SectionHead
               kicker="Starter kits"
-              heading="Grab a bundle, not a blank page."
-              lede="Each kit groups the artifacts a team needs for one job — download the whole set as a ZIP."
+              heading="Get started today with our starter kits"
             />
             <div className="rx-grid rx-grid-3">
               {visibleKits.map((kit) => (
