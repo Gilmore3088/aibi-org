@@ -59,7 +59,7 @@ describe('/api/resources/[slug]/word', () => {
 
     const body = await response.text();
     expect(body).toContain('The Executive / Leadership AI-Native Playbook');
-    expect(body).toContain('Set the AI direction');
+    expect(body).toContain('The executive AI operating model');
   });
 
   it('rejects unknown slugs', async () => {
