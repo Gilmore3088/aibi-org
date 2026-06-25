@@ -43,7 +43,7 @@ import {
 
 // ─── Filter taxonomy ─────────────────────────────────────────────────────
 // Roles map 1:1 to RolePlaybook slugs. Formats are descriptive labels that
-// span Template.format, DeskCard.type, and a synthetic "Playbook" / "Sample".
+// span Template.format, DeskCard.type, and synthetic "Playbook" / "Sample" labels.
 const ROLE_OPTIONS = [
   'Compliance',
   'Retail',
@@ -57,7 +57,7 @@ const ROLE_OPTIONS = [
 ] as const;
 type RoleFilter = (typeof ROLE_OPTIONS)[number];
 
-const FORMAT_OPTIONS = ['Playbook', 'Template', 'Desk card', 'Sample'] as const;
+const FORMAT_OPTIONS = ['Playbook', 'Template', 'Card', 'Desk card', 'Sample'] as const;
 type FormatFilter = (typeof FORMAT_OPTIONS)[number];
 
 function requireProblemPath(title: ProblemPathData['title']): void {

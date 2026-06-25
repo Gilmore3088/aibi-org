@@ -210,7 +210,7 @@ export const rolePlaybooks: RolePlaybook[] = PLAYBOOK_INDEX.map(({ slug, title, 
 export interface ProblemPath {
   title: string;
   artifact: string;
-  format: 'Template' | 'Desk card' | 'Sample';
+  format: 'Template' | 'Card' | 'Desk card' | 'Sample';
   href: string;
   readHref?: string;
   largePrint?: string;
@@ -233,7 +233,7 @@ function problemArtifact(slug: string): Pick<ProblemPath, 'artifact' | 'href' | 
 
 export const problemPaths: ProblemPath[] = [
   { title: 'Set AI rules', ...problemArtifact('template-ai-use-policy-starter'), format: 'Template', icon: ShieldCheck },
-  { title: 'Review a use case', ...problemArtifact('artifact-ai-use-case-inventory'), format: 'Template', icon: ClipboardCheck },
+  { title: 'Review a use case', ...problemArtifact('artifact-ai-use-case-inventory'), format: 'Card', icon: ClipboardCheck },
   { title: 'Train staff', ...problemArtifact('safe-ai-use-checklist'), format: 'Desk card', icon: BookOpen },
   { title: 'Build a workflow SOP', ...problemArtifact('template-ai-workflow-sop'), format: 'Template', icon: Workflow },
   { title: 'Brief leadership', ...problemArtifact('template-board-briefing-checklist'), format: 'Template', icon: BarChart3 },

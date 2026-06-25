@@ -28,7 +28,7 @@ const ARTIFACTS = [
   {
     slug: 'ai-use-case-inventory',
     resourceSlug: 'artifact-ai-use-case-inventory',
-    title: 'The Bank AI Use-Case Inventory Template',
+    title: 'The Bank AI Use-Case Inventory Card',
     writeSourceHtml: false,
   },
   {
@@ -99,8 +99,13 @@ body {
 .body h2 {
   font-size: 13pt; margin: 22pt 0 8pt;
   padding-bottom: 4pt; border-bottom: 1pt solid var(--slate-200);
+  page-break-after: avoid; break-after: avoid;
 }
 .body h3 { font-size: 11pt; margin: 16pt 0 4pt; color: var(--gold-deep); text-transform: uppercase; letter-spacing: .12em; }
+.body h2 + p, .body h2 + table, .body h2 + ul, .body h2 + ol,
+.body h3 + p, .body h3 + table, .body h3 + ul, .body h3 + ol {
+  page-break-before: avoid; break-before: avoid;
+}
 .body p, .body li { color: var(--slate-600); }
 .body p { margin: 10pt 0; }
 .body strong { color: var(--ink); }
@@ -120,6 +125,7 @@ body {
   border: 0; border-top: 1pt solid var(--slate-200); margin: 20pt 0;
 }
 .body table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 10pt; }
+.body table, .body tr { page-break-inside: avoid; break-inside: avoid; }
 .body th, .body td { border: 1pt solid var(--slate-200); padding: 6pt 8pt; text-align: left; vertical-align: top; }
 .body th { background: var(--cream); color: var(--ink); font-weight: 600; }
 .body blockquote {

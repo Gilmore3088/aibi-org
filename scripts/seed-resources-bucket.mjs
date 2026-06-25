@@ -71,7 +71,7 @@ const META = {
   'template-board-briefing-checklist':    { title: 'The AI Board Briefing Checklist', category: 'template', order: 42 },
   'template-gtm-plan':                    { title: 'AI GTM Plan',                     category: 'template', order: 43 },
   // Artifacts
-  'artifact-ai-use-case-inventory':         { title: 'The Bank AI Use-Case Inventory Template', category: 'artifact', order: 50 },
+  'artifact-ai-use-case-inventory':         { title: 'The Bank AI Use-Case Inventory Card', category: 'artifact', order: 50 },
   'artifact-data-handling-reference-card':  { title: 'Data Handling Reference Card',  category: 'artifact', order: 51 },
   'artifact-fair-lending-ai-review-checklist': { title: 'Fair-Lending AI Review Checklist', category: 'artifact', order: 52 },
   // Desk cards / references
@@ -103,7 +103,7 @@ const DESCRIPTIONS = {
   'template-ai-workflow-sop': 'Document AI-assisted work, human review, data handling, vendor controls, monitoring, and shutoff triggers.',
   'template-board-briefing-checklist': 'Four facts, four motions, and four evidence items for a controlled bank AI rollout.',
   'template-gtm-plan': 'AI go-to-market plan template.',
-  'artifact-ai-use-case-inventory': 'Fillable register for AI tools, owners, data classes, vendor controls, risk tiers, and review cadence.',
+  'artifact-ai-use-case-inventory': 'One-page register and editable spreadsheet for AI workflows, owners, data classes, risk tiers, vendor controls, and review cadence.',
   'artifact-data-handling-reference-card': 'Data classification, allowed tools, and escalation paths at a glance.',
   'artifact-fair-lending-ai-review-checklist': 'Fair-lending review checklist for AI-assisted lending decisions.',
   'red-yellow-green-use-card': 'Classify AI use cases in ten seconds.',
