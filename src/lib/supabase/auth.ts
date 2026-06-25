@@ -64,7 +64,9 @@ export async function signUp(
     return { error: 'Auth is not configured. Set Supabase environment variables.' };
   }
   const origin =
-    typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com');
   const next = sanitizeNext(redirectTo);
   const { data, error } = await client().auth.signUp({
     email,
@@ -124,18 +126,21 @@ export async function signOut(): Promise<AuthResult> {
  * /auth/reset-password bypassed the OTP exchange, leaving the reset
  * page without a session and unable to call updateUser({ password }).
  *
- * The /auth/callback POST handler recognizes type=recovery and forces
- * the post-verify destination to /auth/reset-password, so the next
- * query param here is informational but kept for symmetry.
+ * The /auth/callback POST handler recognizes type=recovery and forwards
+ * `next` to /auth/reset-password?next=<dest>, so the reset page can
+ * route the buyer to their intended destination after the password is set.
  */
-export async function resetPassword(email: string): Promise<AuthResult> {
+export async function resetPassword(email: string, next?: string): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
     return { error: 'Auth is not configured. Set Supabase environment variables.' };
   }
   const origin =
-    typeof window !== 'undefined' ? window.location.origin : 'https://aibankinginstitute.com';
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com');
+  const safeNext = sanitizeNext(next ?? null);
   const { error } = await client().auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent('/auth/reset-password')}`,
+    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext)}`,
   });
   return { error: error?.message ?? null };
 }
