@@ -573,6 +573,7 @@ button.rx-featured-item {
 }
 .mockup-scope .rx-pb-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: .5rem;
   margin-top: auto;
@@ -586,10 +587,15 @@ button.rx-featured-item {
   justify-content: center;
   flex: none;
 }
+/* When a download gate opens its email form, it must claim its own full-width
+   line instead of being squished beside the sibling buttons (which overflowed
+   the card). The form then lays out cleanly: input on top, submit below. */
+.mockup-scope .rx-pb-actions > .mk-download-gate-form {
+  flex: 1 0 100%;
+  width: 100%;
+  margin-top: .25rem;
+}
 @media (max-width: 767px) {
-  .mockup-scope .rx-pb-actions {
-    flex-wrap: wrap;
-  }
   .mockup-scope .rx-pb-actions .mk-btn:not(.rx-download-icon-btn) {
     padding: 0 12px;
   }
@@ -993,6 +999,66 @@ button.rx-kit-card-zip {
   color: #fff;
   border-color: var(--ink);
   font-weight: 600;
+}
+
+/* Inline filter bar (2026-06-25 simplification) — replaces the sticky 2-col
+   rail. Search on top, role chips below; wraps cleanly on mobile. */
+.mockup-scope .rx-filterbar {
+  background: var(--cream);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 14px 0;
+}
+.mockup-scope .rx-filterbar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mockup-scope .rx-filterbar-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 120ms;
+}
+.mockup-scope .rx-filterbar-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.mockup-scope .rx-filterbar-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.mockup-scope .rx-filterbar-reset {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-deep);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.mockup-scope .rx-section-foot {
+  margin-top: 1.5rem;
+}
+@media (min-width: 768px) {
+  .mockup-scope .rx-filterbar-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+  .mockup-scope .rx-filterbar-search {
+    flex: 0 0 280px;
+  }
+  .mockup-scope .rx-filterbar-chips {
+    flex: 1 1 auto;
+  }
 }
 
 .mockup-scope .rx-filter-reset {
