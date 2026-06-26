@@ -116,6 +116,21 @@ export async function subscribeToAssessmentForm(
 }
 
 /**
+ * Subscribe to an explicit group with arbitrary (DEFINED) custom fields.
+ * The single primitive behind recordLead() so every capture path syncs to
+ * MailerLite the same way. No-op when groupId is unset.
+ */
+export async function subscribeToGroup(
+  payload: Omit<MailerLiteSubscribePayload, 'groupIds'>,
+  groupId: string | undefined,
+): Promise<SubscribeResult> {
+  if (!groupId) {
+    return { status: 'skipped', reason: 'no-group-id' };
+  }
+  return postSubscriber({ ...payload, groupIds: [groupId] });
+}
+
+/**
  * Subscribe a visitor who requested a role-playbook PDF. Role is stored as
  * a custom field so a single group can fan out to per-role segments in
  * MailerLite. No-op when MAILERLITE_GROUP_ID_PLAYBOOK is unset.

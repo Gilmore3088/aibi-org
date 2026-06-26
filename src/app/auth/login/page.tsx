@@ -113,17 +113,23 @@ const footerStyle: CSSProperties = {
 function Field({
   label,
   trailing,
+  id,
   ...rest
 }: React.InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; trailing?: ReactNode }) {
+  // The id is decoupled from name so multiple forms on one page (sign-in
+  // link, password sign-in, purchase recovery) can each carry name="email"
+  // without colliding on a shared id (WCAG 4.1.1). Falls back to name when
+  // an explicit id is not supplied.
+  const fieldId = id ?? rest.name;
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <label htmlFor={rest.name} style={labelStyle}>
+        <label htmlFor={fieldId} style={labelStyle}>
           {label}
         </label>
         {trailing}
       </div>
-      <input id={rest.name} style={inputStyle} {...rest} />
+      <input id={fieldId} style={inputStyle} {...rest} />
     </div>
   );
 }
@@ -229,6 +235,7 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
         </div>
       )}
       <Field
+        id="login-email"
         label="Email"
         name="email"
         type="email"
@@ -238,6 +245,7 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
         defaultValue={prefillEmail}
       />
       <Field
+        id="login-password"
         label="Password"
         name="password"
         type="password"

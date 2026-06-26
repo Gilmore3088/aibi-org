@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lead-Capture &amp; Email Remediation — The AI Banking Institute</title>
+<style>
+  :root{
+    --ink:#071A2F;--ink-2:#0B2745;--gold:#C8A24A;--gold-deep:#9A7A2F;
+    --cream:#F7F3EA;--cream-2:#EFE7D7;--s2:#E2E8F0;--s4:#94A3B8;--s5:#64748B;--s6:#475569;
+    --emerald:#047857;--crit:#9A1B2F;--amber:#9A7A2F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{background:var(--ink);color:var(--cream);padding:46px 0 40px}
+  header .kick{color:var(--gold);font-weight:600;letter-spacing:.09em;text-transform:uppercase;font-size:12px}
+  header h1{margin:.3em 0 .25em;font-size:32px;line-height:1.12}
+  header .meta{color:#cdd7e2;font-size:14px}
+  .verdict{background:var(--ink-2);border-left:4px solid var(--gold);padding:16px 18px;border-radius:10px;margin-top:22px;color:#eef3f8;font-size:14px}
+  .verdict strong{color:var(--gold)}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:-26px 0 0;position:relative}
+  .kpi{background:#fff;border:1px solid var(--s2);border-radius:14px;padding:16px 12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .kpi-v{font-size:23px;font-weight:800}.kpi-k{font-size:11px;color:var(--s5);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+  section{padding:30px 0 6px}
+  h2{font-size:20px;margin:0 0 4px}
+  h2 .sub{font-weight:400;color:var(--s5);font-size:13px}
+  .lead{color:var(--s6);max-width:80ch;margin:6px 0 14px}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--s2);border-radius:12px;overflow:hidden;font-size:13.5px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--s2);vertical-align:top}
+  th{background:var(--cream-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--s6)}
+  tr:last-child td{border-bottom:none}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+  .b-done{background:#e7f3ee;color:var(--emerald)}
+  .b-you{background:#fbeede;color:var(--amber)}
+  .b-open{background:#fbeaec;color:var(--crit)}
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{background:#fff;border:1px solid var(--s2);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  ul.clean li .t{flex:1}
+  .num{flex:0 0 22px;height:22px;border-radius:50%;background:var(--ink);color:var(--cream);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .note{background:var(--cream-2);border-radius:10px;padding:13px 15px;color:var(--s6);font-size:13px;margin-top:8px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--cream-2);padding:1px 6px;border-radius:5px;font-size:12.5px}
+  .commits{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#fff;border:1px solid var(--s2);border-radius:12px;padding:14px 16px}
+  .commits div{padding:3px 0;color:var(--s6)}.commits b{color:var(--ink)}
+  footer{color:var(--s5);font-size:12px;padding:28px 0 50px;text-align:center}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="kick">Remediation status · post-mortem + fix</div>
+  <h1>Lead-Capture &amp; Email — Connecting MailerLite + Supabase</h1>
+  <div class="meta">Branch <code style="color:#cdd7e2;background:rgba(255,255,255,.08)">feature/connect-lead-capture</code> · 2026-06-26 · code-complete, <strong style="color:var(--gold)">not yet deployed</strong></div>
+  <div class="verdict">A real lead — <strong>wkeels@safefed.org</strong> (SAFE FCU) — requested the AI Use Policy Starter via the resource gate, and the capture wrote MailerLite only (with its context fields silently dropped), nothing to Supabase, and the delivery email <strong>bounced</strong>. Root cause: the resource/lead-magnet capture paths were never wired to the database, and MailerLite had no fields to hold their context. Both systems are now connected through a single <code style="background:rgba(255,255,255,.08);color:#eef3f8">recordLead()</code> front door.</div>
+</div></header>
+
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">4 / 4</div><div class="kpi-k">capture paths wired</div></div>
+    <div class="kpi"><div class="kpi-v">7</div><div class="kpi-k">commits on branch</div></div>
+    <div class="kpi"><div class="kpi-v">1</div><div class="kpi-k">lost lead recovered</div></div>
+    <div class="kpi"><div class="kpi-v">~40</div><div class="kpi-k">tests green · tsc clean</div></div>
+  </div>
+
+  <section>
+    <h2>Goal 1 — Wire all email functionality <span class="sub">every capture path now hits BOTH systems</span></h2>
+    <table>
+      <thead><tr><th>Capture path</th><th>Before</th><th>Now</th></tr></thead>
+      <tbody>
+        <tr><td><b>Resource gate</b> (the wkeels leak)</td><td>MailerLite only · fields dropped · <b>no database</b></td><td><code>recordLead</code> → <code>leads</code> row + MailerLite Resource Library group with real fields</td></tr>
+        <tr><td><b>Prompt cards</b></td><td>ML context fields dropped</td><td><code>recordLead</code> (keeps <code>prompt_card_leads</code>)</td></tr>
+        <tr><td><b>Inquiry</b> (guide / playbook)</td><td><code>subscribeToPlaybookForm</code> · fields dropped</td><td><code>recordLead</code> (playbook group, real fields)</td></tr>
+        <tr><td><b>Assessment</b></td><td><code>user_profiles</code> + tier groups</td><td>+ canonical <code>leads</code> row (unified view)</td></tr>
+        <tr><td><b>Cron emails</b> (re-engagement, reminders)</td><td>emailed <code>.test</code> users → all bounced</td><td>skip non-deliverable addresses</td></tr>
+        <tr><td><b>Bounces / complaints</b></td><td>silent (only in Resend logs)</td><td>webhook → <code>leads.delivery_status</code></td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>Live in production now:</b> the <code>leads</code> table, 4 new MailerLite fields, the Resource Library Leads group, and <b>wkeels@safefed.org recovered</b> into <code>leads</code> with full context (resource-gate · AI Use Policy Starter · bounced · linked to his MailerLite id). The <code>recordLead()</code> helper, the 4 path rewires, the bounce webhook, and cron hygiene are built + tested on the branch — <b>not yet deployed</b>.</div>
+  </section>
+
+  <section>
+    <h2>Goal 2 — Resolve outstanding persona / email issues</h2>
+    <table>
+      <thead><tr><th>Issue</th><th>Status</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Auth duplicate-<code>id</code> forms (#19)</td><td><span class="badge b-done">DONE</span></td><td>Root cause: a <code>Field</code> helper forced <code>id={name}</code>. Unique ids now; WCAG-clean; FormData unchanged.</td></tr>
+        <tr><td><code>/settings</code> 500 (#20)</td><td><span class="badge b-done">DONE</span></td><td>Confirmed already fixed on an ancestor commit (undefined <code>.filter</code> guarded).</td></tr>
+        <tr><td>M3 / M7 / M13 content mismatches (#22)</td><td><span class="badge b-done">DONE</span></td><td>Already reconciled on the branch; an invariant test now enforces label↔activity alignment.</td></tr>
+        <tr><td>Navigation: loops + cert link (#22)</td><td><span class="badge b-done">DONE</span></td><td>Cookbook↔recipe loop broken with a forward CTA; dashboard certificate link added for completers.</td></tr>
+        <tr><td>Unsourced savings claims (#21)</td><td><span class="badge b-you">YOUR CALL</span></td><td>Implemented show-the-math + "modeled estimate" caveat — but a prior commit had removed them. Keep, or revert to removal?</td></tr>
+        <tr><td>Persona harness covers capture funnel (#15)</td><td><span class="badge b-open">OPTIONAL NEXT</span></td><td>Extend the harness to drive the real capture funnel + assert the full chain — the gap that hid wkeels.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>What needs you <span class="sub">I can't do these — Vercel / decisions / deploy</span></h2>
+    <ul class="clean">
+      <li><span class="num">1</span><span class="t">Set in Vercel + <code>.env.local</code>: <code>MAILERLITE_GROUP_ID_RESOURCES=191321740575507803</code> (until then, resource/prompt-card leads safely fall back to the assessment group).</span></li>
+      <li><span class="num">2</span><span class="t"><b>Verify / rotate <code>MAILERLITE_API_KEY</code></b> — the local key returns <b>401 Unauthenticated</b>. If Vercel's is the same stale value, production MailerLite subscribes are silently failing right now.</span></li>
+      <li><span class="num">3</span><span class="t">Configure the Resend webhook → <code>/api/webhooks/resend</code> and set <code>RESEND_WEBHOOK_SECRET</code> in Vercel (so bounces are recorded automatically).</span></li>
+      <li><span class="num">4</span><span class="t"><b>Decide the savings claims (#21):</b> keep the show-the-math version, or revert to the prior removal (<code>722e76c3</code>). Isolated commit either way.</span></li>
+      <li><span class="num">5</span><span class="t"><b>Deploy approval</b> — nothing is merged to <code>main</code> or deployed yet.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Commits on the branch <span class="sub">all tsc-clean, tested</span></h2>
+    <div class="commits">
+      <div><b>482fae7d</b> content(course): make time-savings claims defensible (show-math + caveat) — pending your call</div>
+      <div><b>04dba61c</b> fix(nav): break toolbox cookbook↔recipe loop + add dashboard certificate link</div>
+      <div><b>32a701d8</b> feat(email): Resend bounce/complaint webhook → leads.delivery_status</div>
+      <div><b>27ca8b12</b> feat(leads): wire inquiry resource-capture paths to recordLead</div>
+      <div><b>501e5a5d</b> fix(auth,email): unique form ids (WCAG) + skip non-deliverable emails in crons</div>
+      <div><b>25b7d714</b> chore(leads): backfill script + recover wkeels@safefed.org orphan</div>
+      <div><b>78ab699e</b> feat(leads): unified lead capture — connect MailerLite + Supabase</div>
+    </div>
+  </section>
+</div>
+<footer>The AI Banking Institute · Lead-capture &amp; email remediation · 2026-06-26 · generated for review</footer>
+</body>
+</html>

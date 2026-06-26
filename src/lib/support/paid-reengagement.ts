@@ -1,5 +1,6 @@
 import { FOUNDATION_FINAL_MODULE_NUMBER } from '@content/courses/foundation-program';
 import { emailVariants } from '@/lib/email/canonicalize';
+import { isNonDeliverableEmail } from '@/lib/email/deliverability';
 import { normalizeProduct } from '@/lib/products/normalize';
 import {
   sendFoundationNotStartedReminder,
@@ -433,6 +434,11 @@ export async function runPaidReengagementMonitor(
 
   const candidates: PaidReengagementCandidate[] = [];
   for (const candidate of evaluated) {
+    // Skip seeded test/placeholder addresses so scheduled reminders never
+    // hard-bounce against the .test TLD and erode sender reputation.
+    if (isNonDeliverableEmail(candidate.enrollment.email ?? '')) {
+      continue;
+    }
     if (candidate.campaign === 'in_depth_waiting' && await hasCompletedInDepth(client, candidate.enrollment)) {
       continue;
     }

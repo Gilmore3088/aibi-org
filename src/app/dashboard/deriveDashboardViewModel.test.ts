@@ -243,6 +243,7 @@ describe('deriveDashboardViewModel lifecycle personas', () => {
     expect(model.completedModuleCount).toBe(modules.length);
     expect(model.stepCertificate).toBe(false);
     expect(model.certificateId).toBeNull();
+    expect(model.certificateHref).toBeNull();
     expect(model.stepsComplete).toBe(4);
   });
 
@@ -274,6 +275,7 @@ describe('deriveDashboardViewModel lifecycle personas', () => {
     expect(model.stepCertificate).toBe(true);
     expect(model.certificateId).toBe('AIBIP-2026-ABC234');
     expect(model.certificateVerifyUrl).toBe('/verify/AIBIP-2026-ABC234');
+    expect(model.certificateHref).toBe('/courses/foundation/program/certificate');
     expect(model.stepsComplete).toBe(5);
   });
 });

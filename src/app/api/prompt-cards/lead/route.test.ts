@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
-  subscribeToAssessmentForm: vi.fn(),
+  recordLead: vi.fn(),
   createServiceRoleClient: vi.fn(),
   isSupabaseConfigured: vi.fn(),
   rateLimitOrFail: vi.fn(),
   getRequestIp: vi.fn(),
 }));
 
-vi.mock('@/lib/mailerlite', () => ({
-  subscribeToAssessmentForm: mocks.subscribeToAssessmentForm,
+vi.mock('@/lib/leads/recordLead', () => ({
+  recordLead: mocks.recordLead,
 }));
 
 vi.mock('@/lib/supabase/client', () => ({
@@ -38,7 +38,7 @@ describe('POST /api/prompt-cards/lead', () => {
     mocks.rateLimitOrFail.mockResolvedValue(null);
     mocks.getRequestIp.mockReturnValue('203.0.113.56');
     mocks.isSupabaseConfigured.mockReturnValue(false);
-    mocks.subscribeToAssessmentForm.mockResolvedValue(undefined);
+    mocks.recordLead.mockResolvedValue({ persisted: true, mailerlite: 'subscribed' });
   });
 
   it.each([
@@ -60,9 +60,12 @@ describe('POST /api/prompt-cards/lead', () => {
     expect(response.headers.get('set-cookie')).toContain(
       'aibi_free_resource_email=collector%40communitybank.test',
     );
-    expect(mocks.subscribeToAssessmentForm).toHaveBeenCalledWith({
+    expect(mocks.recordLead).toHaveBeenCalledWith({
       email: 'collector@communitybank.test',
-      fields: { source: 'prompt-cards', role },
+      source: 'prompt-cards',
+      role,
+      institution: 'Credit union',
+      metadata: { assetSize: '$500M-$1B' },
     });
   });
 
@@ -76,6 +79,6 @@ describe('POST /api/prompt-cards/lead', () => {
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({ error: 'Role is required.' });
-    expect(mocks.subscribeToAssessmentForm).not.toHaveBeenCalled();
+    expect(mocks.recordLead).not.toHaveBeenCalled();
   });
 });

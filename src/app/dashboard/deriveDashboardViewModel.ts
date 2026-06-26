@@ -97,6 +97,7 @@ export interface DashboardViewModel {
   readonly stepCertificate: boolean;
   readonly certificateId: string | null;
   readonly certificateVerifyUrl: string | null;
+  readonly certificateHref: string | null;
   readonly stepsComplete: number;
   readonly totalSteps: number;
   readonly nowIndex: number;
@@ -144,6 +145,11 @@ export function deriveDashboardViewModel(input: DashboardViewModelInput): Dashbo
   const certificateId = dashboard?.certificate?.id ?? null;
   const certificateVerifyUrl = dashboard?.certificate?.verifyUrl ?? null;
   const stepCertificate = Boolean(certificateId);
+  // Foundation completers (a certificate has been issued) get a direct link to
+  // their in-program certificate page. The journey-step link points at the
+  // public verify URL, leaving the certificate page unreachable from the
+  // dashboard otherwise.
+  const certificateHref = stepCertificate ? '/courses/foundation/program/certificate' : null;
   const savedPromptCount = dashboard?.prompts.savedCount ?? 0;
   const artifacts = dashboard?.artifacts ?? [];
   const completedArtifactCount = artifacts.filter((artifact) => artifact.status === 'completed').length;
@@ -236,6 +242,7 @@ export function deriveDashboardViewModel(input: DashboardViewModelInput): Dashbo
     stepCertificate,
     certificateId,
     certificateVerifyUrl,
+    certificateHref,
     stepEnrolled,
     stepFirstModule,
     stepInDepth,
