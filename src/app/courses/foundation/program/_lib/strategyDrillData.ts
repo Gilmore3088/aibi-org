@@ -10,7 +10,7 @@ export type Strategy =
   | 'Analysis'
   | 'Thinking'
   | 'Template'
-  | 'Sanitisation';
+  | 'Sanitization';
 
 export const STRATEGIES: readonly Strategy[] = [
   'Structured',
@@ -18,8 +18,19 @@ export const STRATEGIES: readonly Strategy[] = [
   'Analysis',
   'Thinking',
   'Template',
-  'Sanitisation',
+  'Sanitization',
 ];
+
+// One-line definition of each strategy, shown on the shelf so the taxonomy is
+// explained before the learner is asked to match tasks to it.
+export const STRATEGY_DEFINITIONS: Readonly<Record<Strategy, string>> = {
+  Structured: 'Create new output from scratch — name the role, task, and format.',
+  Transformation: 'Reshape text you already have into a tighter or clearer form.',
+  Analysis: 'Review existing material through a defined lens to find gaps or risks.',
+  Thinking: 'Get structure and trade-offs to reason through a decision before acting.',
+  Template: 'Turn a repeating task into a reusable, fill-in-the-blanks pattern.',
+  Sanitization: 'Strip sensitive specifics out before sending anything to the AI.',
+};
 
 export interface DrillRound {
   readonly task: string;
@@ -51,11 +62,11 @@ export const STRATEGY_ROUNDS: readonly DrillRound[] = [
   {
     task: 'You run the same weekly branch performance summary every Monday.',
     answer: 'Template',
-    why: 'It repeats — it deserves a reusable, parameterised pattern.',
+    why: 'It repeats — it deserves a reusable, parameterized pattern.',
   },
   {
     task: 'A member’s question still contains their SSN and account number.',
-    answer: 'Sanitisation',
+    answer: 'Sanitization',
     why: 'Strip the specifics before you ask — the structure rarely needs them.',
   },
   {
@@ -66,6 +77,6 @@ export const STRATEGY_ROUNDS: readonly DrillRound[] = [
   {
     task: 'List the objections leadership might raise to an AI pilot, in priority order.',
     answer: 'Thinking',
-    why: 'Organising reasoning before action — the model returns structure, you decide.',
+    why: 'Organizing reasoning before action — the model returns structure, you decide.',
   },
 ];

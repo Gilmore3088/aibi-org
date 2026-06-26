@@ -39,8 +39,10 @@ interface GrowthPreviewProps {
 }
 
 export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
+  // Fallback score and tier must agree with the v3 readiness bands
+  // (12-22 = Starting Point, 23-32 = Early Stage). 22 is Starting Point.
   const displayedPreScore = preScore ?? 22;
-  const displayedPreTier = preTierLabel ?? 'Early Stage';
+  const displayedPreTier = preTierLabel ?? 'Starting Point';
 
   return (
     <section

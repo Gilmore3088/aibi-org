@@ -12,7 +12,7 @@
 
 import { useCallback, useState, type CSSProperties } from 'react';
 import type { Activity } from '@content/courses/foundation-program';
-import { STRATEGIES, STRATEGY_ROUNDS, type Strategy } from '../_lib/strategyDrillData';
+import { STRATEGIES, STRATEGY_DEFINITIONS, STRATEGY_ROUNDS, type Strategy } from '../_lib/strategyDrillData';
 
 const INK = '#071A2F';
 const GOLD_DEEP = '#9A7A2F';
@@ -169,8 +169,13 @@ export function StrategyDrill({
                 textAlign: 'left',
               }}
             >
-              {reveal && (isAnswer ? '✓ ' : isPick ? '✗ ' : '')}
-              {s}
+              <span style={{ display: 'block' }}>
+                {reveal && (isAnswer ? '✓ ' : isPick ? '✗ ' : '')}
+                {s}
+              </span>
+              <span style={{ display: 'block', marginTop: 4, fontSize: 12, fontWeight: 500, color: '#475569', lineHeight: 1.3 }}>
+                {STRATEGY_DEFINITIONS[s]}
+              </span>
             </button>
           );
         })}
