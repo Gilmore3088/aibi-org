@@ -7,8 +7,6 @@ type IconProps = { className?: string; size?: number };
 export interface CoursesOverviewFacts {
   readonly moduleCount: number;
   readonly artifactCount: number;
-  readonly totalMinutes: number;
-  readonly totalHoursLabel: string;
   readonly individualPriceLabel: string;
   readonly samplePacketSlots: readonly {
     readonly moduleNumber: number;
@@ -19,8 +17,6 @@ export interface CoursesOverviewFacts {
 const DEFAULT_FACTS: CoursesOverviewFacts = {
   moduleCount: 18,
   artifactCount: 18,
-  totalMinutes: 182,
-  totalHoursLabel: '3',
   individualPriceLabel: '$295',
   samplePacketSlots: [
     { moduleNumber: 1, label: 'AI Limits Card' },
@@ -37,24 +33,24 @@ function countWord(count: number) {
 
 function buildPricingBullets(facts: CoursesOverviewFacts) {
   return [
-    `${facts.moduleCount} modules · ${facts.totalMinutes} minutes`,
+    `${facts.moduleCount} modules`,
     `${facts.artifactCount}-piece Foundation Packet`,
     'Prompt Builder, Skill Builder, and workflow-map practice',
     'Review notes and transfer plans in every module',
     'Final packet submission',
     'Ongoing access to purchased materials under current offer',
-    'Simple completion record when needed',
+    'Manager-readable packet evidence',
   ];
 }
 
 function buildOutcomeStats(facts: CoursesOverviewFacts) {
   return [
     { value: String(facts.moduleCount), label: 'modules' },
-    { value: String(facts.totalMinutes), label: 'minutes' },
     { value: String(facts.artifactCount), label: 'packet artifacts' },
     { value: '4', label: 'builder modes' },
     { value: '1', label: 'Foundation Packet' },
     { value: 'Review', label: 'notes + reuse rules' },
+    { value: 'Access', label: 'purchased materials' },
   ];
 }
 
@@ -130,24 +126,19 @@ const LEARNING_FLOW: { step: string; title: string; desc: string; icon: (p: Icon
 
 const COURSE_EVIDENCE: { title: string; desc: string; icon: (p: IconProps) => JSX.Element }[] = [
   {
-    title: 'Saved work products',
-    desc: 'Prompt cards, workflow maps, skill templates, review notes, and safe-use boundaries stay in the packet.',
+    title: 'Reusable prompt card',
+    desc: 'Task, source, format, constraints, and reviewer are captured together.',
     icon: CheckCircleIcon,
   },
   {
-    title: 'Manager-readable evidence',
-    desc: 'The packet shows what was drafted, what was checked, and what still needs human review before reuse.',
+    title: 'Review note',
+    desc: 'The learner marks what was checked and what still needs [VERIFY].',
     icon: FileIcon,
   },
   {
-    title: 'Simple completion record',
-    desc: 'A verification page can confirm completion when needed. The packet carries the substance.',
+    title: 'Packet artifact',
+    desc: 'The finished card is saved for manager review and future reuse.',
     icon: ClipboardIcon,
-  },
-  {
-    title: 'Clear claim boundary',
-    desc: 'AiBI Foundation is not a license, regulator approval, regulator recognition, or third-party endorsement.',
-    icon: WorkflowIcon,
   },
 ];
 
@@ -185,7 +176,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               </Button>
             </div>
             <p className="mk-course-proofline">
-              {facts.moduleCount} modules · {facts.totalMinutes} minutes · {facts.artifactCount}-piece Foundation Packet · completion record
+              {facts.moduleCount} modules · {facts.artifactCount}-piece Foundation Packet · reviewed work products · completion record
             </p>
           </div>
 
@@ -264,11 +255,11 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         <div className="mk-course-bottom-head">
           <div>
             <p className="mk-course-bottom-kicker">Course preview</p>
-            <h2>Preview the work before you enroll.</h2>
+            <h2>One lesson. One saved artifact.</h2>
           </div>
           <p>
-            The course is built around small, reviewed outputs. This sample shows the rhythm:
-            turn a loose prompt into a reusable banking asset, then save the proof.
+            A module starts with one rough banking task, adds safe-use rules, and saves
+            a reusable work product to the Foundation Packet.
           </p>
         </div>
 
@@ -277,16 +268,13 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
 
           <aside className="mk-course-trust-panel" aria-label="Course data and packet rules">
             <div className="mk-course-trust-block">
-              <p className="mk-k">Data rule</p>
-              <h3>Practice with sample facts.</h3>
+              <p className="mk-k">Safe practice rule</p>
+              <h3>Use sample facts. Keep sensitive data out.</h3>
               <ul className="mk-course-trust-list">
-                <li>Synthetic or sanitized banking examples are enough to complete the course.</li>
-                <li>Customer PII, account numbers, confidential records, and non-public exam material stay out of prompts.</li>
-                <li>Saved artifacts document input boundary, tool, output, reviewer, and reuse rule.</li>
+                <li>Synthetic or sanitized examples are enough.</li>
+                <li>No customer PII, account data, confidential records, or non-public exam material.</li>
+                <li>Each saved artifact keeps the source, tool, reviewer, and reuse rule.</li>
               </ul>
-              <Button variant="ghost-dark" href="/security/data-handling">
-                Read data-handling summary
-              </Button>
             </div>
 
             <div className="mk-course-trust-block">
@@ -306,6 +294,10 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
                   );
                 })}
               </ul>
+              <p className="mk-course-claim-note">
+                AiBI Foundation is not a license, regulator approval, regulator recognition,
+                or third-party endorsement.
+              </p>
             </div>
           </aside>
         </div>
@@ -372,51 +364,52 @@ function HeroOutcomeCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
       </ul>
       <div className="mk-course-outcome-foot">
         <span>{facts.individualPriceLabel}</span>
-        <span>{facts.totalMinutes} minutes</span>
         <span>{facts.moduleCount} modules</span>
+        <span>{facts.artifactCount} artifacts</span>
       </div>
     </div>
   );
 }
 
 function LessonPreview() {
-  const strategyRows = [
-    ['Role', 'Branch operations reviewer'],
-    ['Task', 'Rewrite the procedure for frontline branch staff'],
-    ['Source', 'Approved procedure excerpt only'],
-    ['Format', 'Staff-ready note with action, owner, and escalation trigger'],
-    ['Constraint', 'No customer data. Preserve policy meaning.'],
-    ['Reviewer', 'Manager review before reuse'],
-    ['Rule', 'Mark unclear items with [VERIFY]'],
+  const sampleSteps = [
+    {
+      step: '01',
+      title: 'Start rough',
+      desc: '"Rewrite this procedure for frontline branch staff."',
+    },
+    {
+      step: '02',
+      title: 'Add guardrails',
+      desc: 'Audience, source, format, constraints, reviewer, and [VERIFY] rule.',
+    },
+    {
+      step: '03',
+      title: 'Save the card',
+      desc: 'A reusable First Prompt Card with data boundary and manager review note.',
+    },
   ] as const;
 
   return (
-    <div className="mk-lesson-preview">
-      <div className="mk-lesson-preview-copy">
+    <div className="mk-lesson-simple" aria-label="Course lesson preview">
+      <div className="mk-lesson-simple-head">
         <p className="mk-k">Module 04 · Build a reusable prompt</p>
-        <h3>Learners practice the builder, then save the First Prompt Card.</h3>
-        <ol>
-          <li>Learner starts with a weak prompt.</li>
-          <li>Builder adds task, audience, constraints, output, and review.</li>
-          <li>Learner saves a reusable prompt strategy to the Foundation Packet.</li>
-        </ol>
+        <h3>Turn a loose request into a reusable prompt card.</h3>
       </div>
-      <div className="mk-prompt-compare" aria-label="Prompt before and after">
-        <div className="mk-prompt-before">
-          <p className="mk-k">Weak prompt</p>
-          <p>&quot;Rewrite this procedure for frontline branch staff.&quot;</p>
-        </div>
-        <div className="mk-prompt-after">
-          <p className="mk-k">Reusable prompt strategy</p>
-          <div className="mk-prompt-strategy">
-            {strategyRows.map(([label, value]) => (
-              <div key={label} className="mk-prompt-row">
-                <span>{label}</span>
-                <strong>{value}</strong>
-              </div>
-            ))}
+      <div className="mk-lesson-simple-steps">
+        {sampleSteps.map((item) => (
+          <div key={item.step} className="mk-lesson-simple-step">
+            <span>{item.step}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <p>{item.desc}</p>
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
+      <div className="mk-lesson-simple-save">
+        <CheckCircleIcon size={18} />
+        <span>Saved to the Foundation Packet for review and reuse.</span>
       </div>
     </div>
   );

@@ -82,13 +82,6 @@ const COMPARISON_ROWS = [
   },
 ] as const;
 
-const DECISION_RULES = [
-  'Start free if you need a quick read.',
-  'Buy the $99 report if a decision is waiting.',
-  'Choose Foundation if you need skill, templates, and reusable work products.',
-  'Contact us if seats, reporting, invoicing, SSO, or partner rollout matter.',
-] as const;
-
 const PURCHASE_RULES = [
   'Individual products are one-time purchases.',
   'No subscription is required for Snapshot, In-Depth Assessment, or Foundation.',
@@ -178,18 +171,6 @@ export default function PricingPage() {
           ))}
         </section>
 
-        <section className="mk-pricing-rules" aria-labelledby="pricing-rules-heading">
-          <div className="mk-pricing-section-head">
-            <p className="mk-k">Decision rules</p>
-            <h2 id="pricing-rules-heading">Not sure what to choose?</h2>
-          </div>
-          <ul className="mk-pricing-rule-list">
-            {DECISION_RULES.map((rule) => (
-              <li key={rule}>{rule}</li>
-            ))}
-          </ul>
-        </section>
-
         <section id="compare" className="mk-pricing-compare" aria-labelledby="compare-heading">
           <div className="mk-pricing-section-head">
             <p className="mk-k">Compare</p>
@@ -214,26 +195,6 @@ export default function PricingPage() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </section>
-
-        <section className="mk-pricing-rollout" aria-labelledby="pricing-rollout-heading">
-          <div>
-            <p className="mk-k">Institution rollout</p>
-            <h2 id="pricing-rollout-heading">Custom pricing is scoped before checkout.</h2>
-            <p>
-              When seats, reporting, invoicing, SSO, partner rollout, or
-              support matter, pricing depends on scope. Use the ROI calculator
-              when you are sizing a team case, then request a rollout plan.
-            </p>
-          </div>
-          <div className="mk-pricing-rollout-actions">
-            <Button variant="ink" size="lg" href="/#roi-calculator">
-              Run ROI calculator
-            </Button>
-            <Button variant="ghost-light" size="lg" href="/for-institutions">
-              Request a rollout plan
-            </Button>
           </div>
         </section>
 
