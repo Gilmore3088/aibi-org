@@ -6,7 +6,7 @@ import { sendInquiryAck, sendInquiryNotification, sendResourceDelivery } from '@
 import { resolveDeliverableResource } from '@/lib/resources/resourceDelivery';
 import { ensureAuthUser } from '@/lib/supabase/auth-admin';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
-import { subscribeToPlaybookForm } from '@/lib/mailerlite';
+import { recordLead } from '@/lib/leads/recordLead';
 import { createSupportCase } from '@/lib/support/cases';
 import { getSupportInboxEmail } from '@/lib/support/admin';
 import { setFreeResourceCaptureCookie } from '@/lib/resources/captureCookie';
@@ -206,23 +206,31 @@ export async function POST(request: Request) {
     }).catch((err) => console.warn('[inquiry] support case skip', err));
   }
 
-  // Playbook PDF requests route to the playbook MailerLite group with
-  // role stored as a custom field so per-role segments can fan out.
-  // Track is "{role}-playbook" e.g. "compliance-playbook". Role is
-  // allowlisted to the six canonical playbooks so an attacker cannot
-  // inject arbitrary segmentation labels into MailerLite.
-  if (body.type === 'playbook-request') {
+  // Resource-capture inquiries (guide + playbook downloads) are lead magnets:
+  // record them in BOTH systems via recordLead — canonical Supabase `leads`
+  // row + MailerLite with DEFINED fields. This replaces subscribeToPlaybookForm,
+  // whose playbook_role/institution fields were silently dropped by MailerLite.
+  // Role is allowlisted to the six canonical playbooks.
+  if (body.type === 'guide-request') {
+    await recordLead({
+      email: body.email,
+      source: 'resource-gate',
+      firstName,
+      institution: body.institution,
+      leadSource: 'guide-request',
+      ...(deliverable ? { requestedArtifact: deliverable.title } : {}),
+    }).catch((err) => console.warn('[inquiry] recordLead skip', err));
+  } else if (body.type === 'playbook-request') {
     const role = body.track.replace(/-playbook$/, '');
-    if (ALLOWED_PLAYBOOK_ROLES.has(role)) {
-      subscribeToPlaybookForm({
-        email: body.email,
-        firstName,
-        role,
-        institution: body.institution,
-      }).catch((err) => console.warn('[inquiry] mailerlite skip', err));
-    } else {
-      console.warn('[inquiry] playbook-request with disallowed role:', role);
-    }
+    await recordLead({
+      email: body.email,
+      source: 'inquiry',
+      firstName,
+      institution: body.institution,
+      leadSource: 'playbook-request',
+      ...(deliverable ? { requestedArtifact: deliverable.title } : {}),
+      ...(ALLOWED_PLAYBOOK_ROLES.has(role) ? { role } : {}),
+    }).catch((err) => console.warn('[inquiry] recordLead skip', err));
   }
 
   const response = NextResponse.json({ ok: true });

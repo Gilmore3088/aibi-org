@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
   ensureAuthUser: vi.fn(),
   rateLimitOrFail: vi.fn(),
   getRequestIp: vi.fn(),
-  subscribeToPlaybookForm: vi.fn(),
+  recordLead: vi.fn(),
   createSupportCase: vi.fn(),
 }));
 
@@ -26,8 +26,8 @@ vi.mock('@/lib/api/rate-limit', () => ({
   getRequestIp: mocks.getRequestIp,
 }));
 
-vi.mock('@/lib/mailerlite', () => ({
-  subscribeToPlaybookForm: mocks.subscribeToPlaybookForm,
+vi.mock('@/lib/leads/recordLead', () => ({
+  recordLead: mocks.recordLead,
 }));
 
 vi.mock('@/lib/support/cases', () => ({
@@ -57,7 +57,7 @@ describe('POST /api/inquiry', () => {
     mocks.sendInquiryAck.mockResolvedValue({ skipped: true, reason: 'test' });
     mocks.sendInquiryNotification.mockResolvedValue({ skipped: true, reason: 'test' });
     mocks.sendResourceDelivery.mockResolvedValue({ skipped: true, reason: 'test' });
-    mocks.subscribeToPlaybookForm.mockResolvedValue(undefined);
+    mocks.recordLead.mockResolvedValue({ persisted: true, mailerlite: 'subscribed' });
     mocks.createSupportCase.mockResolvedValue({ id: 'case-123' });
   });
 
@@ -111,7 +111,7 @@ describe('POST /api/inquiry', () => {
         track: 'Team assessment',
       },
     }));
-    expect(mocks.subscribeToPlaybookForm).not.toHaveBeenCalled();
+    expect(mocks.recordLead).not.toHaveBeenCalled();
   });
 
   it('preserves commercial lending team context in the support case summary', async () => {
@@ -212,15 +212,18 @@ describe('POST /api/inquiry', () => {
     await expect(response.json()).resolves.toEqual({ ok: true });
     expect(mocks.sendResourceDelivery).toHaveBeenCalledWith({
       email: 'sam@communitybank.test',
-      title: 'IT / InfoSec Playbook',
+      title: 'The Bank InfoSec AI Control Plane Kit',
       downloadUrl: 'https://aibankinginstitute.com/api/resources/infosec-playbook/download',
       firstName: 'Sam',
     });
     expect(mocks.sendInquiryAck).not.toHaveBeenCalled();
-    // Still routes the lead into the playbook MailerLite group.
-    expect(mocks.subscribeToPlaybookForm).toHaveBeenCalledWith(expect.objectContaining({
+    // Routes the lead into BOTH systems via recordLead (Supabase leads +
+    // MailerLite playbook group) with context fields that actually persist.
+    expect(mocks.recordLead).toHaveBeenCalledWith(expect.objectContaining({
       email: 'sam@communitybank.test',
+      source: 'inquiry',
       role: 'infosec',
+      institution: 'Community Bank',
     }));
   });
 
