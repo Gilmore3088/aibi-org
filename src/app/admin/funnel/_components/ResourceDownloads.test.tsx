@@ -83,8 +83,8 @@ describe('ResourceDownloads', () => {
     render(<ResourceDownloads totals={totals} rows={rows} />);
     expect(screen.getByText('Role playbooks')).toBeTruthy();
     expect(screen.getByText('Starter kits')).toBeTruthy();
-    expect(screen.getByText('Compliance Playbook')).toBeTruthy();
-    expect(screen.getByText('AI Governance Starter Kit')).toBeTruthy();
+    expect(screen.getByText("The Compliance Officer's AI Governance Playbook")).toBeTruthy();
+    expect(screen.getByText('The Bank AI Governance Starter Kit')).toBeTruthy();
   });
 
   it('places in-depth-playbook under Paid previews, not Role playbooks', () => {
@@ -97,7 +97,7 @@ describe('ResourceDownloads', () => {
 
   it('renders a row with its download counts', () => {
     const { container } = render(<ResourceDownloads totals={totals} rows={rows} />);
-    const compRow = within(container).getByText('Compliance Playbook').closest('tr');
+    const compRow = within(container).getByText("The Compliance Officer's AI Governance Playbook").closest('tr');
     expect(compRow).toBeTruthy();
     expect(within(compRow as HTMLElement).getByText('65')).toBeTruthy();
   });

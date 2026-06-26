@@ -6,7 +6,7 @@ describe('resolveDeliverableResource', () => {
   it('resolves a role playbook to its by-slug download URL', () => {
     expect(resolveDeliverableResource('infosec-playbook')).toEqual({
       slug: 'infosec-playbook',
-      title: 'IT / InfoSec Playbook',
+      title: 'The Bank InfoSec AI Control Plane Kit',
       downloadUrl: 'https://aibankinginstitute.com/api/resources/infosec-playbook/download',
     });
   });
