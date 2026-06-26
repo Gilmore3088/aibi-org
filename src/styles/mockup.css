@@ -5914,7 +5914,6 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-pricing-hero .mk-k,
 .mk-pricing-section-head .mk-k,
-.mk-pricing-rollout .mk-k,
 .mk-pricing-support .mk-k,
 .mk-pricing-final .mk-k {
   margin: 0;
@@ -6143,8 +6142,6 @@ section.mk-std { padding: 56px 0; }
   color: var(--gold-deep);
 }
 .mk-pricing-compare,
-.mk-pricing-rules,
-.mk-pricing-rollout,
 .mk-pricing-support,
 .mk-pricing-final {
   padding: 64px max(18px, calc((100vw - 1180px) / 2));
@@ -6156,7 +6153,6 @@ section.mk-std { padding: 56px 0; }
   margin-bottom: 24px;
 }
 .mk-pricing-section-head h2,
-.mk-pricing-rollout h2,
 .mk-pricing-support h2,
 .mk-pricing-final h2 {
   margin: 0;
@@ -6204,57 +6200,12 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-table td:last-child {
   border-right: 0;
 }
-.mk-pricing-rule-list {
-  display: grid;
-  gap: 10px;
-  max-width: 780px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.mk-pricing-rule-list li {
-  position: relative;
-  padding: 16px 18px 16px 42px;
-  background: #fff;
-  border: 1px solid var(--ink-a10);
-  color: var(--slate-600);
-  font-size: 15px;
-  font-weight: 650;
-  line-height: 1.45;
-}
-.mk-pricing-rule-list li::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 22px;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--gold);
-}
-.mk-pricing-rollout {
-  display: grid;
-  gap: 24px;
-  align-items: center;
-  background: var(--cream-2);
-}
-@media (min-width: 880px) {
-  .mk-pricing-rollout {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-}
-.mk-pricing-rollout p,
 .mk-pricing-final p {
   max-width: 68ch;
   margin: 14px 0 0;
   color: var(--slate-600);
   font-size: 16px;
   line-height: 1.58;
-}
-.mk-pricing-rollout-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
 }
 .mk-pricing-support {
   display: grid;
@@ -6353,7 +6304,6 @@ section.mk-std { padding: 56px 0; }
 }
 @media (max-width: 560px) {
   .mk-pricing-hero-actions,
-  .mk-pricing-rollout-actions,
   .mk-pricing-support-actions {
     align-items: stretch;
     flex-direction: column;
@@ -6392,14 +6342,11 @@ section.mk-std { padding: 56px 0; }
   }
   .mk-pricing-tier-grid,
   .mk-pricing-compare,
-  .mk-pricing-rules,
-  .mk-pricing-rollout,
   .mk-pricing-support,
   .mk-pricing-final {
     padding: 42px 18px;
   }
   .mk-pricing-section-head h2,
-  .mk-pricing-rollout h2,
   .mk-pricing-support h2,
   .mk-pricing-final h2 {
     font-size: 32px;

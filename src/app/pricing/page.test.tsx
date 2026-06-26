@@ -18,7 +18,9 @@ describe('PricingPage', () => {
     expect(screen.getAllByText('Custom').length).toBeGreaterThan(0);
     expect(screen.getByText(/best first paid step/i)).toBeTruthy();
     expect(screen.getByText(/best for individual capability/i)).toBeTruthy();
-    expect(screen.getByText(/not sure what to choose/i)).toBeTruthy();
+    expect(screen.queryByText(/not sure what to choose/i)).toBeNull();
+    expect(screen.queryByText(/decision rules/i)).toBeNull();
+    expect(screen.queryByText(/custom pricing is scoped before checkout/i)).toBeNull();
     expect(screen.getByText(/where should i start/i)).toBeTruthy();
     expect(screen.getByText(/certificate with public authenticity URL/i)).toBeTruthy();
     expect(screen.getByText(/simple purchase rules/i)).toBeTruthy();
@@ -40,9 +42,7 @@ describe('PricingPage', () => {
     expect(screen.getAllByRole('link', { name: /request a rollout plan/i })[0]?.getAttribute('href')).toBe(
       '/for-institutions',
     );
-    expect(screen.getByRole('link', { name: /run roi calculator/i }).getAttribute('href')).toBe(
-      '/#roi-calculator',
-    );
+    expect(screen.queryByRole('link', { name: /run roi calculator/i })).toBeNull();
     expect(screen.getByRole('link', { name: /institution \/ partner inquiry/i }).getAttribute('href')).toBe(
       '/for-institutions',
     );
