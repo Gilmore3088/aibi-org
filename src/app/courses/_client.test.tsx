@@ -7,10 +7,9 @@ describe('CoursesIndexPage', () => {
     render(<CoursesIndexPage />);
 
     expect(screen.getByRole('heading', { name: /the packet is the useful part/i })).toBeTruthy();
-    expect(screen.getAllByText(/saved work products/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/manager-readable evidence/i)).toBeTruthy();
-    expect(screen.getAllByText(/simple completion record/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/the packet carries the substance/i)).toBeTruthy();
+    expect(screen.getAllByText(/reusable prompt card/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/review note/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/packet artifact/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/not a license, regulator approval/i)).toBeTruthy();
   });
 
@@ -24,6 +23,9 @@ describe('CoursesIndexPage', () => {
       screen.getByText(/18 modules · 18-piece Foundation Packet · reviewed work products/i),
     ).toBeTruthy();
     expect(screen.queryByText(/182 minutes/i)).toBeNull();
+    expect(screen.getByRole('heading', { name: /one lesson\. one saved artifact/i })).toBeTruthy();
+    expect(screen.getByText(/turn a loose request into a reusable prompt card/i)).toBeTruthy();
+    expect(screen.queryByText(/Branch operations reviewer/i)).toBeNull();
     expect(screen.getByRole('link', { name: /preview a lesson/i }).getAttribute('href')).toBe(
       '#lesson-preview',
     );
