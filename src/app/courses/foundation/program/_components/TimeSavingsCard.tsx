@@ -10,7 +10,6 @@
 
 import { ACTIVITY_SAVINGS } from '../_lib/activitySavings';
 
-const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
   fontSize: 12,
   fontWeight: 600,
