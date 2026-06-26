@@ -123,7 +123,9 @@ function LabPracticeBrief({
             {brief.labTask}
           </h3>
           <p style={{ margin: '7px 0 0', color: 'var(--slate-600)', fontSize: 13, lineHeight: 1.38, fontWeight: 650 }}>
-            Use the sample data. Save draft material only.
+            {sampleLabel === 'Guided practice task'
+              ? 'Work through the task below. Save draft material only.'
+              : 'Use the sample data. Save draft material only.'}
           </p>
         </div>
 
