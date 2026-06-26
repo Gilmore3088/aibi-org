@@ -4,10 +4,10 @@ import { ModuleHeaderCard } from './ModuleHeaderCard';
 
 const baseProps = {
   moduleNumber: 3,
-  titleMain: 'Spot weak AI output',
+  titleMain: 'Write a Prompt That Gets to the Core',
   titleTail: null,
-  keyOutput: 'Claim Review Markup',
-  goalLine: 'Catch unsupported claims before they become work product.',
+  keyOutput: 'CORE Prompt Card',
+  goalLine: 'Turn a vague request into a clear, reusable CORE prompt.',
   estimatedMinutes: 10,
   pillarId: 'understanding' as const,
   status: 'current' as const,
@@ -33,21 +33,21 @@ describe('ModuleHeaderCard', () => {
     expect(
       screen.getByText((_, element) =>
         element?.classList.contains('foundation-module-hero__module-label') === true &&
-        element.textContent === 'Module 03 · Spot weak AI output',
+        element.textContent === 'Module 03 · Write a Prompt That Gets to the Core',
       ),
     ).toBeTruthy();
     expect(screen.getByText('In progress')).toBeTruthy();
     expect(screen.getByText('You will build')).toBeTruthy();
-    expect(screen.getByRole('heading', { name: 'Claim Review Markup' })).toBeTruthy();
-    expect(screen.getByText('Catch unsupported claims before they become work product.')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'CORE Prompt Card' })).toBeTruthy();
+    expect(screen.getByText('Turn a vague request into a clear, reusable CORE prompt.')).toBeTruthy();
 
     const facts = screen.getByLabelText('Module facts');
     expect(facts.textContent).toContain('Time');
     expect(facts.textContent).toContain('10 min');
     expect(facts.textContent).toContain('Build');
-    expect(facts.textContent).toContain('Claim Review Builder');
+    expect(facts.textContent).toContain('CORE Prompt Builder');
     expect(facts.textContent).toContain('Save');
-    expect(facts.textContent).toContain('claim review markup');
+    expect(facts.textContent).toContain('CORE prompt card');
 
     expect(screen.queryByRole('list', { name: 'Module path' })).toBeNull();
     expect(screen.getByRole('link', { name: 'Start' }).getAttribute('href')).toBe('#st-takeaway');
