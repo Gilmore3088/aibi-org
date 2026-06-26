@@ -6,6 +6,7 @@ import {
   hashAssessmentResumeToken,
 } from '@/lib/assessment/drafts';
 import { sendAssessmentResumeLink, type ResendResult } from '@/lib/resend';
+import { isNonDeliverableEmail } from '@/lib/email/deliverability';
 
 type ServiceClient = ReturnType<typeof createServiceRoleClient>;
 
@@ -193,8 +194,12 @@ export async function runAbandonedAssessmentMonitor(
   const client = providedClient ?? createServiceRoleClient();
   const now = input.now ?? new Date();
   const rows = await fetchAbandonedDrafts(client, now, options);
-  const candidates = rows.filter((row) =>
-    isAbandonedAssessmentDraftCandidate(row, now, options.reminderAfterHours),
+  const candidates = rows.filter(
+    (row) =>
+      // Skip seeded test/placeholder addresses so scheduled reminders never
+      // hard-bounce against the .test TLD and erode sender reputation.
+      !isNonDeliverableEmail(row.email) &&
+      isAbandonedAssessmentDraftCandidate(row, now, options.reminderAfterHours),
   );
   const sentReminders: AbandonedAssessmentReminder[] = [];
   const failedReminders: Array<{ readonly draftId: string; readonly email: string; readonly reason: string }> = [];

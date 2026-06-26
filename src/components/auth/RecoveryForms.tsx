@@ -87,17 +87,23 @@ const successStyle: CSSProperties = {
 function Field({
   label,
   trailing,
+  id,
   ...rest
 }: React.InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; trailing?: ReactNode }) {
+  // The id is decoupled from name so these recovery forms can share
+  // /auth/login with the password sign-in form (all using name="email")
+  // without colliding on a shared id (WCAG 4.1.1). Falls back to name when
+  // an explicit id is not supplied.
+  const fieldId = id ?? rest.name;
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <label htmlFor={rest.name} style={labelStyle}>
+        <label htmlFor={fieldId} style={labelStyle}>
           {label}
         </label>
         {trailing}
       </div>
-      <input id={rest.name} style={inputStyle} {...rest} />
+      <input id={fieldId} style={inputStyle} {...rest} />
     </div>
   );
 }
@@ -141,6 +147,7 @@ export function EmailLinkForm({
   return (
     <form onSubmit={handleSubmit} noValidate>
       <Field
+        id="signin-link-email"
         label="Email"
         name="email"
         type="email"
@@ -203,6 +210,7 @@ export function PurchaseRecoveryForm({ prefillEmail }: { readonly prefillEmail: 
         Send a fresh purchase access link to the email used at checkout.
       </p>
       <Field
+        id="purchase-recovery-email"
         label="Purchase email"
         name="email"
         type="email"

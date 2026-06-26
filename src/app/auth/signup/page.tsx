@@ -109,14 +109,19 @@ const footerStyle: CSSProperties = {
 
 function Field({
   label,
+  id,
   ...rest
 }: React.InputHTMLAttributes<HTMLInputElement> & { label: ReactNode }) {
+  // The id is decoupled from name so signup fields carry page-scoped ids
+  // distinct from the same name="email" / name="password" inputs on the
+  // multi-form /auth/login page. Falls back to name when no id is supplied.
+  const fieldId = id ?? rest.name;
   return (
     <div style={{ marginBottom: 14 }}>
-      <label htmlFor={rest.name} style={labelStyle}>
+      <label htmlFor={fieldId} style={labelStyle}>
         {label}
       </label>
-      <input id={rest.name} style={inputStyle} {...rest} />
+      <input id={fieldId} style={inputStyle} {...rest} />
     </div>
   );
 }
@@ -283,6 +288,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} noValidate>
           <Field
+            id="signup-full-name"
             label="Full name"
             name="fullName"
             type="text"
@@ -291,6 +297,7 @@ export default function SignupPage() {
             placeholder="Jane Doe"
           />
           <Field
+            id="signup-email"
             label="Email"
             name="email"
             type="email"
@@ -308,12 +315,14 @@ export default function SignupPage() {
                 </span>
               </>
             }
+            id="signup-institution"
             name="institutionName"
             type="text"
             autoComplete="organization"
             placeholder="First Community Bank"
           />
           <Field
+            id="signup-password"
             label="Password"
             name="password"
             type="password"
@@ -330,6 +339,7 @@ export default function SignupPage() {
             {PASSWORD_HINT}
           </p>
           <Field
+            id="signup-confirm-password"
             label="Confirm password"
             name="confirmPassword"
             type="password"
