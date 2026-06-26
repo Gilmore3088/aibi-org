@@ -112,6 +112,7 @@ export default function DashboardPage() {
   });
   const {
     artifacts,
+    certificateHref,
     certificateVerifyUrl,
     completedArtifactCount,
     completedModuleCount,
@@ -211,6 +212,11 @@ export default function DashboardPage() {
                   <Link href={heroSecondary.href} className="btn btn-ghost">
                     {heroSecondary.label} <span className="arrow">→</span>
                   </Link>
+                  {certificateHref && (
+                    <Link href={certificateHref} className="btn btn-ghost">
+                      View your certificate <span className="arrow">→</span>
+                    </Link>
+                  )}
                 </div>
               </div>
 

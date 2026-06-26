@@ -21,7 +21,7 @@ export interface CurriculumSkill {
 // Source learning ladder:
 //   M1  AI limits in a bank
 //   M2  Rewrite a low-risk message
-//   M3  Spot weak AI output
+//   M3  Write a prompt that gets to the core
 //   M4  Build a first prompt
 //   M5  Add context and constraints
 //   M6  Ask for structured output
