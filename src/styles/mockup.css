@@ -5242,12 +5242,22 @@ section.mk-std { padding: 56px 0; }
   font-size: 12px; color: #b91c1c; margin: 0; line-height: 1.4;
 }
 .mk-download-gate-confirm {
-  margin-top: auto; padding-top: 14px;
-  border-top: 1px solid var(--slate-200);
-  font-size: 13px; color: var(--slate-600);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  max-width: 100%;
+  margin-top: auto;
+  padding-top: 14px;
 }
 .mk-download-gate-ok {
   color: var(--emerald-700); font-weight: 600;
+}
+.mk-download-gate-note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--slate-600);
+  max-width: 42ch;
 }
 
 .mk-reg-ref-grid {
