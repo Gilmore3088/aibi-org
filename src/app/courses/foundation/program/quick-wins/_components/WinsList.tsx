@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  minutesToLabel,
-  toolLabel,
-  frequencyLabel,
-  quarterlyHours,
-  type QuickWin,
-} from '../../_lib/quickWinsData';
+import { minutesToLabel, toolLabel, type QuickWin } from '../../_lib/quickWinsData';
 
 interface WinsListProps {
   readonly wins: QuickWin[];
@@ -133,19 +127,6 @@ export function WinsList({ wins, loading }: WinsListProps) {
                   {minutesToLabel(win.time_saved_minutes)}
                 </span>
               </div>
-
-              <p
-                style={{
-                  marginTop: 8,
-                  fontSize: 13,
-                  color: 'var(--slate-500)',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                &asymp; {quarterlyHours(win).toFixed(1)} hrs this quarter &mdash;{' '}
-                {minutesToLabel(win.time_saved_minutes)} &times;{' '}
-                {frequencyLabel(win.frequency).toLowerCase()} over 13 weeks (modeled estimate)
-              </p>
 
               <div
                 style={{

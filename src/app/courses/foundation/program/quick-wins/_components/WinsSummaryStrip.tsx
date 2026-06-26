@@ -10,20 +10,16 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
   return (
     <div
       style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px 24px',
+        alignItems: 'baseline',
         marginBottom: 36,
         paddingBottom: 18,
         borderBottom: '1px solid var(--ink-a10)',
       }}
       aria-label="Logging summary"
     >
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '8px 24px',
-          alignItems: 'baseline',
-        }}
-      >
       <span
         style={{
           fontSize: 12,
@@ -46,7 +42,7 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
           fontVariantNumeric: 'tabular-nums',
         }}
       >
-        {totalQuarterlyHours.toFixed(1)} hrs / quarter (modeled)
+        {totalQuarterlyHours.toFixed(1)} hrs / quarter saved
       </span>
       {winsToGo > 0 && (
         <>
@@ -64,18 +60,6 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
           </span>
         </>
       )}
-      </div>
-      <p
-        style={{
-          fontSize: 12,
-          color: 'var(--slate-500)',
-          margin: '10px 0 0',
-          lineHeight: 1.5,
-        }}
-      >
-        Modeled from the time and frequency you logged for each win (over 13 weeks) — not a
-        guarantee.
-      </p>
     </div>
   );
 }
