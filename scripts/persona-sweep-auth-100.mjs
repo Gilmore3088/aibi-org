@@ -77,20 +77,75 @@ async function bodySnippet(page) {
   return (await page.locator('main, body').first().innerText({ timeout: 2000 }).catch(() => '')).slice(0, 800);
 }
 
-// Drive the real /auth/login form. Returns the landing URL (post-redirect).
-async function login(page, user) {
-  await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.getByLabel(/email/i).first().fill(user.email).catch(() => {});
-  await page.getByLabel(/password/i).first().fill(user.password).catch(() => {});
-  await page.getByRole('button', { name: /sign in|log in/i }).first().click().catch(() => {});
-  await page
-    .waitForURL(
+// Post-login destination per account state (remediation plan P0-1). Starting
+// login at /auth/login?next=<dest> measures the real intended journey and lets
+// us assert each state lands where it should within one redirect.
+const LANDING_FOR_STATE = {
+  'account-only': '/dashboard',
+  'free-assessment': '/dashboard',
+  'in-depth': '/assessment/in-depth/take',
+  'foundation-onboarding-pending': '/courses/foundation/program/onboarding',
+  'foundation-early': '/courses/foundation/program',
+  'foundation-mid': '/courses/foundation/program',
+  'foundation-complete': '/courses/foundation/program/certificate',
+  'unconfirmed': '/dashboard',
+};
+
+// Thrown when a seeded user never leaves /auth/login — a HARD audit failure,
+// not a silent anonymous walk (the bug that invalidated the prior run, where
+// 95/100 personas stayed on /auth/login).
+class LoginError extends Error {
+  constructor(message, diag) {
+    super(message);
+    this.name = 'LoginError';
+    this.diag = diag;
+  }
+}
+
+// Drive the real /auth/login form, starting from the state's intended
+// destination via ?next=. Returns the post-login landing URL, or throws
+// LoginError (with diagnostics) when the session is still on /auth/login.
+async function login(page, user, state) {
+  const next = LANDING_FOR_STATE[state] || '/dashboard';
+  const loginUrl = `${abs('/auth/login')}?next=${encodeURIComponent(next)}`;
+  const checkDevice = [];
+  page.on('response', (r) => {
+    if (r.url().includes('/api/auth/check-device')) checkDevice.push(r.status());
+  });
+
+  await page.goto(loginUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  // Name/type selectors proven against production (e2e/auth-prod.spec.ts).
+  // The prior run used getByLabel(/email/i), which silently matched nothing,
+  // so the form submitted empty and never left /auth/login. No silent catch
+  // here: a missing field must surface as a failure, not a fake walk.
+  await page.locator('input[name="email"]').first().fill(user.email);
+  await page.locator('input[type="password"]').first().fill(user.password);
+  await page.getByRole('button', { name: /sign in|log in/i }).first().click();
+
+  let landed = true;
+  try {
+    await page.waitForURL(
       (url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'),
       { timeout: 15000 },
-    )
-    .catch(() => {});
+    );
+  } catch {
+    landed = false;
+  }
   await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
-  return page.url();
+
+  const url = page.url();
+  if (!landed && /^\/auth\/login/.test(pathOf(url))) {
+    const alertText = await page
+      .locator('[role="alert"], [data-error], .text-red-600, .error')
+      .first()
+      .innerText({ timeout: 1500 })
+      .catch(() => '');
+    await page
+      .screenshot({ path: resolve(SHOT_DIR, `LOGINFAIL-${user.email.replace(/[^a-z0-9]/gi, '_')}.png`) })
+      .catch(() => {});
+    throw new LoginError(`login stuck on /auth/login`, { url, alertText, checkDevice });
+  }
+  return url;
 }
 
 async function runPersona(browser, persona) {
@@ -128,7 +183,7 @@ async function runPersona(browser, persona) {
       }]);
     }
 
-    loginLanding = await login(page, seeded.user);
+    loginLanding = await login(page, seeded.user, recipe.state);
 
     // Walk starts from the login landing page (canonical post-login entry),
     // so clicks-to-value measures the real logged-in journey.
@@ -180,8 +235,16 @@ async function runPersona(browser, persona) {
 
     await page.screenshot({ path: resolve(SHOT_DIR, `${persona.id}-final.png`) }).catch(() => {});
   } catch (e) {
-    authError = String(e?.message || e).slice(0, 200);
-    issues.push({ persona: persona.id, path: '(seed/login)', status: 0, navError: authError });
+    const isLogin = e?.name === 'LoginError';
+    authError = `${isLogin ? 'LOGIN' : 'SEED'}: ${String(e?.message || e).slice(0, 160)}`;
+    issues.push({
+      persona: persona.id,
+      path: '(seed/login)',
+      status: 0,
+      navError: authError,
+      failKind: isLogin ? 'login' : 'seed',
+      loginDiag: isLogin ? e.diag : undefined,
+    });
   } finally {
     await page.close().catch(() => {});
     await ctx.close().catch(() => {});
@@ -227,7 +290,8 @@ async function main() {
     process.exit(2);
   }
   await mkdir(SHOT_DIR, { recursive: true });
-  let roster = await loadRoster(DEFAULT_ROSTER_MD);
+  const rosterMd = process.env.ROSTER_MD ? resolve(process.cwd(), process.env.ROSTER_MD) : DEFAULT_ROSTER_MD;
+  let roster = await loadRoster(rosterMd);
   if (PERSONA_LIMIT) roster = roster.slice(0, PERSONA_LIMIT);
   const personas = buildPersonas(roster, { stepsMin: STEPS_MIN, stepsMax: STEPS_MAX });
 
