@@ -12,7 +12,8 @@ describe('Foundation micro-module ladder', () => {
   it('separates prompt, template, skill, workflow kit, and packet concepts', () => {
     const byNumber = new Map(FOUNDATION_MICRO_MODULES.map((module) => [module.number, module]));
 
-    expect(byNumber.get(4)?.plainLanguageConcept).toContain('work instruction');
+    // M4 applies the CORE method (from M3) to the learner's own recurring task.
+    expect(byNumber.get(4)?.plainLanguageConcept).toContain('your own role');
     expect(byNumber.get(9)?.plainLanguageConcept).toContain('named reusable asset');
     expect(byNumber.get(13)?.plainLanguageConcept).toContain('not just a prompt');
     expect(byNumber.get(17)?.plainLanguageConcept).toContain('workflow kit');
