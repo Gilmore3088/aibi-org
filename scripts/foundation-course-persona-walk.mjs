@@ -34,9 +34,12 @@ const pathOf = (u) => { try { return new URL(u, BASE).pathname; } catch { return
 
 async function login(page, user) {
   await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.getByLabel(/email/i).first().fill(user.email).catch(() => {});
-  await page.getByLabel(/password/i).first().fill(user.password).catch(() => {});
-  await page.getByRole('button', { name: /sign in|log in/i }).first().click().catch(() => {});
+  // Login page has several email inputs; scope to the password form so the
+  // right email is filled. No silent .catch — a fill failure must surface.
+  const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
+  await form.locator('input[name="email"]').fill(user.email);
+  await form.locator('input[name="password"]').fill(user.password);
+  await form.getByRole('button', { name: /sign in|log in/i }).click();
   await page.waitForURL((url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'), { timeout: 15000 }).catch(() => {});
   await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
   return page.url();

@@ -70,9 +70,10 @@ test.describe('post-login auth journeys (seeded)', () => {
 
       // Deep-link to a gated module; login should honor next= and land there.
       await page.goto('/auth/login?next=%2Fcourses%2Ffoundation%2Fprogram%2F3');
-      await page.getByLabel(/email/i).first().fill(user.email);
-      await page.getByLabel(/password/i).first().fill(user.password);
-      await page.getByRole('button', { name: /sign in|log in/i }).first().click();
+      const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
+      await form.locator('input[name="email"]').fill(user.email);
+      await form.locator('input[name="password"]').fill(user.password);
+      await form.getByRole('button', { name: /sign in|log in/i }).click();
 
       await page.waitForURL(/\/courses\/foundation\/program\/3/, { timeout: 15_000 });
       await expect(page).toHaveURL(/\/courses\/foundation\/program\/3/);
