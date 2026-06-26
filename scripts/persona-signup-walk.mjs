@@ -77,11 +77,20 @@ async function runSignup(browser, persona) {
       waitUntil: 'domcontentloaded',
       timeout: 30000,
     });
-    await page.locator('input[name="email"]').first().fill(email);
-    await page.locator('input[name="password"]').first().fill(password);
-    const confirm = page.locator('input[name="confirmPassword"]').first();
+    // Like /auth/login, the signup page renders multiple forms. The signup
+    // form is the one that owns the confirmPassword field — scope fills to it
+    // so FormData reads the values we typed, not an empty sibling input.
+    const form = page.locator('form', { has: page.locator('input[name="confirmPassword"]') }).first();
+    const scope = (await form.count()) ? form : page;
+    await scope.locator('input[name="email"]').first().fill(email);
+    await scope.locator('input[name="password"]').first().fill(password);
+    const confirm = scope.locator('input[name="confirmPassword"]').first();
     if (await confirm.count()) await confirm.fill(password);
-    await page.getByRole('button', { name: /create|sign up|start|continue/i }).first().click({ timeout: 8000 });
+    // Signup gates on a required terms checkbox (name="terms"); tick it or the
+    // submit fails with "You must accept the terms to create an account."
+    const terms = scope.locator('input[name="terms"]').first();
+    if (await terms.count()) await terms.check().catch(() => {});
+    await scope.getByRole('button', { name: /create|sign up|start|continue|account/i }).first().click({ timeout: 8000 });
     // Wait for one of: a redirect off /auth/signup, the "check your email"
     // success message, or an inline error.
     await Promise.race([

@@ -113,39 +113,52 @@ async function login(page, user, state) {
     if (r.url().includes('/api/auth/check-device')) checkDevice.push(r.status());
   });
 
-  await page.goto(loginUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  // Name/type selectors proven against production (e2e/auth-prod.spec.ts).
-  // The prior run used getByLabel(/email/i), which silently matched nothing,
-  // so the form submitted empty and never left /auth/login. No silent catch
-  // here: a missing field must surface as a failure, not a fake walk.
-  await page.locator('input[name="email"]').first().fill(user.email);
-  await page.locator('input[type="password"]').first().fill(user.password);
-  await page.getByRole('button', { name: /sign in|log in/i }).first().click();
+  // The login page renders THREE forms (sign-in, forgot-password, resend-
+  // confirmation), each with its own input[name="email"] sharing a duplicated
+  // id="email". The sign-in handler reads FormData from its own form, so fills
+  // MUST be scoped to the sign-in button's form — otherwise FormData.get('email')
+  // returns an empty sibling input ("missing email or phone") and the session
+  // never leaves /auth/login. That selector mismatch was the prior 95/100 bug.
+  // One retry absorbs transient prod flakes without masking a real failure
+  // (a systematic problem still fails both attempts).
+  let lastDiag = null;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    await page.goto(loginUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const form = page
+      .locator('form', { has: page.getByRole('button', { name: /sign in|log in/i }) })
+      .first();
+    await form.locator('input[name="email"]').first().fill(user.email);
+    await form.locator('input[type="password"]').first().fill(user.password);
+    await form.getByRole('button', { name: /sign in|log in/i }).first().click();
 
-  let landed = true;
-  try {
-    await page.waitForURL(
-      (url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'),
-      { timeout: 15000 },
-    );
-  } catch {
-    landed = false;
-  }
-  await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
+    let landed = true;
+    try {
+      await page.waitForURL(
+        (url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'),
+        { timeout: 15000 },
+      );
+    } catch {
+      landed = false;
+    }
+    await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
 
-  const url = page.url();
-  if (!landed && /^\/auth\/login/.test(pathOf(url))) {
+    const url = page.url();
+    if (landed || !/^\/auth\/login/.test(pathOf(url))) return url;
+
     const alertText = await page
       .locator('[role="alert"], [data-error], .text-red-600, .error')
       .first()
       .innerText({ timeout: 1500 })
       .catch(() => '');
-    await page
-      .screenshot({ path: resolve(SHOT_DIR, `LOGINFAIL-${user.email.replace(/[^a-z0-9]/gi, '_')}.png`) })
-      .catch(() => {});
-    throw new LoginError(`login stuck on /auth/login`, { url, alertText, checkDevice });
+    lastDiag = { url, alertText, checkDevice: [...checkDevice], attempt };
+    if (attempt === 2) {
+      await page
+        .screenshot({ path: resolve(SHOT_DIR, `LOGINFAIL-${user.email.replace(/[^a-z0-9]/gi, '_')}.png`) })
+        .catch(() => {});
+      throw new LoginError(`login stuck on /auth/login`, lastDiag);
+    }
+    await page.waitForTimeout(600); // brief backoff before the single retry
   }
-  return url;
 }
 
 async function runPersona(browser, persona) {
