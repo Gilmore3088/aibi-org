@@ -52,7 +52,7 @@ describe('ModuleInteractiveTakeaway', () => {
     expect(payload.model).toBe('AiBI micro-module takeaway builder');
     expect(payload.moduleNumber).toBe(15);
     expect(payload.content).toContain('# Module 15 - Human Review Gate Card');
-    expect(payload.content).toContain('OCC model risk principles guardrail');
+    expect(payload.content).toContain('SR 11-7 guardrail');
     expect(payload.reviewChecklist).toContain('Gate happens before impact');
   });
 
