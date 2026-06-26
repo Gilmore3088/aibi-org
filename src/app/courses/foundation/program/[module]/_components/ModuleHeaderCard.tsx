@@ -21,7 +21,7 @@ const BUILDER_PATH_BY_MODULE: Record<number, {
 }> = {
   1: { builder: 'Limits Card Builder', savedAs: 'AI limits card', reusableAs: 'draft/check/decide rule' },
   2: { builder: 'Rewrite Prompt Builder', savedAs: 'rewritten message', reusableAs: 'internal message prompt' },
-  3: { builder: 'Claim Review Builder', savedAs: 'claim review markup', reusableAs: 'fact-check habit' },
+  3: { builder: 'CORE Prompt Builder', savedAs: 'CORE prompt card', reusableAs: 'reusable prompt structure' },
   4: { builder: 'First Prompt Builder', savedAs: 'first prompt card', reusableAs: 'prompt structure' },
   5: { builder: 'Context Block Builder', savedAs: 'safe context block', reusableAs: 'role context template' },
   6: { builder: 'Output Format Builder', savedAs: 'output template', reusableAs: 'reviewable response format' },

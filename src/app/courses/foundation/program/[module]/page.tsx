@@ -500,7 +500,11 @@ export default async function ModulePage(props: ModulePageParams) {
                       intro="Step-by-step walkthroughs for your first real banking task on each platform. Pick the one that matches what you already have access to."
                     />
                   )}
-                  {moduleNum === 7 && (
+                  {/* M7_TUTORIALS is legacy-named but its content is the
+                      anatomy-of-a-skill pattern, which belongs to Module 13
+                      (Build a Simple Reusable Skill), not Module 7 (Review AI
+                      Output — which now has its own claim-review lab). */}
+                  {moduleNum === 13 && (
                     <MiniTutorialList
                       tutorials={M7_TUTORIALS}
                       heading="Skill-builder tutorials"
