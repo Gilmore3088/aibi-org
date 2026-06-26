@@ -2279,6 +2279,7 @@ export function LearnSection({ sections, keyTakeaways, moduleNumber, learnerRole
           {workedExample && (
             <details
               data-testid="foundation-quick-example"
+              open
               style={{
                 border: '1px solid var(--ink-a10)',
                 borderRadius: 14,
