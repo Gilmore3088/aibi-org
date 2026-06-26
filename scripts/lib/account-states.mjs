@@ -26,6 +26,21 @@ const MID_MODULE = Math.max(2, Math.round(FOUNDATION_MODULE_COUNT / 2));
 // (content/courses/foundation-program/role-paths.ts).
 const ROLE_KEYS = ['lending', 'operations', 'compliance', 'finance', 'marketing', 'it', 'retail', 'executive'];
 
+// `user_profiles.role` is constrained to the In-Depth role taxonomy
+// (migration 00040_user_profiles_role_v4), NOT the onboarding role-path keys
+// above. Translate before seeding a readiness profile, or compliance/finance/
+// retail violate user_profiles_role_check. (finance has no equivalent -> other.)
+const PROFILE_ROLE_BY_PATH = {
+  lending: 'lending-credit',
+  operations: 'operations',
+  compliance: 'compliance-risk',
+  finance: 'other',
+  marketing: 'marketing-product',
+  it: 'it-infosec',
+  retail: 'retail-branch',
+  executive: 'executive',
+};
+
 export function primaryRoleFor(roleText) {
   const s = (roleText || '').toLowerCase();
   if (/lend|credit|loan/.test(s)) return 'lending';
@@ -73,6 +88,7 @@ export function accountStateFor(persona) {
 export function seedRecipeFor(persona) {
   const state = accountStateFor(persona);
   const primary_role = primaryRoleFor(persona.role);
+  const profileRole = PROFILE_ROLE_BY_PATH[primary_role] ?? 'other';
   const onboarding = {
     uses_m365: 'yes',
     personal_ai_subscriptions: ['ChatGPT'],
@@ -85,9 +101,9 @@ export function seedRecipeFor(persona) {
     case ACCOUNT_STATE.ACCOUNT_ONLY:
       return { state, kind: 'account-only' };
     case ACCOUNT_STATE.FREE_ASSESSMENT:
-      return { state, kind: 'free', readiness: 'free', role: primary_role };
+      return { state, kind: 'free', readiness: 'free', role: profileRole };
     case ACCOUNT_STATE.IN_DEPTH:
-      return { state, kind: 'in-depth', readiness: 'in-depth', role: primary_role };
+      return { state, kind: 'in-depth', readiness: 'in-depth', role: profileRole };
     case ACCOUNT_STATE.FOUNDATION_ONBOARDING:
       return { state, kind: 'foundation', onboarding: null, currentModule: 0, completedModules: [] };
     case ACCOUNT_STATE.FOUNDATION_EARLY:
