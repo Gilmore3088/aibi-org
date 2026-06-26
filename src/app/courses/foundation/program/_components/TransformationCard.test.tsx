@@ -19,6 +19,7 @@ describe('TransformationCard', () => {
         postTierLabel="Operational"
         postTierColorVar="var(--gold)"
         skillsBuilt={4}
+        annualHoursSaved={188}
         enrollmentId="enrollment-123"
       />,
     );

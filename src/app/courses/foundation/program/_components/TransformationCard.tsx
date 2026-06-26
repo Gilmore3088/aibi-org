@@ -1,8 +1,9 @@
 'use client';
 
 // TransformationCard — summary card shown after post-course assessment completion.
-// Displays score delta, tier change, skills built, and hours saved/year.
-// Includes a share-result CTA (copies summary text to clipboard).
+// Displays score delta, tier change, skills built, and a modeled annual
+// time-savings estimate (shown as an estimate, with a caveat, never a
+// guarantee). Includes a share-result CTA (copies summary text to clipboard).
 //
 // Ported to mockup design system 2026-05-27 (Inter, ink/cream/gold,
 // tabular-nums via fontVariantNumeric).
@@ -17,6 +18,8 @@ interface TransformationCardProps {
   readonly postTierLabel: string;
   readonly postTierColorVar: string;
   readonly skillsBuilt: number;
+  // Modeled annual hours from the Foundation activity time-savings model.
+  readonly annualHoursSaved: number;
   readonly enrollmentId?: string;
 }
 
@@ -71,6 +74,7 @@ export function TransformationCard({
   postTierLabel,
   postTierColorVar,
   skillsBuilt,
+  annualHoursSaved,
   enrollmentId,
 }: TransformationCardProps) {
   const [copied, setCopied] = useState(false);
@@ -121,6 +125,7 @@ export function TransformationCard({
       : `AI Readiness Score: ${postScore} / 48`,
     tierChanged ? `Tier: ${preTierLabel} → ${postTierLabel}` : `Tier: ${postTierLabel}`,
     `Skills Built: ${skillsBuilt}`,
+    `Modeled Annual Savings: ~${annualHoursSaved} hrs/year (estimate)`,
     '',
     'The AI Banking Institute — aibankinginstitute.com',
   ].join('\n');
@@ -269,7 +274,29 @@ export function TransformationCard({
             {skillsBuilt}
           </dd>
         </div>
+
+        {/* Modeled annual hours */}
+        <div>
+          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
+            Modeled Hrs / Yr
+          </dt>
+          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
+            ~{annualHoursSaved}
+          </dd>
+        </div>
       </dl>
+
+      <p
+        style={{
+          fontSize: 12,
+          color: 'var(--slate-500)',
+          margin: '0 0 24px',
+          lineHeight: 1.5,
+        }}
+      >
+        Modeled estimate from the time-savings model in your completed activities — not a
+        guarantee. Actual savings vary by role and how often each workflow is reused.
+      </p>
 
       {/* Action row */}
       <div

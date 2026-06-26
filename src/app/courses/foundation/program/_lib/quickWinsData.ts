@@ -49,6 +49,10 @@ export function toolLabel(value: string): string {
   return QUICK_WIN_TOOLS.find((t) => t.value === value)?.label ?? value;
 }
 
+export function frequencyLabel(value: string): string {
+  return QUICK_WIN_FREQUENCIES.find((f) => f.value === value)?.label ?? value;
+}
+
 export interface QuickWin {
   id: string;
   enrollment_id: string;

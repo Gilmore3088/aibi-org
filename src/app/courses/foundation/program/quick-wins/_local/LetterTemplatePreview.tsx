@@ -69,8 +69,9 @@ function buildLetter(
     `Specifically:`,
     ...bullets,
     '',
-    `Together, these workflows have returned roughly ${totalHrs} hours per quarter ` +
-      `to the team — time that has been redirected to ${placeholder('higher-value work, e.g. examiner prep, member calls')}.`,
+    `Together, these workflows return an estimated ${totalHrs} hours per quarter ` +
+      `to the team — modeled from the time and frequency logged for each, and redirected to ` +
+      `${placeholder('higher-value work, e.g. examiner prep, member calls')}.`,
     '',
     `Each workflow was completed against AiBI-Foundation guardrails: ` +
       `identifiers stripped before any prompt left the bank, human review on every ` +

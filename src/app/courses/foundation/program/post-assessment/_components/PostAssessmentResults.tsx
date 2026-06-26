@@ -2,6 +2,7 @@
 
 import { GrowthComparison } from '../../_components/GrowthComparison';
 import { TransformationCard } from '../../_components/TransformationCard';
+import { TOTAL_ANNUAL_HOURS } from '../../_lib/activitySavings';
 import { ShareDelta } from '../_local/ShareDelta';
 import type { Tier, DimensionScore } from '@content/assessments/v2/scoring';
 import type { Dimension } from '@content/assessments/v2/types';
@@ -95,6 +96,7 @@ export function PostAssessmentResults({
         postTierLabel={postTier.label}
         postTierColorVar={postTier.colorVar}
         skillsBuilt={SKILLS_BUILT}
+        annualHoursSaved={TOTAL_ANNUAL_HOURS}
         enrollmentId={enrollmentId}
       />
 
