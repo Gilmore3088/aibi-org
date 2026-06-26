@@ -248,7 +248,9 @@ export default async function PurchasePage(
         </div>
         <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
       </div>
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .foundation-mobile-purchase-bar {
           display: none;
         }
@@ -297,7 +299,9 @@ export default async function PurchasePage(
             display: none;
           }
         }
-      `}</style>
+          `,
+        }}
+      />
     </CourseShell>
   );
 }
