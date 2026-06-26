@@ -46,6 +46,6 @@ export const module10SandboxConfig: SandboxConfig = {
   suggestedPrompts: [
     'Help me pick one AI use case for my role on the lending team. Use the role-scenarios sample data and walk me through the green/yellow/red versions.',
     'I want to use AI to draft customer follow-up emails after loan closings. Help me specify the role use-case card — input shape, review owner, and failure mode.',
-    'My BSA officer asked if AI can help summarize SAR narrative drafts. Use the role-scenarios sample data and help me figure out which version of that task is safe.',
+    'A colleague suggested using AI on SAR narratives. Use the role-scenarios sample data to decide whether that is a safe foundation use case at all, and name the data class and decision boundaries (red-zone NPI, compliance determinations) that would rule it out or have to hold first.',
   ],
 } as const;

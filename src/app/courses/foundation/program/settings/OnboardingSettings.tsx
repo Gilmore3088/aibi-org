@@ -370,8 +370,8 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
                   {savedRole ? ROLE_LABEL[savedRole] : '—'}
                 </p>
                 <p style={summaryNoteStyle}>
-                  Steers the role path, sandbox scenarios, and which skills
-                  surface first.
+                  Steers your role path and which skills and examples surface
+                  first.
                 </p>
               </div>
             </div>

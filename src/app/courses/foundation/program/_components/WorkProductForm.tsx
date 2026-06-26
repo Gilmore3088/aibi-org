@@ -208,8 +208,8 @@ export function WorkProductForm({
         />
         <TextAreaField
           id="input-text"
-          label="Input Used (redacted of sensitive data)"
-          placeholder="Paste the input you provided to the AI tool. Replace any sensitive data with [REDACTED]."
+          label="The Prompt You Used (redacted of sensitive data)"
+          placeholder="Paste the prompt you gave the AI tool. Replace any sensitive data with [REDACTED]."
           value={values.inputText}
           error={errors.inputText}
           minLength={MIN_INPUT_TEXT}
@@ -228,8 +228,8 @@ export function WorkProductForm({
         />
         <TextAreaField
           id="edited-output-text"
-          label="Final Edited Output and Annotation"
-          placeholder="Paste your edited version of the output, followed by a 4-6 sentence annotation covering: hallucination patterns found, what was verified, and one improvement for next iteration."
+          label="Your Edited Output"
+          placeholder="Paste your edited, ready-to-use version of the AI output."
           value={values.editedOutputText}
           error={errors.editedOutputText}
           minLength={MIN_EDITED_OUTPUT_TEXT}
@@ -238,7 +238,7 @@ export function WorkProductForm({
         />
         <TextAreaField
           id="annotation-text"
-          label="Annotation (separate field)"
+          label="Your Annotation"
           placeholder="4-6 sentences: hallucination patterns found, what you verified, and one improvement for your next AI interaction."
           value={values.annotationText}
           error={errors.annotationText}

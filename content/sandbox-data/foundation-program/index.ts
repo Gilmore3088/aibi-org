@@ -43,5 +43,9 @@ export const SANDBOX_CONFIGS: Partial<Record<number, SandboxConfig>> = {
   11: withSourceModule(module10SandboxConfig, 10),
   12: withSourceModule(module9SandboxConfig, 9),
   14: withSourceModule(module8SandboxConfig, 8),
+  // M15 (Set the Human Review Gate) previously had no lab — an empty Try phase.
+  // Reuse the safe-use scenarios so learners practice classifying where AI work
+  // must pause for human review on real cases.
+  15: withSourceModule(module9SandboxConfig, 9),
   18: withSourceModule(module18SandboxConfig, 18),
 };
