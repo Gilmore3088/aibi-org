@@ -248,7 +248,12 @@ export default async function PurchasePage(
         </div>
         <EnrollButton userEmail={userEmail ?? undefined} showNote={false} />
       </div>
-      <style>{`
+      <style
+        // dangerouslySetInnerHTML avoids the React #418 hydration mismatch that
+        // a `<style>{template}</style>` expression child triggers in a Server
+        // Component (same safe pattern as ModuleTabs / CourseShell / LMSTopBar).
+        dangerouslySetInnerHTML={{
+          __html: `
         .foundation-mobile-purchase-bar {
           display: none;
         }
@@ -297,7 +302,9 @@ export default async function PurchasePage(
             display: none;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </CourseShell>
   );
 }
