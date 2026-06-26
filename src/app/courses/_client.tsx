@@ -7,8 +7,6 @@ type IconProps = { className?: string; size?: number };
 export interface CoursesOverviewFacts {
   readonly moduleCount: number;
   readonly artifactCount: number;
-  readonly totalMinutes: number;
-  readonly totalHoursLabel: string;
   readonly individualPriceLabel: string;
   readonly samplePacketSlots: readonly {
     readonly moduleNumber: number;
@@ -19,8 +17,6 @@ export interface CoursesOverviewFacts {
 const DEFAULT_FACTS: CoursesOverviewFacts = {
   moduleCount: 18,
   artifactCount: 18,
-  totalMinutes: 182,
-  totalHoursLabel: '3',
   individualPriceLabel: '$295',
   samplePacketSlots: [
     { moduleNumber: 1, label: 'AI Limits Card' },
@@ -37,7 +33,7 @@ function countWord(count: number) {
 
 function buildPricingBullets(facts: CoursesOverviewFacts) {
   return [
-    `${facts.moduleCount} modules · ${facts.totalMinutes} minutes`,
+    `${facts.moduleCount} modules`,
     `${facts.artifactCount}-piece Foundation Packet`,
     'Prompt Builder, Skill Builder, and workflow-map practice',
     'Review notes and transfer plans in every module',
@@ -50,11 +46,11 @@ function buildPricingBullets(facts: CoursesOverviewFacts) {
 function buildOutcomeStats(facts: CoursesOverviewFacts) {
   return [
     { value: String(facts.moduleCount), label: 'modules' },
-    { value: String(facts.totalMinutes), label: 'minutes' },
     { value: String(facts.artifactCount), label: 'packet artifacts' },
     { value: '4', label: 'builder modes' },
     { value: '1', label: 'Foundation Packet' },
     { value: 'Review', label: 'notes + reuse rules' },
+    { value: 'Access', label: 'purchased materials' },
   ];
 }
 
@@ -185,7 +181,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               </Button>
             </div>
             <p className="mk-course-proofline">
-              {facts.moduleCount} modules · {facts.totalMinutes} minutes · {facts.artifactCount}-piece Foundation Packet · completion record
+              {facts.moduleCount} modules · {facts.artifactCount}-piece Foundation Packet · reviewed work products · completion record
             </p>
           </div>
 
@@ -372,8 +368,8 @@ function HeroOutcomeCard({ facts }: { readonly facts: CoursesOverviewFacts }) {
       </ul>
       <div className="mk-course-outcome-foot">
         <span>{facts.individualPriceLabel}</span>
-        <span>{facts.totalMinutes} minutes</span>
         <span>{facts.moduleCount} modules</span>
+        <span>{facts.artifactCount} artifacts</span>
       </div>
     </div>
   );

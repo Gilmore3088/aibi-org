@@ -20,7 +20,10 @@ describe('CoursesIndexPage', () => {
     expect(
       screen.getByRole('heading', { name: /build reusable ai work products for banking/i }),
     ).toBeTruthy();
-    expect(screen.getByText(/18 modules · 182 minutes · 18-piece Foundation Packet/i)).toBeTruthy();
+    expect(
+      screen.getByText(/18 modules · 18-piece Foundation Packet · reviewed work products/i),
+    ).toBeTruthy();
+    expect(screen.queryByText(/182 minutes/i)).toBeNull();
     expect(screen.getByRole('link', { name: /preview a lesson/i }).getAttribute('href')).toBe(
       '#lesson-preview',
     );
