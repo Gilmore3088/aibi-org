@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { subscribeToAssessmentForm } from '@/lib/mailerlite';
+import { recordLead } from '@/lib/leads/recordLead';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { freeResourceCaptureResponse } from '@/lib/resources/captureCookie';
@@ -42,10 +42,16 @@ export async function POST(request: Request): Promise<NextResponse> {
   const institutionType = typeof body.institutionType === 'string' ? body.institutionType : null;
   const assetSize = typeof body.assetSize === 'string' ? body.assetSize : null;
 
-  await subscribeToAssessmentForm({
+  // Unified capture: Supabase `leads` row + MailerLite (Resource Library group)
+  // with context fields that exist. The prompt_card_leads upsert below stays
+  // for back-compat with existing funnel views.
+  await recordLead({
     email,
-    fields: { source: 'prompt-cards', role: body.role },
-  }).catch((err) => console.warn('[prompt-cards/lead] mailerlite skip', err));
+    source: 'prompt-cards',
+    role: body.role,
+    ...(institutionType ? { institution: institutionType } : {}),
+    ...(assetSize ? { metadata: { assetSize } } : {}),
+  }).catch((err) => console.warn('[prompt-cards/lead] recordLead skip', err));
 
   if (isSupabaseConfigured()) {
     const client = createServiceRoleClient();

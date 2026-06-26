@@ -5,6 +5,7 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToAssessmentForm } from '@/lib/mailerlite';
+import { recordLead } from '@/lib/leads/recordLead';
 import {
   upsertReadinessResult,
   getReadinessTierByEmail,
@@ -244,12 +245,18 @@ export async function POST(request: Request) {
     console.log(
       `[capture-email] research-library gate email=${redactEmail(researchEmail)} artifact=${requested_artifact ?? 'none'}`,
     );
-    if (process.env.SKIP_MAILERLITE !== 'true') {
-      await subscribeToAssessmentForm({
-        email: researchEmail,
-        fields: { lead_source, ...(requested_artifact ? { requested_artifact } : {}) },
-      }).catch((err) => console.warn('[capture-email] mailerlite research skip', err));
-    }
+    // Connect both systems: canonical Supabase `leads` row + MailerLite
+    // (Resource Library group) with context fields that actually exist. This
+    // path previously wrote MailerLite ONLY — bare, with lead_source /
+    // requested_artifact silently dropped — and nothing to Supabase (the
+    // wkeels@safefed.org failure). recordLead handles the SKIP_MAILERLITE guard
+    // internally and records whether the sync landed.
+    await recordLead({
+      email: researchEmail,
+      source: 'resource-gate',
+      leadSource: lead_source,
+      ...(requested_artifact ? { requestedArtifact: requested_artifact } : {}),
+    }).catch((err) => console.warn('[capture-email] recordLead research skip', err));
     // Email the requested artifact so the file lands in the inbox, not only as
     // a transient browser download. Best-effort; only fires when the requested
     // slug resolves to a free, link-deliverable resource.
@@ -359,6 +366,20 @@ export async function POST(request: Request) {
     // the real row id above.
     profileId = result.paidPrimary ? null : result.id;
   }
+
+  // Canonical lead row (additive). user_profiles holds the score; the unified
+  // `leads` table holds the contact record across ALL capture paths so the two
+  // systems stay connected. MailerLite is handled below by tagAssessmentTier —
+  // syncMailerlite:false avoids a double-subscribe.
+  await recordLead({
+    email,
+    source: 'assessment',
+    ...(role ? { role } : {}),
+    ...(trimmedInstitution ? { institution: trimmedInstitution } : {}),
+    ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
+    marketingOptIn: marketingOptIn === true,
+    syncMailerlite: false,
+  }).catch((err) => console.warn('[capture-email] recordLead assessment skip', err));
 
   // MailerLite tier-routing. Honors the marketingOptIn flag from the client
   // (always true post-newsletter-retirement; field kept for back-compat).
