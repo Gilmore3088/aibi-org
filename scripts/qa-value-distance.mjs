@@ -56,17 +56,25 @@ function primaryMoment(state) {
 }
 
 async function login(page, user) {
-  await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
-  // /auth/login renders 3 forms, each with an input[name="email"]; scope fills
-  // to the password (sign-in) form or FormData.get('email') reads an empty
-  // sibling input and the session never leaves /auth/login.
-  const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
-  await form.locator('input[name="email"]').fill(user.email);
-  await form.locator('input[name="password"]').fill(user.password);
-  await form.getByRole('button', { name: /sign in|log in/i }).click();
-  await page.waitForURL((url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'), { timeout: 15000 }).catch(() => {});
-  await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
-  return page.url();
+  // /auth/login renders 3 forms each with input[name="email"]; scope fills to
+  // the password (sign-in) form. One retry absorbs transient prod flakes; a
+  // persistent failure THROWS so the row records a real login error rather than
+  // reporting the value moment as "unreached" from an unauthenticated crawl.
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
+    await form.locator('input[name="email"]').fill(user.email);
+    await form.locator('input[name="password"]').fill(user.password);
+    await form.getByRole('button', { name: /sign in|log in/i }).click();
+    let landed = true;
+    try {
+      await page.waitForURL((url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'), { timeout: 15000 });
+    } catch { landed = false; }
+    await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
+    if (landed || !/^\/auth\/login/.test(pathOf(page.url()))) return page.url();
+    if (attempt === 2) throw new Error(`login failed (stuck on /auth/login) for ${user.email}`);
+    await page.waitForTimeout(600);
+  }
 }
 
 async function gatherLinks(page) {

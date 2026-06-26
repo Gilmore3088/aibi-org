@@ -33,16 +33,25 @@ const abs = (p) => new URL(p, BASE).toString();
 const pathOf = (u) => { try { return new URL(u, BASE).pathname; } catch { return u; } };
 
 async function login(page, user) {
-  await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
-  // Login page has several email inputs; scope to the password form so the
-  // right email is filled. No silent .catch — a fill failure must surface.
-  const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
-  await form.locator('input[name="email"]').fill(user.email);
-  await form.locator('input[name="password"]').fill(user.password);
-  await form.getByRole('button', { name: /sign in|log in/i }).click();
-  await page.waitForURL((url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'), { timeout: 15000 }).catch(() => {});
-  await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
-  return page.url();
+  // Login page has 3 forms each with input[name="email"]; scope to the password
+  // (sign-in) form. One retry absorbs transient prod flakes; a persistent
+  // failure THROWS so the caller records a real login error instead of walking
+  // unauthenticated (which would mislabel every gated page as a login redirect).
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    await page.goto(abs('/auth/login'), { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
+    await form.locator('input[name="email"]').fill(user.email);
+    await form.locator('input[name="password"]').fill(user.password);
+    await form.getByRole('button', { name: /sign in|log in/i }).click();
+    let landed = true;
+    try {
+      await page.waitForURL((url) => !url.pathname.startsWith('/auth/') || url.pathname.startsWith('/auth/confirm-device-pending'), { timeout: 15000 });
+    } catch { landed = false; }
+    await page.waitForLoadState('networkidle', { timeout: 4000 }).catch(() => {});
+    if (landed || !/^\/auth\/login/.test(pathOf(page.url()))) return page.url();
+    if (attempt === 2) throw new Error(`login failed (stuck on /auth/login) for ${user.email}`);
+    await page.waitForTimeout(600);
+  }
 }
 
 async function newAuthedPage(browser, recipe) {
