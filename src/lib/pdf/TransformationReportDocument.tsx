@@ -15,7 +15,6 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 export interface SkillEntry {
   readonly name: string;
   readonly role: string;
-  readonly annualHoursSaved: number;
 }
 
 export interface QuickWinEntry {
@@ -41,7 +40,6 @@ export interface TransformationReportProps {
   readonly postTierLabel: string;
   readonly dimensions: readonly DimensionEntry[];
   readonly skills: readonly SkillEntry[];
-  readonly totalAnnualHoursSaved: number;
   readonly workflowsAutomated: number;
   readonly quickWins: readonly QuickWinEntry[];
   readonly modulesCompleted: number;
@@ -740,9 +738,6 @@ function SkillsPage({ skills }: Pick<TransformationReportProps, 'skills'>) {
               <View style={styles.skillBody}>
                 <Text style={styles.skillName}>{skill.name}</Text>
                 <Text style={styles.skillRole}>{skill.role}</Text>
-                <Text style={styles.skillSavings}>
-                  Est. {skill.annualHoursSaved} hrs saved / year
-                </Text>
               </View>
             </View>
           ))
@@ -763,10 +758,9 @@ function SkillsPage({ skills }: Pick<TransformationReportProps, 'skills'>) {
 // ── Page 4: Cumulative Impact ────────────────────────────────────────────────
 
 function ImpactPage({
-  totalAnnualHoursSaved,
   workflowsAutomated,
   quickWins,
-}: Pick<TransformationReportProps, 'totalAnnualHoursSaved' | 'workflowsAutomated' | 'quickWins'>) {
+}: Pick<TransformationReportProps, 'workflowsAutomated' | 'quickWins'>) {
   const totalQuarterlyMinutes = quickWins.reduce((sum, w) => sum + w.timeSavedMinutes, 0);
   const totalQuarterlyHours = Math.round(totalQuarterlyMinutes / 60);
 
@@ -780,11 +774,6 @@ function ImpactPage({
       <View style={styles.pageBody}>
         {/* Impact metrics */}
         <View style={styles.impactGrid}>
-          <View style={styles.impactCard}>
-            <Text style={styles.impactCardLabel}>Est. Hours Saved / Year</Text>
-            <Text style={styles.impactCardValue}>{totalAnnualHoursSaved}</Text>
-            <Text style={styles.impactCardUnit}>from course curriculum alone</Text>
-          </View>
           <View style={styles.impactCard}>
             <Text style={styles.impactCardLabel}>Workflows Automated</Text>
             <Text style={styles.impactCardValue}>{workflowsAutomated}</Text>
@@ -961,7 +950,6 @@ export function TransformationReportDocument(props: TransformationReportProps) {
       />
       <SkillsPage skills={props.skills} />
       <ImpactPage
-        totalAnnualHoursSaved={props.totalAnnualHoursSaved}
         workflowsAutomated={props.workflowsAutomated}
         quickWins={props.quickWins}
       />

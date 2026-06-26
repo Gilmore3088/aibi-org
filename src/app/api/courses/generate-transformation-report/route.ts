@@ -24,11 +24,6 @@ import { FOUNDATION_MODULE_COUNT } from '@content/courses/foundation-program/cou
 
 const PDF_FILENAME = 'AiBI-Foundation-Transformation-Report.pdf';
 
-// Annual hours saved by module — mirrors _PostAssessmentClient.tsx constant
-const ANNUAL_HOURS_BY_MODULE: Record<number, number> = {
-  1: 6, 2: 0, 3: 43, 4: 52, 5: 0, 6: 0, 7: 87, 8: 0, 9: 0,
-};
-const TOTAL_ANNUAL_HOURS = Object.values(ANNUAL_HOURS_BY_MODULE).reduce((a, b) => a + b, 0);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -176,7 +171,6 @@ function buildSkills(activityResponses: ActivityResponseRow[]): SkillEntry[] {
       skills.push({
         name: skillDraft.slice(0, 120),
         role: reviewNote.slice(0, 200),
-        annualHoursSaved: 87,
       });
     }
   }
@@ -195,7 +189,6 @@ function buildSkills(activityResponses: ActivityResponseRow[]): SkillEntry[] {
       skills.push({
         name: workflowPurpose.slice(0, 120),
         role: reviewGate.slice(0, 200),
-        annualHoursSaved: 0,
       });
     }
   }
@@ -362,7 +355,6 @@ export async function GET(request: Request): Promise<Response> {
     postTierLabel,
     dimensions,
     skills,
-    totalAnnualHoursSaved: TOTAL_ANNUAL_HOURS,
     workflowsAutomated: skills.length,
     quickWins,
     modulesCompleted: completedModules,

@@ -17,7 +17,6 @@ interface TransformationCardProps {
   readonly postTierLabel: string;
   readonly postTierColorVar: string;
   readonly skillsBuilt: number;
-  readonly annualHoursSaved: number;
   readonly enrollmentId?: string;
 }
 
@@ -72,7 +71,6 @@ export function TransformationCard({
   postTierLabel,
   postTierColorVar,
   skillsBuilt,
-  annualHoursSaved,
   enrollmentId,
 }: TransformationCardProps) {
   const [copied, setCopied] = useState(false);
@@ -123,7 +121,6 @@ export function TransformationCard({
       : `AI Readiness Score: ${postScore} / 48`,
     tierChanged ? `Tier: ${preTierLabel} → ${postTierLabel}` : `Tier: ${postTierLabel}`,
     `Skills Built: ${skillsBuilt}`,
-    `Estimated Annual Savings: ${annualHoursSaved} hrs/year`,
     '',
     'The AI Banking Institute — aibankinginstitute.com',
   ].join('\n');
@@ -270,16 +267,6 @@ export function TransformationCard({
           </dt>
           <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {skillsBuilt}
-          </dd>
-        </div>
-
-        {/* Hours saved */}
-        <div>
-          <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
-            Hrs Saved / Year
-          </dt>
-          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
-            {annualHoursSaved}
           </dd>
         </div>
       </dl>

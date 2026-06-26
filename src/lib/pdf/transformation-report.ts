@@ -3,7 +3,6 @@ import { generatePdfFromHtml } from './generate';
 export interface SkillEntry {
   readonly name: string;
   readonly role: string;
-  readonly annualHoursSaved: number;
 }
 
 export interface QuickWinEntry {
@@ -29,7 +28,6 @@ export interface TransformationReportProps {
   readonly postTierLabel: string;
   readonly dimensions: readonly DimensionEntry[];
   readonly skills: readonly SkillEntry[];
-  readonly totalAnnualHoursSaved: number;
   readonly workflowsAutomated: number;
   readonly quickWins: readonly QuickWinEntry[];
   readonly modulesCompleted: number;
@@ -141,7 +139,6 @@ function skillsList(skills: readonly SkillEntry[]): string {
         <div>
           <h3>${safeText(skill.name)}</h3>
           <p class="muted italic">${safeText(skill.role)}</p>
-          <p class="gold">Est. ${skill.annualHoursSaved} hrs saved / year</p>
         </div>
       </article>`,
     )
@@ -707,12 +704,7 @@ export function buildTransformationReportHtml(props: TransformationReportProps):
         <h2>Cumulative Impact</h2>
       </header>
       <div class="page-body">
-        <div class="grid-3 impact-grid">
-          <article class="impact-card">
-            <p class="metric-label">Est. Hours Saved / Year</p>
-            <p class="impact-value">${props.totalAnnualHoursSaved}</p>
-            <p class="impact-unit">from course curriculum alone</p>
-          </article>
+        <div class="grid-2 impact-grid">
           <article class="impact-card">
             <p class="metric-label">Workflows Automated</p>
             <p class="impact-value">${props.workflowsAutomated}</p>

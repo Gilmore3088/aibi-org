@@ -26,10 +26,8 @@ const baseReport: TransformationReportProps = {
     {
       name: 'Complaint response summarizer',
       role: 'Branch operations',
-      annualHoursSaved: 87,
     },
   ],
-  totalAnnualHoursSaved: 188,
   workflowsAutomated: 1,
   quickWins: [
     {
@@ -59,7 +57,6 @@ describe('transformation report PDF rendering', () => {
         {
           name: '<img src=x onerror=alert(1)>',
           role: `Use "public" documents only`,
-          annualHoursSaved: 87,
         },
       ],
       quickWins: [
