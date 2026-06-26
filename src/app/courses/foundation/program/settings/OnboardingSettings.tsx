@@ -15,22 +15,14 @@ import Link from 'next/link';
 import { signOutAction } from '@/app/auth/actions';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
+import {
+  deriveInitialFormState,
+  type ExclusiveValue,
+  type FormState,
+} from './onboardingFormState';
 
 const INTER_STACK =
   'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
-
-const AI_SUBSCRIPTION_OPTIONS = [
-  'ChatGPT Plus',
-  'Claude Pro',
-  'Perplexity Pro',
-  'Google Gemini',
-  'Microsoft Copilot Pro',
-  'Other',
-] as const;
-
-type ExclusiveValue = 'free_tiers' | 'none';
-
-const KNOWN_SUBSCRIPTIONS = new Set<string>(AI_SUBSCRIPTION_OPTIONS);
 
 const ROLE_LABEL: Record<LearnerRole, string> = {
   lending: 'Lending',
@@ -53,46 +45,6 @@ const M365_LABEL: Record<OnboardingAnswers['uses_m365'], string> = {
 interface OnboardingSettingsProps {
   readonly enrollmentId: string;
   readonly currentAnswers: OnboardingAnswers | null;
-}
-
-interface FormState {
-  uses_m365: OnboardingAnswers['uses_m365'] | null;
-  personal_ai_subscriptions: string[];
-  exclusive_selection: ExclusiveValue | null;
-  primary_role: LearnerRole | null;
-}
-
-function deriveInitialFormState(answers: OnboardingAnswers | null): FormState {
-  if (!answers) {
-    return {
-      uses_m365: null,
-      personal_ai_subscriptions: [],
-      exclusive_selection: null,
-      primary_role: null,
-    };
-  }
-
-  const subscriptions = answers.personal_ai_subscriptions as string[];
-  const knownSubs = subscriptions.filter((s) => KNOWN_SUBSCRIPTIONS.has(s));
-  // Detect the exclusive sentinel encoded in personal_ai_subscriptions
-  // on submit. 'free_tiers' and 'none' are mutually exclusive with any
-  // known-subscription label, so we read the first one we find. Fixes
-  // the issue where re-opening the settings page lost the original
-  // "Free tiers" / "None" selection because exclusive_selection was
-  // never persisted, only the empty knownSubs array was.
-  const exclusive: ExclusiveValue | null =
-    subscriptions.includes('free_tiers')
-      ? 'free_tiers'
-      : subscriptions.includes('none')
-        ? 'none'
-        : null;
-
-  return {
-    uses_m365: answers.uses_m365,
-    personal_ai_subscriptions: knownSubs,
-    exclusive_selection: exclusive,
-    primary_role: answers.primary_role,
-  };
 }
 
 // ---------------------------------------------------------------------------

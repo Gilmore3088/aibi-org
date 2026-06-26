@@ -59,11 +59,13 @@ function createDevEnrollment(): EnrollmentData {
     completed_modules: DEV_UNLOCKED_MODULES,
     current_module: DEV_UNLOCKED_MODULES.length,
     enrolled_at: new Date().toISOString(),
+    // Must match the real OnboardingAnswers shape (src/types/course.ts) so
+    // local/preview QA exercises the same code paths as production — the old
+    // shape (role/department/tools/weekly_ai_usage) crashed the settings page.
     onboarding_answers: {
-      role: 'other',
-      department: 'local-preview',
-      tools: [],
-      weekly_ai_usage: 'testing',
+      uses_m365: 'not_sure',
+      personal_ai_subscriptions: [],
+      primary_role: 'other',
     },
   } as unknown as EnrollmentData;
 }
