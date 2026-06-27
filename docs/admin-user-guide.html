@@ -1,0 +1,1827 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin User Guide | The AI Banking Institute</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #637083;
+      --line: #dce3eb;
+      --soft: #f5f7fa;
+      --paper: #ffffff;
+      --brand: #0b4f6c;
+      --brand-dark: #08384d;
+      --accent: #b7832f;
+      --code: #14202b;
+      --code-bg: #eef3f6;
+      --shadow: 0 18px 45px rgba(21, 32, 43, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #edf2f6;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+
+    a { color: var(--brand); }
+    a:hover { color: var(--brand-dark); }
+
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 28px 22px;
+      background: #102433;
+      color: #eef6fb;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-lockup {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .brand-name {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d8edf5;
+    }
+
+    .doc-label {
+      margin: 0;
+      color: #adc2ce;
+      font-size: 0.92rem;
+    }
+
+    .source-link {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .toc-title {
+      margin: 0 0 10px;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc {
+      display: grid;
+      gap: 1px;
+      padding-bottom: 30px;
+    }
+
+    .toc a {
+      display: block;
+      border-radius: 6px;
+      color: #d6e4eb;
+      text-decoration: none;
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .toc-h1 { padding: 8px 8px; font-weight: 800; }
+    .toc-h2 { padding: 7px 8px 7px 16px; font-weight: 700; }
+    .toc-h3 { padding: 6px 8px 6px 28px; color: #b7cbd6 !important; }
+
+    main {
+      min-width: 0;
+      padding: 44px clamp(22px, 5vw, 76px) 80px;
+    }
+
+    .document {
+      max-width: 1120px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .document-header {
+      padding: 42px clamp(26px, 5vw, 62px) 34px;
+      background: linear-gradient(135deg, #ffffff 0%, #f3f8fa 58%, #f7f2ea 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .document-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .document-meta {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    article {
+      padding: 18px clamp(24px, 5vw, 62px) 62px;
+    }
+
+    article h1,
+    article h2,
+    article h3 {
+      position: relative;
+      scroll-margin-top: 24px;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    article h1 {
+      margin: 18px 0 16px;
+      font-size: 2.1rem;
+      line-height: 1.16;
+    }
+
+    article h2 {
+      margin: 46px 0 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-size: 1.45rem;
+      line-height: 1.24;
+    }
+
+    article h3 {
+      margin: 30px 0 10px;
+      font-size: 1.05rem;
+      line-height: 1.32;
+      color: var(--brand-dark);
+    }
+
+    .heading-anchor {
+      margin-left: 8px;
+      color: #9caaba;
+      opacity: 0;
+      text-decoration: none;
+      font-size: 0.86em;
+    }
+
+    h1:hover .heading-anchor,
+    h2:hover .heading-anchor,
+    h3:hover .heading-anchor { opacity: 1; }
+
+    article p { margin: 12px 0; }
+    article ul, article ol { padding-left: 24px; }
+    article li { margin: 5px 0; }
+
+    article blockquote {
+      margin: 18px 0;
+      padding: 12px 16px;
+      border-left: 4px solid var(--accent);
+      background: #fbf8f1;
+      color: #4d463a;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin: 18px 0 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      min-width: 680px;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f3f6f8;
+      color: #2d3b49;
+      font-weight: 800;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: var(--code-bg);
+      color: var(--code);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      margin: 18px 0 24px;
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 8px;
+      background: #102433;
+      color: #f3f7fa;
+    }
+
+    pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 0.9rem;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 36px 0;
+    }
+
+    @media (max-width: 980px) {
+      .shell { display: block; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        max-height: 420px;
+      }
+      main { padding: 22px 14px 48px; }
+      .document { border-radius: 8px; }
+      .document-header { padding: 30px 22px 26px; }
+      article { padding: 14px 22px 42px; }
+      table { min-width: 620px; }
+    }
+
+    @media print {
+      body { background: #ffffff; }
+      .shell { display: block; }
+      .sidebar { display: none; }
+      main { padding: 0; }
+      .document {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .document-header { background: #ffffff; }
+      article h2 { break-after: avoid; }
+      .table-wrap { overflow: visible; }
+      a { color: #000000; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Table of contents">
+      <div class="brand-lockup">
+        <div class="brand-name">The AI Banking Institute</div>
+        <p class="doc-label">Standalone HTML review copy</p>
+        <a class="source-link" href="admin-user-guide.md">Open Markdown source</a>
+      </div>
+      <p class="toc-title">Contents</p>
+      <nav class="toc">
+<a class="toc-h1" href="#admin-user-guide">Admin User Guide</a>
+<a class="toc-h2" href="#1-site-map-for-admins">1. Site Map For Admins</a>
+<a class="toc-h3" href="#public-product-paths">Public product paths</a>
+<a class="toc-h3" href="#admin-paths">Admin paths</a>
+<a class="toc-h2" href="#2-admin-access">2. Admin Access</a>
+<a class="toc-h3" href="#required-access-pieces">Required access pieces</a>
+<a class="toc-h3" href="#login-flow">Login flow</a>
+<a class="toc-h3" href="#adding-or-removing-an-admin">Adding or removing an admin</a>
+<a class="toc-h2" href="#3-daily-operating-routine">3. Daily Operating Routine</a>
+<a class="toc-h3" href="#start-of-day">Start of day</a>
+<a class="toc-h3" href="#midday">Midday</a>
+<a class="toc-h3" href="#end-of-business-day-pacific-time">End of business day, Pacific time</a>
+<a class="toc-h3" href="#weekly-funnel-review">Weekly funnel review</a>
+<a class="toc-h3" href="#after-launches-promotions-or-email-sends">After launches, promotions, or email sends</a>
+<a class="toc-h2" href="#4-managing-support">4. Managing Support</a>
+<a class="toc-h3" href="#support-queue">Support queue</a>
+<a class="toc-h3" href="#support-statuses">Support statuses</a>
+<a class="toc-h3" href="#support-categories">Support categories</a>
+<a class="toc-h3" href="#buyer-search">Buyer search</a>
+<a class="toc-h3" href="#case-detail-page">Case detail page</a>
+<a class="toc-h3" href="#access-rescue-workflow">Access rescue workflow</a>
+<a class="toc-h3" href="#refund-workflow">Refund workflow</a>
+<a class="toc-h2" href="#5-managing-resources">5. Managing Resources</a>
+<a class="toc-h3" href="#where-resource-files-live">Where resource files live</a>
+<a class="toc-h3" href="#how-downloads-work">How downloads work</a>
+<a class="toc-h3" href="#resource-gate-policies">Resource gate policies</a>
+<a class="toc-h3" href="#resource-statuses">Resource statuses</a>
+<a class="toc-h3" href="#adding-a-normal-downloadable-resource">Adding a normal downloadable resource</a>
+<a class="toc-h3" href="#adding-a-browser-rendered-template">Adding a browser-rendered template</a>
+<a class="toc-h3" href="#adding-a-role-playbook">Adding a role playbook</a>
+<a class="toc-h3" href="#removing-or-hiding-a-resource">Removing or hiding a resource</a>
+<a class="toc-h3" href="#reading-resource-metrics">Reading resource metrics</a>
+<a class="toc-h3" href="#troubleshooting-resource-downloads">Troubleshooting resource downloads</a>
+<a class="toc-h2" href="#6-managing-course-work">6. Managing Course Work</a>
+<a class="toc-h3" href="#current-foundation-product">Current Foundation product</a>
+<a class="toc-h3" href="#course-content-source-files">Course content source files</a>
+<a class="toc-h3" href="#what-each-module-contains">What each module contains</a>
+<a class="toc-h3" href="#course-access-flow">Course access flow</a>
+<a class="toc-h3" href="#learner-progress">Learner progress</a>
+<a class="toc-h3" href="#activity-responses-and-artifacts">Activity responses and artifacts</a>
+<a class="toc-h3" href="#final-packet-and-certification">Final packet and certification</a>
+<a class="toc-h3" href="#updating-a-course-module">Updating a course module</a>
+<a class="toc-h3" href="#adding-or-removing-modules">Adding or removing modules</a>
+<a class="toc-h3" href="#unblocking-a-learner">Unblocking a learner</a>
+<a class="toc-h2" href="#7-managing-data">7. Managing Data</a>
+<a class="toc-h3" href="#source-of-truth-map">Source-of-truth map</a>
+<a class="toc-h3" href="#core-supabase-tables">Core Supabase tables</a>
+<a class="toc-h3" href="#data-you-should-not-edit-casually">Data you should not edit casually</a>
+<a class="toc-h3" href="#test-and-internal-data-exclusions">Test and internal data exclusions</a>
+<a class="toc-h3" href="#privacy-and-pii">Privacy and PII</a>
+<a class="toc-h2" href="#8-payments-provisioning-and-access">8. Payments, Provisioning, And Access</a>
+<a class="toc-h3" href="#products">Products</a>
+<a class="toc-h3" href="#webhook-behavior">Webhook behavior</a>
+<a class="toc-h3" href="#common-payment-issues">Common payment issues</a>
+<a class="toc-h2" href="#9-email-automations-and-cron-jobs">9. Email, Automations, And Cron Jobs</a>
+<a class="toc-h3" href="#email-systems">Email systems</a>
+<a class="toc-h3" href="#mailerlite-state">MailerLite state</a>
+<a class="toc-h3" href="#cron-jobs">Cron jobs</a>
+<a class="toc-h3" href="#ops-alert-test">Ops alert test</a>
+<a class="toc-h2" href="#10-toolbox-and-ai-usage">10. Toolbox And AI Usage</a>
+<a class="toc-h2" href="#11-team-and-institution-workflows">11. Team And Institution Workflows</a>
+<a class="toc-h2" href="#12-environment-variables-to-know">12. Environment Variables To Know</a>
+<a class="toc-h2" href="#13-deployment-and-release-checklist">13. Deployment And Release Checklist</a>
+<a class="toc-h2" href="#14-troubleshooting-guide">14. Troubleshooting Guide</a>
+<a class="toc-h3" href="#buyer-paid-but-cannot-access-foundation">Buyer paid but cannot access Foundation</a>
+<a class="toc-h3" href="#learner-is-stuck-on-a-module">Learner is stuck on a module</a>
+<a class="toc-h3" href="#certificate-missing">Certificate missing</a>
+<a class="toc-h3" href="#resource-link-fails">Resource link fails</a>
+<a class="toc-h3" href="#funnel-numbers-look-wrong">Funnel numbers look wrong</a>
+<a class="toc-h3" href="#admin-cannot-log-in">Admin cannot log in</a>
+<a class="toc-h2" href="#15-resolved-notes-and-operating-boundaries">15. Resolved Notes And Operating Boundaries</a>
+<a class="toc-h2" href="#16-quick-reference">16. Quick Reference</a>
+<a class="toc-h3" href="#best-admin-pages">Best admin pages</a>
+<a class="toc-h3" href="#best-external-systems">Best external systems</a>
+<a class="toc-h3" href="#best-repository-files">Best repository files</a>
+      </nav>
+    </aside>
+    <main>
+      <section class="document">
+        <header class="document-header">
+          <p class="eyebrow">Administrator Documentation</p>
+          <h1 id="admin-user-guide" class="document-title">Admin User Guide</h1>
+          <p class="document-meta">Generated for review on June 25, 2026 from <code>docs/admin-user-guide.md</code>.</p>
+        </header>
+        <article>
+<p>Reviewed against the codebase on June 25, 2026.</p>
+<p>This guide is for the site administrator or operator of The AI Banking Institute. It explains how to manage the site day to day, where the important data lives, how resources are maintained, how course work is governed, and which systems are authoritative for money, access, email, and learner records.</p>
+<p>Scope: this guide is based on the local repository and existing operational docs. It does not include a live production data audit or an authenticated walkthrough of the production admin UI.</p>
+<p>The site does not currently have a full in-browser content management system. Most operational work happens in the admin pages, Supabase, Stripe, Resend, MailerLite, Vercel, and this repository.</p>
+<h2 id="1-site-map-for-admins">1. Site Map For Admins<a class="heading-anchor" href="#1-site-map-for-admins" aria-label="Link to 1. Site Map For Admins">#</a></h2><h3 id="public-product-paths">Public product paths<a class="heading-anchor" href="#public-product-paths" aria-label="Link to Public product paths">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Route</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Home</td>
+<td><code>/</code></td>
+<td>Main public entry point</td>
+</tr>
+<tr>
+<td>Free assessment</td>
+<td><code>/assessment</code></td>
+<td>Public 12-question readiness assessment</td>
+</tr>
+<tr>
+<td>In-Depth Assessment</td>
+<td><code>/assessment/in-depth</code></td>
+<td>Paid 48-question assessment</td>
+</tr>
+<tr>
+<td>In-Depth purchase return</td>
+<td><code>/assessment/in-depth/purchased</code></td>
+<td>Stripe success return</td>
+</tr>
+<tr>
+<td>Foundation course landing</td>
+<td><code>/courses/foundation</code></td>
+<td>Public course sales/overview page</td>
+</tr>
+<tr>
+<td>Foundation purchase</td>
+<td><code>/courses/foundation/program/purchase</code></td>
+<td>Stripe checkout entry</td>
+</tr>
+<tr>
+<td>Foundation purchase return</td>
+<td><code>/courses/foundation/program/purchased</code></td>
+<td>Stripe success return</td>
+</tr>
+<tr>
+<td>Foundation course app</td>
+<td><code>/courses/foundation/program</code></td>
+<td>Authenticated learner area</td>
+</tr>
+<tr>
+<td>Resource library</td>
+<td><code>/resources</code></td>
+<td>Free and gated resource library</td>
+</tr>
+<tr>
+<td>Resource templates</td>
+<td><code>/resources/templates/[slug]</code></td>
+<td>Browser-rendered templates</td>
+</tr>
+<tr>
+<td>Certificate verification</td>
+<td><code>/verify/[certificateId]</code></td>
+<td>Public certificate lookup</td>
+</tr>
+<tr>
+<td>Purchase support</td>
+<td><code>/support/purchase-help</code></td>
+<td>Public buyer help intake</td>
+</tr>
+<tr>
+<td>Team assessment</td>
+<td><code>/team-assessment</code></td>
+<td>Team assessment entry point. Keep self-serve gated until hardened.</td>
+</tr>
+</tbody></table></div>
+<h3 id="admin-paths">Admin paths<a class="heading-anchor" href="#admin-paths" aria-label="Link to Admin paths">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Route</th>
+<th>Who can access</th>
+<th>What it is for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Operator dashboard</td>
+<td><code>/admin</code></td>
+<td>Support admins with trusted device</td>
+<td>Launch counters, support summary, buyer lookup, funnel summary if also funnel admin</td>
+</tr>
+<tr>
+<td>Funnel dashboard</td>
+<td><code>/admin/funnel</code></td>
+<td>Funnel admins</td>
+<td>Known-contact funnel reporting, stage distribution, resource download reporting</td>
+</tr>
+<tr>
+<td>Support queue</td>
+<td><code>/admin/support</code></td>
+<td>Support admins with trusted device</td>
+<td>Case queue, support metrics, SLA triage</td>
+</tr>
+<tr>
+<td>Buyer search</td>
+<td><code>/admin/support/search</code></td>
+<td>Support admins with trusted device</td>
+<td>Search by buyer email or Stripe Checkout Session ID</td>
+</tr>
+<tr>
+<td>Case detail</td>
+<td><code>/admin/support/cases/[caseId]</code></td>
+<td>Support admins with trusted device</td>
+<td>Case timeline, status, notes, access email, refund workflow notes</td>
+</tr>
+<tr>
+<td>Toolbox usage</td>
+<td><code>/admin/toolbox-usage</code></td>
+<td>Funnel admins</td>
+<td>Public AI playground usage, cost, rate limits, error monitoring</td>
+</tr>
+<tr>
+<td>Support CSV</td>
+<td><code>/admin/support/export.csv?range=30d</code></td>
+<td>Support admins with trusted device</td>
+<td>Support export for 7, 30, or 90 day ranges</td>
+</tr>
+</tbody></table></div>
+<p>There is no current <code>/admin/reviewer</code> queue. The current Foundation final packet flow auto-approves once the learner has completed all modules and submitted the required final packet.</p>
+<h2 id="2-admin-access">2. Admin Access<a class="heading-anchor" href="#2-admin-access" aria-label="Link to 2. Admin Access">#</a></h2><p>Admin access is intentionally fail-closed.</p>
+<h3 id="required-access-pieces">Required access pieces<a class="heading-anchor" href="#required-access-pieces" aria-label="Link to Required access pieces">#</a></h3><ol>
+<li>A real Supabase auth session.</li>
+<li>The admin email must be listed in the correct environment variable.</li>
+<li>Support admin pages require a trusted device confirmation.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Admin function</th>
+<th>Environment variable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Funnel dashboard and toolbox usage</td>
+<td><code>FUNNEL_ADMIN_EMAILS</code></td>
+</tr>
+<tr>
+<td>Support queue, buyer search, support export, operator dashboard</td>
+<td><code>ADMIN_SUPPORT_EMAILS</code></td>
+</tr>
+</tbody></table></div>
+<p>Emails are canonicalized before comparison. The app does not allow preview bypass for admin pages that expose paid buyer or PII data.</p>
+<h3 id="login-flow">Login flow<a class="heading-anchor" href="#login-flow" aria-label="Link to Login flow">#</a></h3><ol>
+<li>Visit <code>/admin</code>.</li>
+<li>If not signed in, the app redirects to <code>/auth/login?next=/admin</code>.</li>
+<li>Sign in with the admin email.</li>
+<li>For support admin tools, complete trusted device confirmation if prompted.</li>
+<li>If the email is not allowlisted, the route returns a 404 instead of exposing admin details.</li>
+</ol>
+<h3 id="adding-or-removing-an-admin">Adding or removing an admin<a class="heading-anchor" href="#adding-or-removing-an-admin" aria-label="Link to Adding or removing an admin">#</a></h3><ol>
+<li>Update the relevant environment variable in the production hosting environment.</li>
+<li>Redeploy or restart the app if required by the hosting platform.</li>
+<li>Have the admin sign in with that exact email.</li>
+<li>For support access, verify the trusted device step.</li>
+</ol>
+<p>Do not set preview or test bypass flags in production. In particular, do not use <code>PREVIEW_AUTH_BYPASS</code>, <code>SKIP_ENROLLMENT_GATE</code>, <code>SKIP_CRON_AUTH</code>, or other local bypass flags in production.</p>
+<h2 id="3-daily-operating-routine">3. Daily Operating Routine<a class="heading-anchor" href="#3-daily-operating-routine" aria-label="Link to 3. Daily Operating Routine">#</a></h2><h3 id="start-of-day">Start of day<a class="heading-anchor" href="#start-of-day" aria-label="Link to Start of day">#</a></h3><ol>
+<li>Open <code>/admin/support</code>.</li>
+<li>Check SLA breaches first.</li>
+<li>Open all urgent or high-priority cases.</li>
+<li>Use <code>/admin/support/search</code> before replying to any paid buyer.</li>
+<li>Confirm whether any access, email delivery, webhook, or refund issue needs manual action.</li>
+</ol>
+<h3 id="midday">Midday<a class="heading-anchor" href="#midday" aria-label="Link to Midday">#</a></h3><ol>
+<li>Recheck <code>/admin/support</code> for new paid access or refund cases.</li>
+<li>Review any ops alerts from Resend, webhook delivery, cron jobs, or stranded-buyer detection.</li>
+<li>Search buyer records for any case with unclear access state.</li>
+</ol>
+<h3 id="end-of-business-day-pacific-time">End of business day, Pacific time<a class="heading-anchor" href="#end-of-business-day-pacific-time" aria-label="Link to End of business day, Pacific time">#</a></h3><ol>
+<li>Resolve or update every urgent paid buyer case.</li>
+<li>Leave an internal note on cases waiting for Stripe, email provider, or engineering follow-up.</li>
+<li>Export the support CSV if you need an audit trail for the day.</li>
+</ol>
+<h3 id="weekly-funnel-review">Weekly funnel review<a class="heading-anchor" href="#weekly-funnel-review" aria-label="Link to Weekly funnel review">#</a></h3><ol>
+<li>Open <code>/admin/funnel</code>.</li>
+<li>Record scorecard totals and stage distribution.</li>
+<li>Separate known-contact funnel metrics from anonymous download popularity.</li>
+<li>Identify one action for the next week: improve a resource, adjust an email nurture, fix a page drop-off, or follow up with buyers.</li>
+</ol>
+<h3 id="after-launches-promotions-or-email-sends">After launches, promotions, or email sends<a class="heading-anchor" href="#after-launches-promotions-or-email-sends" aria-label="Link to After launches, promotions, or email sends">#</a></h3><ol>
+<li>Watch <code>/admin/support</code> for purchase and access failures.</li>
+<li>Watch <code>/admin/funnel</code> for resource and assessment movement.</li>
+<li>Watch <code>/admin/toolbox-usage</code> for public AI playground cost, errors, rate limits, and abuse.</li>
+<li>Check Stripe webhooks for failures.</li>
+<li>Check Resend for transactional email failures.</li>
+</ol>
+<h2 id="4-managing-support">4. Managing Support<a class="heading-anchor" href="#4-managing-support" aria-label="Link to 4. Managing Support">#</a></h2><p>Support administration is the most complete admin workflow in the app.</p>
+<h3 id="support-queue">Support queue<a class="heading-anchor" href="#support-queue" aria-label="Link to Support queue">#</a></h3><p>Use <code>/admin/support</code> to manage cases. The queue supports filtering by:</p>
+<ul>
+<li>Status</li>
+<li>Category</li>
+<li>Priority</li>
+<li>Search query</li>
+</ul>
+<p>Important metrics on the page include:</p>
+<ul>
+<li>Open cases</li>
+<li>SLA breaches</li>
+<li>First response timing</li>
+<li>Resolution timing</li>
+<li>Paid total</li>
+<li>Cases per 10 purchases</li>
+<li>Pending refunds</li>
+<li>Access rescues</li>
+</ul>
+<h3 id="support-statuses">Support statuses<a class="heading-anchor" href="#support-statuses" aria-label="Link to Support statuses">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>new</code></td>
+<td>New case, no operator response yet</td>
+</tr>
+<tr>
+<td><code>open</code></td>
+<td>Active operator work</td>
+</tr>
+<tr>
+<td><code>waiting_customer</code></td>
+<td>Customer needs to reply</td>
+</tr>
+<tr>
+<td><code>waiting_internal</code></td>
+<td>Waiting on Stripe, email provider, engineering, or manual review</td>
+</tr>
+<tr>
+<td><code>resolved</code></td>
+<td>Solved without refund</td>
+</tr>
+<tr>
+<td><code>refunded</code></td>
+<td>Refund completed or recorded</td>
+</tr>
+<tr>
+<td><code>closed_no_action</code></td>
+<td>No support action required</td>
+</tr>
+</tbody></table></div>
+<h3 id="support-categories">Support categories<a class="heading-anchor" href="#support-categories" aria-label="Link to Support categories">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>access</code></td>
+<td>Buyer cannot access paid product</td>
+</tr>
+<tr>
+<td><code>missing_email</code></td>
+<td>Purchase, magic link, report, or certificate email missing</td>
+</tr>
+<tr>
+<td><code>refund_request</code></td>
+<td>Buyer asks for refund</td>
+</tr>
+<tr>
+<td><code>failed_payment</code></td>
+<td>Payment failed or unclear charge state</td>
+</tr>
+<tr>
+<td><code>provisioning_failure</code></td>
+<td>Stripe completed but enrollment/access did not provision</td>
+</tr>
+<tr>
+<td><code>email_failure</code></td>
+<td>Resend or MailerLite delivery issue</td>
+</tr>
+<tr>
+<td><code>webhook_error</code></td>
+<td>Stripe webhook failed or was delayed</td>
+</tr>
+<tr>
+<td><code>team_seats</code></td>
+<td>Team or institution seat issue</td>
+</tr>
+<tr>
+<td><code>ops_alert</code></td>
+<td>Internal alert-generated case</td>
+</tr>
+<tr>
+<td><code>other</code></td>
+<td>Anything else</td>
+</tr>
+</tbody></table></div>
+<h3 id="buyer-search">Buyer search<a class="heading-anchor" href="#buyer-search" aria-label="Link to Buyer search">#</a></h3><p>Use <code>/admin/support/search</code> for every paid support case. Search by:</p>
+<ul>
+<li>Buyer email</li>
+<li>Stripe Checkout Session ID</li>
+</ul>
+<p>The buyer snapshot can show:</p>
+<ul>
+<li>Paid enrollments</li>
+<li>Active entitlements</li>
+<li>Certificates</li>
+<li>Team cohorts</li>
+<li>Purchases and refund eligibility</li>
+<li>Stripe links</li>
+<li>Saved prompts</li>
+<li>Artifacts</li>
+<li>Activity responses</li>
+<li>Refunded sessions</li>
+<li>Profile and work-state warnings</li>
+</ul>
+<h3 id="case-detail-page">Case detail page<a class="heading-anchor" href="#case-detail-page" aria-label="Link to Case detail page">#</a></h3><p>Use <code>/admin/support/cases/[caseId]</code> to:</p>
+<ul>
+<li>Change status and priority</li>
+<li>Add internal timeline notes</li>
+<li>Send an access email</li>
+<li>Record refund approval</li>
+<li>Record refund denial</li>
+<li>Record a manual refund after you complete it in Stripe</li>
+</ul>
+<p>The app records the support workflow. It does not issue Stripe refunds itself.</p>
+<h3 id="access-rescue-workflow">Access rescue workflow<a class="heading-anchor" href="#access-rescue-workflow" aria-label="Link to Access rescue workflow">#</a></h3><ol>
+<li>Open the case.</li>
+<li>Search the buyer by email or Stripe session.</li>
+<li>Confirm payment and enrollment state.</li>
+<li>Click &quot;Send access email&quot; from the case action panel.</li>
+<li>Verify that the timeline records the event.</li>
+<li>Reply to the buyer from the support inbox.</li>
+</ol>
+<p>If the access email still fails, use the buyer search details to decide whether the problem is auth, email delivery, entitlement provisioning, or a payment/webhook issue.</p>
+<h3 id="refund-workflow">Refund workflow<a class="heading-anchor" href="#refund-workflow" aria-label="Link to Refund workflow">#</a></h3><ol>
+<li>Open the case.</li>
+<li>Search the buyer record.</li>
+<li>Check refund eligibility.</li>
+<li>If approved, issue the refund manually in Stripe.</li>
+<li>Return to the case and record the manual refund.</li>
+<li>Reply to the buyer.</li>
+</ol>
+<p>Current policy checks include:</p>
+<ul>
+<li>Refund window</li>
+<li>Whether the assessment was submitted</li>
+<li>Number of completed modules</li>
+<li>Whether a certificate was issued</li>
+<li>Duplicate purchase state</li>
+<li>Unresolved access failures</li>
+</ul>
+<p>Full Stripe refunds revoke access through the webhook flow. Partial refunds retain access.</p>
+<h2 id="5-managing-resources">5. Managing Resources<a class="heading-anchor" href="#5-managing-resources" aria-label="Link to 5. Managing Resources">#</a></h2><p>The resource library is source-controlled. The admin dashboard reports resource usage, but it does not edit resources.</p>
+<h3 id="where-resource-files-live">Where resource files live<a class="heading-anchor" href="#where-resource-files-live" aria-label="Link to Where resource files live">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Resource manifest</td>
+<td><code>src/lib/resources/freeResources.manifest.json</code></td>
+</tr>
+<tr>
+<td>Manifest accessor and validation</td>
+<td><code>src/lib/resources/freeResources.ts</code></td>
+</tr>
+<tr>
+<td>Public resource page presentation data</td>
+<td><code>src/app/resources/data.ts</code></td>
+</tr>
+<tr>
+<td>Download catalog</td>
+<td><code>src/lib/resources/downloadCatalog.ts</code></td>
+</tr>
+<tr>
+<td>Resource KPI labels and categories</td>
+<td><code>src/lib/resources/resourceMeta.ts</code></td>
+</tr>
+<tr>
+<td>Downloadable files</td>
+<td><code>public/downloads</code></td>
+</tr>
+<tr>
+<td>Source HTML for Word-style documents</td>
+<td><code>public/downloads/source</code></td>
+</tr>
+<tr>
+<td>Large print PDFs</td>
+<td><code>public/downloads/large-print</code></td>
+</tr>
+<tr>
+<td>Static markdown artifacts</td>
+<td><code>public/artifacts</code></td>
+</tr>
+<tr>
+<td>Template index</td>
+<td><code>src/app/resources/templates/templateIndex.ts</code></td>
+</tr>
+<tr>
+<td>Template body data</td>
+<td><code>src/app/resources/templates/data.ts</code></td>
+</tr>
+<tr>
+<td>Role playbook presentation data</td>
+<td><code>src/app/playbooks/data.ts</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="how-downloads-work">How downloads work<a class="heading-anchor" href="#how-downloads-work" aria-label="Link to How downloads work">#</a></h3><p>Most download links go through:</p>
+<p><code>/api/resources/[slug]/download</code></p>
+<p>The download API:</p>
+<ol>
+<li>Looks up the resource by slug.</li>
+<li>Checks whether the resource is free, email-gated, paid, planned, archived, or source-only.</li>
+<li>Checks authentication and active entitlement for gated paid resources.</li>
+<li>Creates a signed Supabase Storage URL when storage is configured.</li>
+<li>Falls back to <code>public/downloads</code> for free resources if storage is unavailable.</li>
+<li>Logs the download to <code>resource_downloads</code>.</li>
+</ol>
+<p>For paid resources, storage must be available. Paid downloads should not fall back to public files.</p>
+<h3 id="resource-gate-policies">Resource gate policies<a class="heading-anchor" href="#resource-gate-policies" aria-label="Link to Resource gate policies">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Gate policy</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>free</code></td>
+<td>Public download</td>
+</tr>
+<tr>
+<td><code>free-email-gated</code></td>
+<td>Public, but email attribution can be captured</td>
+</tr>
+<tr>
+<td><code>paid-entitlement</code></td>
+<td>Requires logged-in user with active entitlement</td>
+</tr>
+<tr>
+<td><code>planned</code></td>
+<td>Not downloadable yet</td>
+</tr>
+<tr>
+<td><code>source-only</code></td>
+<td>Internal source material only</td>
+</tr>
+</tbody></table></div>
+<h3 id="resource-statuses">Resource statuses<a class="heading-anchor" href="#resource-statuses" aria-label="Link to Resource statuses">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>public</code></td>
+<td>Visible and active</td>
+</tr>
+<tr>
+<td><code>planned</code></td>
+<td>Future item</td>
+</tr>
+<tr>
+<td><code>archived</code></td>
+<td>Kept for history, not promoted</td>
+</tr>
+</tbody></table></div>
+<h3 id="adding-a-normal-downloadable-resource">Adding a normal downloadable resource<a class="heading-anchor" href="#adding-a-normal-downloadable-resource" aria-label="Link to Adding a normal downloadable resource">#</a></h3><ol>
+<li>Add the file to <code>public/downloads</code>.</li>
+<li>Add or update the manifest entry in <code>src/lib/resources/freeResources.manifest.json</code>.</li>
+<li>Set <code>slug</code>, <code>title</code>, <code>description</code>, <code>category</code>, <code>status</code>, <code>gatePolicy</code>, <code>tierRequired</code>, <code>download</code>, <code>canonicalRoute</code>, and <code>visibleSurfaces</code>.</li>
+<li>If the resource belongs in a starter kit or bundle, set <code>zipMembership</code>.</li>
+<li>Add presentation metadata in <code>src/app/resources/data.ts</code> if it needs a card, kit placement, role placement, or custom callout.</li>
+<li>Add labels or category metadata in <code>src/lib/resources/resourceMeta.ts</code> if the funnel dashboard should display friendly names.</li>
+<li>If Supabase Storage is the production source, upload the file to the private <code>resources</code> bucket and ensure the <code>resources</code> table row points to it.</li>
+<li>Run the resource audit.</li>
+</ol>
+<p>Recommended checks:</p>
+<pre><code class="language-bash">npm run audit:resources
+npm test -- src/lib/resources/freeResources.test.ts src/app/resources/data.test.ts
+</code></pre>
+<h3 id="adding-a-browser-rendered-template">Adding a browser-rendered template<a class="heading-anchor" href="#adding-a-browser-rendered-template" aria-label="Link to Adding a browser-rendered template">#</a></h3><ol>
+<li>Add the slug to <code>TemplateSlug</code> and <code>TEMPLATE_INDEX</code> in <code>src/app/resources/templates/templateIndex.ts</code>.</li>
+<li>Add the full template body to <code>src/app/resources/templates/data.ts</code>.</li>
+<li>Add the resource manifest entry.</li>
+<li>Add the public presentation data in <code>src/app/resources/data.ts</code>.</li>
+<li>Verify the template page at <code>/resources/templates/[slug]</code>.</li>
+<li>Verify the Word export route if applicable:</li>
+</ol>
+<p><code>/api/resources/templates/[slug]/word</code></p>
+<h3 id="adding-a-role-playbook">Adding a role playbook<a class="heading-anchor" href="#adding-a-role-playbook" aria-label="Link to Adding a role playbook">#</a></h3><ol>
+<li>Add the playbook resource to the manifest with a slug ending in <code>-playbook</code>.</li>
+<li>Add or update role presentation data in <code>src/app/playbooks/data.ts</code>.</li>
+<li>Confirm that the route and resource card use the expected role, title, and category.</li>
+<li>Run the resource audit and the resource page tests.</li>
+</ol>
+<h3 id="removing-or-hiding-a-resource">Removing or hiding a resource<a class="heading-anchor" href="#removing-or-hiding-a-resource" aria-label="Link to Removing or hiding a resource">#</a></h3><p>Prefer changing status instead of deleting history.</p>
+<ol>
+<li>Set <code>status</code> to <code>archived</code> or <code>planned</code>.</li>
+<li>Remove the surface from <code>visibleSurfaces</code> if it should disappear from the library.</li>
+<li>Keep old files if they are referenced by previous emails, support cases, or analytics.</li>
+<li>Do not delete <code>resource_downloads</code> rows. They are historical reporting data.</li>
+</ol>
+<h3 id="reading-resource-metrics">Reading resource metrics<a class="heading-anchor" href="#reading-resource-metrics" aria-label="Link to Reading resource metrics">#</a></h3><p>Use <code>/admin/funnel</code>.</p>
+<p>There are two different kinds of resource metrics:</p>
+<ul>
+<li>Known-contact scorecard metrics: better for lead quality.</li>
+<li>Raw download popularity metrics: useful for seeing what content attracts clicks, but includes anonymous, repeat, test, and seed traffic.</li>
+</ul>
+<p>Do not treat raw download totals as qualified leads.</p>
+<h3 id="troubleshooting-resource-downloads">Troubleshooting resource downloads<a class="heading-anchor" href="#troubleshooting-resource-downloads" aria-label="Link to Troubleshooting resource downloads">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Free download fails</td>
+<td>Confirm manifest path and file in <code>public/downloads</code></td>
+</tr>
+<tr>
+<td>Paid download fails</td>
+<td>Confirm active entitlement and Supabase Storage object</td>
+</tr>
+<tr>
+<td>Download logs missing</td>
+<td>Confirm service-role key and <code>resource_downloads</code> table access</td>
+</tr>
+<tr>
+<td>Wrong card text</td>
+<td>Check <code>src/app/resources/data.ts</code></td>
+</tr>
+<tr>
+<td>Wrong funnel label</td>
+<td>Check <code>src/lib/resources/resourceMeta.ts</code></td>
+</tr>
+<tr>
+<td>Template export broken</td>
+<td>Check <code>src/app/resources/templates/data.ts</code> and route-specific Word export</td>
+</tr>
+</tbody></table></div>
+<h2 id="6-managing-course-work">6. Managing Course Work<a class="heading-anchor" href="#6-managing-course-work" aria-label="Link to 6. Managing Course Work">#</a></h2><p>The Foundation course is managed through code and database records. There is no admin course editor in the app today.</p>
+<h3 id="current-foundation-product">Current Foundation product<a class="heading-anchor" href="#current-foundation-product" aria-label="Link to Current Foundation product">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Current value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public course</td>
+<td>Foundation</td>
+</tr>
+<tr>
+<td>Public designation</td>
+<td><code>AiBI-Foundation</code></td>
+</tr>
+<tr>
+<td>Current module count</td>
+<td>18 micro-modules</td>
+</tr>
+<tr>
+<td>Individual price</td>
+<td>$295</td>
+</tr>
+<tr>
+<td>Institution seat price</td>
+<td>$199 per seat, minimum 10, assisted/deferred</td>
+</tr>
+<tr>
+<td>Legacy DB product key</td>
+<td><code>aibi-p</code></td>
+</tr>
+<tr>
+<td>Canonical product key</td>
+<td><code>foundation</code></td>
+</tr>
+</tbody></table></div>
+<p>Current public and admin docs should say 18 modules. Historical planning or review files may mention older 9-module or 12-module versions only as archive context.</p>
+<h3 id="course-content-source-files">Course content source files<a class="heading-anchor" href="#course-content-source-files" aria-label="Link to Course content source files">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Course configuration</td>
+<td><code>content/courses/foundation-program/course-config.ts</code></td>
+</tr>
+<tr>
+<td>Module list builder</td>
+<td><code>content/courses/foundation-program/modules.ts</code></td>
+</tr>
+<tr>
+<td>Micro-module authoring source</td>
+<td><code>content/courses/foundation-program/micro-modules.ts</code></td>
+</tr>
+<tr>
+<td>Apply activities and artifact templates</td>
+<td><code>content/courses/foundation-program/module-activities.ts</code></td>
+</tr>
+<tr>
+<td>Prompt library authoring source</td>
+<td><code>content/courses/foundation-program/prompt-library.ts</code></td>
+</tr>
+<tr>
+<td>Practice and certificate requirements</td>
+<td><code>content/practice-reps/foundation-program.ts</code></td>
+</tr>
+<tr>
+<td>Course app routes</td>
+<td><code>src/app/courses/foundation/program</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="what-each-module-contains">What each module contains<a class="heading-anchor" href="#what-each-module-contains" aria-label="Link to What each module contains">#</a></h3><p>Each micro-module can define:</p>
+<ul>
+<li>Module number</li>
+<li>ID and title</li>
+<li>Pillar</li>
+<li>Estimated minutes</li>
+<li>Key output</li>
+<li>Mission</li>
+<li>Plain-language concept</li>
+<li>Banking guardrail</li>
+<li>Guidance source</li>
+<li>Try task</li>
+<li>Build task</li>
+<li>Save-artifact prompt</li>
+<li>Visual model</li>
+<li>Review checklist</li>
+<li>Quality signals</li>
+<li>Weak and strong examples</li>
+<li>Transfer move</li>
+<li>Proof to save</li>
+<li>Reference</li>
+</ul>
+<h3 id="course-access-flow">Course access flow<a class="heading-anchor" href="#course-access-flow" aria-label="Link to Course access flow">#</a></h3><ol>
+<li>Buyer purchases through Stripe.</li>
+<li>Stripe webhook receives <code>checkout.session.completed</code>.</li>
+<li>The app provisions a <code>course_enrollments</code> row.</li>
+<li>Entitlements are synchronized.</li>
+<li>Buyer receives a purchase/access email.</li>
+<li>Learner signs in.</li>
+<li>Learner completes onboarding if <code>onboarding_answers</code> is empty.</li>
+<li>Learner starts module 1.</li>
+</ol>
+<p>The course layout blocks access unless the user has:</p>
+<ul>
+<li>A Supabase auth session</li>
+<li>Trusted device where required</li>
+<li>A valid enrollment</li>
+<li>Completed onboarding</li>
+</ul>
+<h3 id="learner-progress">Learner progress<a class="heading-anchor" href="#learner-progress" aria-label="Link to Learner progress">#</a></h3><p>Learner progress is sequential.</p>
+<ul>
+<li>Module 1 is always available to an enrolled learner.</li>
+<li>Module N requires all previous modules to be complete.</li>
+<li>Saving progress appends the module number to <code>completed_modules</code>.</li>
+<li>The app advances <code>current_module</code> until the final module.</li>
+</ul>
+<p>Important API routes:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /api/courses/save-onboarding</code></td>
+<td>Save onboarding answers</td>
+</tr>
+<tr>
+<td><code>POST /api/courses/submit-activity</code></td>
+<td>Save module Apply activity</td>
+</tr>
+<tr>
+<td><code>GET /api/courses/activity-response</code></td>
+<td>Read saved activity response</td>
+</tr>
+<tr>
+<td><code>POST /api/courses/save-progress</code></td>
+<td>Mark current module complete</td>
+</tr>
+<tr>
+<td><code>GET /api/courses/generate-module-artifact?module=N</code></td>
+<td>Generate learner artifact markdown</td>
+</tr>
+<tr>
+<td><code>POST /api/courses/save-post-assessment</code></td>
+<td>Save post-course assessment</td>
+</tr>
+<tr>
+<td><code>POST /api/courses/submit-work-product</code></td>
+<td>Submit final work packet</td>
+</tr>
+<tr>
+<td><code>POST /api/courses/generate-certificate</code></td>
+<td>Generate certificate PDF</td>
+</tr>
+</tbody></table></div>
+<h3 id="activity-responses-and-artifacts">Activity responses and artifacts<a class="heading-anchor" href="#activity-responses-and-artifacts" aria-label="Link to Activity responses and artifacts">#</a></h3><p>Each module has an Apply activity. The app validates required fields and minimum lengths before inserting into <code>activity_responses</code>.</p>
+<p>When an activity has an artifact ID, the app also writes to <code>user_artifacts</code>.</p>
+<p>Module artifact downloads are generated from the saved response plus the artifact template. They are returned as <code>.md</code> files.</p>
+<h3 id="final-packet-and-certification">Final packet and certification<a class="heading-anchor" href="#final-packet-and-certification" aria-label="Link to Final packet and certification">#</a></h3><p>Current behavior:</p>
+<ol>
+<li>Learner must complete all modules.</li>
+<li>Learner submits the final work packet.</li>
+<li>The app validates required fields and optional uploaded work product path.</li>
+<li>The submission is auto-approved.</li>
+<li>The app issues a certificate.</li>
+<li>Learner can download the certificate.</li>
+<li>Public verification works at <code>/verify/[certificateId]</code>.</li>
+</ol>
+<p>There is no active human reviewer queue in the current code. If you later want human review, scope it as a new feature with reviewer roles, queue states, SLA rules, certificate gating, and audit history.</p>
+<h3 id="updating-a-course-module">Updating a course module<a class="heading-anchor" href="#updating-a-course-module" aria-label="Link to Updating a course module">#</a></h3><ol>
+<li>Edit the micro-module source in <code>content/courses/foundation-program/micro-modules.ts</code>.</li>
+<li>If the activity changes, edit <code>content/courses/foundation-program/module-activities.ts</code>.</li>
+<li>If prompt-library content changes, edit <code>content/courses/foundation-program/prompt-library.ts</code>.</li>
+<li>If runtime prompt-library records must change, add a Supabase migration for <code>toolbox_library_skills</code> or related tables.</li>
+<li>Run the course schema check.</li>
+</ol>
+<p>Recommended checks:</p>
+<pre><code class="language-bash">npm run check:course-schema
+npm test -- src/app/courses/foundation/program
+</code></pre>
+<p>Adjust the exact test path if the test suite names change.</p>
+<h3 id="adding-or-removing-modules">Adding or removing modules<a class="heading-anchor" href="#adding-or-removing-modules" aria-label="Link to Adding or removing modules">#</a></h3><p>Changing module count has database, UI, progress, and certificate implications. Treat it as an engineering change, not a content-only edit.</p>
+<p>Before changing module count, check:</p>
+<ul>
+<li><code>FOUNDATION_MODULE_COUNT</code></li>
+<li>Module definitions</li>
+<li>Activity definitions</li>
+<li>Progress rules</li>
+<li>Tests</li>
+<li>Database constraints on <code>activity_responses.module_number</code></li>
+<li>Existing learner records</li>
+<li>Certificate requirements</li>
+<li>Marketing copy</li>
+<li>Docs and pricing pages</li>
+</ul>
+<p>The database has already been migrated for the current 18-module structure. Do not assume old 9-module constraints still match production.</p>
+<h3 id="unblocking-a-learner">Unblocking a learner<a class="heading-anchor" href="#unblocking-a-learner" aria-label="Link to Unblocking a learner">#</a></h3><p>Use this order:</p>
+<ol>
+<li>Open <code>/admin/support/search</code>.</li>
+<li>Search by email or Stripe session.</li>
+<li>Confirm enrollment exists.</li>
+<li>Confirm entitlement exists.</li>
+<li>Confirm auth user exists and email matches.</li>
+<li>Confirm onboarding state.</li>
+<li>Confirm <code>current_module</code> and <code>completed_modules</code>.</li>
+<li>Check <code>activity_responses</code> for the blocked module.</li>
+<li>Send access email if the problem is sign-in.</li>
+<li>Escalate to a direct Supabase fix only if the admin UI cannot resolve the issue.</li>
+</ol>
+<p>Direct database edits should be rare and documented in a support case note.</p>
+<h2 id="7-managing-data">7. Managing Data<a class="heading-anchor" href="#7-managing-data" aria-label="Link to 7. Managing Data">#</a></h2><p>Different systems are authoritative for different facts.</p>
+<h3 id="source-of-truth-map">Source-of-truth map<a class="heading-anchor" href="#source-of-truth-map" aria-label="Link to Source-of-truth map">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Authoritative system</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Money, charges, refunds</td>
+<td>Stripe</td>
+</tr>
+<tr>
+<td>User authentication</td>
+<td>Supabase Auth</td>
+</tr>
+<tr>
+<td>Paid enrollment rows</td>
+<td>Supabase <code>course_enrollments</code></td>
+</tr>
+<tr>
+<td>Access rights</td>
+<td>Supabase <code>entitlements</code></td>
+</tr>
+<tr>
+<td>Course progress</td>
+<td>Supabase course tables</td>
+</tr>
+<tr>
+<td>Certificates</td>
+<td>Supabase <code>certificates</code> plus generated PDF route</td>
+</tr>
+<tr>
+<td>Public resource catalog</td>
+<td>Repository manifest and resource files</td>
+</tr>
+<tr>
+<td>Resource download history</td>
+<td>Supabase <code>resource_downloads</code></td>
+</tr>
+<tr>
+<td>Support cases</td>
+<td>Supabase <code>support_cases</code> and <code>support_case_events</code></td>
+</tr>
+<tr>
+<td>Transactional email</td>
+<td>Resend</td>
+</tr>
+<tr>
+<td>Marketing nurture</td>
+<td>MailerLite</td>
+</tr>
+<tr>
+<td>Traffic analytics</td>
+<td>Vercel Analytics or Plausible</td>
+</tr>
+<tr>
+<td>Cron job configuration</td>
+<td>Vercel plus <code>vercel.json</code></td>
+</tr>
+<tr>
+<td>Environment secrets</td>
+<td>Hosting environment</td>
+</tr>
+</tbody></table></div>
+<h3 id="core-supabase-tables">Core Supabase tables<a class="heading-anchor" href="#core-supabase-tables" aria-label="Link to Core Supabase tables">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Tables</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Assessments</td>
+<td><code>user_profiles</code>, <code>assessment_drafts</code>, <code>team_assessment_cohorts</code>, <code>team_assessment_responses</code></td>
+</tr>
+<tr>
+<td>Resources and leads</td>
+<td><code>resource_downloads</code>, <code>resources</code>, <code>prompt_card_leads</code>, <code>email_capture_log</code></td>
+</tr>
+<tr>
+<td>Course</td>
+<td><code>course_enrollments</code>, <code>institution_enrollments</code>, <code>activity_responses</code>, <code>work_submissions</code>, <code>certificates</code>, <code>practice_rep_completions</code>, <code>saved_prompts</code>, <code>user_artifacts</code>, <code>quick_wins</code></td>
+</tr>
+<tr>
+<td>Access</td>
+<td><code>entitlements</code>, Supabase <code>auth.users</code></td>
+</tr>
+<tr>
+<td>Support</td>
+<td><code>support_cases</code>, <code>support_case_events</code>, <code>support_intake_log</code></td>
+</tr>
+<tr>
+<td>Payments and refunds</td>
+<td><code>refunded_checkout_sessions</code>, Stripe records</td>
+</tr>
+<tr>
+<td>AI/toolbox</td>
+<td><code>toolbox_library_skills</code>, <code>toolbox_library_skill_versions</code>, <code>toolbox_recipes</code>, <code>ai_usage_log</code></td>
+</tr>
+<tr>
+<td>Operations</td>
+<td><code>rate_limits</code>, <code>paid_reengagement_events</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="data-you-should-not-edit-casually">Data you should not edit casually<a class="heading-anchor" href="#data-you-should-not-edit-casually" aria-label="Link to Data you should not edit casually">#</a></h3><p>Do not casually edit:</p>
+<ul>
+<li>Stripe IDs</li>
+<li><code>stripe_session_id</code></li>
+<li>Entitlement rows</li>
+<li>Certificate IDs</li>
+<li>Webhook-derived records</li>
+<li>Refund records</li>
+<li>Support timeline events</li>
+<li>Auth user IDs</li>
+</ul>
+<p>If data must be corrected, create or update a support case note explaining:</p>
+<ul>
+<li>What was wrong</li>
+<li>What was changed</li>
+<li>Why it was safe</li>
+<li>Which external system was checked first</li>
+</ul>
+<h3 id="test-and-internal-data-exclusions">Test and internal data exclusions<a class="heading-anchor" href="#test-and-internal-data-exclusions" aria-label="Link to Test and internal data exclusions">#</a></h3><p>The funnel/admin dashboards exclude known test data through environment configuration and default patterns.</p>
+<p>Important variables:</p>
+<ul>
+<li><code>ADMIN_DASHBOARD_EXCLUDED_EMAILS</code></li>
+<li><code>ADMIN_DASHBOARD_EXCLUDED_EMAIL_PATTERNS</code></li>
+</ul>
+<p>Default exclusions include test/example domains such as:</p>
+<ul>
+<li><code>*@aibankinginstitute.test</code></li>
+<li><code>*@example.test</code></li>
+<li><code>*@example.com</code></li>
+</ul>
+<p>Gmail dot and plus variants are canonicalized for exact exclusions.</p>
+<h3 id="privacy-and-pii">Privacy and PII<a class="heading-anchor" href="#privacy-and-pii" aria-label="Link to Privacy and PII">#</a></h3><p>The app uses hashed IPs for rate limits and usage logs where possible. Public AI usage logs store hashed IP data, not raw IP addresses.</p>
+<p>Operational rules:</p>
+<ul>
+<li>Do not export buyer data unless there is a clear support or audit reason.</li>
+<li>Prefer support CSV exports over ad hoc table dumps.</li>
+<li>Do not paste assessment answers, buyer records, or support timelines into public tools.</li>
+<li>For AI/toolbox monitoring, use the admin page and aggregate logs.</li>
+<li>Keep service-role keys restricted to server environments.</li>
+</ul>
+<h2 id="8-payments-provisioning-and-access">8. Payments, Provisioning, And Access<a class="heading-anchor" href="#8-payments-provisioning-and-access" aria-label="Link to 8. Payments, Provisioning, And Access">#</a></h2><p>Stripe is authoritative for money. Supabase is authoritative for app access after webhook provisioning.</p>
+<h3 id="products">Products<a class="heading-anchor" href="#products" aria-label="Link to Products">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Stripe/API path</th>
+<th>Access created</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Free assessment</td>
+<td>No Stripe</td>
+<td><code>user_profiles</code> assessment data</td>
+</tr>
+<tr>
+<td>In-Depth Assessment</td>
+<td><code>/api/checkout/in-depth</code></td>
+<td>Enrollment and entitlement for <code>in-depth-assessment</code></td>
+</tr>
+<tr>
+<td>Foundation Course</td>
+<td><code>/api/create-checkout</code></td>
+<td>Enrollment and entitlement for <code>foundation</code> / legacy <code>aibi-p</code></td>
+</tr>
+<tr>
+<td>Institution Foundation</td>
+<td>Assisted/deferred</td>
+<td><code>institution_enrollments</code> when enabled</td>
+</tr>
+<tr>
+<td>Team Assessment</td>
+<td>Assisted or flag-gated</td>
+<td>Team cohort records</td>
+</tr>
+</tbody></table></div>
+<h3 id="webhook-behavior">Webhook behavior<a class="heading-anchor" href="#webhook-behavior" aria-label="Link to Webhook behavior">#</a></h3><p>Stripe sends events to:</p>
+<p><code>/api/webhooks/stripe</code></p>
+<p>Important events:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>checkout.session.completed</code></td>
+<td>Provisions enrollment, entitlement, and purchase email</td>
+</tr>
+<tr>
+<td><code>charge.refunded</code></td>
+<td>Full refunds revoke access; partial refunds retain access</td>
+</tr>
+<tr>
+<td><code>payment_intent.payment_failed</code></td>
+<td>Logs failure and analytics</td>
+</tr>
+<tr>
+<td><code>payment_intent.succeeded</code></td>
+<td>Acknowledges successful payment intent</td>
+</tr>
+</tbody></table></div>
+<h3 id="common-payment-issues">Common payment issues<a class="heading-anchor" href="#common-payment-issues" aria-label="Link to Common payment issues">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Where to check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Buyer paid but has no access</td>
+<td>Stripe session, webhook logs, <code>/admin/support/search</code>, <code>course_enrollments</code>, <code>entitlements</code></td>
+</tr>
+<tr>
+<td>Buyer did not get email</td>
+<td>Resend logs, support case timeline, send access email action</td>
+</tr>
+<tr>
+<td>Duplicate purchase</td>
+<td>Stripe customer/session history, buyer search, support case</td>
+</tr>
+<tr>
+<td>Refund request</td>
+<td>Buyer search refund panel, Stripe dashboard, support case</td>
+</tr>
+<tr>
+<td>Access remains after full refund</td>
+<td>Stripe webhook delivery, <code>refunded_checkout_sessions</code>, <code>course_enrollments</code>, <code>entitlements</code></td>
+</tr>
+</tbody></table></div>
+<h2 id="9-email-automations-and-cron-jobs">9. Email, Automations, And Cron Jobs<a class="heading-anchor" href="#9-email-automations-and-cron-jobs" aria-label="Link to 9. Email, Automations, And Cron Jobs">#</a></h2><h3 id="email-systems">Email systems<a class="heading-anchor" href="#email-systems" aria-label="Link to Email systems">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Resend</td>
+<td>Transactional email: purchases, access, assessment results, certificates, support replies/acks, paid reengagement</td>
+</tr>
+<tr>
+<td>MailerLite</td>
+<td>Marketing and nurture sequences</td>
+</tr>
+</tbody></table></div>
+<p>Transactional email should not depend on marketing opt-in. Marketing/nurture email should respect opt-in and MailerLite list state.</p>
+<h3 id="mailerlite-state">MailerLite state<a class="heading-anchor" href="#mailerlite-state" aria-label="Link to MailerLite state">#</a></h3><p>The code can subscribe/update contacts and fields, but automation email bodies may still require manual setup inside MailerLite. Confirm the MailerLite automations are enabled before depending on them for launch.</p>
+<h3 id="cron-jobs">Cron jobs<a class="heading-anchor" href="#cron-jobs" aria-label="Link to Cron jobs">#</a></h3><p>Configured in <code>vercel.json</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Schedule</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/api/assessment/pdf/cron-cleanup</code></td>
+<td>Daily</td>
+<td>Clean generated assessment PDFs</td>
+</tr>
+<tr>
+<td><code>/api/cron/cleanup-rate-limits</code></td>
+<td>Daily</td>
+<td>Remove old rate-limit rows</td>
+</tr>
+<tr>
+<td><code>/api/cron/stranded-buyers</code></td>
+<td>Daily</td>
+<td>Find paid buyers who did not complete access</td>
+</tr>
+<tr>
+<td><code>/api/cron/assessment-abandoned</code></td>
+<td>Daily</td>
+<td>Send assessment resume reminders</td>
+</tr>
+<tr>
+<td><code>/api/cron/paid-reengagement</code></td>
+<td>Daily</td>
+<td>Send transactional paid learner reminders</td>
+</tr>
+</tbody></table></div>
+<p>Cron routes require:</p>
+<p><code>Authorization: Bearer $CRON_SECRET</code></p>
+<p>Do not disable cron authentication in production.</p>
+<h3 id="ops-alert-test">Ops alert test<a class="heading-anchor" href="#ops-alert-test" aria-label="Link to Ops alert test">#</a></h3><p>Use this after changing alert environment variables:</p>
+<pre><code class="language-bash">curl -X POST https://www.aibankinginstitute.com/api/ops/alert-test \
+  -H &quot;Authorization: Bearer $CRON_SECRET&quot;
+</code></pre>
+<p>Expected response:</p>
+<pre><code class="language-json">{&quot;ok&quot;:true,&quot;channel&quot;:&quot;webhook&quot;}
+</code></pre>
+<p>The channel may be email if webhook alerts are not configured.</p>
+<h2 id="10-toolbox-and-ai-usage">10. Toolbox And AI Usage<a class="heading-anchor" href="#10-toolbox-and-ai-usage" aria-label="Link to 10. Toolbox And AI Usage">#</a></h2><p>There are two AI usage surfaces:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Route/API</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public playground</td>
+<td><code>/api/playground/run</code></td>
+<td>Public, rate-limited</td>
+</tr>
+<tr>
+<td>Paid toolbox/course AI</td>
+<td><code>/api/toolbox/run</code>, <code>/api/sandbox/chat</code></td>
+<td>Requires paid entitlement</td>
+</tr>
+</tbody></table></div>
+<p>Use <code>/admin/toolbox-usage</code> to monitor public playground usage. It shows:</p>
+<ul>
+<li>Calls</li>
+<li>Successes</li>
+<li>Rate limits</li>
+<li>Errors</li>
+<li>Unique IP hashes</li>
+<li>Cost</li>
+<li>Token usage</li>
+<li>Top IP hashes</li>
+<li>Daily trends</li>
+<li>Recent rows</li>
+</ul>
+<p>Watch for:</p>
+<ul>
+<li>Sudden cost spikes</li>
+<li>Repeated errors</li>
+<li>Many requests from one IP hash</li>
+<li>Rate-limit pressure</li>
+<li>PII flags</li>
+</ul>
+<p>Important environment variable:</p>
+<p><code>TOOLBOX_IP_HASH_SALT</code></p>
+<p>Keep it stable and secret. Rotating it changes the meaning of historical IP hashes.</p>
+<h2 id="11-team-and-institution-workflows">11. Team And Institution Workflows<a class="heading-anchor" href="#11-team-and-institution-workflows" aria-label="Link to 11. Team And Institution Workflows">#</a></h2><p>Institution and team workflows exist in the codebase, but self-serve team checkout should remain off until the hardening work is complete.</p>
+<p>Important flag:</p>
+<p><code>ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT</code></p>
+<p>Keep this off in production unless the team assessment self-serve flow has been deliberately launched.</p>
+<p>Team assessment data lives separately from individual assessment profiles so team reports do not overwrite individual user history.</p>
+<p>Important tables:</p>
+<ul>
+<li><code>team_assessment_cohorts</code></li>
+<li><code>team_assessment_responses</code></li>
+</ul>
+<p>Institution Foundation purchases use:</p>
+<ul>
+<li><code>institution_enrollments</code></li>
+</ul>
+<h2 id="12-environment-variables-to-know">12. Environment Variables To Know<a class="heading-anchor" href="#12-environment-variables-to-know" aria-label="Link to 12. Environment Variables To Know">#</a></h2><p>Core production variables include:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SUPABASE_URL</code></td>
+<td>Supabase project URL</td>
+</tr>
+<tr>
+<td><code>SUPABASE_ANON_KEY</code></td>
+<td>Public Supabase browser key</td>
+</tr>
+<tr>
+<td><code>SUPABASE_SERVICE_ROLE_KEY</code></td>
+<td>Server-only privileged Supabase key</td>
+</tr>
+<tr>
+<td><code>STRIPE_SECRET_KEY</code></td>
+<td>Stripe API key</td>
+</tr>
+<tr>
+<td><code>STRIPE_WEBHOOK_SECRET</code></td>
+<td>Stripe webhook verification</td>
+</tr>
+<tr>
+<td><code>STRIPE_FOUNDATION_PRICE_ID</code></td>
+<td>Foundation individual price</td>
+</tr>
+<tr>
+<td><code>STRIPE_INDEPTH_PRICE_ID</code></td>
+<td>In-Depth Assessment price</td>
+</tr>
+<tr>
+<td><code>RESEND_API_KEY</code></td>
+<td>Transactional email</td>
+</tr>
+<tr>
+<td><code>MAILERLITE_API_KEY</code></td>
+<td>Marketing email</td>
+</tr>
+<tr>
+<td><code>ANTHROPIC_API_KEY</code></td>
+<td>AI/toolbox provider key</td>
+</tr>
+<tr>
+<td><code>CRON_SECRET</code></td>
+<td>Cron route authorization</td>
+</tr>
+<tr>
+<td><code>TOOLBOX_IP_HASH_SALT</code></td>
+<td>IP hash salt for toolbox logs</td>
+</tr>
+<tr>
+<td><code>ADMIN_SUPPORT_EMAILS</code></td>
+<td>Support admin allowlist</td>
+</tr>
+<tr>
+<td><code>FUNNEL_ADMIN_EMAILS</code></td>
+<td>Funnel admin allowlist</td>
+</tr>
+<tr>
+<td><code>OPS_ALERT_WEBHOOK_URL</code></td>
+<td>Ops alert webhook</td>
+</tr>
+<tr>
+<td><code>OPS_ALERT_EMAIL</code></td>
+<td>Ops alert email fallback</td>
+</tr>
+</tbody></table></div>
+<p>Important spelling:</p>
+<p>Use <code>STRIPE_INDEPTH_PRICE_ID</code>, not <code>STRIPE_IN_DEPTH_PRICE_ID</code>.</p>
+<h2 id="13-deployment-and-release-checklist">13. Deployment And Release Checklist<a class="heading-anchor" href="#13-deployment-and-release-checklist" aria-label="Link to 13. Deployment And Release Checklist">#</a></h2><p>Before deploying admin, resource, course, payment, or email changes:</p>
+<ol>
+<li>Confirm the worktree changes are intentional.</li>
+<li>Run relevant tests.</li>
+<li>Run environment audit if env vars changed.</li>
+<li>Run resource audit if resources changed.</li>
+<li>Run course schema check if course content changed.</li>
+<li>Deploy to preview.</li>
+<li>Smoke-test critical routes.</li>
+<li>Deploy to production.</li>
+<li>Check Stripe webhook delivery if payments were touched.</li>
+<li>Check Resend if transactional email was touched.</li>
+<li>Check <code>/admin/support</code> and <code>/admin/funnel</code> after deployment.</li>
+</ol>
+<p>Useful commands:</p>
+<pre><code class="language-bash">npm run audit:env
+npm run audit:env:production
+npm run audit:secrets
+npm run audit:resources
+npm run check:course-schema
+npm test
+npm run build
+</code></pre>
+<h2 id="14-troubleshooting-guide">14. Troubleshooting Guide<a class="heading-anchor" href="#14-troubleshooting-guide" aria-label="Link to 14. Troubleshooting Guide">#</a></h2><h3 id="buyer-paid-but-cannot-access-foundation">Buyer paid but cannot access Foundation<a class="heading-anchor" href="#buyer-paid-but-cannot-access-foundation" aria-label="Link to Buyer paid but cannot access Foundation">#</a></h3><ol>
+<li>Search buyer in <code>/admin/support/search</code>.</li>
+<li>Check Stripe session status.</li>
+<li>Check <code>course_enrollments</code>.</li>
+<li>Check <code>entitlements</code>.</li>
+<li>Check Supabase auth user.</li>
+<li>Send access email from the case page.</li>
+<li>If no enrollment exists, check Stripe webhook delivery.</li>
+<li>If webhook failed, replay from Stripe after confirming the code/environment issue is fixed.</li>
+</ol>
+<h3 id="learner-is-stuck-on-a-module">Learner is stuck on a module<a class="heading-anchor" href="#learner-is-stuck-on-a-module" aria-label="Link to Learner is stuck on a module">#</a></h3><ol>
+<li>Search buyer in <code>/admin/support/search</code>.</li>
+<li>Confirm <code>current_module</code>.</li>
+<li>Confirm all previous modules are in <code>completed_modules</code>.</li>
+<li>Check whether the current module activity response exists.</li>
+<li>Confirm the learner is not blocked by onboarding.</li>
+<li>Document any manual correction in a support case.</li>
+</ol>
+<h3 id="certificate-missing">Certificate missing<a class="heading-anchor" href="#certificate-missing" aria-label="Link to Certificate missing">#</a></h3><ol>
+<li>Confirm all modules are complete.</li>
+<li>Confirm final packet submission exists in <code>work_submissions</code>.</li>
+<li>Confirm <code>review_status</code> is approved.</li>
+<li>Check <code>certificates</code> for existing row.</li>
+<li>Check Resend for certificate email.</li>
+<li>Have learner revisit the certificate page or use the certificate API after approval state is correct.</li>
+</ol>
+<h3 id="resource-link-fails">Resource link fails<a class="heading-anchor" href="#resource-link-fails" aria-label="Link to Resource link fails">#</a></h3><ol>
+<li>Check the resource manifest slug.</li>
+<li>Check the file path in <code>public/downloads</code> or Supabase Storage.</li>
+<li>Check gate policy and required entitlement.</li>
+<li>Check whether the resource is <code>planned</code> or <code>archived</code>.</li>
+<li>Check server logs for signed URL or storage errors.</li>
+</ol>
+<h3 id="funnel-numbers-look-wrong">Funnel numbers look wrong<a class="heading-anchor" href="#funnel-numbers-look-wrong" aria-label="Link to Funnel numbers look wrong">#</a></h3><ol>
+<li>Confirm test data exclusions.</li>
+<li>Separate known-contact scorecard metrics from raw resource download totals.</li>
+<li>Check whether the contact used a plus-address or alternate email.</li>
+<li>Confirm the source event exists in the relevant table.</li>
+<li>Check whether the views/migrations are applied in production.</li>
+</ol>
+<h3 id="admin-cannot-log-in">Admin cannot log in<a class="heading-anchor" href="#admin-cannot-log-in" aria-label="Link to Admin cannot log in">#</a></h3><ol>
+<li>Confirm the email is in the correct allowlist variable.</li>
+<li>Confirm they are using the same email in Supabase auth.</li>
+<li>Confirm production env vars are deployed.</li>
+<li>For support pages, complete trusted device confirmation.</li>
+<li>Check whether they need both <code>ADMIN_SUPPORT_EMAILS</code> and <code>FUNNEL_ADMIN_EMAILS</code>.</li>
+</ol>
+<h2 id="15-resolved-notes-and-operating-boundaries">15. Resolved Notes And Operating Boundaries<a class="heading-anchor" href="#15-resolved-notes-and-operating-boundaries" aria-label="Link to 15. Resolved Notes And Operating Boundaries">#</a></h2><p>The stale admin references found during this review have been corrected in the current README and code comments:</p>
+<ol>
+<li><code>/admin/reviewer</code> is no longer documented as an available admin route.</li>
+<li><code>REVIEWER_EMAILS</code> is no longer documented as an admin environment variable.</li>
+<li>A stale &quot;9-module course map&quot; code comment has been updated to match the current 18-module Foundation course.</li>
+</ol>
+<p>The remaining items are operating boundaries to manage intentionally, not runtime bugs:</p>
+<ol>
+<li><strong>Resources:</strong> there is no browser CMS. Manage resources through the manifest, files, tests, and deployment workflow described in section 5. Add a CMS only after defining versioning, approval, entitlement, and audit requirements.</li>
+<li><strong>Course content:</strong> there is no browser course editor. Manage modules, activities, prompts, and artifact templates through the course source files described in section 6. Add an editor only after defining author roles, schema validation, preview, rollback, and learner-impact rules.</li>
+<li><strong>Foundation certification:</strong> final packet submission currently auto-approves after all modules are complete. If human review becomes a product requirement, treat it as a new reviewed-certification feature, not a small admin toggle.</li>
+<li><strong>Refunds:</strong> the app should continue to record refund decisions and support history, while Stripe remains the system that moves money.</li>
+<li><strong>Team assessment self-serve:</strong> keep <code>ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT</code> off until production-like cohort QA and owner approval are complete.</li>
+<li><strong>MailerLite:</strong> treat automation body setup as an external launch checklist item. The app can sync contacts and fields, but MailerLite email-body editing still belongs in the MailerLite dashboard unless a future API-supported authoring flow is built.</li>
+</ol>
+<h2 id="16-quick-reference">16. Quick Reference<a class="heading-anchor" href="#16-quick-reference" aria-label="Link to 16. Quick Reference">#</a></h2><h3 id="best-admin-pages">Best admin pages<a class="heading-anchor" href="#best-admin-pages" aria-label="Link to Best admin pages">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>See launch state</td>
+<td><code>/admin</code></td>
+</tr>
+<tr>
+<td>Triage buyer issues</td>
+<td><code>/admin/support</code></td>
+</tr>
+<tr>
+<td>Search a buyer</td>
+<td><code>/admin/support/search</code></td>
+</tr>
+<tr>
+<td>Work a case</td>
+<td><code>/admin/support/cases/[caseId]</code></td>
+</tr>
+<tr>
+<td>Read funnel state</td>
+<td><code>/admin/funnel</code></td>
+</tr>
+<tr>
+<td>Monitor public AI usage</td>
+<td><code>/admin/toolbox-usage</code></td>
+</tr>
+<tr>
+<td>Export support cases</td>
+<td><code>/admin/support/export.csv?range=30d</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="best-external-systems">Best external systems<a class="heading-anchor" href="#best-external-systems" aria-label="Link to Best external systems">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Refund or inspect payment</td>
+<td>Stripe</td>
+</tr>
+<tr>
+<td>Inspect database record</td>
+<td>Supabase</td>
+</tr>
+<tr>
+<td>Inspect sign-in user</td>
+<td>Supabase Auth</td>
+</tr>
+<tr>
+<td>Inspect transactional email</td>
+<td>Resend</td>
+</tr>
+<tr>
+<td>Inspect marketing automation</td>
+<td>MailerLite</td>
+</tr>
+<tr>
+<td>Inspect deploy/env/cron</td>
+<td>Vercel</td>
+</tr>
+<tr>
+<td>Inspect anonymous traffic</td>
+<td>Vercel Analytics or Plausible</td>
+</tr>
+</tbody></table></div>
+<h3 id="best-repository-files">Best repository files<a class="heading-anchor" href="#best-repository-files" aria-label="Link to Best repository files">#</a></h3><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Resource catalog</td>
+<td><code>src/lib/resources/freeResources.manifest.json</code></td>
+</tr>
+<tr>
+<td>Resource page content</td>
+<td><code>src/app/resources/data.ts</code></td>
+</tr>
+<tr>
+<td>Template content</td>
+<td><code>src/app/resources/templates/data.ts</code></td>
+</tr>
+<tr>
+<td>Course modules</td>
+<td><code>content/courses/foundation-program/micro-modules.ts</code></td>
+</tr>
+<tr>
+<td>Course activities</td>
+<td><code>content/courses/foundation-program/module-activities.ts</code></td>
+</tr>
+<tr>
+<td>Course config</td>
+<td><code>content/courses/foundation-program/course-config.ts</code></td>
+</tr>
+<tr>
+<td>Prompt library source</td>
+<td><code>content/courses/foundation-program/prompt-library.ts</code></td>
+</tr>
+<tr>
+<td>Environment docs</td>
+<td><code>docs/env-vars.md</code></td>
+</tr>
+<tr>
+<td>Funnel reporting docs</td>
+<td><code>docs/funnel-reporting.md</code></td>
+</tr>
+<tr>
+<td>Support runbook</td>
+<td><code>docs/paid-buyer-support-runbook.md</code></td>
+</tr>
+<tr>
+<td>Stripe product docs</td>
+<td><code>docs/stripe-products.md</code></td>
+</tr>
+</tbody></table></div>
+
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
