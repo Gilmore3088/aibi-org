@@ -385,22 +385,75 @@ export function ActivitySection({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    try {
-      setHandoffNote(window.localStorage.getItem(`foundation-module-handoff-${moduleNumber}`) ?? '');
-    } catch {
-      setHandoffNote('');
+    const storageKey = `foundation-module-handoff-${moduleNumber}`;
+
+    function readStoredHandoffNote() {
+      try {
+        setHandoffNote(window.localStorage.getItem(storageKey) ?? '');
+      } catch {
+        setHandoffNote('');
+      }
     }
+
+    function handleHandoffUpdate(event: Event) {
+      const detail = (event as CustomEvent<unknown>).detail as
+        | { moduleNumber?: unknown; value?: unknown }
+        | undefined;
+      if (detail?.moduleNumber !== moduleNumber) return;
+      if (typeof detail.value === 'string') {
+        setHandoffNote(detail.value);
+        setHandoffError(null);
+        setSaveProgressError(null);
+        return;
+      }
+      readStoredHandoffNote();
+    }
+
+    readStoredHandoffNote();
+    window.addEventListener('foundation-module-handoff-updated', handleHandoffUpdate);
+    window.addEventListener('storage', readStoredHandoffNote);
+    return () => {
+      window.removeEventListener('foundation-module-handoff-updated', handleHandoffUpdate);
+      window.removeEventListener('storage', readStoredHandoffNote);
+    };
   }, [moduleNumber]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const savedResponsePlan = getSavedTransferPlanFromResponses(existingResponses);
+    const storageKey = `foundation-transfer-plan-${moduleNumber}`;
+
+    function readStoredTransferPlan() {
+      try {
+        const stored = window.localStorage.getItem(storageKey);
+        setTransferPlan(stored ?? savedResponsePlan);
+      } catch {
+        setTransferPlan(savedResponsePlan);
+      }
+    }
+
+    function handleTransferPlanUpdate(event: Event) {
+      const detail = (event as CustomEvent<unknown>).detail as
+        | { moduleNumber?: unknown; signal?: unknown; value?: unknown }
+        | undefined;
+      if (detail?.moduleNumber !== moduleNumber || detail.signal !== 'transfer-plan') {
+        return;
+      }
+      if (typeof detail.value === 'string') {
+        setTransferPlan(detail.value);
+        setTransferPlanError(null);
+        setSaveProgressError(null);
+        return;
+      }
+      readStoredTransferPlan();
+    }
+
     try {
-      const stored = window.localStorage.getItem(`foundation-transfer-plan-${moduleNumber}`);
+      const stored = window.localStorage.getItem(storageKey);
       const nextValue = stored ?? savedResponsePlan;
       setTransferPlan(nextValue);
       if (!stored && savedResponsePlan) {
-        window.localStorage.setItem(`foundation-transfer-plan-${moduleNumber}`, savedResponsePlan);
+        window.localStorage.setItem(storageKey, savedResponsePlan);
         window.dispatchEvent(
           new CustomEvent('foundation-learning-signal-updated', {
             detail: {
@@ -415,6 +468,13 @@ export function ActivitySection({
     } catch {
       setTransferPlan(savedResponsePlan);
     }
+
+    window.addEventListener('foundation-learning-signal-updated', handleTransferPlanUpdate);
+    window.addEventListener('storage', readStoredTransferPlan);
+    return () => {
+      window.removeEventListener('foundation-learning-signal-updated', handleTransferPlanUpdate);
+      window.removeEventListener('storage', readStoredTransferPlan);
+    };
   }, [existingResponses, moduleNumber]);
 
   // All activities are now routable — no more shell-only types

@@ -113,7 +113,7 @@ export function createServerClientWithCookies(cookieStore: {
  * Use ONLY in server-side code (Route Handlers, Server Actions, webhooks).
  * Never expose or use in Client Components.
  *
- * Use cases: Stripe webhook enrollment writes, reviewer queue updates,
+ * Use cases: Stripe webhook enrollment writes, support/admin workflows,
  * certificate generation — any operation that must act on behalf of the system.
  */
 export function createServiceRoleClient() {
