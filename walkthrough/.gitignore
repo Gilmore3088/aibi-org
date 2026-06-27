@@ -11,3 +11,4 @@ public/narration/
 __pycache__/
 *.pyc
 public/footage/_rec/
+public/footage/_calc/
