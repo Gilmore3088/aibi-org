@@ -79,6 +79,10 @@ export function FreeResourceDownloadGate({
   const [captureContext, setCaptureContext] = useState<FreeResourceCaptureContext | null>(null);
   const [email, setEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  // True only when this finish followed a fresh email capture (which also sends
+  // the resource by email). A same-session re-download does not re-send, so the
+  // inbox reassurance must not claim an email that never went out.
+  const [emailedThisCapture, setEmailedThisCapture] = useState(false);
   const inputId = useId();
 
   const unlockedLabel = capturedLabel ?? `Download ${format}`;
@@ -173,6 +177,7 @@ export function FreeResourceDownloadGate({
       rememberFreeResourceCapture(nextContext);
       setCaptureContext(nextContext);
       setCaptured(true);
+      setEmailedThisCapture(true);
       await runUnlockedAction(nextContext);
     } catch (error) {
       setErrorMsg(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
@@ -183,9 +188,18 @@ export function FreeResourceDownloadGate({
   const containerClass = ['fr-download-gate', containerClassName].filter(Boolean).join(' ');
 
   if (phase === 'done') {
+    // Calm, encouraging finish — not a dead-end "Opening…" label. Drops the
+    // resource title (which overflowed long names) and never shows a redundant
+    // re-download button; the file is already on its way.
+    const confirmClass = ['mk-download-gate-confirm', containerClassName].filter(Boolean).join(' ');
     return (
-      <div className={containerClass} role="status" aria-live="polite">
-        <span className="mk-download-gate-ok">{doneLabel ?? `Opening ${title}...`}</span>
+      <div className={confirmClass} role="status" aria-live="polite">
+        <span className="mk-download-gate-ok">{doneLabel ?? "You're all set."}</span>
+        <span className="mk-download-gate-note">
+          {emailedThisCapture
+            ? 'Your download is starting — and a copy is on its way to your inbox.'
+            : 'Your download is starting.'}
+        </span>
       </div>
     );
   }

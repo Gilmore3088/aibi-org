@@ -61,6 +61,13 @@ describe('FreeResourceDownloadGate', () => {
         '/api/resources/safe-ai-use-checklist/download?source_surface=resources-library',
       );
     });
+
+    // The finish is an encouraging confirmation, not a dead-end "Opening…"
+    // label, and — because a fresh capture also emails the file — it reassures
+    // the requester it is in their inbox.
+    expect(await screen.findByText(/You're all set\./i)).toBeTruthy();
+    expect(screen.getByText(/a copy is on its way to your inbox/i)).toBeTruthy();
+    expect(screen.queryByText(/^Opening /i)).toBeNull();
   });
 
   it('skips the form when the session was already unlocked', () => {
@@ -81,6 +88,10 @@ describe('FreeResourceDownloadGate', () => {
     expect(navigate).toHaveBeenCalledWith(
       '/api/resources/governance-starter-kit/download?source_surface=resources-library',
     );
+    // A same-session re-download does NOT re-send the email, so the finish must
+    // not claim an inbox copy that never went out.
+    expect(screen.getByText('Your download is starting.')).toBeTruthy();
+    expect(screen.queryByText(/inbox/i)).toBeNull();
   });
 
   it('adds remembered assessment context to later resource downloads', () => {
