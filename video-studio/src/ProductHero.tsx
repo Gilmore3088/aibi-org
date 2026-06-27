@@ -97,17 +97,17 @@ export const ProductHero: React.FC = () => {
       <Stage />
 
       <Sequence from={place(A)} durationInFrames={A}>
-        <Shot total={A} src="screens/results.png" url="aibankinginstitute.com/assessment/results"
-          cursor={{ fromX: 980, fromY: 470, toX: 446, toY: 752, moveStart: 30, moveDur: 34, clickAt: 110 }} />
+        <Shot total={A} src="screens/course-overview.png" url="aibankinginstitute.com/courses/foundation"
+          cursor={{ fromX: 1000, fromY: 420, toX: 1500, toY: 636, moveStart: 30, moveDur: 36, clickAt: 112 }} />
       </Sequence>
 
       <Sequence from={place(B)} durationInFrames={B}>
-        <Shot total={B} src="screens/sandbox.png" url="aibankinginstitute.com/sandbox"
-          cursor={{ fromX: 1040, fromY: 430, toX: 1154, toY: 844, moveStart: 34, moveDur: 36, clickAt: 120 }} />
+        <Shot total={B} src="screens/course-module.png" url="aibankinginstitute.com/courses/foundation/module-07"
+          cursor={{ fromX: 760, fromY: 420, toX: 1190, toY: 690, moveStart: 34, moveDur: 38, clickAt: 124 }} />
       </Sequence>
 
       <Sequence from={place(C)} durationInFrames={C}>
-        <Shot total={C} src="screens/toolbox.png" url="aibankinginstitute.com/toolbox" pushTo={1.06} />
+        <Shot total={C} src="screens/course-toolbox.png" url="aibankinginstitute.com/courses/foundation/toolbox" pushTo={1.06} />
       </Sequence>
 
       <Sequence from={place(D)} durationInFrames={D}>
