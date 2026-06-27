@@ -8,3 +8,5 @@ public/site/
 public/narration/
 .env
 .env.*
+__pycache__/
+*.pyc
