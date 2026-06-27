@@ -494,12 +494,87 @@ export async function seedFoundationLearner(
   return { ...user, trustedDevice };
 }
 
+export interface ProvisioningByEmail {
+  readonly enrollment: { id: string; product: string; stripe_session_id: string | null } | null;
+  readonly entitlement: { id: string; product: string; tier: string | null; active: boolean } | null;
+}
+
 /**
- * Delete every user with the `e2e+...@aibankinginstitute.test` pattern.
- * Cascades to user_profiles, course_enrollments, entitlements via FK.
- * Call from an afterAll() hook or a periodic cleanup job.
+ * Look up what a Stripe webhook provisioned for a buyer email: the
+ * course_enrollments row and the matching active entitlement. Used by the
+ * payments-provisioning E2E to assert the full checkout -> webhook ->
+ * enrollment -> entitlement chain landed, then poll for it (provisioning is
+ * async relative to the post-checkout redirect).
  */
-export async function cleanupAllSeededUsers(): Promise<{ deleted: number }> {
+export async function getProvisioningByEmail(
+  email: string,
+  product?: string,
+): Promise<ProvisioningByEmail> {
+  const supabase = getServiceRoleClient();
+  let enrollmentQuery = supabase
+    .from('course_enrollments')
+    .select('id, product, stripe_session_id, user_id')
+    .eq('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  if (product) enrollmentQuery = enrollmentQuery.eq('product', product);
+  const { data: enrollmentRows } = await enrollmentQuery;
+  const enrollment = (enrollmentRows?.[0] as
+    | { id: string; product: string; stripe_session_id: string | null; user_id: string | null }
+    | undefined) ?? null;
+
+  let entitlement: ProvisioningByEmail['entitlement'] = null;
+  if (enrollment?.user_id) {
+    let entQuery = supabase
+      .from('entitlements')
+      .select('id, product, tier, active')
+      .eq('user_id', enrollment.user_id)
+      .eq('active', true)
+      .limit(1);
+    if (product) entQuery = entQuery.eq('product', product);
+    const { data: entRows } = await entQuery;
+    entitlement = (entRows?.[0] as ProvisioningByEmail['entitlement']) ?? null;
+  }
+
+  return {
+    enrollment: enrollment
+      ? { id: enrollment.id, product: enrollment.product, stripe_session_id: enrollment.stripe_session_id }
+      : null,
+    entitlement,
+  };
+}
+
+// Tables that reference auth.users with a delete-BLOCKING FK
+// (NO ACTION / RESTRICT) and that this harness actually populates. Their rows
+// MUST be removed before auth.admin.deleteUser or the delete fails. Everything
+// else (entitlements, trusted_devices, toolbox_items, …) is CASCADE and cleans
+// itself when the auth user goes. This was previously assumed to cascade — it
+// does not, which silently stranded every seeded user that had a profile or
+// enrollment.
+const DELETE_BLOCKING_TABLES = ['course_enrollments', 'user_profiles'] as const;
+
+async function clearDeleteBlockers(
+  supabase: SupabaseClient,
+  userIds: readonly string[],
+): Promise<void> {
+  if (userIds.length === 0) return;
+  const ids = [...userIds];
+  for (const table of DELETE_BLOCKING_TABLES) {
+    const { error } = await supabase.from(table).delete().in('user_id', ids);
+    if (error) {
+      throw new Error(`clearDeleteBlockers: ${table} delete failed: ${error.message}`);
+    }
+  }
+}
+
+/**
+ * Delete every user matching the `e2e+...@aibankinginstitute.test` pattern.
+ * Clears delete-blocking child rows first, then removes each auth user (the
+ * CASCADE FKs handle the rest). Returns the REAL counts: `deleted` only counts
+ * users that actually went away, `failed` flags any that did not — so a caller
+ * can never again mistake "found" for "removed".
+ */
+export async function cleanupAllSeededUsers(): Promise<{ deleted: number; failed: number }> {
   const supabase = getServiceRoleClient();
   const { data: users, error: listError } = await supabase.auth.admin.listUsers({
     page: 1,
@@ -511,17 +586,35 @@ export async function cleanupAllSeededUsers(): Promise<{ deleted: number }> {
   const seeded = users.users.filter(
     (u) => u.email?.startsWith('e2e+') && u.email.endsWith('@aibankinginstitute.test'),
   );
+  if (seeded.length === 0) return { deleted: 0, failed: 0 };
+
+  await clearDeleteBlockers(supabase, seeded.map((u) => u.id));
+
+  let deleted = 0;
+  let failed = 0;
   for (const u of seeded) {
-    await supabase.auth.admin.deleteUser(u.id);
+    const { error } = await supabase.auth.admin.deleteUser(u.id);
+    if (error) {
+      failed += 1;
+      console.warn(`cleanupAllSeededUsers: ${u.id} not deleted: ${error.message}`);
+    } else {
+      deleted += 1;
+    }
   }
-  return { deleted: seeded.length };
+  return { deleted, failed };
 }
 
 /**
- * Delete a single seeded user by id. Cheaper than listAll when a test
- * already has the id.
+ * Delete a single seeded user by id. Clears delete-blocking child rows first
+ * (CASCADE FKs handle the rest), then removes the auth user. A residual failure
+ * is surfaced as a warning rather than thrown, so this stays safe to call from
+ * a test `finally` block without masking the test's own result.
  */
 export async function cleanupSeededUser(userId: string): Promise<void> {
   const supabase = getServiceRoleClient();
-  await supabase.auth.admin.deleteUser(userId);
+  await clearDeleteBlockers(supabase, [userId]);
+  const { error } = await supabase.auth.admin.deleteUser(userId);
+  if (error) {
+    console.warn(`cleanupSeededUser(${userId}) not deleted: ${error.message}`);
+  }
 }

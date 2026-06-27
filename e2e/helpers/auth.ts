@@ -12,9 +12,13 @@ import type { SeededUser } from './seed';
  */
 export async function loginViaUI(page: Page, user: SeededUser): Promise<void> {
   await page.goto('/auth/login');
-  await page.getByLabel(/email/i).fill(user.email);
-  await page.getByLabel(/password/i).fill(user.password);
-  await page.getByRole('button', { name: /sign in|log in/i }).click();
+  // The page has several email inputs (magic-link, password, and purchase
+  // forms), all named "email". Scope to the form that owns the password input
+  // so the credentials go to the password sign-in form, not the magic-link field.
+  const form = page.locator('form').filter({ has: page.locator('input[type="password"]') });
+  await form.locator('input[name="email"]').fill(user.email);
+  await form.locator('input[name="password"]').fill(user.password);
+  await form.getByRole('button', { name: /sign in|log in/i }).click();
   // Accept either a destination outside /auth/ (trusted device) or the
   // confirm-device-pending holding page (untrusted device, #425).
   await page.waitForURL(
