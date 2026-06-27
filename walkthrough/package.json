@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render src/index.ts SiteWalkthrough out/site-walkthrough.mp4"
+    "render": "remotion render src/index.ts SiteWalkthrough out/site-walkthrough.mp4",
+    "render-ad": "remotion render src/index.ts AssessmentAd out/assessment-ad.mp4 --crf 28",
+    "voiceover": "tsx scripts/generate-voiceover.ts",
+    "record": "node scripts/record-experience.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.440",
@@ -12,5 +15,10 @@
     "react-dom": "^18.3.1",
     "remotion": "^4.0.440"
   },
-  "devDependencies": { "@types/react": "^18.3.12", "typescript": "^5.6.3" }
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "undici": "^6.21.0"
+  }
 }

@@ -1,10 +1,12 @@
-// Ad from the REAL assessment recording, cut to the requested shape:
-//   [Ai] open → first 3 questions → (9 questions dropped) → fill name/email →
-//   the ACTUAL report → CTA.
-// Cut points come from the recording (public/footage/assessment.cuts.json).
+// Ad from the REAL assessment recording, narration-driven:
+//   [Ai] open → first 3 questions → (9 dropped) → fill name/email → ACTUAL report → CTA.
+// When narration is generated, each beat stretches to its spoken line and plays
+// its clip; until then it renders silent with captions. Cut points come from the
+// recording (assessment.cuts.json); voice lengths from assessment.narration.json.
 import React from "react";
 import {
   AbsoluteFill,
+  Audio,
   interpolate,
   OffthreadVideo,
   Sequence,
@@ -13,26 +15,34 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import narration from "./assessment.narration.json";
 
 const C = { ink: "#071A2F", ink2: "#0B2745", gold: "#C8A24A", goldSoft: "#E6D39B", cream: "#F7F3EA" };
 const SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 const SERIF = 'Georgia, "Times New Roman", serif';
 const FPS = 30;
 
-// recording cut points (seconds) — see assessment.cuts.json
 const CUT = { q3End: 8.41, formStart: 11.21, reportStart: 19.31, end: 25.42 };
 const f = (s: number) => Math.round(s * FPS);
 
-// three segments: [source range, playback rate]
-const SEGS = [
-  { a: 0, b: CUT.q3End, rate: 1.2, cap: "Twelve questions. About three minutes." },
-  { a: CUT.formStart, b: CUT.reportStart, rate: 1.5, cap: "Add your name — and where you bank." },
-  { a: CUT.reportStart, b: CUT.end, rate: 1.0, cap: "Your real report — score, top gap, where to start." },
-];
-const segLen = (s: { a: number; b: number; rate: number }) => Math.ceil((f(s.b) - f(s.a)) / s.rate);
+const VO: Record<string, { seconds: number; audio: string }> | null =
+  narration.enabled ? (narration.sections as Record<string, { seconds: number; audio: string }>) : null;
 
-const OPEN = 60, CLOSE = 84;
-export const assessmentAdFrames = OPEN + SEGS.reduce((n, s) => n + segLen(s), 0) + CLOSE;
+// footage beats: source range + a default (silent) duration; voiced overrides it
+const SEGS = [
+  { id: "questions", a: 0, b: CUT.q3End, silentRate: 1.2, cap: "Twelve questions. About three minutes." },
+  { id: "form", a: CUT.formStart, b: CUT.reportStart, silentRate: 1.5, cap: "Add your name — and where you bank." },
+  { id: "report", a: CUT.reportStart, b: CUT.end, silentRate: 1.0, cap: "Your real report — score, top gap, where to start." },
+];
+const partFrames = (id: string, fallback: number) => (VO && VO[id] ? Math.round(VO[id].seconds * FPS) : fallback);
+const segFrames = (s: (typeof SEGS)[number]) => partFrames(s.id, Math.ceil((f(s.b) - f(s.a)) / s.silentRate));
+
+const OPEN_DEF = 60, CLOSE_DEF = 84;
+const openFrames = () => partFrames("open", OPEN_DEF);
+const closeFrames = () => partFrames("close", CLOSE_DEF);
+export const assessmentAdFrames = () => openFrames() + SEGS.reduce((n, s) => n + segFrames(s), 0) + closeFrames();
+
+const VoiceClip: React.FC<{ id: string }> = ({ id }) => (VO && VO[id] ? <Audio src={staticFile(VO[id].audio)} /> : null);
 
 const fade = (fr: number, t: number, i = 10, o = 10) =>
   interpolate(fr, [0, i, t - o, t], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
@@ -61,13 +71,14 @@ const Mark = (color: string, size: number) => (
   </span>
 );
 
-const BrandCard: React.FC<{ total: number; title: string; sub?: string }> = ({ total, title, sub }) => {
+const BrandCard: React.FC<{ id: string; total: number; title: string; sub?: string }> = ({ id, total, title, sub }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const reveal = interpolate(frame, [4, 26], [0, 100], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const rise = spring({ frame: frame - 14, fps, config: { damping: 200 } });
   return (
     <AbsoluteFill style={{ opacity: fade(frame, total), alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20 }}>
+      <VoiceClip id={id} />
       <div style={{ position: "relative", lineHeight: 1 }}>
         {Mark(`${C.gold}22`, 150)}
         <div style={{ position: "absolute", inset: 0, overflow: "hidden", width: `${reveal}%` }}>{Mark(C.gold, 150)}</div>
@@ -78,16 +89,19 @@ const BrandCard: React.FC<{ total: number; title: string; sub?: string }> = ({ t
   );
 };
 
-const Seg: React.FC<{ a: number; b: number; rate: number; total: number; cap: string }> = ({ a, b, rate, total, cap }) => {
+const Seg: React.FC<{ s: (typeof SEGS)[number]; total: number }> = ({ s, total }) => {
   const frame = useCurrentFrame();
   const push = interpolate(frame, [0, total], [1.0, 1.025], { extrapolateRight: "clamp" });
+  const rate = (f(s.b) - f(s.a)) / total; // footage fills the (voice-sized) segment
   const o = interpolate(frame, [8, 20, total - 12, total], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ opacity: fade(frame, total, 8, 8), alignItems: "center", justifyContent: "center" }}>
+      <VoiceClip id={s.id} />
       <div style={{ transform: `scale(${push})`, width: 1500, borderRadius: 14, overflow: "hidden", boxShadow: "0 70px 150px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06)" }}>
-        <OffthreadVideo src={staticFile("footage/assessment.mp4")} startFrom={f(a)} endAt={f(b)} playbackRate={rate} style={{ width: "100%", display: "block" }} />
+        <OffthreadVideo src={staticFile("footage/assessment.mp4")} startFrom={f(s.a)} endAt={f(s.b)} playbackRate={rate} style={{ width: "100%", display: "block" }} />
       </div>
-      <div style={{ position: "absolute", bottom: 30, width: "100%", textAlign: "center", opacity: o, fontFamily: SANS, fontSize: 34, color: C.cream, textShadow: "0 3px 16px rgba(0,0,0,.8)" }}>{cap}</div>
+      {/* captions only when there's no voice (voice carries it otherwise) */}
+      {!VO && <div style={{ position: "absolute", bottom: 30, width: "100%", textAlign: "center", opacity: o, fontFamily: SANS, fontSize: 34, color: C.cream, textShadow: "0 3px 16px rgba(0,0,0,.8)" }}>{s.cap}</div>}
     </AbsoluteFill>
   );
 };
@@ -98,12 +112,12 @@ export const AssessmentAd: React.FC = () => {
   return (
     <AbsoluteFill>
       <Stage />
-      <Sequence from={place(OPEN)} durationInFrames={OPEN}><BrandCard total={OPEN} title="Find your AI starting point." sub="Free · 12 questions · 3 minutes" /></Sequence>
-      {SEGS.map((s, i) => {
-        const len = segLen(s);
-        return <Sequence key={i} from={place(len)} durationInFrames={len}><Seg a={s.a} b={s.b} rate={s.rate} total={len} cap={s.cap} /></Sequence>;
+      <Sequence from={place(openFrames())} durationInFrames={openFrames()}><BrandCard id="open" total={openFrames()} title="Find your AI starting point." sub="Free · 12 questions · 3 minutes" /></Sequence>
+      {SEGS.map((s) => {
+        const len = segFrames(s);
+        return <Sequence key={s.id} from={place(len)} durationInFrames={len}><Seg s={s} total={len} /></Sequence>;
       })}
-      <Sequence from={place(CLOSE)} durationInFrames={CLOSE}><BrandCard total={CLOSE} title="Turning Bankers into Builders" sub="aibankinginstitute.com — start free" /></Sequence>
+      <Sequence from={place(closeFrames())} durationInFrames={closeFrames()}><BrandCard id="close" total={closeFrames()} title="Turning Bankers into Builders" sub="aibankinginstitute.com — start free" /></Sequence>
       <Grain />
     </AbsoluteFill>
   );

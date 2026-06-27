@@ -4,3 +4,7 @@ out/
 *.log
 # Captured site pages — regenerate with scripts/capture-site.mjs
 public/site/
+# Generated narration audio (re-create with npm run voiceover)
+public/narration/
+.env
+.env.*
