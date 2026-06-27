@@ -10,6 +10,7 @@
     "render-explainer": "remotion render src/index.ts AiReadyExplainer out/whats-ai-ready.mp4",
     "render-ad": "remotion render src/index.ts BlankCursor out/blank-cursor.mp4",
     "voiceover": "tsx scripts/generate-voiceover.ts",
+    "shots": "tsx scripts/generate-shots.ts",
     "still": "remotion still src/index.ts AssessmentResults out/frame.png --frame=300",
     "upgrade": "remotion upgrade"
   },

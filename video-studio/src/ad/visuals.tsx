@@ -5,13 +5,25 @@ import React from "react";
 import {
   AbsoluteFill,
   interpolate,
+  OffthreadVideo,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import { brand, fonts } from "../brand";
 import { CountUp } from "../ui";
 import { ScriptSection } from "../scripted/types";
+
+// Real/AI-generated footage layer for a beat (used when section.footage is set).
+const Footage: React.FC<{ src: string }> = ({ src }) => (
+  <AbsoluteFill>
+    <OffthreadVideo
+      src={staticFile(src)}
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  </AbsoluteFill>
+);
 
 const MONO = '"SF Mono", "JetBrains Mono", Menlo, Consolas, monospace';
 
@@ -60,10 +72,10 @@ const Supers: React.FC<{ section: ScriptSection; total: number }> = ({
     <div
       style={{
         position: "absolute",
-        bottom: legal ? 70 : 84,
+        bottom: legal ? 150 : 158, // sit inside the letterbox safe area
         width: "100%",
         textAlign: legal ? "center" : "left",
-        paddingLeft: legal ? 0 : 90,
+        paddingLeft: legal ? 0 : 150,
         opacity: o,
         fontFamily: fonts.sans,
         fontSize: legal ? 26 : 30,
@@ -84,6 +96,16 @@ const DocCursor: React.FC<{
 }> = ({ section, total, tight }) => {
   const frame = useCurrentFrame();
   const scale = kenBurns(frame, total, tight ? 1.4 : 1.0, tight ? 1.55 : 1.05);
+
+  // When a generated/real clip is supplied, use it instead of the graphic.
+  if (section.footage) {
+    return (
+      <AbsoluteFill style={{ opacity: fade(frame, total) }}>
+        <Footage src={section.footage} />
+        <Supers section={section} total={total} />
+      </AbsoluteFill>
+    );
+  }
 
   return (
     <AbsoluteFill
@@ -271,6 +293,14 @@ const Artifacts: React.FC<{ section: ScriptSection; total: number }> = ({ sectio
 // ── Beat 5 — draft, edit, sign (you stay in the chair) ─────────────────────
 const DraftSign: React.FC<{ section: ScriptSection; total: number }> = ({ section, total }) => {
   const frame = useCurrentFrame();
+  if (section.footage) {
+    return (
+      <AbsoluteFill style={{ opacity: fade(frame, total) }}>
+        <Footage src={section.footage} />
+        <Supers section={section} total={total} />
+      </AbsoluteFill>
+    );
+  }
   const lines = [96, 90, 99, 84, 92, 70];
   const sigStart = Math.round(total * 0.55);
   const sig = interpolate(frame, [sigStart, sigStart + 26], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });

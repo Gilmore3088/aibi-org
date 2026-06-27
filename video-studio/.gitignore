@@ -9,3 +9,5 @@ out/
 
 # Generated narration audio (re-create with `npm run voiceover`)
 public/narration/
+# Generated / downloaded footage (re-create with `npm run shots`)
+public/footage/

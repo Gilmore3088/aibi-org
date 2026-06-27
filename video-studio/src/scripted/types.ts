@@ -42,6 +42,10 @@ export interface ScriptSection {
   value?: number;
   /** A lower-third "super" — a URL, legal line, or tagline. */
   super?: string;
+  /** Path (relative to public/) of a footage clip for this beat. When set, the
+   *  bespoke graphic is replaced by real/AI-generated video, with supers kept
+   *  on top. Drop generated clips in public/footage/ and set this. */
+  footage?: string;
   /** The narration — spoken aloud (when you add voiceover) AND shown as
    *  kinetic captions. This is the script. */
   narration: string;
