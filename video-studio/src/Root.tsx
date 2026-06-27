@@ -12,6 +12,7 @@ import { safeAiUseScript } from "./scripts/safe-ai-use";
 import { whatsAiReadyScript } from "./scripts/whats-ai-ready";
 import { blankCursorScript } from "./scripts/blank-cursor";
 import { bankersIntoBuildersScript } from "./scripts/bankers-into-builders";
+import { ProductHero, productHeroFrames } from "./ProductHero";
 import { totalFrames } from "./scripted/types";
 
 export const RemotionRoot: React.FC = () => {
@@ -79,6 +80,16 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: bankersFrames(props.script ?? bankersIntoBuildersScript),
         })}
+      />
+
+      {/* Video 6 — PROOF of the "product-as-hero" look (real UI, no actors). */}
+      <Composition
+        id="ProductHero"
+        component={ProductHero}
+        durationInFrames={productHeroFrames}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );
