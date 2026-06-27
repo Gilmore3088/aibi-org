@@ -36,12 +36,12 @@ Also deployed after the original checklist:
 Locally completed after the original checklist, pending commit/deploy/live proof:
 
 - 20-person remediation comparison:
-  [`Plans/20-persona-remediation-comparison-2026-06-23.md`](../Plans/20-persona-remediation-comparison-2026-06-23.md).
+  [`archive/Plans/20-persona-remediation-comparison-2026-06-23.md`](../archive/Plans/20-persona-remediation-comparison-2026-06-23.md).
 - Finalized 50-person GTM readiness review:
-  [`Plans/50-persona-gtm-readiness-review-2026-06-23.md`](../Plans/50-persona-gtm-readiness-review-2026-06-23.md).
+  [`archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md`](../archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md).
 - 100-persona audit remediation: local outcome rows now count
   **100 ok / 0 warn / 0 fail** in
-  [`docs/persona-audit-2026-06-23/02-persona-outcomes.md`](persona-audit-2026-06-23/02-persona-outcomes.md).
+  [`archive/docs/persona-audit-2026-06-23/02-persona-outcomes.md`](../archive/docs/persona-audit-2026-06-23/02-persona-outcomes.md).
 - Current launch gate:
   [`docs/launch-checklist.md`](launch-checklist.md) now treats the remaining
   100-persona work as production proof rather than unresolved local persona rows.

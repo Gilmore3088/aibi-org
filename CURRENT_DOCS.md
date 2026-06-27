@@ -26,11 +26,11 @@ were archived locally outside the repo at:
 | Site E2E review (10 buyer personas, funnel friction) | [Persona E2E review 2026-06-22](docs/reviews/persona-e2e-review-2026-06-22.md) |
 | Adversarial red-team review (GTM plan + site) | [Red-team review 2026-06-22](docs/reviews/red-team-review-2026-06-22.md) |
 | Consolidated GTM readiness review (10 consumers + 10 expert lenses) | [20-persona GTM review 2026-06-23](docs/reviews/gtm-20-persona-review-2026-06-23.md) |
-| Current prioritized persona remediation plans | [20-persona prioritized remediation plans 2026-06-23](Plans/20-persona-prioritized-remediation-plans-2026-06-23.md) |
-| 20-person remediation comparison | [20-persona remediation comparison 2026-06-23](Plans/20-persona-remediation-comparison-2026-06-23.md) |
-| Finalized 50-person GTM readiness review | [50-persona GTM readiness review 2026-06-23](Plans/50-persona-gtm-readiness-review-2026-06-23.md) |
-| Larger 100-persona remediation plan | [100-persona audit action items 2026-06-23](docs/persona-audit-2026-06-23/03-action-items.md) |
-| 100-persona outcome tracker | [100-persona outcomes 2026-06-23](docs/persona-audit-2026-06-23/02-persona-outcomes.md) |
+| Current prioritized persona remediation plans | [20-persona prioritized remediation plans 2026-06-23](archive/Plans/20-persona-prioritized-remediation-plans-2026-06-23.md) |
+| 20-person remediation comparison | [20-persona remediation comparison 2026-06-23](archive/Plans/20-persona-remediation-comparison-2026-06-23.md) |
+| Finalized 50-person GTM readiness review | [50-persona GTM readiness review 2026-06-23](archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md) |
+| Larger 100-persona remediation plan | [100-persona audit action items 2026-06-23](archive/docs/persona-audit-2026-06-23/03-action-items.md) |
+| 100-persona outcome tracker | [100-persona outcomes 2026-06-23](archive/docs/persona-audit-2026-06-23/02-persona-outcomes.md) |
 | Original action plans from the 20-persona GTM review | [20-persona GTM action plans 2026-06-23](docs/reviews/gtm-20-persona-action-plans-2026-06-23.md) |
 | Persona-by-persona issue resolution status | [GTM persona resolution log 2026-06-23](docs/reviews/gtm-persona-resolution-log-2026-06-23.md) |
 | AI / LLM data handling policy | [LLM data handling](docs/compliance/llm-data-handling.md) |
@@ -43,6 +43,7 @@ were archived locally outside the repo at:
 |---|---|
 | [docs/](docs/README.md) | Current operational, integration, compliance, brand, and email reference docs. |
 | [Plans/](Plans/README.md) | Current strategic plans and launch planning docs. |
+| [archive/](archive/) | Superseded dated plans and persona-audit reports, kept for history. |
 
 ## Local Tracking Docs
 

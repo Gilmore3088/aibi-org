@@ -270,11 +270,11 @@ The current review chain is:
 - 20-persona GTM review:
   `docs/reviews/gtm-20-persona-review-2026-06-23.md`.
 - 20-person remediation comparison:
-  `Plans/20-persona-remediation-comparison-2026-06-23.md`.
+  `archive/Plans/20-persona-remediation-comparison-2026-06-23.md`.
 - Finalized 50-person GTM readiness review:
-  `Plans/50-persona-gtm-readiness-review-2026-06-23.md`.
+  `archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md`.
 - 100-persona outcome tracker:
-  `docs/persona-audit-2026-06-23/02-persona-outcomes.md`.
+  `archive/docs/persona-audit-2026-06-23/02-persona-outcomes.md`.
 
 Before broad paid promotion:
 
@@ -419,14 +419,14 @@ Current dirty-worktree status at handoff:
 Local/untracked artifacts created for the persona remediation and reviews include:
 
 ```text
-Plans/20-persona-prioritized-remediation-plans-2026-06-23.md
-Plans/20-persona-remediation-comparison-2026-06-23.md
-Plans/50-persona-gtm-readiness-review-2026-06-23.md
+archive/Plans/20-persona-prioritized-remediation-plans-2026-06-23.md
+archive/Plans/20-persona-remediation-comparison-2026-06-23.md
+archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md
 docs/reviews/gtm-20-persona-review-2026-06-23.md
 docs/handoffs/persona-sweep-2026-06-23/summary.md
 docs/handoffs/persona-sweep-2026-06-23/sweep.json
 docs/handoffs/persona-sweep-2026-06-23/shots/*.png
-docs/persona-audit-2026-06-23/
+archive/docs/persona-audit-2026-06-23/
 docs/live-smoke-test-evidence-log.md
 docs/proof-collection-runbook.md
 ```
