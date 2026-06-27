@@ -1,0 +1,6 @@
+node_modules/
+out/
+.remotion/
+*.log
+# Captured site pages — regenerate with scripts/capture-site.mjs
+public/site/
