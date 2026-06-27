@@ -13,15 +13,17 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { safeAiUseScript } from "../src/scripts/safe-ai-use";
 import { whatsAiReadyScript } from "../src/scripts/whats-ai-ready";
+import { blankCursorScript } from "../src/scripts/blank-cursor";
 import type { VideoScript } from "../src/scripted/types";
 
 // ── which script + where its files go ──────────────────────────────────────
 // Pick with `SCRIPT=safe-ai-use npm run voiceover`; defaults to the current one.
 const REGISTRY: Record<string, VideoScript> = {
+  "blank-cursor": blankCursorScript,
   "whats-ai-ready": whatsAiReadyScript,
   "safe-ai-use": safeAiUseScript,
 };
-const SCRIPT_ID = process.env.SCRIPT || "whats-ai-ready";
+const SCRIPT_ID = process.env.SCRIPT || "blank-cursor";
 const script: VideoScript = REGISTRY[SCRIPT_ID];
 if (!script) {
   console.error(`Unknown SCRIPT "${SCRIPT_ID}". Options: ${Object.keys(REGISTRY).join(", ")}`);

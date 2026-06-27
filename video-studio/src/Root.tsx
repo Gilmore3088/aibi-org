@@ -6,8 +6,10 @@ import { AssessmentResults, TOTAL_FRAMES } from "./AssessmentResults";
 import { sampleResult } from "./data";
 import { ScriptedExplainer } from "./ScriptedExplainer";
 import { AiReadyExplainer } from "./AiReadyExplainer";
+import { BlankCursor, adFrames } from "./BlankCursor";
 import { safeAiUseScript } from "./scripts/safe-ai-use";
 import { whatsAiReadyScript } from "./scripts/whats-ai-ready";
+import { blankCursorScript } from "./scripts/blank-cursor";
 import { totalFrames } from "./scripted/types";
 
 export const RemotionRoot: React.FC = () => {
@@ -48,6 +50,19 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ script: whatsAiReadyScript }}
         calculateMetadata={({ props }) => ({
           durationInFrames: totalFrames(props.script ?? whatsAiReadyScript),
+        })}
+      />
+
+      {/* Video 4 — "The Blank Cursor", the :30 broadcast/social ad. */}
+      <Composition
+        id="BlankCursor"
+        component={BlankCursor}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{ script: blankCursorScript }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: adFrames(props.script ?? blankCursorScript),
         })}
       />
     </>

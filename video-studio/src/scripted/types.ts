@@ -40,6 +40,8 @@ export interface ScriptSection {
   labels?: string[];
   /** Target number for the gauge visual. */
   value?: number;
+  /** A lower-third "super" — a URL, legal line, or tagline. */
+  super?: string;
   /** The narration — spoken aloud (when you add voiceover) AND shown as
    *  kinetic captions. This is the script. */
   narration: string;
