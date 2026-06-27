@@ -138,3 +138,13 @@ docs/reviews/lighthouse-*/
 *.local.md
 
 
+
+# --- Cleanup 2026-06-27: tool cache + dated draft docs (keep local, not in git) ---
+/.understand-anything/
+/docs/HANDOFF-*.md
+/docs/HANDOFF-*.html
+/docs/lead-capture-nurture-plan-2026-*.md
+/docs/lead-capture-nurture-plan-2026-*.html
+/docs/nurture-*-draft-2026-*.md
+/docs/sr-model-risk-copy-sweep-2026-*.md
+/docs/*-review-2026-*.html
