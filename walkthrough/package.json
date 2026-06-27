@@ -7,7 +7,7 @@
     "render": "remotion render src/index.ts SiteWalkthrough out/site-walkthrough.mp4",
     "render-ad": "remotion render src/index.ts AssessmentAd out/assessment-ad.mp4 --crf 28",
     "voiceover": "tsx scripts/generate-voiceover.ts",
-    "record": "node scripts/record-experience.mjs"
+    "record": "node scripts/record-experience.mjs && npx remotion ffmpeg -y -i public/footage/_rec/assessment.webm -c:v libx264 -crf 24 -pix_fmt yuv420p -movflags +faststart public/footage/assessment.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.440",

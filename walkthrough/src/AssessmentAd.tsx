@@ -16,13 +16,15 @@ import {
   useVideoConfig,
 } from "remotion";
 import narration from "./assessment.narration.json";
+import cuts from "../public/footage/assessment.cuts.json";
 
 const C = { ink: "#071A2F", ink2: "#0B2745", gold: "#C8A24A", goldSoft: "#E6D39B", cream: "#F7F3EA" };
 const SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 const SERIF = 'Georgia, "Times New Roman", serif';
 const FPS = 30;
 
-const CUT = { q3End: 8.41, formStart: 11.21, reportStart: 19.31, end: 25.42 };
+// Cut points come from the recording — re-record and they update automatically.
+const CUT = cuts as { q3End: number; formStart: number; reportStart: number; end: number };
 const f = (s: number) => Math.round(s * FPS);
 
 const VO: Record<string, { seconds: number; audio: string }> | null =
