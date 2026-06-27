@@ -10,10 +10,11 @@ cd "$(dirname "$0")/.."
 
 SCRIPT="${1:-blank-cursor}"
 case "$SCRIPT" in
-  blank-cursor)   COMP=BlankCursor;       OUT=blank-cursor.mp4 ;;
-  whats-ai-ready) COMP=AiReadyExplainer;  OUT=whats-ai-ready.mp4 ;;
-  safe-ai-use)    COMP=ScriptedExplainer; OUT=safe-ai-use.mp4 ;;
-  *) echo "✗ unknown script '$SCRIPT' (blank-cursor | whats-ai-ready | safe-ai-use)" >&2; exit 1 ;;
+  blank-cursor)          COMP=BlankCursor;         OUT=blank-cursor.mp4 ;;
+  bankers-into-builders) COMP=BankersIntoBuilders; OUT=bankers-into-builders.mp4 ;;
+  whats-ai-ready)        COMP=AiReadyExplainer;    OUT=whats-ai-ready.mp4 ;;
+  safe-ai-use)           COMP=ScriptedExplainer;   OUT=safe-ai-use.mp4 ;;
+  *) echo "✗ unknown script '$SCRIPT'" >&2; exit 1 ;;
 esac
 
 if [ -z "${ELEVENLABS_API_KEY:-}" ] && [ -z "${OPENAI_API_KEY:-}" ]; then

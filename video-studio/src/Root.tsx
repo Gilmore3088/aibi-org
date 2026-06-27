@@ -7,9 +7,11 @@ import { sampleResult } from "./data";
 import { ScriptedExplainer } from "./ScriptedExplainer";
 import { AiReadyExplainer } from "./AiReadyExplainer";
 import { BlankCursor, adFrames } from "./BlankCursor";
+import { BankersIntoBuilders, bankersFrames } from "./BankersIntoBuilders";
 import { safeAiUseScript } from "./scripts/safe-ai-use";
 import { whatsAiReadyScript } from "./scripts/whats-ai-ready";
 import { blankCursorScript } from "./scripts/blank-cursor";
+import { bankersIntoBuildersScript } from "./scripts/bankers-into-builders";
 import { totalFrames } from "./scripted/types";
 
 export const RemotionRoot: React.FC = () => {
@@ -63,6 +65,19 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ script: blankCursorScript }}
         calculateMetadata={({ props }) => ({
           durationInFrames: adFrames(props.script ?? blankCursorScript),
+        })}
+      />
+
+      {/* Video 5 — "Bankers into Builders", the :60 journey ad. */}
+      <Composition
+        id="BankersIntoBuilders"
+        component={BankersIntoBuilders}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{ script: bankersIntoBuildersScript }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: bankersFrames(props.script ?? bankersIntoBuildersScript),
         })}
       />
     </>

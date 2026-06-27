@@ -14,11 +14,13 @@ import { fileURLToPath } from "node:url";
 import { safeAiUseScript } from "../src/scripts/safe-ai-use";
 import { whatsAiReadyScript } from "../src/scripts/whats-ai-ready";
 import { blankCursorScript } from "../src/scripts/blank-cursor";
+import { bankersIntoBuildersScript } from "../src/scripts/bankers-into-builders";
 import type { VideoScript } from "../src/scripted/types";
 
 // ── which script + where its files go ──────────────────────────────────────
 // Pick with `SCRIPT=safe-ai-use npm run voiceover`; defaults to the current one.
 const REGISTRY: Record<string, VideoScript> = {
+  "bankers-into-builders": bankersIntoBuildersScript,
   "blank-cursor": blankCursorScript,
   "whats-ai-ready": whatsAiReadyScript,
   "safe-ai-use": safeAiUseScript,
