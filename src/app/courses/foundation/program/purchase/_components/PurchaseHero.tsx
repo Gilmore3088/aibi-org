@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { foundationDurationLabel } from '@content/courses/foundation-program';
 import { SavedPromptCard } from './SavedPromptCard';
 
 const INTER_STACK =
@@ -47,6 +48,19 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
         >
           AiBI-Foundation · 18 bite-sized modules · $295
         </span>
+
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            color: 'rgba(247, 243, 234, 0.72)',
+            margin: '0 0 18px',
+          }}
+        >
+          {foundationDurationLabel()}
+        </p>
 
         <h1
           style={{

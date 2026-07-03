@@ -4,7 +4,7 @@
 
 import {
   FOUNDATION_MODULE_COUNT,
-  FOUNDATION_TOTAL_MINUTES,
+  getFoundationTrainingRecord,
 } from '@content/courses/foundation-program';
 
 interface FAQ {
@@ -13,7 +13,7 @@ interface FAQ {
   readonly defaultOpen?: boolean;
 }
 
-const COURSE_HOURS = Math.round((FOUNDATION_TOTAL_MINUTES / 60) * 10) / 10;
+const COURSE_HOURS = getFoundationTrainingRecord().hours;
 
 const QUESTIONS: readonly FAQ[] = [
   {

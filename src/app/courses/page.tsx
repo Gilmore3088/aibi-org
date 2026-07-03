@@ -3,6 +3,7 @@ import CoursesIndexPage from './_client';
 import {
   ARTIFACT_FIRST_BY_MODULE,
   foundationCourseConfig,
+  getFoundationTrainingRecord,
 } from '@content/courses/foundation-program';
 
 const MODULE_COUNT = foundationCourseConfig.modules.length;
@@ -14,6 +15,7 @@ const courseOverviewFacts = {
   artifactCount: ARTIFACT_COUNT,
   individualPriceLabel: '$295',
   teamSeatPriceLabel: '$199',
+  durationLabel: `~${getFoundationTrainingRecord().hours} hours self-paced`,
   samplePacketSlots: SAMPLE_PACKET_MODULES.map((moduleNumber) => ({
     moduleNumber,
     label: ARTIFACT_FIRST_BY_MODULE[moduleNumber].saved,

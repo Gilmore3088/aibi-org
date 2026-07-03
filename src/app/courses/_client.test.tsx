@@ -20,7 +20,7 @@ describe('CoursesIndexPage', () => {
       screen.getByRole('heading', { name: /build reusable ai work products for banking/i }),
     ).toBeTruthy();
     expect(
-      screen.getByText(/18 modules · 18-piece Foundation Packet · reviewed work products/i),
+      screen.getByText(/18 modules · self-paced · 18-piece Foundation Packet · reviewed work products/i),
     ).toBeTruthy();
     expect(screen.queryByText(/182 minutes/i)).toBeNull();
     expect(screen.getByRole('heading', { name: /one lesson\. one saved artifact/i })).toBeTruthy();
@@ -33,5 +33,23 @@ describe('CoursesIndexPage', () => {
       '/courses/foundation/program/purchase',
     );
     expect(screen.queryByRole('link', { name: /Get In-Depth report/i })).toBeNull();
+  });
+
+  it('surfaces total seat time in the hero proofline when facts provide it', () => {
+    render(
+      <CoursesIndexPage
+        facts={{
+          moduleCount: 18,
+          artifactCount: 18,
+          individualPriceLabel: '$295',
+          durationLabel: '~3 hours self-paced',
+          samplePacketSlots: [{ moduleNumber: 1, label: 'AI Limits Card' }],
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByText(/18 modules · ~3 hours self-paced · 18-piece Foundation Packet/i),
+    ).toBeTruthy();
   });
 });

@@ -25,6 +25,10 @@ describe('PricingPage', () => {
     expect(screen.getByText(/certificate with public authenticity URL/i)).toBeTruthy();
     expect(screen.getByText(/simple purchase rules/i)).toBeTruthy();
     expect(screen.getByText(/no subscription is required/i)).toBeTruthy();
+    // Seat-time transparency: buyers see the time cost before committing.
+    expect(
+      screen.getByText(/~\d+(\.\d+)? hours total · \d+–\d+ min per module · self-paced/i),
+    ).toBeTruthy();
   });
 
   it('links each option to the correct next step', () => {
