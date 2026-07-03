@@ -60,6 +60,12 @@ import {
   getFoundationLabBrief,
   type FoundationLabBrief,
 } from '@content/courses/foundation-program/lab-first';
+import {
+  getTestOutCheck,
+  isTestOutEligible,
+  type TestOutCheck,
+} from '@content/courses/foundation-program/test-out';
+import { TestOutCard } from '../_components/TestOutCard';
 
 interface ModulePageParams {
   readonly params: Promise<{ module: string }>;
@@ -291,6 +297,24 @@ export default async function ModulePage(props: ModulePageParams) {
   const submitMin = Math.max(5, totalMin - takeawayMin - sandboxMin);
   const hasSandbox = Boolean(SANDBOX_CONFIGS[moduleNum]);
 
+  // Prior-experience recognition: offer the test-out check on the learner's
+  // current, eligible early-ramp module. Strip the correct flags before the
+  // check crosses to the client — grading is server-side.
+  const rawTestOutCheck =
+    status === 'current' && !isAlreadyCompleted && isTestOutEligible(moduleNum, learnerRole)
+      ? getTestOutCheck(moduleNum)
+      : null;
+  const testOutCheck: TestOutCheck | null = rawTestOutCheck
+    ? {
+        moduleNumber: rawTestOutCheck.moduleNumber,
+        questions: rawTestOutCheck.questions.map((question) => ({
+          id: question.id,
+          prompt: question.prompt,
+          options: question.options.map((option) => ({ id: option.id, label: option.label })),
+        })),
+      }
+    : null;
+
   return (
     <CourseShell
       modules={lmsModules}
@@ -447,6 +471,9 @@ export default async function ModulePage(props: ModulePageParams) {
                 >
                   Understand · {takeawayMin} min
                 </h2>
+                {testOutCheck && (
+                  <TestOutCard check={testOutCheck} enrollmentId={enrollment.id} />
+                )}
                 <LearnSection
                   sections={expandedModule?.sections ?? []}
                   keyTakeaways={expandedModule?.takeaways}

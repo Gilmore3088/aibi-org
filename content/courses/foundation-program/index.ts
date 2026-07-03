@@ -12,3 +12,4 @@ export * from './module-3-activities';
 export * from './prompt-library';
 export * from './output-examples';
 export * from './role-paths';
+export * from './test-out';
