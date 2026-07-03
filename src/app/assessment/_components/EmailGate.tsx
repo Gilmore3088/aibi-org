@@ -27,6 +27,11 @@ import {
   type FreeRole,
 } from '@content/assessments/v3/roles';
 import {
+  FREE_ASSET_BANDS,
+  FREE_ASSET_BAND_LABEL,
+  type FreeAssetBand,
+} from '@content/assessments/v3/asset-bands';
+import {
   formatRoiCurrency,
   formatRoiNumber,
   type RoiAssessmentContext,
@@ -54,12 +59,14 @@ interface EmailGateProps {
       readonly usedFreeEmail?: boolean;
       readonly magicLinkUrl?: string | null;
       readonly role?: FreeRole;
+      readonly assetBand?: FreeAssetBand;
     },
   ) => void;
   readonly onSkip: (extras: {
     readonly firstName?: string;
     readonly institutionName?: string;
     readonly role?: FreeRole;
+    readonly assetBand?: FreeAssetBand;
   }) => void;
   readonly roiContext?: RoiAssessmentContext | null;
 }
@@ -129,6 +136,7 @@ export function EmailGate({
   const [firstName, setFirstName] = useState('');
   const [institutionName, setInstitutionName] = useState('');
   const [role, setRole] = useState<FreeRole | ''>('');
+  const [assetBand, setAssetBand] = useState<FreeAssetBand | ''>('');
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
@@ -186,6 +194,7 @@ export function EmailGate({
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
           role: role || undefined,
+          assetBand: assetBand || undefined,
           marketingOptIn,
         }),
       });
@@ -225,6 +234,7 @@ export function EmailGate({
         // Pass the un-collapsed free role so the inline results view resolves
         // the exact role → playbook (matches what the DB now stores).
         role: role || undefined,
+        assetBand: assetBand || undefined,
       });
     } catch (err) {
       setStatus('error');
@@ -252,6 +262,7 @@ export function EmailGate({
       firstName: firstName.trim() || undefined,
       institutionName: institutionName.trim() || undefined,
       role: role || undefined,
+      assetBand: assetBand || undefined,
     });
   }
 
@@ -431,26 +442,49 @@ export function EmailGate({
               </div>
             </div>
 
-            <div>
-              <label
-                htmlFor="gate-role"
-                className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
-              >
-                Your role <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
-              </label>
-              <select
-                id="gate-role"
-                value={role}
-                onChange={(e) => setRole(e.target.value as FreeRole | '')}
-                className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
-              >
-                <option value="">Select your role</option>
-                {FREE_ROLES.map((r) => (
-                  <option key={r} value={r}>
-                    {FREE_ROLE_LABEL[r]}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-3">
+              <div>
+                <label
+                  htmlFor="gate-role"
+                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  Your role <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+                </label>
+                <select
+                  id="gate-role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as FreeRole | '')}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                >
+                  <option value="">Select your role</option>
+                  {FREE_ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {FREE_ROLE_LABEL[r]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="gate-asset-band"
+                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  Institution size <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+                </label>
+                <select
+                  id="gate-asset-band"
+                  value={assetBand}
+                  onChange={(e) => setAssetBand(e.target.value as FreeAssetBand | '')}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                >
+                  <option value="">Prefer not to say</option>
+                  {FREE_ASSET_BANDS.map((band) => (
+                    <option key={band} value={band}>
+                      {FREE_ASSET_BAND_LABEL[band]}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {status === 'error' && message && (

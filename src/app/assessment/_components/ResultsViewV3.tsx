@@ -34,8 +34,10 @@ import {
   RECOMMENDATIONS,
   STARTER_PROMPTS,
   SEVEN_DAY_PLAN,
+  STAFFING_REALITY,
   TIER_CLOSING_CTA,
 } from '@content/assessments/v3/personalization';
+import type { FreeAssetBand } from '@content/assessments/v3/asset-bands';
 
 const V3_MAX_SCORE = 48;
 
@@ -51,6 +53,9 @@ interface ResultsViewV3Props {
   /** Free-funnel role the respondent selected at email capture. Drives which
    *  role playbook is flagged as "Best match". Null when the role was skipped. */
   readonly role?: FreeRole | null;
+  /** Optional asset band shared at the email gate. Renders the staffing-
+   *  reality stripe; context only — never affects the score. */
+  readonly assetBand?: FreeAssetBand | null;
   /** Show the "you used a personal email" note above the report. Set on the
    *  immediate post-capture hand-off when a free-mail domain was used. */
   readonly showPersonalEmailNote?: boolean;
@@ -143,6 +148,7 @@ export function ResultsViewV3({
   institutionName,
   profileId,
   role,
+  assetBand,
   showPersonalEmailNote,
   roiContext,
 }: ResultsViewV3Props) {
@@ -169,6 +175,7 @@ export function ResultsViewV3({
 
   const matchedPlaybook = bestMatchPlaybook(role);
   const missionName = missionInstitutionName(institutionName);
+  const staffingReality = assetBand ? STAFFING_REALITY[assetBand] : null;
 
   const resultHeadline = firstName?.trim()
     ? `${firstName.trim()}, your result is ${tier.label}.`
@@ -302,6 +309,24 @@ export function ResultsViewV3({
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {staffingReality && (
+        <section
+          className="rounded-[24px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] p-6 md:p-7"
+          aria-label="Staffing reality"
+          data-testid="staffing-reality"
+        >
+          <p className="text-[12px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+            Staffing reality
+          </p>
+          <h2 className="mt-3 text-[24px] md:text-[30px] font-semibold leading-[1.1] text-[color:var(--ink)]">
+            {staffingReality.headline}
+          </h2>
+          <p className="mt-4 max-w-4xl text-[16px] md:text-[17px] leading-[1.65] text-[color:var(--slate-700)]">
+            {staffingReality.body}
+          </p>
         </section>
       )}
 

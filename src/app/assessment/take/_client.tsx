@@ -10,6 +10,7 @@ import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3'
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 import type { FreeRole } from '@content/assessments/v3/roles';
+import type { FreeAssetBand } from '@content/assessments/v3/asset-bands';
 import {
   appendRoiSearchParams,
   parseRoiAssessmentContext,
@@ -36,6 +37,7 @@ export default function AssessmentPage() {
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const [capturedRole, setCapturedRole] = useState<FreeRole | null>(null);
+  const [capturedAssetBand, setCapturedAssetBand] = useState<FreeAssetBand | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [resumeEmail, setResumeEmail] = useState('');
@@ -232,6 +234,7 @@ export default function AssessmentPage() {
             institutionName={capturedInstitution}
             profileId={capturedProfileId}
             role={capturedRole}
+            assetBand={capturedAssetBand}
             showPersonalEmailNote={usedFreeEmail}
             roiContext={roiContext}
           />
@@ -284,6 +287,7 @@ export default function AssessmentPage() {
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(null);
                         setCapturedRole(extras.role ?? null);
+                        setCapturedAssetBand(extras.assetBand ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
                         state.advanceToResults();
                       }}
@@ -293,6 +297,7 @@ export default function AssessmentPage() {
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(null);
                         setCapturedRole(extras.role ?? null);
+                        setCapturedAssetBand(extras.assetBand ?? null);
                         setUsedFreeEmail(false);
                         state.advanceToResults();
                       }}

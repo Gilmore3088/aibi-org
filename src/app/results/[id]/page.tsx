@@ -63,6 +63,7 @@ export default async function ResultsPage(props: ResultsPageProps) {
           institutionName={null}
           profileId={response.profileId}
           role={response.role}
+          assetBand={response.assetBandFree}
           showPersonalEmailNote={showPersonalEmailNote}
           roiContext={roiContext}
         />

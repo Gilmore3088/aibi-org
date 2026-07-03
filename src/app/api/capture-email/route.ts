@@ -38,6 +38,10 @@ import {
   type FreeRole,
   parseFreeRole,
 } from '@content/assessments/v3/roles';
+import {
+  type FreeAssetBand,
+  parseFreeAssetBand,
+} from '@content/assessments/v3/asset-bands';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person
@@ -68,6 +72,7 @@ interface CapturePayload {
   firstName?: unknown;
   institutionName?: unknown;
   role?: unknown;
+  assetBand?: unknown;
   marketingOptIn?: unknown;
   // Research-library gate additions (optional on all calls, required on none).
   lead_source?: unknown;
@@ -123,6 +128,7 @@ type AssessmentPayload = {
   firstName?: string;
   institutionName?: string;
   role?: FreeRole;
+  assetBand?: FreeAssetBand;
   marketingOptIn?: boolean;
   lead_source?: string;
   requested_artifact?: string;
@@ -183,6 +189,10 @@ function parsePayload(p: CapturePayload): ValidatedPayload | null {
   // so silently-bad clients show up as 400s rather than dropping the value.
   const parsedRole = p.role === undefined ? undefined : parseFreeRole(p.role);
   if (p.role !== undefined && parsedRole === null) return null;
+  // Asset band is optional CONTEXT only — an unknown value is dropped, never
+  // a 400, so a stale client can't block the capture (and it never touches
+  // scoring, which is validated purely from answers above).
+  const parsedAssetBand = parseFreeAssetBand(p.assetBand);
 
   return {
     kind: 'assessment',
@@ -197,6 +207,7 @@ function parsePayload(p: CapturePayload): ValidatedPayload | null {
     ...(typeof p.firstName === 'string' ? { firstName: p.firstName } : {}),
     ...(typeof p.institutionName === 'string' ? { institutionName: p.institutionName } : {}),
     ...(parsedRole ? { role: parsedRole } : {}),
+    ...(parsedAssetBand ? { assetBand: parsedAssetBand } : {}),
     ...(typeof p.marketingOptIn === 'boolean' ? { marketingOptIn: p.marketingOptIn } : {}),
     ...(typeof p.lead_source === 'string' ? { lead_source: p.lead_source } : {}),
     ...(typeof p.requested_artifact === 'string' ? { requested_artifact: p.requested_artifact } : {}),
@@ -285,6 +296,7 @@ export async function POST(request: Request) {
     firstName,
     institutionName,
     role,
+    assetBand,
     marketingOptIn,
   } = parsed;
 
@@ -301,6 +313,9 @@ export async function POST(request: Request) {
       fields: {
         tier,
         ...(role ? { role } : {}),
+        // Best-effort subscriber field — MailerLite ignores fields that are
+        // not configured in the account, so this must never block capture.
+        ...(assetBand ? { asset_band: assetBand } : {}),
         ...(trimmedInstitution ? { institution: trimmedInstitution } : {}),
       },
       ...(trimmedFirstName ? { firstName: trimmedFirstName } : {}),
@@ -353,7 +368,12 @@ export async function POST(request: Request) {
       // Persist the un-collapsed free role directly (migration 00040 widened
       // the role CHECK to accept the full union), so the results view can
       // resolve the exact role → playbook without a lossy v2 collapse.
-      role ? { role } : {},
+      // The optional asset band merges into institution_context (jsonb from
+      // migration 00045) — context only, never a scoring input.
+      {
+        ...(role ? { role } : {}),
+        ...(assetBand ? { institutionContextPatch: { asset_band_free: assetBand } } : {}),
+      },
     ).catch((err) => {
       console.warn('[capture-email] supabase skip', err);
       return { id: null as string | null, paidPrimary: false };
