@@ -1,7 +1,10 @@
 // SampleWeek — four-step preview of a typical module.
 //
-// Understand / Try / Build / Save. Pulls real Module 1 content so the buyer
-// sees concrete artifacts, not marketing copy.
+// Understand / Try / Build / Save. Describes Module 1's loop and links to
+// the public /courses/foundation/preview route where buyers can read the
+// module's actual Understand content before paying.
+
+import Link from 'next/link';
 
 const INTER_STACK =
   'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
@@ -85,6 +88,21 @@ export function SampleWeek() {
         >
           Every module runs the same loop: understand the artifact, try a
           contained lab, build the reviewed asset, and save the proof. Below is Module 1.
+        </p>
+        <p style={{ margin: '14px 0 0' }}>
+          <Link
+            href="/courses/foundation/preview"
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 15,
+              fontWeight: 700,
+              color: 'var(--ink)',
+              textDecorationColor: 'var(--gold)',
+              textUnderlineOffset: 4,
+            }}
+          >
+            Read Module 1&rsquo;s full Understand section free &rarr;
+          </Link>
         </p>
       </div>
 

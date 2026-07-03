@@ -25,6 +25,12 @@ interface LearnSectionProps {
   readonly keyTakeaways?: readonly string[];
   readonly moduleNumber: number;
   readonly learnerRole?: LearnerRole;
+  /**
+   * 'preview' renders the same Understand content on the public Module 1
+   * preview: no in-course anchors (the lab/submit tabs don't exist there)
+   * and the reference drawer starts open so visitors see real material.
+   */
+  readonly variant?: 'course' | 'preview';
 }
 
 const FONT_INTER = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -2106,7 +2112,14 @@ function QualityGatePanel({
   );
 }
 
-export function LearnSection({ sections, keyTakeaways, moduleNumber, learnerRole = 'other' }: LearnSectionProps) {
+export function LearnSection({
+  sections,
+  keyTakeaways,
+  moduleNumber,
+  learnerRole = 'other',
+  variant = 'course',
+}: LearnSectionProps) {
+  const isPreview = variant === 'preview';
   const brief = getFoundationLabBrief(moduleNumber);
   const currentArtifact = getArtifactFirst(moduleNumber);
   const previousArtifact = moduleNumber > 1 ? getArtifactFirst(moduleNumber - 1) : undefined;
@@ -2207,27 +2220,29 @@ export function LearnSection({ sections, keyTakeaways, moduleNumber, learnerRole
                 {brief.concept}
               </h3>
             </div>
-            <a
-              href="#st-sandbox"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: 44,
-                borderRadius: 12,
-                background: 'var(--ink)',
-                color: '#fff',
-                padding: '0 16px',
-                textDecoration: 'none',
-                fontSize: 12,
-                fontWeight: 875,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Try it
-            </a>
+            {!isPreview && (
+              <a
+                href="#st-sandbox"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: 44,
+                  borderRadius: 12,
+                  background: 'var(--ink)',
+                  color: '#fff',
+                  padding: '0 16px',
+                  textDecoration: 'none',
+                  fontSize: 12,
+                  fontWeight: 875,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Try it
+              </a>
+            )}
           </div>
 
           <dl
@@ -2318,6 +2333,7 @@ export function LearnSection({ sections, keyTakeaways, moduleNumber, learnerRole
             id={`m${moduleNumber}-reference-drawer`}
             data-testid="foundation-reference-drawer"
             className="foundation-reference-drawer"
+            open={isPreview || undefined}
             style={{
               border: '1px solid var(--ink-a10)',
               borderRadius: 14,

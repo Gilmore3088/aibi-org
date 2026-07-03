@@ -26,8 +26,8 @@ describe('CoursesIndexPage', () => {
     expect(screen.getByRole('heading', { name: /one lesson\. one saved artifact/i })).toBeTruthy();
     expect(screen.getByText(/turn a loose request into a reusable prompt card/i)).toBeTruthy();
     expect(screen.queryByText(/Branch operations reviewer/i)).toBeNull();
-    expect(screen.getByRole('link', { name: /preview a lesson/i }).getAttribute('href')).toBe(
-      '#lesson-preview',
+    expect(screen.getByRole('link', { name: /preview module 1 free/i }).getAttribute('href')).toBe(
+      '/courses/foundation/preview',
     );
     expect(screen.getByRole('link', { name: /enroll in foundation/i }).getAttribute('href')).toBe(
       '/courses/foundation/program/purchase',

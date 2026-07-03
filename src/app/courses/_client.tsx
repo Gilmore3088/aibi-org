@@ -172,8 +172,8 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
                 Enroll · {facts.individualPriceLabel} <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#lesson-preview">
-                Preview a lesson
+              <Button variant="ghost-dark" size="lg" href="/courses/foundation/preview">
+                Preview Module 1 free
               </Button>
             </div>
             <p className="mk-course-proofline">
