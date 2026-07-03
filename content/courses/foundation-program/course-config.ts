@@ -139,6 +139,41 @@ export function getFoundationModuleMeta(moduleId: string): FoundationModuleMeta 
   return FOUNDATION_MODULES_META[moduleId] ?? null;
 }
 
+// ─── Training record ─────────────────────────────────────────────────────────
+//
+// Institutions document staff training for internal training logs and exam
+// evidence. These values describe documented seat time only — they are not
+// CPE credit, accreditation, or regulator-endorsed training, and copy that
+// consumes them must keep that boundary explicit.
+
+export interface FoundationTrainingRecord {
+  readonly totalMinutes: number;
+  /** Seat time rounded to the nearest half hour for display (e.g. 3 or 3.5). */
+  readonly hours: number;
+  readonly moduleCount: number;
+  /** The four pillar labels — the topics-covered line for a training log. */
+  readonly topics: readonly string[];
+}
+
+export function getFoundationTrainingRecord(): FoundationTrainingRecord {
+  return {
+    totalMinutes: FOUNDATION_TOTAL_MINUTES,
+    hours: Math.round((FOUNDATION_TOTAL_MINUTES / 60) * 2) / 2,
+    moduleCount: FOUNDATION_MODULE_COUNT,
+    topics: FOUNDATION_SECTIONS.map((section) => section.label),
+  };
+}
+
+/** Human-readable course duration line, derived — never hardcode the hours. */
+export function foundationDurationLabel(): string {
+  const minutes = foundationCourseConfig.modules.map((mod) => mod.estimatedMinutes);
+  const min = Math.min(...minutes);
+  const max = Math.max(...minutes);
+  const { hours } = getFoundationTrainingRecord();
+  const hoursLabel = Number.isInteger(hours) ? String(hours) : hours.toFixed(1);
+  return `~${hoursLabel} hours total · ${min}–${max} min per module · self-paced`;
+}
+
 /** Re-export the standalone content collections so downstream code can
  *  pull everything Foundation-related from this barrel. */
 export {

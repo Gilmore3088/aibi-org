@@ -18,6 +18,7 @@ import { formatDate } from './_lib/formatDate';
 import { CertificateCard } from './_components/CertificateCard';
 import { CertificateMeta } from './_components/CertificateMeta';
 import { CertificatePending } from './_components/CertificatePending';
+import { TrainingRecordPanel } from './_components/TrainingRecordPanel';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
 
 const INTER_STACK =
@@ -376,7 +377,7 @@ export default async function CertificatePage() {
           )}
         </header>
 
-        {certificate ? (
+        {certificate && verificationUrl ? (
           <>
             <CertificateCard
               holderName={certificate.holder_name}
@@ -388,6 +389,13 @@ export default async function CertificatePage() {
               certificateId={certificate.certificate_id}
               enrollmentId={enrollment.id}
               downloadFilename={`AiBI-Foundation-Certificate-${certificate.certificate_id}.pdf`}
+              issuedAt={certificate.issued_at}
+              verificationUrl={verificationUrl}
+            />
+            <TrainingRecordPanel
+              holderName={certificate.holder_name}
+              issuedAt={certificate.issued_at}
+              verificationUrl={verificationUrl}
             />
             <ReferralPanel
               certificateId={certificate.certificate_id}

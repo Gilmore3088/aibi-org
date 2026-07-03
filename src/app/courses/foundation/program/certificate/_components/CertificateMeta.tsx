@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { buildLinkedInAddToProfileUrl } from '../_lib/linkedin';
 
 const INTER_STACK =
   '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
@@ -17,9 +18,25 @@ interface CertificateMetaProps {
   readonly certificateId: string;
   readonly enrollmentId: string;
   readonly downloadFilename: string;
+  readonly issuedAt: string;
+  readonly verificationUrl: string;
 }
 
-export function CertificateMeta({ certificateId, enrollmentId, downloadFilename }: CertificateMetaProps) {
+export function CertificateMeta({
+  certificateId,
+  enrollmentId,
+  downloadFilename,
+  issuedAt,
+  verificationUrl,
+}: CertificateMetaProps) {
+  const linkedInUrl = buildLinkedInAddToProfileUrl({
+    name: 'AiBI-Foundation',
+    organizationName: 'The AI Banking Institute',
+    issuedAt,
+    certUrl: verificationUrl,
+    certId: certificateId,
+  });
+
   return (
     <div
       style={{
@@ -104,6 +121,28 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
           <br />
           Verified at aibankinginstitute.com/verify/{certificateId}
         </p>
+        <a
+          href={linkedInUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'block',
+            textAlign: 'center',
+            marginTop: 14,
+            background: 'var(--ink)',
+            color: '#FFFFFF',
+            fontFamily: INTER_STACK,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            padding: '12px 16px',
+            borderRadius: 8,
+            textDecoration: 'none',
+          }}
+        >
+          Add to LinkedIn profile
+        </a>
       </section>
 
       {/* Download PDF */}

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
+import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
 export const metadata: Metadata = {
   title: 'Certifications — The AI Banking Institute',
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default function CertificationsPage() {
+  const trainingRecord = getFoundationTrainingRecord();
+  const hoursLabel = Number.isInteger(trainingRecord.hours)
+    ? String(trainingRecord.hours)
+    : trainingRecord.hours.toFixed(1);
+
   return (
     <MockupShell
       activePath="/certifications"
@@ -31,9 +37,24 @@ export default function CertificationsPage() {
           surface: 'white',
         },
         {
+          kicker: 'Training record',
+          heading: <>Documented seat time for your training log.</>,
+          lede: (
+            <>
+              The credential documents ~{hoursLabel} hours of seat time across{' '}
+              {trainingRecord.moduleCount} self-paced modules covering{' '}
+              {trainingRecord.topics.join(', ')}. The verification URL lets your
+              institution confirm the record for its internal training log.
+              Documented seat time is not CPE credit, accreditation, or
+              regulator-endorsed training.
+            </>
+          ),
+        },
+        {
           kicker: 'Claim boundary',
           heading: <>Aligned to public references. Not regulator-endorsed.</>,
           lede: <>No federal or state regulator issues, approves, recognizes, or endorses the AiBI-Foundation credential. The curriculum maps to SR 11-7, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon as public references for bank review.</>,
+          surface: 'white',
         },
       ]}
       ctaBand={{

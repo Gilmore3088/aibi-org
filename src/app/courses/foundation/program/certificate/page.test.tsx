@@ -124,4 +124,22 @@ describe('CertificatePage', () => {
       enrollmentId: 'enrollment-123',
     }));
   });
+
+  it('shows the training-record panel with documented seat time and the non-CPE boundary', async () => {
+    const CertificatePage = (await import('./page')).default;
+
+    render(await CertificatePage());
+
+    expect(
+      screen.getByRole('heading', { name: /for your institution.s training log/i }),
+    ).toBeTruthy();
+    expect(screen.getByText(/documents ~\d+(\.\d+)? hours of seat time/i)).toBeTruthy();
+    expect(
+      screen.getByText(/not CPE credit, accreditation, or\s+regulator-endorsed training/i),
+    ).toBeTruthy();
+    // The paste-ready training log entry carries the verify URL.
+    expect(
+      screen.getByText(/Verification: https:\/\/aibankinginstitute\.com\/verify\/AIBIP-2026-ABC234/i),
+    ).toBeTruthy();
+  });
 });

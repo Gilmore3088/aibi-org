@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
 interface CertificateVerificationResult {
   readonly holder_name: string;
@@ -246,6 +247,12 @@ export default async function CertificateVerificationPage({ params }: PageProps)
   }
 
   const issuedDate = formatDate(certificate.issued_at);
+  const trainingRecord = getFoundationTrainingRecord();
+  const hoursLabel = Number.isInteger(trainingRecord.hours)
+    ? String(trainingRecord.hours)
+    : trainingRecord.hours.toFixed(1);
+  const seatTimeLine = `~${hoursLabel} hours · ${trainingRecord.moduleCount} self-paced modules`;
+  const topicsLine = trainingRecord.topics.join(', ');
 
   return (
     <Surface>
@@ -326,6 +333,8 @@ export default async function CertificateVerificationPage({ params }: PageProps)
             value={`${certificate.designation} · The AI Banking Institute`}
           />
           <DataRow label="Date Issued" value={issuedDate} />
+          <DataRow label="Documented Seat Time" value={seatTimeLine} />
+          <DataRow label="Topics Covered" value={topicsLine} />
           <DataRow label="Issuing Institution" value="The AI Banking Institute" last />
         </article>
 
