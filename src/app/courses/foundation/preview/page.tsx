@@ -35,7 +35,19 @@ export default function FoundationPreviewPage() {
   const totalModules = foundationCourseConfig.modules.length;
 
   return (
-    <div className="mockup-scope">
+    <div
+      className="mockup-scope"
+      style={
+        {
+          // LearnSection's 12px eyebrow labels assume the course shell's
+          // recolored canvas. On this public cream canvas the default
+          // --gold-deep/--slate-500 fall below WCAG AA 4.5:1 at that size,
+          // so darken both for this route (≥4.5:1 on cream, cream-2, white).
+          '--gold-deep': '#7a5f1e',
+          '--slate-500': '#475569',
+        } as React.CSSProperties
+      }
+    >
       <SiteHeader
         activePath="/courses"
         cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }}
