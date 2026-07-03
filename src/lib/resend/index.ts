@@ -63,6 +63,11 @@ import {
   inDepthWaitingReminderHtml,
   inDepthWaitingReminderText,
 } from './templates/paid-reengagement';
+import {
+  certificateTransferReminderHtml,
+  certificateTransferReminderText,
+  type CertificateTransferReminderVars,
+} from './templates/certificate-transfer';
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
 
@@ -765,6 +770,23 @@ export function sendInDepthWaitingReminder(
     html: inDepthWaitingReminderHtml({ actionUrl: payload.actionUrl }),
     text: inDepthWaitingReminderText({ actionUrl: payload.actionUrl }),
     tag: '[resend:in-depth-waiting-reminder]',
+  });
+}
+
+export interface CertificateTransferReminderPayload {
+  readonly email: string;
+  readonly vars: CertificateTransferReminderVars;
+}
+
+export function sendCertificateTransferReminder(
+  payload: CertificateTransferReminderPayload,
+): Promise<ResendResult> {
+  return sendInline({
+    to: payload.email,
+    subject: payload.vars.headingText,
+    html: certificateTransferReminderHtml(payload.vars),
+    text: certificateTransferReminderText(payload.vars),
+    tag: `[resend:certificate-transfer-${payload.vars.stage}]`,
   });
 }
 
