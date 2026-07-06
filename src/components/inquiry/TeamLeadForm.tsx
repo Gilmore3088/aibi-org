@@ -48,6 +48,7 @@ export function TeamLeadForm({
   const [notes, setNotes] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
+  const [reference, setReference] = useState<string | null>(null);
 
   const track = TRACKS.find((option) => option.type === type)?.label ?? defaultTrack.label;
 
@@ -69,8 +70,12 @@ export function TeamLeadForm({
           type,
         }),
       });
-      const body = (await response.json().catch(() => ({}))) as { error?: string };
+      const body = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        reference?: string;
+      };
       if (!response.ok) throw new Error(body.error ?? 'Could not send the inquiry.');
+      setReference(body.reference ?? null);
       setStatus('success');
     } catch (err) {
       setStatus('error');
@@ -153,7 +158,8 @@ export function TeamLeadForm({
         </button>
         {status === 'success' ? (
           <p className="team-lead-success" role="status">
-            Received. We will reply within one business day.
+            Received{reference ? <> — reference <strong>{reference}</strong></> : null}. We will
+            reply within one business day. Keep the reference if you need to follow up.
           </p>
         ) : null}
         {status === 'error' ? (

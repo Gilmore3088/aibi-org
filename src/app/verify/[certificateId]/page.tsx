@@ -5,8 +5,10 @@
 // gold landmark, middle-dot credential format).
 
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 
+import { checkRateLimit } from '@/lib/api/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
@@ -236,6 +238,49 @@ function NotFoundContent() {
 
 export default async function CertificateVerificationPage({ params }: PageProps) {
   const { certificateId } = await params;
+
+  // Throttle scripted probing of the unauthenticated lookup (persona audit:
+  // the AIBIP id space is large, but lookups were completely unthrottled).
+  // Fail-open: a rate-limit store outage must not break legitimate
+  // verification.
+  const headerList = await headers();
+  const ip =
+    headerList.get('x-real-ip') ??
+    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    'unknown';
+  const rate = await checkRateLimit({
+    key: 'verify-lookup',
+    scope: 'ip',
+    identifier: ip,
+    max: 30,
+    windowSeconds: 600,
+  }).catch(() => ({ allowed: true as const, resetAt: new Date() }));
+  if (!rate.allowed) {
+    return (
+      <Surface>
+        <div style={{ width: '100%', maxWidth: 480, textAlign: 'center' }}>
+          <p style={KICKER}>Verify · Slow down</p>
+          <h1
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
+              fontWeight: 700,
+              color: 'var(--ink)',
+              letterSpacing: '-0.02em',
+              margin: '12px 0',
+            }}
+          >
+            Too many lookups.
+          </h1>
+          <p style={{ fontFamily: INTER_STACK, fontSize: '0.9375rem', color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
+            Try again in a few minutes. If you are verifying certificates in bulk
+            for an institution, contact hello@aibankinginstitute.com.
+          </p>
+        </div>
+      </Surface>
+    );
+  }
+
   const certificate = await fetchCertificate(certificateId);
 
   if (!certificate) {

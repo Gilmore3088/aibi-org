@@ -66,12 +66,30 @@ const PROVIDERS = [
   },
 ] as const;
 
-const OPERATING_POSTURE = [
+const RETENTION_ROWS = [
   {
-    title: 'Retention window',
-    body:
-      'AiBI keeps account, assessment, enrollment, certificate, saved-artifact, support, payment/provisioning, and usage-metadata records while needed to provide the product, operate support, investigate abuse, handle disputes, satisfy tax or legal obligations, and maintain launch evidence. Assessment resume drafts expire after 30 days. Institution rollouts can define stricter retention or deletion expectations before seats are assigned.',
+    record: 'Assessment resume drafts',
+    window: 'Deleted after 30 days',
   },
+  {
+    record: 'Raw prompt text in AI usage logs',
+    window: 'Never stored — metadata only',
+  },
+  {
+    record: 'OpenAI API inputs and outputs',
+    window: 'Retained by OpenAI up to 30 days for abuse monitoring, then deleted (per provider terms)',
+  },
+  {
+    record: 'Account, assessment, enrollment, certificate, saved-artifact, support, and payment records',
+    window: 'Kept while needed to provide the product, operate support, handle disputes, and satisfy tax or legal obligations',
+  },
+  {
+    record: 'Institution rollouts',
+    window: 'Stricter retention or deletion expectations can be defined before seats are assigned',
+  },
+] as const;
+
+const OPERATING_POSTURE = [
   {
     title: 'Usage and PII audit logs',
     body:
@@ -166,6 +184,58 @@ function ProviderGrid() {
   );
 }
 
+function RetentionTable() {
+  return (
+    <div
+      data-testid="retention-table"
+      style={{ ...cardStyle, padding: 0, overflowX: 'auto', marginBottom: 12 }}
+    >
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          fontSize: '0.8125rem',
+          lineHeight: 1.45,
+        }}
+      >
+        <caption
+          style={{
+            textAlign: 'left',
+            padding: '14px 18px 0',
+            color: 'var(--ink)',
+            fontSize: '0.875rem',
+            fontWeight: 800,
+          }}
+        >
+          Retention at a glance
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col" style={{ textAlign: 'left', padding: '12px 18px 8px', color: 'var(--slate-500)', fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+              Record
+            </th>
+            <th scope="col" style={{ textAlign: 'left', padding: '12px 18px 8px', color: 'var(--slate-500)', fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+              How long it is kept
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {RETENTION_ROWS.map((row) => (
+            <tr key={row.record} style={{ borderTop: '1px solid var(--slate-200)' }}>
+              <th scope="row" style={{ textAlign: 'left', padding: '10px 18px', color: 'var(--ink)', fontWeight: 700, verticalAlign: 'top' }}>
+                {row.record}
+              </th>
+              <td style={{ padding: '10px 18px', color: 'var(--slate-600)', fontWeight: 500, verticalAlign: 'top' }}>
+                {row.window}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function OperatingPostureGrid() {
   return (
     <div style={gridStyle}>
@@ -245,7 +315,12 @@ export default function DataHandlingPage() {
               should use before approving an institution rollout.
             </>
           ),
-          body: <OperatingPostureGrid />,
+          body: (
+            <>
+              <RetentionTable />
+              <OperatingPostureGrid />
+            </>
+          ),
           surface: 'white',
         },
         {

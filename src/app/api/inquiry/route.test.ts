@@ -72,7 +72,7 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
 
     expect(mocks.rateLimitOrFail).toHaveBeenCalledWith({
       key: 'inquiry',
@@ -88,15 +88,15 @@ describe('POST /api/inquiry', () => {
       institution: 'Community Bank',
       track: 'Team assessment',
     });
-    expect(mocks.sendInquiryNotification).toHaveBeenCalledWith({
+    expect(mocks.sendInquiryNotification).toHaveBeenCalledWith(expect.objectContaining({
       to: 'hello@aibankinginstitute.com',
       name: 'Alex Rivera',
       email: 'alex@communitybank.test',
       institution: 'Community Bank',
       track: 'Team assessment',
       type: 'team-assessment-request',
-      notes: 'We need 25 seats across compliance and operations.',
-    });
+      notes: expect.stringContaining('We need 25 seats across compliance and operations.'),
+    }));
     expect(mocks.createSupportCase).toHaveBeenCalledWith(expect.objectContaining({
       buyerEmail: 'alex@communitybank.test',
       subject: 'Institution inquiry: Team assessment',
@@ -106,10 +106,10 @@ describe('POST /api/inquiry', () => {
       product: 'team-assessment',
       actorType: 'customer',
       actorEmail: 'alex@communitybank.test',
-      metadata: {
+      metadata: expect.objectContaining({
         inquiryType: 'team-assessment-request',
         track: 'Team assessment',
-      },
+      }),
     }));
     expect(mocks.recordLead).not.toHaveBeenCalled();
   });
@@ -125,7 +125,7 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
 
     expect(mocks.createSupportCase).toHaveBeenCalledWith(expect.objectContaining({
       buyerEmail: 'casey@creditunion.test',
@@ -150,14 +150,14 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
 
     expect(mocks.sendInquiryNotification).toHaveBeenCalledWith(expect.objectContaining({
       to: 'hello@aibankinginstitute.com',
       institution: 'Regional Bankers Bank',
       track: "Bankers' bank / association partner",
       type: 'partner-rollout-request',
-      notes: 'We want to offer readiness checks to 12 client banks.',
+      notes: expect.stringContaining('We want to offer readiness checks to 12 client banks.'),
     }));
     expect(mocks.createSupportCase).toHaveBeenCalledWith(expect.objectContaining({
       buyerEmail: 'morgan@bankersbank.test',
@@ -165,10 +165,10 @@ describe('POST /api/inquiry', () => {
       category: 'team_seats',
       priority: 'high',
       product: 'partner-rollout',
-      metadata: {
+      metadata: expect.objectContaining({
         inquiryType: 'partner-rollout-request',
         track: "Bankers' bank / association partner",
-      },
+      }),
     }));
   });
 
@@ -183,7 +183,7 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
     expect(response.headers.get('set-cookie')).toContain(
       'aibi_free_resource_email=jordan%40communitybank.test',
     );
@@ -209,7 +209,7 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
     expect(mocks.sendResourceDelivery).toHaveBeenCalledWith({
       email: 'sam@communitybank.test',
       title: 'The Bank InfoSec AI Control Plane Kit',
@@ -238,14 +238,14 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
 
     expect(mocks.sendInquiryNotification).toHaveBeenCalledWith(expect.objectContaining({
       to: 'hello@aibankinginstitute.com',
       institution: 'Neighborhood Credit Union',
       track: 'Cohort pilot / L&D rollout',
       type: 'cohort-pilot-request',
-      notes: 'We need a launch packet and manager handoff for 40 learners.',
+      notes: expect.stringContaining('We need a launch packet and manager handoff for 40 learners.'),
     }));
     expect(mocks.createSupportCase).toHaveBeenCalledWith(expect.objectContaining({
       buyerEmail: 'taylor@creditunion.test',
@@ -253,10 +253,10 @@ describe('POST /api/inquiry', () => {
       category: 'team_seats',
       priority: 'high',
       product: 'cohort-pilot',
-      metadata: {
+      metadata: expect.objectContaining({
         inquiryType: 'cohort-pilot-request',
         track: 'Cohort pilot / L&D rollout',
-      },
+      }),
     }));
   });
 
@@ -271,14 +271,14 @@ describe('POST /api/inquiry', () => {
     }));
 
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ ok: true });
+    await expect(response.json()).resolves.toEqual(expect.objectContaining({ ok: true }));
 
     expect(mocks.sendInquiryNotification).toHaveBeenCalledWith(expect.objectContaining({
       to: 'hello@aibankinginstitute.com',
       institution: 'Metro Credit Union',
       track: 'PMO project plan',
       type: 'project-plan-request',
-      notes: 'We need a 90-day project plan, owners, milestones, and SLA.',
+      notes: expect.stringContaining('We need a 90-day project plan, owners, milestones, and SLA.'),
     }));
     expect(mocks.createSupportCase).toHaveBeenCalledWith(expect.objectContaining({
       buyerEmail: 'jordan@creditunion.test',
@@ -286,10 +286,10 @@ describe('POST /api/inquiry', () => {
       category: 'team_seats',
       priority: 'high',
       product: 'project-plan',
-      metadata: {
+      metadata: expect.objectContaining({
         inquiryType: 'project-plan-request',
         track: 'PMO project plan',
-      },
+      }),
     }));
   });
 

@@ -48,11 +48,15 @@ const TIERS = [
   },
   {
     name: 'Institution Rollout',
-    price: 'Custom',
-    cadence: 'Scoped before rollout',
+    price: 'From $199/seat',
+    cadence: '10+ seats · scoped before rollout',
     badge: 'For teams',
     bestFor: 'Departments, cohorts, institutions, associations, or partner channels.',
-    bullets: ['Rollout planning and cohort setup', 'Reporting scope and support path', 'Optional briefing'],
+    bullets: [
+      'Foundation seats at $199 each for 10+ seats',
+      'Rollout planning and cohort setup',
+      'Reporting scope and support path',
+    ],
     action: 'Request a rollout plan',
     href: '/for-institutions',
   },

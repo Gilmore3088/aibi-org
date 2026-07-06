@@ -15,7 +15,7 @@ describe('PricingPage', () => {
     expect(screen.getAllByText('$0').length).toBeGreaterThan(0);
     expect(screen.getAllByText('$99').length).toBeGreaterThan(0);
     expect(screen.getAllByText('$295').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Custom').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('From $199/seat').length).toBeGreaterThan(0);
     expect(screen.getByText(/best first paid step/i)).toBeTruthy();
     expect(screen.getByText(/best for individual capability/i)).toBeTruthy();
     expect(screen.queryByText(/not sure what to choose/i)).toBeNull();

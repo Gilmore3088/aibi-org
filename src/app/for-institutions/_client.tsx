@@ -81,7 +81,7 @@ const TIERS = [
     included: [
       'Eighteen bite-sized self-paced modules',
       'Eighteen reviewed AI artifacts per practitioner',
-      '$295 individual · volume seats by request',
+      '$295 individual · $199/seat at 10+',
     ],
     ctaHref: '/courses',
     ctaLabel: 'View the curriculum',
@@ -630,18 +630,18 @@ export default function ForInstitutionsPage() {
             </Button>
           </div>
           <div className="mk-ccard">
-            <div className="mk-lab">By request</div>
+            <div className="mk-lab">$199/seat</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
               <div className="mk-v">10+</div>
-              <div className="mk-u">seats · quote by cohort</div>
+              <div className="mk-u">seats at 10+ · scoped by cohort</div>
             </div>
             <p>
               Request Foundation Course seats in bulk. We confirm assignment, reporting,
               invoicing, and support before quoting the cohort.
             </p>
             <ul>
-              <li><CheckIcon className="mk-ic" />Volume pricing available by request</li>
+              <li><CheckIcon className="mk-ic" />$199/seat at 10 or more seats — larger cohorts scoped individually</li>
               <li><CheckIcon className="mk-ic" />Enrollment handoff scoped up front</li>
               <li><CheckIcon className="mk-ic" />SSO and invoicing discussed before rollout</li>
             </ul>
