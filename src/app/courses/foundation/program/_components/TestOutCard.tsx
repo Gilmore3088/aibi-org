@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import type { TestOutCheck } from '@content/courses/foundation-program/test-out';
 
 const INK = '#071A2F';
-const GOLD_DEEP = '#9A7A2F';
+const GOLD_DEEP = 'var(--gold-deep, #7A5F1E)';
 const SLATE = '#475569';
 const LINE = 'rgba(7,26,47,.12)';
 const FONT_INTER =

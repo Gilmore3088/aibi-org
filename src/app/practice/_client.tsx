@@ -394,6 +394,7 @@ export default function PracticeSandboxPage() {
                     <h2 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '6px 0 0' }}>Edit and run</h2>
                   </div>
                   <textarea
+                    aria-label="Prompt workspace — edit the prompt before running it"
                     value={prompt}
                     onChange={(e) => {
                       setPrompt(e.target.value);

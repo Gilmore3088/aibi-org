@@ -30,7 +30,7 @@ export interface KnowledgeCheckProps {
 const INK = '#071A2F';
 const CREAM_2 = 'var(--cream-2)'; // inherits the course soft-slate override (CourseShell)
 const GOLD = '#C8A24A';
-const GOLD_DEEP = '#9A7A2F';
+const GOLD_DEEP = 'var(--gold-deep, #7A5F1E)';
 const SLATE = '#475569';
 const LINE = 'rgba(7,26,47,.12)';
 
