@@ -284,10 +284,10 @@ export function EmailGate({
               score, tier, and starting direction are visible to the right,
               so they're a receipt of completed work, not bait. */}
           <p className="mt-5 text-[1rem] md:text-[1.0625rem] leading-[1.6] text-white/70">
-            Your score and starting direction are to the right. Send the
-            full result for the plain-English diagnosis, your copy-ready
-            starter prompt, the AI working brief you can paste into any
-            tool, and a 30-day action path.
+            Your score and starting direction are already on this page. Send
+            the full result for the plain-English diagnosis, a ready-to-use
+            AI instruction you can paste into any tool, and a 30-day action
+            path.
           </p>
         </div>
 
@@ -398,6 +398,22 @@ export function EmailGate({
                 {status === 'submitting' ? 'Sending…' : 'Send my report →'}
               </button>
             </div>
+
+            {/* The no-email lane must be visible in the first viewport, not
+                two screens below the form (persona audit: privacy-cautious
+                users read the gate as email-required and bail). The full
+                button lower down remains. */}
+            <p className="text-[0.8125rem] text-[color:var(--slate-600)]">
+              Prefer not to share your email?{' '}
+              <button
+                type="button"
+                onClick={handleSkip}
+                data-testid="gate-skip-top"
+                className="font-semibold text-[color:var(--ink)] underline underline-offset-4 hover:text-[color:var(--gold-deep)]"
+              >
+                View your summary without email →
+              </button>
+            </p>
 
             {/* Personalize — first name, institution, role. All optional
                 but visible (not collapsed) so users can fill them

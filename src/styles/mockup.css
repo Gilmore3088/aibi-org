@@ -76,6 +76,12 @@ section.mk-std { padding: 56px 0; }
   background: rgba(247, 243, 234, 0.92);
   backdrop-filter: saturate(180%) blur(14px);
 }
+
+/* Anchored sections must clear the sticky header when scrolled to —
+   without this the ROI calculator heading slid under the header. */
+#roi-calculator {
+  scroll-margin-top: 104px;
+}
 .mk-header-inner {
   display: flex;
   align-items: center;
@@ -2705,6 +2711,26 @@ section.mk-std { padding: 56px 0; }
   border: 1px solid var(--slate-200);
   border-radius: var(--r-lg);
   background: #fff;
+}
+.mk-take-resume-summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--slate-600);
+}
+.mk-take-resume-summary::-webkit-details-marker {
+  display: none;
+}
+.mk-take-resume-summary::before {
+  content: '+ ';
+  color: var(--gold-deep);
+}
+.mk-take-resume[open] .mk-take-resume-summary {
+  margin-bottom: 10px;
+}
+.mk-take-resume[open] .mk-take-resume-summary::before {
+  content: '– ';
 }
 .mk-take-resume label {
   display: block;
@@ -8946,6 +8972,12 @@ section.mk-std { padding: 56px 0; }
   .mk-nav-mobile-more {
     flex: initial;
     padding: 10px 6px;
+    /* 44px touch minimum (WCAG 2.5.8 / Apple HIG) — the pills previously
+       landed around 40px tall. */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.8125rem;
     text-align: center;
     white-space: nowrap;

@@ -262,7 +262,7 @@ export function ResultsViewV3({
           {artifact && (
             <div className="border-t border-white/12 pt-3">
               <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-                Starter artifact
+                Starter template
               </p>
               <p className="mt-1.5 text-[1.125rem] text-white/90 leading-snug">{artifact.title}</p>
             </div>
@@ -344,6 +344,16 @@ export function ResultsViewV3({
             where to start. The In-Depth Assessment is a separate
             eight-dimension diagnostic for a fuller action plan.
           </p>
+          {signals.filter((s) => bandForSignal(s) === bandForSignal(signals[0])).length >= 8 && (
+            <p
+              data-testid="uniform-band-note"
+              className="mt-4 text-[0.9375rem] leading-[1.6] text-[color:var(--slate-600)] max-w-prose"
+            >
+              Most of your topics landed at the same stage — that&rsquo;s normal
+              for a first pass, not a data problem. The one to act on is the top
+              gap above; the rest will move together as the basics go in.
+            </p>
+          )}
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
           {signals.map((s) => {

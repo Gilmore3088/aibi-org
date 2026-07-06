@@ -53,7 +53,10 @@ export function LayoutChrome({
 
   return (
     <>
-      {!chromeless && skipLink}
+      {/* The #main-content target below exists on every route, so the skip
+          link must too — chromeless (mockup) pages render their own header
+          but keyboard users still need to skip it. */}
+      {skipLink}
       {!chromeless && siteNav}
       <div id="main-content" className="flex-1">
         {children}
