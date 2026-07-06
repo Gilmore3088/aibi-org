@@ -11,7 +11,7 @@
 import { ACTIVITY_SAVINGS } from '../_lib/activitySavings';
 
 const KICKER: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -40,26 +40,26 @@ export function TimeSavingsCard({ moduleNumber }: TimeSavingsCardProps) {
         Where this saves time
       </p>
 
-      <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '0 0 4px' }}>
+      <p style={{ fontSize: '0.8125rem', color: 'var(--slate-500)', margin: '0 0 4px' }}>
         {savings.activityLabel}
       </p>
 
       {savings.mode === 'recurring' && (
-        <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
+        <p style={{ fontSize: '1rem', color: 'var(--ink)', margin: 0 }}>
           Saves a few minutes each time you reuse it &middot;{' '}
           <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
         </p>
       )}
 
       {savings.mode === 'one-time' && (
-        <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
+        <p style={{ fontSize: '1rem', color: 'var(--ink)', margin: 0 }}>
           A one-time setup you reuse later &middot;{' '}
           <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
         </p>
       )}
 
       {savings.mode === 'ongoing' && (
-        <p style={{ fontSize: 16, color: 'var(--ink)', margin: 0 }}>
+        <p style={{ fontSize: '1rem', color: 'var(--ink)', margin: 0 }}>
           A habit you apply as needed &middot;{' '}
           <span style={{ color: 'var(--slate-500)' }}>{savings.usageLabel}</span>
         </p>

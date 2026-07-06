@@ -46,7 +46,7 @@ export function PricingProof({
         <span
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--gold-deep)',
@@ -61,7 +61,7 @@ export function PricingProof({
             style={{
               fontFamily: INTER_STACK,
               fontWeight: 700,
-              fontSize: 56,
+              fontSize: '3.5rem',
               letterSpacing: '-0.025em',
               lineHeight: 1,
               color: 'var(--ink)',
@@ -72,7 +72,7 @@ export function PricingProof({
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: '0.875rem',
               fontWeight: 600,
               color: 'var(--gold-deep)',
               letterSpacing: '0.04em',
@@ -87,7 +87,7 @@ export function PricingProof({
             role="status"
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 600,
               color: 'var(--gold-deep)',
               background: 'var(--cream-2)',
@@ -105,7 +105,7 @@ export function PricingProof({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 14.5,
+            fontSize: '0.9063rem',
             color: 'var(--slate-600)',
             lineHeight: 1.55,
             margin: 0,
@@ -134,7 +134,7 @@ export function PricingProof({
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -146,7 +146,7 @@ export function PricingProof({
           <blockquote
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 17,
+              fontSize: '1.0625rem',
               lineHeight: 1.45,
               color: '#fff',
               margin: '12px 0 0',
@@ -161,7 +161,7 @@ export function PricingProof({
             style={{
               marginTop: 14,
               fontFamily: INTER_STACK,
-              fontSize: 12.5,
+              fontSize: '0.7813rem',
               color: 'var(--gold-soft)',
               letterSpacing: '0.04em',
             }}
@@ -182,7 +182,7 @@ export function PricingProof({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -196,7 +196,7 @@ export function PricingProof({
             style={{
               fontFamily: INTER_STACK,
               fontWeight: 700,
-              fontSize: 36,
+              fontSize: '2.25rem',
               letterSpacing: '-0.02em',
               lineHeight: 1.05,
               color: 'var(--ink)',
@@ -207,7 +207,7 @@ export function PricingProof({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: '0.875rem',
               color: 'var(--ink)',
               lineHeight: 1.5,
               margin: '8px 0 6px',
@@ -220,7 +220,7 @@ export function PricingProof({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 12,
+              fontSize: '0.75rem',
               color: 'var(--slate-500)',
               margin: 0,
               letterSpacing: '0.02em',

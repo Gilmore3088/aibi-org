@@ -27,25 +27,25 @@ export default async function ToolboxPage() {
     <main className="mockup-scope min-h-screen bg-[color:var(--cream)]">
       <div className="border-b border-[color:var(--ink-a10)] bg-[color:var(--cream)]">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4 lg:px-10">
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.6875rem] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
             Banking AI Toolbox · {accessLabel}
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/dashboard/toolbox/library"
-              className="inline-flex items-center gap-2 rounded-[12px] border border-[color:var(--ink-a10)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)]"
+              className="inline-flex items-center gap-2 rounded-[12px] border border-[color:var(--ink-a10)] bg-white px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)]"
             >
               LIBRARY →
             </Link>
             <Link
               href="/dashboard/toolbox/cookbook"
-              className="inline-flex items-center gap-2 rounded-[12px] border border-[color:var(--ink-a10)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)]"
+              className="inline-flex items-center gap-2 rounded-[12px] border border-[color:var(--ink-a10)] bg-white px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold-deep)]"
             >
               COOKBOOK →
             </Link>
             <Link
               href={access.tier === 'starter' ? '/assessment/in-depth/access' : '/courses/foundation/program'}
-              className="inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+              className="inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
               {access.tier === 'starter' ? '← IN-DEPTH REPORT' : '← COURSEWORK'}
             </Link>

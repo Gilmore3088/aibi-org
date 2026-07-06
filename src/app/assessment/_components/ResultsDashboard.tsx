@@ -72,7 +72,7 @@ export function ResultsDashboard({
       <p
         className="uppercase"
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.2em',
           color: 'var(--gold-deep)',
@@ -85,7 +85,7 @@ export function ResultsDashboard({
         id="dashboard-heading"
         className="max-w-3xl"
         style={{
-          fontSize: 'clamp(32px, 4.5vw, 52px)',
+          fontSize: 'clamp(2rem, 4.5vw, 3.25rem)',
           fontWeight: 700,
           lineHeight: 1.08,
           letterSpacing: '-0.02em',
@@ -98,7 +98,7 @@ export function ResultsDashboard({
       <p
         className="max-w-2xl"
         style={{
-          fontSize: 18,
+          fontSize: '1.125rem',
           lineHeight: 1.6,
           color: 'var(--slate-600)',
         }}
@@ -143,7 +143,7 @@ export function ResultsDashboard({
               <p
                 className="uppercase"
                 style={{
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   color: 'var(--ink)',
@@ -154,7 +154,7 @@ export function ResultsDashboard({
               <p
                 className="uppercase tabular-nums"
                 style={{
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 600,
                   letterSpacing: '0.16em',
                   color: 'var(--slate-500)',
@@ -185,7 +185,7 @@ export function ResultsDashboard({
           <p
             className="uppercase"
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.18em',
               color: 'var(--ink)',
@@ -198,7 +198,7 @@ export function ResultsDashboard({
                 color: 'var(--gold-deep)',
                 fontWeight: 700,
                 letterSpacing: 'normal',
-                fontSize: 15,
+                fontSize: '0.9375rem',
               }}
             >
               {rungIndex + 1}
@@ -210,7 +210,7 @@ export function ResultsDashboard({
                 fontWeight: 600,
                 letterSpacing: 'normal',
                 textTransform: 'none',
-                fontSize: 16,
+                fontSize: '1rem',
               }}
             >
               {rungLabel}
@@ -219,7 +219,7 @@ export function ResultsDashboard({
           <p
             className="uppercase"
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               color: 'var(--slate-500)',
@@ -254,7 +254,7 @@ function TierSeal({
       <p
         className="uppercase tabular-nums"
         style={{
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 700,
           letterSpacing: '0.2em',
           color: 'var(--slate-500)',
@@ -264,7 +264,7 @@ function TierSeal({
       </p>
       <p
         style={{
-          fontSize: 18,
+          fontSize: '1.125rem',
           fontWeight: 600,
           color: 'var(--gold-deep)',
           lineHeight: 1.15,
@@ -295,7 +295,7 @@ function DimensionBar({ row }: { readonly row: RankedRow }) {
           <span
             className="min-w-0 truncate"
             style={{
-              fontSize: 17,
+              fontSize: '1.0625rem',
               fontWeight: 600,
               color: 'var(--ink)',
               lineHeight: 1.2,
@@ -306,7 +306,7 @@ function DimensionBar({ row }: { readonly row: RankedRow }) {
           <span
             className="tabular-nums shrink-0"
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 600,
               color: 'var(--slate-600)',
             }}

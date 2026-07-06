@@ -6,7 +6,7 @@ const INTER_STACK =
 
 const KICKER: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -72,7 +72,7 @@ export function CertificateMeta({
             style={{
               color: 'var(--gold-soft)',
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 700,
               letterSpacing: '-0.02em',
             }}
@@ -83,7 +83,7 @@ export function CertificateMeta({
         <h3
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             color: 'var(--ink)',
             margin: '0 0 8px',
@@ -94,7 +94,7 @@ export function CertificateMeta({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: '0 0 14px',
@@ -106,7 +106,7 @@ export function CertificateMeta({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 500,
             lineHeight: 1.55,
             color: 'var(--ink)',
@@ -132,7 +132,7 @@ export function CertificateMeta({
             background: 'var(--ink)',
             color: '#FFFFFF',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -191,7 +191,7 @@ export function CertificateMeta({
         <h3
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             color: 'var(--ink)',
             margin: '0 0 8px',
@@ -202,7 +202,7 @@ export function CertificateMeta({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: '0 0 16px',
@@ -221,7 +221,7 @@ export function CertificateMeta({
             background: 'var(--ink)',
             color: '#FFFFFF',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -260,7 +260,7 @@ export function CertificateMeta({
           <h3
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 22,
+              fontSize: '1.375rem',
               fontWeight: 700,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
@@ -272,7 +272,7 @@ export function CertificateMeta({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               color: 'var(--on-dark-80)',
               margin: '0 0 18px',
@@ -290,7 +290,7 @@ export function CertificateMeta({
             background: 'var(--gold)',
             color: 'var(--ink)',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',

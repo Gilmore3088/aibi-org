@@ -109,7 +109,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
               color: GOLD_DEEP,
               textTransform: 'uppercase',
               letterSpacing: '0.18em',
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 800,
             }}
           >
@@ -117,7 +117,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
           </p>
           <h3
             id={`test-out-m${check.moduleNumber}-heading`}
-            style={{ margin: '6px 0 0', color: INK, fontSize: 17, fontWeight: 800, lineHeight: 1.35 }}
+            style={{ margin: '6px 0 0', color: INK, fontSize: '1.0625rem', fontWeight: 800, lineHeight: 1.35 }}
           >
             Take the {check.questions.length}-question check to mark this module complete.
           </h3>
@@ -134,7 +134,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
             color: open ? INK : '#fff',
             padding: '0 16px',
             fontFamily: FONT_INTER,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 800,
             cursor: 'pointer',
           }}
@@ -153,7 +153,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
               <legend
                 style={{
                   color: INK,
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   fontWeight: 800,
                   lineHeight: 1.4,
                   marginBottom: 8,
@@ -177,7 +177,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
                       padding: '11px 13px',
                       cursor: 'pointer',
                       color: INK,
-                      fontSize: 14,
+                      fontSize: '0.875rem',
                       lineHeight: 1.4,
                       fontWeight: 650,
                     }}
@@ -213,7 +213,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
                 color: allAnswered && !busy ? '#fff' : SLATE,
                 padding: '0 18px',
                 fontFamily: FONT_INTER,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 850,
                 cursor: allAnswered && !busy ? 'pointer' : 'not-allowed',
               }}
@@ -224,7 +224,7 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
                   ? 'Passed — unlocking next module'
                   : 'Submit answers'}
             </button>
-            <span style={{ color: SLATE, fontSize: 13, lineHeight: 1.4, fontWeight: 650 }}>
+            <span style={{ color: SLATE, fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 650 }}>
               All {check.questions.length} correct marks the module complete. You can retry, or
               just work through the module below.
             </span>
@@ -232,18 +232,18 @@ export function TestOutCard({ check, enrollmentId }: TestOutCardProps) {
 
           <div aria-live="polite">
             {status.kind === 'failed' && (
-              <p style={{ margin: 0, color: SLATE, fontSize: 14, lineHeight: 1.5, fontWeight: 650 }}>
+              <p style={{ margin: 0, color: SLATE, fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 650 }}>
                 {status.correctCount} of {status.total} correct. Worth working through this module —
                 adjust your answers and retry any time.
               </p>
             )}
             {status.kind === 'passed' && (
-              <p style={{ margin: 0, color: GOLD_DEEP, fontSize: 14, lineHeight: 1.5, fontWeight: 750 }}>
+              <p style={{ margin: 0, color: GOLD_DEEP, fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 750 }}>
                 Module marked complete. The next module is unlocked.
               </p>
             )}
             {status.kind === 'error' && (
-              <p style={{ margin: 0, color: '#8A1F1F', fontSize: 14, lineHeight: 1.5, fontWeight: 650 }}>
+              <p style={{ margin: 0, color: '#8A1F1F', fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 650 }}>
                 {status.message}
               </p>
             )}

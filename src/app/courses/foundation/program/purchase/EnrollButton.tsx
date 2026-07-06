@@ -71,7 +71,7 @@ export function EnrollButton({ userEmail, showNote = true }: EnrollButtonProps) 
         disabled={loading}
         aria-disabled={loading}
         className={[
-          'w-full px-8 py-4 rounded-sm font-mono text-[10px] uppercase tracking-[0.15em] transition-colors',
+          'w-full px-8 py-4 rounded-sm font-mono text-[0.625rem] uppercase tracking-[0.15em] transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2',
           loading
             ? 'bg-[color:var(--gold)]/60 text-[color:var(--cream)]/70 cursor-wait'
@@ -81,12 +81,12 @@ export function EnrollButton({ userEmail, showNote = true }: EnrollButtonProps) 
         {loading ? 'Redirecting to checkout…' : 'Enroll · $295'}
       </button>
 
-      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
+      <p className="mt-3 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
         7-day refund if unused · fewer than two modules completed
       </p>
 
       {showNote && !userEmail && (
-        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
+        <p className="mt-2 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-[color:var(--slate-500)] text-center">
           Stripe collects your email at checkout · no account required to enroll
         </p>
       )}
@@ -94,7 +94,7 @@ export function EnrollButton({ userEmail, showNote = true }: EnrollButtonProps) 
       {error && (
         <p
           role="alert"
-          className="mt-3 font-mono text-[11px] text-[color:var(--gold-deep)] text-center"
+          className="mt-3 font-mono text-[0.6875rem] text-[color:var(--gold-deep)] text-center"
         >
           {error}
         </p>

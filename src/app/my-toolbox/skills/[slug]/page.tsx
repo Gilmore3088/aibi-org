@@ -151,7 +151,7 @@ export default function SavedSkillPage(props: { params: Promise<{ slug: string }
                       <span className="mk-name">{v.name}</span>
                       <span className="mk-vmeta">{v.status}</span>
                     </div>
-                    <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>{v.date}</div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: 4 }}>{v.date}</div>
                   </button>
                 ))}
               </div>
@@ -167,7 +167,7 @@ export default function SavedSkillPage(props: { params: Promise<{ slug: string }
               <div className="mk-panel-body">
                 <p style={{ color: 'var(--slate-600)', margin: 0 }}>{active.note}</p>
                 <div className="mk-og-rule" />
-                <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 12px' }}>Prompt body</h3>
+                <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: '0 0 12px' }}>Prompt body</h3>
                 <pre
                   style={{
                     background: 'var(--ink)',
@@ -175,7 +175,7 @@ export default function SavedSkillPage(props: { params: Promise<{ slug: string }
                     borderRadius: 'var(--r-md)',
                     padding: 24,
                     fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     lineHeight: 1.7,
                     whiteSpace: 'pre-wrap',
                     margin: 0,

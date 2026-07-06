@@ -68,7 +68,7 @@ export default function ErrorPage({
           <button
             type="button"
             onClick={reset}
-            className="inline-block px-8 py-4 text-[11px] uppercase transition-all active:scale-[0.98]"
+            className="inline-block px-8 py-4 text-[0.6875rem] uppercase transition-all active:scale-[0.98]"
             style={{
               background: 'var(--ink)',
               color: 'var(--cream)',
@@ -81,7 +81,7 @@ export default function ErrorPage({
           </button>
           <Link
             href="/"
-            className="inline-block px-8 py-4 text-[11px] uppercase transition-colors"
+            className="inline-block px-8 py-4 text-[0.6875rem] uppercase transition-colors"
             style={{
               border: '1px solid var(--ink-a15)',
               color: 'var(--ink)',

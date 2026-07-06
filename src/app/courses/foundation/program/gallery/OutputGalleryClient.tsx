@@ -38,7 +38,7 @@ const ROLE_FILTER_OPTIONS: readonly { value: RoleFilter; label: string }[] = [
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -48,7 +48,7 @@ const kickerStyle: CSSProperties = {
 
 const sectionHeadingStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 14,
+  fontSize: '0.875rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -59,7 +59,7 @@ const sectionHeadingStyle: CSSProperties = {
 const headlineStyle: CSSProperties = {
   fontFamily: INTER_STACK,
   fontWeight: 800,
-  fontSize: 'clamp(32px, 4vw, 48px)',
+  fontSize: 'clamp(2rem, 4vw, 3rem)',
   lineHeight: 1.05,
   letterSpacing: '-0.025em',
   margin: '12px 0 12px',
@@ -68,7 +68,7 @@ const headlineStyle: CSSProperties = {
 
 const ledeStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 17,
+  fontSize: '1.0625rem',
   lineHeight: 1.6,
   color: 'var(--slate-600)',
   margin: 0,
@@ -98,7 +98,7 @@ const tileActiveStyle: CSSProperties = {
 };
 
 const tileRoleStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -106,7 +106,7 @@ const tileRoleStyle: CSSProperties = {
 };
 
 const tileTitleStyle: CSSProperties = {
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: 700,
   lineHeight: 1.3,
   color: 'var(--ink)',
@@ -114,7 +114,7 @@ const tileTitleStyle: CSSProperties = {
 };
 
 const tileSnippetStyle: CSSProperties = {
-  fontSize: 13,
+  fontSize: '0.8125rem',
   lineHeight: 1.5,
   color: 'var(--slate-600)',
   margin: 0,
@@ -127,7 +127,7 @@ const tileSnippetStyle: CSSProperties = {
 function pillStyle(isActive: boolean): CSSProperties {
   return {
     padding: '8px 14px',
-    fontSize: 12,
+    fontSize: '0.75rem',
     fontWeight: 700,
     letterSpacing: '0.18em',
     textTransform: 'uppercase',
@@ -285,7 +285,7 @@ export function OutputGalleryClient() {
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -310,7 +310,7 @@ export function OutputGalleryClient() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 margin: 0,

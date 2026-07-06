@@ -55,7 +55,7 @@ export default async function OpengraphImage() {
             display: 'flex',
             alignItems: 'baseline',
             fontFamily: INTER_STACK,
-            fontSize: 36,
+            fontSize: '2.25rem',
             fontWeight: 600,
             letterSpacing: '-0.012em',
             lineHeight: 1,
@@ -69,7 +69,7 @@ export default async function OpengraphImage() {
               fontFamily: MARK_SERIF_STACK,
               fontStyle: 'italic',
               fontWeight: 400,
-              fontSize: 41,
+              fontSize: '2.5625rem',
               margin: '0 1px',
             }}
           >
@@ -91,7 +91,7 @@ export default async function OpengraphImage() {
             style={{
               fontFamily: INTER_STACK,
               fontWeight: 400,
-              fontSize: 18,
+              fontSize: '1.125rem',
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
               color: GOLD_SOFT,
@@ -103,7 +103,7 @@ export default async function OpengraphImage() {
             style={{
               fontFamily: INTER_STACK,
               fontWeight: 700,
-              fontSize: 104,
+              fontSize: '6.5rem',
               lineHeight: 1.0,
               letterSpacing: '-0.025em',
               color: CREAM,
@@ -141,7 +141,7 @@ export default async function OpengraphImage() {
               alignItems: 'center',
               justifyContent: 'space-between',
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               fontWeight: 600,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',

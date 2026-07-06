@@ -72,7 +72,7 @@ function StateMark({ state }: { readonly state: SubTaskState }) {
           borderRadius: 999,
           background: 'var(--emerald-700)',
           color: 'var(--cream)',
-          fontSize: 13,
+          fontSize: '0.8125rem',
           fontWeight: 700,
         }}
       >
@@ -152,7 +152,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -162,7 +162,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         </span>
         <span
           style={{
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -179,7 +179,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
           id="this-weeks-heading"
           style={{
             margin: '0 0 10px',
-            fontSize: 'clamp(26px, 2.8vw, 32px)',
+            fontSize: 'clamp(1.625rem, 2.8vw, 2rem)',
             fontWeight: 700,
             letterSpacing: '-0.015em',
             color: 'var(--ink)',
@@ -191,7 +191,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
         <p
           style={{
             margin: '0 0 28px',
-            fontSize: 17,
+            fontSize: '1.0625rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             maxWidth: '64ch',
@@ -230,7 +230,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
                   style={{
                     margin: '0 0 6px',
                     color: 'var(--gold-deep)',
-                    fontSize: 10,
+                    fontSize: '0.625rem',
                     fontWeight: 850,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -242,7 +242,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
                   style={{
                     margin: 0,
                     color: 'var(--ink)',
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     lineHeight: 1.35,
                     fontWeight: 700,
                   }}
@@ -281,7 +281,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             <div>
               <div
                 style={{
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   fontWeight: 700,
                   color: 'var(--ink)',
                   letterSpacing: '-0.005em',
@@ -291,7 +291,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
               </div>
               <div
                 style={{
-                  fontSize: 14,
+                  fontSize: '0.875rem',
                   color: 'var(--slate-600)',
                   marginTop: 3,
                   lineHeight: 1.35,
@@ -303,7 +303,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
             </div>
             <span
               style={{
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -328,7 +328,7 @@ export function ThisWeeksModule({ currentModule, isCompleted }: ThisWeeksModuleP
               borderRadius: 12,
               background: 'var(--gold)',
               color: 'var(--ink)',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

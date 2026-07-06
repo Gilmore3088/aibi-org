@@ -265,7 +265,7 @@ export function ModuleTabs({
                 borderRadius: 12,
                 cursor: 'pointer',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 800,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -276,7 +276,7 @@ export function ModuleTabs({
                 style={{
                   fontVariantNumeric: 'tabular-nums',
                   fontWeight: 700,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   color: numFg,
                 }}
                 aria-hidden="true"

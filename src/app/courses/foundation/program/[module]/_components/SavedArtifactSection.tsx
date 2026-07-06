@@ -61,7 +61,7 @@ export function SavedArtifactSection({
               <span
                 style={{
                   fontFamily: MOCKUP_FONT,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 800,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -73,7 +73,7 @@ export function SavedArtifactSection({
               <span
                 style={{
                   fontFamily: MOCKUP_FONT,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 800,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -89,7 +89,7 @@ export function SavedArtifactSection({
             <p
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 18,
+                fontSize: '1.125rem',
                 fontWeight: 850,
                 color: 'var(--ink)',
                 margin: 0,
@@ -111,7 +111,7 @@ export function SavedArtifactSection({
               background: isAlreadyCompleted ? 'var(--ink)' : 'var(--gold)',
               color: isAlreadyCompleted ? '#fff' : 'var(--ink)',
               fontFamily: MOCKUP_FONT,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -136,7 +136,7 @@ export function SavedArtifactSection({
               margin: 0,
               fontFamily: MOCKUP_FONT,
               color: 'var(--ink)',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.45,
               fontWeight: 720,
             }}
@@ -167,7 +167,7 @@ export function SavedArtifactSection({
             <span
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -179,7 +179,7 @@ export function SavedArtifactSection({
             <span
               style={{
                 fontFamily: MOCKUP_FONT,
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -211,7 +211,7 @@ export function SavedArtifactSection({
                   style={{
                     margin: '0 0 6px',
                     fontFamily: MOCKUP_FONT,
-                    fontSize: 10,
+                    fontSize: '0.625rem',
                     fontWeight: 850,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -224,7 +224,7 @@ export function SavedArtifactSection({
                   style={{
                     margin: 0,
                     fontFamily: MOCKUP_FONT,
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     lineHeight: 1.38,
                     fontWeight: 700,
                     color: 'var(--ink)',

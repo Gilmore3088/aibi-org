@@ -27,7 +27,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
       >
         Where you are. Where this leads.
       </h2>
-      <p className="text-[15px] leading-[1.6] text-[color:var(--ink)]/75 max-w-2xl">
+      <p className="text-[0.9375rem] leading-[1.6] text-[color:var(--ink)]/75 max-w-2xl">
         Six stages describe the arc from individual experimentation to
         institutional advantage. Your current rung is pinned below.
         The rungs above it are the trajectory — not a promise, but the
@@ -50,7 +50,7 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
               <span
                 aria-hidden
                 className={
-                  'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] tabular-nums font-semibold ' +
+                  'absolute -left-[37px] top-1 inline-flex items-center justify-center h-7 w-7 rounded-full text-[0.6875rem] tabular-nums font-semibold ' +
                   (isCurrent
                     ? 'bg-[color:var(--gold)] text-[color:var(--cream)] ring-4 ring-[color:var(--gold)]/20'
                     : isBelow
@@ -72,14 +72,14 @@ export function MaturityLadder({ tierId }: MaturityLadderProps) {
                   {rung.label}
                 </h3>
                 {isCurrent ? (
-                  <span className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
+                  <span className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--gold)]">
                     You are here
                   </span>
                 ) : null}
               </div>
               <p
                 className={
-                  'mt-2 text-[14.5px] leading-[1.55] ' +
+                  'mt-2 text-[0.9063rem] leading-[1.55] ' +
                   (isBelow
                     ? 'text-[color:var(--ink)]/55'
                     : 'text-[color:var(--ink)]/80')

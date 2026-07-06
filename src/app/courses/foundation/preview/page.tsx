@@ -67,7 +67,7 @@ export default function FoundationPreviewPage() {
             <p
               style={{
                 margin: 0,
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -79,7 +79,7 @@ export default function FoundationPreviewPage() {
             <p
               style={{
                 margin: '8px 0 0',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.55,
                 color: 'var(--slate-600)',
               }}
@@ -94,7 +94,7 @@ export default function FoundationPreviewPage() {
             <p
               style={{
                 margin: '0 0 10px',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -106,7 +106,7 @@ export default function FoundationPreviewPage() {
             <h1
               style={{
                 margin: 0,
-                fontSize: 'clamp(30px, 4vw, 44px)',
+                fontSize: 'clamp(1.875rem, 4vw, 2.75rem)',
                 lineHeight: 1.08,
                 letterSpacing: '-0.02em',
                 fontWeight: 800,
@@ -139,7 +139,7 @@ export default function FoundationPreviewPage() {
             <h2
               style={{
                 margin: 0,
-                fontSize: 'clamp(22px, 2.6vw, 30px)',
+                fontSize: 'clamp(1.375rem, 2.6vw, 1.875rem)',
                 lineHeight: 1.12,
                 letterSpacing: '-0.01em',
                 fontWeight: 800,
@@ -149,7 +149,7 @@ export default function FoundationPreviewPage() {
               The other {totalModules - 1} modules add the labs, saved artifacts,
               and the credential.
             </h2>
-            <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: 'rgba(247,243,234,0.8)' }}>
+            <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, color: 'rgba(247,243,234,0.8)' }}>
               Every module ends with a reviewed work product saved to your Foundation
               Packet. {foundationDurationLabel()}.
             </p>
@@ -182,7 +182,7 @@ export default function FoundationPreviewPage() {
           fontFamily: INTER_STACK,
         }}
       >
-        <span style={{ color: 'rgba(247,243,234,0.85)', fontSize: 14, fontWeight: 600 }}>
+        <span style={{ color: 'rgba(247,243,234,0.85)', fontSize: '0.875rem', fontWeight: 600 }}>
           Reading the free Module 1 preview
         </span>
         <Link
@@ -195,7 +195,7 @@ export default function FoundationPreviewPage() {
             borderRadius: 999,
             background: 'var(--gold)',
             color: 'var(--ink)',
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 800,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',

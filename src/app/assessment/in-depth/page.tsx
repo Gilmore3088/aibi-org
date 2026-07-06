@@ -69,7 +69,7 @@ const KICKER: React.CSSProperties = {
   alignItems: 'center',
   padding: '6px 14px',
   borderRadius: 999,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -117,7 +117,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 style={{
                   fontFamily: INTER_STACK,
                   fontWeight: 700,
-                  fontSize: 'clamp(36px, 4.5vw, 60px)',
+                  fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
                   lineHeight: 1.03,
                   letterSpacing: '-0.028em',
                   margin: '0 0 22px',
@@ -131,7 +131,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               <p
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 18,
+                  fontSize: '1.125rem',
                   lineHeight: 1.55,
                   color: 'var(--on-dark-80)',
                   margin: '0 0 32px',
@@ -157,7 +157,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     gap: 8,
                     color: 'var(--gold-soft)',
                     fontFamily: INTER_STACK,
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 700,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -196,7 +196,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   style={{
                     margin: '10px 0 0',
                     fontFamily: INTER_STACK,
-                    fontSize: 15,
+                    fontSize: '0.9375rem',
                     lineHeight: 1.55,
                     color: 'var(--ink)',
                   }}
@@ -220,7 +220,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               <h2
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 'clamp(28px, 3.4vw, 44px)',
+                  fontSize: 'clamp(1.75rem, 3.4vw, 2.75rem)',
                   fontWeight: 700,
                   lineHeight: 1.08,
                   letterSpacing: '-0.02em',
@@ -235,7 +235,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               <p
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 17,
+                  fontSize: '1.0625rem',
                   lineHeight: 1.55,
                   color: 'var(--slate-600)',
                   margin: 0,
@@ -282,7 +282,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     background: 'var(--gold)',
                     color: 'var(--ink)',
                     fontFamily: INTER_STACK,
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 700,
                     letterSpacing: '0.16em',
                     textTransform: 'uppercase',
@@ -298,7 +298,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 <h3
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 28,
+                    fontSize: '1.75rem',
                     fontWeight: 700,
                     lineHeight: 1.2,
                     letterSpacing: '-0.015em',
@@ -311,7 +311,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 <p
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 15,
+                    fontSize: '0.9375rem',
                     lineHeight: 1.55,
                     color: 'var(--slate-600)',
                     margin: '0 0 24px',
@@ -327,7 +327,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   <p
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 52,
+                      fontSize: '3.25rem',
                       fontWeight: 700,
                       color: 'var(--ink)',
                       lineHeight: 1,
@@ -339,7 +339,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   <p
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       fontWeight: 600,
                       letterSpacing: '0.04em',
                       color: 'var(--slate-500)',
@@ -360,7 +360,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                 <p
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 600,
                     letterSpacing: '0.16em',
                     textTransform: 'uppercase',
@@ -395,7 +395,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                           gridTemplateColumns: '20px 1fr',
                           gap: 10,
                           fontFamily: INTER_STACK,
-                          fontSize: 14,
+                          fontSize: '0.875rem',
                           lineHeight: 1.5,
                           color: 'var(--ink)',
                         }}
@@ -422,7 +422,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     alignSelf: 'flex-start',
                     color: 'var(--gold-deep)',
                     fontFamily: INTER_STACK,
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 700,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -449,7 +449,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
               <h2
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 'clamp(28px, 3.4vw, 44px)',
+                  fontSize: 'clamp(1.75rem, 3.4vw, 2.75rem)',
                   fontWeight: 700,
                   lineHeight: 1.08,
                   letterSpacing: '-0.02em',
@@ -499,7 +499,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 margin: '32px auto 0',
@@ -554,7 +554,7 @@ function NarrativeCard(props: {
       <h3
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 24,
+          fontSize: '1.5rem',
           fontWeight: 700,
           lineHeight: 1.2,
           letterSpacing: '-0.015em',
@@ -567,7 +567,7 @@ function NarrativeCard(props: {
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 15,
+          fontSize: '0.9375rem',
           lineHeight: 1.55,
           color: 'var(--slate-600)',
           margin: 0,
@@ -580,7 +580,7 @@ function NarrativeCard(props: {
         href={props.ctaHref}
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',

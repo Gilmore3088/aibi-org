@@ -123,7 +123,7 @@ export default function ForInstitutionsPage() {
             <p
               style={{
                 margin: '0 0 14px',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -167,7 +167,7 @@ export default function ForInstitutionsPage() {
                 borderRadius: 999,
                 padding: '4px 8px',
                 color: 'var(--gold-deep)',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
@@ -221,7 +221,7 @@ export default function ForInstitutionsPage() {
                   style={{
                     marginTop: 6,
                     color: 'var(--slate-500)',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 700,
                   }}
                 >
@@ -250,7 +250,7 @@ export default function ForInstitutionsPage() {
               </div>
               <div
                 style={{
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -322,7 +322,7 @@ export default function ForInstitutionsPage() {
             >
               <p
                 style={{
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -334,7 +334,7 @@ export default function ForInstitutionsPage() {
               </p>
               <h3
                 style={{
-                  fontSize: 24,
+                  fontSize: '1.5rem',
                   fontWeight: 600,
                   lineHeight: 1.2,
                   color: 'var(--ink)',
@@ -345,7 +345,7 @@ export default function ForInstitutionsPage() {
               </h3>
               <p
                 style={{
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                   color: 'var(--slate-600)',
                   margin: '0 0 16px',
@@ -372,7 +372,7 @@ export default function ForInstitutionsPage() {
                       display: 'grid',
                       gridTemplateColumns: '14px 1fr',
                       gap: 10,
-                      fontSize: 14,
+                      fontSize: '0.875rem',
                       lineHeight: 1.5,
                       color: 'var(--ink)',
                     }}

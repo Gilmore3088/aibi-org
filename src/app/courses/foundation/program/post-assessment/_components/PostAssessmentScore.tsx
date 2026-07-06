@@ -22,7 +22,7 @@ export function PostAssessmentScore({ totalScore, preData, onViewResults }: Post
             borderRadius: 999,
             background: 'var(--gold-a10)',
             color: 'var(--gold-deep)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -41,7 +41,7 @@ export function PostAssessmentScore({ totalScore, preData, onViewResults }: Post
         <h2
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(28px, 3.6vw, 40px)',
+            fontSize: 'clamp(1.75rem, 3.6vw, 2.5rem)',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: 'var(--ink)',
@@ -55,7 +55,7 @@ export function PostAssessmentScore({ totalScore, preData, onViewResults }: Post
         {preData?.score && (
           <p
             style={{
-              fontSize: 17,
+              fontSize: '1.0625rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               marginTop: 16,
@@ -81,7 +81,7 @@ export function PostAssessmentScore({ totalScore, preData, onViewResults }: Post
             padding: '14px 28px',
             background: 'var(--ink)',
             color: 'var(--cream-2)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',

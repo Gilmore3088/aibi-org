@@ -47,7 +47,7 @@ export function PostAssessmentResults({
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -59,7 +59,7 @@ export function PostAssessmentResults({
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)',
             lineHeight: 1.04,
             letterSpacing: '-0.028em',
             color: '#fff',
@@ -72,7 +72,7 @@ export function PostAssessmentResults({
 
       {saving && (
         <p
-          style={{ fontSize: 13, color: 'var(--slate-500)', margin: 0 }}
+          style={{ fontSize: '0.8125rem', color: 'var(--slate-500)', margin: 0 }}
           aria-live="polite"
         >
           Saving your result...
@@ -80,7 +80,7 @@ export function PostAssessmentResults({
       )}
       {saveError && (
         <p
-          style={{ fontSize: 13, color: 'var(--ink)', margin: 0, fontWeight: 600 }}
+          style={{ fontSize: '0.8125rem', color: 'var(--ink)', margin: 0, fontWeight: 600 }}
           role="alert"
           aria-live="assertive"
         >

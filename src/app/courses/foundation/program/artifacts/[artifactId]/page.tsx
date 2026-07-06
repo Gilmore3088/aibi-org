@@ -59,7 +59,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
       <header style={{ marginBottom: 28 }}>
         <p
           style={{
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -72,7 +72,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(30px, 4vw, 44px)',
+            fontSize: 'clamp(1.875rem, 4vw, 2.75rem)',
             lineHeight: 1.08,
             letterSpacing: '-0.025em',
             margin: '0 0 14px',
@@ -83,7 +83,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
         </h1>
         <p
           style={{
-            fontSize: 17,
+            fontSize: '1.0625rem',
             color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: 0,
@@ -166,7 +166,7 @@ export default async function ArtifactDetailPage(props: ArtifactPageProps) {
             display: 'inline-flex',
             alignItems: 'center',
             padding: '12px 18px',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -203,7 +203,7 @@ function MetaPanel({
         <div key={item.label}>
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -215,7 +215,7 @@ function MetaPanel({
           </p>
           <p
             style={{
-              fontSize: 13.5,
+              fontSize: '0.8438rem',
               color: 'var(--ink)',
               lineHeight: 1.5,
               margin: 0,

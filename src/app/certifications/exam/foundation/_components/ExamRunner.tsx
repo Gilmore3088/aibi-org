@@ -35,7 +35,7 @@ const buttonPrimary: CSSProperties = {
   border: 'none',
   cursor: 'pointer',
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 700,
@@ -52,7 +52,7 @@ const buttonGhost: CSSProperties = {
   border: '1px solid var(--ink-a15)',
   cursor: 'pointer',
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 700,
@@ -60,7 +60,7 @@ const buttonGhost: CSSProperties = {
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -69,7 +69,7 @@ const kickerStyle: CSSProperties = {
 
 const mutedKickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -152,7 +152,7 @@ export function ExamRunner() {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(22px, 2.6vw, 28px)',
+            fontSize: 'clamp(1.375rem, 2.6vw, 1.75rem)',
             lineHeight: 1.35,
             letterSpacing: '-0.01em',
             margin: '10px 0 22px',
@@ -182,7 +182,7 @@ export function ExamRunner() {
                   borderRadius: 12,
                   cursor: 'pointer',
                   fontFamily: INTER_STACK,
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   fontWeight: 500,
                   color: 'var(--ink)',
                   lineHeight: 1.5,
@@ -192,7 +192,7 @@ export function ExamRunner() {
                 <span
                   style={{
                     fontFamily: INTER_STACK,
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 700,
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
@@ -273,7 +273,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
         style={{
           fontFamily: INTER_STACK,
           fontWeight: 700,
-          fontSize: 'clamp(36px, 5vw, 54px)',
+          fontSize: 'clamp(2.25rem, 5vw, 3.375rem)',
           lineHeight: 1.05,
           letterSpacing: '-0.025em',
           margin: '0 0 14px',
@@ -285,7 +285,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 17,
+          fontSize: '1.0625rem',
           fontWeight: 400,
           lineHeight: 1.55,
           color: 'var(--slate-600)',
@@ -321,7 +321,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
               alignItems: 'baseline',
               gap: 10,
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: '0.875rem',
               fontWeight: 500,
               color: 'var(--slate-600)',
             }}
@@ -365,7 +365,7 @@ function ProgressBar({
           display: 'flex',
           justifyContent: 'space-between',
           fontFamily: INTER_STACK,
-          fontSize: 10.5,
+          fontSize: '0.6563rem',
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -422,7 +422,7 @@ function ResultsPhase({
         style={{
           fontFamily: INTER_STACK,
           fontWeight: 700,
-          fontSize: 'clamp(34px, 4.5vw, 48px)',
+          fontSize: 'clamp(2.125rem, 4.5vw, 3rem)',
           lineHeight: 1.1,
           letterSpacing: '-0.025em',
           margin: '0 0 16px',
@@ -449,7 +449,7 @@ function ResultsPhase({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 10.5,
+              fontSize: '0.6563rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -461,7 +461,7 @@ function ResultsPhase({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 56,
+              fontSize: '3.5rem',
               fontWeight: 700,
               letterSpacing: '-0.03em',
               lineHeight: 1,
@@ -475,7 +475,7 @@ function ResultsPhase({
             style={{
               marginTop: 8,
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -489,7 +489,7 @@ function ResultsPhase({
           style={{
             margin: 0,
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             fontWeight: 500,
             lineHeight: 1.6,
             color: 'var(--slate-600)',
@@ -502,7 +502,7 @@ function ResultsPhase({
       <h2
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 22,
+          fontSize: '1.375rem',
           fontWeight: 700,
           letterSpacing: '-0.01em',
           margin: '0 0 14px',
@@ -537,7 +537,7 @@ function ResultsPhase({
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 15,
+                fontSize: '0.9375rem',
                 fontWeight: 600,
                 color: 'var(--ink)',
               }}
@@ -547,7 +547,7 @@ function ResultsPhase({
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 500,
                 color: 'var(--slate-500)',
               }}
@@ -557,7 +557,7 @@ function ResultsPhase({
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 700,
                 color: 'var(--ink)',
                 minWidth: 44,
@@ -582,7 +582,7 @@ function ResultsPhase({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -596,7 +596,7 @@ function ResultsPhase({
           style={{
             margin: 0,
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             fontWeight: 500,
             lineHeight: 1.6,
             color: 'var(--slate-600)',
@@ -614,7 +614,7 @@ function ResultsPhase({
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -628,7 +628,7 @@ function ResultsPhase({
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -642,7 +642,7 @@ function ResultsPhase({
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

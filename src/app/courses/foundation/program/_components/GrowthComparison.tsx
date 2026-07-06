@@ -30,7 +30,7 @@ const TIER_ORDER = ['starting-point', 'early-stage', 'building-momentum', 'ready
 
 const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -75,11 +75,11 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
           marginBottom: 8,
         }}
       >
-        <span style={{ fontSize: 16, color: 'var(--ink)' }}>{label}</span>
+        <span style={{ fontSize: '1rem', color: 'var(--ink)' }}>{label}</span>
         <span
           style={{
             ...TNUM,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 600,
             color: improved ? 'var(--gold-deep)' : 'var(--slate-500)',
           }}
@@ -130,7 +130,7 @@ function DimensionBar({ dimension, delta }: DimensionBarProps) {
       </div>
 
       <div style={{ marginTop: 4 }}>
-        <span style={{ ...TNUM, fontSize: 11, color: 'var(--slate-500)' }}>
+        <span style={{ ...TNUM, fontSize: '0.6875rem', color: 'var(--slate-500)' }}>
           {preScore !== null ? `${preScore} → ` : ''}
           <span style={{ color: 'var(--ink)' }}>{postScore}</span> / {maxScore}
         </span>
@@ -181,7 +181,7 @@ export function GrowthComparison({
         <h2
           id="growth-heading"
           style={{
-            fontSize: 'clamp(24px, 3vw, 32px)',
+            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
             fontWeight: 700,
             letterSpacing: '-0.015em',
             color: 'var(--ink)',
@@ -209,7 +209,7 @@ export function GrowthComparison({
             aria-label={`Tier advanced from ${preTierLabel} to ${postTierLabel}`}
           >
             <span style={{ ...KICKER, color: 'var(--slate-500)' }}>{preTierLabel}</span>
-            <span style={{ fontSize: 12, color: 'var(--slate-500)' }} aria-hidden="true">
+            <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)' }} aria-hidden="true">
               →
             </span>
             <span style={{ ...KICKER, color: postTierColorVar, fontWeight: 700 }}>
@@ -246,14 +246,14 @@ export function GrowthComparison({
             <p
               style={{
                 ...TNUM,
-                fontSize: 28,
+                fontSize: '1.75rem',
                 fontWeight: 700,
                 color: 'var(--slate-500)',
                 margin: 0,
               }}
             >
               {preScore}
-              <span style={{ fontSize: 16, fontWeight: 400 }}> / 48</span>
+              <span style={{ fontSize: '1rem', fontWeight: 400 }}> / 48</span>
             </p>
           </div>
           <div>
@@ -263,14 +263,14 @@ export function GrowthComparison({
             <p
               style={{
                 ...TNUM,
-                fontSize: 28,
+                fontSize: '1.75rem',
                 fontWeight: 700,
                 color: 'var(--gold-deep)',
                 margin: 0,
               }}
             >
               {postScore}
-              <span style={{ fontSize: 16, fontWeight: 400 }}> / 48</span>
+              <span style={{ fontSize: '1rem', fontWeight: 400 }}> / 48</span>
             </p>
           </div>
         </div>
@@ -290,7 +290,7 @@ export function GrowthComparison({
           {preScore !== null && (
             <p
               style={{
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 color: 'var(--slate-500)',
                 lineHeight: 1.6,
                 marginTop: 16,

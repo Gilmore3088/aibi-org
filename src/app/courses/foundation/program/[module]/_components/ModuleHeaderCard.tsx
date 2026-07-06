@@ -7,7 +7,7 @@ const FONT_STACK = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica N
 
 const KICKER_STYLE: CSSProperties = {
   fontFamily: FONT_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 800,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -132,7 +132,7 @@ export function ModuleHeaderCard({
               alignItems: 'center',
               gap: 8,
               color: statusColor,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -170,7 +170,7 @@ export function ModuleHeaderCard({
               style={{
                 margin: 0,
                 color: 'var(--ink)',
-                fontSize: 'clamp(36px, 5vw, 64px)',
+                fontSize: 'clamp(2.25rem, 5vw, 4rem)',
                 fontWeight: 850,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.98,
@@ -184,7 +184,7 @@ export function ModuleHeaderCard({
                 margin: '14px 0 0',
                 maxWidth: 720,
                 color: 'var(--slate-600)',
-                fontSize: 18,
+                fontSize: '1.125rem',
                 fontWeight: 520,
                 lineHeight: 1.5,
               }}
@@ -223,7 +223,7 @@ export function ModuleHeaderCard({
                 <dt
                   style={{
                     color: 'var(--gold-deep)',
-                    fontSize: 10,
+                    fontSize: '0.625rem',
                     fontWeight: 900,
                     letterSpacing: '0.16em',
                     textTransform: 'uppercase',
@@ -235,7 +235,7 @@ export function ModuleHeaderCard({
                   style={{
                     margin: 0,
                     color: 'var(--ink)',
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                     fontWeight: 780,
                     lineHeight: 1.25,
                   }}
@@ -271,7 +271,7 @@ export function ModuleHeaderCard({
             borderRadius: 12,
             background: 'var(--ink)',
             color: '#fff',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 850,
             letterSpacing: '0.13em',
             textDecoration: 'none',

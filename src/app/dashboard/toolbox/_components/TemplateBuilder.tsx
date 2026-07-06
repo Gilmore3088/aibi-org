@@ -83,7 +83,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
           rows={8}
           className={monoInputClass}
         />
-        <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
+        <p className="mt-1 text-[0.625rem] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
           {skill.systemPrompt.length} chars · min 20
         </p>
       </Section>
@@ -137,7 +137,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
                 <option value="number">number</option>
                 <option value="select">select</option>
               </select>
-              <label className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-600)]">
+              <label className="flex items-center gap-1 text-[0.625rem] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-600)]">
                 <input
                   type="checkbox"
                   checked={v.required}
@@ -148,7 +148,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
               <button
                 type="button"
                 onClick={() => removeVariable(i)}
-                className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+                className="text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
               >
                 REMOVE
               </button>
@@ -158,7 +158,7 @@ export function TemplateBuilder({ skill, onChange }: TemplateBuilderProps) {
         <button
           type="button"
           onClick={addVariable}
-          className="mt-3 inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+          className="mt-3 inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
           ADD VARIABLE
         </button>
@@ -187,7 +187,7 @@ function Section({
 }) {
   return (
     <section>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+      <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
         {label}
       </p>
       <p className="mt-1 text-xs text-[color:var(--slate-500)]">{hint}</p>

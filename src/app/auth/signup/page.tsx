@@ -24,7 +24,7 @@ const cardStyle: CSSProperties = {
 };
 
 const eyebrowStyle: CSSProperties = {
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -33,7 +33,7 @@ const eyebrowStyle: CSSProperties = {
 };
 
 const h1Style: CSSProperties = {
-  fontSize: 32,
+  fontSize: '2rem',
   fontWeight: 700,
   lineHeight: 1.1,
   letterSpacing: '-0.02em',
@@ -42,7 +42,7 @@ const h1Style: CSSProperties = {
 };
 
 const labelStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.02em',
   color: 'var(--slate-600)',
@@ -58,7 +58,7 @@ const inputStyle: CSSProperties = {
   border: '1px solid var(--slate-200)',
   background: '#fff',
   color: 'var(--ink)',
-  fontSize: 15,
+  fontSize: '0.9375rem',
   fontFamily: 'inherit',
   outline: 'none',
 };
@@ -73,7 +73,7 @@ const primaryBtnStyle: CSSProperties = {
   borderRadius: 12,
   background: 'var(--gold)',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -89,7 +89,7 @@ const alertStyle: CSSProperties = {
   background: 'rgba(180, 60, 50, 0.06)',
   color: '#7A1F18',
   padding: '10px 14px',
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.45,
 };
 
@@ -102,7 +102,7 @@ const linkStyle: CSSProperties = {
 
 const footerStyle: CSSProperties = {
   textAlign: 'center',
-  fontSize: 14,
+  fontSize: '0.875rem',
   color: 'var(--slate-600)',
   margin: 0,
 };
@@ -208,7 +208,7 @@ export default function SignupPage() {
           <h1 style={h1Style}>Check your inbox to set your password.</h1>
         </div>
         <div style={cardStyle}>
-          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
+          <p style={{ margin: 0, fontSize: '1rem', lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
             This email already has an account — your purchase set it up for you.
             We just emailed a link to <strong>set your password</strong>. Click it,
             choose a password, and you&rsquo;re in.
@@ -216,7 +216,7 @@ export default function SignupPage() {
           <p
             style={{
               margin: '12px 0 0',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               color: 'var(--slate-500)',
@@ -245,13 +245,13 @@ export default function SignupPage() {
           <h1 style={h1Style}>Check your inbox.</h1>
         </div>
         <div style={cardStyle}>
-          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
+          <p style={{ margin: 0, fontSize: '1rem', lineHeight: 1.5, color: 'var(--ink)', textAlign: 'center' }}>
             We sent a confirmation link to your email. Click it to activate your account.
           </p>
           <p
             style={{
               margin: '12px 0 0',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               color: 'var(--slate-500)',
@@ -334,7 +334,7 @@ export default function SignupPage() {
           />
           <p
             id="password-hint"
-            style={{ marginTop: -6, marginBottom: 14, fontSize: 12, color: 'var(--slate-500)' }}
+            style={{ marginTop: -6, marginBottom: 14, fontSize: '0.75rem', color: 'var(--slate-500)' }}
           >
             {PASSWORD_HINT}
           </p>
@@ -362,7 +362,7 @@ export default function SignupPage() {
                 flexShrink: 0,
               }}
             />
-            <label htmlFor="terms" style={{ fontSize: 13, lineHeight: 1.45, color: 'var(--slate-600)' }}>
+            <label htmlFor="terms" style={{ fontSize: '0.8125rem', lineHeight: 1.45, color: 'var(--slate-600)' }}>
               I agree to the{' '}
               <Link href="/terms" style={linkStyle}>
                 Terms of Service

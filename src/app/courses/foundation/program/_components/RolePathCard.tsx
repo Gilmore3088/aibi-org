@@ -81,7 +81,7 @@ function ToolRow({
       </div>
       <div className="min-w-0">
         <p
-          className="text-[11px] uppercase mb-1"
+          className="text-[0.6875rem] uppercase mb-1"
           style={{
             fontFamily: FONT_INTER,
             fontWeight: 700,
@@ -110,7 +110,7 @@ function QuickWinItem({ text, index }: { text: string; index: number }) {
   return (
     <li className="flex items-start gap-3" style={{ fontFamily: FONT_INTER }}>
       <span
-        className="flex-shrink-0 text-[11px] mt-0.5 w-5 h-5 flex items-center justify-center"
+        className="flex-shrink-0 text-[0.6875rem] mt-0.5 w-5 h-5 flex items-center justify-center"
         style={{
           backgroundColor: 'var(--gold)',
           color: 'var(--ink)',
@@ -162,7 +162,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
       >
         <div>
           <p
-            className="text-[11px] uppercase mb-2"
+            className="text-[0.6875rem] uppercase mb-2"
             style={{
               fontFamily: FONT_INTER,
               fontWeight: 700,
@@ -198,7 +198,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
           <span
-            className="text-[11px] uppercase"
+            className="text-[0.6875rem] uppercase"
             style={{
               fontFamily: FONT_INTER,
               fontWeight: 700,
@@ -224,7 +224,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           style={{ borderRight: '1px solid var(--ink-a10)' }}
         >
           <h3
-            className="text-[11px] uppercase mb-4"
+            className="text-[0.6875rem] uppercase mb-4"
             style={{
               fontFamily: FONT_INTER,
               fontWeight: 700,
@@ -254,7 +254,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           {/* Start Here */}
           <div>
             <h3
-              className="text-[11px] uppercase mb-4"
+              className="text-[0.6875rem] uppercase mb-4"
               style={{
                 fontFamily: FONT_INTER,
                 fontWeight: 700,
@@ -277,7 +277,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p
-                    className="text-[11px] uppercase mb-1.5"
+                    className="text-[0.6875rem] uppercase mb-1.5"
                     style={{
                       fontFamily: FONT_INTER,
                       fontWeight: 700,
@@ -327,7 +327,7 @@ export function RolePathCard({ rolePath }: RolePathCardProps) {
           {/* Quick wins */}
           <div>
             <h3
-              className="text-[11px] uppercase mb-4"
+              className="text-[0.6875rem] uppercase mb-4"
               style={{
                 fontFamily: FONT_INTER,
                 fontWeight: 700,

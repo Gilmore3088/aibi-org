@@ -37,7 +37,7 @@ const FONT_INTER = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica N
 
 const eyebrowStyle: CSSProperties = {
   fontFamily: FONT_INTER,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -112,7 +112,7 @@ function StepNumber({ index }: { readonly index: number }) {
         justifyContent: 'center',
         background: 'var(--ink)',
         color: 'var(--cream)',
-        fontSize: 12,
+        fontSize: '0.75rem',
         fontWeight: 800,
         fontVariantNumeric: 'tabular-nums',
         flex: '0 0 auto',
@@ -211,7 +211,7 @@ function MemoryCardPanel({
             id={`m${moduleNumber}-memory-card-heading`}
             style={{
               margin: 0,
-              fontSize: 'clamp(22px, 2vw, 28px)',
+              fontSize: 'clamp(1.375rem, 2vw, 1.75rem)',
               lineHeight: 1.08,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -220,7 +220,7 @@ function MemoryCardPanel({
             Keep the rule, not the chapter.
           </h3>
         </div>
-        <p style={{ margin: 0, color: 'var(--on-dark-70)', fontSize: 14, lineHeight: 1.45, fontWeight: 650 }}>
+        <p style={{ margin: 0, color: 'var(--on-dark-70)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 650 }}>
           Say this from memory before the next module, then use it once on real work.
         </p>
       </div>
@@ -259,7 +259,7 @@ function MemoryCardPanel({
               <p style={{ ...eyebrowStyle, color: 'var(--gold-deep)', marginBottom: 0 }}>
                 {item.label}
               </p>
-              <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.38, fontWeight: 760 }}>
+              <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.38, fontWeight: 760 }}>
                 {item.body}
               </p>
             </div>
@@ -283,7 +283,7 @@ function MemoryCardPanel({
             <p style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 5 }}>
               Proof to show
             </p>
-            <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.35, fontWeight: 760 }}>
+            <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.35, fontWeight: 760 }}>
               {proof}
             </p>
           </div>
@@ -300,7 +300,7 @@ function MemoryCardPanel({
               color: remembered ? '#fff' : 'var(--ink)',
               padding: '0 16px',
               fontFamily: FONT_INTER,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 850,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -381,7 +381,7 @@ function PacketContinuityPanel({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 'clamp(20px, 2vw, 26px)',
+              fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
               lineHeight: 1.12,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -393,7 +393,7 @@ function PacketContinuityPanel({
         <span
           style={{
             color: 'var(--slate-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -426,7 +426,7 @@ function PacketContinuityPanel({
               style={{
                 margin: '0 0 8px',
                 color: 'var(--ink)',
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.25,
                 fontWeight: 850,
                 letterSpacing: '-0.01em',
@@ -434,7 +434,7 @@ function PacketContinuityPanel({
             >
               {item.title}
             </h4>
-            <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.5, fontWeight: 600 }}>
+            <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 600 }}>
               {item.body}
             </p>
           </div>
@@ -491,7 +491,7 @@ function WorkedExamplePanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 'clamp(20px, 2vw, 26px)',
+            fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -526,7 +526,7 @@ function WorkedExamplePanel({
                 style={{
                   margin: '0 0 10px',
                   color: 'var(--ink)',
-                  fontSize: 17,
+                  fontSize: '1.0625rem',
                   lineHeight: 1.2,
                   letterSpacing: '-0.01em',
                   fontWeight: 850,
@@ -538,7 +538,7 @@ function WorkedExamplePanel({
                 style={{
                   margin: 0,
                   color: isStrong ? 'var(--ink)' : 'var(--slate-600)',
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                   fontWeight: 650,
                 }}
@@ -612,7 +612,7 @@ function SelfExplanationPanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 'clamp(20px, 2vw, 26px)',
+            fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -650,7 +650,7 @@ function SelfExplanationPanel({
                   color: isActive ? '#fff' : 'var(--ink)',
                   padding: '11px 10px',
                   fontFamily: FONT_INTER,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   lineHeight: 1.15,
                   fontWeight: 850,
                   cursor: 'pointer',
@@ -673,10 +673,10 @@ function SelfExplanationPanel({
           <p style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 8 }}>
             Look for
           </p>
-          <p style={{ margin: 0, color: 'var(--ink)', fontSize: 15, lineHeight: 1.5, fontWeight: 775 }}>
+          <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.5, fontWeight: 775 }}>
             {activeLens.prompt}
           </p>
-          <p style={{ margin: '12px 0 0', color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.5, fontWeight: 650 }}>
+          <p style={{ margin: '12px 0 0', color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 650 }}>
             {activeLens.feedback} In this example: {example.why}
           </p>
         </div>
@@ -742,7 +742,7 @@ function RetrievalWarmupPanel({
           id={`m${moduleNumber}-retrieval-heading`}
           style={{
             margin: 0,
-            fontSize: 'clamp(21px, 2vw, 28px)',
+            fontSize: 'clamp(1.3125rem, 2vw, 1.75rem)',
             lineHeight: 1.08,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -750,13 +750,13 @@ function RetrievalWarmupPanel({
         >
           Answer before you read.
         </h3>
-        <p style={{ margin: '12px 0 0', color: 'var(--on-dark-70)', fontSize: 14, lineHeight: 1.55 }}>
+        <p style={{ margin: '12px 0 0', color: 'var(--on-dark-70)', fontSize: '0.875rem', lineHeight: 1.55 }}>
           A quick retrieval rep before the lab.
         </p>
       </div>
 
       <div style={{ padding: 'clamp(20px, 2.6vw, 28px)' }}>
-        <p style={{ margin: '0 0 12px', color: 'var(--ink)', fontSize: 17, lineHeight: 1.45, fontWeight: 800 }}>
+        <p style={{ margin: '0 0 12px', color: 'var(--ink)', fontSize: '1.0625rem', lineHeight: 1.45, fontWeight: 800 }}>
           {brief.learningLoop.recallPrompt}
         </p>
         <label
@@ -764,7 +764,7 @@ function RetrievalWarmupPanel({
           style={{
             display: 'block',
             color: 'var(--slate-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -793,7 +793,7 @@ function RetrievalWarmupPanel({
             background: 'var(--cream)',
             color: 'var(--ink)',
             fontFamily: FONT_INTER,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             lineHeight: 1.45,
             fontWeight: 600,
             padding: '14px 16px',
@@ -813,14 +813,14 @@ function RetrievalWarmupPanel({
               color: hasDraft ? '#fff' : 'var(--slate-500)',
               padding: '11px 16px',
               fontFamily: FONT_INTER,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 850,
               cursor: hasDraft ? 'pointer' : 'not-allowed',
             }}
           >
             Compare with model
           </button>
-          <span style={{ color: 'var(--slate-500)', fontSize: 13, lineHeight: 1.4, fontWeight: 650 }}>
+          <span style={{ color: 'var(--slate-500)', fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 650 }}>
             Private note. Nothing saves here.
           </span>
         </div>
@@ -851,7 +851,7 @@ function RetrievalWarmupPanel({
                       flex: '0 0 auto',
                     }}
                   />
-                  <span style={{ color: 'var(--ink)', fontSize: 14, lineHeight: 1.45, fontWeight: 725 }}>
+                  <span style={{ color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 725 }}>
                     {point}
                   </span>
                 </li>
@@ -962,7 +962,7 @@ function SpacedReviewPanel({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 'clamp(20px, 2vw, 26px)',
+              fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -971,7 +971,7 @@ function SpacedReviewPanel({
             Bring back the last skill before you add this one.
           </h3>
         </div>
-        <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.45, fontWeight: 675 }}>
+        <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 675 }}>
           Spacing works when you retrieve without rereading.
         </p>
       </div>
@@ -1010,10 +1010,10 @@ function SpacedReviewPanel({
               <p style={{ ...eyebrowStyle, color: item.label === 'Today' ? 'var(--gold-deep)' : 'var(--slate-500)', marginBottom: 0 }}>
                 {item.label}
               </p>
-              <h4 style={{ margin: 0, color: 'var(--ink)', fontSize: 15, lineHeight: 1.25, fontWeight: 850 }}>
+              <h4 style={{ margin: 0, color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.25, fontWeight: 850 }}>
                 {item.title}
               </h4>
-              <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: 13, lineHeight: 1.4, fontWeight: 650 }}>
+              <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 650 }}>
                 {item.body}
               </p>
             </div>
@@ -1033,7 +1033,7 @@ function SpacedReviewPanel({
             padding: '12px 14px',
           }}
         >
-          <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.4, fontWeight: 725 }}>
+          <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.4, fontWeight: 725 }}>
             Say the prior rule out loud, then compare it to today&apos;s model.
           </p>
           <button
@@ -1049,7 +1049,7 @@ function SpacedReviewPanel({
               color: retrieved ? '#fff' : 'var(--ink)',
               padding: '0 16px',
               fontFamily: FONT_INTER,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 850,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -1162,7 +1162,7 @@ function ReadinessCheckPanel({
           style={{
             margin: '0 0 12px',
             color: 'var(--ink)',
-            fontSize: 'clamp(20px, 2vw, 26px)',
+            fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -1197,7 +1197,7 @@ function ReadinessCheckPanel({
                   color: isSelected ? '#fff' : 'var(--ink)',
                   padding: '12px 10px',
                   fontFamily: FONT_INTER,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   lineHeight: 1.15,
                   fontWeight: 800,
                   cursor: 'pointer',
@@ -1214,7 +1214,7 @@ function ReadinessCheckPanel({
           style={{
             margin: 0,
             color: 'var(--slate-600)',
-            fontSize: 15,
+            fontSize: '0.9375rem',
             lineHeight: 1.55,
             fontWeight: 650,
           }}
@@ -1246,7 +1246,7 @@ function ReadinessCheckPanel({
                 color: '#fff',
                 padding: '10px 16px',
                 fontFamily: FONT_INTER,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 850,
                 cursor: 'pointer',
               }}
@@ -1267,7 +1267,7 @@ function ReadinessCheckPanel({
                 color: '#fff',
                 padding: '10px 16px',
                 fontFamily: FONT_INTER,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 850,
                 textDecoration: 'none',
               }}
@@ -1278,7 +1278,7 @@ function ReadinessCheckPanel({
           <span
             style={{
               color: 'var(--slate-500)',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               lineHeight: 1.4,
               fontWeight: 650,
             }}
@@ -1313,7 +1313,7 @@ function ReadinessCheckPanel({
                 htmlFor={`m${moduleNumber}-transfer-plan`}
                 style={{
                   color: 'var(--ink)',
-                  fontSize: 14,
+                  fontSize: '0.875rem',
                   fontWeight: 850,
                   letterSpacing: '-0.01em',
                 }}
@@ -1324,7 +1324,7 @@ function ReadinessCheckPanel({
                 aria-live="polite"
                 style={{
                   color: hasTransferPlan ? 'var(--gold-deep)' : 'var(--slate-500)',
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 850,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -1348,7 +1348,7 @@ function ReadinessCheckPanel({
                 color: 'var(--ink)',
                 padding: '11px 12px',
                 fontFamily: FONT_INTER,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.45,
                 outline: 'none',
               }}
@@ -1374,7 +1374,7 @@ function ReadinessCheckPanel({
                     color: 'var(--ink)',
                     padding: '8px 10px',
                     fontFamily: FONT_INTER,
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     lineHeight: 1.2,
                     fontWeight: 800,
                     cursor: 'pointer',
@@ -1410,7 +1410,7 @@ function ReadinessCheckPanel({
                   flex: '0 0 auto',
                 }}
               />
-              <span style={{ color: 'var(--ink)', fontSize: 14, lineHeight: 1.45, fontWeight: 700 }}>{item}</span>
+              <span style={{ color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 700 }}>{item}</span>
             </li>
           ))}
         </ul>
@@ -1471,7 +1471,7 @@ function _RetrievalBridgePanel({
           style={{
             margin: 0,
             color: '#fff',
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.15,
             fontWeight: 850,
             letterSpacing: '-0.01em',
@@ -1498,7 +1498,7 @@ function _RetrievalBridgePanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 15,
+            fontSize: '0.9375rem',
             lineHeight: 1.38,
             fontWeight: 750,
           }}
@@ -1524,7 +1524,7 @@ function _RetrievalBridgePanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.35,
             fontWeight: 750,
           }}
@@ -1592,7 +1592,7 @@ function RoleTransferPanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 'clamp(20px, 2vw, 26px)',
+            fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -1625,7 +1625,7 @@ function RoleTransferPanel({
             <p style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 10 }}>
               {item.label}
             </p>
-            <p style={{ margin: 0, color: 'var(--ink)', fontSize: 15, lineHeight: 1.5, fontWeight: 725 }}>
+            <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.5, fontWeight: 725 }}>
               {item.body}
             </p>
           </div>
@@ -1710,7 +1710,7 @@ function PracticeCoachPanel({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 'clamp(21px, 2vw, 28px)',
+              fontSize: 'clamp(1.3125rem, 2vw, 1.75rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -1750,7 +1750,7 @@ function PracticeCoachPanel({
                   padding: '11px 10px',
                   minHeight: 44,
                   fontFamily: FONT_INTER,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   lineHeight: 1.15,
                   fontWeight: 850,
                   cursor: 'pointer',
@@ -1788,7 +1788,7 @@ function PracticeCoachPanel({
             borderRadius: 999,
             background: 'var(--ink)',
             color: '#fff',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 900,
             letterSpacing: '0.13em',
             textTransform: 'uppercase',
@@ -1797,13 +1797,13 @@ function PracticeCoachPanel({
         >
           Rep {activeIndex + 1}/{tabs.length}
         </span>
-        <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.35, fontWeight: 760 }}>
+        <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.35, fontWeight: 760 }}>
           {active.cue}
         </p>
         <span
           style={{
             color: 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -1863,7 +1863,7 @@ function PracticeCoachPanel({
           style={{
             margin: 0,
             color: 'var(--slate-500)',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.3,
             fontWeight: 750,
           }}
@@ -1891,7 +1891,7 @@ function PracticeCoachPanel({
                 color: 'var(--ink)',
                 padding: '0 16px',
                 fontFamily: FONT_INTER,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.1,
                 fontWeight: 850,
                 cursor: 'pointer',
@@ -1912,7 +1912,7 @@ function PracticeCoachPanel({
                 color: '#fff',
                 padding: '0 18px',
                 fontFamily: FONT_INTER,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.1,
                 fontWeight: 850,
                 cursor: 'pointer',
@@ -1934,7 +1934,7 @@ function PracticeCoachPanel({
                 color: '#fff',
                 padding: '0 18px',
                 fontFamily: FONT_INTER,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.1,
                 fontWeight: 850,
                 textDecoration: 'none',
@@ -2016,7 +2016,7 @@ function QualityGatePanel({
           style={{
             margin: 0,
             color: 'var(--ink)',
-            fontSize: 'clamp(20px, 2vw, 26px)',
+            fontSize: 'clamp(1.25rem, 2vw, 1.625rem)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -2057,7 +2057,7 @@ function QualityGatePanel({
                   color: isActive ? '#fff' : 'var(--ink)',
                   padding: '11px 10px',
                   fontFamily: FONT_INTER,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   lineHeight: 1.15,
                   fontWeight: 850,
                   cursor: 'pointer',
@@ -2083,7 +2083,7 @@ function QualityGatePanel({
           <p style={{ ...eyebrowStyle, color: 'var(--slate-500)', marginBottom: 8 }}>
             {active.eyebrow}
           </p>
-          <h4 style={{ margin: '0 0 12px', color: 'var(--ink)', fontSize: 17, lineHeight: 1.2, fontWeight: 850 }}>
+          <h4 style={{ margin: '0 0 12px', color: 'var(--ink)', fontSize: '1.0625rem', lineHeight: 1.2, fontWeight: 850 }}>
             {active.heading}
           </h4>
           <ul style={{ display: 'grid', gap: 9, margin: 0, padding: 0, listStyle: 'none' }}>
@@ -2100,7 +2100,7 @@ function QualityGatePanel({
                     flex: '0 0 auto',
                   }}
                 />
-                <span style={{ color: 'var(--ink)', fontSize: 15, lineHeight: 1.45, fontWeight: 650 }}>
+                <span style={{ color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.45, fontWeight: 650 }}>
                   {item}
                 </span>
               </li>
@@ -2152,7 +2152,7 @@ export function LearnSection({
                 padding: '18px 22px',
                 cursor: 'pointer',
                 fontFamily: FONT_INTER,
-                fontSize: 18,
+                fontSize: '1.125rem',
                 fontWeight: 700,
                 color: 'var(--ink)',
               }}
@@ -2211,7 +2211,7 @@ export function LearnSection({
                 style={{
                   margin: 0,
                   color: 'var(--ink)',
-                  fontSize: 'clamp(24px, 2.4vw, 34px)',
+                  fontSize: 'clamp(1.5rem, 2.4vw, 2.125rem)',
                   lineHeight: 1.08,
                   letterSpacing: '-0.02em',
                   fontWeight: 875,
@@ -2233,7 +2233,7 @@ export function LearnSection({
                   color: '#fff',
                   padding: '0 16px',
                   textDecoration: 'none',
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 875,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -2271,7 +2271,7 @@ export function LearnSection({
                   style={{
                     margin: 0,
                     color: 'var(--ink)',
-                    fontSize: 15,
+                    fontSize: '0.9375rem',
                     lineHeight: 1.42,
                     fontWeight: 730,
                   }}
@@ -2314,15 +2314,15 @@ export function LearnSection({
                 }}
               >
                 <span style={{ ...eyebrowStyle }}>Example</span>
-                <span style={{ color: 'var(--ink)', fontSize: 14, lineHeight: 1.3, fontWeight: 850 }}>
+                <span style={{ color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.3, fontWeight: 850 }}>
                   Weak vs. better
                 </span>
               </summary>
               <div style={{ borderTop: '1px solid var(--ink-a10)', padding: 18, background: '#fff' }}>
-                <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.45, fontWeight: 650 }}>
+                <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 650 }}>
                   <strong>{workedExample.weakLabel}:</strong> {workedExample.weak}
                 </p>
-                <p style={{ margin: '12px 0 0', color: 'var(--ink)', fontSize: 14, lineHeight: 1.45, fontWeight: 740 }}>
+                <p style={{ margin: '12px 0 0', color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 740 }}>
                   <strong>{workedExample.strongLabel}:</strong> {workedExample.strong}
                 </p>
               </div>
@@ -2354,7 +2354,7 @@ export function LearnSection({
               }}
             >
               <span style={{ ...eyebrowStyle }}>Reference</span>
-              <span style={{ color: 'var(--slate-500)', fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              <span style={{ color: 'var(--slate-500)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                 {minutes} min optional
               </span>
             </summary>
@@ -2372,7 +2372,7 @@ export function LearnSection({
               {keyTakeaways && keyTakeaways.length > 0 && (
                 <ul style={{ display: 'grid', gap: 7, margin: 0, padding: 0, listStyle: 'none' }}>
                   {keyTakeaways.slice(0, 3).map((item) => (
-                    <li key={item} style={{ color: 'var(--ink)', fontSize: 14, lineHeight: 1.4, fontWeight: 700 }}>
+                    <li key={item} style={{ color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.4, fontWeight: 700 }}>
                       {item}
                     </li>
                   ))}
@@ -2394,20 +2394,20 @@ export function LearnSection({
                       gap: 12,
                       cursor: 'pointer',
                       color: 'var(--ink)',
-                      fontSize: 15,
+                      fontSize: '0.9375rem',
                       fontWeight: 850,
                       lineHeight: 1.25,
                     }}
                   >
                     <span>{section.title}</span>
-                    <span style={{ color: 'var(--slate-500)', fontSize: 11, fontWeight: 850, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    <span style={{ color: 'var(--slate-500)', fontSize: '0.6875rem', fontWeight: 850, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                       Open
                     </span>
                   </summary>
                   <div style={{ padding: '10px 0 4px' }}>
                     <MarkdownRenderer content={section.content} />
                     {section.tryThis && (
-                      <p style={{ margin: '12px 0 0', color: 'var(--ink)', fontSize: 14, lineHeight: 1.5, fontWeight: 750 }}>
+                      <p style={{ margin: '12px 0 0', color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 750 }}>
                         Try: {section.tryThis}
                       </p>
                     )}
@@ -2489,7 +2489,7 @@ export function LearnSection({
             style={{
               margin: '0 0 10px',
               color: 'var(--ink)',
-              fontSize: 'clamp(21px, 2vw, 28px)',
+              fontSize: 'clamp(1.3125rem, 2vw, 1.75rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -2501,7 +2501,7 @@ export function LearnSection({
             style={{
               margin: '0 0 16px',
               color: 'var(--slate-600)',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.45,
               fontWeight: 650,
             }}
@@ -2531,7 +2531,7 @@ export function LearnSection({
                 background: 'var(--ink)',
                 color: '#fff',
                 fontFamily: FONT_INTER,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 850,
                 textDecoration: 'none',
               }}
@@ -2551,7 +2551,7 @@ export function LearnSection({
                 background: 'var(--cream)',
                 color: 'var(--ink)',
                 fontFamily: FONT_INTER,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 850,
                 textDecoration: 'none',
               }}
@@ -2598,7 +2598,7 @@ export function LearnSection({
                 }}
               >
                 <StepNumber index={index} />
-                <span style={{ color: 'var(--ink)', fontSize: 15, fontWeight: 800, lineHeight: 1.25 }}>
+                <span style={{ color: 'var(--ink)', fontSize: '0.9375rem', fontWeight: 800, lineHeight: 1.25 }}>
                   {item}
                 </span>
               </li>
@@ -2643,7 +2643,7 @@ export function LearnSection({
               style={{
                 margin: 0,
                 color: 'var(--ink)',
-                fontSize: 'clamp(19px, 1.8vw, 24px)',
+                fontSize: 'clamp(1.1875rem, 1.8vw, 1.5rem)',
                 lineHeight: 1.12,
                 letterSpacing: '-0.01em',
                 fontWeight: 850,
@@ -2655,7 +2655,7 @@ export function LearnSection({
           <span
             style={{
               color: 'var(--slate-500)',
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 800,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -2718,7 +2718,7 @@ export function LearnSection({
               style={{
                 margin: 0,
                 color: 'var(--ink)',
-                fontSize: 'clamp(19px, 1.8vw, 24px)',
+                fontSize: 'clamp(1.1875rem, 1.8vw, 1.5rem)',
                 lineHeight: 1.2,
                 fontWeight: 850,
                 letterSpacing: '-0.01em',
@@ -2726,7 +2726,7 @@ export function LearnSection({
             >
               Reference: {brief.referenceLabel}
             </h3>
-            <span style={{ color: 'var(--slate-500)', fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            <span style={{ color: 'var(--slate-500)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
               {minutes} min optional
             </span>
           </summary>
@@ -2767,7 +2767,7 @@ export function LearnSection({
                       style={{
                         margin: 0,
                         color: 'var(--ink)',
-                        fontSize: 'clamp(18px, 1.6vw, 22px)',
+                        fontSize: 'clamp(1.125rem, 1.6vw, 1.375rem)',
                         lineHeight: 1.15,
                         fontWeight: 850,
                         letterSpacing: '-0.01em',
@@ -2779,7 +2779,7 @@ export function LearnSection({
                   <span
                     style={{
                       color: 'var(--slate-500)',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       lineHeight: 1.2,
                       fontWeight: 800,
                       letterSpacing: '0.12em',
@@ -2823,14 +2823,14 @@ export function LearnSection({
                             style={{
                               margin: '0 0 7px',
                               color: 'var(--ink)',
-                              fontSize: 16,
+                              fontSize: '1rem',
                               lineHeight: 1.25,
                               fontWeight: 850,
                             }}
                           >
                             {section.title}
                           </h5>
-                          <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.45, fontWeight: 650 }}>
+                          <p style={{ margin: 0, color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 650 }}>
                             {previewText(section.content)}
                           </p>
                         </div>
@@ -2844,7 +2844,7 @@ export function LearnSection({
                           <p style={{ ...eyebrowStyle, color: 'var(--gold-deep)', marginBottom: 6 }}>
                             Practice hook
                           </p>
-                          <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.45, fontWeight: 750 }}>
+                          <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 750 }}>
                             {section.tryThis
                               ? previewText(section.tryThis, 130)
                               : 'Open if you need more detail before the lab.'}
@@ -2881,19 +2881,19 @@ export function LearnSection({
                       padding: '16px 20px',
                       cursor: 'pointer',
                       color: 'var(--ink)',
-                      fontSize: 16,
+                      fontSize: '1rem',
                       fontWeight: 800,
                       lineHeight: 1.3,
                     }}
                   >
-                    <span style={{ color: 'var(--gold-deep)', fontVariantNumeric: 'tabular-nums', fontSize: 12 }}>
+                    <span style={{ color: 'var(--gold-deep)', fontVariantNumeric: 'tabular-nums', fontSize: '0.75rem' }}>
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span>{section.title}</span>
                     <span
                       style={{
                         color: 'var(--slate-500)',
-                        fontSize: 11,
+                        fontSize: '0.6875rem',
                         fontWeight: 750,
                         letterSpacing: '0.14em',
                         textTransform: 'uppercase',
@@ -2919,7 +2919,7 @@ export function LearnSection({
                         }}
                       >
                         <p style={{ ...eyebrowStyle, marginBottom: 8 }}>Try this</p>
-                        <p style={{ margin: 0, color: 'var(--ink)', fontSize: 15, lineHeight: 1.6 }}>
+                        <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.6 }}>
                           {section.tryThis}
                         </p>
                       </aside>
@@ -2929,7 +2929,7 @@ export function LearnSection({
                       <div style={{ marginTop: 24, display: 'grid', gap: 20 }}>
                         {section.subsections.map((sub) => (
                           <section key={sub.id}>
-                            <h4 style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: 16, fontWeight: 800 }}>
+                            <h4 style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: '1rem', fontWeight: 800 }}>
                               {sub.title}
                             </h4>
                             <MarkdownRenderer content={sub.content} />

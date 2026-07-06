@@ -64,7 +64,7 @@ export function KnowledgeCheck({
             color: GOLD_DEEP,
             textTransform: 'uppercase',
             letterSpacing: '0.18em',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
           }}
         >
@@ -72,7 +72,7 @@ export function KnowledgeCheck({
         </div>
         <p
           style={{
-            fontSize: 17,
+            fontSize: '1.0625rem',
             fontWeight: 800,
             color: INK,
             lineHeight: 1.45,
@@ -116,7 +116,7 @@ export function KnowledgeCheck({
                   border: `1px solid ${border}`,
                   borderRadius: 12,
                   padding: '13px 14px',
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   fontWeight: 700,
                   color: INK,
                   cursor: 'pointer',
@@ -144,7 +144,7 @@ export function KnowledgeCheck({
                     color: showAsCorrect || showAsWrong ? 'white' : INK,
                     display: 'inline-grid',
                     placeItems: 'center',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 900,
                     marginTop: 1,
                   }}
@@ -177,7 +177,7 @@ export function KnowledgeCheck({
                   style={{
                     margin: '0 0 7px',
                     color: isCorrect ? '#05603A' : '#912018',
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 850,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -185,7 +185,7 @@ export function KnowledgeCheck({
                 >
                   {isCorrect ? 'Good call' : 'Try the reasoning again'}
                 </p>
-                <p style={{ margin: 0, color: INK, fontSize: 16, lineHeight: 1.45, fontWeight: 750 }}>
+                <p style={{ margin: 0, color: INK, fontSize: '1rem', lineHeight: 1.45, fontWeight: 750 }}>
                   {picked.explainer}
                 </p>
               </div>
@@ -202,7 +202,7 @@ export function KnowledgeCheck({
                     style={{
                       margin: '0 0 6px',
                       color: GOLD_DEEP,
-                      fontSize: 10,
+                      fontSize: '0.625rem',
                       fontWeight: 850,
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
@@ -210,7 +210,7 @@ export function KnowledgeCheck({
                   >
                     Better move
                   </p>
-                  <p style={{ margin: 0, color: INK, fontSize: 14, lineHeight: 1.4, fontWeight: 750 }}>
+                  <p style={{ margin: 0, color: INK, fontSize: '0.875rem', lineHeight: 1.4, fontWeight: 750 }}>
                     {correctOption.label}
                   </p>
                 </div>
@@ -221,7 +221,7 @@ export function KnowledgeCheck({
                     style={{
                       margin: '0 0 6px',
                       color: GOLD_DEEP,
-                      fontSize: 10,
+                      fontSize: '0.625rem',
                       fontWeight: 850,
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
@@ -229,7 +229,7 @@ export function KnowledgeCheck({
                   >
                     Next use
                   </p>
-                  <p style={{ margin: 0, color: INK, fontSize: 14, lineHeight: 1.45, fontWeight: 700 }}>
+                  <p style={{ margin: 0, color: INK, fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 700 }}>
                     {transferCue}
                   </p>
                 </div>
@@ -245,7 +245,7 @@ export function KnowledgeCheck({
                       background: '#fff',
                       color: INK,
                       padding: '10px 13px',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       fontWeight: 850,
                       cursor: 'pointer',
                     }}
@@ -264,7 +264,7 @@ export function KnowledgeCheck({
                       background: INK,
                       color: '#fff',
                       padding: '10px 13px',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       fontWeight: 850,
                       textDecoration: 'none',
                     }}
@@ -280,7 +280,7 @@ export function KnowledgeCheck({
                 style={{
                   margin: '0 0 8px',
                   color: GOLD_DEEP,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 850,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -288,7 +288,7 @@ export function KnowledgeCheck({
               >
                 Feedback appears here
               </p>
-              <p style={{ margin: 0, color: SLATE, fontSize: 15, lineHeight: 1.5, fontWeight: 650 }}>
+              <p style={{ margin: 0, color: SLATE, fontSize: '0.9375rem', lineHeight: 1.5, fontWeight: 650 }}>
                 Make a choice to see the reasoning, then carry the move into the lab or artifact.
               </p>
             </div>

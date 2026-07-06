@@ -24,7 +24,7 @@ function TableView({ table }: ContentTableProps) {
               <th
                 key={col.key}
                 scope="col"
-                className="px-4 py-3 text-left font-mono text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] whitespace-nowrap"
+                className="px-4 py-3 text-left font-mono text-[0.6875rem] uppercase tracking-widest text-[color:var(--slate-600)] whitespace-nowrap"
               >
                 {col.header}
               </th>
@@ -76,7 +76,7 @@ function CardGrid({ table }: ContentTableProps) {
           <div className="px-4 pb-4 space-y-2">
             {metaColumns.map((col) => (
               <div key={col.key}>
-                <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] block mb-0.5">
+                <span className="font-mono text-[0.6875rem] uppercase tracking-widest text-[color:var(--slate-600)] block mb-0.5">
                   {col.header}
                 </span>
                 <span className="text-base text-[color:var(--ink)] leading-relaxed block">

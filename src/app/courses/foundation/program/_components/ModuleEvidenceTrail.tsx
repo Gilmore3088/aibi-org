@@ -212,7 +212,7 @@ export function ModuleEvidenceTrail({
           style={{
             margin: 0,
             color: 'var(--gold-soft)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 900,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
@@ -220,7 +220,7 @@ export function ModuleEvidenceTrail({
         >
           Evidence trail
         </p>
-        <p style={{ margin: 0, color: 'rgba(255,255,255,0.78)', fontSize: 13, lineHeight: 1.3, fontWeight: 750 }}>
+        <p style={{ margin: 0, color: 'rgba(255,255,255,0.78)', fontSize: '0.8125rem', lineHeight: 1.3, fontWeight: 750 }}>
           {completedCount}/{steps.length} proof points
         </p>
       </div>
@@ -259,7 +259,7 @@ export function ModuleEvidenceTrail({
                 borderRadius: 999,
                 background: step.done ? 'var(--gold)' : 'var(--cream)',
                 color: step.done ? 'var(--ink)' : 'var(--slate-500)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 900,
               }}
             >
@@ -270,7 +270,7 @@ export function ModuleEvidenceTrail({
                 style={{
                   display: 'block',
                   color: step.done ? 'var(--gold-deep)' : 'var(--slate-500)',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 900,
                   letterSpacing: '0.13em',
                   textTransform: 'uppercase',
@@ -283,7 +283,7 @@ export function ModuleEvidenceTrail({
                   display: '-webkit-box',
                   marginTop: 4,
                   color: 'var(--ink)',
-                  fontSize: 12.5,
+                  fontSize: '0.7813rem',
                   lineHeight: 1.28,
                   fontWeight: 760,
                   overflow: 'hidden',

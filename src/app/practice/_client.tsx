@@ -358,7 +358,7 @@ export default function PracticeSandboxPage() {
                 <div className="mk-k">Safe Sample Data</div>
               </div>
               <div className="mk-panel-body">
-                <p style={{ color: 'var(--slate-600)', fontSize: 13, margin: 0 }}>
+                <p style={{ color: 'var(--slate-600)', fontSize: '0.8125rem', margin: 0 }}>
                   {scenario.sampleData}
                 </p>
                 <div
@@ -373,7 +373,7 @@ export default function PracticeSandboxPage() {
                   }}
                 >
                   <LockIcon size={20} />
-                  <p style={{ fontSize: 13, margin: 0, color: 'var(--slate-600)' }}>
+                  <p style={{ fontSize: '0.8125rem', margin: 0, color: 'var(--slate-600)' }}>
                     Use fictional, redacted, or approved sample content only. Do not paste
                     customer or confidential data.
                   </p>
@@ -388,10 +388,10 @@ export default function PracticeSandboxPage() {
               <div className="mk-pr-workspace-grid">
                 <div className="mk-prompt-col">
                   <div style={{ marginBottom: 16 }}>
-                    <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                    <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                       Prompt Workspace
                     </div>
-                    <h2 style={{ fontSize: 24, fontWeight: 600, margin: '6px 0 0' }}>Edit and run</h2>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '6px 0 0' }}>Edit and run</h2>
                   </div>
                   <textarea
                     value={prompt}
@@ -418,10 +418,10 @@ export default function PracticeSandboxPage() {
                 <div className="mk-out-col">
                   <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
                     <div>
-                      <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                      <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                         Draft Output
                       </div>
-                      <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '4px 0 0' }}>
+                      <p style={{ fontSize: '0.8125rem', color: 'var(--slate-500)', margin: '4px 0 0' }}>
                         Review required before saving.
                       </p>
                     </div>
@@ -438,7 +438,7 @@ export default function PracticeSandboxPage() {
                       data-testid="practice-safety-block"
                       style={{
                         margin: '0 0 10px',
-                        fontSize: 13,
+                        fontSize: '0.8125rem',
                         fontWeight: 600,
                         color: '#912018',
                         background: '#FEE4E2',
@@ -461,7 +461,7 @@ export default function PracticeSandboxPage() {
                       data-testid="practice-demo-fallback"
                       style={{
                         margin: '0 0 10px',
-                        fontSize: 13,
+                        fontSize: '0.8125rem',
                         fontWeight: 600,
                         color: 'var(--gold-deep)',
                         background: 'var(--gold-a10)',
@@ -482,16 +482,16 @@ export default function PracticeSandboxPage() {
             <div className="mk-pr-review" style={{ marginTop: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 20 }}>
                 <div>
-                  <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                  <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                     Review Before Saving
                   </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 600, margin: '8px 0 0' }}>Turn practice into a reusable asset.</h3>
+                  <h3 style={{ fontSize: '1.375rem', fontWeight: 600, margin: '8px 0 0' }}>Turn practice into a reusable asset.</h3>
                 </div>
                 <span
                   style={{
                     padding: '8px 14px',
                     borderRadius: 'var(--r-pill)',
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 700,
                     background: reviewComplete ? 'rgba(4,120,87,0.12)' : 'var(--gold-a20)',
                     color: reviewComplete ? 'var(--emerald-800)' : 'var(--gold-deep)',
@@ -543,7 +543,7 @@ export default function PracticeSandboxPage() {
                     background: 'rgba(4,120,87,0.10)',
                     color: 'var(--emerald-800)',
                     fontWeight: 600,
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                   }}
                 >
                   Sign in to save reviewed output in your Toolbox.

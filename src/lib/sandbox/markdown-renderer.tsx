@@ -84,7 +84,7 @@ export function renderMarkdown(text: string): ReactNode[] {
           className="my-2 overflow-x-auto rounded-[2px] bg-[color:#FFFFFF] p-3 text-xs font-mono"
         >
           {lang && (
-            <span className="mb-1 block text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
+            <span className="mb-1 block text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
               {lang}
             </span>
           )}

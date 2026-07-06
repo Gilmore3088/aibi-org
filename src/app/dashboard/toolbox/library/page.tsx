@@ -60,7 +60,7 @@ export default async function LibraryPage({
         <div className="border-b border-[color:var(--ink-a10)] bg-white">
           <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+              <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
                 Toolbox · Library
               </p>
               <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -72,7 +72,7 @@ export default async function LibraryPage({
             </div>
             <Link
               href="/dashboard/toolbox"
-              className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+              className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
               BACK TO TOOLBOX
             </Link>
@@ -93,7 +93,7 @@ export default async function LibraryPage({
               <li key={prompt.id}>
                 <details className="block h-full rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)]">
                   <summary className="cursor-pointer list-none">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                    <p className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                       {prompt.role} · {prompt.difficulty}
                     </p>
                     <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
@@ -102,7 +102,7 @@ export default async function LibraryPage({
                     <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--slate-600)]">
                       {prompt.whenToUse ?? prompt.expectedOutput}
                     </p>
-                    <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                    <p className="mt-5 text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                       SHOW PROMPT →
                     </p>
                   </summary>
@@ -123,7 +123,7 @@ export default async function LibraryPage({
       <div className="border-b border-[color:var(--ink-a10)] bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
               Toolbox · Library
             </p>
             <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -136,7 +136,7 @@ export default async function LibraryPage({
           </div>
           <Link
             href="/dashboard/toolbox"
-            className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+            className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
           >
             BACK TO TOOLBOX
           </Link>
@@ -165,7 +165,7 @@ export default async function LibraryPage({
                   href={`/dashboard/toolbox/library/${s.slug}`}
                   className="block h-full rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)] transition-all hover:-translate-y-1 hover:border-[color:var(--ink)] hover:shadow-[var(--shadow-feature)]"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                  <p className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                     {s.category} · {s.complexity ?? 'intermediate'}
                   </p>
                   <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
@@ -176,7 +176,7 @@ export default async function LibraryPage({
                       {s.description}
                     </p>
                   )}
-                  <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                  <p className="mt-5 text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                     OPEN →
                   </p>
                 </Link>
@@ -199,9 +199,9 @@ function FilterBar({
   categories: string[];
 }) {
   const baseClass =
-    'rounded-[999px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]';
+    'rounded-[999px] border border-[color:var(--ink-a15)] bg-white px-3 py-1.5 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]';
   const activeClass =
-    'rounded-[999px] border border-[color:var(--ink)] bg-[color:var(--ink)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white';
+    'rounded-[999px] border border-[color:var(--ink)] bg-[color:var(--ink)] px-3 py-1.5 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-white';
 
   const buildHref = (params: Partial<SearchParams>) => {
     const next = new URLSearchParams();
@@ -243,7 +243,7 @@ function FilterBar({
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
+      <span className="text-[0.625rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
         {label}
       </span>
       {children}

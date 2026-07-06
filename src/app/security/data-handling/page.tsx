@@ -111,7 +111,7 @@ const cardStyle: CSSProperties = {
 const cardTitleStyle: CSSProperties = {
   display: 'block',
   color: 'var(--ink)',
-  fontSize: 14,
+  fontSize: '0.875rem',
   fontWeight: 800,
   lineHeight: 1.35,
 };
@@ -119,7 +119,7 @@ const cardTitleStyle: CSSProperties = {
 const cardBodyStyle: CSSProperties = {
   margin: '8px 0 0',
   color: 'var(--slate-600)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 500,
   lineHeight: 1.45,
 };

@@ -41,7 +41,7 @@ export function VerifyLookupForm() {
           display: 'grid',
           gap: 8,
           fontFamily: 'var(--font-inter)',
-          fontSize: 13,
+          fontSize: '0.8125rem',
           fontWeight: 700,
           color: 'var(--ink)',
         }}
@@ -63,7 +63,7 @@ export function VerifyLookupForm() {
             borderRadius: 12,
             padding: '0 16px',
             fontFamily: 'var(--font-mono)',
-            fontSize: 15,
+            fontSize: '0.9375rem',
             color: 'var(--ink)',
             background: '#fff',
             textTransform: 'uppercase',
@@ -77,7 +77,7 @@ export function VerifyLookupForm() {
             margin: 0,
             color: '#B42318',
             fontFamily: 'var(--font-inter)',
-            fontSize: 13,
+            fontSize: '0.8125rem',
             lineHeight: 1.5,
           }}
         >
@@ -93,7 +93,7 @@ export function VerifyLookupForm() {
           background: 'var(--ink)',
           color: 'var(--cream)',
           fontFamily: 'var(--font-inter)',
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 800,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',

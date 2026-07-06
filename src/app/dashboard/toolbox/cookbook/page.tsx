@@ -27,7 +27,7 @@ export default async function CookbookPage() {
       <div className="border-b border-[color:var(--ink-a10)] bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
               Toolbox · Cookbook
             </p>
             <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -41,7 +41,7 @@ export default async function CookbookPage() {
           </div>
           <Link
             href="/dashboard/toolbox"
-            className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+            className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
           >
             BACK TO TOOLBOX
           </Link>
@@ -51,7 +51,7 @@ export default async function CookbookPage() {
       <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
         {recipes.length === 0 ? (
           <div className="mt-12 rounded-[24px] border border-dashed border-[color:var(--ink-a15)] bg-white p-10 text-center shadow-[var(--shadow-soft)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
               No published recipes yet
             </p>
             <h2 className="mt-3 text-2xl font-bold text-[color:var(--ink)]">
@@ -64,7 +64,7 @@ export default async function CookbookPage() {
             </p>
             <Link
               href="/dashboard/toolbox/library"
-              className="mt-6 inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+              className="mt-6 inline-flex items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
               BROWSE LIBRARY →
             </Link>
@@ -77,7 +77,7 @@ export default async function CookbookPage() {
                   href={`/dashboard/toolbox/cookbook/${r.slug}`}
                   className="block h-full rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)] transition-all hover:-translate-y-1 hover:border-[color:var(--ink)] hover:shadow-[var(--shadow-feature)]"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                  <p className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                     {r.category} · {r.steps.length} {r.steps.length === 1 ? 'step' : 'steps'}
                   </p>
                   <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
@@ -86,7 +86,7 @@ export default async function CookbookPage() {
                   <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--slate-600)]">
                     {r.overview}
                   </p>
-                  <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                  <p className="mt-5 text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                     OPEN RECIPE →
                   </p>
                 </Link>

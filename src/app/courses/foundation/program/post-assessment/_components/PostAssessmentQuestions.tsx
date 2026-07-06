@@ -32,7 +32,7 @@ export function PostAssessmentQuestions({
             borderRadius: 999,
             background: 'var(--gold-a10)',
             color: 'var(--gold-deep)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -44,7 +44,7 @@ export function PostAssessmentQuestions({
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(28px, 3.4vw, 36px)',
+            fontSize: 'clamp(1.75rem, 3.4vw, 2.25rem)',
             lineHeight: 1.1,
             letterSpacing: '-0.022em',
             color: 'var(--ink)',
@@ -55,7 +55,7 @@ export function PostAssessmentQuestions({
         </h1>
         <p
           style={{
-            fontSize: 16,
+            fontSize: '1rem',
             color: 'var(--slate-600)',
             lineHeight: 1.6,
             margin: '0 0 24px',

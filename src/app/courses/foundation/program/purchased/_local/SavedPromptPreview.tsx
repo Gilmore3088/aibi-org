@@ -25,7 +25,7 @@ const cardStyle: CSSProperties = {
 
 const eyebrowStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: '0.625rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -48,7 +48,7 @@ export function SavedPromptPreview() {
         <span
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 600,
             color: 'var(--slate-500)',
           }}
@@ -59,7 +59,7 @@ export function SavedPromptPreview() {
       <h3
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 16,
+          fontSize: '1rem',
           fontWeight: 700,
           lineHeight: 1.3,
           letterSpacing: '-0.01em',
@@ -72,7 +72,7 @@ export function SavedPromptPreview() {
       <pre
         style={{
           fontFamily: MONO_STACK,
-          fontSize: 12,
+          fontSize: '0.75rem',
           color: 'var(--slate-600)',
           lineHeight: 1.55,
           whiteSpace: 'pre-wrap',
@@ -93,7 +93,7 @@ new information. Reply with the rewritten message only.`}
           gap: 14,
           flexWrap: 'wrap',
           fontFamily: INTER_STACK,
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 600,
           color: 'var(--slate-500)',
           letterSpacing: '0.04em',

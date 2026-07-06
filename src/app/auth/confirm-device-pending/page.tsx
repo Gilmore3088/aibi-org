@@ -38,7 +38,7 @@ const cardStyle: CSSProperties = {
 };
 
 const eyebrowStyle: CSSProperties = {
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -63,14 +63,14 @@ const recoveryEyebrowStyle: CSSProperties = {
 };
 
 const recoveryBodyStyle: CSSProperties = {
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.5,
   color: 'var(--slate-600)',
   margin: '0 0 16px',
 };
 
 const h1Style: CSSProperties = {
-  fontSize: 28,
+  fontSize: '1.75rem',
   fontWeight: 700,
   lineHeight: 1.15,
   letterSpacing: '-0.02em',
@@ -79,7 +79,7 @@ const h1Style: CSSProperties = {
 };
 
 const bodyStyle: CSSProperties = {
-  fontSize: 15,
+  fontSize: '0.9375rem',
   lineHeight: 1.55,
   color: 'var(--slate-600)',
   margin: '0 0 16px',
@@ -93,7 +93,7 @@ const linkStyle: CSSProperties = {
 };
 
 const stampStyle: CSSProperties = {
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -108,7 +108,7 @@ const resendBtnStyle: CSSProperties = {
   borderRadius: 10,
   background: 'var(--gold)',
   color: '#fff',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -168,7 +168,7 @@ export default function ConfirmDevicePendingPage() {
 
         {/* Resend action */}
         {resendStatus === 'sent' ? (
-          <p style={{ fontSize: 14, color: 'var(--gold-deep)', fontWeight: 600, margin: '20px 0 0' }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--gold-deep)', fontWeight: 600, margin: '20px 0 0' }}>
             New link sent — check your inbox.
           </p>
         ) : (
@@ -182,13 +182,13 @@ export default function ConfirmDevicePendingPage() {
           </button>
         )}
         {resendStatus === 'error' && (
-          <p style={{ fontSize: 13, color: '#9b2226', margin: '8px 0 0' }}>
+          <p style={{ fontSize: '0.8125rem', color: '#9b2226', margin: '8px 0 0' }}>
             Could not resend.{' '}
             <Link href="/auth/login" style={linkStyle}>Sign in again</Link> to start a new session.
           </p>
         )}
         {resendStatus === 'no-session' && (
-          <p style={{ fontSize: 13, color: 'var(--slate-600)', margin: '8px 0 0', lineHeight: 1.45 }}>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--slate-600)', margin: '8px 0 0', lineHeight: 1.45 }}>
             We could not confirm a live session in this browser. Use{' '}
             <strong style={{ color: 'var(--ink)' }}>Email me a sign-in link</strong> below — it sends
             a fresh link without needing one.
@@ -213,14 +213,14 @@ export default function ConfirmDevicePendingPage() {
         </div>
       </div>
 
-      <div style={{ textAlign: 'center', fontSize: 14, color: 'var(--slate-600)', margin: 0 }}>
+      <div style={{ textAlign: 'center', fontSize: '0.875rem', color: 'var(--slate-600)', margin: 0 }}>
         <p style={{ margin: '0 0 8px' }}>
           Wrong email?{' '}
           <Link href="/auth/login" style={linkStyle}>
             Sign in again
           </Link>
         </p>
-        <p style={{ margin: 0, fontSize: 13 }}>
+        <p style={{ margin: 0, fontSize: '0.8125rem' }}>
           Opened the link on a different device?{' '}
           <Link href="/auth/login" style={linkStyle}>
             Sign in here

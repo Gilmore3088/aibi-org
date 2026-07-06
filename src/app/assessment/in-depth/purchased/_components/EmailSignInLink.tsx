@@ -27,7 +27,7 @@ const buttonStyle: React.CSSProperties = {
   color: '#fff',
   padding: '14px 28px',
   borderRadius: 12,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
 };
@@ -69,7 +69,7 @@ export function EmailSignInLink({ email }: EmailSignInLinkProps) {
 
   if (status === 'sent') {
     return (
-      <p style={{ fontSize: 14, color: 'var(--slate-600)', lineHeight: 1.5 }}>
+      <p style={{ fontSize: '0.875rem', color: 'var(--slate-600)', lineHeight: 1.5 }}>
         <span style={{ fontWeight: 700, color: 'var(--gold-deep)', letterSpacing: '0.08em' }}>
           CHECK YOUR INBOX
         </span>{' '}
@@ -92,7 +92,7 @@ export function EmailSignInLink({ email }: EmailSignInLinkProps) {
         {status === 'sending' ? 'SENDING…' : 'EMAIL MY ONE-CLICK LINK'}
       </button>
       {status === 'error' && (
-        <span style={{ fontSize: 12, color: '#9b2226' }}>
+        <span style={{ fontSize: '0.75rem', color: '#9b2226' }}>
           {message ?? 'Could not send the email.'} Try again or{' '}
           <Link href="/auth/forgot-password" style={{ textDecoration: 'underline' }}>
             use forgot password

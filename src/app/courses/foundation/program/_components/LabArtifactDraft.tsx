@@ -221,7 +221,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             style={{
               margin: '0 0 6px',
               color: 'var(--gold-deep)',
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 800,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -233,7 +233,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 20,
+              fontSize: '1.25rem',
               lineHeight: 1.2,
               fontWeight: 800,
               letterSpacing: '-0.01em',
@@ -241,7 +241,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
           >
             Carry this into {artifactLabel}.
           </h3>
-          <p style={{ margin: '8px 0 0', color: 'var(--slate-600)', fontSize: 14, lineHeight: 1.5, fontWeight: 650 }}>
+          <p style={{ margin: '8px 0 0', color: 'var(--slate-600)', fontSize: '0.875rem', lineHeight: 1.5, fontWeight: 650 }}>
             Use the lab output as raw material. Your submitted artifact still needs source context, edits, and a human review note.
           </p>
         </div>
@@ -259,7 +259,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             color: 'var(--ink)',
             borderRadius: 12,
             padding: '10px 14px',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -291,7 +291,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               style={{
                 margin: '0 0 7px',
                 color: 'var(--gold-deep)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -299,7 +299,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             >
               {item.label}
             </p>
-            <p style={{ margin: 0, color: 'var(--ink)', fontSize: 13, lineHeight: 1.4, fontWeight: 750 }}>
+            <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 750 }}>
               {item.body}
             </p>
           </div>
@@ -331,7 +331,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               style={{
                 margin: '0 0 5px',
                 color: 'var(--gold-deep)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -344,7 +344,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               style={{
                 margin: 0,
                 color: 'var(--ink)',
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.2,
                 fontWeight: 850,
               }}
@@ -357,7 +357,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             style={{
               margin: 0,
               color: 'var(--slate-600)',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               lineHeight: 1.35,
               fontWeight: 700,
             }}
@@ -394,7 +394,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
                   padding: '0 12px',
                   cursor: 'pointer',
                   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 850,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -412,7 +412,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               display: 'block',
               marginBottom: 6,
               color: 'var(--slate-500)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -434,7 +434,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               padding: '11px 12px',
               color: 'var(--ink)',
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.45,
               outlineColor: 'var(--gold-deep)',
             }}
@@ -467,7 +467,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               style={{
                 margin: '0 0 5px',
                 color: 'var(--gold-deep)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -475,7 +475,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             >
               Build checklist
             </p>
-            <p style={{ margin: 0, color: 'var(--ink)', fontSize: 15, lineHeight: 1.3, fontWeight: 820 }}>
+            <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.9375rem', lineHeight: 1.3, fontWeight: 820 }}>
               Convert the lab output into human-reviewed work.
             </p>
           </div>
@@ -491,7 +491,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
               background: '#fff',
               border: '1px solid var(--ink-a10)',
               color: 'var(--ink)',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -552,7 +552,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
                     border: '1px solid var(--gold)',
                     background: selected ? 'var(--gold)' : '#fff',
                     color: 'var(--ink)',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 900,
                     lineHeight: 1,
                   }}
@@ -563,7 +563,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
                   <span
                     style={{
                       color: 'var(--ink)',
-                      fontSize: 13,
+                      fontSize: '0.8125rem',
                       lineHeight: 1.2,
                       fontWeight: 850,
                     }}
@@ -573,7 +573,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
                   <span
                     style={{
                       color: 'var(--slate-600)',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       lineHeight: 1.3,
                       fontWeight: 650,
                     }}
@@ -625,14 +625,14 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
                   borderRadius: 6,
                   background: 'var(--gold)',
                   color: 'var(--ink)',
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 900,
                   lineHeight: 1,
                 }}
               >
                 ✓
               </span>
-              <span style={{ color: 'var(--ink)', fontSize: 13, lineHeight: 1.28, fontWeight: 750 }}>
+              <span style={{ color: 'var(--ink)', fontSize: '0.8125rem', lineHeight: 1.28, fontWeight: 750 }}>
                 {item}
               </span>
             </div>
@@ -656,7 +656,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
           <span
             style={{
               color: 'var(--slate-500)',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -664,7 +664,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
           >
             Optional preview
           </span>
-          <span style={{ color: 'var(--ink)', fontSize: 13, fontWeight: 850 }}>
+          <span style={{ color: 'var(--ink)', fontSize: '0.8125rem', fontWeight: 850 }}>
             View draft output
           </span>
         </summary>
@@ -679,7 +679,7 @@ export function LabArtifactDraft({ moduleId, artifactLabel, feedbackCue }: LabAr
             padding: 16,
             color: 'var(--ink)',
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.55,
           }}
         >

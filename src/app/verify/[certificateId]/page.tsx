@@ -62,7 +62,7 @@ const INTER_STACK =
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -72,7 +72,7 @@ const KICKER: React.CSSProperties = {
 
 const META_LABEL: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: '0.625rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -150,7 +150,7 @@ function DataRow({ label, value, last }: { label: string; value: string; last?: 
         style={{
           margin: '6px 0 0',
           fontFamily: INTER_STACK,
-          fontSize: 18,
+          fontSize: '1.125rem',
           color: 'var(--ink)',
           lineHeight: 1.3,
           letterSpacing: '-0.01em',
@@ -181,7 +181,7 @@ function NotFoundContent() {
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 'clamp(28px, 4vw, 38px)',
+            fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
             fontWeight: 700,
             color: 'var(--ink)',
             letterSpacing: '-0.02em',
@@ -204,7 +204,7 @@ function NotFoundContent() {
           style={{
             margin: 0,
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             textAlign: 'center',
@@ -218,7 +218,7 @@ function NotFoundContent() {
         style={{
           textAlign: 'center',
           fontFamily: INTER_STACK,
-          fontSize: 13,
+          fontSize: '0.8125rem',
           color: 'var(--slate-600)',
           margin: 0,
         }}
@@ -274,7 +274,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           <h1
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 'clamp(28px, 4vw, 38px)',
+              fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
               fontWeight: 700,
               color: 'var(--ink)',
               letterSpacing: '-0.02em',
@@ -287,7 +287,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: '0.875rem',
               color: 'var(--slate-600)',
               lineHeight: 1.5,
               margin: 0,
@@ -315,7 +315,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
               style={{
                 margin: '8px 0 0',
                 fontFamily: INTER_STACK,
-                fontSize: 'clamp(26px, 3vw, 32px)',
+                fontSize: 'clamp(1.625rem, 3vw, 2rem)',
                 fontWeight: 700,
                 color: 'var(--ink)',
                 lineHeight: 1.1,
@@ -342,7 +342,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           style={{
             textAlign: 'center',
             fontFamily: INTER_STACK,
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',

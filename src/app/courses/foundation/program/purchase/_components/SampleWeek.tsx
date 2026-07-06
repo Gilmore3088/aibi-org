@@ -53,7 +53,7 @@ export function SampleWeek() {
           style={{
             display: 'inline-block',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--gold-deep)',
@@ -67,7 +67,7 @@ export function SampleWeek() {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(26px, 2.8vw, 34px)',
+            fontSize: 'clamp(1.625rem, 2.8vw, 2.125rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
             margin: 0,
@@ -79,7 +79,7 @@ export function SampleWeek() {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             color: 'var(--slate-600)',
             lineHeight: 1.55,
             margin: '10px 0 0',
@@ -94,7 +94,7 @@ export function SampleWeek() {
             href="/courses/foundation/preview"
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 15,
+              fontSize: '0.9375rem',
               fontWeight: 700,
               color: 'var(--ink)',
               textDecorationColor: 'var(--gold)',
@@ -124,7 +124,7 @@ export function SampleWeek() {
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -138,7 +138,7 @@ export function SampleWeek() {
               style={{
                 fontFamily: INTER_STACK,
                 fontWeight: 700,
-                fontSize: 18,
+                fontSize: '1.125rem',
                 letterSpacing: '-0.01em',
                 lineHeight: 1.25,
                 margin: '0 0 10px',
@@ -150,7 +150,7 @@ export function SampleWeek() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 color: 'var(--slate-600)',
                 lineHeight: 1.55,
                 margin: '0 0 16px',
@@ -162,7 +162,7 @@ export function SampleWeek() {
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 11.5,
+                fontSize: '0.7188rem',
                 color: 'var(--slate-500)',
                 letterSpacing: '0.03em',
                 paddingTop: 12,

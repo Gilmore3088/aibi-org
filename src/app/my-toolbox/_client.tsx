@@ -184,7 +184,7 @@ export default function ToolboxPage() {
         />
 
         <div className="mk-role-filter" role="tablist">
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--slate-500)', marginRight: 6 }}>Filter by role:</span>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--slate-500)', marginRight: 6 }}>Filter by role:</span>
           {ROLES.map((r) => (
             <button key={r} type="button" onClick={() => setRole(r)} className={`mk-rf${role === r ? ' is-active' : ''}`}>
               {r === 'Retail' ? 'Branch / Retail' : r}

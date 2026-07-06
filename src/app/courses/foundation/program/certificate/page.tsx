@@ -26,7 +26,7 @@ const INTER_STACK =
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -146,7 +146,7 @@ function ReferralPanel({
           margin: 0,
           color: 'var(--ink)',
           fontFamily: INTER_STACK,
-          fontSize: 26,
+          fontSize: '1.625rem',
           lineHeight: 1.12,
         }}
       >
@@ -157,7 +157,7 @@ function ReferralPanel({
           margin: '10px 0 18px',
           color: 'var(--slate-600)',
           fontFamily: INTER_STACK,
-          fontSize: 14,
+          fontSize: '0.875rem',
           lineHeight: 1.55,
         }}
       >
@@ -182,7 +182,7 @@ function ReferralPanel({
             background: 'var(--ink)',
             color: 'var(--cream)',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -202,7 +202,7 @@ function ReferralPanel({
             border: '1px solid var(--ink-a10)',
             color: 'var(--ink)',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 800,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -239,7 +239,7 @@ export default async function CertificatePage() {
           <h1
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 28,
+              fontSize: '1.75rem',
               fontWeight: 700,
               color: 'var(--ink)',
               margin: '0 0 12px',
@@ -248,7 +248,7 @@ export default async function CertificatePage() {
           >
             Service Unavailable
           </h1>
-          <p style={{ color: 'var(--slate-600)', fontSize: 16, lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
             The certificate service is not configured. Please contact support.
           </p>
         </div>
@@ -350,7 +350,7 @@ export default async function CertificatePage() {
             style={{
               fontFamily: INTER_STACK,
               fontWeight: 700,
-              fontSize: 'clamp(34px, 4.5vw, 48px)',
+              fontSize: 'clamp(2.125rem, 4.5vw, 3rem)',
               lineHeight: 1.08,
               letterSpacing: '-0.02em',
               margin: '0 0 12px',
@@ -363,7 +363,7 @@ export default async function CertificatePage() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 color: 'var(--slate-600)',
                 margin: 0,
               }}

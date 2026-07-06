@@ -48,7 +48,7 @@ const ROLE_OPTIONS: { value: LearnerRole; label: string }[] = [
 const eyebrowStyle: CSSProperties = {
   display: 'block',
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -58,7 +58,7 @@ const eyebrowStyle: CSSProperties = {
 
 const questionTitleStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 20,
+  fontSize: '1.25rem',
   fontWeight: 700,
   lineHeight: 1.3,
   letterSpacing: '-0.01em',
@@ -68,7 +68,7 @@ const questionTitleStyle: CSSProperties = {
 
 const helperStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -84,7 +84,7 @@ function optionButtonStyle(isSelected: boolean): CSSProperties {
     border: `1px solid ${isSelected ? 'var(--ink)' : 'var(--ink-a10)'}`,
     color: isSelected ? 'var(--cream)' : 'var(--ink)',
     fontFamily: INTER_STACK,
-    fontSize: 16,
+    fontSize: '1rem',
     fontWeight: 600,
     textAlign: 'left',
     cursor: 'pointer',
@@ -184,7 +184,7 @@ export function SettingsQuestions({
                   <span
                     style={{
                       fontFamily: INTER_STACK,
-                      fontSize: 16,
+                      fontSize: '1rem',
                       fontWeight: 500,
                       color: 'var(--ink)',
                     }}

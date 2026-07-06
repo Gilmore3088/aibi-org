@@ -108,7 +108,7 @@ function LabPracticeBrief({
             style={{
               margin: '0 0 10px',
               color: 'var(--gold-deep)',
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 800,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -120,7 +120,7 @@ function LabPracticeBrief({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 'clamp(19px, 1.8vw, 24px)',
+              fontSize: 'clamp(1.1875rem, 1.8vw, 1.5rem)',
               lineHeight: 1.18,
               letterSpacing: '-0.02em',
               fontWeight: 850,
@@ -128,7 +128,7 @@ function LabPracticeBrief({
           >
             {brief.labTask}
           </h3>
-          <p style={{ margin: '7px 0 0', color: 'var(--slate-600)', fontSize: 13, lineHeight: 1.38, fontWeight: 650 }}>
+          <p style={{ margin: '7px 0 0', color: 'var(--slate-600)', fontSize: '0.8125rem', lineHeight: 1.38, fontWeight: 650 }}>
             {sampleLabel === 'Guided practice task'
               ? 'Work through the task below. Save draft material only.'
               : 'Use the sample data. Save draft material only.'}
@@ -167,7 +167,7 @@ function LabPracticeBrief({
                 style={{
                   margin: 0,
                   color: 'var(--gold-deep)',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 850,
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
@@ -175,7 +175,7 @@ function LabPracticeBrief({
               >
                 {label}
               </dt>
-              <dd style={{ margin: 0, color: 'var(--ink)', fontSize: 13, lineHeight: 1.28, fontWeight: 780 }}>
+              <dd style={{ margin: 0, color: 'var(--ink)', fontSize: '0.8125rem', lineHeight: 1.28, fontWeight: 780 }}>
                 {value}
               </dd>
             </div>
@@ -328,7 +328,7 @@ export default async function ModulePage(props: ModulePageParams) {
             href="/courses/foundation/program"
             style={{
               fontFamily: MOCKUP_FONT,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.04em',
               color: 'var(--slate-600)',
@@ -467,7 +467,7 @@ export default async function ModulePage(props: ModulePageParams) {
               <section id="st-takeaway" aria-labelledby="st-takeaway-h" style={{ scrollMarginTop: 160 }}>
                 <h2
                   id="st-takeaway-h"
-                  style={{ fontFamily: MOCKUP_FONT, fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
+                  style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
                 >
                   Understand · {takeawayMin} min
                 </h2>
@@ -499,7 +499,7 @@ export default async function ModulePage(props: ModulePageParams) {
                 >
                   <h2
                     id="st-sandbox-h"
-                    style={{ fontFamily: MOCKUP_FONT, fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
+                    style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
                   >
                     Try · {sandboxMin} min
                   </h2>
@@ -552,7 +552,7 @@ export default async function ModulePage(props: ModulePageParams) {
               >
                 <h2
                   id="st-submit-h"
-                  style={{ fontFamily: MOCKUP_FONT, fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
+                  style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
                 >
                   Build · {submitMin} min
                 </h2>
@@ -580,7 +580,7 @@ export default async function ModulePage(props: ModulePageParams) {
               >
                 <h2
                   id="st-saved-h"
-                  style={{ fontFamily: MOCKUP_FONT, fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
+                  style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
                 >
                   Save · Packet proof
                 </h2>

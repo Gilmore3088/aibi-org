@@ -20,7 +20,7 @@ const cardStyle: CSSProperties = {
 };
 
 const eyebrowStyle: CSSProperties = {
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -29,7 +29,7 @@ const eyebrowStyle: CSSProperties = {
 };
 
 const h1Style: CSSProperties = {
-  fontSize: 32,
+  fontSize: '2rem',
   fontWeight: 700,
   lineHeight: 1.1,
   letterSpacing: '-0.02em',
@@ -38,7 +38,7 @@ const h1Style: CSSProperties = {
 };
 
 const labelStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.02em',
   color: 'var(--slate-600)',
@@ -54,7 +54,7 @@ const inputStyle: CSSProperties = {
   border: '1px solid var(--slate-200)',
   background: '#fff',
   color: 'var(--ink)',
-  fontSize: 15,
+  fontSize: '0.9375rem',
   fontFamily: 'inherit',
   outline: 'none',
 };
@@ -69,7 +69,7 @@ const primaryBtnStyle: CSSProperties = {
   borderRadius: 12,
   background: 'var(--gold)',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -92,7 +92,7 @@ const alertStyle: CSSProperties = {
   background: 'rgba(180, 60, 50, 0.06)',
   color: '#7A1F18',
   padding: '10px 14px',
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.45,
 };
 
@@ -105,7 +105,7 @@ const linkStyle: CSSProperties = {
 
 const footerStyle: CSSProperties = {
   textAlign: 'center',
-  fontSize: 14,
+  fontSize: '0.875rem',
   color: 'var(--slate-600)',
   margin: 0,
 };
@@ -163,7 +163,7 @@ function Divider({ label }: { readonly label: string }) {
         alignItems: 'center',
         margin: '18px 0',
         color: 'var(--slate-500)',
-        fontSize: 11,
+        fontSize: '0.6875rem',
         fontWeight: 700,
         letterSpacing: '0.14em',
         textTransform: 'uppercase',
@@ -253,7 +253,7 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
         required
         placeholder="••••••••"
         trailing={
-          <Link href="/auth/forgot-password" style={{ ...linkStyle, fontSize: 12 }}>
+          <Link href="/auth/forgot-password" style={{ ...linkStyle, fontSize: '0.75rem' }}>
             Forgot password
           </Link>
         }

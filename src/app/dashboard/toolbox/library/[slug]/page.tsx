@@ -51,11 +51,11 @@ export default async function LibrarySkillPage({
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 lg:px-10">
           <Link
             href="/dashboard/toolbox/library"
-            className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+            className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
           >
             ← BACK TO LIBRARY
           </Link>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+          <p className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
             {skill.category} · {skill.complexity ?? 'intermediate'} · {skill.kind}
           </p>
           <h1 className="text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -78,14 +78,14 @@ export default async function LibrarySkillPage({
         )}
 
         {skill.course_source_ref && (
-          <p className="mt-12 border-t border-[color:var(--ink-a10)] pt-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+          <p className="mt-12 border-t border-[color:var(--ink-a10)] pt-6 text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
             Sourced from {skill.course_source_ref}
           </p>
         )}
 
         {usedInRecipes.length > 0 && (
           <section className="mt-12 border-t border-[color:var(--ink-a10)] pt-6">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+            <h2 className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
               Used in recipes
             </h2>
             <ul className="mt-3 space-y-2">
@@ -161,7 +161,7 @@ function WorkflowSections({ content }: { content: Record<string, unknown> }) {
                 key={i}
                 className="rounded-[16px] border border-[color:var(--ink-a10)] bg-white p-5 shadow-[var(--shadow-soft)]"
               >
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                <p className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
                   {s.title}
                 </p>
                 <pre className="mt-2 whitespace-pre-wrap font-mono text-xs leading-relaxed text-[color:var(--ink)]">
@@ -207,7 +207,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
               <li key={i} className="flex items-baseline gap-3 text-sm text-[color:var(--ink)]">
                 <code className="font-mono text-xs font-semibold text-[color:var(--gold-deep)]">{`{{${v.name}}}`}</code>
                 <span>{v.label}</span>
-                <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
+                <span className="text-[0.625rem] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
                   {v.type}
                   {v.required ? ' · required' : ''}
                 </span>
@@ -221,7 +221,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
         <Section label="Example">
           {example.input && (
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
+              <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
                 Input
               </p>
               <pre className="mt-2 whitespace-pre-wrap rounded-[16px] border border-[color:var(--ink-a10)] bg-white p-5 font-mono text-xs text-[color:var(--ink)] shadow-[var(--shadow-soft)]">
@@ -231,7 +231,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
           )}
           {example.output && (
             <div className="mt-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
+              <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--slate-500)]">
                 Output
               </p>
               <pre className="mt-2 whitespace-pre-wrap rounded-[16px] border border-[color:var(--ink-a10)] bg-white p-5 font-mono text-xs text-[color:var(--ink)] shadow-[var(--shadow-soft)]">
@@ -248,7 +248,7 @@ function TemplateSections({ content }: { content: Record<string, unknown> }) {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="mt-10">
-      <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+      <h2 className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
         {label}
       </h2>
       <div className="mt-3">{children}</div>

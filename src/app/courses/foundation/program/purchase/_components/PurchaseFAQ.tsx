@@ -63,7 +63,7 @@ export function PurchaseFAQ() {
         <span
           style={{
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-            fontSize: 11,
+            fontSize: '0.6875rem',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: 'var(--gold)',
@@ -76,7 +76,7 @@ export function PurchaseFAQ() {
           style={{
             fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
             fontWeight: 500,
-            fontSize: 'clamp(34px, 4vw, 48px)',
+            fontSize: 'clamp(2.125rem, 4vw, 3rem)',
             lineHeight: 1,
             letterSpacing: '-0.025em',
             margin: 0,
@@ -116,7 +116,7 @@ export function PurchaseFAQ() {
               <span
                 style={{
                   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   letterSpacing: '0.18em',
                   color: 'var(--slate-500)',
                   fontWeight: 600,
@@ -128,7 +128,7 @@ export function PurchaseFAQ() {
                 style={{
                   fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
                   fontWeight: 500,
-                  fontSize: 19,
+                  fontSize: '1.1875rem',
                   lineHeight: 1.3,
                   letterSpacing: '-0.015em',
                   color: 'var(--ink)',
@@ -140,7 +140,7 @@ export function PurchaseFAQ() {
                 aria-hidden="true"
                 style={{
                   fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                  fontSize: 22,
+                  fontSize: '1.375rem',
                   color: 'var(--slate-500)',
                   lineHeight: 1,
                 }}
@@ -152,7 +152,7 @@ export function PurchaseFAQ() {
               <p
                 style={{
                   fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.6,
                   color: 'var(--ink-2)',
                   margin: 0,

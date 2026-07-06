@@ -49,7 +49,7 @@ export function SavedPromptCard({
       >
         <span
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -60,7 +60,7 @@ export function SavedPromptCard({
         </span>
         <span
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             color: 'var(--slate-500)',
             letterSpacing: '0.04em',
           }}
@@ -71,7 +71,7 @@ export function SavedPromptCard({
 
       <h3
         style={{
-          fontSize: 19,
+          fontSize: '1.1875rem',
           fontWeight: 700,
           lineHeight: 1.25,
           letterSpacing: '-0.01em',
@@ -88,7 +88,7 @@ export function SavedPromptCard({
           border: '1px solid var(--ink-a10, rgba(7,26,47,0.1))',
           borderRadius: 16,
           padding: '16px 18px',
-          fontSize: 14,
+          fontSize: '0.875rem',
           lineHeight: 1.55,
           color: 'var(--ink)',
           whiteSpace: 'pre-wrap',
@@ -106,7 +106,7 @@ export function SavedPromptCard({
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 12,
-          fontSize: 12,
+          fontSize: '0.75rem',
           color: 'var(--slate-600)',
           letterSpacing: '0.02em',
         }}

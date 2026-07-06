@@ -17,7 +17,7 @@ const INTER_STACK =
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -76,7 +76,7 @@ export function TrainingRecordPanel(props: TrainingRecordPanelProps) {
           margin: 0,
           color: 'var(--ink)',
           fontFamily: INTER_STACK,
-          fontSize: 26,
+          fontSize: '1.625rem',
           lineHeight: 1.12,
         }}
       >
@@ -87,7 +87,7 @@ export function TrainingRecordPanel(props: TrainingRecordPanelProps) {
           margin: '10px 0 18px',
           color: 'var(--slate-600)',
           fontFamily: INTER_STACK,
-          fontSize: 14,
+          fontSize: '0.875rem',
           lineHeight: 1.55,
         }}
       >
@@ -102,7 +102,7 @@ export function TrainingRecordPanel(props: TrainingRecordPanelProps) {
           margin: '14px 0 0',
           color: 'var(--slate-600)',
           fontFamily: INTER_STACK,
-          fontSize: 13,
+          fontSize: '0.8125rem',
           lineHeight: 1.5,
         }}
       >
