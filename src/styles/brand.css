@@ -51,6 +51,11 @@
 .aibi-mark .ai {
   padding: 0 0 0 0.02em;
 }
+/* The "Banking Institute" (or "BI") text after the [Ai] mark. */
+.aibi-mark .wt {
+  margin-left: 0.34em;
+  white-space: nowrap;
+}
 
 /* Dark-surface variant. */
 .aibi-mark--dark {

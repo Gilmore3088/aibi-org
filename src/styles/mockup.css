@@ -80,7 +80,10 @@ section.mk-std { padding: 56px 0; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  /* Keep the horizontal container gutter: this shorthand previously zeroed
+     .mk-container's side padding (same element, later rule), leaving the
+     brand and CTA flush against the viewport edge at 1280px. */
+  padding: 16px var(--container-pad);
   gap: 24px;
 }
 .mk-brand {
