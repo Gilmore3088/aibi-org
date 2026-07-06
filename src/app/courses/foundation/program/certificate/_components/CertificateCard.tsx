@@ -7,7 +7,7 @@ const INTER_STACK =
 
 const KICKER: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -17,7 +17,7 @@ const KICKER: CSSProperties = {
 
 const META_LABEL: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -106,7 +106,7 @@ export function CertificateCard({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 500,
             color: 'var(--slate-600)',
             margin: '0 0 10px',
@@ -117,7 +117,7 @@ export function CertificateCard({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 'clamp(28px, 4vw, 38px)',
+            fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
             fontWeight: 700,
             color: 'var(--ink)',
             letterSpacing: '-0.015em',
@@ -141,7 +141,7 @@ export function CertificateCard({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 500,
             color: 'var(--slate-600)',
             margin: '0 0 10px',
@@ -152,7 +152,7 @@ export function CertificateCard({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 'clamp(20px, 2.4vw, 24px)',
+            fontSize: 'clamp(1.25rem, 2.4vw, 1.5rem)',
             fontWeight: 700,
             color: 'var(--ink)',
             letterSpacing: '0.01em',
@@ -164,7 +164,7 @@ export function CertificateCard({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 500,
             color: 'var(--slate-600)',
             letterSpacing: '0.02em',
@@ -193,7 +193,7 @@ export function CertificateCard({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 500,
               color: 'var(--ink)',
               margin: 0,
@@ -207,7 +207,7 @@ export function CertificateCard({
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 500,
               color: 'var(--ink)',
               letterSpacing: '0.04em',
@@ -233,7 +233,7 @@ export function CertificateCard({
             href={verificationUrl}
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 500,
               letterSpacing: '0.04em',
               color: 'var(--slate-500)',

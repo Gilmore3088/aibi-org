@@ -58,7 +58,7 @@ function CheckIcon() {
 
 const TNUM: React.CSSProperties = { fontVariantNumeric: 'tabular-nums' };
 const KICKER: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -142,7 +142,7 @@ export function TransformationCard({
     padding: '10px 20px',
     background: 'var(--ink)',
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: '0.75rem',
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -159,7 +159,7 @@ export function TransformationCard({
     padding: '10px 20px',
     background: '#FFFFFF',
     color: 'var(--ink)',
-    fontSize: 12,
+    fontSize: '0.75rem',
     fontWeight: 700,
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -198,17 +198,17 @@ export function TransformationCard({
         {/* Score */}
         <div>
           <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>Score</dt>
-          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
+          <dd style={{ ...TNUM, fontSize: '1.5rem', fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {preScore !== null ? (
               <>
                 <span style={{ color: 'var(--slate-500)' }}>{preScore}</span>{' '}
-                <span style={{ fontSize: 16, color: 'var(--slate-500)' }}>→</span>{' '}
+                <span style={{ fontSize: '1rem', color: 'var(--slate-500)' }}>→</span>{' '}
                 <span style={{ color: postTierColorVar }}>{postScore}</span>
               </>
             ) : (
               <span style={{ color: postTierColorVar }}>{postScore}</span>
             )}
-            <span style={{ fontSize: 16, fontWeight: 400, color: 'var(--slate-500)' }}>
+            <span style={{ fontSize: '1rem', fontWeight: 400, color: 'var(--slate-500)' }}>
               {' '}/ 48
             </span>
           </dd>
@@ -216,7 +216,7 @@ export function TransformationCard({
             <dd
               style={{
                 ...TNUM,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 600,
                 color: postTierColorVar,
                 margin: '2px 0 0',
@@ -232,7 +232,7 @@ export function TransformationCard({
           <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>Tier</dt>
           <dd
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -245,7 +245,7 @@ export function TransformationCard({
               <span
                 style={{
                   display: 'block',
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   fontWeight: 400,
                   letterSpacing: 0,
                   textTransform: 'none',
@@ -265,7 +265,7 @@ export function TransformationCard({
           <dt style={{ ...KICKER, color: 'var(--slate-500)', margin: '0 0 4px' }}>
             Skills Built
           </dt>
-          <dd style={{ ...TNUM, fontSize: 24, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
+          <dd style={{ ...TNUM, fontSize: '1.5rem', fontWeight: 700, color: 'var(--ink)', margin: 0 }}>
             {skillsBuilt}
           </dd>
         </div>
@@ -332,7 +332,7 @@ export function TransformationCard({
           style={{
             margin: '12px 0 0',
             color: 'var(--slate-600)',
-            fontSize: 13,
+            fontSize: '0.8125rem',
             lineHeight: 1.45,
           }}
         >

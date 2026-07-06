@@ -78,12 +78,12 @@ const navLink: React.CSSProperties = {
   padding: '0 13px',
   background: '#fff',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   textDecoration: 'none',
 };
 const sectionTitle: React.CSSProperties = {
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 600,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -99,12 +99,12 @@ const card: React.CSSProperties = {
 const table: React.CSSProperties = {
   width: '100%',
   borderCollapse: 'collapse',
-  fontSize: 14,
+  fontSize: '0.875rem',
 };
 const th: React.CSSProperties = {
   textAlign: 'left',
   padding: '10px 14px',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
@@ -152,7 +152,7 @@ function StageBars({ rows }: { rows: FunnelStageRow[] }) {
     <div style={{ ...card, padding: '16px 18px' }}>
       {rows.map((r) => (
         <div key={r.lifecycle_stage} style={{ margin: '10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8125rem', marginBottom: 4 }}>
             <span style={{ fontWeight: 500 }}>{stageLabel(r.lifecycle_stage)}</span>
             <span style={{ color: 'var(--slate-500)', fontVariantNumeric: 'tabular-nums' }}>
               {r.contacts} · {r.pct_of_contacts ?? 0}%
@@ -198,7 +198,7 @@ function ContactsTable({ rows }: { rows: FunnelContactRow[] }) {
               <td style={td}>{c.readiness_tier_label ?? '—'}</td>
               <td style={td}>{c.role ?? '—'}</td>
               <td style={td}>{c.institution ?? '—'}</td>
-              <td style={{ ...td, color: 'var(--slate-500)', fontSize: 13 }}>
+              <td style={{ ...td, color: 'var(--slate-500)', fontSize: '0.8125rem' }}>
                 {c.products.length ? c.products.join(', ') : '—'}
               </td>
               <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--slate-500)' }}>{fmtDate(c.first_seen)}</td>
@@ -249,8 +249,8 @@ export default async function AdminFunnelPage() {
       <div style={container}>
         <div style={header}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>Funnel</h1>
-            <p style={{ color: 'var(--slate-600)', fontSize: 14, marginTop: 6, maxWidth: 720 }}>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 700, margin: 0 }}>Funnel</h1>
+            <p style={{ color: 'var(--slate-600)', fontSize: '0.875rem', marginTop: 6, maxWidth: 720 }}>
               Live known-contact funnel from Supabase. Revenue and refund dollars live in Stripe;
               anonymous traffic lives in Vercel/Plausible. Known-contact counts exclude configured
               test/internal identities; raw resource-download tiles remain popularity signals only.
@@ -271,7 +271,7 @@ export default async function AdminFunnelPage() {
               background: 'var(--gold-a10)',
               padding: 16,
               marginTop: 24,
-              fontSize: 14,
+              fontSize: '0.875rem',
             }}
           >
             Could not load funnel data: {loadError}
@@ -308,7 +308,7 @@ export default async function AdminFunnelPage() {
               borderColor: 'var(--gold)',
               background: 'var(--gold-a10)',
               padding: 16,
-              fontSize: 14,
+              fontSize: '0.875rem',
             }}
           >
             Could not load resource downloads: {resourceError}

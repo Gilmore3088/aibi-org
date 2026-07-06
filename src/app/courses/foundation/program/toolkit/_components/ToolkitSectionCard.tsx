@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 const kickerStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -33,7 +33,7 @@ export function ToolkitSectionCard({ title, label, children }: ToolkitSectionCar
         id={`section-${slug}`}
         style={{
           fontWeight: 700,
-          fontSize: 24,
+          fontSize: '1.5rem',
           letterSpacing: '-0.02em',
           color: 'var(--ink)',
           margin: '0 0 20px',

@@ -81,7 +81,7 @@ const TIERS = [
     included: [
       'Eighteen bite-sized self-paced modules',
       'Eighteen reviewed AI artifacts per practitioner',
-      '$295 individual · volume seats by request',
+      '$295 individual · $199/seat at 10+',
     ],
     ctaHref: '/courses',
     ctaLabel: 'View the curriculum',
@@ -123,7 +123,7 @@ export default function ForInstitutionsPage() {
             <p
               style={{
                 margin: '0 0 14px',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -167,7 +167,7 @@ export default function ForInstitutionsPage() {
                 borderRadius: 999,
                 padding: '4px 8px',
                 color: 'var(--gold-deep)',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
@@ -221,7 +221,7 @@ export default function ForInstitutionsPage() {
                   style={{
                     marginTop: 6,
                     color: 'var(--slate-500)',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 700,
                   }}
                 >
@@ -250,7 +250,7 @@ export default function ForInstitutionsPage() {
               </div>
               <div
                 style={{
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -322,7 +322,7 @@ export default function ForInstitutionsPage() {
             >
               <p
                 style={{
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -334,7 +334,7 @@ export default function ForInstitutionsPage() {
               </p>
               <h3
                 style={{
-                  fontSize: 24,
+                  fontSize: '1.5rem',
                   fontWeight: 600,
                   lineHeight: 1.2,
                   color: 'var(--ink)',
@@ -345,7 +345,7 @@ export default function ForInstitutionsPage() {
               </h3>
               <p
                 style={{
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                   color: 'var(--slate-600)',
                   margin: '0 0 16px',
@@ -372,7 +372,7 @@ export default function ForInstitutionsPage() {
                       display: 'grid',
                       gridTemplateColumns: '14px 1fr',
                       gap: 10,
-                      fontSize: 14,
+                      fontSize: '0.875rem',
                       lineHeight: 1.5,
                       color: 'var(--ink)',
                     }}
@@ -630,18 +630,18 @@ export default function ForInstitutionsPage() {
             </Button>
           </div>
           <div className="mk-ccard">
-            <div className="mk-lab">By request</div>
+            <div className="mk-lab">$199/seat</div>
             <h3>Institution Seats</h3>
             <div className="mk-price">
               <div className="mk-v">10+</div>
-              <div className="mk-u">seats · quote by cohort</div>
+              <div className="mk-u">seats at 10+ · scoped by cohort</div>
             </div>
             <p>
               Request Foundation Course seats in bulk. We confirm assignment, reporting,
               invoicing, and support before quoting the cohort.
             </p>
             <ul>
-              <li><CheckIcon className="mk-ic" />Volume pricing available by request</li>
+              <li><CheckIcon className="mk-ic" />$199/seat at 10 or more seats — larger cohorts scoped individually</li>
               <li><CheckIcon className="mk-ic" />Enrollment handoff scoped up front</li>
               <li><CheckIcon className="mk-ic" />SSO and invoicing discussed before rollout</li>
             </ul>

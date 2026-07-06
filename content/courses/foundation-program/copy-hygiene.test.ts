@@ -17,6 +17,18 @@ const SKIP_PATTERNS = [
   /content\/courses\/foundation-program\/output-examples\.ts$/,
 ] as const;
 
+// Unsupported outcome claims. Pre-launch there is no learner-outcome data, so
+// learner-facing copy must never state measured peer results or fixed
+// time-savings numbers. Frame outcomes as goals the learner can measure
+// against their own baseline instead.
+const FABRICATED_OUTCOME_PATTERNS = [
+  /automate an average of/i,
+  /average of \d+ workflows/i,
+  /peerBenchmark/,
+  /from 45 minutes to (under )?15/i,
+  /who complete AiBI-Foundation (automate|implement|report)/i,
+] as const;
+
 const STALE_FOUNDATION_PATTERNS = [
   /m9-final-capstone/,
   /9\.capstone/,
@@ -58,6 +70,27 @@ describe('Foundation course copy hygiene', () => {
         if (SKIP_PATTERNS.some((pattern) => pattern.test(rel))) continue;
         const source = readFileSync(file, 'utf8');
         for (const pattern of STALE_FOUNDATION_PATTERNS) {
+          if (pattern.test(source)) {
+            matches.push(`${rel}: ${pattern}`);
+          }
+        }
+      }
+    }
+
+    expect(matches).toEqual([]);
+  });
+
+  it('keeps fabricated outcome statistics out of learner-facing code', () => {
+    const repoRoot = process.cwd();
+    const matches: string[] = [];
+
+    for (const root of ROOTS) {
+      const files = listSourceFiles(resolve(repoRoot, root));
+      for (const file of files) {
+        const rel = relative(repoRoot, file);
+        if (SKIP_PATTERNS.some((pattern) => pattern.test(rel))) continue;
+        const source = readFileSync(file, 'utf8');
+        for (const pattern of FABRICATED_OUTCOME_PATTERNS) {
           if (pattern.test(source)) {
             matches.push(`${rel}: ${pattern}`);
           }

@@ -69,7 +69,7 @@ function ToolboxMiniMap() {
               style={{
                 margin: 0,
                 color: 'var(--slate-500)',
-                fontSize: 9,
+                fontSize: '0.5625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -81,7 +81,7 @@ function ToolboxMiniMap() {
               style={{
                 margin: '7px 0 0',
                 color: 'var(--ink)',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.18,
                 fontWeight: 850,
               }}
@@ -104,7 +104,7 @@ function ToolboxMiniMap() {
             <span
               style={{
                 color: index === 1 ? 'var(--ink)' : 'var(--slate-500)',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 lineHeight: 1.25,
                 fontWeight: 750,
               }}
@@ -219,7 +219,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
             background: 'none',
             border: 'none',
             cursor: 'pointer',
-            fontSize: 22,
+            fontSize: '1.375rem',
             lineHeight: 1,
             color: 'var(--slate-500)',
             padding: '4px 8px',
@@ -232,7 +232,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         {/* Eyebrow */}
         <p
           style={{
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -246,7 +246,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         {/* Heading */}
         <h2
           style={{
-            fontSize: 28,
+            fontSize: '1.75rem',
             fontWeight: 700,
             lineHeight: 1.15,
             letterSpacing: '-0.02em',
@@ -283,7 +283,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
                 style={{
                   display: 'flex',
                   gap: 12,
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                   color: 'var(--ink)',
                 }}
@@ -325,7 +325,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
                 style={{
                   display: 'flex',
                   gap: 12,
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                   color: 'var(--ink)',
                 }}
@@ -351,7 +351,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         {!isFoundation && (
           <p
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               lineHeight: 1.55,
               color: 'var(--slate-500)',
               marginBottom: 20,
@@ -364,7 +364,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
         {isFoundation && (
           <p
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               lineHeight: 1.55,
               color: 'var(--slate-500)',
               marginBottom: 20,
@@ -385,7 +385,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
               padding: '12px 24px',
               borderRadius: 10,
               border: 'none',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -400,7 +400,7 @@ export function WelcomeOverlay({ tier, onDismiss, onOpenLibrary }: WelcomeOverla
             style={{
               background: 'none',
               border: 'none',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               color: 'var(--slate-500)',
               cursor: 'pointer',
               padding: '12px 4px',

@@ -82,7 +82,7 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
     border: '1px solid var(--ink-a10)',
     borderRadius: 10,
     padding: '10px 14px',
-    fontSize: 15,
+    fontSize: '0.9375rem',
     color: 'var(--ink)',
     background: '#fff',
     fontFamily: 'inherit',
@@ -92,7 +92,7 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
 
   const labelStyle: React.CSSProperties = {
     display: 'block',
-    fontSize: 12,
+    fontSize: '0.75rem',
     fontWeight: 700,
     letterSpacing: '0.06em',
     color: 'var(--slate-600)',
@@ -113,8 +113,8 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           gap: 12,
         }}
       >
-        <span style={{ fontSize: 20 }} aria-hidden="true">✓</span>
-        <p style={{ margin: 0, fontSize: 15, color: '#065F46', fontWeight: 600 }}>
+        <span style={{ fontSize: '1.25rem' }} aria-hidden="true">✓</span>
+        <p style={{ margin: 0, fontSize: '0.9375rem', color: '#065F46', fontWeight: 600 }}>
           Saved. Your report will be personalized with this context.
         </p>
       </div>
@@ -218,7 +218,7 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
             border: 'none',
             borderRadius: 10,
             padding: '11px 24px',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -230,11 +230,11 @@ export function InstitutionContextForm({ sessionId, profileId }: Props): JSX.Ele
           {status === 'saving' ? 'Saving…' : 'Save context'}
         </button>
         {status === 'error' && (
-          <p role="alert" style={{ margin: 0, fontSize: 13, color: '#C0392B' }}>
+          <p role="alert" style={{ margin: 0, fontSize: '0.8125rem', color: '#C0392B' }}>
             Could not save — check your connection and try again.
           </p>
         )}
-        <p style={{ margin: 0, fontSize: 12, color: 'var(--slate-500)' }}>
+        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--slate-500)' }}>
           All fields optional. Used only to personalize your report.
         </p>
       </div>

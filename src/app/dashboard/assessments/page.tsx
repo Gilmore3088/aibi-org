@@ -93,7 +93,7 @@ export default async function DashboardAssessmentsPage() {
     >
       <p
         style={{
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 700,
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
@@ -105,7 +105,7 @@ export default async function DashboardAssessmentsPage() {
       </p>
       <h1
         style={{
-          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
           fontWeight: 600,
           lineHeight: 1.05,
           letterSpacing: '-0.02em',
@@ -117,7 +117,7 @@ export default async function DashboardAssessmentsPage() {
       </h1>
       <p
         style={{
-          fontSize: 17,
+          fontSize: '1.0625rem',
           lineHeight: 1.55,
           color: 'var(--slate-600)',
           margin: '0 0 40px',
@@ -131,7 +131,7 @@ export default async function DashboardAssessmentsPage() {
       <section style={{ marginBottom: 40 }}>
         <h2
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -144,7 +144,7 @@ export default async function DashboardAssessmentsPage() {
           Free readiness checks · {free.length}
         </h2>
         {free.length === 0 ? (
-          <p style={{ color: 'var(--slate-600)', fontSize: 14 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: '0.875rem' }}>
             You have not completed the free readiness check yet.{' '}
             <Link
               href="/assessment/take"
@@ -172,7 +172,7 @@ export default async function DashboardAssessmentsPage() {
                 </span>
                 <span
                   style={{
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     color: 'var(--slate-500)',
                   }}
                 >
@@ -180,7 +180,7 @@ export default async function DashboardAssessmentsPage() {
                 </span>
                 <span
                   style={{
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 600,
                     fontVariantNumeric: 'tabular-nums',
                     color: 'var(--ink)',
@@ -191,7 +191,7 @@ export default async function DashboardAssessmentsPage() {
                 <Link
                   href={`/results/${row.id}`}
                   style={{
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 700,
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
@@ -209,7 +209,7 @@ export default async function DashboardAssessmentsPage() {
       <section>
         <h2
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -222,7 +222,7 @@ export default async function DashboardAssessmentsPage() {
           In-Depth Assessments · {indepth.length}
         </h2>
         {indepth.length === 0 ? (
-          <p style={{ color: 'var(--slate-600)', fontSize: 14 }}>
+          <p style={{ color: 'var(--slate-600)', fontSize: '0.875rem' }}>
             You have not purchased an In-Depth Assessment.{' '}
             <Link
               href="/assessment/in-depth"
@@ -250,7 +250,7 @@ export default async function DashboardAssessmentsPage() {
                 </span>
                 <span
                   style={{
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     color: 'var(--slate-500)',
                   }}
                 >
@@ -259,7 +259,7 @@ export default async function DashboardAssessmentsPage() {
                 <Link
                   href="/assessment/in-depth/take"
                   style={{
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 700,
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',

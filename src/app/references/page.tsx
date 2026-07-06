@@ -35,7 +35,7 @@ const cardStyle: CSSProperties = {
 const shortStyle: CSSProperties = {
   display: 'block',
   color: 'var(--ink)',
-  fontSize: 15,
+  fontSize: '0.9375rem',
   fontWeight: 800,
   lineHeight: 1.3,
 };
@@ -43,7 +43,7 @@ const shortStyle: CSSProperties = {
 const longStyle: CSSProperties = {
   margin: '4px 0 0',
   color: 'var(--slate-700)',
-  fontSize: 13.5,
+  fontSize: '0.8438rem',
   fontWeight: 600,
   lineHeight: 1.4,
 };
@@ -51,7 +51,7 @@ const longStyle: CSSProperties = {
 const metaStyle: CSSProperties = {
   margin: '8px 0 0',
   color: 'var(--slate-500)',
-  fontSize: 12.5,
+  fontSize: '0.7813rem',
   fontWeight: 500,
   lineHeight: 1.45,
 };
@@ -61,7 +61,7 @@ const linkStyle: CSSProperties = {
   marginTop: 10,
   color: 'var(--gold-deep)',
   fontWeight: 800,
-  fontSize: 13,
+  fontSize: '0.8125rem',
 };
 
 type RefEntry = {

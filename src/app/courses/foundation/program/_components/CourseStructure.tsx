@@ -52,7 +52,7 @@ export function CourseStructure({
           style={{
             fontFamily: FONT_INTER,
             fontWeight: 700,
-            fontSize: 32,
+            fontSize: '2rem',
             letterSpacing: '-0.02em',
             margin: 0,
             color: 'var(--ink)',
@@ -63,7 +63,7 @@ export function CourseStructure({
         <span
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -77,7 +77,7 @@ export function CourseStructure({
         style={{
           fontFamily: FONT_INTER,
           color: 'var(--slate-600)',
-          fontSize: 16,
+          fontSize: '1rem',
           lineHeight: 1.6,
           maxWidth: '58ch',
           margin: '0 0 28px',
@@ -109,7 +109,7 @@ export function CourseStructure({
               <span
                 style={{
                   fontFamily: FONT_INTER,
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',

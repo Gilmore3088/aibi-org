@@ -44,7 +44,7 @@ type SortKey = 'recent' | 'module' | 'type';
 type FilterKey = 'all' | 'module' | 'type';
 
 const kickerStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -66,7 +66,7 @@ const ghostLinkStyle: CSSProperties = {
   padding: '8px 14px',
   border: '1px solid var(--ink-a10)',
   color: 'var(--slate-500)',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -88,7 +88,7 @@ const selectStyle: CSSProperties = {
   background:
     'var(--cream) url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\' viewBox=\'0 0 10 6\'><path fill=\'%2364748B\' d=\'M0 0l5 6 5-6z\'/></svg>") no-repeat right 12px center',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 500,
   cursor: 'pointer',
 };
@@ -180,7 +180,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
             </Link>
             <span
               style={{
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -195,7 +195,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
           </div>
           <p
             style={{
-              fontSize: 16,
+              fontSize: '1rem',
               fontWeight: 600,
               color: 'var(--ink)',
               margin: '0 0 4px',
@@ -206,7 +206,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
           </p>
           <p
             style={{
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--slate-500)',
               lineHeight: 1.6,
               margin: '0 0 8px',
@@ -235,7 +235,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
                     padding: '4px 9px',
                     background: artifact.available ? 'var(--cream-2)' : 'var(--slate-100)',
                     color: 'var(--slate-600)',
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 700,
                     letterSpacing: '0.04em',
                   }}
@@ -255,7 +255,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
                 borderRadius: 12,
                 background: artifact.available ? '#fff' : 'var(--cream-2)',
                 color: 'var(--ink)',
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 lineHeight: 1.42,
                 fontWeight: 650,
               }}
@@ -263,7 +263,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
               <span
                 style={{
                   color: 'var(--gold-deep)',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 850,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -277,7 +277,7 @@ function ArtifactCard({ artifact }: { readonly artifact: ToolkitArtifact }) {
           )}
           <p
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               color: 'var(--slate-400)',
               margin: 0,
               fontWeight: 500,
@@ -317,7 +317,7 @@ function EmptyState() {
           alignItems: 'center',
           justifyContent: 'center',
           color: 'var(--slate-400)',
-          fontSize: 24,
+          fontSize: '1.5rem',
           fontWeight: 300,
         }}
       >
@@ -325,7 +325,7 @@ function EmptyState() {
       </div>
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           fontWeight: 600,
           color: 'var(--ink)',
           margin: '0 0 6px',
@@ -333,7 +333,7 @@ function EmptyState() {
       >
         Nothing saved yet
       </p>
-      <p style={{ fontSize: 16, color: 'var(--slate-500)', margin: 0, lineHeight: 1.6 }}>
+      <p style={{ fontSize: '1rem', color: 'var(--slate-500)', margin: 0, lineHeight: 1.6 }}>
         Your first saved prompt lands here once you finish Module 3.
       </p>
     </div>
@@ -401,7 +401,7 @@ export function ArtifactsClient({
       >
         <p
           style={{
-            fontSize: 13,
+            fontSize: '0.8125rem',
             color: 'var(--slate-500)',
             margin: 0,
           }}
@@ -415,7 +415,7 @@ export function ArtifactsClient({
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -451,7 +451,7 @@ export function ArtifactsClient({
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -479,7 +479,7 @@ export function ArtifactsClient({
         ) : visible.length === 0 ? (
           <p
             style={{
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--slate-500)',
               margin: 0,
               padding: '20px 0',

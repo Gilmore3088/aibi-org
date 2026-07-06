@@ -85,7 +85,7 @@ const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconPro
 const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [string, string][] }> = {
   Assess: {
     label: 'Sample readiness output',
-    title: 'Score, top gap, first artifact',
+    title: 'Score, top gap, first working template',
     rows: [
       ['Readiness', '32 / 48'],
       ['Top gap', 'Workflow documentation'],
@@ -198,7 +198,7 @@ export default function HomePage() {
                 Start learning
               </Button>
             </div>
-            <p className="mk-hero-meta">Free · 12 questions · 3 minutes · first artifact</p>
+            <p className="mk-hero-meta">Free · 12 questions · 3 minutes · first working template</p>
           </div>
           <HomeRedlinePrompt />
         </div>
@@ -430,7 +430,7 @@ const PRICE_TIERS: {
     eyebrow: 'Start here',
     label: 'Readiness baseline',
     price: 'Free',
-    note: '12 questions. Score, top gap, and first artifact.',
+    note: '12 questions. Score, top gap, and a first working template.',
     href: '/assessment/take',
     action: 'Start free',
     featured: true,

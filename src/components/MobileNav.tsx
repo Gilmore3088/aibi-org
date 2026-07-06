@@ -167,7 +167,7 @@ export function MobileNav() {
               {/* Assessment CTA */}
               <Link
                 href="/assessment/take"
-                className="block w-full text-center py-3 px-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+                className="block w-full text-center py-3 px-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Take Assessment
               </Link>

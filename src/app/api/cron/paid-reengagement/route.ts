@@ -1,9 +1,11 @@
 // GET /api/cron/paid-reengagement
 // Sends deduped transactional reminders for paid buyers who have not started
-// or have stalled after purchase. Auth mirrors the other Vercel cron routes.
+// or have stalled after purchase, plus 30/60/90-day post-certificate
+// transfer prompts. Auth mirrors the other Vercel cron routes.
 
 import { NextResponse } from 'next/server';
 import { notifyOpsAlert } from '@/lib/ops/alerts';
+import { runCertificateTransferMonitor } from '@/lib/support/certificate-transfer';
 import { runPaidReengagementMonitor } from '@/lib/support/paid-reengagement';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
@@ -28,23 +30,31 @@ export async function GET(request: Request) {
 
   try {
     const result = await runPaidReengagementMonitor();
+    const transferResult = await runCertificateTransferMonitor();
 
-    if (result.failedReminders.length > 0) {
+    const failedReminders = [
+      ...result.failedReminders,
+      ...transferResult.failedReminders,
+    ];
+
+    if (failedReminders.length > 0) {
       const today = new Date().toISOString().slice(0, 10);
       await notifyOpsAlert({
         title: 'Paid re-engagement reminders failed',
-        message: `${result.failedReminders.length} paid re-engagement reminder(s) failed. Check Resend and paid_reengagement_events.`,
+        message: `${failedReminders.length} paid re-engagement / certificate-transfer reminder(s) failed. Check Resend and paid_reengagement_events.`,
         severity: 'warning',
         context: {
           dedupeKey: `paid-reengagement-failures:${today}`,
-          failedReminders: result.failedReminders,
+          failedReminders,
           checkedEnrollments: result.checkedEnrollments,
           eligibleCandidates: result.eligibleCandidates,
+          checkedCertificates: transferResult.checkedCertificates,
+          eligibleTransferCandidates: transferResult.eligibleCandidates,
         },
       });
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json({ ...result, certificateTransfer: transferResult });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'unknown';
     console.error('[cron/paid-reengagement] failed:', message);

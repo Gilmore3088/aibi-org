@@ -22,7 +22,7 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
     >
       <span
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
@@ -31,10 +31,10 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
       >
         {winsCount} {winsCount === 1 ? 'win' : 'wins'} logged
       </span>
-      <span aria-hidden="true" style={{ fontSize: 12, color: 'var(--slate-400)' }}>·</span>
+      <span aria-hidden="true" style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>·</span>
       <span
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
@@ -46,10 +46,10 @@ export function WinsSummaryStrip({ winsCount, totalQuarterlyHours, winsToGo }: W
       </span>
       {winsToGo > 0 && (
         <>
-          <span aria-hidden="true" style={{ fontSize: 12, color: 'var(--slate-400)' }}>·</span>
+          <span aria-hidden="true" style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>·</span>
           <span
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',

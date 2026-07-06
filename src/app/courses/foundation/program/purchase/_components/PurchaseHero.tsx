@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { foundationDurationLabel } from '@content/courses/foundation-program';
 import { SavedPromptCard } from './SavedPromptCard';
 
 const INTER_STACK =
@@ -39,7 +40,7 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
             background: 'var(--gold-a10)',
             color: 'var(--gold-soft)',
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 600,
             letterSpacing: '0.04em',
             marginBottom: 22,
@@ -48,11 +49,24 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
           AiBI-Foundation · 18 bite-sized modules · $295
         </span>
 
+        <p
+          style={{
+            fontFamily: INTER_STACK,
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            color: 'rgba(247, 243, 234, 0.72)',
+            margin: '0 0 18px',
+          }}
+        >
+          {foundationDurationLabel()}
+        </p>
+
         <h1
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(36px, 4.2vw, 56px)',
+            fontSize: 'clamp(2.25rem, 4.2vw, 3.5rem)',
             lineHeight: 1.02,
             letterSpacing: '-0.03em',
             margin: '0 0 20px',
@@ -69,7 +83,7 @@ export function PurchaseHero({ enrollButton }: PurchaseHeroProps) {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 17,
+            fontSize: '1.0625rem',
             lineHeight: 1.55,
             color: 'rgba(247, 243, 234, 0.84)',
             margin: '0 0 24px',

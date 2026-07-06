@@ -58,20 +58,20 @@ export function SiteFooter(_props: SiteFooterProps = {} as SiteFooterProps) {
             <div className="flex flex-col" style={{ lineHeight: 0.95 }}>
               <span
                 className="font-sans uppercase text-ink"
-                style={{ fontWeight: 700, fontSize: 16, letterSpacing: '-0.005em', lineHeight: 1 }}
+                style={{ fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.005em', lineHeight: 1 }}
               >
                 The AI Banking
               </span>
               <span
                 className="font-sans uppercase text-dust"
-                style={{ fontWeight: 700, fontSize: 16, letterSpacing: '-0.005em', lineHeight: 1, marginTop: 1 }}
+                style={{ fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.005em', lineHeight: 1, marginTop: 1 }}
               >
                 Institute
               </span>
             </div>
             <p
               className="font-mono text-gold mt-s4 mb-s5"
-              style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}
+              style={{ fontSize: '0.6875rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}
             >
               Turning Bankers into Builders
             </p>

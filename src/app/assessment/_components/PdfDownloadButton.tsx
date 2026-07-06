@@ -101,12 +101,12 @@ export function PdfDownloadButton({
     : `mt-12 text-center ${className}`;
 
   const buttonClass = compact
-    ? 'inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--gold)] px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]'
-    : 'inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--gold)] px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]';
+    ? 'inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--gold)] px-5 py-2.5 text-[0.875rem] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]'
+    : 'inline-flex min-h-11 items-center justify-center rounded-xl bg-[color:var(--gold)] px-6 py-3 font-sans text-[0.875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]';
 
   const fallbackClass = compact
-    ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--ink-a15)] bg-white px-5 py-2.5 text-[14px] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]'
-    : 'inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--ink-a15)] bg-white px-6 py-3 font-sans text-[14px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]';
+    ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--ink-a15)] bg-white px-5 py-2.5 text-[0.875rem] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]'
+    : 'inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--ink-a15)] bg-white px-6 py-3 font-sans text-[0.875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]';
 
   return (
     <>
@@ -115,8 +115,8 @@ export function PdfDownloadButton({
           <p
             className={
               compact
-                ? 'text-[14px] font-semibold text-[color:var(--slate-600)]'
-                : 'text-[13px] uppercase tracking-[0.18em] text-[color:var(--ink)]/55'
+                ? 'text-[0.875rem] font-semibold text-[color:var(--slate-600)]'
+                : 'text-[0.8125rem] uppercase tracking-[0.18em] text-[color:var(--ink)]/55'
             }
           >
             Preparing PDF&hellip;
@@ -131,12 +131,12 @@ export function PdfDownloadButton({
           </button>
         )}
         {state.kind === 'downloading' && (
-          <p className="text-[14px] font-semibold text-[color:var(--ink)]/55">
+          <p className="text-[0.875rem] font-semibold text-[color:var(--ink)]/55">
             Downloading&hellip;
           </p>
         )}
         {state.kind === 'done' && (
-          <p className="text-[14px] font-semibold text-[color:var(--gold-deep)]">
+          <p className="text-[0.875rem] font-semibold text-[color:var(--gold-deep)]">
             Downloaded
           </p>
         )}

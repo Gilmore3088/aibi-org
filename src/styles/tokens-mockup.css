@@ -25,7 +25,7 @@
   --gold:       #C8A24A;
   --gold-2:     #D8B867;   /* hover */
   --gold-soft:  #E6D39B;   /* on-dark text accent */
-  --gold-deep:  #9A7A2F;   /* on-light kicker / metadata */
+  --gold-deep:  #7A5F1E;   /* on-light kicker / metadata (WCAG AA on cream/white) */
 
   /* Cream (page + recessed surface) */
   --cream:      #F7F3EA;
@@ -87,7 +87,7 @@
   --gold-300:  #E6D39B;   /* = --gold-soft (on-dark accent) */
   --gold-400:  #D9AA2E;
   --gold-500:  #C8A24A;   /* = --gold (primary accent) */
-  --gold-600:  #9A7A2F;   /* = --gold-deep (on-light kicker) */
+  --gold-600:  #7A5F1E;   /* = --gold-deep (on-light kicker) */
   --gold-700:  #745816;
 
   /* Radii — mockup system uses generous radii (12–32px) */

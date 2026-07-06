@@ -14,7 +14,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
         id="wins-list-heading"
         style={{
           fontWeight: 700,
-          fontSize: 22,
+          fontSize: '1.375rem',
           letterSpacing: '-0.02em',
           color: 'var(--ink)',
           margin: '0 0 18px',
@@ -24,7 +24,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
       </h2>
 
       {loading && (
-        <p style={{ fontSize: 16, color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
+        <p style={{ fontSize: '1rem', color: 'var(--slate-500)', margin: 0 }}>Loading...</p>
       )}
 
       {!loading && wins.length === 0 && (
@@ -38,7 +38,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
         >
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -50,7 +50,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
           </p>
           <p
             style={{
-              fontSize: 16,
+              fontSize: '1rem',
               fontWeight: 600,
               color: 'var(--ink)',
               margin: '0 0 8px',
@@ -61,7 +61,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
           </p>
           <p
             style={{
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--slate-500)',
               margin: 0,
               lineHeight: 1.6,
@@ -105,7 +105,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
               >
                 <p
                   style={{
-                    fontSize: 16,
+                    fontSize: '1rem',
                     fontWeight: 600,
                     color: 'var(--ink)',
                     lineHeight: 1.4,
@@ -117,7 +117,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
                 </p>
                 <span
                   style={{
-                    fontSize: 16,
+                    fontSize: '1rem',
                     fontWeight: 700,
                     color: 'var(--ink)',
                     fontVariantNumeric: 'tabular-nums',
@@ -145,7 +145,7 @@ export function WinsList({ wins, loading }: WinsListProps) {
                   <span
                     key={`${win.id}-meta-${i}`}
                     style={{
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       fontWeight: 600,
                       letterSpacing: '0.16em',
                       textTransform: 'uppercase',

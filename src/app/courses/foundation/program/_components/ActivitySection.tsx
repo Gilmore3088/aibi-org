@@ -100,7 +100,7 @@ export function ModuleHandoffCheck({
             style={{
               margin: '0 0 8px',
               color: 'var(--gold-deep)',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.17em',
               textTransform: 'uppercase',
@@ -113,7 +113,7 @@ export function ModuleHandoffCheck({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 'clamp(20px, 1.8vw, 25px)',
+              fontSize: 'clamp(1.25rem, 1.8vw, 1.5625rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.01em',
               fontWeight: 850,
@@ -125,7 +125,7 @@ export function ModuleHandoffCheck({
             style={{
               margin: '10px 0 0',
               color: 'var(--slate-600)',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.5,
               fontWeight: 650,
             }}
@@ -148,7 +148,7 @@ export function ModuleHandoffCheck({
                 display: 'block',
                 marginBottom: 6,
                 color: error ? 'var(--ink)' : 'var(--slate-500)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -172,7 +172,7 @@ export function ModuleHandoffCheck({
                 padding: '11px 12px',
                 color: 'var(--ink)',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.45,
                 outlineColor: 'var(--gold-deep)',
               }}
@@ -185,7 +185,7 @@ export function ModuleHandoffCheck({
               style={{
                 margin: '-4px 0 0',
                 color: 'var(--ink)',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 lineHeight: 1.35,
                 fontWeight: 760,
               }}
@@ -200,7 +200,7 @@ export function ModuleHandoffCheck({
                 display: 'block',
                 marginBottom: 6,
                 color: transferPlanError ? 'var(--ink)' : 'var(--slate-500)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -224,7 +224,7 @@ export function ModuleHandoffCheck({
                 padding: '11px 12px',
                 color: 'var(--ink)',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.45,
                 outlineColor: 'var(--gold-deep)',
               }}
@@ -237,7 +237,7 @@ export function ModuleHandoffCheck({
               style={{
                 margin: '-4px 0 0',
                 color: 'var(--ink)',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 lineHeight: 1.35,
                 fontWeight: 760,
               }}
@@ -260,7 +260,7 @@ export function ModuleHandoffCheck({
               color: ready ? 'var(--cream)' : 'var(--slate-500)',
               padding: '0 18px',
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -280,7 +280,7 @@ export function ModuleHandoffCheck({
                 margin: 0,
                 maxWidth: 540,
                 color: 'var(--ink)',
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 lineHeight: 1.45,
                 fontWeight: 760,
               }}
@@ -610,7 +610,7 @@ export function ActivitySection({
               style={{
                 margin: 0,
                 color: 'var(--ink)',
-                fontSize: 'clamp(16px, 1.5vw, 19px)',
+                fontSize: 'clamp(1rem, 1.5vw, 1.1875rem)',
                 lineHeight: 1.2,
                 letterSpacing: '-0.015em',
                 fontWeight: 850,
@@ -638,7 +638,7 @@ export function ActivitySection({
                 background: hasLabDraft ? 'var(--ink)' : 'var(--cream)',
                 color: hasLabDraft ? '#fff' : 'var(--ink)',
                 padding: '0 10px',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 850,
               }}
             >
@@ -653,7 +653,7 @@ export function ActivitySection({
                 background: 'var(--cream)',
                 color: 'var(--ink)',
                 padding: '0 10px',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 850,
               }}
             >
@@ -667,7 +667,7 @@ export function ActivitySection({
                   alignItems: 'center',
                   minHeight: 30,
                   color: 'var(--ink)',
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 850,
                   textDecoration: 'underline',
                   textUnderlineOffset: 3,
@@ -680,7 +680,7 @@ export function ActivitySection({
               style={{
                 maxWidth: 260,
                 color: 'var(--slate-600)',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 lineHeight: 1.3,
                 fontWeight: 760,
               }}

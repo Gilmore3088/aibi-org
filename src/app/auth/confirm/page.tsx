@@ -92,7 +92,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
     <div style={{ width: '100%', maxWidth: 560 }}>
       <p
         style={{
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 700,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
@@ -105,7 +105,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
 
       <h1
         style={{
-          fontSize: 'clamp(28px, 4vw, 40px)',
+          fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
           fontWeight: 700,
           lineHeight: 1.1,
           letterSpacing: '-0.02em',
@@ -118,7 +118,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
 
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           lineHeight: 1.55,
           color: 'var(--slate-600)',
           margin: '0 0 28px',
@@ -140,7 +140,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
             color: '#7A1F18',
             padding: '12px 16px',
             marginBottom: 20,
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.45,
           }}
         >
@@ -166,7 +166,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
               height: 48,
               background: 'var(--gold)',
               color: 'var(--ink)',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -187,13 +187,13 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
             boxShadow: 'var(--shadow-soft)',
           }}
         >
-          <p style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--ink)', margin: '0 0 12px' }}>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 1.5, color: 'var(--ink)', margin: '0 0 12px' }}>
             This confirmation link is missing required information. Please request a fresh link from the sign-in page.
           </p>
           <Link
             href="/auth/login"
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -210,7 +210,7 @@ export default async function ConfirmPage({ searchParams }: PageProps) {
       <p
         style={{
           marginTop: 36,
-          fontSize: 12,
+          fontSize: '0.75rem',
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
           color: 'var(--slate-500)',

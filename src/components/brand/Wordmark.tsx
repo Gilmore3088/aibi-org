@@ -2,12 +2,17 @@
  * <Wordmark> — the bracketed [Ai] Banking Institute lockup.
  *
  * Brand v1 (2026-05-28). Source of truth: docs/brand/brand-guide-v1.html.
- * The public SVG lockups in /public/brand are the visual source of truth;
- * this component keeps the same API while rendering those assets everywhere.
+ *
+ * Rendered as a typographic lockup (self-hosted next/font faces via the
+ * .aibi-mark classes in brand.css), NOT the /public/brand SVG files: those
+ * SVGs @import Google Fonts at runtime, and on networks that block that
+ * fetch — standard egress filtering at community banks — the fallback font
+ * overflowed the fixed viewBox and the header logo clipped to
+ * "[Ai] Banking Insti" (persona audit, 2026-07-03). The SVG files remain in
+ * /public/brand for email/PDF surfaces that embed them directly.
  */
 
 import { cn } from '@/lib/utils/cn';
-import Image from 'next/image';
 
 export type BrandTone = 'dark' | 'light' | 'mono';
 
@@ -24,28 +29,15 @@ export interface WordmarkProps {
   className?: string;
 }
 
+function toneClass(tone: BrandTone): string {
+  if (tone === 'light') return 'aibi-mark--dark';
+  if (tone === 'mono') return 'aibi-mark--mono';
+  return '';
+}
+
 function toCssSize(size: string | number | undefined): string | undefined {
   if (size === undefined) return undefined;
   return typeof size === 'number' ? `${size}px` : size;
-}
-
-function wordmarkSrc(variant: NonNullable<WordmarkProps['variant']>, tone: BrandTone): string {
-  if (variant === 'compact') {
-    return tone === 'light' ? '/brand/aibi-mark-dark.svg' : '/brand/aibi-mark.svg';
-  }
-
-  if (tone === 'light') return '/brand/aibi-wordmark-dark.svg';
-  if (tone === 'mono') return '/brand/aibi-wordmark-mono.svg';
-  return '/brand/aibi-wordmark.svg';
-}
-
-function wordmarkDimensions(variant: NonNullable<WordmarkProps['variant']>): {
-  width: number;
-  height: number;
-} {
-  return variant === 'compact'
-    ? { width: 260, height: 116 }
-    : { width: 740, height: 116 };
 }
 
 export function Wordmark({
@@ -56,25 +48,22 @@ export function Wordmark({
   className,
 }: WordmarkProps) {
   const label = ariaLabel ?? (variant === 'full' ? '[Ai] Banking Institute' : '[Ai]BI');
-  const height = toCssSize(size);
-  const dimensions = wordmarkDimensions(variant);
+  const fontSize = toCssSize(size);
 
   return (
     <span
-      className={cn('aibi-wordmark-image', className)}
+      className={cn('aibi-mark', toneClass(tone), className)}
       role="img"
       aria-label={label}
-      style={height ? { height } : undefined}
+      style={fontSize ? { fontSize } : undefined}
     >
-      <Image
-        className="aibi-wordmark-image__asset"
-        src={wordmarkSrc(variant, tone)}
-        width={dimensions.width}
-        height={dimensions.height}
-        alt=""
-        aria-hidden="true"
-        unoptimized
-      />
+      <span className="bk" aria-hidden="true">[</span>
+      <span className="ai" aria-hidden="true">A</span>
+      <span className="si" aria-hidden="true">i</span>
+      <span className="bk" aria-hidden="true">]</span>
+      <span className="wt" aria-hidden="true">
+        {variant === 'full' ? 'Banking Institute' : 'BI'}
+      </span>
     </span>
   );
 }

@@ -47,7 +47,7 @@ interface RpcRow {
   reset_at: string;
 }
 
-async function checkRateLimit(config: RateLimitConfig): Promise<RateLimitResult> {
+export async function checkRateLimit(config: RateLimitConfig): Promise<RateLimitResult> {
   const fallback: RateLimitResult = {
     allowed: true,
     count: 0,

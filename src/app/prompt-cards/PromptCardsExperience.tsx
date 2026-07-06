@@ -104,7 +104,7 @@ export function PromptCardsExperience() {
         <section className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-20">
           <div>
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
+            <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--gold)]">
               AiBI Prompt Cards
             </p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.98] text-[color:var(--ink)] md:text-7xl">
@@ -117,7 +117,7 @@ export function PromptCardsExperience() {
               {unlocked ? (
                 <a
                   href={downloadHref}
-                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
                 >
                   Download PDF
                 </a>
@@ -125,14 +125,14 @@ export function PromptCardsExperience() {
                 <button
                   type="button"
                   onClick={unlock}
-                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
                 >
                   Get the AiBI Prompt Cards
                 </button>
               )}
               <Link
                 href="/courses/foundation/program"
-                className="border border-[color:var(--ink)]/25 px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
+                className="border border-[color:var(--ink)]/25 px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
               >
                 Explore AiBI-Foundation
               </Link>
@@ -146,7 +146,7 @@ export function PromptCardsExperience() {
                 onClick={() => selectCard(card)}
                 className="grid grid-cols-[40px_1fr] gap-4 border border-[color:var(--ink)]/10 bg-white/45 p-4 text-left transition-colors hover:border-[color:var(--gold)]/50"
               >
-                <span className="font-mono text-[11px] text-[color:var(--gold)] tabular-nums">
+                <span className="font-mono text-[0.6875rem] text-[color:var(--gold)] tabular-nums">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span>
@@ -176,7 +176,7 @@ export function PromptCardsExperience() {
       <section className="mx-auto grid max-w-7xl gap-8 px-6 pb-16 lg:grid-cols-[360px_1fr] lg:px-10">
         <aside className="h-fit lg:sticky lg:top-28">
           <div className="border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-5">
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
+            <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)]">
               Library
             </p>
             <h2 className="mt-2 font-serif text-3xl leading-tight text-[color:var(--ink)]">
@@ -188,7 +188,7 @@ export function PromptCardsExperience() {
             {unlocked ? (
               <a
                 href={downloadHref}
-                className="mt-5 block bg-[color:var(--ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
+                className="mt-5 block bg-[color:var(--ink)] px-4 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
               >
                 Download PDF
               </a>
@@ -196,7 +196,7 @@ export function PromptCardsExperience() {
               <button
                 type="button"
                 onClick={unlock}
-                className="mt-5 w-full bg-[color:var(--gold)] px-4 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
+                className="mt-5 w-full bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
               >
                 Unlock full library
               </button>
@@ -242,8 +242,8 @@ export function PromptCardsExperience() {
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)]">{card.category}</span>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--slate-600)]">{card.difficulty}</span>
+                  <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--gold)]">{card.category}</span>
+                  <span className="font-mono text-[0.5625rem] uppercase tracking-widest text-[color:var(--slate-600)]">{card.difficulty}</span>
                 </div>
                 <h3 className="mt-3 font-serif text-2xl leading-tight text-[color:var(--ink)]">{card.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[color:var(--slate-600)]">{card.description}</p>
@@ -268,7 +268,7 @@ export function PromptCardsExperience() {
       <section className="border-t border-[color:var(--ink)]/10 bg-[color:var(--ink)] px-6 py-12 text-[color:var(--cream)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--cream-2)]">
+            <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--cream-2)]">
               Course bridge
             </p>
             <h2 className="mt-2 font-serif text-4xl leading-tight">Ready for the full AiBI Method?</h2>
@@ -278,7 +278,7 @@ export function PromptCardsExperience() {
           </div>
           <Link
             href="/courses/foundation/program"
-            className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
+            className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
           >
             View AiBI-Foundation
           </Link>
@@ -308,16 +308,16 @@ function CardDetail(props: {
     <article className="border border-[color:var(--ink)]/10 bg-white p-5 md:p-7">
       <div className="flex flex-col gap-3 border-b border-[color:var(--ink)]/10 pb-5 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--gold)]">{props.card.category}</p>
+          <p className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--gold)]">{props.card.category}</p>
           <h2 className="mt-2 font-serif text-4xl leading-tight text-[color:var(--ink)]">{props.card.title}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-600)]">{props.card.description}</p>
         </div>
         {locked ? (
-          <button type="button" onClick={props.onUnlock} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]">
+          <button type="button" onClick={props.onUnlock} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
             Unlock
           </button>
         ) : (
-          <button type="button" onClick={props.onCopy} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]">
+          <button type="button" onClick={props.onCopy} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
             {props.copied ? 'Copied' : 'Copy prompt'}
           </button>
         )}
@@ -351,7 +351,7 @@ function CardDetail(props: {
         type="button"
         onClick={props.onExpand}
         disabled={locked}
-        className="mt-6 border border-[color:var(--ink)]/20 px-4 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--ink)] disabled:opacity-45"
+        className="mt-6 border border-[color:var(--ink)]/20 px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] disabled:opacity-45"
       >
         Expand for More Depth
       </button>
@@ -366,7 +366,7 @@ function CardDetail(props: {
 
       <div className="mt-6 flex flex-col gap-3 border-t border-[color:var(--ink)]/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-serif text-2xl text-[color:var(--ink)]">Ready for the full AiBI Method?</p>
-        <Link href="/courses/foundation/program" className="bg-[color:var(--ink)] px-4 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)]">
+        <Link href="/courses/foundation/program" className="bg-[color:var(--ink)] px-4 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
           Foundation course
         </Link>
       </div>
@@ -444,7 +444,7 @@ function LeadModal({
       <form onSubmit={submit} className="w-full max-w-xl bg-[color:var(--cream)] border border-[color:var(--ink)]/15 p-6 md:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)]">Unlock library</p>
+            <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)]">Unlock library</p>
             <h2 className="mt-2 font-serif text-4xl text-[color:var(--ink)]">Get the AiBI Prompt Cards</h2>
             <p className="mt-2 text-sm leading-relaxed text-[color:var(--slate-600)]">Unlock the full library and PDF download.</p>
           </div>
@@ -452,11 +452,11 @@ function LeadModal({
         </div>
         <div className="mt-6 grid gap-4">
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]">Email</span>
+            <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-600)]">Email</span>
             <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-3 text-sm" />
           </label>
           <label className="block">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]">Role</span>
+            <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-600)]">Role</span>
             <select value={role} onChange={(event) => setRole(event.target.value)} className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-3 text-sm">
               <option value="practitioner">Banking practitioner</option>
               <option value="compliance-risk">Compliance / Risk</option>
@@ -467,17 +467,17 @@ function LeadModal({
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]">Institution type</span>
+              <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-600)]">Institution type</span>
               <input value={institutionType} onChange={(event) => setInstitutionType(event.target.value)} placeholder="Bank, credit union..." className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-3 text-sm" />
             </label>
             <label className="block">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--slate-600)]">Asset size</span>
+              <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-600)]">Asset size</span>
               <input value={assetSize} onChange={(event) => setAssetSize(event.target.value)} placeholder="$500M-$1B" className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-3 text-sm" />
             </label>
           </div>
         </div>
         {error && <p className="mt-4 text-sm text-[color:#9b2226]">{error}</p>}
-        <button disabled={submitting} type="submit" className="mt-6 w-full bg-[color:var(--gold)] px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-50">
+        <button disabled={submitting} type="submit" className="mt-6 w-full bg-[color:var(--gold)] px-5 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-50">
           {submitting ? 'Preparing PDF...' : 'Unlock and download cards'}
         </button>
       </form>

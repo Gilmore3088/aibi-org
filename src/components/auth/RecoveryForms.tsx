@@ -16,7 +16,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react';
 // ── Shared inline styles (mockup tokens) ─────────────────────────────────────
 
 const labelStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.02em',
   color: 'var(--slate-600)',
@@ -32,7 +32,7 @@ const inputStyle: CSSProperties = {
   border: '1px solid var(--slate-200)',
   background: '#fff',
   color: 'var(--ink)',
-  fontSize: 15,
+  fontSize: '0.9375rem',
   fontFamily: 'inherit',
   outline: 'none',
 };
@@ -47,7 +47,7 @@ const primaryBtnStyle: CSSProperties = {
   borderRadius: 12,
   background: 'var(--gold)',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -70,7 +70,7 @@ const alertStyle: CSSProperties = {
   background: 'rgba(180, 60, 50, 0.06)',
   color: '#7A1F18',
   padding: '10px 14px',
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.45,
 };
 
@@ -80,7 +80,7 @@ const successStyle: CSSProperties = {
   background: 'rgba(4, 120, 87, 0.06)',
   color: '#047857',
   padding: '10px 14px',
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.45,
 };
 
@@ -203,10 +203,10 @@ export function PurchaseRecoveryForm({ prefillEmail }: { readonly prefillEmail: 
 
   return (
     <form onSubmit={handleSubmit} noValidate style={{ marginTop: 18 }}>
-      <p style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: 14, fontWeight: 700 }}>
+      <p style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: '0.875rem', fontWeight: 700 }}>
         Bought something but cannot get in?
       </p>
-      <p style={{ margin: '0 0 12px', color: 'var(--slate-600)', fontSize: 13, lineHeight: 1.45 }}>
+      <p style={{ margin: '0 0 12px', color: 'var(--slate-600)', fontSize: '0.8125rem', lineHeight: 1.45 }}>
         Send a fresh purchase access link to the email used at checkout.
       </p>
       <Field

@@ -39,7 +39,7 @@ function buildDraft(args: {
 }
 
 const kicker: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -87,7 +87,7 @@ export function ShareDelta({
         id="share-delta-heading"
         style={{
           fontWeight: 700,
-          fontSize: 22,
+          fontSize: '1.375rem',
           letterSpacing: '-0.02em',
           color: 'var(--ink)',
           margin: '0 0 8px',
@@ -97,7 +97,7 @@ export function ShareDelta({
       </h2>
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           color: 'var(--slate-600)',
           lineHeight: 1.6,
           margin: '0 0 16px',
@@ -118,7 +118,7 @@ export function ShareDelta({
           border: '1px solid var(--ink-a10)',
           borderRadius: 16,
           padding: '16px 18px',
-          fontSize: 16,
+          fontSize: '1rem',
           lineHeight: 1.6,
           color: 'var(--ink)',
           resize: 'vertical',
@@ -143,7 +143,7 @@ export function ShareDelta({
             padding: '12px 22px',
             background: 'var(--ink)',
             color: 'var(--cream-2)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -157,7 +157,7 @@ export function ShareDelta({
         <span
           aria-live="polite"
           style={{
-            fontSize: 13,
+            fontSize: '0.8125rem',
             color: copied ? 'var(--emerald-700)' : 'var(--slate-500)',
           }}
         >

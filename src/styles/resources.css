@@ -38,7 +38,7 @@
   border-radius: 999px;
   background: var(--ink);
   color: #fff;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-decoration: none;
   box-shadow: var(--shadow-soft, 0 1px 2px rgba(0,0,0,.06));
@@ -129,7 +129,7 @@
   }
   .mockup-scope .rx-grid.rx-chips-mobile > * {
     padding: 10px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
 
@@ -208,7 +208,7 @@ button.rx-featured-item {
   border: 1px solid var(--slate-200);
   background: #fff;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-decoration: none;
   padding: 0 .75rem;
@@ -563,7 +563,7 @@ button.rx-featured-item {
   }
   .mockup-scope .rx-hero .mk-ctas > * {
     padding-inline: 10px;
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: nowrap;
   }
   .mockup-scope .rx-hero-start {
@@ -1545,7 +1545,7 @@ button.rx-featured-item {
 .prompt-simple-scope .prompt-simple-method > span {
   color: var(--gold-deep);
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -1578,7 +1578,7 @@ button.rx-featured-item {
   content: counter(prompt-line);
   counter-increment: prompt-line;
   display: inline-flex;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 800;
   height: 28px;
   justify-content: center;
@@ -1688,7 +1688,7 @@ button.rx-featured-item {
 }
 .prompt-simple-scope .prompt-preview-artifact-head span {
   color: var(--slate-600);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 820;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -1697,7 +1697,7 @@ button.rx-featured-item {
   background: #D1FAE5;
   border-radius: 999px;
   color: #065F46;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 850;
   padding: 6px 10px;
   text-transform: uppercase;
@@ -1744,7 +1744,7 @@ button.rx-featured-item {
 }
 .prompt-simple-scope .prompt-example-split span {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -1847,7 +1847,7 @@ button.rx-featured-item {
 .prompt-simple-scope .prompt-wizard-step-head span {
   color: var(--gold-deep);
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -2170,7 +2170,7 @@ button.rx-kit-card-zip {
 }
 
 .mockup-scope .rx-filter-rail-title {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2190,7 +2190,7 @@ button.rx-kit-card-zip {
 .mockup-scope .rx-filter-rail-summary {
   list-style: none;
   padding: 14px 20px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--ink);
   cursor: pointer;
@@ -2213,7 +2213,7 @@ button.rx-kit-card-zip {
   gap: 6px;
 }
 .mockup-scope .rx-filter-search-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2222,7 +2222,7 @@ button.rx-kit-card-zip {
 .mockup-scope .rx-filter-search-input {
   width: 100%;
   padding: 10px 12px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: inherit;
   background: #fff;
   border: 1px solid var(--slate-200);
@@ -2237,7 +2237,7 @@ button.rx-kit-card-zip {
 
 .mockup-scope .rx-filter-group { display: flex; flex-direction: column; gap: 8px; }
 .mockup-scope .rx-filter-group-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2255,7 +2255,7 @@ button.rx-kit-card-zip {
   background: #fff;
   border: 1px solid var(--slate-200);
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--ink);
   cursor: pointer;
@@ -2292,7 +2292,7 @@ button.rx-kit-card-zip {
   border: 1px solid var(--slate-200);
   background: #fff;
   color: var(--ink);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: inherit;
   transition: border-color 120ms;
 }
@@ -2307,7 +2307,7 @@ button.rx-kit-card-zip {
   align-items: center;
 }
 .mockup-scope .rx-filterbar-reset {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--gold-deep);
   background: transparent;
@@ -2334,7 +2334,7 @@ button.rx-kit-card-zip {
 
 .mockup-scope .rx-filter-reset {
   align-self: flex-start;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--gold-deep);
   background: transparent;
@@ -2352,13 +2352,13 @@ button.rx-kit-card-zip {
 }
 .mockup-scope .rx-empty-state .mk-k {
   color: var(--gold-deep);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 .mockup-scope .rx-empty-state h2 {
-  font-size: 28px;
+  font-size: 1.75rem;
   margin: 8px 0 12px;
   color: var(--ink);
 }

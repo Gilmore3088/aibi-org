@@ -119,7 +119,7 @@ export function QuickWinsClient() {
             display: 'flex',
             alignItems: 'center',
             gap: 8,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',

@@ -64,7 +64,7 @@ const buttonStyle: CSSProperties = {
   alignItems: 'center',
   gap: 10,
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 12,
+  fontSize: '0.75rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 700,
@@ -161,7 +161,7 @@ function ArtifactReadinessCheck({
             style={{
               margin: '0 0 5px',
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -169,7 +169,7 @@ function ArtifactReadinessCheck({
           >
             Before save
           </p>
-          <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.34, fontWeight: 820 }}>
+          <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.34, fontWeight: 820 }}>
             Readiness
           </p>
         </div>
@@ -178,7 +178,7 @@ function ArtifactReadinessCheck({
           style={{
             margin: 0,
             color: 'var(--slate-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             lineHeight: 1.3,
             fontWeight: 750,
             textAlign: 'right',
@@ -222,7 +222,7 @@ function ArtifactReadinessCheck({
                 color: isSelected ? '#fff' : 'var(--ink)',
                 padding: '0 12px',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 850,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -303,7 +303,7 @@ function JudgmentCheckpoint({
             style={{
               margin: 0,
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -316,7 +316,7 @@ function JudgmentCheckpoint({
           style={{
             margin: 0,
             color: 'var(--slate-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             lineHeight: 1.3,
             fontWeight: 750,
             textAlign: 'right',
@@ -333,7 +333,7 @@ function JudgmentCheckpoint({
             display: 'block',
             marginBottom: 6,
             color: error ? 'var(--ink)' : 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -357,7 +357,7 @@ function JudgmentCheckpoint({
             padding: '11px 12px',
             color: 'var(--ink)',
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.45,
             outlineColor: 'var(--gold-deep)',
           }}
@@ -370,7 +370,7 @@ function JudgmentCheckpoint({
           style={{
             margin: '-2px 0 0',
             color: 'var(--ink)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             lineHeight: 1.35,
             fontWeight: 760,
           }}
@@ -441,7 +441,7 @@ function SavedJudgmentNote({
           style={{
             margin: 0,
             color: 'var(--gold-deep)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
@@ -456,7 +456,7 @@ function SavedJudgmentNote({
             background: '#fff',
             padding: '5px 10px',
             color: 'var(--ink)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -465,7 +465,7 @@ function SavedJudgmentNote({
           {option.label}
         </span>
       </div>
-      <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.45, fontWeight: 700 }}>
+      <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.45, fontWeight: 700 }}>
         {note}
       </p>
     </section>
@@ -508,7 +508,7 @@ function TransferPlanCheckpoint({
             style={{
               margin: 0,
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -521,7 +521,7 @@ function TransferPlanCheckpoint({
           style={{
             margin: 0,
             color: 'var(--slate-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             lineHeight: 1.3,
             fontWeight: 750,
             textAlign: 'right',
@@ -538,7 +538,7 @@ function TransferPlanCheckpoint({
             display: 'block',
             marginBottom: 6,
             color: error ? 'var(--ink)' : 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -562,7 +562,7 @@ function TransferPlanCheckpoint({
             padding: '11px 12px',
             color: 'var(--ink)',
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.45,
             outlineColor: 'var(--gold-deep)',
           }}
@@ -575,7 +575,7 @@ function TransferPlanCheckpoint({
           style={{
             margin: '-2px 0 0',
             color: 'var(--ink)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             lineHeight: 1.35,
             fontWeight: 760,
           }}
@@ -659,7 +659,7 @@ function ArtifactEvidenceRubric({
             style={{
               margin: '0 0 5px',
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -667,7 +667,7 @@ function ArtifactEvidenceRubric({
           >
             Evidence target
           </p>
-          <p style={{ margin: 0, color: 'var(--ink)', fontSize: 14, lineHeight: 1.32, fontWeight: 800 }}>
+          <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.32, fontWeight: 800 }}>
             Save {savedAsset} with a review note and first-use plan.
           </p>
         </div>
@@ -686,7 +686,7 @@ function ArtifactEvidenceRubric({
           <span
             style={{
               color: submitted ? 'var(--ink)' : 'var(--slate-500)',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 850,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -730,7 +730,7 @@ function ArtifactEvidenceRubric({
           borderRadius: 10,
           background: 'var(--cream)',
           color: 'var(--ink)',
-          fontSize: 13,
+          fontSize: '0.8125rem',
           lineHeight: 1.3,
           fontWeight: 750,
         }}
@@ -739,7 +739,7 @@ function ArtifactEvidenceRubric({
           style={{
             flex: '0 0 auto',
             color: 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -805,7 +805,7 @@ function TransferNoteCard({
             style={{
               margin: '0 0 5px',
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -818,7 +818,7 @@ function TransferNoteCard({
             style={{
               margin: 0,
               color: 'var(--ink)',
-              fontSize: 18,
+              fontSize: '1.125rem',
               lineHeight: 1.22,
               fontWeight: 850,
             }}
@@ -829,7 +829,7 @@ function TransferNoteCard({
         <span
           style={{
             color: note.trim() ? 'var(--ink)' : 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -851,7 +851,7 @@ function TransferNoteCard({
             display: 'block',
             marginBottom: 6,
             color: 'var(--slate-500)',
-            fontSize: 10,
+            fontSize: '0.625rem',
             fontWeight: 850,
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -873,7 +873,7 @@ function TransferNoteCard({
             padding: '11px 12px',
             color: 'var(--ink)',
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.45,
             outlineColor: 'var(--gold-deep)',
           }}
@@ -945,7 +945,7 @@ function ToolboxSaveStatusCard({ status }: { readonly status: ToolboxSaveStatus 
         style={{
           margin: 0,
           color: status === 'saved' ? 'var(--gold-deep)' : 'var(--slate-500)',
-          fontSize: 10,
+          fontSize: '0.625rem',
           fontWeight: 850,
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
@@ -953,7 +953,7 @@ function ToolboxSaveStatusCard({ status }: { readonly status: ToolboxSaveStatus 
       >
         {current.label}
       </p>
-      <p style={{ margin: 0, color: 'var(--ink)', fontSize: 13, lineHeight: 1.4, fontWeight: 720 }}>
+      <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 720 }}>
         {current.body}
       </p>
     </section>
@@ -979,7 +979,7 @@ function PacketSaveStatusCard() {
         style={{
           margin: 0,
           color: 'var(--gold-deep)',
-          fontSize: 10,
+          fontSize: '0.625rem',
           fontWeight: 850,
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
@@ -987,7 +987,7 @@ function PacketSaveStatusCard() {
       >
         Packet saved
       </p>
-      <p style={{ margin: 0, color: 'var(--ink)', fontSize: 13, lineHeight: 1.4, fontWeight: 720 }}>
+      <p style={{ margin: 0, color: 'var(--ink)', fontSize: '0.8125rem', lineHeight: 1.4, fontWeight: 720 }}>
         This artifact is part of your Foundation packet and can be reused from the course record.
       </p>
     </section>
@@ -1404,7 +1404,7 @@ function StandardActivityForm({
                   style={{
                     margin: '0 0 5px',
                     color: 'var(--gold-deep)',
-                    fontSize: 10,
+                    fontSize: '0.625rem',
                     fontWeight: 850,
                     letterSpacing: '0.15em',
                     textTransform: 'uppercase',
@@ -1416,7 +1416,7 @@ function StandardActivityForm({
                   style={{
                     margin: 0,
                     color: 'var(--ink)',
-                    fontSize: 18,
+                    fontSize: '1.125rem',
                     lineHeight: 1.22,
                     fontWeight: 850,
                   }}
@@ -1428,7 +1428,7 @@ function StandardActivityForm({
                 style={{
                   margin: 0,
                   color: 'var(--slate-500)',
-                  fontSize: 12,
+                  fontSize: '0.75rem',
                   lineHeight: 1.35,
                   fontWeight: 750,
                   textAlign: 'right',
@@ -1476,7 +1476,7 @@ function StandardActivityForm({
                 background: 'var(--cream-2)',
                 color: 'var(--ink)',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 borderTopRightRadius: 8,
                 borderBottomRightRadius: 8,
               }}

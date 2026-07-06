@@ -72,7 +72,7 @@ export function SourceBacklink({
   return (
     <Link
       href={target.href}
-      className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
+      className="text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
     >
       {target.label}
     </Link>

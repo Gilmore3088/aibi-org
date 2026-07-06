@@ -23,11 +23,11 @@ const card: React.CSSProperties = {
   borderRadius: 16,
   overflow: 'hidden',
 };
-const table: React.CSSProperties = { width: '100%', borderCollapse: 'collapse', fontSize: 14 };
+const table: React.CSSProperties = { width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' };
 const th: React.CSSProperties = {
   textAlign: 'left',
   padding: '10px 14px',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
@@ -49,7 +49,7 @@ const tileRow: React.CSSProperties = {
 };
 const tile: React.CSSProperties = { ...card, padding: '14px 16px' };
 const tileLabel: React.CSSProperties = {
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 600,
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
@@ -57,7 +57,7 @@ const tileLabel: React.CSSProperties = {
   margin: 0,
 };
 const tileValue: React.CSSProperties = {
-  fontSize: 28,
+  fontSize: '1.75rem',
   fontWeight: 700,
   fontVariantNumeric: 'tabular-nums',
   marginTop: 4,
@@ -67,7 +67,7 @@ const catHeader: React.CSSProperties = {
   ...td,
   background: 'var(--cream)',
   fontWeight: 600,
-  fontSize: 12,
+  fontSize: '0.75rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
   color: 'var(--gold-deep)',
@@ -79,7 +79,7 @@ const segmentGrid: React.CSSProperties = {
   marginTop: 16,
 };
 const segmentTitle: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -158,7 +158,7 @@ function AttributionTable({
 export function ResourceDownloads({ totals, rows, attributionRows = [] }: ResourceDownloadsProps) {
   if (rows.length === 0) {
     return (
-      <div style={{ ...card, padding: 16, fontSize: 14, color: 'var(--slate-600)' }}>
+      <div style={{ ...card, padding: 16, fontSize: '0.875rem', color: 'var(--slate-600)' }}>
         No resource downloads recorded yet.
       </div>
     );
@@ -199,7 +199,7 @@ export function ResourceDownloads({ totals, rows, attributionRows = [] }: Resour
         </div>
       ) : null}
 
-      <p style={{ fontSize: 12, color: 'var(--slate-500)', margin: '0 0 12px', maxWidth: 760 }}>
+      <p style={{ fontSize: '0.75rem', color: 'var(--slate-500)', margin: '0 0 12px', maxWidth: 760 }}>
         Raw download events — includes anonymous, repeat, and test/seed traffic
         (not de-duplicated, not test-filtered). The scorecard&rsquo;s
         &ldquo;Resource downloaders (known email)&rdquo; counts unique

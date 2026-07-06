@@ -50,7 +50,7 @@ const PLATFORM_TAGS: Readonly<Record<PlatformId, readonly UseCaseFilter[]>> = {
 };
 
 const kicker = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase' as const,
@@ -83,7 +83,7 @@ export default async function ToolGuidesPage() {
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)',
             lineHeight: 1.05,
             letterSpacing: '-0.025em',
             margin: '0 0 16px',
@@ -95,7 +95,7 @@ export default async function ToolGuidesPage() {
 
         <p
           style={{
-            fontSize: 18,
+            fontSize: '1.125rem',
             lineHeight: 1.5,
             color: 'var(--slate-600)',
             margin: 0,
@@ -134,7 +134,7 @@ export default async function ToolGuidesPage() {
                   id={`heading-${guide.platformId}`}
                   style={{
                     fontWeight: 700,
-                    fontSize: 28,
+                    fontSize: '1.75rem',
                     letterSpacing: '-0.02em',
                     color: 'var(--ink)',
                     margin: 0,
@@ -154,7 +154,7 @@ export default async function ToolGuidesPage() {
               </div>
               <p
                 style={{
-                  fontSize: 16,
+                  fontSize: '1rem',
                   lineHeight: 1.6,
                   color: 'var(--slate-600)',
                   margin: 0,
@@ -191,7 +191,7 @@ export default async function ToolGuidesPage() {
             <h2
               style={{
                 fontWeight: 700,
-                fontSize: 18,
+                fontSize: '1.125rem',
                 color: 'var(--ink)',
                 margin: '0 0 8px',
               }}
@@ -200,7 +200,7 @@ export default async function ToolGuidesPage() {
             </h2>
             <p
               style={{
-                fontSize: 16,
+                fontSize: '1rem',
                 color: 'var(--slate-600)',
                 lineHeight: 1.6,
                 margin: 0,
@@ -216,7 +216,7 @@ export default async function ToolGuidesPage() {
             <h2
               style={{
                 fontWeight: 700,
-                fontSize: 18,
+                fontSize: '1.125rem',
                 color: 'var(--ink)',
                 margin: '0 0 8px',
               }}
@@ -233,7 +233,7 @@ export default async function ToolGuidesPage() {
                   <Link
                     href={item.href}
                     style={{
-                      fontSize: 16,
+                      fontSize: '1rem',
                       color: 'var(--gold-deep)',
                       textDecoration: 'underline',
                       textUnderlineOffset: 2,

@@ -32,7 +32,7 @@ const OPTIONS: ReadonlyArray<{
 export function KindPicker({ value, onChange }: KindPickerProps) {
   return (
     <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+      <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
         Choose a kind
       </p>
       <h2 className="mt-2 text-2xl font-bold text-[color:var(--ink)]">
@@ -63,11 +63,11 @@ export function KindPicker({ value, onChange }: KindPickerProps) {
                 <p className="mt-2 text-sm leading-relaxed text-[color:var(--slate-600)]">
                   {opt.blurb}
                 </p>
-                <p className="mt-3 text-[10px] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
+                <p className="mt-3 text-[0.625rem] font-medium uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
                   Examples: {opt.example}
                 </p>
                 <p
-                  className={`mt-auto pt-4 text-[11px] font-bold uppercase tracking-[0.18em] ${
+                  className={`mt-auto pt-4 text-[0.6875rem] font-bold uppercase tracking-[0.18em] ${
                     selected
                       ? 'text-[color:var(--gold-deep)]'
                       : 'text-[color:var(--ink)] group-hover:text-[color:var(--ink-2)]'

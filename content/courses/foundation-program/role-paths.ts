@@ -29,7 +29,9 @@ export interface RolePath {
   readonly keyPromptIds: readonly string[];
   readonly automationTargets: readonly string[];
   readonly skillStarters: readonly string[];
-  readonly peerBenchmark: string;
+  // Honest goal framing, not an outcome statistic. Pre-launch there is no
+  // completion data, so this field must never claim measured peer results.
+  readonly thirtyDayGoal: string;
   readonly startHereModule: number;
   readonly quickWins: readonly string[];
 }
@@ -86,11 +88,11 @@ const lendingPath: RolePath = {
     'CRE Market Intelligence Brief',
     'Credit Memo Draft Generator',
   ],
-  peerBenchmark:
-    'Lending officers who complete AiBI-Foundation automate an average of 4 workflows within 30 days — most commonly loan file review and committee brief preparation.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for lending officers: put the loan-file completeness check and the committee-brief workflow into weekly use — the two workflows this path builds first.',
   startHereModule: 4,
   quickWins: [
-    'Run a loan file through ChatGPT File Upload against the 22-item checklist and cut review time in half',
+    'Run a loan file through ChatGPT File Upload against the 22-item checklist and time it against your manual review',
     'Generate a CRE market brief using Deep Research before your next committee meeting',
     'Draft a credit memo introduction from borrower financials in under 10 minutes',
   ],
@@ -124,7 +126,7 @@ const operationsPath: RolePath = {
       moduleNumber: 13,
       moduleId: 'm13-simple-reusable-skill',
       title: 'Build a Simple Reusable Skill',
-      focusSection: 'Daily Exception Report Analyzer — your starter skill reduces morning triage from 45 minutes to under 15',
+      focusSection: 'Daily Exception Report Analyzer — a starter skill built to take real time out of morning triage; you measure the gain against your own baseline',
     },
     {
       moduleNumber: 17,
@@ -144,8 +146,8 @@ const operationsPath: RolePath = {
     'Meeting Summary Formatter',
     'Policy Document Review Checklist',
   ],
-  peerBenchmark:
-    'Operations managers who complete AiBI-Foundation automate an average of 5 workflows within 30 days — exception triage and meeting documentation are consistently the first two.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for operations managers: make exception triage and meeting documentation your first two reviewed AI workflows, then add one more from your automation list.',
   startHereModule: 4,
   quickWins: [
     'Set up Custom Instructions in ChatGPT to standardize your exception report format across the team',
@@ -202,8 +204,8 @@ const compliancePath: RolePath = {
     'Regulatory Research Brief',
     'Policy Gap Analyzer',
   ],
-  peerBenchmark:
-    'Compliance officers who complete AiBI-Foundation automate an average of 3 workflows within 30 days — SAR narrative drafting and regulatory research preparation are the most common.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for compliance officers: put SAR narrative drafting and regulatory research preparation into reviewed weekly use, with evidence notes for every AI-assisted draft.',
   startHereModule: 5,
   quickWins: [
     'Use Perplexity to research the latest CFPB guidance on a topic on your watch list — note every citation links directly to source',
@@ -260,8 +262,8 @@ const financePath: RolePath = {
     'Balance Sheet Variance Analyzer',
     'Board Report Narrative Writer',
   ],
-  peerBenchmark:
-    'Finance professionals who complete AiBI-Foundation automate an average of 3 workflows within 30 days — monthly variance commentary and board report drafting are the most consistent.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for finance professionals: draft one month-end variance commentary and one board report narrative with AI, reviewed against your own numbers before anything ships.',
   startHereModule: 4,
   quickWins: [
     'Upload last month\'s income statement to ChatGPT and run the variance analysis prompt — compare to your manual commentary',
@@ -318,8 +320,8 @@ const marketingPath: RolePath = {
     'Social Media Content Calendar Builder',
     'Member Communication Drafter',
   ],
-  peerBenchmark:
-    'Marketing professionals who complete AiBI-Foundation automate an average of 4 workflows within 30 days — campaign copy production and social content drafting are the most common time savings.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for marketing professionals: run campaign copy and social content drafting through a compliance-safe AI workflow, with UDAP-flagged language checked before publication.',
   startHereModule: 4,
   quickWins: [
     'Run the social media prompt in Gemini for your next product promotion — note how the UDAP constraints are already built in',
@@ -376,8 +378,8 @@ const itPath: RolePath = {
     'Policy Library Knowledge Base Builder',
     'Technical-to-Executive Summary Converter',
   ],
-  peerBenchmark:
-    'IT professionals who complete AiBI-Foundation automate an average of 3 workflows within 30 days — vendor due diligence documentation and policy gap analysis are the most common.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for IT professionals: produce one AI vendor due diligence questionnaire and one policy gap analysis with AI assistance, each with documented review evidence.',
   startHereModule: 5,
   quickWins: [
     'Use the IT vendor assessment prompt in Claude to generate a TPRM questionnaire for a vendor you are currently evaluating',
@@ -434,8 +436,8 @@ const retailPath: RolePath = {
     'Product Knowledge Assistant',
     'Branch Training Material Builder',
   ],
-  peerBenchmark:
-    'Retail and frontline staff who complete AiBI-Foundation automate an average of 4 workflows within 30 days — customer email drafting is the most universal first win.',
+  thirtyDayGoal:
+    'A realistic 30-day goal for retail and frontline staff: make customer email drafting your first reviewed AI workflow — it is the most universal first win — then add a product-knowledge assistant.',
   startHereModule: 3,
   quickWins: [
     'Draft a rate change email to a customer using the Copilot prompt — your first draft in under 5 minutes',
@@ -492,8 +494,8 @@ const executivePath: RolePath = {
     'Peer Market Intelligence Brief',
     'Strategic Briefing Assembler',
   ],
-  peerBenchmark:
-    'Executives who complete AiBI-Foundation implement institution-wide AI policies within 60 days and report board-level AI adoption updates within 90 days.',
+  thirtyDayGoal:
+    'A realistic goal for executives: leave the course with a draft institution-wide AI policy and a board-ready AI adoption update — then put both on your leadership calendar for adoption.',
   startHereModule: 1,
   quickWins: [
     'Use the board AI update prompt in Claude to draft your next quarterly AI report in under 20 minutes',

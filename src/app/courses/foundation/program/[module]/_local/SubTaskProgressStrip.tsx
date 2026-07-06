@@ -149,7 +149,7 @@ export function SubTaskProgressStrip({ items }: Props) {
             style={{
               margin: 0,
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -161,7 +161,7 @@ export function SubTaskProgressStrip({ items }: Props) {
             style={{
               margin: '4px 0 0',
               color: 'var(--ink)',
-              fontSize: 15,
+              fontSize: '0.9375rem',
               lineHeight: 1.25,
               fontWeight: 850,
             }}
@@ -220,7 +220,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                     borderRadius: 999,
                     background: isActive ? 'var(--gold)' : 'var(--cream)',
                     color: isActive ? 'var(--ink)' : 'var(--gold-deep)',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 900,
                     fontVariantNumeric: 'tabular-nums',
                   }}
@@ -232,7 +232,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                     className="foundation-subtask-verb"
                     style={{
                       display: 'block',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       lineHeight: 1.05,
                       fontWeight: 900,
                       letterSpacing: '0.13em',
@@ -247,7 +247,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                       display: 'block',
                       marginTop: 4,
                       color: isActive ? 'rgba(255,255,255,0.74)' : 'var(--slate-600)',
-                      fontSize: 12.5,
+                      fontSize: '0.7813rem',
                       lineHeight: 1.25,
                       fontWeight: 700,
                       overflow: 'hidden',
@@ -275,7 +275,7 @@ export function SubTaskProgressStrip({ items }: Props) {
                     style={{
                       display: 'block',
                       marginTop: 3,
-                      fontSize: 13,
+                      fontSize: '0.8125rem',
                       lineHeight: 1.1,
                       fontWeight: 750,
                       color: isActive ? 'var(--gold-soft)' : 'var(--slate-500)',

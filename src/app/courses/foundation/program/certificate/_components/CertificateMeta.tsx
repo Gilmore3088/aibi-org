@@ -1,11 +1,12 @@
 import type { CSSProperties } from 'react';
+import { buildLinkedInAddToProfileUrl } from '../_lib/linkedin';
 
 const INTER_STACK =
   '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -17,9 +18,25 @@ interface CertificateMetaProps {
   readonly certificateId: string;
   readonly enrollmentId: string;
   readonly downloadFilename: string;
+  readonly issuedAt: string;
+  readonly verificationUrl: string;
 }
 
-export function CertificateMeta({ certificateId, enrollmentId, downloadFilename }: CertificateMetaProps) {
+export function CertificateMeta({
+  certificateId,
+  enrollmentId,
+  downloadFilename,
+  issuedAt,
+  verificationUrl,
+}: CertificateMetaProps) {
+  const linkedInUrl = buildLinkedInAddToProfileUrl({
+    name: 'AiBI-Foundation',
+    organizationName: 'The AI Banking Institute',
+    issuedAt,
+    certUrl: verificationUrl,
+    certId: certificateId,
+  });
+
   return (
     <div
       style={{
@@ -55,7 +72,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             style={{
               color: 'var(--gold-soft)',
               fontFamily: INTER_STACK,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 700,
               letterSpacing: '-0.02em',
             }}
@@ -66,7 +83,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         <h3
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             color: 'var(--ink)',
             margin: '0 0 8px',
@@ -77,7 +94,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: '0 0 14px',
@@ -89,7 +106,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 500,
             lineHeight: 1.55,
             color: 'var(--ink)',
@@ -104,6 +121,28 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
           <br />
           Verified at aibankinginstitute.com/verify/{certificateId}
         </p>
+        <a
+          href={linkedInUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'block',
+            textAlign: 'center',
+            marginTop: 14,
+            background: 'var(--ink)',
+            color: '#FFFFFF',
+            fontFamily: INTER_STACK,
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            padding: '12px 16px',
+            borderRadius: 8,
+            textDecoration: 'none',
+          }}
+        >
+          Add to LinkedIn profile
+        </a>
       </section>
 
       {/* Download PDF */}
@@ -152,7 +191,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         <h3
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             color: 'var(--ink)',
             margin: '0 0 8px',
@@ -163,7 +202,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: '0 0 16px',
@@ -182,7 +221,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             background: 'var(--ink)',
             color: '#FFFFFF',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -221,7 +260,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
           <h3
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 22,
+              fontSize: '1.375rem',
               fontWeight: 700,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
@@ -233,7 +272,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               color: 'var(--on-dark-80)',
               margin: '0 0 18px',
@@ -251,7 +290,7 @@ export function CertificateMeta({ certificateId, enrollmentId, downloadFilename 
             background: 'var(--gold)',
             color: 'var(--ink)',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',

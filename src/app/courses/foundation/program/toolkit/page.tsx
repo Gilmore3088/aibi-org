@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 const kickerStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -52,7 +52,7 @@ const primaryLinkStyle: CSSProperties = {
   borderRadius: 14,
   background: 'var(--ink)',
   color: 'var(--cream)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -152,7 +152,7 @@ export default async function ToolkitPage() {
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(36px, 4.6vw, 56px)',
+            fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)',
             lineHeight: 1.05,
             letterSpacing: '-0.025em',
             margin: '0 0 16px',
@@ -163,7 +163,7 @@ export default async function ToolkitPage() {
         </h1>
         <p
           style={{
-            fontSize: 19,
+            fontSize: '1.1875rem',
             lineHeight: 1.45,
             color: 'var(--ink)',
             margin: '0 0 12px',
@@ -175,7 +175,7 @@ export default async function ToolkitPage() {
         </p>
         <p
           style={{
-            fontSize: 17,
+            fontSize: '1.0625rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: 0,
@@ -217,7 +217,7 @@ export default async function ToolkitPage() {
               <h2
                 id="packet-readiness"
                 style={{
-                  fontSize: 'clamp(28px, 4vw, 44px)',
+                  fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
                   lineHeight: 1,
                   letterSpacing: '-0.03em',
                   color: 'var(--ink)',
@@ -228,7 +228,7 @@ export default async function ToolkitPage() {
               </h2>
               <p
                 style={{
-                  fontSize: 16,
+                  fontSize: '1rem',
                   color: 'var(--slate-500)',
                   lineHeight: 1.55,
                   margin: 0,
@@ -314,7 +314,7 @@ export default async function ToolkitPage() {
                 <p style={{ ...kickerStyle, marginBottom: 14 }}>{label}</p>
                 <p
                   style={{
-                    fontSize: 34,
+                    fontSize: '2.125rem',
                     lineHeight: 1,
                     fontWeight: 800,
                     color: 'var(--ink)',
@@ -326,7 +326,7 @@ export default async function ToolkitPage() {
                 </p>
                 <p
                   style={{
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                     lineHeight: 1.45,
                     color: 'var(--slate-500)',
                     margin: 0,
@@ -364,7 +364,7 @@ export default async function ToolkitPage() {
             id="manager-summary"
             style={{
               color: 'var(--cream)',
-              fontSize: 'clamp(24px, 3vw, 34px)',
+              fontSize: 'clamp(1.5rem, 3vw, 2.125rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               margin: 0,
@@ -400,7 +400,7 @@ export default async function ToolkitPage() {
               <p style={{ ...kickerStyle }}>{label}</p>
               <p
                 style={{
-                  fontSize: 17,
+                  fontSize: '1.0625rem',
                   lineHeight: 1.5,
                   color: 'var(--ink)',
                   margin: 0,
@@ -423,7 +423,7 @@ export default async function ToolkitPage() {
 
       {inventoryResponse && (
         <ToolkitSectionCard title="Subscription inventory detail" label="Module 2 baseline">
-          <p style={{ fontSize: 16, color: 'var(--slate-500)', marginBottom: 16, lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1rem', color: 'var(--slate-500)', marginBottom: 16, lineHeight: 1.6 }}>
             Recorded during Module 2. Update by revisiting{' '}
             <Link
               href="/courses/foundation/program/2"
@@ -448,10 +448,10 @@ export default async function ToolkitPage() {
                     borderBottom: i === arr.length - 1 ? 'none' : '1px solid var(--ink-a10)',
                   }}
                 >
-                  <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink)', flex: '0 0 220px' }}>
+                  <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--ink)', flex: '0 0 220px' }}>
                     {platformName}
                   </span>
-                  <span style={{ fontSize: 16, color: 'var(--slate-500)' }}>
+                  <span style={{ fontSize: '1rem', color: 'var(--slate-500)' }}>
                     {displayValue || 'No selection recorded'}
                   </span>
                 </div>

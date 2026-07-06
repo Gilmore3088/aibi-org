@@ -39,7 +39,7 @@ export default function ResultsNotFound() {
               color: 'var(--ink)',
               fontWeight: 700,
               letterSpacing: '-0.02em',
-              fontSize: 'clamp(32px, 4.5vw, 48px)',
+              fontSize: 'clamp(2rem, 4.5vw, 3rem)',
               lineHeight: 1.1,
             }}
           >
@@ -57,7 +57,7 @@ export default function ResultsNotFound() {
           <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/auth/login?next=/dashboard"
-              className="inline-block px-8 py-4 text-[11px] uppercase transition-all active:scale-[0.98]"
+              className="inline-block px-8 py-4 text-[0.6875rem] uppercase transition-all active:scale-[0.98]"
               style={{
                 background: 'var(--ink)',
                 color: 'var(--cream)',
@@ -70,7 +70,7 @@ export default function ResultsNotFound() {
             </Link>
             <Link
               href="/assessment/take"
-              className="inline-block px-8 py-4 text-[11px] uppercase transition-all"
+              className="inline-block px-8 py-4 text-[0.6875rem] uppercase transition-all"
               style={{
                 border: '1px solid var(--ink-a15)',
                 color: 'var(--ink)',

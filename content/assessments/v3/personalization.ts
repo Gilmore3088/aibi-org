@@ -886,6 +886,37 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
 };
 
 // ---------------------------------------------------------------------------
+// STAFFING REALITY — asset-band-keyed. Optional context stripe on the free
+// report; renders only when the reader shared an asset band at the email
+// gate. Context only — never affects the score.
+// ---------------------------------------------------------------------------
+
+import type { FreeAssetBand } from './asset-bands';
+
+export interface StaffingReality {
+  readonly headline: string;
+  readonly body: string;
+}
+
+export const STAFFING_REALITY: Record<FreeAssetBand, StaffingReality> = {
+  'under-150m': {
+    headline: 'For an institution under $150M',
+    body:
+      'You likely have no dedicated AI, IT security, or compliance analyst — the same few people wear all of those hats. Your fastest path is one named owner with a few protected hours a month, one low-risk workflow, and a one-page acceptable-use rule. Skip anything in this report that assumes a committee.',
+  },
+  '150m-500m': {
+    headline: 'For an institution between $150M and $500M',
+    body:
+      'You probably have named owners for compliance and IT, but AI is a dual-hat assignment on top of a full day job. Pick two owners — one business, one risk — and give them a standing 30 minutes every other week. Your advantage is speed: decisions here take a meeting, not a quarter.',
+  },
+  '500m-1b-plus': {
+    headline: 'For an institution of $500M to $1B+',
+    body:
+      'You have real departments — which means your bigger risk is inconsistency between them, not absence of capability. The recommendations here work best routed through your existing committee structure: a shared acceptable-use standard, one pilot per department, and evidence that rolls up to the board.',
+  },
+};
+
+// ---------------------------------------------------------------------------
 // CLOSING CTA — tier-keyed. Shared with v2 (identical strategy + copy);
 // single source in content/assessments/shared/free-readiness.
 // ---------------------------------------------------------------------------

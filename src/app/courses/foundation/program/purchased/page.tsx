@@ -143,7 +143,7 @@ export default async function AiBIPurchasedPage({
         >
           <span
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
@@ -159,7 +159,7 @@ export default async function AiBIPurchasedPage({
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(36px, 5vw, 56px)',
+            fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
             lineHeight: 1.04,
             letterSpacing: '-0.03em',
             margin: '0 0 16px',
@@ -170,7 +170,7 @@ export default async function AiBIPurchasedPage({
         </h1>
         <p
           style={{
-            fontSize: 19,
+            fontSize: '1.1875rem',
             lineHeight: 1.5,
             color: 'var(--slate-600)',
             margin: '0 0 40px',
@@ -196,7 +196,7 @@ export default async function AiBIPurchasedPage({
           <section aria-label="Next steps">
             <p
               style={{
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
@@ -245,7 +245,7 @@ export default async function AiBIPurchasedPage({
                       <PrimaryButton as="a" href={courseEntryUrl}>
                         ENTER MY COURSE →
                       </PrimaryButton>
-                      <p style={{ margin: '12px 0 0', fontSize: 13, color: 'var(--slate-600)' }}>
+                      <p style={{ margin: '12px 0 0', fontSize: '0.8125rem', color: 'var(--slate-600)' }}>
                         Prefer a password for next time?{' '}
                         <a
                           href={`/auth/forgot-password?next=${encodeURIComponent('/courses/foundation/program')}${
@@ -334,7 +334,7 @@ export default async function AiBIPurchasedPage({
         >
           <p
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
@@ -346,7 +346,7 @@ export default async function AiBIPurchasedPage({
           </p>
           <h2
             style={{
-              fontSize: 26,
+              fontSize: '1.625rem',
               fontWeight: 700,
               lineHeight: 1.15,
               letterSpacing: '-0.02em',
@@ -358,7 +358,7 @@ export default async function AiBIPurchasedPage({
           </h2>
           <p
             style={{
-              fontSize: 15,
+              fontSize: '0.9375rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               maxWidth: '60ch',
@@ -383,7 +383,7 @@ export default async function AiBIPurchasedPage({
             gap: 14,
             alignItems: 'baseline',
             justifyContent: 'space-between',
-            fontSize: 13,
+            fontSize: '0.8125rem',
             color: 'var(--slate-500)',
             lineHeight: 1.6,
           }}
@@ -467,7 +467,7 @@ function ActionStep({ index, done, title, body, action }: ActionStepProps) {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 14,
+          fontSize: '0.875rem',
           fontWeight: 700,
           fontVariantNumeric: 'tabular-nums',
           flexShrink: 0,
@@ -479,7 +479,7 @@ function ActionStep({ index, done, title, body, action }: ActionStepProps) {
         <h2
           style={{
             margin: 0,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             letterSpacing: '-0.01em',
             color: 'var(--ink)',
@@ -491,7 +491,7 @@ function ActionStep({ index, done, title, body, action }: ActionStepProps) {
         <p
           style={{
             margin: '6px 0 0',
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.55,
             color: 'var(--slate-600)',
           }}

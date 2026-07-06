@@ -41,7 +41,7 @@ export function SurveyBranding({
           style={{
             display: 'block',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -54,7 +54,7 @@ export function SurveyBranding({
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 40,
+            fontSize: '2.5rem',
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: '-0.02em',
@@ -68,7 +68,7 @@ export function SurveyBranding({
           style={{
             marginTop: 16,
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 400,
             lineHeight: 1.6,
             color: 'var(--slate-600)',
@@ -86,7 +86,7 @@ export function SurveyBranding({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',

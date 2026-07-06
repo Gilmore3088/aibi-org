@@ -53,7 +53,7 @@ interface OnboardingSettingsProps {
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -83,7 +83,7 @@ const summaryRowStyle: CSSProperties = {
 
 const summaryLabelStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -93,7 +93,7 @@ const summaryLabelStyle: CSSProperties = {
 
 const summaryValueStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: 600,
   color: 'var(--ink)',
   margin: 0,
@@ -102,7 +102,7 @@ const summaryValueStyle: CSSProperties = {
 
 const summaryNoteStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: 400,
   color: 'var(--slate-600)',
   margin: '4px 0 0',
@@ -140,7 +140,7 @@ const primaryButtonStyle: CSSProperties = {
   background: 'var(--gold)',
   color: 'var(--ink)',
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -151,7 +151,7 @@ const primaryButtonStyle: CSSProperties = {
 
 const backLinkStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -161,7 +161,7 @@ const backLinkStyle: CSSProperties = {
 
 const signOutLinkStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -283,7 +283,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 36,
+            fontSize: '2.25rem',
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
@@ -296,7 +296,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             margin: 0,
@@ -322,7 +322,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             id="current-setup-heading"
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 18,
+              fontSize: '1.125rem',
               fontWeight: 700,
               color: 'var(--ink)',
               margin: 0,
@@ -335,7 +335,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
               href="#edit"
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -352,7 +352,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: 0,
@@ -410,7 +410,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
             id="edit-heading"
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 22,
+              fontSize: '1.375rem',
               fontWeight: 700,
               color: 'var(--ink)',
               margin: '8px 0 6px',
@@ -422,7 +422,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: 0,
@@ -459,7 +459,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
                 border: '1px solid var(--gold-deep)',
                 color: 'var(--gold-deep)',
                 fontFamily: INTER_STACK,
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.6,
                 fontWeight: 600,
               }}
@@ -479,7 +479,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
                 border: '1px solid var(--emerald-700)',
                 color: 'var(--emerald-800)',
                 fontFamily: INTER_STACK,
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.6,
                 fontWeight: 600,
                 transition: 'opacity var(--t-med) var(--ease)',
@@ -529,7 +529,7 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               margin: '6px 0 0',

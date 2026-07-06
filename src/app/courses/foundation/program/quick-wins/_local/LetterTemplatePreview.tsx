@@ -29,7 +29,7 @@ const linedPaper: CSSProperties = {
   border: '1px solid var(--ink-a10)',
   borderRadius: 16,
   padding: '22px clamp(20px, 3vw, 28px)',
-  fontSize: 14,
+  fontSize: '0.875rem',
   lineHeight: 1.7,
   color: 'var(--ink)',
 };
@@ -132,7 +132,7 @@ export function LetterTemplatePreview({
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -146,7 +146,7 @@ export function LetterTemplatePreview({
         id="letter-template-heading"
         style={{
           fontWeight: 700,
-          fontSize: 'clamp(28px, 3.8vw, 40px)',
+          fontSize: 'clamp(1.75rem, 3.8vw, 2.5rem)',
           lineHeight: 1.08,
           letterSpacing: '-0.024em',
           margin: '0 0 12px',
@@ -158,7 +158,7 @@ export function LetterTemplatePreview({
 
       <p
         style={{
-          fontSize: 17,
+          fontSize: '1.0625rem',
           lineHeight: 1.6,
           color: 'var(--gold-soft)',
           margin: '0 0 22px',
@@ -182,7 +182,7 @@ export function LetterTemplatePreview({
             fontFamily: 'inherit',
             whiteSpace: 'pre-wrap',
             wordWrap: 'break-word',
-            fontSize: 13.5,
+            fontSize: '0.8438rem',
             lineHeight: 1.65,
             color: 'var(--ink)',
           }}
@@ -208,7 +208,7 @@ export function LetterTemplatePreview({
             padding: '12px 22px',
             background: ready ? 'var(--gold)' : 'transparent',
             color: ready ? 'var(--ink)' : 'var(--gold-soft)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -227,7 +227,7 @@ export function LetterTemplatePreview({
         <span
           aria-live="polite"
           style={{
-            fontSize: 13,
+            fontSize: '0.8125rem',
             color: 'var(--gold-soft)',
             letterSpacing: '0.04em',
           }}

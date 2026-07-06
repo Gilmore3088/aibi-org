@@ -63,11 +63,11 @@ export default async function CookbookRecipePage(props: PageProps) {
         <div className="mx-auto max-w-3xl px-6 py-10 lg:px-10">
           <Link
             href="/dashboard/toolbox/cookbook"
-            className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+            className="text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
           >
             ← BACK TO COOKBOOK
           </Link>
-          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+          <p className="mt-4 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             Cookbook · {recipe.category}
           </p>
           <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -100,7 +100,7 @@ export default async function CookbookRecipePage(props: PageProps) {
         </ol>
 
         <section className="mt-12 rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)]">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             Next
           </p>
           <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
@@ -113,13 +113,13 @@ export default async function CookbookRecipePage(props: PageProps) {
           <div className="mt-5 flex flex-wrap items-center gap-5">
             <Link
               href="/dashboard/toolbox"
-              className="inline-flex items-center rounded-[12px] bg-[color:var(--ink)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)]"
+              className="inline-flex items-center rounded-[12px] bg-[color:var(--ink)] px-5 py-2.5 text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)]"
             >
               OPEN MY TOOLBOX →
             </Link>
             <Link
               href="/dashboard/toolbox/cookbook"
-              className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+              className="text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
             >
               BACK TO COOKBOOK
             </Link>

@@ -32,9 +32,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Inline-style size map — mockup-system pill buttons with consistent
 // padding + font scale across hero / card / compact surfaces.
 const SIZE_STYLE: Record<Size, React.CSSProperties> = {
-  card: { padding: '14px 26px', fontSize: 13 },
-  hero: { padding: '16px 32px', fontSize: 14 },
-  compact: { padding: '12px 22px', fontSize: 12 },
+  card: { padding: '14px 26px', fontSize: '0.8125rem' },
+  hero: { padding: '16px 32px', fontSize: '0.875rem' },
+  compact: { padding: '12px 22px', fontSize: '0.75rem' },
 };
 
 function readLocalEmail(): string | null {
@@ -127,7 +127,7 @@ export function PurchaseButton({
       <p
         style={{
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 12,
+          fontSize: '0.75rem',
           lineHeight: 1.4,
           color: 'var(--slate-500)',
           margin: 0,
@@ -141,7 +141,7 @@ export function PurchaseButton({
           role="alert"
           style={{
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 14,
+            fontSize: '0.875rem',
             color: 'var(--ink)',
             margin: 0,
           }}

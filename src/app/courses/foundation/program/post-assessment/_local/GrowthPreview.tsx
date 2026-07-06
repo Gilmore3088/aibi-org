@@ -6,7 +6,7 @@
 import type { CSSProperties } from 'react';
 
 const kicker: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -24,7 +24,7 @@ const block: CSSProperties = {
 };
 
 const scoreNumber: CSSProperties = {
-  fontSize: 44,
+  fontSize: '2.75rem',
   fontWeight: 700,
   letterSpacing: '-0.02em',
   fontVariantNumeric: 'tabular-nums',
@@ -72,7 +72,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
         <div style={block}>
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -85,7 +85,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
           <div style={scoreNumber}>{displayedPreScore}</div>
           <p
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 600,
               color: 'var(--slate-600)',
               margin: 0,
@@ -99,7 +99,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
           aria-hidden="true"
           style={{
             alignSelf: 'center',
-            fontSize: 22,
+            fontSize: '1.375rem',
             fontWeight: 700,
             color: 'var(--gold-deep)',
             padding: '0 4px',
@@ -111,7 +111,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
         <div style={{ ...block, borderColor: 'var(--gold)' }}>
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -124,7 +124,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
           <div style={{ ...scoreNumber, color: 'var(--ink)' }}>—</div>
           <p
             style={{
-              fontSize: 13,
+              fontSize: '0.8125rem',
               fontWeight: 600,
               color: 'var(--slate-500)',
               margin: 0,
@@ -137,7 +137,7 @@ export function GrowthPreview({ preScore, preTierLabel }: GrowthPreviewProps) {
 
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           color: 'var(--slate-600)',
           lineHeight: 1.6,
           margin: '18px 0 0',

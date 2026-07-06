@@ -65,7 +65,7 @@ export default async function FoundationExamPage() {
             href="/courses/foundation/program"
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -107,7 +107,7 @@ function NotEligibleYetNotice({
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -121,7 +121,7 @@ function NotEligibleYetNotice({
         style={{
           fontFamily: INTER_STACK,
           fontWeight: 700,
-          fontSize: 'clamp(34px, 5vw, 50px)',
+          fontSize: 'clamp(2.125rem, 5vw, 3.125rem)',
           lineHeight: 1.1,
           letterSpacing: '-0.02em',
           margin: '0 0 14px',
@@ -133,7 +133,7 @@ function NotEligibleYetNotice({
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 17,
+          fontSize: '1.0625rem',
           fontWeight: 400,
           lineHeight: 1.55,
           color: 'var(--slate-600)',
@@ -162,7 +162,7 @@ function NotEligibleYetNotice({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -174,7 +174,7 @@ function NotEligibleYetNotice({
           <div
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 32,
+              fontSize: '2rem',
               fontWeight: 700,
               letterSpacing: '-0.02em',
               lineHeight: 1,
@@ -188,7 +188,7 @@ function NotEligibleYetNotice({
         <div
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 14,
+            fontSize: '0.875rem',
             fontWeight: 500,
             color: 'var(--slate-600)',
             lineHeight: 1.55,
@@ -203,7 +203,7 @@ function NotEligibleYetNotice({
             alignItems: 'center',
             gap: 10,
             fontFamily: INTER_STACK,
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',

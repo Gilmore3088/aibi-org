@@ -10,6 +10,8 @@ import { useAssessmentV3, QUESTIONS_PER_SESSION } from '../_lib/useAssessmentV3'
 import { ProgressBar } from '../_components/ProgressBar';
 import { EmailGate } from '../_components/EmailGate';
 import type { FreeRole } from '@content/assessments/v3/roles';
+import type { FreeAssetBand } from '@content/assessments/v3/asset-bands';
+import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import {
   appendRoiSearchParams,
   parseRoiAssessmentContext,
@@ -36,6 +38,7 @@ export default function AssessmentPage() {
   const [capturedInstitution, setCapturedInstitution] = useState<string | null>(null);
   const [capturedProfileId, setCapturedProfileId] = useState<string | null>(null);
   const [capturedRole, setCapturedRole] = useState<FreeRole | null>(null);
+  const [capturedAssetBand, setCapturedAssetBand] = useState<FreeAssetBand | null>(null);
   const [usedFreeEmail, setUsedFreeEmail] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [resumeEmail, setResumeEmail] = useState('');
@@ -43,6 +46,8 @@ export default function AssessmentPage() {
   const [resumeMessage, setResumeMessage] = useState<string | null>(null);
   const [roiContext, setRoiContext] = useState<RoiAssessmentContext | null>(null);
   const scoreHeadingRef = useRef<HTMLDivElement | null>(null);
+  const questionHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const questionFocusArmedRef = useRef(false);
   const resumeAttemptedRef = useRef(false);
 
   useEffect(() => {
@@ -98,6 +103,19 @@ export default function AssessmentPage() {
       requestAnimationFrame(() => scoreHeadingRef.current?.focus());
     }
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
+
+  // Keyboard flow: after an answer auto-advances, move focus to the next
+  // question's heading instead of dropping to <body> (persona audit: a
+  // keyboard user had to re-Tab through the header on all 12 questions).
+  // Armed only after the first interaction so page load doesn't steal focus.
+  useEffect(() => {
+    if (state.phase !== 'questions') return;
+    if (!questionFocusArmedRef.current) {
+      questionFocusArmedRef.current = state.currentQuestion > 0;
+      return;
+    }
+    requestAnimationFrame(() => questionHeadingRef.current?.focus());
+  }, [state.phase, state.currentQuestion]);
 
   useEffect(() => {
     if (state.phase === 'results') {
@@ -179,8 +197,9 @@ export default function AssessmentPage() {
             <>
               <section className="mk-take-q-panel" aria-label="Question">
                 <div className="mk-take-q-prompt">
-                  <p className="mk-k">{q.dimension}</p>
-                  <h2>{q.prompt}</h2>
+                  {/* Human label, not the raw dimension slug ("STRATEGIC-VALUE"). */}
+                  <p className="mk-k">{DIMENSION_LABELS[q.dimension]}</p>
+                  <h2 ref={questionHeadingRef} tabIndex={-1}>{q.prompt}</h2>
                   {state.currentQuestion > 0 && (
                     <button
                       type="button"
@@ -232,6 +251,7 @@ export default function AssessmentPage() {
             institutionName={capturedInstitution}
             profileId={capturedProfileId}
             role={capturedRole}
+            assetBand={capturedAssetBand}
             showPersonalEmailNote={usedFreeEmail}
             roiContext={roiContext}
           />
@@ -284,6 +304,7 @@ export default function AssessmentPage() {
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(null);
                         setCapturedRole(extras.role ?? null);
+                        setCapturedAssetBand(extras.assetBand ?? null);
                         setUsedFreeEmail(extras.usedFreeEmail ?? false);
                         state.advanceToResults();
                       }}
@@ -293,6 +314,7 @@ export default function AssessmentPage() {
                         setCapturedInstitution(extras.institutionName ?? null);
                         setCapturedProfileId(null);
                         setCapturedRole(extras.role ?? null);
+                        setCapturedAssetBand(extras.assetBand ?? null);
                         setUsedFreeEmail(false);
                         state.advanceToResults();
                       }}
@@ -333,31 +355,41 @@ function ResumeLinkForm({
 }) {
   const busy = status === 'sending' || status === 'restoring';
 
+  // Collapsed by default: an always-open email form directly under the
+  // answer options read as a required step mid-quiz (persona audit). The
+  // native <details> keeps it one tap away without stealing attention.
   return (
-    <form id="assessment-resume-link" className="mk-take-resume" onSubmit={onSubmit}>
-      <label htmlFor="assessment-resume-email">Email yourself a resume link</label>
-      <div className="mk-take-resume-row">
-        <input
-          id="assessment-resume-email"
-          name="email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          value={email}
-          onChange={(event) => onEmailChange(event.target.value)}
-          placeholder="you@bank.com"
-          disabled={busy}
-        />
-        <button type="submit" disabled={busy}>
-          {busy ? 'Sending...' : 'Send'}
-        </button>
-      </div>
-      {message ? (
-        <p className={`mk-take-resume-message is-${status === 'error' ? 'error' : 'success'}`}>
-          {message}
-        </p>
-      ) : null}
-    </form>
+    <details className="mk-take-resume" open={busy || message ? true : undefined}>
+      <summary className="mk-take-resume-summary">
+        Need to finish later? Email yourself a resume link
+      </summary>
+      <form id="assessment-resume-link" onSubmit={onSubmit}>
+        <label htmlFor="assessment-resume-email" className="sr-only">
+          Email for the resume link
+        </label>
+        <div className="mk-take-resume-row">
+          <input
+            id="assessment-resume-email"
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => onEmailChange(event.target.value)}
+            placeholder="you@bank.com"
+            disabled={busy}
+          />
+          <button type="submit" disabled={busy}>
+            {busy ? 'Sending...' : 'Send'}
+          </button>
+        </div>
+        {message ? (
+          <p className={`mk-take-resume-message is-${status === 'error' ? 'error' : 'success'}`}>
+            {message}
+          </p>
+        ) : null}
+      </form>
+    </details>
   );
 }
 

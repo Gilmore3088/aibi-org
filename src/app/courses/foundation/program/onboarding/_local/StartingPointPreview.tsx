@@ -62,7 +62,7 @@ const rowStyle: CSSProperties = {
 
 const labelStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -72,7 +72,7 @@ const labelStyle: CSSProperties = {
 
 const valueStyle = (filled: boolean): CSSProperties => ({
   fontFamily: INTER_STACK,
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: filled ? 600 : 500,
   lineHeight: 1.6,
   color: filled ? 'var(--ink)' : 'var(--slate-400)',
@@ -143,7 +143,7 @@ export function StartingPointPreview({
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
@@ -192,7 +192,7 @@ export function StartingPointPreview({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -205,7 +205,7 @@ export function StartingPointPreview({
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 600,
             lineHeight: 1.6,
             color: roleFilled ? 'var(--ink)' : 'var(--slate-500)',

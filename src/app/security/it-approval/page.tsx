@@ -141,7 +141,7 @@ function PacketAside() {
     >
       <p
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -153,7 +153,7 @@ function PacketAside() {
       </p>
       <h2
         style={{
-          fontSize: 28,
+          fontSize: '1.75rem',
           fontWeight: 600,
           lineHeight: 1.15,
           margin: '0 0 12px',
@@ -164,7 +164,7 @@ function PacketAside() {
       </h2>
       <p
         style={{
-          fontSize: 14,
+          fontSize: '0.875rem',
           lineHeight: 1.6,
           color: 'rgba(255,255,255,0.82)',
           margin: '0 0 20px',
@@ -177,7 +177,7 @@ function PacketAside() {
         href={`mailto:${BRAND.emails.contact}`}
         style={{
           color: 'var(--gold-soft)',
-          fontSize: 14,
+          fontSize: '0.875rem',
           fontWeight: 700,
           textDecoration: 'none',
         }}

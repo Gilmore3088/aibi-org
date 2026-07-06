@@ -100,7 +100,7 @@ export default function EfficiencyRatioArticle() {
               <dd className="text-sm text-[color:var(--ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
-              <p className="font-mono text-[10px] text-[color:var(--ink)]/50 mt-2">
+              <p className="font-mono text-[0.625rem] text-[color:var(--ink)]/50 mt-2">
                 {stat.source}
               </p>
             </div>
@@ -252,13 +252,13 @@ export default function EfficiencyRatioArticle() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/#roi"
-              className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
             >
               Run the ROI Calculator
             </Link>
             <a
               href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20article%20follow-up"
-              className="inline-block px-8 py-4 border border-[color:var(--ink)]/20 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
+              className="inline-block px-8 py-4 border border-[color:var(--ink)]/20 text-[color:var(--ink)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] active:scale-[0.98] transition-all"
             >
               Request an Executive Briefing
             </a>

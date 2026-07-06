@@ -5,9 +5,12 @@
 // gold landmark, middle-dot credential format).
 
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 
+import { checkRateLimit } from '@/lib/api/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
 interface CertificateVerificationResult {
   readonly holder_name: string;
@@ -61,7 +64,7 @@ const INTER_STACK =
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -71,7 +74,7 @@ const KICKER: React.CSSProperties = {
 
 const META_LABEL: React.CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 10,
+  fontSize: '0.625rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -149,7 +152,7 @@ function DataRow({ label, value, last }: { label: string; value: string; last?: 
         style={{
           margin: '6px 0 0',
           fontFamily: INTER_STACK,
-          fontSize: 18,
+          fontSize: '1.125rem',
           color: 'var(--ink)',
           lineHeight: 1.3,
           letterSpacing: '-0.01em',
@@ -180,7 +183,7 @@ function NotFoundContent() {
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 'clamp(28px, 4vw, 38px)',
+            fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
             fontWeight: 700,
             color: 'var(--ink)',
             letterSpacing: '-0.02em',
@@ -203,7 +206,7 @@ function NotFoundContent() {
           style={{
             margin: 0,
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
             textAlign: 'center',
@@ -217,7 +220,7 @@ function NotFoundContent() {
         style={{
           textAlign: 'center',
           fontFamily: INTER_STACK,
-          fontSize: 13,
+          fontSize: '0.8125rem',
           color: 'var(--slate-600)',
           margin: 0,
         }}
@@ -235,6 +238,49 @@ function NotFoundContent() {
 
 export default async function CertificateVerificationPage({ params }: PageProps) {
   const { certificateId } = await params;
+
+  // Throttle scripted probing of the unauthenticated lookup (persona audit:
+  // the AIBIP id space is large, but lookups were completely unthrottled).
+  // Fail-open: a rate-limit store outage must not break legitimate
+  // verification.
+  const headerList = await headers();
+  const ip =
+    headerList.get('x-real-ip') ??
+    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    'unknown';
+  const rate = await checkRateLimit({
+    key: 'verify-lookup',
+    scope: 'ip',
+    identifier: ip,
+    max: 30,
+    windowSeconds: 600,
+  }).catch(() => ({ allowed: true as const, resetAt: new Date() }));
+  if (!rate.allowed) {
+    return (
+      <Surface>
+        <div style={{ width: '100%', maxWidth: 480, textAlign: 'center' }}>
+          <p style={KICKER}>Verify · Slow down</p>
+          <h1
+            style={{
+              fontFamily: INTER_STACK,
+              fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
+              fontWeight: 700,
+              color: 'var(--ink)',
+              letterSpacing: '-0.02em',
+              margin: '12px 0',
+            }}
+          >
+            Too many lookups.
+          </h1>
+          <p style={{ fontFamily: INTER_STACK, fontSize: '0.9375rem', color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
+            Try again in a few minutes. If you are verifying certificates in bulk
+            for an institution, contact hello@aibankinginstitute.com.
+          </p>
+        </div>
+      </Surface>
+    );
+  }
+
   const certificate = await fetchCertificate(certificateId);
 
   if (!certificate) {
@@ -246,6 +292,12 @@ export default async function CertificateVerificationPage({ params }: PageProps)
   }
 
   const issuedDate = formatDate(certificate.issued_at);
+  const trainingRecord = getFoundationTrainingRecord();
+  const hoursLabel = Number.isInteger(trainingRecord.hours)
+    ? String(trainingRecord.hours)
+    : trainingRecord.hours.toFixed(1);
+  const seatTimeLine = `~${hoursLabel} hours · ${trainingRecord.moduleCount} self-paced modules`;
+  const topicsLine = trainingRecord.topics.join(', ');
 
   return (
     <Surface>
@@ -267,7 +319,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           <h1
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 'clamp(28px, 4vw, 38px)',
+              fontSize: 'clamp(1.75rem, 4vw, 2.375rem)',
               fontWeight: 700,
               color: 'var(--ink)',
               letterSpacing: '-0.02em',
@@ -280,7 +332,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           <p
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 14,
+              fontSize: '0.875rem',
               color: 'var(--slate-600)',
               lineHeight: 1.5,
               margin: 0,
@@ -308,7 +360,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
               style={{
                 margin: '8px 0 0',
                 fontFamily: INTER_STACK,
-                fontSize: 'clamp(26px, 3vw, 32px)',
+                fontSize: 'clamp(1.625rem, 3vw, 2rem)',
                 fontWeight: 700,
                 color: 'var(--ink)',
                 lineHeight: 1.1,
@@ -326,6 +378,8 @@ export default async function CertificateVerificationPage({ params }: PageProps)
             value={`${certificate.designation} · The AI Banking Institute`}
           />
           <DataRow label="Date Issued" value={issuedDate} />
+          <DataRow label="Documented Seat Time" value={seatTimeLine} />
+          <DataRow label="Topics Covered" value={topicsLine} />
           <DataRow label="Issuing Institution" value="The AI Banking Institute" last />
         </article>
 
@@ -333,7 +387,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
           style={{
             textAlign: 'center',
             fontFamily: INTER_STACK,
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 600,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',

@@ -15,7 +15,7 @@ describe('PricingPage', () => {
     expect(screen.getAllByText('$0').length).toBeGreaterThan(0);
     expect(screen.getAllByText('$99').length).toBeGreaterThan(0);
     expect(screen.getAllByText('$295').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Custom').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('From $199/seat').length).toBeGreaterThan(0);
     expect(screen.getByText(/best first paid step/i)).toBeTruthy();
     expect(screen.getByText(/best for individual capability/i)).toBeTruthy();
     expect(screen.queryByText(/not sure what to choose/i)).toBeNull();
@@ -25,6 +25,10 @@ describe('PricingPage', () => {
     expect(screen.getByText(/certificate with public authenticity URL/i)).toBeTruthy();
     expect(screen.getByText(/simple purchase rules/i)).toBeTruthy();
     expect(screen.getByText(/no subscription is required/i)).toBeTruthy();
+    // Seat-time transparency: buyers see the time cost before committing.
+    expect(
+      screen.getByText(/~\d+(\.\d+)? hours total · \d+–\d+ min per module · self-paced/i),
+    ).toBeTruthy();
   });
 
   it('links each option to the correct next step', () => {

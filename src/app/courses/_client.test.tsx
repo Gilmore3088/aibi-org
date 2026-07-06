@@ -20,18 +20,36 @@ describe('CoursesIndexPage', () => {
       screen.getByRole('heading', { name: /build reusable ai work products for banking/i }),
     ).toBeTruthy();
     expect(
-      screen.getByText(/18 modules · 18-piece Foundation Packet · reviewed work products/i),
+      screen.getByText(/18 modules · self-paced · 18-piece Foundation Packet · reviewed work products/i),
     ).toBeTruthy();
     expect(screen.queryByText(/182 minutes/i)).toBeNull();
     expect(screen.getByRole('heading', { name: /one lesson\. one saved artifact/i })).toBeTruthy();
     expect(screen.getByText(/turn a loose request into a reusable prompt card/i)).toBeTruthy();
     expect(screen.queryByText(/Branch operations reviewer/i)).toBeNull();
-    expect(screen.getByRole('link', { name: /preview a lesson/i }).getAttribute('href')).toBe(
-      '#lesson-preview',
+    expect(screen.getByRole('link', { name: /preview module 1 free/i }).getAttribute('href')).toBe(
+      '/courses/foundation/preview',
     );
     expect(screen.getByRole('link', { name: /enroll in foundation/i }).getAttribute('href')).toBe(
       '/courses/foundation/program/purchase',
     );
     expect(screen.queryByRole('link', { name: /Get In-Depth report/i })).toBeNull();
+  });
+
+  it('surfaces total seat time in the hero proofline when facts provide it', () => {
+    render(
+      <CoursesIndexPage
+        facts={{
+          moduleCount: 18,
+          artifactCount: 18,
+          individualPriceLabel: '$295',
+          durationLabel: '~3 hours self-paced',
+          samplePacketSlots: [{ moduleNumber: 1, label: 'AI Limits Card' }],
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByText(/18 modules · ~3 hours self-paced · 18-piece Foundation Packet/i),
+    ).toBeTruthy();
   });
 });

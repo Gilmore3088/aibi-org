@@ -90,7 +90,7 @@ export default async function CourseOverviewPage() {
               fontFamily:
                 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
-              fontSize: 12,
+              fontSize: '0.75rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: 'var(--slate-500)',
@@ -119,7 +119,7 @@ export default async function CourseOverviewPage() {
               border: '1px solid var(--ink-a10, rgba(7,26,47,0.1))',
               fontFamily:
                 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
-              fontSize: 13,
+              fontSize: '0.8125rem',
               color: 'var(--slate-600)',
               lineHeight: 1.5,
             }}

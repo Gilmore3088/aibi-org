@@ -68,7 +68,7 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
             className="leading-none tabular-nums"
             style={{
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-              fontSize: 72,
+              fontSize: '4.5rem',
               fontWeight: 700,
               letterSpacing: '-0.025em',
               color: 'var(--ink)',
@@ -80,7 +80,7 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
             className="mt-3"
             style={{
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.18em',
@@ -95,7 +95,7 @@ export function ScoreRing({ score, minScore, maxScore, colorVar, label }: ScoreR
         className="mt-6 text-center"
         style={{
           fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-          fontSize: 'clamp(20px, 2.4vw, 28px)',
+          fontSize: 'clamp(1.25rem, 2.4vw, 1.75rem)',
           fontWeight: 700,
           letterSpacing: '-0.015em',
           color: colorVar,

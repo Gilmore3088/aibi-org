@@ -18,7 +18,7 @@ interface FormState {
 
 const fieldLabelStyle: CSSProperties = {
   display: 'block',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -32,7 +32,7 @@ const inputStyle: CSSProperties = {
   border: '1px solid var(--ink-a10)',
   borderRadius: 12,
   padding: '12px 14px',
-  fontSize: 16,
+  fontSize: '1rem',
   color: 'var(--ink)',
   outline: 'none',
   fontFamily: 'inherit',
@@ -67,7 +67,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
         id="log-form-heading"
         style={{
           fontWeight: 700,
-          fontSize: 22,
+          fontSize: '1.375rem',
           letterSpacing: '-0.02em',
           color: 'var(--ink)',
           margin: '0 0 6px',
@@ -77,7 +77,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
       </h2>
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           color: 'var(--slate-600)',
           lineHeight: 1.6,
           margin: '0 0 20px',
@@ -96,7 +96,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
             border: '1px solid var(--ink-a15)',
             background: 'var(--cream-2)',
             borderRadius: 12,
-            fontSize: 16,
+            fontSize: '1rem',
             color: 'var(--ink)',
           }}
         >
@@ -114,7 +114,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
             border: '1px solid var(--emerald-700)',
             background: 'var(--cream-2)',
             borderRadius: 12,
-            fontSize: 16,
+            fontSize: '1rem',
             color: 'var(--emerald-800)',
           }}
         >
@@ -260,7 +260,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
             padding: '14px 24px',
             background: 'var(--ink)',
             color: 'var(--cream-2)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',

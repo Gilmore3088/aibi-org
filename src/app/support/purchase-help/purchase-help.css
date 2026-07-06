@@ -18,7 +18,7 @@
 .purchase-help__intro p {
   margin: 0 0 10px;
   color: #6a5b2d;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -26,7 +26,7 @@
 
 .purchase-help__intro h1 {
   margin: 0;
-  font-size: clamp(34px, 5vw, 64px);
+  font-size: clamp(2.125rem, 5vw, 4rem);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -36,7 +36,7 @@
   margin-top: 18px;
   max-width: 44ch;
   color: #58677a;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -53,14 +53,14 @@
 .purchase-help__policy h2 {
   margin: 0;
   color: #102033;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.2;
 }
 
 .purchase-help__policy p {
   margin: 0;
   color: #58677a;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.55;
 }
 
@@ -76,7 +76,7 @@
   position: relative;
   padding-left: 22px;
   color: #102033;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
@@ -112,13 +112,13 @@
 .purchase-help__quick strong {
   display: block;
   color: #102033;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .purchase-help__quick p {
   margin: 6px 0 0;
   color: #58677a;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -129,7 +129,7 @@
 
 .purchase-help__form span {
   color: #475569;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
 }
 
@@ -142,7 +142,7 @@
   background: #ffffff;
   color: #102033;
   font: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   box-sizing: border-box;
 }
 
@@ -164,7 +164,7 @@
   background: #102033;
   color: #ffffff;
   font: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
   cursor: pointer;
 }
@@ -176,7 +176,7 @@
 
 .purchase-help__message {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
 }
 

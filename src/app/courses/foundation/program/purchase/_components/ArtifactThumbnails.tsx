@@ -19,13 +19,13 @@ const ARTIFACTS: readonly Artifact[] = [
     description: 'A one-card statement of where AI fits in your daily work and where it does not. Kept at your desk.',
     preview: (
       <div style={{ display: 'grid', gap: 6 }}>
-        <div style={{ fontSize: 11, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+        <div style={{ fontSize: '0.6875rem', color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
           My AI Line
         </div>
-        <div style={{ fontSize: 13, color: 'var(--ink)', lineHeight: 1.5 }}>
+        <div style={{ fontSize: '0.8125rem', color: 'var(--ink)', lineHeight: 1.5 }}>
           OK: draft customer emails, summarize public memos, rewrite my own notes.
         </div>
-        <div style={{ fontSize: 13, color: 'var(--ink)', lineHeight: 1.5 }}>
+        <div style={{ fontSize: '0.8125rem', color: 'var(--ink)', lineHeight: 1.5 }}>
           Not OK: PII, account numbers, internal credit files, board materials.
         </div>
       </div>
@@ -48,7 +48,7 @@ const ARTIFACTS: readonly Artifact[] = [
               display: 'flex',
               alignItems: 'center',
               gap: 10,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               color: 'var(--ink)',
               padding: '6px 10px',
               borderRadius: 8,
@@ -58,7 +58,7 @@ const ARTIFACTS: readonly Artifact[] = [
           >
             <span aria-hidden style={{ width: 6, height: 6, borderRadius: 999, background: 'var(--gold)' }} />
             <span style={{ flex: 1 }}>{row}</span>
-            <span style={{ fontSize: 10, color: 'var(--slate-500)', letterSpacing: '0.05em' }}>SAVED</span>
+            <span style={{ fontSize: '0.625rem', color: 'var(--slate-500)', letterSpacing: '0.05em' }}>SAVED</span>
           </div>
         ))}
       </div>
@@ -69,7 +69,7 @@ const ARTIFACTS: readonly Artifact[] = [
     title: 'Review-ready work product',
     description: 'A real artifact - email, summary, or script - shaped with source notes, edits, and reviewer questions.',
     preview: (
-      <div style={{ fontSize: 13, color: 'var(--ink)', lineHeight: 1.55 }}>
+      <div style={{ fontSize: '0.8125rem', color: 'var(--ink)', lineHeight: 1.55 }}>
         <span style={{ background: 'var(--gold-a20)', padding: '0 2px' }}>
           The proposed line was approved
         </span>{' '}
@@ -83,7 +83,7 @@ const ARTIFACTS: readonly Artifact[] = [
             marginTop: 10,
             paddingTop: 10,
             borderTop: '1px dashed var(--ink-a10, rgba(7,26,47,0.1))',
-            fontSize: 11,
+            fontSize: '0.6875rem',
             color: 'var(--gold-deep)',
             fontWeight: 700,
             letterSpacing: '0.06em',
@@ -99,7 +99,7 @@ const ARTIFACTS: readonly Artifact[] = [
     title: 'Final practical assessment',
     description: 'A final work-product package checked against the completion rubric. The credential is awarded when the packet is submitted after all modules.',
     preview: (
-      <div style={{ display: 'grid', gap: 6, fontSize: 12.5 }}>
+      <div style={{ display: 'grid', gap: 6, fontSize: '0.7813rem' }}>
         {[
           ['Acceptable Use', 'Pass'],
           ['Saved prompts (3)', 'Pass'],
@@ -135,7 +135,7 @@ export function ArtifactThumbnails() {
           style={{
             display: 'inline-block',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--gold-deep)',
@@ -149,7 +149,7 @@ export function ArtifactThumbnails() {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(26px, 2.8vw, 34px)',
+            fontSize: 'clamp(1.625rem, 2.8vw, 2.125rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
             margin: 0,
@@ -187,7 +187,7 @@ export function ArtifactThumbnails() {
                 style={{
                   fontFamily: INTER_STACK,
                   fontWeight: 700,
-                  fontSize: 18,
+                  fontSize: '1.125rem',
                   letterSpacing: '-0.01em',
                   lineHeight: 1.25,
                   margin: 0,
@@ -199,7 +199,7 @@ export function ArtifactThumbnails() {
               <span
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -226,7 +226,7 @@ export function ArtifactThumbnails() {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 13.5,
+                fontSize: '0.8438rem',
                 color: 'var(--slate-600)',
                 lineHeight: 1.55,
                 margin: 0,

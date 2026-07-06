@@ -47,7 +47,7 @@ const navLink: React.CSSProperties = {
   padding: '0 13px',
   background: '#fff',
   color: 'var(--ink)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   textDecoration: 'none',
 };
@@ -58,7 +58,7 @@ const card: React.CSSProperties = {
   padding: 18,
 };
 const sectionTitle: React.CSSProperties = {
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 700,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
@@ -68,12 +68,12 @@ const sectionTitle: React.CSSProperties = {
 const table: React.CSSProperties = {
   width: '100%',
   borderCollapse: 'collapse',
-  fontSize: 14,
+  fontSize: '0.875rem',
 };
 const th: React.CSSProperties = {
   textAlign: 'left',
   padding: '10px 12px',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
@@ -164,10 +164,10 @@ function SummaryCards({ metrics }: { metrics: PlaygroundUsageMetrics }) {
     >
       {items.map(([label, metric]) => (
         <div key={label} style={card}>
-          <span style={{ color: 'var(--slate-500)', fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>
+          <span style={{ color: 'var(--slate-500)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>
             {label}
           </span>
-          <strong style={{ display: 'block', marginTop: 8, fontSize: 30, lineHeight: 1 }}>
+          <strong style={{ display: 'block', marginTop: 8, fontSize: '1.875rem', lineHeight: 1 }}>
             {metric}
           </strong>
         </div>
@@ -195,7 +195,7 @@ export default async function ToolboxUsageAdminPage({ searchParams }: PageProps)
         <header style={header}>
           <div>
             <p style={{ ...sectionTitle, margin: '0 0 8px' }}>Private admin</p>
-            <h1 style={{ margin: 0, fontSize: 36, fontWeight: 700 }}>Toolbox Usage</h1>
+            <h1 style={{ margin: 0, fontSize: '2.25rem', fontWeight: 700 }}>Toolbox Usage</h1>
             <p style={{ margin: '8px 0 0', color: 'var(--slate-600)', maxWidth: 720 }}>
               Public demo model usage from `/api/playground/run`, including spend, rate limits,
               failures, and IP-hash concentration.
