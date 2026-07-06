@@ -18,7 +18,7 @@ describe('FoundationPreviewPage', () => {
     expect(screen.getByTestId('foundation-guided-understand')).toBeTruthy();
     expect(screen.getByTestId('foundation-reference-drawer')).toBeTruthy();
     // Paid surfaces are named as paid, and their in-course anchors are absent.
-    expect(screen.getByText(/part of the paid course/i)).toBeTruthy();
+    expect(screen.getByText(/what stays paid/i)).toBeTruthy();
     expect(document.querySelector('a[href="#st-sandbox"]')).toBeNull();
     expect(document.querySelector('a[href="#st-submit"]')).toBeNull();
   });
