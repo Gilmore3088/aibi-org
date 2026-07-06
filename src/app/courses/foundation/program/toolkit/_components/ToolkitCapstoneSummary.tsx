@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 const kickerStyle: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -28,7 +28,7 @@ export function ToolkitCapstoneSummary({
 
   return (
     <div style={{ display: 'grid', gap: 16 }}>
-      <p style={{ fontSize: 16, color: 'var(--slate-500)', lineHeight: 1.6, margin: 0 }}>
+      <p style={{ fontSize: '1rem', color: 'var(--slate-500)', lineHeight: 1.6, margin: 0 }}>
         Summary of your reusable skill and workflow evidence: what you tested,
         how you improved it, and the quality standard your final packet should meet.
       </p>
@@ -36,7 +36,7 @@ export function ToolkitCapstoneSummary({
       {skillDraft && (
         <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
           <p style={{ ...kickerStyle, marginBottom: 4 }}>Reusable skill</p>
-          <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: '1rem', color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
             {skillDraft}
             {skillReuse ? (
               <span style={{ color: 'var(--slate-500)' }}> — First reuse: {skillReuse}</span>
@@ -48,7 +48,7 @@ export function ToolkitCapstoneSummary({
       {workflowPurpose && (
         <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
           <p style={{ ...kickerStyle, marginBottom: 4 }}>Workflow kit</p>
-          <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: '1rem', color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
             {workflowPurpose}
           </p>
         </div>
@@ -57,7 +57,7 @@ export function ToolkitCapstoneSummary({
       {(workflowGate || workflowTest || skillReview || workflowKit) && (
         <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
           <p style={{ ...kickerStyle, marginBottom: 4 }}>Review evidence</p>
-          <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: '1rem', color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
             {[workflowGate, workflowTest, skillReview, workflowKit]
               .filter(Boolean)
               .join(' ')}
@@ -67,7 +67,7 @@ export function ToolkitCapstoneSummary({
 
       <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 14 }}>
         <p style={{ ...kickerStyle, marginBottom: 4 }}>Quality standard met</p>
-        <p style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: '1rem', color: 'var(--ink)', lineHeight: 1.6, margin: 0 }}>
           Five-dimension AiBI-Foundation rubric: Accuracy (hard gate), Completeness,
           Tone, Judgment, and Skill Quality.
         </p>

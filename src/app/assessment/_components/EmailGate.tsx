@@ -27,6 +27,11 @@ import {
   type FreeRole,
 } from '@content/assessments/v3/roles';
 import {
+  FREE_ASSET_BANDS,
+  FREE_ASSET_BAND_LABEL,
+  type FreeAssetBand,
+} from '@content/assessments/v3/asset-bands';
+import {
   formatRoiCurrency,
   formatRoiNumber,
   type RoiAssessmentContext,
@@ -54,12 +59,14 @@ interface EmailGateProps {
       readonly usedFreeEmail?: boolean;
       readonly magicLinkUrl?: string | null;
       readonly role?: FreeRole;
+      readonly assetBand?: FreeAssetBand;
     },
   ) => void;
   readonly onSkip: (extras: {
     readonly firstName?: string;
     readonly institutionName?: string;
     readonly role?: FreeRole;
+    readonly assetBand?: FreeAssetBand;
   }) => void;
   readonly roiContext?: RoiAssessmentContext | null;
 }
@@ -129,6 +136,7 @@ export function EmailGate({
   const [firstName, setFirstName] = useState('');
   const [institutionName, setInstitutionName] = useState('');
   const [role, setRole] = useState<FreeRole | ''>('');
+  const [assetBand, setAssetBand] = useState<FreeAssetBand | ''>('');
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState<string | null>(null);
@@ -186,6 +194,7 @@ export function EmailGate({
           firstName: firstName.trim() || undefined,
           institutionName: institutionName.trim() || undefined,
           role: role || undefined,
+          assetBand: assetBand || undefined,
           marketingOptIn,
         }),
       });
@@ -225,6 +234,7 @@ export function EmailGate({
         // Pass the un-collapsed free role so the inline results view resolves
         // the exact role → playbook (matches what the DB now stores).
         role: role || undefined,
+        assetBand: assetBand || undefined,
       });
     } catch (err) {
       setStatus('error');
@@ -252,6 +262,7 @@ export function EmailGate({
       firstName: firstName.trim() || undefined,
       institutionName: institutionName.trim() || undefined,
       role: role || undefined,
+      assetBand: assetBand || undefined,
     });
   }
 
@@ -263,20 +274,20 @@ export function EmailGate({
       >
         {/* LEFT — pitch / receipt framing */}
         <div className="bg-[color:var(--ink)] text-white p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-          <span className="inline-flex w-max items-center gap-2 px-3.5 py-2 rounded-full border border-[color:var(--gold)]/45 bg-[color:var(--gold)]/8 text-[color:var(--gold-soft)] text-[12px] font-semibold">
+          <span className="inline-flex w-max items-center gap-2 px-3.5 py-2 rounded-full border border-[color:var(--gold)]/45 bg-[color:var(--gold)]/8 text-[color:var(--gold-soft)] text-[0.75rem] font-semibold">
             12 of 12 complete
           </span>
-          <h1 className="mt-5 text-[36px] md:text-[52px] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
+          <h1 className="mt-5 text-[2.25rem] md:text-[3.25rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
             Your AI readiness snapshot is ready.
           </h1>
           {/* Promise only what is actually delivered after email — the
               score, tier, and starting direction are visible to the right,
               so they're a receipt of completed work, not bait. */}
-          <p className="mt-5 text-[16px] md:text-[17px] leading-[1.6] text-white/70">
-            Your score and starting direction are to the right. Send the
-            full result for the plain-English diagnosis, your copy-ready
-            starter prompt, the AI working brief you can paste into any
-            tool, and a 30-day action path.
+          <p className="mt-5 text-[1rem] md:text-[1.0625rem] leading-[1.6] text-white/70">
+            Your score and starting direction are already on this page. Send
+            the full result for the plain-English diagnosis, a ready-to-use
+            AI instruction you can paste into any tool, and a 30-day action
+            path.
           </p>
         </div>
 
@@ -287,40 +298,40 @@ export function EmailGate({
               next-step sentence pulled from gapContent.nextStep). */}
           <div className="rounded-[22px] overflow-hidden border border-[color:var(--ink-a10)] grid grid-cols-1 sm:grid-cols-[180px_1fr]">
             <div className="bg-[color:var(--ink)] text-white p-6">
-              <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
+              <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
                 Preview score
               </p>
-              <p className="mt-3 text-[60px] font-bold leading-[0.88] tracking-[-0.04em] text-[color:var(--gold-soft)] tabular-nums">
+              <p className="mt-3 text-[3.75rem] font-bold leading-[0.88] tracking-[-0.04em] text-[color:var(--gold-soft)] tabular-nums">
                 {score}
-                <span className="text-[15px] text-white/55 font-normal tracking-normal ml-1">
+                <span className="text-[0.9375rem] text-white/55 font-normal tracking-normal ml-1">
                   / {displayMax}
                 </span>
               </p>
               <div className="mt-5 px-3.5 py-3 rounded-[14px] bg-white/8 border border-white/12">
-                <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
+                <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
                   Tier
                 </p>
-                <p className="mt-1 text-[16px] font-semibold text-white">{tierLabel}</p>
+                <p className="mt-1 text-[1rem] font-semibold text-white">{tierLabel}</p>
               </div>
             </div>
             {focusGap && gapContent && (
               <div className="bg-[color:var(--cream)] p-6 flex flex-col gap-3">
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                  <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                     Top gap
                   </p>
-                  <h3 className="mt-1.5 text-[20px] font-semibold leading-[1.15] tracking-[-0.02em] text-[color:var(--ink)]">
+                  <h3 className="mt-1.5 text-[1.25rem] font-semibold leading-[1.15] tracking-[-0.02em] text-[color:var(--ink)]">
                     {focusGap.label}
                   </h3>
                 </div>
-                <p className="text-[14px] leading-[1.55] text-[color:var(--slate-700)]">
+                <p className="text-[0.875rem] leading-[1.55] text-[color:var(--slate-700)]">
                   {gapContent.oneLine}
                 </p>
                 <div className="bg-white border border-[color:var(--ink-a10)] rounded-[14px] p-3.5">
-                  <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                  <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                     Where to start
                   </p>
-                  <p className="mt-1.5 text-[14px] leading-[1.55] text-[color:var(--ink)]">
+                  <p className="mt-1.5 text-[0.875rem] leading-[1.55] text-[color:var(--ink)]">
                     {gapContent.nextStep}
                   </p>
                 </div>
@@ -332,10 +343,10 @@ export function EmailGate({
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {roiContext && (
               <div className="rounded-[16px] border border-[color:var(--gold)]/35 bg-[color:var(--gold)]/8 p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+                <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                   ROI context carried forward
                 </p>
-                <p className="mt-2 text-[14px] leading-[1.55] text-[color:var(--slate-700)]">
+                <p className="mt-2 text-[0.875rem] leading-[1.55] text-[color:var(--slate-700)]">
                   Your calculator scenario estimated{' '}
                   <strong className="text-[color:var(--ink)]">
                     {formatRoiCurrency(roiContext.mid)}
@@ -348,10 +359,10 @@ export function EmailGate({
             )}
 
             <div>
-              <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
+              <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
                 Send the full result
               </p>
-              <h2 className="mt-1.5 text-[26px] md:text-[32px] font-semibold leading-[1] tracking-[-0.03em] text-[color:var(--ink)]">
+              <h2 className="mt-1.5 text-[1.625rem] md:text-[2rem] font-semibold leading-[1] tracking-[-0.03em] text-[color:var(--ink)]">
                 Where should we send your report?
               </h2>
             </div>
@@ -377,16 +388,32 @@ export function EmailGate({
                     setMessage(null);
                   }
                 }}
-                className="w-full px-4 py-3.5 border border-[color:var(--ink-a15)] rounded-[16px] bg-white text-[color:var(--ink)] text-[15px] font-semibold focus:outline-none focus:border-[color:var(--gold)]"
+                className="w-full px-4 py-3.5 border border-[color:var(--ink-a15)] rounded-[16px] bg-white text-[color:var(--ink)] text-[0.9375rem] font-semibold focus:outline-none focus:border-[color:var(--gold)]"
               />
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[16px] bg-[color:var(--gold)] text-[color:var(--ink)] text-[14px] font-bold hover:bg-[color:var(--gold-2)] transition-colors disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[16px] bg-[color:var(--gold)] text-[color:var(--ink)] text-[0.875rem] font-bold hover:bg-[color:var(--gold-2)] transition-colors disabled:opacity-60"
               >
                 {status === 'submitting' ? 'Sending…' : 'Send my report →'}
               </button>
             </div>
+
+            {/* The no-email lane must be visible in the first viewport, not
+                two screens below the form (persona audit: privacy-cautious
+                users read the gate as email-required and bail). The full
+                button lower down remains. */}
+            <p className="text-[0.8125rem] text-[color:var(--slate-600)]">
+              Prefer not to share your email?{' '}
+              <button
+                type="button"
+                onClick={handleSkip}
+                data-testid="gate-skip-top"
+                className="font-semibold text-[color:var(--ink)] underline underline-offset-4 hover:text-[color:var(--gold-deep)]"
+              >
+                View your summary without email →
+              </button>
+            </p>
 
             {/* Personalize — first name, institution, role. All optional
                 but visible (not collapsed) so users can fill them
@@ -396,7 +423,7 @@ export function EmailGate({
               <div>
                 <label
                   htmlFor="gate-firstname"
-                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                  className="block text-[0.75rem] font-semibold text-[color:var(--slate-600)] mb-1.5"
                 >
                   First name <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
                 </label>
@@ -408,13 +435,13 @@ export function EmailGate({
                   placeholder="Sarah"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[0.875rem] focus:outline-none focus:border-[color:var(--gold)]"
                 />
               </div>
               <div>
                 <label
                   htmlFor="gate-institution"
-                  className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                  className="block text-[0.75rem] font-semibold text-[color:var(--slate-600)] mb-1.5"
                 >
                   Institution <span className="font-normal text-[color:var(--slate-500)]">· recommended</span>
                 </label>
@@ -426,44 +453,67 @@ export function EmailGate({
                   placeholder="First Federal Credit Union"
                   value={institutionName}
                   onChange={(e) => setInstitutionName(e.target.value)}
-                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[0.875rem] focus:outline-none focus:border-[color:var(--gold)]"
                 />
               </div>
             </div>
 
-            <div>
-              <label
-                htmlFor="gate-role"
-                className="block text-[12px] font-semibold text-[color:var(--slate-600)] mb-1.5"
-              >
-                Your role <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
-              </label>
-              <select
-                id="gate-role"
-                value={role}
-                onChange={(e) => setRole(e.target.value as FreeRole | '')}
-                className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[14px] focus:outline-none focus:border-[color:var(--gold)]"
-              >
-                <option value="">Select your role</option>
-                {FREE_ROLES.map((r) => (
-                  <option key={r} value={r}>
-                    {FREE_ROLE_LABEL[r]}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-3">
+              <div>
+                <label
+                  htmlFor="gate-role"
+                  className="block text-[0.75rem] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  Your role <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+                </label>
+                <select
+                  id="gate-role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as FreeRole | '')}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[0.875rem] focus:outline-none focus:border-[color:var(--gold)]"
+                >
+                  <option value="">Select your role</option>
+                  {FREE_ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {FREE_ROLE_LABEL[r]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="gate-asset-band"
+                  className="block text-[0.75rem] font-semibold text-[color:var(--slate-600)] mb-1.5"
+                >
+                  Institution size <span className="font-normal text-[color:var(--slate-500)]">· optional</span>
+                </label>
+                <select
+                  id="gate-asset-band"
+                  value={assetBand}
+                  onChange={(e) => setAssetBand(e.target.value as FreeAssetBand | '')}
+                  className="w-full px-4 py-3 border border-[color:var(--ink-a15)] rounded-[14px] bg-white text-[color:var(--ink)] text-[0.875rem] focus:outline-none focus:border-[color:var(--gold)]"
+                >
+                  <option value="">Prefer not to say</option>
+                  {FREE_ASSET_BANDS.map((band) => (
+                    <option key={band} value={band}>
+                      {FREE_ASSET_BAND_LABEL[band]}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {status === 'error' && message && (
               <p
                 id="gate-email-error"
                 role="alert"
-                className="text-[13px] text-[#B42318] leading-[1.5]"
+                className="text-[0.8125rem] text-[#B42318] leading-[1.5]"
               >
                 {message}
               </p>
             )}
 
-            <p className="text-[13px] text-[color:var(--slate-600)] leading-[1.55]">
+            <p className="text-[0.8125rem] text-[color:var(--slate-600)] leading-[1.55]">
               No credit card. Work email recommended if you want the result
               tied to your institution.
             </p>
@@ -475,7 +525,7 @@ export function EmailGate({
                 onChange={(event) => setMarketingOptIn(event.target.checked)}
                 className="mt-1 h-4 w-4 accent-[color:var(--gold)]"
               />
-              <span className="text-[13px] leading-[1.55] text-[color:var(--slate-700)]">
+              <span className="text-[0.8125rem] leading-[1.55] text-[color:var(--slate-700)]">
                 Send a few follow-up ideas for this result. You can leave this
                 unchecked and still receive the report email.
               </span>
@@ -484,7 +534,7 @@ export function EmailGate({
             <button
               type="button"
               onClick={handleSkip}
-              className="w-full rounded-[14px] border border-[color:var(--ink-a15)] bg-white px-4 py-3 text-[14px] font-semibold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]"
+              className="w-full rounded-[14px] border border-[color:var(--ink-a15)] bg-white px-4 py-3 text-[0.875rem] font-semibold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]"
             >
               View summary without email
             </button>
@@ -517,13 +567,13 @@ function UnlockRow({ title, body }: { readonly title: string; readonly body: str
     <li className="flex items-start gap-3 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[14px] px-3.5 py-3">
       <span
         aria-hidden
-        className="grid place-items-center w-6 h-6 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[12px] font-bold shrink-0"
+        className="grid place-items-center w-6 h-6 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[0.75rem] font-bold shrink-0"
       >
         ✓
       </span>
       <div className="min-w-0">
-        <p className="text-[14px] font-semibold text-[color:var(--ink)] leading-tight">{title}</p>
-        <p className="mt-0.5 text-[12px] text-[color:var(--slate-600)] leading-[1.5]">{body}</p>
+        <p className="text-[0.875rem] font-semibold text-[color:var(--ink)] leading-tight">{title}</p>
+        <p className="mt-0.5 text-[0.75rem] text-[color:var(--slate-600)] leading-[1.5]">{body}</p>
       </div>
     </li>
   );

@@ -100,22 +100,22 @@ export function SkillFileUpload({
         disabled={uploadStatus === 'uploading'}
         aria-describedby={error ? 'skill-file-error' : 'skill-file-hint'}
         aria-invalid={Boolean(error)}
-        className="block w-full rounded-xl text-base font-sans text-[color:var(--ink)] file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-[color:var(--ink-a10)] file:text-[12px] file:font-sans file:font-bold file:uppercase file:tracking-[0.22em] file:text-[color:var(--ink)] file:bg-[color:var(--cream-2)] hover:file:bg-[color:var(--ink)] hover:file:text-[color:var(--gold-soft)] hover:file:border-[color:var(--ink)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+        className="block w-full rounded-xl text-base font-sans text-[color:var(--ink)] file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-[color:var(--ink-a10)] file:text-[0.75rem] file:font-sans file:font-bold file:uppercase file:tracking-[0.22em] file:text-[color:var(--ink)] file:bg-[color:var(--cream-2)] hover:file:bg-[color:var(--ink)] hover:file:text-[color:var(--gold-soft)] hover:file:border-[color:var(--ink)] file:cursor-pointer file:transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
       />
 
-      <p id="skill-file-hint" className="mt-1 font-sans text-[11px] text-[color:var(--slate-500)]">
+      <p id="skill-file-hint" className="mt-1 font-sans text-[0.6875rem] text-[color:var(--slate-500)]">
         Accepted formats: .md, .txt
       </p>
 
       {uploadStatus === 'uploading' && (
-        <p className="mt-2 font-sans text-[11px] text-[color:var(--slate-500)]" aria-live="polite">
+        <p className="mt-2 font-sans text-[0.6875rem] text-[color:var(--slate-500)]" aria-live="polite">
           Uploading{uploadedFilename ? ` ${uploadedFilename}` : ''}…
         </p>
       )}
 
       {uploadStatus === 'uploaded' && uploadedFilename && (
         <p
-          className="mt-2 font-sans text-[11px] font-semibold text-[color:var(--emerald-700)]"
+          className="mt-2 font-sans text-[0.6875rem] font-semibold text-[color:var(--emerald-700)]"
           aria-live="polite"
         >
           Uploaded: {uploadedFilename}

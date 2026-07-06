@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { foundationDurationLabel } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
@@ -36,17 +37,26 @@ const TIERS = [
     cadence: 'One-time',
     badge: 'Best for individual capability',
     bestFor: 'An individual learner who wants reusable AI work products, not just a score.',
-    bullets: ['18 modules and saved prompts', 'Workflow templates and reviewed artifacts', 'Certificate with public authenticity URL'],
+    bullets: [
+      '18 modules and saved prompts',
+      foundationDurationLabel(),
+      'Workflow templates and reviewed artifacts',
+      'Certificate with public authenticity URL',
+    ],
     action: 'Enroll in Foundation',
     href: '/courses/foundation/program/purchase',
   },
   {
     name: 'Institution Rollout',
-    price: 'Custom',
-    cadence: 'Scoped before rollout',
+    price: 'From $199/seat',
+    cadence: '10+ seats · scoped before rollout',
     badge: 'For teams',
     bestFor: 'Departments, cohorts, institutions, associations, or partner channels.',
-    bullets: ['Rollout planning and cohort setup', 'Reporting scope and support path', 'Optional briefing'],
+    bullets: [
+      'Foundation seats at $199 each for 10+ seats',
+      'Rollout planning and cohort setup',
+      'Reporting scope and support path',
+    ],
     action: 'Request a rollout plan',
     href: '/for-institutions',
   },

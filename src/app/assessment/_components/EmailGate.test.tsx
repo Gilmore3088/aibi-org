@@ -101,4 +101,16 @@ describe('EmailGate', () => {
     expect(onSkip).toHaveBeenCalledWith({});
     expect(vi.mocked(fetch).mock.calls.some(([input]) => input === '/api/capture-email')).toBe(false);
   });
+
+  it('offers the no-email lane right under the primary CTA, not only below the form', async () => {
+    const user = userEvent.setup();
+    const onSkip = vi.fn();
+
+    render(<EmailGate {...baseProps} onCaptured={vi.fn()} onSkip={onSkip} />);
+
+    // The top skip affordance is first-viewport visible next to the submit
+    // button (persona audit: the bottom-only button read as email-required).
+    await user.click(screen.getByTestId('gate-skip-top'));
+    expect(onSkip).toHaveBeenCalled();
+  });
 });

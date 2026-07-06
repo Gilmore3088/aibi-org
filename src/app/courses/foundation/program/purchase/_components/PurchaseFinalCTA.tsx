@@ -29,7 +29,7 @@ export function PurchaseFinalCTA({ enrollButton }: PurchaseFinalCTAProps) {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(24px, 2.6vw, 32px)',
+            fontSize: 'clamp(1.5rem, 2.6vw, 2rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
             margin: '0 0 10px',
@@ -41,7 +41,7 @@ export function PurchaseFinalCTA({ enrollButton }: PurchaseFinalCTAProps) {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             color: 'rgba(247, 243, 234, 0.82)',
             lineHeight: 1.55,
             margin: 0,

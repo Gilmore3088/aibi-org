@@ -22,7 +22,7 @@ const INTER_STACK =
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -32,7 +32,7 @@ const kickerStyle: CSSProperties = {
 const labelStyle: CSSProperties = {
   display: 'block',
   fontFamily: INTER_STACK,
-  fontSize: 11,
+  fontSize: '0.6875rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -48,7 +48,7 @@ const inputStyle: CSSProperties = {
   background: 'var(--on-dark-08)',
   color: 'var(--cream)',
   fontFamily: INTER_STACK,
-  fontSize: 14.5,
+  fontSize: '0.9063rem',
   fontWeight: 500,
   outline: 'none',
 };
@@ -59,7 +59,7 @@ const submitButtonStyle: CSSProperties = {
   background: 'var(--gold)',
   color: 'var(--ink)',
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   textTransform: 'uppercase',
   letterSpacing: '0.14em',
@@ -167,7 +167,7 @@ export function GuideRequestForm() {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 28,
+            fontSize: '1.75rem',
             letterSpacing: '-0.02em',
             margin: '0 0 12px',
             color: 'var(--cream)',
@@ -178,7 +178,7 @@ export function GuideRequestForm() {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             fontWeight: 400,
             lineHeight: 1.6,
             color: 'var(--on-dark-80)',
@@ -254,7 +254,7 @@ export function GuideRequestForm() {
           role="alert"
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 13,
+            fontSize: '0.8125rem',
             fontWeight: 600,
             color: 'var(--gold-soft)',
             margin: 0,

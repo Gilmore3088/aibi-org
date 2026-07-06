@@ -295,7 +295,7 @@ export default function FoundationGalleryClient() {
             <>
               <p
                 style={{
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
                   color: 'var(--slate-500)',

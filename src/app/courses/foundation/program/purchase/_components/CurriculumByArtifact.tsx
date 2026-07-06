@@ -18,7 +18,7 @@ export function CurriculumByArtifact() {
           style={{
             display: 'inline-block',
             fontFamily: INTER_STACK,
-            fontSize: 12,
+            fontSize: '0.75rem',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--gold-deep)',
@@ -32,7 +32,7 @@ export function CurriculumByArtifact() {
           style={{
             fontFamily: INTER_STACK,
             fontWeight: 700,
-            fontSize: 'clamp(26px, 2.8vw, 34px)',
+            fontSize: 'clamp(1.625rem, 2.8vw, 2.125rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
             margin: 0,
@@ -44,7 +44,7 @@ export function CurriculumByArtifact() {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 15,
+            fontSize: '0.9375rem',
             color: 'var(--slate-600)',
             lineHeight: 1.55,
             margin: '10px 0 0',
@@ -99,7 +99,7 @@ export function CurriculumByArtifact() {
                     borderRadius: 999,
                     background: 'var(--ink)',
                     color: 'var(--gold)',
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 700,
                     flex: 'none',
                   }}
@@ -108,7 +108,7 @@ export function CurriculumByArtifact() {
                 </span>
                 <span
                   style={{
-                    fontSize: 16,
+                    fontSize: '1rem',
                     fontWeight: 700,
                     color: 'var(--ink)',
                     lineHeight: 1.3,
@@ -120,7 +120,7 @@ export function CurriculumByArtifact() {
                     style={{
                       fontWeight: 500,
                       color: 'var(--slate-600)',
-                      fontSize: 14,
+                      fontSize: '0.875rem',
                     }}
                   >
                     → produces {m.keyOutput}
@@ -128,7 +128,7 @@ export function CurriculumByArtifact() {
                 </span>
                 <span
                   style={{
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     color: 'var(--slate-500)',
                     letterSpacing: '0.04em',
                     whiteSpace: 'nowrap',
@@ -142,7 +142,7 @@ export function CurriculumByArtifact() {
                 style={{
                   padding: '4px 24px 22px 82px',
                   fontFamily: INTER_STACK,
-                  fontSize: 14,
+                  fontSize: '0.875rem',
                   color: 'var(--slate-600)',
                   lineHeight: 1.6,
                 }}
@@ -150,7 +150,7 @@ export function CurriculumByArtifact() {
                 <div style={{ marginBottom: 8 }}>
                   <span
                     style={{
-                      fontSize: 11,
+                      fontSize: '0.6875rem',
                       fontWeight: 700,
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',

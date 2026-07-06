@@ -37,7 +37,7 @@ const buttonStyle: CSSProperties = {
   color: 'var(--ink)',
   cursor: 'pointer',
   fontFamily: 'var(--font-inter, Inter, ui-sans-serif, system-ui, sans-serif)',
-  fontSize: 13,
+  fontSize: '0.8125rem',
   fontWeight: 600,
   letterSpacing: '0.02em',
 };
@@ -73,7 +73,7 @@ const closeButtonStyle: CSSProperties = {
   padding: 6,
   color: 'var(--ink)',
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-  fontSize: 12,
+  fontSize: '0.75rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   fontWeight: 600,

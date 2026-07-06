@@ -154,7 +154,7 @@ export default function ResultsPage() {
           color: 'var(--ink)',
           padding: '12px 24px',
           textAlign: 'center',
-          fontSize: 14,
+          fontSize: '0.875rem',
           fontWeight: 600,
           letterSpacing: '0.02em',
         }}
@@ -297,7 +297,7 @@ export default function ResultsPage() {
                 style={{
                   display: 'inline-block',
                   fontFamily: 'var(--font-mono, ui-monospace, monospace)',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 700,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -392,7 +392,7 @@ export default function ResultsPage() {
                 style={{
                   display: 'inline-block',
                   fontFamily: 'var(--font-mono, ui-monospace, monospace)',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 700,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',

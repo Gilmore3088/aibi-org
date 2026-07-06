@@ -155,7 +155,7 @@ export default async function PurchasePage(
           <span
             style={{
               fontFamily: INTER_STACK,
-              fontSize: 12,
+              fontSize: '0.75rem',
               letterSpacing: '0.08em',
               color: 'var(--slate-500)',
               fontWeight: 500,
@@ -186,7 +186,7 @@ export default async function PurchasePage(
               style={{
                 margin: 0,
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
@@ -195,7 +195,7 @@ export default async function PurchasePage(
             >
               From the {roleBanner.label} playbook
             </p>
-            <p style={{ margin: '4px 0 0', color: 'var(--ink)', fontSize: 14, lineHeight: 1.55 }}>
+            <p style={{ margin: '4px 0 0', color: 'var(--ink)', fontSize: '0.875rem', lineHeight: 1.55 }}>
               {roleBanner.lede}
             </p>
           </aside>
@@ -356,7 +356,7 @@ function PurchaseDecisionLinks({ compact = false }: { compact?: boolean }) {
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 15,
+                fontSize: '0.9375rem',
                 fontWeight: 800,
                 letterSpacing: 0,
               }}
@@ -366,7 +366,7 @@ function PurchaseDecisionLinks({ compact = false }: { compact?: boolean }) {
             <span
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 lineHeight: 1.45,
                 color: 'var(--slate-600)',
                 letterSpacing: 0,
@@ -397,7 +397,7 @@ function PurchaseDataHandlingNote() {
         style={{
           margin: 0,
           fontFamily: INTER_STACK,
-          fontSize: 11,
+          fontSize: '0.6875rem',
           fontWeight: 800,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -411,7 +411,7 @@ function PurchaseDataHandlingNote() {
           margin: '8px 0 0',
           fontFamily: INTER_STACK,
           color: 'var(--ink)',
-          fontSize: 14,
+          fontSize: '0.875rem',
           lineHeight: 1.55,
         }}
       >

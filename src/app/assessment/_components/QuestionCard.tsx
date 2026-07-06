@@ -81,7 +81,7 @@ export function QuestionCard({
         <p
           className="tabular-nums uppercase"
           style={{
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: "0.18em",
             color: "var(--slate-500)",
@@ -96,7 +96,7 @@ export function QuestionCard({
         <p
           className="uppercase"
           style={{
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: "0.18em",
             color: "var(--gold-deep)",
@@ -172,7 +172,7 @@ export function QuestionCard({
             >
               <span
                 style={{
-                  fontSize: 18,
+                  fontSize: '1.125rem',
                   fontWeight: 500,
                   lineHeight: 1.4,
                   color: "var(--ink)",
@@ -212,7 +212,7 @@ export function QuestionCard({
             onClick={onBack}
             className="transition-colors"
             style={{
-              fontSize: 14,
+              fontSize: '0.875rem',
               fontWeight: 500,
               color: "var(--slate-600)",
               transitionDuration: "120ms",
@@ -232,7 +232,7 @@ export function QuestionCard({
         <span
           className="uppercase"
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: "0.18em",
             color: "var(--slate-500)",

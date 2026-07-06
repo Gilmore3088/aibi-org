@@ -78,12 +78,12 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
         <nav aria-label="Breadcrumb">
           <Link
             href="/dashboard"
-            className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/50 hover:text-[color:var(--gold)] transition-colors"
+            className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.18em] text-[color:var(--ink)]/50 hover:text-[color:var(--gold)] transition-colors"
           >
             Dashboard
           </Link>
           <span className="mx-2 text-[color:var(--ink)]/20">/</span>
-          <span className="font-serif-sc text-[11px] uppercase tracking-[0.18em] text-[color:var(--gold)]">
+          <span className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.18em] text-[color:var(--gold)]">
             Practice
           </span>
         </nav>
@@ -106,7 +106,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
             <InfoBlock title="Scenario">{rep.scenario}</InfoBlock>
             <InfoBlock title="Task">{rep.task}</InfoBlock>
             <div className="border border-[color:var(--ink)]/10 rounded-[3px] p-5 bg-[color:#FFFFFF]">
-              <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+              <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                 Constraints
               </p>
               <ul className="space-y-2">
@@ -120,7 +120,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
           </aside>
 
           <section className="border border-[color:var(--ink)]/10 rounded-[3px] p-5 md:p-6">
-            <label className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)]">
+            <label className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)]">
               Your prompt or response
             </label>
             <div className="mt-3 bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[2px] p-4">
@@ -143,7 +143,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 type="button"
                 onClick={handleSubmit}
                 disabled={response.trim().length < 20}
-                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Submit Practice Rep
               </button>
@@ -164,7 +164,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
           <section className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
               <article className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/10 rounded-[3px] p-6">
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+                <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                   Model answer
                 </p>
                 <p className="text-sm text-[color:var(--ink)]/80 leading-relaxed">
@@ -172,7 +172,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 </p>
               </article>
               <article className="border border-[color:var(--ink)]/10 rounded-[3px] p-6">
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+                <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
                   What good looks like
                 </p>
                 <ul className="space-y-2">
@@ -189,7 +189,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
             </div>
             <article className="border border-[color:var(--gold)]/25 rounded-[3px] bg-[color:#FFFFFF] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2">
+                <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-2">
                   Completion
                 </p>
                 <p className="text-sm text-[color:var(--ink)]/75 leading-relaxed">
@@ -201,7 +201,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 type="button"
                 onClick={handleComplete}
                 disabled={saving}
-                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
+                className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 {saving ? 'Saving...' : 'Mark Complete'}
               </button>
@@ -229,7 +229,7 @@ function InfoBlock({
 }) {
   return (
     <div className="border border-[color:var(--ink)]/10 rounded-[3px] p-5">
-      <p className="font-serif-sc text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
+      <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         {title}
       </p>
       <p className="text-sm text-[color:var(--ink)]/75 leading-relaxed">

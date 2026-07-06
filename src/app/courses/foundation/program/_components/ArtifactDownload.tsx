@@ -16,7 +16,7 @@ const downloadLinkStyle: CSSProperties = {
   alignItems: 'center',
   gap: 10,
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
   fontWeight: 700,
@@ -51,7 +51,7 @@ export function ArtifactDownload({
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.22em',
           textTransform: 'uppercase',

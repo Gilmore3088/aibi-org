@@ -93,7 +93,7 @@ export default async function PlaybookAssetPage(props: PageProps) {
             <p
               style={{
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
@@ -116,7 +116,7 @@ export default async function PlaybookAssetPage(props: PageProps) {
             <p
               style={{
                 color: 'var(--slate-600)',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 marginTop: 12,
               }}
             >
@@ -193,7 +193,7 @@ export default async function PlaybookAssetPage(props: PageProps) {
               <p
                 style={{
                   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
@@ -208,7 +208,7 @@ export default async function PlaybookAssetPage(props: PageProps) {
                   margin: 0,
                   paddingLeft: 18,
                   color: 'var(--slate-600)',
-                  fontSize: 14,
+                  fontSize: '0.875rem',
                   lineHeight: 1.6,
                 }}
               >
@@ -278,7 +278,7 @@ function AssetSectionBlock({
         <div
           style={{
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -291,7 +291,7 @@ function AssetSectionBlock({
         <h2
           style={{
             margin: 0,
-            fontSize: 22,
+            fontSize: '1.375rem',
             lineHeight: 1.25,
             color: '#FFFFFF',
             fontWeight: 600,
@@ -307,7 +307,7 @@ function AssetSectionBlock({
             style={{
               margin: '0 0 16px',
               color: 'var(--slate-600)',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.6,
             }}
           >
@@ -324,7 +324,7 @@ function AssetSectionBlock({
               padding: '14px 18px',
               margin: '4px 0 16px',
               color: 'var(--ink)',
-              fontSize: 15,
+              fontSize: '0.9375rem',
               fontWeight: 600,
               lineHeight: 1.55,
             }}
@@ -350,7 +350,7 @@ function AssetSectionBlock({
                   paddingLeft: 26,
                   margin: '8px 0',
                   color: 'var(--ink)',
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   lineHeight: 1.55,
                 }}
               >
@@ -392,7 +392,7 @@ function AssetSectionBlock({
               >
                 <div
                   style={{
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 700,
                     color: 'var(--ink)',
                     marginBottom: 4,
@@ -403,7 +403,7 @@ function AssetSectionBlock({
                 <div
                   style={{
                     color: 'var(--slate-600)',
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                     lineHeight: 1.55,
                   }}
                 >
@@ -420,7 +420,7 @@ function AssetSectionBlock({
               margin: 0,
               paddingLeft: 22,
               color: 'var(--ink)',
-              fontSize: 15,
+              fontSize: '0.9375rem',
               lineHeight: 1.6,
             }}
           >
@@ -442,7 +442,7 @@ function AssetSectionBlock({
               padding: '14px 16px',
               fontFamily:
                 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-              fontSize: 12.5,
+              fontSize: '0.7813rem',
               lineHeight: 1.5,
               whiteSpace: 'pre-wrap',
               overflowX: 'auto',
@@ -452,7 +452,7 @@ function AssetSectionBlock({
               style={{
                 display: 'block',
                 fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',

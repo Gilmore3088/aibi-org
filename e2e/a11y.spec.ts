@@ -23,6 +23,7 @@ const PUBLIC_ROUTES: ReadonlyArray<{ name: string; path: string }> = [
   { name: 'education', path: '/education' },
   { name: 'for-institutions', path: '/for-institutions' },
   { name: 'foundation purchase', path: '/courses/foundation/program/purchase' },
+  { name: 'foundation module 1 preview', path: '/courses/foundation/preview' },
   { name: 'security', path: '/security' },
   { name: 'LLM data handling', path: '/security/data-handling' },
   { name: 'IT approval packet', path: '/security/it-approval' },

@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 
 const KICKER: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -52,7 +52,7 @@ export function AccordionSection({
       >
         <span
           style={{
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 700,
             color: 'var(--ink)',
             borderBottom: open ? `2px solid ${accentVar}` : 'none',

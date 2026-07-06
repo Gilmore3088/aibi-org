@@ -109,7 +109,7 @@ export default async function InDepthPurchasedPage({
         <p
           className="uppercase mb-3"
           style={{
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             color: 'var(--gold-deep)',
@@ -120,7 +120,7 @@ export default async function InDepthPurchasedPage({
         <h1
           className="mb-5"
           style={{
-            fontSize: 'clamp(36px, 4.5vw, 52px)',
+            fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)',
             fontWeight: 700,
             lineHeight: 1.08,
             letterSpacing: '-0.02em',
@@ -132,7 +132,7 @@ export default async function InDepthPurchasedPage({
         <p
           className="mb-8 max-w-2xl"
           style={{
-            fontSize: 17,
+            fontSize: '1.0625rem',
             lineHeight: 1.6,
             color: 'var(--slate-600)',
           }}
@@ -154,7 +154,7 @@ export default async function InDepthPurchasedPage({
           <p
             className="uppercase"
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               color: 'var(--gold-deep)',
@@ -168,7 +168,7 @@ export default async function InDepthPurchasedPage({
               <li
                 key={line}
                 className="flex gap-3"
-                style={{ fontSize: 15, color: 'var(--ink)', lineHeight: 1.55 }}
+                style={{ fontSize: '0.9375rem', color: 'var(--ink)', lineHeight: 1.55 }}
               >
                 <span
                   aria-hidden="true"
@@ -193,7 +193,7 @@ export default async function InDepthPurchasedPage({
         >
           {signedInEmail ? (
             <>
-              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+              <p className="mb-5" style={{ fontSize: '0.875rem', color: 'var(--slate-600)' }}>
                 You&rsquo;re signed in as{' '}
                 <span style={{ fontWeight: 600, color: 'var(--ink)' }}>
                   {signedInEmail}
@@ -208,7 +208,7 @@ export default async function InDepthPurchasedPage({
                   color: '#fff',
                   padding: '14px 28px',
                   borderRadius: 12,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.16em',
                 }}
@@ -222,7 +222,7 @@ export default async function InDepthPurchasedPage({
                   emailed a one-click link. So this is NOT "create an account"
                   — it's "open what you bought". Lead with the one-click link;
                   password login is a small secondary option. */}
-              <p className="mb-2" style={{ fontSize: 15, color: 'var(--ink)', fontWeight: 600 }}>
+              <p className="mb-2" style={{ fontSize: '0.9375rem', color: 'var(--ink)', fontWeight: 600 }}>
                 ✓ Payment confirmed{prefillEmail ? (
                   <>
                     {' '}for{' '}
@@ -230,13 +230,13 @@ export default async function InDepthPurchasedPage({
                   </>
                 ) : null}. Your assessment is ready.
               </p>
-              <p className="mb-5" style={{ fontSize: 14, color: 'var(--slate-600)' }}>
+              <p className="mb-5" style={{ fontSize: '0.875rem', color: 'var(--slate-600)' }}>
                 We just emailed you a <strong>one-click link</strong> to open it — no password
                 needed. Didn&rsquo;t get it? Resend it:
               </p>
               <div className="flex flex-col gap-3" style={{ alignItems: 'flex-start' }}>
                 <EmailSignInLink email={prefillEmail} />
-                <p style={{ fontSize: 13, color: 'var(--slate-500)' }}>
+                <p style={{ fontSize: '0.8125rem', color: 'var(--slate-500)' }}>
                   Prefer a password?{' '}
                   <Link
                     href={prefillEmail ? `/auth/forgot-password?email=${encodeURIComponent(prefillEmail)}` : '/auth/forgot-password'}
@@ -255,7 +255,7 @@ export default async function InDepthPurchasedPage({
               </div>
             </>
           )}
-          <p style={{ fontSize: 12, color: 'var(--slate-500)', marginTop: 24 }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--slate-500)', marginTop: 24 }}>
             Trouble? Reply to your receipt email or write to{' '}
             <a
               href="mailto:hello@aibankinginstitute.com"
@@ -286,7 +286,7 @@ export default async function InDepthPurchasedPage({
           <p
             className="uppercase"
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               color: 'var(--gold-deep)',
@@ -297,7 +297,7 @@ export default async function InDepthPurchasedPage({
           </p>
           <h2
             style={{
-              fontSize: 22,
+              fontSize: '1.375rem',
               fontWeight: 700,
               lineHeight: 1.15,
               letterSpacing: '-0.02em',
@@ -310,7 +310,7 @@ export default async function InDepthPurchasedPage({
           <p
             className="mb-6"
             style={{
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               maxWidth: '60ch',
@@ -338,7 +338,7 @@ export default async function InDepthPurchasedPage({
           <p
             className="uppercase"
             style={{
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               color: 'var(--gold-deep)',
@@ -349,7 +349,7 @@ export default async function InDepthPurchasedPage({
           </p>
           <h2
             style={{
-              fontSize: 26,
+              fontSize: '1.625rem',
               fontWeight: 700,
               lineHeight: 1.15,
               letterSpacing: 0,
@@ -362,7 +362,7 @@ export default async function InDepthPurchasedPage({
           <p
             className="mb-5"
             style={{
-              fontSize: 15,
+              fontSize: '0.9375rem',
               lineHeight: 1.6,
               color: 'var(--slate-600)',
               maxWidth: '60ch',
@@ -382,7 +382,7 @@ export default async function InDepthPurchasedPage({
                 color: '#fff',
                 padding: '14px 28px',
                 borderRadius: 12,
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.16em',
               }}
@@ -397,7 +397,7 @@ export default async function InDepthPurchasedPage({
                 color: 'var(--ink)',
                 padding: '14px 28px',
                 borderRadius: 12,
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.16em',
               }}
@@ -412,7 +412,7 @@ export default async function InDepthPurchasedPage({
                 color: 'var(--ink)',
                 padding: '14px 28px',
                 borderRadius: 12,
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 700,
                 letterSpacing: '0.16em',
               }}

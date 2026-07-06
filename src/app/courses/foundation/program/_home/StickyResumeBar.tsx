@@ -95,7 +95,7 @@ export function StickyResumeBar({
         <div style={{ minWidth: 0 }}>
           <div
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -108,7 +108,7 @@ export function StickyResumeBar({
           <h2
             style={{
               margin: 0,
-              fontSize: 'clamp(26px, 2.6vw, 30px)',
+              fontSize: 'clamp(1.625rem, 2.6vw, 1.875rem)',
               fontWeight: 700,
               letterSpacing: '-0.015em',
               lineHeight: 1.18,
@@ -134,7 +134,7 @@ export function StickyResumeBar({
             ))}
             <span
               style={{
-                fontSize: 12,
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -148,7 +148,7 @@ export function StickyResumeBar({
           <p
             style={{
               margin: '16px 0 0',
-              fontSize: 15,
+              fontSize: '0.9375rem',
               lineHeight: 1.6,
               color: 'var(--on-dark-70, rgba(247,243,234,0.7))',
               maxWidth: '64ch',
@@ -180,7 +180,7 @@ export function StickyResumeBar({
             style={{
               fontWeight: 600,
               letterSpacing: 0,
-              fontSize: 14,
+              fontSize: '0.875rem',
               textTransform: 'none',
             }}
           >

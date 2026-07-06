@@ -54,7 +54,7 @@ export function DownloadReportButton({ enrollmentId }: DownloadReportButtonProps
           border: '1px solid var(--ink-a10)',
           background: 'var(--cream)',
           color: 'var(--ink)',
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -81,7 +81,7 @@ export function DownloadReportButton({ enrollmentId }: DownloadReportButtonProps
             maxWidth: 360,
             margin: 0,
             color: 'var(--slate-600)',
-            fontSize: 13,
+            fontSize: '0.8125rem',
             lineHeight: 1.45,
           }}
         >

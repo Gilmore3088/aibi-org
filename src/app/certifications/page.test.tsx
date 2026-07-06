@@ -17,4 +17,16 @@ describe('CertificationsPage', () => {
     ).toBe(true);
     expect(screen.getByRole('link', { name: /See the curriculum/i }).getAttribute('href')).toBe('/courses');
   });
+
+  it('states documented seat time for institutional training logs without CPE claims', () => {
+    render(<CertificationsPage />);
+
+    expect(
+      screen.getByRole('heading', { name: /documented seat time for your training log/i }),
+    ).toBeTruthy();
+    expect(screen.getByText(/~\d+(\.\d+)? hours of seat time/i)).toBeTruthy();
+    expect(
+      screen.getByText(/not CPE credit, accreditation, or\s+regulator-endorsed training/i),
+    ).toBeTruthy();
+  });
 });

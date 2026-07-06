@@ -9,6 +9,21 @@ describe('Foundation micro-module ladder', () => {
     expect(new Set(outputs).size).toBe(outputs.length);
   });
 
+  it('keeps every module inside the advertised per-module minutes band', () => {
+    // The public duration label derives its per-module range from these
+    // values; a module outside 10–15 minutes silently breaks the promise.
+    for (const module of FOUNDATION_MICRO_MODULES) {
+      expect(
+        module.estimatedMinutes,
+        `module ${module.number} estimatedMinutes`,
+      ).toBeGreaterThanOrEqual(10);
+      expect(
+        module.estimatedMinutes,
+        `module ${module.number} estimatedMinutes`,
+      ).toBeLessThanOrEqual(15);
+    }
+  });
+
   it('separates prompt, template, skill, workflow kit, and packet concepts', () => {
     const byNumber = new Map(FOUNDATION_MICRO_MODULES.map((module) => [module.number, module]));
 

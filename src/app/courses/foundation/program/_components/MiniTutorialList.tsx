@@ -31,7 +31,7 @@ const fontStack = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 const eyebrow: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.20em',
   textTransform: 'uppercase',
@@ -40,7 +40,7 @@ const eyebrow: React.CSSProperties = {
 
 const metaLabel: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -65,7 +65,7 @@ export function MiniTutorialList({
         style={{
           fontFamily: fontStack,
           fontWeight: 700,
-          fontSize: 26,
+          fontSize: '1.625rem',
           letterSpacing: '-0.02em',
           color: 'var(--ink)',
           margin: '0 0 10px',
@@ -79,7 +79,7 @@ export function MiniTutorialList({
           style={{
             fontFamily: fontStack,
             color: 'var(--slate-600)',
-            fontSize: 17,
+            fontSize: '1.0625rem',
             lineHeight: 1.6,
             margin: '0 0 24px',
             maxWidth: '64ch',
@@ -107,7 +107,7 @@ export function MiniTutorialList({
                 cursor: 'pointer',
                 padding: '16px 20px',
                 fontFamily: fontStack,
-                fontSize: 16,
+                fontSize: '1rem',
                 fontWeight: 600,
                 color: 'var(--ink)',
                 listStyle: 'none',
@@ -143,7 +143,7 @@ export function MiniTutorialList({
                 style={{
                   fontFamily: fontStack,
                   color: 'var(--ink)',
-                  fontSize: 16,
+                  fontSize: '1rem',
                   lineHeight: 1.65,
                   margin: '18px 0 22px',
                 }}
@@ -158,7 +158,7 @@ export function MiniTutorialList({
                     style={{
                       marginBottom: 14,
                       fontFamily: fontStack,
-                      fontSize: 16,
+                      fontSize: '1rem',
                       lineHeight: 1.6,
                       color: 'var(--ink)',
                     }}
@@ -195,7 +195,7 @@ export function MiniTutorialList({
                   style={{
                     fontFamily:
                       'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                     lineHeight: 1.6,
                     color: 'var(--cream)',
                     whiteSpace: 'pre-wrap',
@@ -218,7 +218,7 @@ export function MiniTutorialList({
                   <p
                     style={{
                       fontFamily: fontStack,
-                      fontSize: 16,
+                      fontSize: '1rem',
                       lineHeight: 1.6,
                       color: 'var(--ink)',
                       margin: 0,
@@ -232,7 +232,7 @@ export function MiniTutorialList({
                   <p
                     style={{
                       fontFamily: fontStack,
-                      fontSize: 16,
+                      fontSize: '1rem',
                       lineHeight: 1.6,
                       color: 'var(--ink)',
                       margin: 0,

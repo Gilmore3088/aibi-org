@@ -242,7 +242,7 @@ function Sidebar({
         </div>
         <div
           style={{
-            fontSize: 82,
+            fontSize: '5.125rem',
             color: GOLD_SOFT,
             fontWeight: 950,
             lineHeight: 0.9,
@@ -251,7 +251,7 @@ function Sidebar({
           }}
         >
           {score}
-          <span style={{ fontSize: 16, color: 'rgba(255,255,255,.5)' }}> /100</span>
+          <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,.5)' }}> /100</span>
         </div>
         <p style={{ color: 'rgba(255,255,255,.68)', margin: '10px 0 0' }}>{band.label}</p>
       </div>
@@ -281,10 +281,10 @@ function Sidebar({
 function SidebarBlock({ label, value }: { label: string; value: string }): JSX.Element {
   return (
     <div style={{ padding: '18px 24px', borderBottom: '1px solid rgba(255,255,255,.12)' }}>
-      <span style={{ display: 'block', color: 'rgba(255,255,255,.55)', fontSize: 13 }}>
+      <span style={{ display: 'block', color: 'rgba(255,255,255,.55)', fontSize: '0.8125rem' }}>
         {label}
       </span>
-      <b style={{ display: 'block', marginTop: 4, fontSize: 17 }}>{value}</b>
+      <b style={{ display: 'block', marginTop: 4, fontSize: '1.0625rem' }}>{value}</b>
     </div>
   );
 }
@@ -312,7 +312,7 @@ function SidebarNav({
         background: active ? 'rgba(255,255,255,.09)' : 'transparent',
         textDecoration: 'none',
         fontWeight: 800,
-        fontSize: 14,
+        fontSize: '0.875rem',
         transition: 'background 120ms ease, color 120ms ease',
       }}
       onMouseEnter={(e) => {
@@ -375,7 +375,7 @@ function Section1Summary({
         <Label>Paid diagnostic · Action packet</Label>
         <h1
           style={{
-            fontSize: 'clamp(40px, 5vw, 72px)',
+            fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
             lineHeight: 0.96,
             letterSpacing: '-0.06em',
             margin: '10px 0 14px',
@@ -384,7 +384,7 @@ function Section1Summary({
         >
           {headline}
         </h1>
-        <p style={{ maxWidth: 850, fontSize: 18, color: SLATE, lineHeight: 1.58 }}>
+        <p style={{ maxWidth: 850, fontSize: '1.125rem', color: SLATE, lineHeight: 1.58 }}>
           {packet.thesisBody}
         </p>
         {topGap && brief && (
@@ -396,10 +396,10 @@ function Section1Summary({
               <SnapField label="Primary opportunity" value={brief.opportunity} />
             </div>
             <div style={{ background: INK, color: 'white', padding: '16px 20px' }}>
-              <span style={{ color: GOLD, fontSize: 10.5, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+              <span style={{ color: GOLD, fontSize: '0.6563rem', fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                 Recommendation
               </span>
-              <p style={{ margin: '6px 0 0', fontSize: 16, lineHeight: 1.5 }}>
+              <p style={{ margin: '6px 0 0', fontSize: '1rem', lineHeight: 1.5 }}>
                 Your greatest opportunity is {brief.recommendation}.
               </p>
             </div>
@@ -440,9 +440,9 @@ function Section1Summary({
             >
               {i + 1}
             </div>
-            <b style={{ display: 'block', fontSize: 15 }}>{step.title}</b>
+            <b style={{ display: 'block', fontSize: '0.9375rem' }}>{step.title}</b>
             <span
-              style={{ display: 'block', color: SLATE, fontSize: 13, lineHeight: 1.4, marginTop: 5 }}
+              style={{ display: 'block', color: SLATE, fontSize: '0.8125rem', lineHeight: 1.4, marginTop: 5 }}
             >
               {step.desc}
             </span>
@@ -483,7 +483,7 @@ function Section2Artifact({
           <Label tone="dark">Primary work product</Label>
           <h2
             style={{
-              fontSize: 'clamp(30px, 3vw, 46px)',
+              fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
               lineHeight: 1,
               letterSpacing: '-0.045em',
               margin: '6px 0 8px',
@@ -503,7 +503,7 @@ function Section2Artifact({
           }}
         >
           <Label tone="badge">When to use</Label>
-          <h3 style={{ fontSize: 18, letterSpacing: '-0.02em', margin: '4px 0 0', fontWeight: 800 }}>
+          <h3 style={{ fontSize: '1.125rem', letterSpacing: '-0.02em', margin: '4px 0 0', fontWeight: 800 }}>
             {a.useBefore}
           </h3>
         </div>
@@ -522,7 +522,7 @@ function Section2Artifact({
                 color: GOLD_DEEP,
                 borderRadius: 999,
                 padding: '6px 12px',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 800,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -613,7 +613,7 @@ function ArtifactTable({
           display: 'grid',
           gridTemplateColumns: gridTemplate,
           background: CREAM,
-          fontSize: 11,
+          fontSize: '0.6875rem',
           textTransform: 'uppercase',
           letterSpacing: '0.12em',
           fontWeight: 950,
@@ -640,7 +640,7 @@ function ArtifactTable({
             display: 'grid',
             gridTemplateColumns: gridTemplate,
             borderTop: `1px solid ${LINE}`,
-            fontSize: 14,
+            fontSize: '0.875rem',
             lineHeight: 1.45,
           }}
         >
@@ -684,7 +684,7 @@ function Pill({ tone, children }: { tone: 'ok' | 'edit'; children: string }): JS
         display: 'inline-flex',
         borderRadius: 999,
         padding: '6px 9px',
-        fontSize: 12,
+        fontSize: '0.75rem',
         fontWeight: 800,
         background: bg,
         color: fg,
@@ -704,7 +704,7 @@ function PromptBlock({ text, stretch }: { text: string; stretch?: boolean }): JS
         borderRadius: 20,
         padding: 18,
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        fontSize: 13,
+        fontSize: '0.8125rem',
         lineHeight: 1.55,
         whiteSpace: 'pre-wrap',
         margin: '12px 0 0',
@@ -745,7 +745,7 @@ function DiagRow({
             display: 'block',
             color: GOLD_DEEP,
             fontWeight: 950,
-            fontSize: 10,
+            fontSize: '0.625rem',
             textTransform: 'uppercase',
             letterSpacing: '0.14em',
           }}
@@ -759,7 +759,7 @@ function DiagRow({
           fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
           fontWeight: 800,
           color: INK,
-          fontSize: 20,
+          fontSize: '1.25rem',
         }}
       >
         {score}
@@ -790,7 +790,7 @@ function Section3Timeline({
         <Label>Execution timeline</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 0',
@@ -802,7 +802,7 @@ function Section3Timeline({
         {aiFirstPhaseChecks && (
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               color: GOLD_DEEP,
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -832,16 +832,16 @@ function Section3Timeline({
                 color: GOLD_DEEP,
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
-                fontSize: 12,
+                fontSize: '0.75rem',
               }}
             >
               {p.phase}
             </div>
             <div>
-              <h3 style={{ fontSize: 23, letterSpacing: '-0.025em', margin: 0, fontWeight: 800 }}>
+              <h3 style={{ fontSize: '1.4375rem', letterSpacing: '-0.025em', margin: 0, fontWeight: 800 }}>
                 {p.heading}
               </h3>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP, margin: '12px 0 0' }}>
+              <div style={{ fontSize: '0.6563rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP, margin: '12px 0 0' }}>
                 Completion evidence
               </div>
               <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
@@ -873,10 +873,10 @@ function Section3Timeline({
                 ))}
               </div>
               <div style={{ marginTop: 12, padding: '10px 12px', background: '#F7F3EA', borderRadius: 10 }}>
-                <span style={{ color: GOLD_DEEP, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 10, fontWeight: 800 }}>
+                <span style={{ color: GOLD_DEEP, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '0.625rem', fontWeight: 800 }}>
                   Success metric
                 </span>
-                <span style={{ display: 'block', marginTop: 2, fontSize: 13, color: INK, lineHeight: 1.45 }}>
+                <span style={{ display: 'block', marginTop: 2, fontSize: '0.8125rem', color: INK, lineHeight: 1.45 }}>
                   {[
                     'Your first approved artifact is published and in use by the team.',
                     'One AI-assisted workflow runs end-to-end with evidenced human review.',
@@ -901,8 +901,8 @@ function Section3Timeline({
 function ActionChip({ label, value }: { label: string; value: string }): JSX.Element {
   return (
     <span style={{ display: 'inline-flex', flexDirection: 'column', gap: 1, border: `1px solid ${LINE}`, borderRadius: 10, padding: '6px 12px' }}>
-      <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A7A2F' }}>{label}</span>
-      <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>{value}</span>
+      <span style={{ fontSize: '0.5938rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A7A2F' }}>{label}</span>
+      <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: INK }}>{value}</span>
     </span>
   );
 }
@@ -921,7 +921,7 @@ function SectionActionPlan({
         <Label>Action plan</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 14px',
@@ -939,11 +939,11 @@ function SectionActionPlan({
             const a = ACTION_FOR[d.key];
             return (
               <div key={d.key} style={{ background: 'white', border: `1px solid ${LINE}`, borderRadius: 18, padding: 18 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+                <div style={{ fontSize: '0.6563rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
                   Move {i + 1} · {d.label}
                 </div>
-                <b style={{ display: 'block', fontSize: 18, letterSpacing: '-0.01em', margin: '6px 0 0' }}>{a.what}</b>
-                <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 14, lineHeight: 1.5 }}>
+                <b style={{ display: 'block', fontSize: '1.125rem', letterSpacing: '-0.01em', margin: '6px 0 0' }}>{a.what}</b>
+                <p style={{ margin: '8px 0 0', color: SLATE, fontSize: '0.875rem', lineHeight: 1.5 }}>
                   <b style={{ color: INK }}>Why:</b> {a.why}
                 </p>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
@@ -978,7 +978,7 @@ function SectionRootCause({
         <Label>Root cause analysis</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 14px',
@@ -1014,12 +1014,12 @@ function SectionRootCause({
                     flexWrap: 'wrap',
                   }}
                 >
-                  <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>
+                  <b style={{ fontSize: '1.125rem', letterSpacing: '-0.01em' }}>
                     {d.label} scored {d.score}/100 because:
                   </b>
                   <span
                     style={{
-                      fontSize: 11,
+                      fontSize: '0.6875rem',
                       fontWeight: 800,
                       letterSpacing: '0.1em',
                       textTransform: 'uppercase',
@@ -1033,7 +1033,7 @@ function SectionRootCause({
                   {rc.reasons.map((r) => (
                     <li
                       key={r}
-                      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: SLATE, fontSize: 14, lineHeight: 1.5 }}
+                      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', color: SLATE, fontSize: '0.875rem', lineHeight: 1.5 }}
                     >
                       <span style={{ color: GOLD, fontWeight: 900, flex: 'none' }}>—</span>
                       <span>{r}</span>
@@ -1052,10 +1052,10 @@ function SectionRootCause({
 function SnapField({ label, value }: { label: string; value: string }): JSX.Element {
   return (
     <div style={{ padding: '14px 18px', borderRight: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
-      <div style={{ color: '#9A7A2F', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+      <div style={{ color: '#9A7A2F', fontSize: '0.625rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
         {label}
       </div>
-      <div style={{ marginTop: 5, fontSize: 14, lineHeight: 1.4, color: INK }}>{value}</div>
+      <div style={{ marginTop: 5, fontSize: '0.875rem', lineHeight: 1.4, color: INK }}>{value}</div>
     </div>
   );
 }
@@ -1093,7 +1093,7 @@ function SectionLearning({
         <Label>Learning recommendations</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 14px',
@@ -1126,7 +1126,7 @@ function SectionLearning({
               <span
                 style={{
                   flex: 'none',
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 800,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -1139,10 +1139,10 @@ function SectionLearning({
                 Priority {i + 1}
               </span>
               <div>
-                <b style={{ display: 'block', fontSize: 16 }}>
+                <b style={{ display: 'block', fontSize: '1rem' }}>
                   Module {m.number} · {m.title}
                 </b>
-                <span style={{ display: 'block', color: SLATE, fontSize: 13.5, marginTop: 3 }}>{m.why}</span>
+                <span style={{ display: 'block', color: SLATE, fontSize: '0.8438rem', marginTop: 3 }}>{m.why}</span>
               </div>
             </Link>
           ))}
@@ -1150,7 +1150,7 @@ function SectionLearning({
         <div style={{ marginTop: 22 }}>
           <Label>Recommended playbooks</Label>
           <div style={{ marginTop: 12 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+            <div style={{ fontSize: '0.6563rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
               Matched to your role
             </div>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 8 }}>
@@ -1167,7 +1167,7 @@ function SectionLearning({
           </div>
           {gapPlaybooks.length > 0 && (
             <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
+              <div style={{ fontSize: '0.6563rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: GOLD_DEEP }}>
                 Matched to your top gaps
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 8 }}>
@@ -1211,7 +1211,7 @@ function SectionWorkProducts({
         <Label>Generated work products</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 14px',
@@ -1263,11 +1263,11 @@ function WorkProductCard({
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'baseline' }}>
-        <b style={{ fontSize: 18, letterSpacing: '-0.01em' }}>{product.name}</b>
+        <b style={{ fontSize: '1.125rem', letterSpacing: '-0.01em' }}>{product.name}</b>
         {recommended && (
           <span
             style={{
-              fontSize: 10.5,
+              fontSize: '0.6563rem',
               fontWeight: 800,
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
@@ -1281,14 +1281,14 @@ function WorkProductCard({
           </span>
         )}
       </div>
-      <p style={{ margin: '6px 0 0', color: SLATE, fontSize: 14, lineHeight: 1.5 }}>{product.intent}</p>
-      <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 13 }}>
+      <p style={{ margin: '6px 0 0', color: SLATE, fontSize: '0.875rem', lineHeight: 1.5 }}>{product.intent}</p>
+      <p style={{ margin: '8px 0 0', color: SLATE, fontSize: '0.8125rem' }}>
         <b style={{ color: INK }}>Use before:</b> {product.useBefore}
       </p>
       {open && (
         <div style={{ marginTop: 12 }}>
           <PromptBlock text={product.copyPrompt} stretch />
-          <p style={{ margin: '8px 0 0', color: SLATE, fontSize: 12.5 }}>{product.copyRule}</p>
+          <p style={{ margin: '8px 0 0', color: SLATE, fontSize: '0.7813rem' }}>{product.copyRule}</p>
         </div>
       )}
       <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
@@ -1328,7 +1328,7 @@ function AddAllToToolbox({
     borderRadius: 12,
     padding: '11px 18px',
     fontWeight: 800,
-    fontSize: 13,
+    fontSize: '0.8125rem',
     textDecoration: 'none',
     cursor: 'pointer',
     display: 'inline-flex',
@@ -1408,7 +1408,7 @@ function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
         <Label>Reviewer packet</Label>
         <h2
           style={{
-            fontSize: 'clamp(30px, 3vw, 46px)',
+            fontSize: 'clamp(1.875rem, 3vw, 2.875rem)',
             lineHeight: 1,
             letterSpacing: '-0.045em',
             margin: '6px 0 14px',
@@ -1452,7 +1452,7 @@ function Section4Packet({ packet }: { packet: ActionPacket }): JSX.Element {
               </span>
               <div>
                 <b style={{ display: 'block' }}>{item.name}</b>
-                <p style={{ margin: '4px 0 0', color: SLATE, fontSize: 14 }}>{item.desc}</p>
+                <p style={{ margin: '4px 0 0', color: SLATE, fontSize: '0.875rem' }}>{item.desc}</p>
               </div>
             </div>
           ))}
@@ -1525,7 +1525,7 @@ function PlaybookCardEl({
           borderRadius: 999,
           background: CREAM,
           padding: '6px 9px',
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 900,
           color: GOLD_DEEP,
           marginBottom: 10,
@@ -1533,8 +1533,8 @@ function PlaybookCardEl({
       >
         {tag}
       </span>
-      <h3 style={{ fontSize: 18, margin: '0 0 6px', fontWeight: 800 }}>{label}</h3>
-      <p style={{ margin: 0, color: SLATE, fontSize: 14, lineHeight: 1.5 }}>{use}</p>
+      <h3 style={{ fontSize: '1.125rem', margin: '0 0 6px', fontWeight: 800 }}>{label}</h3>
+      <p style={{ margin: 0, color: SLATE, fontSize: '0.875rem', lineHeight: 1.5 }}>{use}</p>
     </a>
   );
 }
@@ -1591,7 +1591,7 @@ function NotesSection({
         <Label>My Notes</Label>
         <h2
           style={{
-            fontSize: 'clamp(28px, 2.6vw, 38px)',
+            fontSize: 'clamp(1.75rem, 2.6vw, 2.375rem)',
             lineHeight: 1.05,
             letterSpacing: '-0.04em',
             margin: '6px 0 10px',
@@ -1615,7 +1615,7 @@ function NotesSection({
             border: `1px solid ${LINE}`,
             borderRadius: 14,
             padding: '16px 18px',
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: INK,
             background: 'white',
@@ -1628,7 +1628,7 @@ function NotesSection({
           <p
             style={{
               marginTop: 8,
-              fontSize: 13,
+              fontSize: '0.8125rem',
               color: saveStatus === 'error' ? '#C0392B' : SLATE,
             }}
           >
@@ -1664,7 +1664,7 @@ function Section5ScoreAppendix({
         <Label>Score appendix</Label>
         <h2
           style={{
-            fontSize: 'clamp(28px, 2.6vw, 38px)',
+            fontSize: 'clamp(1.75rem, 2.6vw, 2.375rem)',
             lineHeight: 1.05,
             letterSpacing: '-0.04em',
             margin: '6px 0 14px',
@@ -1702,7 +1702,7 @@ function Section5ScoreAppendix({
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
                     <div
                       style={{
-                        fontSize: 11,
+                        fontSize: '0.6875rem',
                         fontWeight: 800,
                         letterSpacing: '0.12em',
                         textTransform: 'uppercase',
@@ -1711,7 +1711,7 @@ function Section5ScoreAppendix({
                     >
                       {DIMENSION_LABELS[key]}
                     </div>
-                    <span style={{ fontSize: 10.5, fontWeight: 800, color: SLATE, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <span style={{ fontSize: '0.6563rem', fontWeight: 800, color: SLATE, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       {t.tier}
                     </span>
                   </div>
@@ -1719,14 +1719,14 @@ function Section5ScoreAppendix({
                     <span
                       style={{
                         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                        fontSize: 26,
+                        fontSize: '1.625rem',
                         fontWeight: 800,
                         color: INK,
                       }}
                     >
                       {dim.score}
                     </span>
-                    <span style={{ fontSize: 12, color: SLATE }}>/ 100 · {t.target}</span>
+                    <span style={{ fontSize: '0.75rem', color: SLATE }}>/ 100 · {t.target}</span>
                   </div>
                   <div style={{ height: 6, background: '#EEF1F5', borderRadius: 999, marginTop: 10, overflow: 'hidden' }}>
                     <div
@@ -1738,7 +1738,7 @@ function Section5ScoreAppendix({
                       }}
                     />
                   </div>
-                  <p style={{ margin: '10px 0 0', color: SLATE, fontSize: 12.5, lineHeight: 1.45 }}>
+                  <p style={{ margin: '10px 0 0', color: SLATE, fontSize: '0.7813rem', lineHeight: 1.45 }}>
                     <b style={{ color: INK }}>Business impact:</b> {DIMENSION_BRIEF[key].risk}
                   </p>
                 </div>
@@ -1759,7 +1759,7 @@ function Footer({ profileId, email }: { profileId: string; email: string }): JSX
       style={{
         padding: '24px 30px 60px',
         color: SLATE_500,
-        fontSize: 12,
+        fontSize: '0.75rem',
         textAlign: 'center',
       }}
     >
@@ -1797,7 +1797,7 @@ function Label({
         color,
         textTransform: 'uppercase',
         letterSpacing: '0.16em',
-        fontSize: 10,
+        fontSize: '0.625rem',
         fontWeight: 900,
       }}
     >
@@ -1813,7 +1813,7 @@ const btnBase: React.CSSProperties = {
   cursor: 'pointer',
   textDecoration: 'none',
   display: 'inline-block',
-  fontSize: 14,
+  fontSize: '0.875rem',
 };
 const btnPrimary: React.CSSProperties = { ...btnBase, background: GOLD, color: INK };
 const btnDark: React.CSSProperties = { ...btnBase, background: INK, color: 'white' };
@@ -2037,7 +2037,7 @@ function PersonalizationStripe({
           color: GOLD_SOFT,
           textTransform: 'uppercase',
           letterSpacing: '0.18em',
-          fontSize: 10,
+          fontSize: '0.625rem',
           fontWeight: 900,
         }}
       >
@@ -2045,7 +2045,7 @@ function PersonalizationStripe({
       </div>
       <div
         style={{
-          fontSize: 22,
+          fontSize: '1.375rem',
           fontWeight: 800,
           letterSpacing: '-0.01em',
           marginTop: 4,
@@ -2082,7 +2082,7 @@ function AIExecSummary({ state }: { state: PersonalizationState }): JSX.Element 
           color: GOLD_DEEP,
           textTransform: 'uppercase',
           letterSpacing: '0.16em',
-          fontSize: 10,
+          fontSize: '0.625rem',
           fontWeight: 900,
         }}
       >
@@ -2090,7 +2090,7 @@ function AIExecSummary({ state }: { state: PersonalizationState }): JSX.Element 
       </div>
       <div
         style={{
-          fontSize: 15,
+          fontSize: '0.9375rem',
           color: INK,
           lineHeight: 1.65,
           marginTop: 8,

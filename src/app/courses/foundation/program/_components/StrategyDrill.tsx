@@ -15,7 +15,7 @@ import type { Activity } from '@content/courses/foundation-program';
 import { STRATEGIES, STRATEGY_DEFINITIONS, STRATEGY_ROUNDS, type Strategy } from '../_lib/strategyDrillData';
 
 const INK = '#071A2F';
-const GOLD_DEEP = '#9A7A2F';
+const GOLD_DEEP = 'var(--gold-deep, #7A5F1E)';
 const CREAM = 'var(--cream)'; // inherits the course soft-slate override (CourseShell)
 const LINE = 'rgba(7,26,47,.12)';
 const SLATE = '#475569';
@@ -99,10 +99,10 @@ export function StrategyDrill({
     return (
       <div style={card}>
         <div style={eyebrow}>Strategy drill · complete</div>
-        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           You can name the kind of work before you write. ✓
         </p>
-        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: 0 }}>
+        <p style={{ color: SLATE, fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
           Structured for new work, transformation to reshape, analysis to review, thinking to
           plan, template to repeat, sanitisation to protect. Next, build one in the Prompt
           Wizard below.
@@ -115,17 +115,17 @@ export function StrategyDrill({
     return (
       <div style={card}>
         <div style={eyebrow}>Strategy drill · {score}/{total}</div>
-        <p style={{ color: INK, fontSize: 17, fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
+        <p style={{ color: INK, fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.6, margin: '10px 0 4px' }}>
           {score === total ? 'Clean sweep.' : `You matched ${score} of ${total}.`}
         </p>
-        <p style={{ color: SLATE, fontSize: 16, lineHeight: 1.6, margin: '0 0 14px' }}>
+        <p style={{ color: SLATE, fontSize: '1rem', lineHeight: 1.6, margin: '0 0 14px' }}>
           Naming the kind of work is half of getting a clean result. Save this and move on to
           the Prompt Wizard.
         </p>
         <button type="button" onClick={submit} disabled={submitting} style={primaryBtn}>
           {submitting ? 'Saving…' : 'Save & continue'}
         </button>
-        {serverError && <p style={{ color: RED, fontSize: 14, marginTop: 10 }}>{serverError}</p>}
+        {serverError && <p style={{ color: RED, fontSize: '0.875rem', marginTop: 10 }}>{serverError}</p>}
       </div>
     );
   }
@@ -135,11 +135,11 @@ export function StrategyDrill({
   return (
     <div style={card}>
       <div style={eyebrow}>Strategy drill · {activity.title}</div>
-      <p style={{ color: SLATE, fontSize: 13, margin: '6px 0 12px' }}>
+      <p style={{ color: SLATE, fontSize: '0.8125rem', margin: '6px 0 12px' }}>
         Task {idx + 1} of {total} · score {score}
       </p>
 
-      <p style={{ color: INK, fontSize: 16, fontWeight: 700, lineHeight: 1.4, margin: '0 0 14px' }}>
+      <p style={{ color: INK, fontSize: '1rem', fontWeight: 700, lineHeight: 1.4, margin: '0 0 14px' }}>
         {round.task}
       </p>
 
@@ -158,7 +158,7 @@ export function StrategyDrill({
               disabled={answered}
               style={{
                 fontFamily: INTER,
-                fontSize: 16,
+                fontSize: '1rem',
                 fontWeight: 700,
                 color: INK,
                 background: bg,
@@ -173,7 +173,7 @@ export function StrategyDrill({
                 {reveal && (isAnswer ? '✓ ' : isPick ? '✗ ' : '')}
                 {s}
               </span>
-              <span style={{ display: 'block', marginTop: 4, fontSize: 12, fontWeight: 500, color: '#475569', lineHeight: 1.3 }}>
+              <span style={{ display: 'block', marginTop: 4, fontSize: '0.75rem', fontWeight: 500, color: '#475569', lineHeight: 1.3 }}>
                 {STRATEGY_DEFINITIONS[s]}
               </span>
             </button>
@@ -186,7 +186,7 @@ export function StrategyDrill({
           <p
             style={{
               color: INK,
-              fontSize: 16,
+              fontSize: '1rem',
               lineHeight: 1.6,
               background: CREAM,
               borderLeft: `3px solid ${pick === round.answer ? EMERALD : GOLD_DEEP}`,
@@ -215,7 +215,7 @@ const card: CSSProperties = {
 };
 const eyebrow: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 800,
   letterSpacing: '0.2em',
   textTransform: 'uppercase',
@@ -223,7 +223,7 @@ const eyebrow: CSSProperties = {
 };
 const primaryBtn: CSSProperties = {
   fontFamily: INTER,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 800,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',

@@ -43,7 +43,7 @@ export function WhereYoureGoing({
     >
       <div
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -57,7 +57,7 @@ export function WhereYoureGoing({
         id="where-going-heading"
         style={{
           margin: 0,
-          fontSize: 'clamp(24px, 2.4vw, 28px)',
+          fontSize: 'clamp(1.5rem, 2.4vw, 1.75rem)',
           fontWeight: 700,
           letterSpacing: '-0.015em',
           color: 'var(--ink)',
@@ -101,7 +101,7 @@ export function WhereYoureGoing({
                 borderRadius: 999,
                 background: 'var(--ink)',
                 color: 'var(--gold)',
-                fontSize: 14,
+                fontSize: '0.875rem',
                 fontWeight: 700,
                 letterSpacing: 0,
                 flex: 'none',
@@ -112,7 +112,7 @@ export function WhereYoureGoing({
             <div>
               <div
                 style={{
-                  fontSize: 16,
+                  fontSize: '1rem',
                   fontWeight: 700,
                   color: 'var(--ink)',
                   letterSpacing: '-0.005em',
@@ -122,7 +122,7 @@ export function WhereYoureGoing({
               </div>
               <div
                 style={{
-                  fontSize: 15,
+                  fontSize: '0.9375rem',
                   color: 'var(--slate-600)',
                   marginTop: 4,
                   lineHeight: 1.6,
@@ -141,7 +141,7 @@ export function WhereYoureGoing({
           <Link
             href="#full-curriculum"
             style={{
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

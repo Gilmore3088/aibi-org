@@ -29,7 +29,7 @@ export function ContextStrip() {
         </p>
         <Link
           href="/dashboard/toolbox?tab=toolbox"
-          className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]"
+          className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]"
         >
           Continue →
         </Link>

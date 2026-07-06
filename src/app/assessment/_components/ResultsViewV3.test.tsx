@@ -52,4 +52,38 @@ describe('ResultsViewV3', () => {
 
     expect(screen.queryByLabelText(/mission lens/i)).toBeNull();
   });
+
+  it('renders the staffing-reality stripe when an asset band was shared', () => {
+    render(
+      <ResultsViewV3
+        score={34}
+        tier={tier}
+        tierId={tier.id}
+        dimensionBreakdown={dimensionBreakdown()}
+        institutionName="First Federal Credit Union"
+        profileId={null}
+        assetBand="under-150m"
+      />,
+    );
+
+    expect(screen.getByTestId('staffing-reality')).toBeTruthy();
+    expect(screen.getByText(/for an institution under \$150M/i)).toBeTruthy();
+    expect(screen.getByText(/one named owner/i)).toBeTruthy();
+  });
+
+  it('renders nothing size-specific when the asset band was skipped', () => {
+    render(
+      <ResultsViewV3
+        score={34}
+        tier={tier}
+        tierId={tier.id}
+        dimensionBreakdown={dimensionBreakdown()}
+        institutionName="First Federal Credit Union"
+        profileId={null}
+        assetBand={null}
+      />,
+    );
+
+    expect(screen.queryByTestId('staffing-reality')).toBeNull();
+  });
 });

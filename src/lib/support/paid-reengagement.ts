@@ -284,7 +284,9 @@ async function fetchCandidateEnrollments(
   return (data ?? []) as unknown as PaidReengagementEnrollmentRow[];
 }
 
-async function fetchExistingSentDedupeKeys(
+// Shared with the certificate-transfer monitor — both campaigns dedupe
+// against the same paid_reengagement_events log.
+export async function fetchExistingSentDedupeKeys(
   client: ServiceClient,
   dedupeKeys: readonly string[],
 ): Promise<Set<string>> {

@@ -16,7 +16,7 @@ const card: CSSProperties = {
 };
 
 const fieldLabel: CSSProperties = {
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -25,7 +25,7 @@ const fieldLabel: CSSProperties = {
 };
 
 const fieldBody: CSSProperties = {
-  fontSize: 16,
+  fontSize: '1rem',
   lineHeight: 1.6,
   color: 'var(--ink)',
   margin: 0,
@@ -89,7 +89,7 @@ export function SubmissionArtifactHero() {
             borderRadius: 999,
             background: 'var(--gold-a20)',
             color: 'var(--gold-soft)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -103,7 +103,7 @@ export function SubmissionArtifactHero() {
         id="submit-artifact-heading"
         style={{
           fontWeight: 700,
-          fontSize: 'clamp(32px, 4.2vw, 48px)',
+          fontSize: 'clamp(2rem, 4.2vw, 3rem)',
           lineHeight: 1.06,
           letterSpacing: '-0.025em',
           margin: '0 0 14px',
@@ -115,7 +115,7 @@ export function SubmissionArtifactHero() {
 
       <p
         style={{
-          fontSize: 16,
+          fontSize: '1rem',
           lineHeight: 1.6,
           color: 'var(--gold-soft)',
           margin: '0 0 24px',
@@ -146,7 +146,7 @@ export function SubmissionArtifactHero() {
 
       <p
         style={{
-          fontSize: 13,
+          fontSize: '0.8125rem',
           color: 'var(--gold-soft)',
           margin: '20px 0 0',
           letterSpacing: '0.04em',

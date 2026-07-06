@@ -123,7 +123,7 @@ export function ModuleStartCommitment({
           style={{
             margin: 0,
             color: 'var(--gold-soft)',
-            fontSize: 11,
+            fontSize: '0.6875rem',
             fontWeight: 850,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -136,7 +136,7 @@ export function ModuleStartCommitment({
           style={{
             margin: 0,
             color: '#fff',
-            fontSize: 'clamp(21px, 2vw, 28px)',
+            fontSize: 'clamp(1.3125rem, 2vw, 1.75rem)',
             lineHeight: 1.08,
             letterSpacing: '-0.01em',
             fontWeight: 850,
@@ -144,7 +144,7 @@ export function ModuleStartCommitment({
         >
           Choose the work this module will improve.
         </h3>
-        <p style={{ margin: 0, color: 'rgba(255,255,255,0.72)', fontSize: 13.5, lineHeight: 1.42, fontWeight: 650 }}>
+        <p style={{ margin: 0, color: 'rgba(255,255,255,0.72)', fontSize: '0.8438rem', lineHeight: 1.42, fontWeight: 650 }}>
           Pick a safe, non-sensitive target. The lab, review note, and packet item will point back here.
         </p>
       </div>
@@ -164,7 +164,7 @@ export function ModuleStartCommitment({
             <span
               style={{
                 color: 'var(--slate-500)',
-                fontSize: 10,
+                fontSize: '0.625rem',
                 fontWeight: 850,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
@@ -189,7 +189,7 @@ export function ModuleStartCommitment({
                 color: 'var(--ink)',
                 padding: '12px 13px',
                 fontFamily: FONT_STACK,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 lineHeight: 1.45,
                 fontWeight: 650,
                 outlineColor: 'var(--gold-deep)',
@@ -213,7 +213,7 @@ export function ModuleStartCommitment({
                   padding: '0 11px',
                   textAlign: 'left',
                   fontFamily: FONT_STACK,
-                  fontSize: 11.5,
+                  fontSize: '0.7188rem',
                   lineHeight: 1.1,
                   fontWeight: 800,
                   cursor: 'pointer',
@@ -244,7 +244,7 @@ export function ModuleStartCommitment({
                 color: canSaveTarget ? '#fff' : 'var(--slate-500)',
                 padding: '0 15px',
                 fontFamily: FONT_STACK,
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 850,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -258,7 +258,7 @@ export function ModuleStartCommitment({
               data-testid="foundation-start-status"
               style={{
                 color: hasSavedTarget ? 'var(--emerald-700)' : 'var(--slate-500)',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 850,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -287,7 +287,7 @@ export function ModuleStartCommitment({
             style={{
               margin: 0,
               color: 'var(--gold-deep)',
-              fontSize: 10,
+              fontSize: '0.625rem',
               fontWeight: 850,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -308,7 +308,7 @@ export function ModuleStartCommitment({
               style={{
                 margin: '0 0 4px',
                 color: 'var(--slate-500)',
-                fontSize: 9.5,
+                fontSize: '0.5938rem',
                 fontWeight: 900,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
@@ -320,7 +320,7 @@ export function ModuleStartCommitment({
               style={{
                 margin: 0,
                 color: hasSavedTarget ? 'var(--ink)' : 'var(--slate-500)',
-                fontSize: 12.5,
+                fontSize: '0.7813rem',
                 lineHeight: 1.35,
                 fontWeight: 760,
               }}
@@ -343,7 +343,7 @@ export function ModuleStartCommitment({
                   style={{
                     margin: 0,
                     color: 'var(--gold-deep)',
-                    fontSize: 9.5,
+                    fontSize: '0.5938rem',
                     fontWeight: 900,
                     letterSpacing: '0.15em',
                     textTransform: 'uppercase',
@@ -360,7 +360,7 @@ export function ModuleStartCommitment({
                     overflow: 'hidden',
                     margin: 0,
                     color: 'var(--ink)',
-                    fontSize: 12.5,
+                    fontSize: '0.7813rem',
                     lineHeight: 1.28,
                     fontWeight: 760,
                   }}

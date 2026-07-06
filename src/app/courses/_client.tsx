@@ -8,6 +8,7 @@ export interface CoursesOverviewFacts {
   readonly moduleCount: number;
   readonly artifactCount: number;
   readonly individualPriceLabel: string;
+  readonly durationLabel?: string;
   readonly samplePacketSlots: readonly {
     readonly moduleNumber: number;
     readonly label: string;
@@ -171,12 +172,12 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
               <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
                 Enroll · {facts.individualPriceLabel} <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-dark" size="lg" href="#lesson-preview">
-                Preview a lesson
+              <Button variant="ghost-dark" size="lg" href="/courses/foundation/preview">
+                Preview Module 1 free
               </Button>
             </div>
             <p className="mk-course-proofline">
-              {facts.moduleCount} modules · {facts.artifactCount}-piece Foundation Packet · reviewed work products · completion record
+              {facts.moduleCount} modules · {facts.durationLabel ?? 'self-paced'} · {facts.artifactCount}-piece Foundation Packet · reviewed work products
             </p>
           </div>
 

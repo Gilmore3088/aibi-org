@@ -157,7 +157,7 @@ function SampleDataViewer({
           <thead className="sticky top-0 bg-[color:#FFFFFF]">
             <tr>
               {headers.map((h, i) => (
-                <th key={i} className="px-3 py-2 font-mono text-[9px] uppercase tracking-wider text-[color:var(--slate-600)] border-b border-[color:var(--ink)]/10 whitespace-nowrap">
+                <th key={i} className="px-3 py-2 font-mono text-[0.5625rem] uppercase tracking-wider text-[color:var(--slate-600)] border-b border-[color:var(--ink)]/10 whitespace-nowrap">
                   {h.trim()}
                 </th>
               ))}
@@ -195,7 +195,7 @@ function SampleDataViewer({
           </p>
         ))}
         {remaining > 0 && (
-          <p className="font-mono text-[9px] text-[color:var(--slate-600)] uppercase tracking-wider mt-2">
+          <p className="font-mono text-[0.5625rem] text-[color:var(--slate-600)] uppercase tracking-wider mt-2">
             + {remaining} more lines loaded into AI context
           </p>
         )}
@@ -248,7 +248,7 @@ function SampleDataViewer({
                 <button
                   type="button"
                   onClick={() => onSendToChat(`Analyze Scenario: ${card.title}\n\n${card.body}`)}
-                  className="font-sans text-[10px] font-semibold uppercase tracking-[1.2px] rounded-[2px] px-3 py-1.5 transition-colors hover:opacity-80"
+                  className="font-sans text-[0.625rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] px-3 py-1.5 transition-colors hover:opacity-80"
                   style={{ color: 'var(--cream)', backgroundColor: accentColor }}
                 >
                   Ask AI about this
@@ -281,6 +281,8 @@ export function AIPracticeSandbox({
   const [dataContent, setDataContent] = useState<string | null>(null);
   const [piiWarning, setPiiWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Optional recovery link rendered next to the error (sign-in / support).
+  const [errorAction, setErrorAction] = useState<{ label: string; href: string } | null>(null);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [selectedModel, setSelectedModel] = useState({
     provider: DEFAULT_MODEL.provider,
@@ -369,9 +371,12 @@ export function AIPracticeSandbox({
     {
       label: 'Run',
       body: 'Run one guided start',
-      status: promptPrepared
+      // Done only when a run actually produced output — a failed request must
+      // never show the step as complete (persona audit: 401 left RUN ✓ while
+      // the review panel still said "Run lab first").
+      status: assistantOutputReady
         ? 'done'
-        : predictionReady && dataReady
+        : promptPrepared || (predictionReady && dataReady)
           ? 'current'
           : 'pending',
     },
@@ -550,6 +555,7 @@ export function AIPracticeSandbox({
 
     if (!predictionReady) {
       setError('Save a prediction before running the lab.');
+      setErrorAction(null);
       return;
     }
 
@@ -563,10 +569,12 @@ export function AIPracticeSandbox({
     // Message limit guard
     if (messageCount >= MAX_MESSAGES) {
       setError('Message limit reached. Download your conversation and reset to continue.');
+      setErrorAction(null);
       return;
     }
 
     setError(null);
+    setErrorAction(null);
     setReviewedItems([]);
     setArtifactSavedAt(null);
     const userMessage: SandboxMessage = { role: 'user', content: trimmed };
@@ -593,8 +601,28 @@ export function AIPracticeSandbox({
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.error ?? `Request failed (${response.status})`);
+        const errorData = (await response.json().catch(() => null)) as { error?: string } | null;
+        // Map auth/entitlement statuses to actionable copy + a recovery link
+        // instead of the raw backend string (persona audit: bare
+        // "Authentication required.").
+        if (response.status === 401) {
+          setErrorAction({ label: 'Go to sign-in', href: '/auth/login' });
+          throw new Error(
+            'Sign in to run the lab — your session has expired or you are not signed in on this device.',
+          );
+        }
+        if (response.status === 403) {
+          setErrorAction({ label: 'Get purchase help', href: '/support/purchase-help' });
+          throw new Error(
+            'The lab needs an active course enrollment. If you purchased the course and still see this, purchase help can restore your access.',
+          );
+        }
+        if (response.status === 429) {
+          throw new Error(
+            errorData?.error ?? 'You have hit the lab message limit for now — take a break and try again shortly.',
+          );
+        }
+        throw new Error(errorData?.error ?? `The lab could not run (error ${response.status}). Try again in a moment.`);
       }
 
       if (!response.body) {
@@ -673,6 +701,7 @@ export function AIPracticeSandbox({
     setMessages([]);
     setMessageCount(0);
     setError(null);
+    setErrorAction(null);
     setInput('');
     setPiiWarning(null);
     setReviewedItems([]);
@@ -727,7 +756,7 @@ export function AIPracticeSandbox({
           >
             {messageCount}/{MAX_MESSAGES}
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
             Messages used
           </span>
         </div>
@@ -756,12 +785,12 @@ export function AIPracticeSandbox({
             }}
           >
             <div className="flex items-center justify-between gap-2">
-              <p className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+              <p className="font-mono text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
                 {index + 1}. {step.label}
               </p>
               <span
                 aria-label={`${step.label} ${step.status}`}
-                className="inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.8px]"
+                className="inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.8px]"
                 style={{
                   background: step.status === 'done' ? 'var(--gold)' : step.status === 'current' ? 'var(--ink)' : 'var(--ink-a10)',
                   color: step.status === 'done' ? 'var(--ink)' : step.status === 'current' ? '#FFFFFF' : 'var(--slate-600)',
@@ -787,7 +816,7 @@ export function AIPracticeSandbox({
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+                <p className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
                   Calibration
                 </p>
                 <h4
@@ -798,7 +827,7 @@ export function AIPracticeSandbox({
                 </h4>
               </div>
               <span
-                className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[1.2px]"
+                className="rounded-full px-3 py-1 font-mono text-[0.625rem] font-bold uppercase tracking-[1.2px]"
                 style={{
                   background: savedPrediction ? 'var(--gold-a20)' : 'var(--cream-2)',
                   color: savedPrediction ? 'var(--gold-deep)' : 'var(--slate-600)',
@@ -831,7 +860,7 @@ export function AIPracticeSandbox({
           <div className="rounded-[12px] border border-[color:var(--ink)]/10 bg-[color:var(--cream-2)] p-3">
             <label
               htmlFor={`aibi-lab-prediction-${moduleId}`}
-              className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]"
+              className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]"
             >
               My prediction
             </label>
@@ -851,7 +880,7 @@ export function AIPracticeSandbox({
                 type="button"
                 onClick={() => savePrediction()}
                 disabled={!prediction.trim()}
-                className="rounded-[10px] bg-[color:var(--ink)] px-3 py-2 font-sans text-[11px] font-bold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--gold-deep)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-[10px] bg-[color:var(--ink)] px-3 py-2 font-sans text-[0.6875rem] font-bold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--gold-deep)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Save prediction
               </button>
@@ -868,13 +897,13 @@ export function AIPracticeSandbox({
       {/* Provider/model selector */}
       <details className="aibi-lab-model-details mb-4 rounded-[14px] border border-[color:var(--ink)]/10 bg-[color:var(--cream-2)]">
         <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <span className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
             Model settings
           </span>
           <span className="font-sans text-sm font-semibold text-[color:var(--ink)]">
             {selectedModelMeta.displayName}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
             Optional
           </span>
         </summary>
@@ -911,7 +940,7 @@ export function AIPracticeSandbox({
       <div className="mb-4 rounded-[14px] border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <p className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+            <p className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
               Sample data
             </p>
             <p className="mt-1 font-sans text-sm font-semibold text-[color:var(--ink)]">
@@ -926,7 +955,7 @@ export function AIPracticeSandbox({
               <select
                 value={selectedDataIndex}
                 onChange={(e) => setSelectedDataIndex(Number(e.target.value))}
-                className="rounded-[10px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] px-2 py-1.5 font-mono text-[11px] text-[color:var(--ink)] focus:outline-none focus:ring-1"
+                className="rounded-[10px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] px-2 py-1.5 font-mono text-[0.6875rem] text-[color:var(--ink)] focus:outline-none focus:ring-1"
                 style={{ focusRingColor: accentColor } as React.CSSProperties}
                 aria-label="Select sample dataset"
               >
@@ -940,7 +969,7 @@ export function AIPracticeSandbox({
             <a
               href={selectedDataPath}
               download
-              className="rounded-[10px] border border-[color:var(--ink)]/10 bg-white px-3 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
+              className="rounded-[10px] border border-[color:var(--ink)]/10 bg-white px-3 py-1.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
             >
               Download
             </a>
@@ -956,13 +985,13 @@ export function AIPracticeSandbox({
                 textareaRef.current?.focus();
               }}
               disabled={!dataContent}
-              className="rounded-[10px] border border-[color:var(--gold)] bg-white px-3 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--gold-deep)] transition-colors hover:bg-[color:var(--cream-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:opacity-40"
+              className="rounded-[10px] border border-[color:var(--gold)] bg-white px-3 py-1.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--gold-deep)] transition-colors hover:bg-[color:var(--cream-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:opacity-40"
             >
               Use in lab
             </button>
             <button
               onClick={() => setDataExpanded((prev) => !prev)}
-              className="rounded-[10px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] transition-colors hover:bg-[color:#FFFFFF] focus:outline-none focus:ring-1"
+              className="rounded-[10px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] transition-colors hover:bg-[color:#FFFFFF] focus:outline-none focus:ring-1"
               style={{ color: accentColor }}
               aria-label={dataExpanded ? 'Hide sample data' : 'View sample data'}
               aria-expanded={dataExpanded}
@@ -995,7 +1024,7 @@ export function AIPracticeSandbox({
       {messages.length === 0 && !dataExpanded && (
         <div className="mb-4">
           <div className="mb-2 flex items-baseline justify-between gap-3">
-            <p className="font-mono text-[11px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
               Guided lab starts
             </p>
             <p className="font-sans text-xs font-semibold text-[color:var(--slate-600)]">
@@ -1005,7 +1034,7 @@ export function AIPracticeSandbox({
           {roleStarts.length > 0 && (
             <div className="mb-3 rounded-[12px] border border-[color:var(--ink)]/10 bg-[color:var(--cream-2)] p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="m-0 font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+                <p className="m-0 font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
                   Role starts
                 </p>
                 <p className="m-0 font-sans text-xs font-semibold text-[color:var(--slate-600)]">
@@ -1035,7 +1064,7 @@ export function AIPracticeSandbox({
                   key={idx}
                   className="aibi-lab-prompt-card rounded-[12px] border border-[color:var(--ink)]/10 bg-[color:#FFFFFF] p-3 transition-colors hover:border-[color:var(--gold)]"
                 >
-                  <p className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+                  <p className="font-mono text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
                     Start {idx + 1}
                   </p>
                   <h4 className="mt-1 font-sans text-base font-bold leading-tight text-[color:var(--ink)]">
@@ -1049,12 +1078,12 @@ export function AIPracticeSandbox({
                       type="button"
                       onClick={() => handlePromptClick(prompt)}
                       disabled={!predictionReady}
-                      className="min-h-[44px] rounded-[10px] bg-[color:var(--ink)] px-3 py-2 font-sans text-[11px] font-bold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--gold-deep)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="min-h-[44px] rounded-[10px] bg-[color:var(--ink)] px-3 py-2 font-sans text-[0.6875rem] font-bold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--gold-deep)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       {predictionReady ? 'Use this start' : 'Predict first'}
                     </button>
                     <details className="group">
-                      <summary className="flex min-h-[44px] cursor-pointer list-none items-center rounded-[10px] border border-[color:var(--ink)]/10 px-3 py-2 font-sans text-[11px] font-bold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]">
+                      <summary className="flex min-h-[44px] cursor-pointer list-none items-center rounded-[10px] border border-[color:var(--ink)]/10 px-3 py-2 font-sans text-[0.6875rem] font-bold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]">
                         Prompt
                       </summary>
                       <p className="mt-2 rounded-[10px] border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-3 font-sans text-xs font-semibold leading-relaxed text-[color:var(--ink)]">
@@ -1100,7 +1129,7 @@ export function AIPracticeSandbox({
                 >
                   {msg.role === 'assistant' && (
                     <div className="mb-1 flex items-center justify-between gap-3">
-                      <span className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
+                      <span className="font-mono text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)]">
                         {selectedModelMeta.displayName}
                       </span>
                       {msg.content && (
@@ -1112,7 +1141,7 @@ export function AIPracticeSandbox({
                               handleSendToArtifact(msg.content);
                             }}
                             disabled={!reviewComplete}
-                            className="rounded-[2px] font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)] hover:text-[color:var(--ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-[color:var(--gold-deep)]"
+                            className="rounded-[2px] font-mono text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)] hover:text-[color:var(--ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-[color:var(--gold-deep)]"
                             aria-label={
                               reviewComplete
                                 ? 'Send this response to the module artifact draft'
@@ -1124,7 +1153,7 @@ export function AIPracticeSandbox({
                           <button
                             type="button"
                             onClick={() => handleCopy(msg.content, idx)}
-                            className="font-mono text-[9px] uppercase tracking-[1.2px] text-[color:var(--slate-600)] hover:text-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 rounded-[2px]"
+                            className="font-mono text-[0.5625rem] uppercase tracking-[1.2px] text-[color:var(--slate-600)] hover:text-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-1 rounded-[2px]"
                             aria-label={copiedIdx === idx ? 'Copied to clipboard' : 'Copy response to clipboard'}
                           >
                             {copiedIdx === idx ? 'Copied' : 'Copy'}
@@ -1154,6 +1183,17 @@ export function AIPracticeSandbox({
       {error && (
         <p className="mb-3 font-sans text-sm text-[color:#9b2226]" role="alert">
           {error}
+          {errorAction && (
+            <>
+              {' '}
+              <a
+                href={errorAction.href}
+                className="font-semibold underline underline-offset-2 text-[color:#9b2226]"
+              >
+                {errorAction.label}
+              </a>
+            </>
+          )}
         </p>
       )}
 
@@ -1161,7 +1201,7 @@ export function AIPracticeSandbox({
         <div className="mb-4 rounded-[14px] border border-[color:var(--ink)]/10 bg-[color:var(--cream-2)] p-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
+              <p className="font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]">
                 Output review
               </p>
               <p className="mt-1 font-sans text-sm font-semibold text-[color:var(--ink)]">
@@ -1169,7 +1209,7 @@ export function AIPracticeSandbox({
               </p>
             </div>
             <span
-              className="rounded-full bg-[color:var(--gold-a20)] px-3 py-1 font-mono text-[10px] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]"
+              className="rounded-full bg-[color:var(--gold-a20)] px-3 py-1 font-mono text-[0.625rem] uppercase tracking-[1.2px] text-[color:var(--gold-deep)]"
               aria-live="polite"
             >
               {reviewStatusLabel}
@@ -1194,7 +1234,7 @@ export function AIPracticeSandbox({
                 />
                 <span
                   aria-hidden="true"
-                  className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border border-[color:var(--gold)] font-mono text-[11px] font-bold text-[color:var(--ink)]"
+                  className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] border border-[color:var(--gold)] font-mono text-[0.6875rem] font-bold text-[color:var(--ink)]"
                   style={{
                     background: reviewedItems.includes(item) ? 'var(--gold)' : '#FFFFFF',
                   }}
@@ -1246,7 +1286,7 @@ export function AIPracticeSandbox({
           <button
             onClick={sendMessage}
             disabled={streaming || !input.trim() || piiWarning !== null || !predictionReady}
-            className="rounded-[2px] px-5 py-2.5 font-sans text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-[2px] px-5 py-2.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-white transition-colors focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
             style={{
               backgroundColor: accentColor,
               ['--tw-ring-color' as string]: accentColor,
@@ -1270,7 +1310,7 @@ export function AIPracticeSandbox({
         <button
           onClick={downloadConversation}
           disabled={messages.length === 0}
-          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[0.6875rem] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
           style={{ ['--tw-ring-color' as string]: accentColor }}
           aria-label="Download conversation as markdown"
         >
@@ -1279,7 +1319,7 @@ export function AIPracticeSandbox({
         <button
           onClick={resetChat}
           disabled={messages.length === 0}
-          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[11px] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-[2px] border border-[color:var(--ink)]/10 px-3 py-1.5 font-serif-sc text-[0.6875rem] uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)] focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-40"
           style={{ ['--tw-ring-color' as string]: accentColor }}
           aria-label="Reset conversation"
         >

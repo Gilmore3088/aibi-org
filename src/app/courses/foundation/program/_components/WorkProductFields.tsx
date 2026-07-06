@@ -115,7 +115,7 @@ export function TextAreaField({
         aria-invalid={hasError}
         aria-required
       />
-      <p id={hintId} className="mt-1 text-[11px] font-sans text-[color:var(--slate-500)]">
+      <p id={hintId} className="mt-1 text-[0.6875rem] font-sans text-[color:var(--slate-500)]">
         {value.length}/{minLength} characters minimum
       </p>
       {hasError && (

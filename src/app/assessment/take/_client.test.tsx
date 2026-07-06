@@ -85,7 +85,9 @@ describe('AssessmentPage resume recovery', () => {
     expect(screen.getByText('Question 2 of 12')).toBeTruthy();
     expect(screen.getByText(/1 of 12 answered .* save your place anytime/i)).toBeTruthy();
     expect(await screen.findByRole('link', { name: /email resume link/i })).toBeTruthy();
-    fireEvent.change(screen.getByLabelText(/email yourself a resume link/i), {
+    // The resume form is collapsed by default — open it first.
+    fireEvent.click(screen.getByText(/need to finish later\? email yourself a resume link/i));
+    fireEvent.change(screen.getByLabelText(/email for the resume link/i), {
       target: { value: 'CRO@Bank.test' },
     });
     fireEvent.click(screen.getByRole('button', { name: 'Send' }));

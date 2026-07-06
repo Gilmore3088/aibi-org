@@ -44,7 +44,7 @@ export default function VerifyCertificateLookupPage() {
             style={{
               margin: 0,
               fontFamily: 'var(--font-inter)',
-              fontSize: 11,
+              fontSize: '0.6875rem',
               fontWeight: 800,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -60,7 +60,7 @@ export default function VerifyCertificateLookupPage() {
               display: 'grid',
               gap: 10,
               fontFamily: 'var(--font-inter)',
-              fontSize: 14,
+              fontSize: '0.875rem',
               lineHeight: 1.6,
               color: 'rgba(255,255,255,0.82)',
             }}
@@ -76,7 +76,7 @@ export default function VerifyCertificateLookupPage() {
           kicker: 'Lookup',
           heading: <>Enter the certificate ID</>,
           lede:
-            'Certificate IDs use the AIBIP-year-code format. If the ID is not found, ask the certificate holder to confirm the exact ID printed on their credential.',
+            'Certificate IDs use the AIBIP-year-code format — the field below shows an example (AIBIP-2026-ABC234). If the ID is not found, ask the certificate holder to confirm the exact ID printed on their credential.',
           body: <VerifyLookupForm />,
           surface: 'white',
         },

@@ -153,7 +153,7 @@ export function InDepthRunner(): React.ReactElement {
       <main className="min-h-screen">
         <ProgressBar progress={0} />
         <div className="px-6 py-12 md:py-16 max-w-4xl mx-auto">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
+          <p className="text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--gold)] mb-3 font-semibold">
             Before we begin
           </p>
           <h1 className="text-3xl md:text-5xl text-[color:var(--ink)] leading-[1.02] tracking-tight">
@@ -203,7 +203,7 @@ export function InDepthRunner(): React.ReactElement {
                         </span>
                       </div>
                       {selected && (
-                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[11px] font-bold">
+                        <span className="flex-none w-5 h-5 grid place-items-center rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[0.6875rem] font-bold">
                           ✓
                         </span>
                       )}
@@ -219,14 +219,14 @@ export function InDepthRunner(): React.ReactElement {
               type="button"
               onClick={() => commitRolePick(role)}
               disabled={role === null}
-              className="text-[11px] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
+              className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] rounded-[1px] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[color:var(--gold-2)] transition-colors"
             >
               Begin assessment →
             </button>
             <button
               type="button"
               onClick={() => commitRolePick(null)}
-              className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 hover:text-[color:var(--ink)] border-b border-[color:var(--ink)]/30 hover:border-[color:var(--ink)] pb-0.5"
+              className="text-[0.6875rem] uppercase tracking-[0.18em] text-[color:var(--ink)]/60 hover:text-[color:var(--ink)] border-b border-[color:var(--ink)]/30 hover:border-[color:var(--ink)] pb-0.5"
             >
               Skip for now
             </button>

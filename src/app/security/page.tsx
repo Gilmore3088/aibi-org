@@ -61,7 +61,7 @@ export default function SecurityPage() {
     <MockupShell
       activePath="/security"
       cta={{ label: 'Get In-Depth report', href: '/assessment/in-depth' }}
-      eyebrow="Security & Governance · Free guide"
+      eyebrow="Security & Governance"
       title={<>Set the AI boundary before staff use it.</>}
       lede={
         <>
@@ -71,48 +71,71 @@ export default function SecurityPage() {
       }
       heroAside={
         <aside
+          data-testid="security-posture-card"
+          aria-label="Security posture at a glance"
           style={{
             background: 'rgba(255,255,255,0.06)',
             border: '1px solid rgba(255,255,255,0.18)',
             borderRadius: 24,
             padding: 28,
             color: '#fff',
+            display: 'grid',
+            gap: 14,
           }}
         >
           <p
             style={{
-              fontSize: 12,
+              fontSize: '0.6875rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
               color: 'var(--gold-soft)',
-              margin: '0 0 12px',
+              margin: 0,
             }}
           >
-            Free download
+            Posture at a glance
           </p>
-          <h2
+          <ul
             style={{
-              fontSize: 28,
-              fontWeight: 600,
-              lineHeight: 1.15,
-              margin: '0 0 12px',
-              color: '#fff',
-            }}
-          >
-            The Safe AI Use Guide.
-          </h2>
-          <p
-            style={{
-              fontSize: 14,
+              margin: 0,
+              paddingLeft: 18,
+              display: 'grid',
+              gap: 10,
+              fontSize: '0.875rem',
               lineHeight: 1.6,
               color: 'rgba(255,255,255,0.82)',
-              margin: '0 0 20px',
             }}
           >
-            Six one-page decisions for community banks and credit unions.
+            <li>
+              Practice runs on synthetic or sanitized banking examples — no
+              customer records needed.
+            </li>
+            <li>
+              Learner AI calls use paid API paths; usage logs store metadata,
+              never raw prompt text.
+            </li>
+            <li>
+              Written to hold up in SR 11-7, Interagency TPRM, and ECOA / Reg B
+              conversations.
+            </li>
+          </ul>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '0.8125rem',
+              fontWeight: 700,
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '6px 18px',
+            }}
+          >
+            <Link href="/security/data-handling" style={{ color: 'var(--gold-soft)' }}>
+              LLM data-handling summary →
+            </Link>
+            <Link href="/security/it-approval" style={{ color: 'var(--gold-soft)' }}>
+              IT review packet →
+            </Link>
           </p>
-          <GuideRequestForm />
         </aside>
       }
       sections={[
@@ -142,7 +165,43 @@ export default function SecurityPage() {
           ),
         },
         {
-          kicker: '§02 · Regulatory alignment',
+          kicker: '§02 · Get the guide',
+          heading: <>Request the Safe AI Use Guide.</>,
+          lede: (
+            <>
+              Six one-page decisions for community banks and credit unions. The
+              PDF downloads immediately and a copy is emailed to you.
+            </>
+          ),
+          body: (
+            <div
+              data-testid="security-guide-form-section"
+              style={{
+                background: 'var(--ink)',
+                borderRadius: 24,
+                padding: 'clamp(24px, 4vw, 40px)',
+                maxWidth: 720,
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '0.6875rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-soft)',
+                  margin: '0 0 16px',
+                }}
+              >
+                Free download
+              </p>
+              <GuideRequestForm />
+            </div>
+          ),
+          surface: 'white',
+        },
+        {
+          kicker: '§03 · Regulatory alignment',
           heading: <>The guide maps staff practice to public source vocabulary.</>,
           body: (
             <div className="mk-reg-ref-grid">
@@ -154,7 +213,7 @@ export default function SecurityPage() {
           surface: 'cream',
         },
         {
-          kicker: '§03 · Data handling',
+          kicker: '§04 · Data handling',
           heading: <>Practice with synthetic data. Keep customer data out of prompts.</>,
           lede: (
             <>
@@ -180,7 +239,7 @@ export default function SecurityPage() {
           surface: 'white',
         },
         {
-          kicker: '§04 · Not just a PDF',
+          kicker: '§05 · Not just a PDF',
           heading: (
             <>The guide is the starting point. The engagement is how it gets operationalized.</>
           ),

@@ -36,7 +36,7 @@ const ctaPrimary: React.CSSProperties = {
   background: 'var(--gold)',
   color: 'var(--ink)',
   fontFamily: fontStack,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -53,7 +53,7 @@ const ctaSecondary: React.CSSProperties = {
   background: 'transparent',
   color: 'var(--ink)',
   fontFamily: fontStack,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -65,7 +65,7 @@ const ctaSecondary: React.CSSProperties = {
 
 const eyebrow: React.CSSProperties = {
   fontFamily: fontStack,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -345,7 +345,7 @@ function CompletionDebrief({
           <h3
             style={{
               fontFamily: fontStack,
-              fontSize: 'clamp(22px, 2.2vw, 30px)',
+              fontSize: 'clamp(1.375rem, 2.2vw, 1.875rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.015em',
               color: 'var(--ink)',
@@ -358,7 +358,7 @@ function CompletionDebrief({
             <p
               style={{
                 fontFamily: fontStack,
-                fontSize: 15,
+                fontSize: '0.9375rem',
                 fontWeight: 650,
                 lineHeight: 1.45,
                 color: 'var(--slate-600)',
@@ -372,7 +372,7 @@ function CompletionDebrief({
             aria-live="polite"
             style={{
               fontFamily: fontStack,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 850,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -420,7 +420,7 @@ function CompletionDebrief({
                     margin: 0,
                     color: 'var(--ink)',
                     fontFamily: fontStack,
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                     fontWeight: 725,
                     lineHeight: 1.4,
                   }}
@@ -465,7 +465,7 @@ function CompletionDebrief({
                   color: 'var(--ink)',
                   border: isChecked ? '1px solid var(--gold)' : '1px solid var(--ink-a10)',
                   fontFamily: fontStack,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 900,
                   fontVariantNumeric: 'tabular-nums',
                 }}
@@ -476,7 +476,7 @@ function CompletionDebrief({
                 style={{
                   display: 'block',
                   fontFamily: fontStack,
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 850,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -489,7 +489,7 @@ function CompletionDebrief({
                 style={{
                   display: 'block',
                   fontFamily: fontStack,
-                  fontSize: 14,
+                  fontSize: '0.875rem',
                   fontWeight: 725,
                   lineHeight: 1.4,
                   color: isChecked ? '#fff' : 'var(--ink)',
@@ -522,7 +522,7 @@ function CompletionDebrief({
                 margin: 0,
                 color: 'var(--ink)',
                 fontFamily: fontStack,
-                fontSize: 14,
+                fontSize: '0.875rem',
                 fontWeight: 825,
                 lineHeight: 1.25,
               }}
@@ -536,7 +536,7 @@ function CompletionDebrief({
                 margin: '4px 0 0',
                 color: 'var(--slate-600)',
                 fontFamily: fontStack,
-                fontSize: 13,
+                fontSize: '0.8125rem',
                 fontWeight: 600,
                 lineHeight: 1.35,
               }}
@@ -558,7 +558,7 @@ function CompletionDebrief({
               color: checkedCount === cues.length ? 'var(--gold)' : 'var(--ink)',
               border: '1px solid var(--ink-a10)',
               fontFamily: fontStack,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 900,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
@@ -640,7 +640,7 @@ function PillarCompletionOffer({ cta }: { readonly cta: PillarCompletionCta }) {
       <p
         style={{
           fontFamily: fontStack,
-          fontSize: 22,
+          fontSize: '1.375rem',
           fontWeight: 700,
           letterSpacing: '-0.01em',
           color: 'var(--ink)',
@@ -652,7 +652,7 @@ function PillarCompletionOffer({ cta }: { readonly cta: PillarCompletionCta }) {
       <p
         style={{
           fontFamily: fontStack,
-          fontSize: 16,
+          fontSize: '1rem',
           color: 'var(--slate-600)',
           lineHeight: 1.65,
           margin: '0 0 20px',
@@ -674,7 +674,7 @@ function PillarCompletionOffer({ cta }: { readonly cta: PillarCompletionCta }) {
         style={{
           marginTop: 12,
           fontFamily: fontStack,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -709,7 +709,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 22,
+              fontSize: '1.375rem',
               fontWeight: 700,
               letterSpacing: '-0.01em',
               color: 'var(--ink)',
@@ -721,7 +721,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--slate-600)',
               lineHeight: 1.65,
               margin: '0 0 20px',
@@ -738,7 +738,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
             style={{
               marginTop: 12,
               fontFamily: fontStack,
-              fontSize: 12,
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -764,7 +764,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 16,
+              fontSize: '1rem',
               fontWeight: 600,
               color: 'var(--ink)',
               margin: '0 0 4px',
@@ -775,7 +775,7 @@ export function CompletionCTA({ moduleNumber, isLastModule }: CompletionCTAProps
           <p
             style={{
               fontFamily: fontStack,
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--slate-600)',
               lineHeight: 1.6,
               margin: '0 0 16px',

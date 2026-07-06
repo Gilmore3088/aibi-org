@@ -50,7 +50,7 @@ export function StarterArtifactCard({
       <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
         Your starter artifact
       </p>
-      <p className="text-[11px] uppercase tracking-widest text-[color:var(--slate-600)] mb-6">
+      <p className="text-[0.6875rem] uppercase tracking-widest text-[color:var(--slate-600)] mb-6">
         Tailored to your top gap: {topGapLabel} · {tierLabel}
       </p>
 
@@ -65,24 +65,24 @@ export function StarterArtifactCard({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-block px-5 py-2.5 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+          className="inline-block px-5 py-2.5 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
         >
           {copied ? 'Copied' : 'Copy to clipboard'}
         </button>
         <a
           href={`/api/assessment/starter-artifact/${dimension}`}
           download={pdfFilename}
-          className="inline-block px-5 py-2.5 border border-[color:var(--ink)]/25 text-[color:var(--ink)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
+          className="inline-block px-5 py-2.5 border border-[color:var(--ink)]/25 text-[color:var(--ink)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-xl hover:border-[color:var(--gold)] hover:text-[color:var(--gold)] transition-colors"
         >
           Download PDF
         </a>
-        <span className="text-[10px] text-[color:var(--slate-600)]">
+        <span className="text-[0.625rem] text-[color:var(--slate-600)]">
           {pdfFilename}
         </span>
         {copyFailed && (
           <span
             role="alert"
-            className="text-[10px] text-[color:#9b2226]"
+            className="text-[0.625rem] text-[color:#9b2226]"
           >
             Copy unavailable in this browser — use Download instead.
           </span>

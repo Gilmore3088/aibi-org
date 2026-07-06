@@ -103,11 +103,11 @@ export function ResultsViewV2({
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
           <p className="text-sm uppercase tracking-[0.22em] text-[color:var(--gold)]">
             AI Readiness Briefing
-            <span className="text-[11px] tracking-[0.2em] text-[color:var(--ink)]/55 ml-3">
+            <span className="text-[0.6875rem] tracking-[0.2em] text-[color:var(--ink)]/55 ml-3">
               · The AI Banking Institute · Confidential
             </span>
           </p>
-          <p className="text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/65 shrink-0">
+          <p className="text-[0.75rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/65 shrink-0">
             {BRIEFING_DATE_FORMATTER.format(new Date())}
           </p>
         </div>
@@ -117,7 +117,7 @@ export function ResultsViewV2({
             : 'Your assessment, in brief.'}
         </h1>
         {(firstName || institutionName) && (
-          <p className="mt-4 text-[11px] uppercase tracking-[0.22em] text-[color:var(--ink)]/65">
+          <p className="mt-4 text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/65">
             Prepared for{' '}
             <span className="text-[color:var(--ink)] font-semibold">
               {firstName?.trim() || 'You'}
@@ -133,7 +133,7 @@ export function ResultsViewV2({
           </p>
         )}
         <p
-          className="mt-5 text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/65"
+          className="mt-5 text-[0.75rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/65"
           data-print-hide="true"
         >
           A 5-minute read
@@ -261,14 +261,14 @@ export function ResultsViewV2({
 
             <div className="bg-[color:#FFFFFF] border border-[color:var(--ink)]/15 rounded-2xl p-7 md:p-9 space-y-7">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
+                <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   Why this is the right starting point
                 </p>
                 <ul className="mt-3 space-y-2">
                   {fastestRoi.whyRightNow.map((reason) => (
                     <li
                       key={reason}
-                      className="text-[15px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
+                      className="text-[0.9375rem] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
                     >
                       <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
                       <span>{reason}</span>
@@ -278,23 +278,23 @@ export function ResultsViewV2({
               </div>
 
               <div className="border-l-2 border-[color:var(--ink)]/20 pl-5">
-                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
+                <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   What this looks like in practice
                 </p>
-                <p className="mt-2 text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
+                <p className="mt-2 text-[0.9375rem] leading-[1.6] text-[color:var(--ink)]/85">
                   {fastestRoi.inPractice}
                 </p>
               </div>
 
               <div>
-                <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
+                <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
                   Where this works best
                 </p>
                 <ul className="mt-2 grid gap-1 sm:grid-cols-3">
                   {fastestRoi.worksBestFor.map((useCase) => (
                     <li
                       key={useCase}
-                      className="text-[14px] text-[color:var(--ink)]/75 flex gap-2"
+                      className="text-[0.875rem] text-[color:var(--ink)]/75 flex gap-2"
                     >
                       <span aria-hidden className="text-[color:var(--gold)]">·</span>
                       <span>{useCase}</span>
@@ -305,19 +305,19 @@ export function ResultsViewV2({
 
               <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-[color:var(--ink)]/10 text-sm">
                 <div>
-                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
+                  <dt className="text-[0.625rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Risk
                   </dt>
                   <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.riskLevel}</dd>
                 </div>
                 <div>
-                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
+                  <dt className="text-[0.625rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Time saved
                   </dt>
                   <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.timeSaved}</dd>
                 </div>
                 <div>
-                  <dt className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
+                  <dt className="text-[0.625rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/55">
                     Owner
                   </dt>
                   <dd className="mt-1 text-[color:var(--ink)]">{fastestRoi.owner}</dd>
@@ -325,7 +325,7 @@ export function ResultsViewV2({
               </dl>
             </div>
 
-            <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
+            <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
               Surfaced by your weakest dimension: {focusGap.label}
             </p>
             <ContinueLink to="section-6" label="Starter prompt" />
@@ -347,15 +347,15 @@ export function ResultsViewV2({
             >
               Copy it. Run it. Refine it.
             </h2>
-            <p className="text-[16px] leading-[1.6] text-[color:var(--ink)]/80 max-w-2xl">
+            <p className="text-[1rem] leading-[1.6] text-[color:var(--ink)]/80 max-w-2xl">
               Take this prompt to the AI tool your institution already trusts. Run it on a real workflow this week. Bring back what worked and what did not.
             </p>
             <StarterPrompt prompt={starterPrompt} />
             {starterArtifact && focusGap && (
               <details className="group border border-[color:var(--ink)]/15 rounded-2xl bg-[color:var(--cream)] overflow-hidden" data-print-hide="true">
-                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] text-[color:var(--ink)]/70 hover:bg-[color:#FFFFFF] transition-colors">
+                <summary className="cursor-pointer list-none px-5 py-4 flex items-center justify-between text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/70 hover:bg-[color:#FFFFFF] transition-colors">
                   <span>Show printable starter artifact</span>
-                  <span aria-hidden className="text-[12px] transition-transform group-open:rotate-180">▾</span>
+                  <span aria-hidden className="text-[0.75rem] transition-transform group-open:rotate-180">▾</span>
                 </summary>
                 <div className="p-5">
                   <StarterArtifactCard artifact={starterArtifact} dimension={focusGap.id} tierLabel={tier.label} topGapLabel={focusGap.label} />
@@ -381,14 +381,14 @@ export function ResultsViewV2({
             <li key={day} className="relative">
               <span
                 aria-hidden
-                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[11px] tabular-nums font-semibold"
+                className="absolute -left-[34px] top-0 inline-flex items-center justify-center h-6 w-6 rounded-full bg-[color:var(--gold)] text-[color:var(--cream)] text-[0.6875rem] tabular-nums font-semibold"
               >
                 {day}
               </span>
-              <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55 mb-1">
+              <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55 mb-1">
                 Day {day}
               </p>
-              <p className="text-[15px] leading-[1.55] text-[color:var(--ink)]/85">
+              <p className="text-[0.9375rem] leading-[1.55] text-[color:var(--ink)]/85">
                 {action}
               </p>
             </li>
@@ -425,7 +425,7 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
     <div className="pt-6 mb-16" data-print-hide="true">
       <a
         href={`#${to}`}
-        className="inline-flex items-center justify-between gap-4 bg-[color:var(--gold)] text-[color:var(--cream)] px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[1.4px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors group"
+        className="inline-flex items-center justify-between gap-4 bg-[color:var(--gold)] text-[color:var(--cream)] px-6 py-3 font-sans text-[0.75rem] font-semibold uppercase tracking-[1.4px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors group"
       >
         <span>{label}</span>
         <span aria-hidden className="transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
@@ -441,10 +441,10 @@ function ContinueLink({ to, label }: { readonly to: string; readonly label: stri
 function ImplicationRow({ label, body }: { readonly label: string; readonly body: string }) {
   return (
     <div className="grid gap-3 md:grid-cols-[200px_1fr] md:gap-8 py-5 border-b border-[color:var(--ink)]/15">
-      <dt className="text-[11px] uppercase tracking-[0.22em] text-[color:var(--gold)] md:pt-1">
+      <dt className="text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--gold)] md:pt-1">
         {label}
       </dt>
-      <dd className="text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
+      <dd className="text-[0.9375rem] leading-[1.6] text-[color:var(--ink)]/85">
         {body}
       </dd>
     </div>
@@ -482,10 +482,10 @@ function StrengthsChart({
           return (
             <li key={row.id} className="space-y-2">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0 text-[18px] md:text-[19px] text-[color:var(--ink)] truncate leading-tight">
+                <span className="min-w-0 text-[1.125rem] md:text-[1.1875rem] text-[color:var(--ink)] truncate leading-tight">
                   {row.label}
                 </span>
-                <span className="text-[13px] text-[color:var(--ink)]/75 tabular-nums shrink-0">
+                <span className="text-[0.8125rem] text-[color:var(--ink)]/75 tabular-nums shrink-0">
                   {row.score}/{row.maxScore}
                   <span className="text-[color:var(--ink)]/45"> · {pctLabel}%</span>
                 </span>
@@ -545,10 +545,10 @@ function ZoneLegend() {
       {zones.map((zone) => (
         <div key={zone.label} className="flex items-center gap-2.5">
           <span aria-hidden className={'inline-block h-3 w-6 ' + zone.className} />
-          <span className="text-[12px] uppercase tracking-[0.2em] text-[color:var(--ink)]/80">
+          <span className="text-[0.75rem] uppercase tracking-[0.2em] text-[color:var(--ink)]/80">
             {zone.label}
           </span>
-          <span className="text-[11px] text-[color:var(--ink)]/55 tabular-nums">
+          <span className="text-[0.6875rem] text-[color:var(--ink)]/55 tabular-nums">
             {zone.range}
           </span>
         </div>
@@ -575,14 +575,14 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
         {cta.headline}
       </h2>
       <article className="border-2 border-[color:var(--gold)] rounded-2xl p-6 md:p-8 bg-[color:var(--cream)]">
-        <p className="text-[15px] leading-[1.6] text-[color:var(--ink)]/85">
+        <p className="text-[0.9375rem] leading-[1.6] text-[color:var(--ink)]/85">
           {cta.body}
         </p>
         <a
           href={cta.primary.href}
           data-print-hide="true"
           data-plausible-event-source={cta.primary.source}
-          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors"
+          className="mt-6 inline-block px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-xl hover:bg-[color:var(--gold-2)] transition-colors"
         >
           {cta.primary.label}
         </a>
@@ -596,7 +596,7 @@ function ClosingCta({ tierId }: { readonly tierId: Tier['id'] }) {
             <a
               href={offer.href}
               data-plausible-event-source={offer.source}
-              className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--ink)]/70 hover:text-[color:var(--gold)] underline underline-offset-4 decoration-[color:var(--ink)]/25 hover:decoration-[color:var(--gold)] transition-colors"
+              className="text-[0.75rem] uppercase tracking-[0.18em] text-[color:var(--ink)]/70 hover:text-[color:var(--gold)] underline underline-offset-4 decoration-[color:var(--ink)]/25 hover:decoration-[color:var(--gold)] transition-colors"
             >
               {offer.label}
             </a>
@@ -623,18 +623,18 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
           {gap.score}/{gap.maxScore}
         </span>
       </header>
-      <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--ink)]/80">
+      <p className="mt-3 text-[0.9375rem] leading-[1.6] text-[color:var(--ink)]/80">
         {content.explanation}
       </p>
       <div className="mt-5">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
+        <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--ink)]/55">
           What this leads to
         </p>
         <ul className="mt-2 space-y-1.5">
           {content.impacts.map((impact) => (
             <li
               key={impact}
-              className="text-[14px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
+              className="text-[0.875rem] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
             >
               <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--ink)]/30 shrink-0" />
               <span>{impact}</span>
@@ -643,14 +643,14 @@ function GapCard({ gap }: { readonly gap: RankedDimension }) {
         </ul>
       </div>
       <div className="mt-5">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--gold)]">
+        <p className="text-[0.625rem] uppercase tracking-[0.22em] text-[color:var(--gold)]">
           What good looks like
         </p>
         <ul className="mt-2 space-y-1.5">
           {content.whatGoodLooksLike.map((vision) => (
             <li
               key={vision}
-              className="text-[14px] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
+              className="text-[0.875rem] leading-[1.55] text-[color:var(--ink)]/85 flex gap-3"
             >
               <span aria-hidden className="mt-2 h-1.5 w-1.5 rounded-sm bg-[color:var(--gold)] shrink-0" />
               <span>{vision}</span>

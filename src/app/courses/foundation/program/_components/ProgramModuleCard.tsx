@@ -49,7 +49,7 @@ export function ProgramModuleCard({
       <span
         style={{
           fontFamily: FONT_INTER,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           color: 'var(--slate-500)',
           letterSpacing: '0.14em',
@@ -62,7 +62,7 @@ export function ProgramModuleCard({
         <div
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 18,
+            fontSize: '1.125rem',
             fontWeight: 700,
             letterSpacing: '-0.01em',
             color: status === 'current' ? 'var(--gold-deep)' : 'var(--ink)',
@@ -73,7 +73,7 @@ export function ProgramModuleCard({
         <div
           style={{
             fontFamily: FONT_INTER,
-            fontSize: 16,
+            fontSize: '1rem',
             color: 'var(--slate-600)',
             marginTop: 4,
             lineHeight: 1.6,
@@ -85,7 +85,7 @@ export function ProgramModuleCard({
       <span
         style={{
           fontFamily: FONT_INTER,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -98,7 +98,7 @@ export function ProgramModuleCard({
         aria-hidden="true"
         style={{
           fontFamily: FONT_INTER,
-          fontSize: 18,
+          fontSize: '1.125rem',
           fontWeight: 600,
           color: locked ? 'var(--slate-400)' : 'var(--ink)',
         }}

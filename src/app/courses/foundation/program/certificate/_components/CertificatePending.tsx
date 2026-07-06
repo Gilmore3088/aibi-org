@@ -5,7 +5,7 @@ const INTER_STACK =
 
 const META_LABEL: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -68,7 +68,7 @@ export function CertificatePending({ pendingState }: CertificatePendingProps) {
       <h2
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 24,
+          fontSize: '1.5rem',
           fontWeight: 700,
           color: 'var(--ink)',
           letterSpacing: '-0.01em',
@@ -80,7 +80,7 @@ export function CertificatePending({ pendingState }: CertificatePendingProps) {
       <p
         style={{
           fontFamily: INTER_STACK,
-          fontSize: 16,
+          fontSize: '1rem',
           lineHeight: 1.6,
           color: 'var(--slate-600)',
           maxWidth: 460,
@@ -135,7 +135,7 @@ export function CertificatePending({ pendingState }: CertificatePendingProps) {
           background: 'var(--ink)',
           color: '#FFFFFF',
           fontFamily: INTER_STACK,
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.12em',
           textTransform: 'uppercase',

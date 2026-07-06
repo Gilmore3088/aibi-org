@@ -7,6 +7,15 @@ import {
   Button,
   EyebrowChip,
 } from '@/components/mockup';
+import { scanForPII } from '@/lib/sandbox/pii-scanner';
+
+// Why the run failed — each kind gets a distinct, honest surface. Safety
+// blocks (pii/injection) show a warning and NO sample output; capacity and
+// outage failures show a clearly-labeled sample.
+interface RunIssue {
+  readonly kind: 'pii' | 'injection' | 'capacity' | 'unavailable';
+  readonly message: string;
+}
 
 type IconProps = { className?: string; size?: number };
 const sw = (p: IconProps) => ({
@@ -83,11 +92,12 @@ const PROMPT_HELPERS: { label: string; addition: string }[] = [
 ];
 
 const INITIAL_OUTPUT = 'Run the scenario to generate a capped live-model draft output.';
-// Shown when the capped public demo is unavailable (daily budget reached, or the
-// model key / Supabase budget store not configured in this environment) so the
+// Shown only for capacity/outage failures (never for safety blocks) so the
 // page demonstrates the shape of safe-AI output instead of a dead error box.
+// The banner above it states the real reason — a policy block, an outage, and
+// a rate limit must never be indistinguishable to the user.
 const FALLBACK_OUTPUT = [
-  'DRAFT — sample output (the live demo is busy)',
+  'DRAFT — sample output (not a live run)',
   '',
   'Summary',
   '  - A plain-language version of the task, drafted from the synthetic sample only.',
@@ -112,14 +122,13 @@ export default function PracticeSandboxPage() {
   const [checked, setChecked] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
   const [running, setRunning] = useState(false);
-  const [error, setError] = useState('');
-  const [usedFallback, setUsedFallback] = useState(false);
+  const [runIssue, setRunIssue] = useState<RunIssue | null>(null);
 
   const scenarioList = SCENARIOS[role];
   const scenario = scenarioList.find((s) => s.id === scenarioId) ?? scenarioList[0];
   const reviewComplete = checked.length === REVIEW_ITEMS.length;
   // Save stays gated on a real live run — a sample fallback is not the visitor's work.
-  const hasLiveOutput = output !== INITIAL_OUTPUT && !error && !usedFallback;
+  const hasLiveOutput = output !== INITIAL_OUTPUT && !runIssue;
   const canSave = reviewComplete && hasLiveOutput && !running;
 
   function changeRole(r: Role) {
@@ -130,8 +139,7 @@ export default function PracticeSandboxPage() {
     setOutput(INITIAL_OUTPUT);
     setChecked([]);
     setSaved(false);
-    setError('');
-    setUsedFallback(false);
+    setRunIssue(null);
   }
   function changeScenario(id: string) {
     const next = scenarioList.find((s) => s.id === id) ?? scenarioList[0];
@@ -140,8 +148,7 @@ export default function PracticeSandboxPage() {
     setOutput(INITIAL_OUTPUT);
     setChecked([]);
     setSaved(false);
-    setError('');
-    setUsedFallback(false);
+    setRunIssue(null);
   }
   function applyHelper(addition: string) {
     setPrompt((cur) => cur + addition);
@@ -151,8 +158,21 @@ export default function PracticeSandboxPage() {
     if (running) return;
     setRunning(true);
     setSaved(false);
-    setError('');
-    setUsedFallback(false);
+    setRunIssue(null);
+
+    // Client-side pre-check: catch obvious PII before it leaves the browser.
+    // The server scans again; this one just means the data never gets POSTed.
+    const precheck = scanForPII(prompt);
+    if (!precheck.safe) {
+      setOutput(INITIAL_OUTPUT);
+      setRunIssue({
+        kind: 'pii',
+        message: precheck.reason ?? 'This input appears to contain personal data. Use the sample data provided instead.',
+      });
+      setRunning(false);
+      return;
+    }
+
     setOutput('Running the capped public model...');
     try {
       const response = await fetch('/api/playground/run', {
@@ -164,17 +184,44 @@ export default function PracticeSandboxPage() {
           prompt,
         }),
       });
-      const json = (await response.json().catch(() => ({}))) as { text?: string; error?: string };
-      if (!response.ok || typeof json.text !== 'string') {
-        throw new Error(json.error ?? 'The demo could not run. Please try again.');
+      const json = (await response.json().catch(() => ({}))) as {
+        text?: string;
+        error?: string;
+        kind?: string;
+      };
+      if (response.ok && typeof json.text === 'string') {
+        setOutput(json.text);
+        setChecked([]);
+        return;
       }
-      setOutput(json.text);
-      setChecked([]);
-    } catch {
-      // Graceful fallback instead of a dead error box — show the shape of a
-      // safe-AI draft. Save stays gated (hasLiveOutput excludes fallback).
+      // Distinct failure states — a policy block must never read as "busy".
+      if (response.status === 422) {
+        setOutput(INITIAL_OUTPUT);
+        setRunIssue({
+          kind: json.kind === 'injection_blocked' ? 'injection' : 'pii',
+          message: json.error ?? 'That input was blocked by the safety check.',
+        });
+        return;
+      }
+      if (response.status === 429 || response.status === 503) {
+        setOutput(FALLBACK_OUTPUT);
+        setRunIssue({
+          kind: 'capacity',
+          message: json.error ?? 'The public demo is at capacity right now — try again in a minute.',
+        });
+        return;
+      }
       setOutput(FALLBACK_OUTPUT);
-      setUsedFallback(true);
+      setRunIssue({
+        kind: 'unavailable',
+        message: json.error ?? 'The live demo is temporarily unavailable.',
+      });
+    } catch {
+      setOutput(FALLBACK_OUTPUT);
+      setRunIssue({
+        kind: 'unavailable',
+        message: 'The live demo could not be reached.',
+      });
     } finally {
       setRunning(false);
     }
@@ -311,7 +358,7 @@ export default function PracticeSandboxPage() {
                 <div className="mk-k">Safe Sample Data</div>
               </div>
               <div className="mk-panel-body">
-                <p style={{ color: 'var(--slate-600)', fontSize: 13, margin: 0 }}>
+                <p style={{ color: 'var(--slate-600)', fontSize: '0.8125rem', margin: 0 }}>
                   {scenario.sampleData}
                 </p>
                 <div
@@ -326,7 +373,7 @@ export default function PracticeSandboxPage() {
                   }}
                 >
                   <LockIcon size={20} />
-                  <p style={{ fontSize: 13, margin: 0, color: 'var(--slate-600)' }}>
+                  <p style={{ fontSize: '0.8125rem', margin: 0, color: 'var(--slate-600)' }}>
                     Use fictional, redacted, or approved sample content only. Do not paste
                     customer or confidential data.
                   </p>
@@ -341,17 +388,18 @@ export default function PracticeSandboxPage() {
               <div className="mk-pr-workspace-grid">
                 <div className="mk-prompt-col">
                   <div style={{ marginBottom: 16 }}>
-                    <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                    <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                       Prompt Workspace
                     </div>
-                    <h2 style={{ fontSize: 24, fontWeight: 600, margin: '6px 0 0' }}>Edit and run</h2>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '6px 0 0' }}>Edit and run</h2>
                   </div>
                   <textarea
+                    aria-label="Prompt workspace — edit the prompt before running it"
                     value={prompt}
                     onChange={(e) => {
                       setPrompt(e.target.value);
                       setSaved(false);
-                      setError('');
+                      setRunIssue(null);
                     }}
                   />
                   <div className="mk-pr-helpers">
@@ -371,10 +419,10 @@ export default function PracticeSandboxPage() {
                 <div className="mk-out-col">
                   <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
                     <div>
-                      <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                      <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                         Draft Output
                       </div>
-                      <p style={{ fontSize: 13, color: 'var(--slate-500)', margin: '4px 0 0' }}>
+                      <p style={{ fontSize: '0.8125rem', color: 'var(--slate-500)', margin: '4px 0 0' }}>
                         Review required before saving.
                       </p>
                     </div>
@@ -385,12 +433,36 @@ export default function PracticeSandboxPage() {
                       </Button>
                     </div>
                   </div>
-                  {usedFallback && (
+                  {runIssue && (runIssue.kind === 'pii' || runIssue.kind === 'injection') && (
                     <p
-                      role="status"
+                      role="alert"
+                      data-testid="practice-safety-block"
                       style={{
                         margin: '0 0 10px',
-                        fontSize: 13,
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                        color: '#912018',
+                        background: '#FEE4E2',
+                        border: '1px solid #B4231840',
+                        borderRadius: 'var(--r-lg)',
+                        padding: '10px 12px',
+                      }}
+                    >
+                      <strong>
+                        {runIssue.kind === 'pii'
+                          ? 'Blocked — this looks like personal or customer data. '
+                          : 'Blocked by the safety check. '}
+                      </strong>
+                      {runIssue.message} Your input was not sent to the AI model.
+                    </p>
+                  )}
+                  {runIssue && (runIssue.kind === 'capacity' || runIssue.kind === 'unavailable') && (
+                    <p
+                      role="status"
+                      data-testid="practice-demo-fallback"
+                      style={{
+                        margin: '0 0 10px',
+                        fontSize: '0.8125rem',
                         fontWeight: 600,
                         color: 'var(--gold-deep)',
                         background: 'var(--gold-a10)',
@@ -399,15 +471,11 @@ export default function PracticeSandboxPage() {
                         padding: '10px 12px',
                       }}
                     >
-                      The live demo is busy right now — here&apos;s a sample of the output it produces.
+                      {runIssue.message} Below is a sample of the output the live demo produces — not a
+                      live run.
                     </p>
                   )}
                   <pre className="mk-pr-output">{output}</pre>
-                  {error && (
-                    <p style={{ color: 'var(--red-700)', fontSize: 13, margin: '10px 0 0' }}>
-                      {error}
-                    </p>
-                  )}
                 </div>
               </div>
             </div>
@@ -415,16 +483,16 @@ export default function PracticeSandboxPage() {
             <div className="mk-pr-review" style={{ marginTop: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 20 }}>
                 <div>
-                  <div className="mk-k" style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
+                  <div className="mk-k" style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)' }}>
                     Review Before Saving
                   </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 600, margin: '8px 0 0' }}>Turn practice into a reusable asset.</h3>
+                  <h3 style={{ fontSize: '1.375rem', fontWeight: 600, margin: '8px 0 0' }}>Turn practice into a reusable asset.</h3>
                 </div>
                 <span
                   style={{
                     padding: '8px 14px',
                     borderRadius: 'var(--r-pill)',
-                    fontSize: 13,
+                    fontSize: '0.8125rem',
                     fontWeight: 700,
                     background: reviewComplete ? 'rgba(4,120,87,0.12)' : 'var(--gold-a20)',
                     color: reviewComplete ? 'var(--emerald-800)' : 'var(--gold-deep)',
@@ -460,8 +528,7 @@ export default function PracticeSandboxPage() {
                     setOutput(INITIAL_OUTPUT);
                     setChecked([]);
                     setSaved(false);
-                    setError('');
-                    setUsedFallback(false);
+                    setRunIssue(null);
                   }}
                 >
                   <RefreshIcon className="mk-ic" />
@@ -477,7 +544,7 @@ export default function PracticeSandboxPage() {
                     background: 'rgba(4,120,87,0.10)',
                     color: 'var(--emerald-800)',
                     fontWeight: 600,
-                    fontSize: 14,
+                    fontSize: '0.875rem',
                   }}
                 >
                   Sign in to save reviewed output in your Toolbox.

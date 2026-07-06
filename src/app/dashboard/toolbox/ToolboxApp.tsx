@@ -455,7 +455,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
           <Link
             key={tab.id}
             href={`/dashboard/toolbox?tab=${tab.id}`}
-            className={`whitespace-nowrap border-b-2 px-4 py-4 text-[10px] uppercase tracking-widest transition-colors ${
+            className={`whitespace-nowrap border-b-2 px-4 py-4 text-[0.625rem] uppercase tracking-widest transition-colors ${
               safeTab === tab.id
                 ? 'border-[color:var(--gold-deep)] text-[color:var(--gold-deep)]'
                 : 'border-transparent text-[color:var(--slate-500)] hover:text-[color:var(--ink)]'
@@ -467,7 +467,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
         ))}
         <Link
           href="/dashboard/toolbox/cookbook"
-          className="whitespace-nowrap border-b-2 border-transparent px-4 py-4 text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] transition-colors hover:text-[color:var(--ink)]"
+          className="whitespace-nowrap border-b-2 border-transparent px-4 py-4 text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] transition-colors hover:text-[color:var(--ink)]"
         >
           Cookbook
         </Link>
@@ -481,7 +481,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
           aria-live="polite"
           className="mb-6 grid w-full gap-1 border border-[color:var(--gold-deep)]/25 bg-white px-4 py-3 text-left text-sm text-[color:var(--ink)] shadow-sm transition-colors hover:border-[color:var(--gold-deep)]/50"
         >
-          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+          <span className="text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
             Toolbox note
           </span>
           <span className="max-w-4xl font-semibold leading-relaxed text-[color:var(--slate-600)]">
@@ -523,7 +523,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
           />
           <div className="flex flex-col gap-4 border-b border-[color:var(--ink)]/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+              <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
                 Library
               </p>
               <h2 className="mt-2 text-4xl text-[color:var(--ink)]">
@@ -535,13 +535,13 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
             </div>
             <div className="flex flex-wrap gap-3">
               <label className="flex flex-col gap-1">
-                <span className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)]">Role</span>
+                <span className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)]">Role</span>
                 <select value={roleFilter} onChange={(event) => setRoleFilter(event.target.value)} className="border border-[color:var(--ink)]/15 bg-white px-3 py-2 text-sm">
                   {roles.map((role) => <option key={role} value={role}>{role === 'all' ? 'All roles' : role}</option>)}
                 </select>
               </label>
               <label className="flex flex-col gap-1">
-                <span className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)]">Difficulty</span>
+                <span className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)]">Difficulty</span>
                 <select value={difficultyFilter} onChange={(event) => setDifficultyFilter(event.target.value)} className="border border-[color:var(--ink)]/15 bg-white px-3 py-2 text-sm">
                   <option value="all">All levels</option>
                   <option value="beginner">Beginner</option>
@@ -558,7 +558,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
               <button
                 type="button"
                 onClick={() => { setRoleFilter('all'); setDifficultyFilter('all'); }}
-                className="mt-5 border border-[color:var(--ink)]/20 px-4 py-2 text-[10px] uppercase tracking-widest text-[color:var(--ink)] hover:border-[color:var(--gold-deep)] hover:text-[color:var(--gold-deep)]"
+                className="mt-5 border border-[color:var(--ink)]/20 px-4 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] hover:border-[color:var(--gold-deep)] hover:text-[color:var(--gold-deep)]"
               >
                 Show all playbooks
               </button>
@@ -595,7 +595,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
           <button
             type="button"
             onClick={() => setBuildKind(null)}
-            className="mb-6 text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
+            className="mb-6 text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
           >
             ← Choose a different kind
           </button>
@@ -616,7 +616,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
           <button
             type="button"
             onClick={() => setBuildKind(null)}
-            className="mb-6 text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
+            className="mb-6 text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]"
           >
             ← Choose a different kind
           </button>
@@ -625,7 +625,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
             <button
               type="button"
               onClick={() => setTemplateSkill({ ...EMPTY_TEMPLATE_SKILL })}
-              className="border border-[color:var(--ink)]/20 px-4 py-2 text-[10px] uppercase tracking-widest"
+              className="border border-[color:var(--ink)]/20 px-4 py-2 text-[0.625rem] uppercase tracking-widest"
             >
               New template
             </button>
@@ -635,7 +635,7 @@ export function ToolboxApp({ tier = 'starter' }: ToolboxAppProps = {}) {
                 const saved = await saveSkill(templateSkill);
                 if (saved) loadSkill(saved, 'playground');
               }}
-              className="bg-[color:var(--gold-deep)] px-4 py-2 text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
+              className="bg-[color:var(--gold-deep)] px-4 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
             >
               Save and test
             </button>
@@ -776,7 +776,7 @@ function WorkbenchPath({
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.625rem] font-bold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             Current workflow
           </p>
           <p className="mt-1 text-lg font-bold leading-snug text-[color:var(--ink)]">
@@ -798,7 +798,7 @@ function WorkbenchPath({
                 } ${step.disabled ? 'cursor-not-allowed opacity-55 hover:border-[color:var(--ink-a10)]' : ''}`}
               >
                 <span
-                  className={`grid h-8 w-8 place-items-center rounded-full text-[11px] font-black tabular-nums ${
+                  className={`grid h-8 w-8 place-items-center rounded-full text-[0.6875rem] font-black tabular-nums ${
                     step.active
                       ? 'bg-[color:var(--gold)] text-[color:var(--ink)]'
                       : 'bg-white text-[color:var(--gold-deep)]'
@@ -808,7 +808,7 @@ function WorkbenchPath({
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-[10px] font-black uppercase tracking-[0.16em]">
+                  <span className="block text-[0.625rem] font-black uppercase tracking-[0.16em]">
                     {step.label}
                   </span>
                   <span className="mt-1 block truncate text-sm font-bold">
@@ -864,7 +864,7 @@ function FirstRunHint({
     <div className="border border-[color:var(--gold-deep)]/30 bg-[color:var(--cream)] p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             New here? Start with this one.
           </p>
           <h3 className="mt-2 text-2xl text-[color:var(--ink)]">
@@ -880,7 +880,7 @@ function FirstRunHint({
               onTry(starter);
               handleDismiss();
             }}
-            className="mt-4 bg-[color:var(--gold-deep)] px-5 py-2.5 text-[10px] uppercase tracking-widest text-[color:var(--cream)]"
+            className="mt-4 bg-[color:var(--gold-deep)] px-5 py-2.5 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
           >
             Try it now
           </button>
@@ -889,7 +889,7 @@ function FirstRunHint({
           type="button"
           onClick={handleDismiss}
           aria-label="Dismiss tip"
-          className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+          className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
         >
           Dismiss
         </button>
@@ -929,7 +929,7 @@ function GuidePanel({
     <section className="py-6 text-[color:var(--ink)]" aria-labelledby="toolbox-guide-heading">
       <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.6875rem] font-bold uppercase tracking-[0.22em] text-[color:var(--gold-deep)]">
             Start here · First 10 minutes
           </p>
           <h1
@@ -947,7 +947,7 @@ function GuidePanel({
                 key={label}
                 className="border border-[color:var(--ink-a10)] bg-white px-3 py-3 sm:px-4"
               >
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                <p className="text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                   {label}
                 </p>
                 <p className="mt-1 text-xs font-bold leading-snug text-[color:var(--ink)] sm:text-sm">
@@ -960,14 +960,14 @@ function GuidePanel({
             <button
               type="button"
               onClick={onStartMission}
-              className="min-h-[44px] bg-[color:var(--gold-deep)] px-6 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink)]"
+              className="min-h-[44px] bg-[color:var(--gold-deep)] px-6 py-3 text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink)]"
             >
               Start guided run
             </button>
             <button
               type="button"
               onClick={() => setTab('toolbox')}
-              className="min-h-[44px] border border-[color:var(--ink-a15)] px-6 py-3 text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+              className="min-h-[44px] border border-[color:var(--ink-a15)] px-6 py-3 text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
             >
               My Toolbox {savedCount > 0 ? `(${savedCount})` : ''}
             </button>
@@ -977,7 +977,7 @@ function GuidePanel({
         <div className="border border-[color:var(--ink)] bg-white">
           <div className="grid gap-5 border-b border-[color:var(--ink-a10)] p-5 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+              <p className="text-[0.625rem] font-black uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
                 Guided mission
               </p>
               <h2 className="mt-2 text-3xl leading-tight tracking-[-0.03em] text-[color:var(--ink)]">
@@ -988,7 +988,7 @@ function GuidePanel({
               </p>
             </div>
             <div className="bg-[color:var(--ink)] px-4 py-3 text-[color:var(--cream)]">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold)]">
+              <p className="text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--gold)]">
                 Current proof
               </p>
               <p className="mt-1 text-3xl font-black leading-none tracking-[-0.03em]">
@@ -1005,11 +1005,11 @@ function GuidePanel({
                 key={label}
                 className="grid min-h-[104px] gap-2 border-b border-r border-[color:var(--ink-a10)] p-3 even:border-r-0 md:block md:min-h-[132px] md:border-b-0 md:border-r md:p-4 md:last:border-r-0"
               >
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-[color:var(--cream)] text-[11px] font-black tabular-nums text-[color:var(--gold-deep)] md:mb-4 md:h-9 md:w-9 md:text-xs">
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-[color:var(--cream)] text-[0.6875rem] font-black tabular-nums text-[color:var(--gold-deep)] md:mb-4 md:h-9 md:w-9 md:text-xs">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span>
-                  <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                  <span className="block text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                     {label}
                   </span>
                   <span className="mt-1 block text-xs font-bold leading-snug text-[color:var(--ink)] md:mt-2 md:text-sm">
@@ -1036,7 +1036,7 @@ function GuidePanel({
             }}
             className="min-h-[68px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] px-3 py-3 text-left transition-colors hover:border-[color:var(--gold-deep)] md:min-h-[88px] md:px-4"
           >
-            <span className="block text-[9px] font-black uppercase tracking-[0.14em] text-[color:var(--gold-deep)] md:text-[10px] md:tracking-[0.18em]">
+            <span className="block text-[0.5625rem] font-black uppercase tracking-[0.14em] text-[color:var(--gold-deep)] md:text-[0.625rem] md:tracking-[0.18em]">
               {label}
             </span>
             <span className="mt-1 block text-xs font-bold leading-snug text-[color:var(--slate-600)] md:mt-2 md:text-sm md:leading-relaxed">
@@ -1047,7 +1047,7 @@ function GuidePanel({
       </div>
 
       <aside className="mt-6 border-l-4 border-[color:var(--gold)] bg-[color:var(--cream)] px-5 py-4">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+        <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
           Need an example?
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-500)]">
@@ -1055,7 +1055,7 @@ function GuidePanel({
         </p>
         <Link
           href="/dashboard/toolbox/cookbook"
-          className="mt-4 inline-block text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] border-b border-[color:var(--gold-deep)] hover:text-[color:var(--ink)] hover:border-[color:var(--ink)]"
+          className="mt-4 inline-block text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)] border-b border-[color:var(--gold-deep)] hover:text-[color:var(--ink)] hover:border-[color:var(--ink)]"
         >
           Read the Cookbook →
         </Link>
@@ -1069,17 +1069,17 @@ function TemplateCard({ template, onTry, onCustomize }: { readonly template: Too
   return (
     <article className="border border-[color:var(--ink)]/10 bg-white/45 p-5 transition-colors hover:border-[color:var(--gold-deep)]/50">
       <div className="flex items-start justify-between gap-3">
-        <span className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)]">{template.deptFull}</span>
-        <span className="text-[9px] uppercase tracking-widest text-[color:var(--slate-500)]">{template.difficulty}</span>
+        <span className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)]">{template.deptFull}</span>
+        <span className="text-[0.5625rem] uppercase tracking-widest text-[color:var(--slate-500)]">{template.difficulty}</span>
       </div>
       <h3 className="mt-4 text-2xl leading-tight text-[color:var(--ink)]">{template.name}</h3>
       <p className="mt-3 min-h-[64px] text-sm leading-relaxed text-[color:var(--slate-500)]">{template.desc}</p>
-      <div className="mt-5 border-t border-[color:var(--ink)]/10 pt-4 text-[11px] text-[color:var(--slate-500)]">
+      <div className="mt-5 border-t border-[color:var(--ink)]/10 pt-4 text-[0.6875rem] text-[color:var(--slate-500)]">
         Saves {template.timeSaved} per {cadenceLabel}
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <button type="button" onClick={onTry} className="bg-[color:var(--gold-deep)] px-3 py-2 text-[10px] uppercase tracking-widest text-[color:var(--cream)]">Run it now</button>
-        <button type="button" onClick={onCustomize} className="border border-[color:var(--ink)]/20 px-3 py-2 text-[10px] uppercase tracking-widest text-[color:var(--ink)]">Edit and run</button>
+        <button type="button" onClick={onTry} className="bg-[color:var(--gold-deep)] px-3 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">Run it now</button>
+        <button type="button" onClick={onCustomize} className="border border-[color:var(--ink)]/20 px-3 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">Edit and run</button>
       </div>
     </article>
   );
@@ -1097,14 +1097,14 @@ function BuilderPanel({ skill, setSkill, onNew, onSave }: {
   return (
     <section className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
       <div>
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">Build</p>
+        <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">Build</p>
         <h2 className="mt-2 text-4xl text-[color:var(--ink)]">Define the reusable workflow.</h2>
         <p className="mt-3 text-sm leading-relaxed text-[color:var(--slate-500)]">
           Keep the skill narrow, owned, versioned, and explicit about when a human must take over.
         </p>
         <div className="mt-6 flex gap-2">
-          <button type="button" onClick={onNew} className="border border-[color:var(--ink)]/20 px-4 py-2 text-[10px] uppercase tracking-widest">New skill</button>
-          <button type="button" onClick={onSave} className="bg-[color:var(--gold-deep)] px-4 py-2 text-[10px] uppercase tracking-widest text-[color:var(--cream)]">Save and test</button>
+          <button type="button" onClick={onNew} className="border border-[color:var(--ink)]/20 px-4 py-2 text-[0.625rem] uppercase tracking-widest">New skill</button>
+          <button type="button" onClick={onSave} className="bg-[color:var(--gold-deep)] px-4 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">Save and test</button>
         </div>
       </div>
       <div className="grid gap-4">
@@ -1141,7 +1141,7 @@ function Field({ label, value, onChange, textarea = false }: {
 }) {
   return (
     <label className="block">
-      <span className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)]">{label}</span>
+      <span className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)]">{label}</span>
       {textarea ? (
         <textarea value={value} onChange={(event) => onChange(event.target.value)} rows={4} className="mt-2 w-full border border-[color:var(--ink)]/15 bg-white px-3 py-2 text-sm leading-relaxed" />
       ) : (
@@ -1190,15 +1190,15 @@ function PlaygroundPanel(props: {
           aria-label="AiBI Lab data-handling notice"
           className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--ink)]/30 bg-[color:var(--cream)] px-4 py-3"
         >
-          <p className="text-[11px] uppercase tracking-widest text-[color:var(--ink)]">
+          <p className="text-[0.6875rem] uppercase tracking-widest text-[color:var(--ink)]">
             Sandbox · Never enter real member, account, or institution-confidential data
           </p>
-          <p className="text-[10px] tracking-wide text-[color:var(--slate-500)]">
+          <p className="text-[0.625rem] tracking-wide text-[color:var(--slate-500)]">
             Requests leave our servers. Use fabricated examples only.
           </p>
         </div>
         <div className="mx-auto max-w-2xl py-20 text-center">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
             AiBI Lab
           </p>
           <h2 className="mt-3 text-4xl text-[color:var(--ink)]">
@@ -1213,7 +1213,7 @@ function PlaygroundPanel(props: {
           <p className="mt-3 text-sm leading-relaxed text-[color:var(--slate-500)]">
             Pick a starter from the Library to see how it works.
           </p>
-          <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--gold-deep)] px-5 py-3 text-[10px] uppercase tracking-widest text-[color:var(--cream)]">Browse Library</button>
+          <button type="button" onClick={props.onBrowse} className="mt-6 bg-[color:var(--gold-deep)] px-5 py-3 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">Browse Library</button>
         </div>
       </section>
     );
@@ -1254,10 +1254,10 @@ function PlaygroundPanel(props: {
         aria-label="AiBI Lab data-handling notice"
         className="flex flex-wrap items-center justify-between gap-3 border border-[color:var(--ink)]/30 bg-[color:var(--cream)] px-4 py-3"
       >
-        <p className="text-[11px] uppercase tracking-widest text-[color:var(--ink)]">
+        <p className="text-[0.6875rem] uppercase tracking-widest text-[color:var(--ink)]">
           Sandbox · Never enter real member, account, or institution-confidential data
         </p>
-        <p className="text-[10px] tracking-wide text-[color:var(--slate-500)]">
+        <p className="text-[0.625rem] tracking-wide text-[color:var(--slate-500)]">
           Requests leave our servers. Use fabricated examples only.
         </p>
       </div>
@@ -1281,11 +1281,11 @@ function PlaygroundPanel(props: {
 
       <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
       <aside className="h-fit border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-5 lg:sticky lg:top-40">
-        <p className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)]">
+        <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)]">
           {props.activeSkill.deptFull || props.activeSkill.dept || 'Playbook'}
         </p>
         <h2 className="mt-2 text-3xl leading-tight">{props.activeSkill.name}</h2>
-        <p className="mt-1 text-[10px] text-[color:var(--slate-500)]">{props.activeSkill.cmd}</p>
+        <p className="mt-1 text-[0.625rem] text-[color:var(--slate-500)]">{props.activeSkill.cmd}</p>
         <p className="mt-3 text-sm leading-relaxed text-[color:var(--slate-500)]">{props.activeSkill.desc || (isWorkflowSkill(props.activeSkill) ? props.activeSkill.purpose : '')}</p>
         <div className="mt-5 grid gap-2 border-t border-[color:var(--ink)]/10 pt-4 text-xs text-[color:var(--slate-500)]">
           <p><span className="text-[color:var(--ink)]">Owner:</span> {props.activeSkill.owner}</p>
@@ -1293,17 +1293,17 @@ function PlaygroundPanel(props: {
           <p><span className="text-[color:var(--ink)]">Maturity:</span> {props.activeSkill.maturity}</p>
         </div>
         <div className="mt-5 grid gap-3">
-          <button type="button" onClick={props.onSave} className="bg-[color:var(--gold-deep)] px-3 py-2 text-[10px] uppercase tracking-widest text-[color:var(--cream)]">
+          <button type="button" onClick={props.onSave} className="bg-[color:var(--gold-deep)] px-3 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
             Save playbook changes
           </button>
           <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
-            <button type="button" onClick={props.onEdit} className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
+            <button type="button" onClick={props.onEdit} className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
               Edit in Builder
             </button>
-            <button type="button" onClick={props.onExport} className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
+            <button type="button" onClick={props.onExport} className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
               Download .md
             </button>
-            <button type="button" onClick={props.onCopy} className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
+            <button type="button" onClick={props.onCopy} className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)]">
               Copy Markdown
             </button>
           </div>
@@ -1314,11 +1314,11 @@ function PlaygroundPanel(props: {
         <div className="border border-[color:var(--ink)]/10 bg-[color:var(--cream)] p-4">
           {/* Compact meta strip: safety + model + usage in one row */}
           <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--ink)]/10 pb-3">
-            <p className="text-[10px] uppercase tracking-widest text-[color:var(--ink)]">
+            <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">
               Sandbox · No real member data
             </p>
             {props.usage && (
-              <p className="text-[10px] tabular-nums text-[color:var(--slate-500)]">
+              <p className="text-[0.625rem] tabular-nums text-[color:var(--slate-500)]">
                 ${(props.usage.todayCents / 100).toFixed(2)} / ${(props.usage.dailyCapCents / 100).toFixed(2)} today
               </p>
             )}
@@ -1326,7 +1326,7 @@ function PlaygroundPanel(props: {
 
           {isWorkflowSkill(props.activeSkill) && props.activeSkill.samples.length > 0 && props.input.trim() === '' && props.messages.length === 0 && (
             <div className="mb-3">
-              <p className="mb-2 text-[10px] uppercase tracking-widest text-[color:var(--slate-500)]">
+              <p className="mb-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)]">
                 Or try a sample scenario
               </p>
               <div className="flex flex-wrap gap-2">
@@ -1358,7 +1358,7 @@ function PlaygroundPanel(props: {
               type="button"
               disabled={props.running || !props.input.trim()}
               onClick={props.onRun}
-              className="absolute bottom-3 right-3 bg-[color:var(--gold-deep)] px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-[color:var(--cream)] hover:bg-[color:var(--gold-deep)] disabled:opacity-40"
+              className="absolute bottom-3 right-3 bg-[color:var(--gold-deep)] px-5 py-2.5 text-[0.625rem] font-semibold uppercase tracking-widest text-[color:var(--cream)] hover:bg-[color:var(--gold-deep)] disabled:opacity-40"
             >
               {props.running ? `${providerLabel} running…` : `Run ⌘↵`}
             </button>
@@ -1370,7 +1370,7 @@ function PlaygroundPanel(props: {
             </div>
             <div className="flex flex-wrap gap-4">
               {props.messages.length > 0 && (
-                <button type="button" onClick={props.onReset} className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]">
+                <button type="button" onClick={props.onReset} className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--gold-deep)]">
                   Reset
                 </button>
               )}
@@ -1381,7 +1381,7 @@ function PlaygroundPanel(props: {
                   if (props.messages.length === 0) return;
                   props.onSavePlayground();
                 }}
-                className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)] disabled:opacity-30"
+                className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)] hover:text-[color:var(--ink)] disabled:opacity-30"
               >
                 {saveRunLabel} →
               </button>
@@ -1395,14 +1395,14 @@ function PlaygroundPanel(props: {
             {props.messages.map((message, idx) => (
               <div key={idx} className={`group mb-4 border-l-2 p-3 ${message.role === 'user' ? 'border-[color:var(--gold-deep)] bg-[color:var(--cream-2)]/35' : 'border-[color:var(--gold-deep)] bg-[color:var(--cream)]'}`}>
                 <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)]">
+                  <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)]">
                     {message.role === 'user' ? 'You' : providerLabel}
                   </p>
                   {message.role === 'assistant' && message.content && (
                     <button
                       type="button"
                       onClick={() => copyMessage(message.content)}
-                      className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] opacity-0 transition-opacity group-hover:opacity-100 hover:text-[color:var(--gold-deep)]"
+                      className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] opacity-0 transition-opacity group-hover:opacity-100 hover:text-[color:var(--gold-deep)]"
                       aria-label="Copy response"
                     >
                       Copy
@@ -1412,7 +1412,7 @@ function PlaygroundPanel(props: {
                 <div className="text-sm leading-relaxed">{message.role === 'assistant' ? renderMarkdown(message.content) : <pre className="whitespace-pre-wrap font-sans">{message.content}</pre>}</div>
               </div>
             ))}
-            {props.running && <p className="text-[10px] uppercase tracking-widest text-[color:var(--gold-deep)]">{providerLabel} is thinking…</p>}
+            {props.running && <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--gold-deep)]">{providerLabel} is thinking…</p>}
           </div>
         )}
       </div>
@@ -1436,7 +1436,7 @@ function TypedConfirmGate(props: {
       className="fixed inset-0 z-50 flex items-center justify-center bg-[color:var(--ink)]/40 px-4"
     >
       <div className="w-full max-w-lg border border-[color:var(--ink)]/15 bg-white p-6">
-        <p className="text-[10px] uppercase tracking-widest text-[color:var(--ink)]">
+        <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">
           Sandbox confirmation
         </p>
         <h3
@@ -1468,7 +1468,7 @@ function TypedConfirmGate(props: {
           <button
             type="button"
             onClick={props.onCancel}
-            className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+            className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
           >
             Cancel
           </button>
@@ -1476,7 +1476,7 @@ function TypedConfirmGate(props: {
             type="button"
             disabled={!matches}
             onClick={props.onConfirm}
-            className="bg-[color:var(--gold-deep)] px-4 py-2 text-[10px] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-40"
+            className="bg-[color:var(--gold-deep)] px-4 py-2 text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-40"
           >
             Confirm &amp; run
           </button>
@@ -1497,7 +1497,7 @@ function PiiOverrideBanner(props: {
       aria-live="polite"
       className="border border-[color:var(--ink)]/40 bg-white p-4"
     >
-      <p className="text-[10px] uppercase tracking-widest text-[color:var(--ink)]">
+      <p className="text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">
         Possible real-member data detected
       </p>
       <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink)]">{props.reason}</p>
@@ -1510,14 +1510,14 @@ function PiiOverrideBanner(props: {
         <button
           type="button"
           onClick={props.onOverride}
-          className="border border-[color:var(--ink)]/60 px-3 py-1.5 text-[10px] uppercase tracking-widest text-[color:var(--ink)] hover:bg-[color:var(--ink)]/10"
+          className="border border-[color:var(--ink)]/60 px-3 py-1.5 text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] hover:bg-[color:var(--ink)]/10"
         >
           Send anyway · fabricated
         </button>
         <button
           type="button"
           onClick={props.onDismiss}
-          className="text-[10px] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
+          className="text-[0.625rem] uppercase tracking-widest text-[color:var(--slate-500)] hover:text-[color:var(--ink)]"
         >
           Edit my input
         </button>

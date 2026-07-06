@@ -106,7 +106,7 @@ export default function MembersWillSwitchArticle() {
               <dd className="text-sm text-[color:var(--ink)]/75 mt-3 leading-relaxed">
                 {stat.label}
               </dd>
-              <p className="font-mono text-[10px] text-[color:var(--slate-600)] mt-3">
+              <p className="font-mono text-[0.625rem] text-[color:var(--slate-600)] mt-3">
                 {stat.source}
               </p>
             </div>
@@ -190,7 +190,7 @@ export default function MembersWillSwitchArticle() {
           </p>
           <Link
             href="/assessment/take"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Take the Free Assessment
           </Link>

@@ -45,7 +45,7 @@ const kicker = {
   padding: '6px 14px',
   borderRadius: 999,
   background: 'var(--gold-a10)',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase' as const,
@@ -74,7 +74,7 @@ const inlineCtaInk = {
   borderRadius: 12,
   background: 'var(--ink)',
   color: 'var(--cream-2)',
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 600,
   letterSpacing: '0.16em',
   textTransform: 'uppercase' as const,
@@ -163,7 +163,7 @@ export default async function SubmitPage() {
             <span style={{ ...kicker, marginBottom: 12 }}>Course incomplete</span>
             <p
               style={{
-                fontSize: 16,
+                fontSize: '1rem',
                 color: 'var(--ink)',
                 margin: '0 0 16px',
                 lineHeight: 1.6,
@@ -183,7 +183,7 @@ export default async function SubmitPage() {
             <span style={{ ...kicker, marginBottom: 12 }}>Your work is in review</span>
             <p
               style={{
-                fontSize: 16,
+                fontSize: '1rem',
                 color: 'var(--ink)',
                 margin: '0 0 6px',
                 lineHeight: 1.6,
@@ -194,7 +194,7 @@ export default async function SubmitPage() {
             </p>
             <p
               style={{
-                fontSize: 16,
+                fontSize: '1rem',
                 color: 'var(--slate-500)',
                 margin: 0,
                 lineHeight: 1.6,
@@ -223,7 +223,7 @@ export default async function SubmitPage() {
             </span>
             <p
               style={{
-                fontSize: 16,
+                fontSize: '1rem',
                 color: 'var(--ink)',
                 margin: '0 0 16px',
                 lineHeight: 1.6,

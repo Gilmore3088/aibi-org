@@ -106,7 +106,7 @@ export default function EfficiencyRatioWorkbookPage() {
             </div>
           </dl>
 
-          <p className="font-mono text-[10px] text-[color:var(--slate-600)] mt-8 leading-relaxed">
+          <p className="font-mono text-[0.625rem] text-[color:var(--slate-600)] mt-8 leading-relaxed">
             Sources: FDIC Quarterly Banking Profile · Cornerstone Advisors,
             <em> AI Playbook for Banks and Credit Unions</em> (2025).
           </p>
@@ -205,7 +205,7 @@ export default function EfficiencyRatioWorkbookPage() {
           <BriefingButton
             href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up"
             source="services"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[11px] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
+            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
           >
             Book an Executive Briefing
           </BriefingButton>

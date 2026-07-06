@@ -69,7 +69,7 @@ export function ToolGuideFilter({ platformTags }: ToolGuideFilterProps) {
     >
       <p
         style={{
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -95,7 +95,7 @@ export function ToolGuideFilter({ platformTags }: ToolGuideFilterProps) {
               onClick={() => onSelect(opt.value)}
               style={{
                 padding: '10px 18px',
-                fontSize: 16,
+                fontSize: '1rem',
                 fontWeight: 600,
                 borderRadius: 999,
                 border: '1px solid',

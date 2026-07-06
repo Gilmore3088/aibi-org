@@ -18,7 +18,7 @@ export interface ModuleNavigationProps {
 
 const linkStyle: React.CSSProperties = {
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 14,
+  fontSize: '0.875rem',
   fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -41,7 +41,7 @@ const learningCtaBase: React.CSSProperties = {
 
 const learningCtaMeta: React.CSSProperties = {
   margin: 0,
-  fontSize: 10,
+  fontSize: '0.625rem',
   fontWeight: 850,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -50,7 +50,7 @@ const learningCtaMeta: React.CSSProperties = {
 const learningCtaTitle: React.CSSProperties = {
   display: 'block',
   marginTop: 4,
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: 850,
   letterSpacing: '-0.01em',
   lineHeight: 1.2,
@@ -59,7 +59,7 @@ const learningCtaTitle: React.CSSProperties = {
 const learningCtaSub: React.CSSProperties = {
   display: 'block',
   marginTop: 4,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 650,
   lineHeight: 1.35,
 };

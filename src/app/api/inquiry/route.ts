@@ -1,6 +1,7 @@
 // POST /api/inquiry
 // Certification inquiry form — validates, logs, sends ack email.
 
+import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { sendInquiryAck, sendInquiryNotification, sendResourceDelivery } from '@/lib/resend';
 import { resolveDeliverableResource } from '@/lib/resources/resourceDelivery';
@@ -150,6 +151,103 @@ export async function POST(request: Request) {
         : null;
   const deliverable = deliverableSlug ? resolveDeliverableResource(deliverableSlug) : null;
 
+  // Team/institution inquiries are the highest-value leads on the site, so
+  // their delivery is CONFIRMED, not fire-and-forget: the route previously
+  // returned ok:true even when every downstream write failed silently
+  // (persona audit — the L&D buyer's 25-seat lead went nowhere while she saw
+  // green success). Resource/lead-magnet types keep best-effort sends because
+  // the artifact is already delivered in-browser.
+  const reference = `INQ-${randomBytes(3).toString('hex').toUpperCase()}`;
+
+  const resendDelivered = (result: unknown): boolean =>
+    typeof result === 'object' && result !== null && 'ok' in result &&
+    (result as { ok: boolean }).ok === true;
+
+  if (TEAM_SUPPORT_TYPES.has(body.type)) {
+    const [ackDelivered, notificationDelivered, supportCaseCreated] = await Promise.all([
+      sendInquiryAck({
+        email: body.email,
+        name: firstName,
+        institution: body.institution,
+        track,
+      })
+        .then(resendDelivered)
+        .catch((err) => {
+          console.warn('[inquiry] resend ack failed', err);
+          return false;
+        }),
+      sendInquiryNotification({
+        to: getSupportInboxEmail(),
+        name: body.name,
+        email: body.email,
+        institution: body.institution,
+        track,
+        type: body.type,
+        notes: `${notes}\n\nReference: ${reference}`,
+      })
+        .then(resendDelivered)
+        .catch((err) => {
+          console.warn('[inquiry] owner notification failed', err);
+          return false;
+        }),
+      createSupportCase({
+        buyerEmail: body.email,
+        subject: `Institution inquiry: ${track}`,
+        summary: [
+          `Reference: ${reference}`,
+          `Name: ${body.name}`,
+          `Institution: ${body.institution}`,
+          `Track: ${track}`,
+          '',
+          notes || 'No notes provided.',
+        ].join('\n'),
+        category: 'team_seats',
+        priority: body.type === 'team-assessment-request'
+          || body.type === 'partner-rollout-request'
+          || body.type === 'cohort-pilot-request'
+          || body.type === 'project-plan-request'
+          ? 'high'
+          : 'normal',
+        source: 'buyer_form',
+        product: productForInquiryType(body.type),
+        actorType: 'customer',
+        actorEmail: body.email,
+        metadata: {
+          inquiryType: body.type,
+          track,
+          reference,
+        },
+      })
+        .then(() => true)
+        .catch((err) => {
+          console.warn('[inquiry] support case failed', err);
+          return false;
+        }),
+    ]);
+
+    // At least one durable channel (support queue or inbox notification) must
+    // have the lead, or we tell the buyer the truth instead of a fake success.
+    if (!notificationDelivered && !supportCaseCreated) {
+      return NextResponse.json(
+        {
+          error:
+            'Your inquiry could not be recorded right now. Email us directly at hello@aibankinginstitute.com and we will reply within one business day.',
+        },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json({
+      ok: true,
+      reference,
+      delivered: {
+        ack: ackDelivered,
+        notification: notificationDelivered,
+        supportCase: supportCaseCreated,
+      },
+    });
+  }
+
   if (deliverable) {
     sendResourceDelivery({
       email: body.email,
@@ -176,35 +274,6 @@ export async function POST(request: Request) {
     type: body.type,
     notes,
   }).catch((err) => console.warn('[inquiry] owner notification skip', err));
-
-  if (TEAM_SUPPORT_TYPES.has(body.type)) {
-    await createSupportCase({
-      buyerEmail: body.email,
-      subject: `Institution inquiry: ${track}`,
-      summary: [
-        `Name: ${body.name}`,
-        `Institution: ${body.institution}`,
-        `Track: ${track}`,
-        '',
-        notes || 'No notes provided.',
-      ].join('\n'),
-      category: 'team_seats',
-      priority: body.type === 'team-assessment-request'
-        || body.type === 'partner-rollout-request'
-        || body.type === 'cohort-pilot-request'
-        || body.type === 'project-plan-request'
-        ? 'high'
-        : 'normal',
-      source: 'buyer_form',
-      product: productForInquiryType(body.type),
-      actorType: 'customer',
-      actorEmail: body.email,
-      metadata: {
-        inquiryType: body.type,
-        track,
-      },
-    }).catch((err) => console.warn('[inquiry] support case skip', err));
-  }
 
   // Resource-capture inquiries (guide + playbook downloads) are lead magnets:
   // record them in BOTH systems via recordLead — canonical Supabase `leads`

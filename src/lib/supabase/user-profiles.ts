@@ -43,7 +43,15 @@ export interface UserProfileRow {
 export async function upsertReadinessResult(
   email: string,
   result: ReadinessResult,
-  options: { role?: AnyRole | null } = {},
+  options: {
+    role?: AnyRole | null;
+    /**
+     * Keys merged into the row's institution_context jsonb (existing keys
+     * preserved). Used by the free funnel to record the optional asset band
+     * without touching the In-Depth flow's own context writes.
+     */
+    institutionContextPatch?: Record<string, unknown>;
+  } = {},
 ): Promise<{ id: string | null; paidPrimary?: boolean }> {
   if (SKIP || !isSupabaseConfigured()) return { id: null };
 
@@ -64,7 +72,7 @@ export async function upsertReadinessResult(
   // mixed-case rows match too.
   const { data: existingRows } = await client
     .from('user_profiles')
-    .select('id, email, readiness_version, readiness_score, readiness_tier_id, readiness_tier_label, readiness_answers, readiness_at, readiness_max_score, readiness_dimension_breakdown')
+    .select('id, email, readiness_version, readiness_score, readiness_tier_id, readiness_tier_label, readiness_answers, readiness_at, readiness_max_score, readiness_dimension_breakdown, institution_context')
     .or(variants.map((v) => `email.ilike.${v}`).join(','))
     .order('readiness_at', { ascending: false, nullsFirst: false })
     .limit(10);
@@ -74,6 +82,16 @@ export async function upsertReadinessResult(
     rows[0] ??
     null;
   const keyEmail = (existing?.email as string | undefined) ?? normalizedEmail;
+
+  // Merge (not replace) institution_context so the In-Depth flow's own
+  // context keys survive a free-funnel patch and vice versa.
+  const existingContext =
+    existing && typeof existing.institution_context === 'object' && existing.institution_context !== null
+      ? (existing.institution_context as Record<string, unknown>)
+      : {};
+  const mergedContext = options.institutionContextPatch
+    ? { ...existingContext, ...options.institutionContextPatch }
+    : null;
 
   // Version-downgrade guard (2026-06-10 prod incident): a free (v3) submit
   // that resolves to a row holding a paid In-Depth (v4) result must NOT
@@ -96,6 +114,7 @@ export async function upsertReadinessResult(
           dimension_breakdown: result.dimensionBreakdown,
           version: 'v3',
         },
+        ...(mergedContext ? { institution_context: mergedContext } : {}),
       })
       .eq('id', existing.id);
     if (archiveError) {
@@ -152,6 +171,7 @@ export async function upsertReadinessResult(
         // free-flow submits so we never overwrite a previously-captured role
         // with null on a retake.
         ...(options.role !== undefined ? { role: options.role } : {}),
+        ...(mergedContext ? { institution_context: mergedContext } : {}),
       },
       { onConflict: 'email' },
     )

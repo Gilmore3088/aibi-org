@@ -58,7 +58,7 @@ export function CopyablePrompt({ text }: { readonly text: string }) {
         <pre
           style={{
             fontFamily: MONO_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             lineHeight: 1.6,
             color: 'var(--ink)',
             whiteSpace: 'pre-wrap',
@@ -77,7 +77,7 @@ export function CopyablePrompt({ text }: { readonly text: string }) {
           top: 8,
           right: 8,
           padding: '6px 12px',
-          fontSize: 12,
+          fontSize: '0.75rem',
           fontWeight: 700,
           letterSpacing: '0.12em',
           textTransform: 'uppercase',

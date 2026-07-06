@@ -161,4 +161,51 @@ describe('AIPracticeSandbox', () => {
     expect(input.value).toContain('loan file support');
     expect(input.value).toContain('one sentence I could save into my Foundation Packet');
   });
+
+  it('maps a 401 run failure to actionable sign-in copy and keeps Run un-done', async () => {
+    // Sample-data fetch succeeds; the chat POST fails with 401.
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async (url: string, init?: RequestInit) => {
+        if (init?.method === 'POST') {
+          return {
+            ok: false,
+            status: 401,
+            json: async () => ({ error: 'Authentication required.' }),
+          } as Response;
+        }
+        return {
+          ok: true,
+          text: async () => '## Scenario 1\nA synthetic branch note with no customer data.',
+        } as Response;
+      }),
+    );
+
+    render(
+      <AIPracticeSandbox
+        moduleId="aibi-p-module-1"
+        product="foundation"
+        sandboxConfig={sandboxConfig}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'No customer data' }));
+    await waitFor(() => {
+      expect(screen.getByText('Prediction saved')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'Use this start' })[0]);
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toMatch(/sign in to run the lab/i);
+    expect(alert.textContent).not.toMatch(/^Authentication required\.$/);
+    expect(within(alert).getByRole('link', { name: /go to sign-in/i }).getAttribute('href')).toBe(
+      '/auth/login',
+    );
+
+    // The step tracker must NOT mark Run as done after a failed request.
+    const runStep = screen.getByText('3. Run').closest('li') ?? screen.getByText('3. Run').parentElement;
+    expect(runStep?.textContent ?? '').not.toMatch(/done/i);
+  });
 });

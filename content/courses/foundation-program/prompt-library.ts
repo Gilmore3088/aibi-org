@@ -1197,7 +1197,7 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
     difficulty: 'advanced',
     relatedModule: 7,
     timeEstimate: '25 minutes',
-    introduction: 'This tutorial builds a compliance skill for drafting SAR narrative sections. SAR narratives require specific structure (the five W elements) and careful language. This skill produces a consistent draft that the BSA Officer reviews and edits before filing — reducing drafting time from 45 minutes to 15 minutes per narrative.',
+    introduction: 'This tutorial builds a compliance skill for drafting SAR narrative sections. SAR narratives require specific structure (the five W elements) and careful language. This skill produces a consistent draft that the BSA Officer reviews and edits before filing — time a drafted narrative against your current manual process to measure the gain.',
     steps: [
       {
         stepNumber: 1,

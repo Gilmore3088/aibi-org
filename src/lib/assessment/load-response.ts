@@ -24,6 +24,7 @@ import type { Dimension as DimensionV4, MaturityBand } from '@content/assessment
 import { parseRole, type Role } from '@content/assessments/v2/role';
 import { parseRoleV4, type RoleV4 } from '@content/assessments/v4/roles';
 import { normalizeStoredRoleToFreeRole, type FreeRole } from '@content/assessments/v3/roles';
+import { parseFreeAssetBand, type FreeAssetBand } from '@content/assessments/v3/asset-bands';
 
 export type AssessmentResponseVersion = 'v1' | 'v2' | 'v3' | 'v4';
 
@@ -51,6 +52,9 @@ export interface AssessmentResponseLoadedV3 extends Omit<AssessmentResponseBase,
   readonly tier: TierV3;
   readonly tierId: TierV3['id'];
   readonly dimensionBreakdown: Record<DimensionV3, DimensionScoreV3>;
+  // Optional asset band shared at the email gate; stored in
+  // institution_context.asset_band_free. Context only — never scoring.
+  readonly assetBandFree: FreeAssetBand | null;
 }
 
 // v4 paid In-Depth: normalized 0-100 score, 5-band maturity, 8 strategic
@@ -200,6 +204,8 @@ export async function loadAssessmentResponse(
   // v3 free funnel: stores 12-48 raw scores with v3 dimension keys.
   if (storedVersion === 'v3' && storedMax === 48) {
     const tier = getTierV3(score);
+    const institutionContext =
+      (data as { institution_context?: InstitutionContext | null }).institution_context ?? null;
     return {
       ...base,
       // Override base.role (v2-parsed) with the free-role normalization so
@@ -212,6 +218,9 @@ export async function loadAssessmentResponse(
         DimensionV3,
         DimensionScoreV3
       >,
+      assetBandFree: parseFreeAssetBand(
+        (institutionContext as { asset_band_free?: unknown } | null)?.asset_band_free,
+      ),
     };
   }
 

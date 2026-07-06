@@ -39,7 +39,7 @@ const USER_PROMPT_PREFIX =
 
 const eyebrowStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -56,7 +56,7 @@ const primaryButtonStyle: CSSProperties = {
   background: 'var(--ink)',
   color: 'var(--cream)',
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -67,7 +67,7 @@ const primaryButtonStyle: CSSProperties = {
 
 const linkButtonStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -150,7 +150,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         <h1
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 44,
+            fontSize: '2.75rem',
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: '-0.02em',
@@ -165,7 +165,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
         <p
           style={{
             fontFamily: INTER_STACK,
-            fontSize: 16,
+            fontSize: '1rem',
             fontWeight: 400,
             lineHeight: 1.6,
             color: 'var(--slate-600)',
@@ -209,7 +209,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
                 style={{
                   margin: '0 0 5px',
                   fontFamily: INTER_STACK,
-                  fontSize: 10,
+                  fontSize: '0.625rem',
                   fontWeight: 850,
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
@@ -222,7 +222,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
                 style={{
                   margin: 0,
                   fontFamily: INTER_STACK,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   lineHeight: 1.32,
                   fontWeight: 750,
                   color: 'var(--ink)',
@@ -247,7 +247,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
           <pre
             style={{
               fontFamily: MONO_STACK,
-              fontSize: 16,
+              fontSize: '1rem',
               color: 'var(--ink)',
               lineHeight: 1.6,
               whiteSpace: 'pre-wrap',
@@ -284,7 +284,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <p
                 style={{
                   fontFamily: MONO_STACK,
-                  fontSize: 16,
+                  fontSize: '1rem',
                   lineHeight: 1.6,
                   color: 'var(--slate-500)',
                   margin: 0,
@@ -297,7 +297,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <pre
                 style={{
                   fontFamily: MONO_STACK,
-                  fontSize: 16,
+                  fontSize: '1rem',
                   color: 'var(--ink)',
                   lineHeight: 1.6,
                   whiteSpace: 'pre-wrap',
@@ -311,7 +311,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
               <p
                 style={{
                   fontFamily: INTER_STACK,
-                  fontSize: 16,
+                  fontSize: '1rem',
                   lineHeight: 1.6,
                   fontWeight: 600,
                   color: 'var(--gold-deep)',
@@ -331,7 +331,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 20,
+                fontSize: '1.25rem',
                 fontWeight: 600,
                 lineHeight: 1.4,
                 letterSpacing: '-0.01em',
@@ -359,7 +359,7 @@ export function WelcomeFirstPrompt({ onContinue }: WelcomeFirstPromptProps) {
             <p
               style={{
                 fontFamily: INTER_STACK,
-                fontSize: 16,
+                fontSize: '1rem',
                 lineHeight: 1.6,
                 color: 'var(--slate-600)',
                 maxWidth: 480,

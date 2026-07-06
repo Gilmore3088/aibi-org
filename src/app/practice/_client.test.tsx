@@ -49,4 +49,58 @@ describe('PracticeSandboxPage', () => {
     }));
     expect(await screen.findByText(/Draft job aid from the public model/i)).toBeTruthy();
   });
+
+  it('surfaces a server PII block as a safety warning, never as "demo busy" sample output', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 422,
+      json: async () => ({
+        error: 'This message appears to contain a Social Security number. Use the sample data provided instead.',
+        kind: 'pii_blocked',
+      }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<PracticeSandboxPage />);
+    fireEvent.click(screen.getAllByRole('button', { name: /Run Scenario/i })[0]);
+
+    const warning = await screen.findByTestId('practice-safety-block');
+    expect(warning.textContent).toMatch(/Social Security number/i);
+    expect(warning.textContent).toMatch(/not sent to the AI model/i);
+    expect(screen.queryByTestId('practice-demo-fallback')).toBeNull();
+    expect(screen.queryByText(/sample of the output/i)).toBeNull();
+  });
+
+  it('blocks obvious PII client-side before any request is sent', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<PracticeSandboxPage />);
+    const textarea = screen.getByRole('textbox');
+    fireEvent.change(textarea, {
+      target: { value: 'Summarize the account for SSN 123-45-6789 please.' },
+    });
+    fireEvent.click(screen.getAllByRole('button', { name: /Run Scenario/i })[0]);
+
+    const warning = await screen.findByTestId('practice-safety-block');
+    expect(warning.textContent).toMatch(/not sent to the AI model/i);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('labels an outage honestly as unavailable sample output, not "busy"', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: async () => ({ error: 'The public demo model is temporarily unavailable. Try again shortly.' }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<PracticeSandboxPage />);
+    fireEvent.click(screen.getAllByRole('button', { name: /Run Scenario/i })[0]);
+
+    const notice = await screen.findByTestId('practice-demo-fallback');
+    expect(notice.textContent).toMatch(/temporarily unavailable/i);
+    expect(notice.textContent).toMatch(/not a\s+live run/i);
+    expect(notice.textContent).not.toMatch(/busy/i);
+  });
 });

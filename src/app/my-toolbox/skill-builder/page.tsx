@@ -340,7 +340,7 @@ ${guardrails
               <div className="mk-mp-pane">
                 {tab === 'Output' && (
                   <div>
-                    <h3 style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>{name || 'Untitled Skill'}</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, margin: 0 }}>{name || 'Untitled Skill'}</h3>
                     <p style={{ color: 'var(--slate-600)', marginTop: 8 }}>{purpose}</p>
                   </div>
                 )}

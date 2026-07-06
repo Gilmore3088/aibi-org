@@ -52,7 +52,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
       <div style={{ marginBottom: 16 }}>
         <div
           style={{
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
@@ -67,7 +67,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
             id="packet-heading"
             style={{
               margin: 0,
-              fontSize: 'clamp(24px, 2.4vw, 30px)',
+              fontSize: 'clamp(1.5rem, 2.4vw, 1.875rem)',
               fontWeight: 700,
               letterSpacing: '-0.015em',
               color: 'var(--ink)',
@@ -76,7 +76,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
           >
             Eighteen modules. Eighteen work products.
           </h2>
-          <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--slate-600)' }}>
+          <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--slate-600)' }}>
             {savedCount} of {total} saved
           </span>
         </div>
@@ -125,7 +125,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               <span
                 style={{
                   fontFamily: FONT_INTER,
-                  fontSize: 13,
+                  fontSize: '0.8125rem',
                   fontWeight: 700,
                   fontVariantNumeric: 'tabular-nums',
                   color: 'var(--slate-500)',
@@ -138,7 +138,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
               <span
                 style={{
                   fontFamily: FONT_INTER,
-                  fontSize: 16,
+                  fontSize: '1rem',
                   fontWeight: 600,
                   color: 'var(--ink)',
                   lineHeight: 1.4,
@@ -152,7 +152,7 @@ export function YourWorkStrip({ completedModules, currentModule }: YourWorkStrip
                   flex: 'none',
                   padding: '4px 10px',
                   borderRadius: 999,
-                  fontSize: 11,
+                  fontSize: '0.6875rem',
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',

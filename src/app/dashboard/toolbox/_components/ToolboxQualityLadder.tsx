@@ -44,7 +44,7 @@ export function ToolboxQualityLadder({
     >
       <div className="grid gap-0 md:grid-cols-[220px_repeat(3,minmax(0,1fr))]">
         <div className="border-b border-[color:var(--ink-a10)] bg-[color:var(--ink)] px-5 py-4 text-[color:var(--cream)] md:border-b-0 md:border-r">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--gold)]">
+          <p className="text-[0.625rem] font-black uppercase tracking-[0.2em] text-[color:var(--gold)]">
             Asset quality
           </p>
           <p className="mt-2 text-xl font-black leading-tight tracking-[-0.02em]">
@@ -78,7 +78,7 @@ export function ToolboxQualityLadder({
                 {marker}
               </span>
               <div className="min-w-0">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                <p className="text-[0.625rem] font-black uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
                   {step.label}
                 </p>
                 <p className="mt-2 text-sm font-black leading-snug text-[color:var(--ink)]">
@@ -88,7 +88,7 @@ export function ToolboxQualityLadder({
                   {step.body}
                 </p>
                 {hasCounts && (
-                  <p className="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
+                  <p className="mt-3 text-[0.625rem] font-black uppercase tracking-[0.16em] text-[color:var(--slate-500)]">
                     {total === 0 ? '0%' : `${Math.round((count / total) * 100)}%`} of toolbox
                   </p>
                 )}

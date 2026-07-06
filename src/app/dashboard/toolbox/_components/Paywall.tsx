@@ -6,7 +6,7 @@ export function Paywall() {
   return (
     <main className="mockup-scope min-h-screen bg-[color:var(--cream)] px-6 py-16">
       <section className="mx-auto max-w-5xl">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+      <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
         Toolbox preview
       </p>
       <h1 className="mt-3 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
@@ -24,7 +24,7 @@ export function Paywall() {
           ['My Toolbox', 'Save trusted versions as reusable templates.'],
         ].map(([label, body]) => (
           <div key={label}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+            <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
               {label}
             </p>
             <p className="mt-2 text-sm font-semibold leading-snug text-[color:var(--slate-600)]">
@@ -35,7 +35,7 @@ export function Paywall() {
       </div>
       <div className="mt-8 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="border border-[color:var(--ink-a10)] bg-white p-5 shadow-sm">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+          <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
             Preview flow
           </p>
           <ol className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -45,14 +45,14 @@ export function Paywall() {
               ['03', 'Save the reviewed asset.'],
             ].map(([step, body]) => (
               <li key={step} className="border border-[color:var(--ink-a10)] bg-[color:var(--cream)] p-4">
-                <p className="text-[11px] font-black text-[color:var(--gold-deep)]">{step}</p>
+                <p className="text-[0.6875rem] font-black text-[color:var(--gold-deep)]">{step}</p>
                 <p className="mt-2 text-sm font-bold leading-snug text-[color:var(--ink)]">{body}</p>
               </li>
             ))}
           </ol>
         </div>
         <div className="border border-[color:var(--ink)] bg-[color:var(--ink)] p-5 text-white">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--gold)]">
+          <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-[color:var(--gold)]">
             Unlocks with paid access
           </p>
           <p className="mt-3 text-2xl font-bold leading-tight">
@@ -67,13 +67,13 @@ export function Paywall() {
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">
         <Link
           href="/assessment/in-depth"
-          className="inline-flex items-center justify-center rounded-[12px] bg-[color:var(--ink)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)]"
+          className="inline-flex items-center justify-center rounded-[12px] bg-[color:var(--ink)] px-6 py-3 text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-white transition-colors hover:bg-[color:var(--ink-2)]"
         >
           UNLOCK WITH IN-DEPTH
         </Link>
         <Link
           href="/courses"
-          className="inline-flex items-center justify-center rounded-[12px] border border-[color:var(--ink-a15)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+          className="inline-flex items-center justify-center rounded-[12px] border border-[color:var(--ink-a15)] px-6 py-3 text-[0.6875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
         >
           VIEW FOUNDATION COURSE
         </Link>

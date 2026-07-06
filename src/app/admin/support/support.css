@@ -17,7 +17,7 @@
 
 .support-admin__top h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 1.75rem;
   line-height: 1.1;
   letter-spacing: 0;
 }
@@ -26,7 +26,7 @@
 .support-kicker {
   margin: 0 0 6px;
   color: #6a5b2d;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -35,7 +35,7 @@
 .support-admin__identity {
   min-width: 0;
   color: #58677a;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 
@@ -55,7 +55,7 @@
   border-radius: 8px;
   padding: 8px 12px;
   color: #102033;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-decoration: none;
   background: #ffffff;
@@ -93,7 +93,7 @@
   background: #ffffff;
   color: #102033;
   font: inherit;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .support-search input,
@@ -118,7 +118,7 @@
   background: #102033;
   color: #ffffff;
   font: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
   cursor: pointer;
 }
@@ -155,7 +155,7 @@
 .support-label {
   display: block;
   color: #64748b;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
@@ -163,7 +163,7 @@
   display: block;
   margin-top: 8px;
   color: #102033;
-  font-size: 26px;
+  font-size: 1.625rem;
   line-height: 1;
 }
 
@@ -198,7 +198,7 @@
 .support-section-head h2 {
   margin: 0;
   color: #102033;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -233,7 +233,7 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .support-table th,
@@ -246,7 +246,7 @@
 
 .support-table th {
   color: #64748b;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -268,7 +268,7 @@
   padding: 0 9px;
   background: #eef2f6;
   color: #334155;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 800;
   text-transform: capitalize;
   white-space: nowrap;
@@ -309,7 +309,7 @@
 
 .support-health-list dt {
   color: #64748b;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .support-health-list dd {
@@ -331,7 +331,7 @@
 .support-ops-grid h3 {
   margin: 0 0 10px;
   color: #102033;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .support-ops-grid ol {
@@ -340,7 +340,7 @@
   margin: 0;
   padding-left: 18px;
   color: #475569;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.45;
 }
 
@@ -371,7 +371,7 @@
 .support-timeline small,
 .support-muted {
   color: #64748b;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .support-timeline p {
@@ -388,7 +388,7 @@
   display: grid;
   gap: 6px;
   color: #64748b;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 800;
 }
 
@@ -402,7 +402,7 @@
 .support-actions__message {
   margin: 0;
   color: #0f5e74;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
 }
 
@@ -424,7 +424,7 @@
 .support-snapshot-grid strong {
   display: block;
   margin-top: 4px;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .support-list-block {
@@ -433,7 +433,7 @@
 
 .support-list-block h3 {
   margin: 0 0 10px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .support-record {
@@ -447,11 +447,11 @@
 .support-record p {
   margin: 4px 0;
   color: #58677a;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .support-record code {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #475569;
   overflow-wrap: anywhere;
 }

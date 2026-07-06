@@ -22,7 +22,7 @@ describe('HomePage', () => {
       name: /AI is already here\. Let.s make sure your team is ready\./i,
     });
     expect(heading).toBeTruthy();
-    expect(screen.getByText(/Free .* 12 questions .* 3 minutes .* first artifact/i)).toBeTruthy();
+    expect(screen.getByText(/Free .* 12 questions .* 3 minutes .* first working template/i)).toBeTruthy();
     expect(screen.getByText(/frontline tellers, branch teams, lenders/i)).toBeTruthy();
 
     const proofObject = screen.getByLabelText(/typed into a public chatbot/i);

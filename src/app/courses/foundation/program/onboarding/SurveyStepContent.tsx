@@ -20,7 +20,7 @@ const INTER_STACK =
 const eyebrowStyle: CSSProperties = {
   display: 'block',
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -30,7 +30,7 @@ const eyebrowStyle: CSSProperties = {
 
 const questionTitleStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 24,
+  fontSize: '1.5rem',
   fontWeight: 700,
   lineHeight: 1.25,
   letterSpacing: '-0.01em',
@@ -40,7 +40,7 @@ const questionTitleStyle: CSSProperties = {
 
 const helperStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 12,
+  fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -50,7 +50,7 @@ const helperStyle: CSSProperties = {
 
 const contextStyle: CSSProperties = {
   fontFamily: INTER_STACK,
-  fontSize: 16,
+  fontSize: '1rem',
   fontWeight: 400,
   lineHeight: 1.6,
   color: 'var(--slate-600)',
@@ -66,7 +66,7 @@ function optionButtonStyle(isSelected: boolean): CSSProperties {
     border: `1px solid ${isSelected ? 'var(--ink)' : 'var(--ink-a10)'}`,
     color: isSelected ? 'var(--cream)' : 'var(--ink)',
     fontFamily: INTER_STACK,
-    fontSize: 16,
+    fontSize: '1rem',
     fontWeight: 600,
     textAlign: 'left',
     cursor: 'pointer',
@@ -176,7 +176,7 @@ export function SurveyStepContent({
                     <span
                       style={{
                         fontFamily: INTER_STACK,
-                        fontSize: 16,
+                        fontSize: '1rem',
                         fontWeight: 500,
                         color: 'var(--ink)',
                       }}

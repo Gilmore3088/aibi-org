@@ -158,7 +158,7 @@ export function WorkProductForm({
         className="border border-[color:var(--ink-a10)] border-l-4 rounded-2xl p-6 bg-[color:var(--cream)] shadow-[var(--shadow-soft)] focus:outline-none"
         style={{ borderLeftColor: 'var(--emerald-700)' }}
       >
-        <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--emerald-700)] mb-2">
+        <p className="font-sans text-[0.6875rem] font-bold uppercase tracking-widest text-[color:var(--emerald-700)] mb-2">
           Submitted
         </p>
         <p className="font-sans text-base font-semibold text-[color:var(--ink)] mb-2">
@@ -170,14 +170,14 @@ export function WorkProductForm({
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href={submitSuccess?.certificateUrl ?? '/courses/foundation/program/certificate'}
-            className="inline-flex items-center rounded-xl bg-[color:var(--ink)] px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+            className="inline-flex items-center rounded-xl bg-[color:var(--ink)] px-5 py-3 font-sans text-[0.6875rem] font-bold uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--ink-2)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
           >
             View certificate
           </Link>
           {submitSuccess?.verifyUrl ? (
             <Link
               href={submitSuccess.verifyUrl}
-              className="inline-flex items-center rounded-xl border border-[color:var(--ink-a10)] bg-white px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+              className="inline-flex items-center rounded-xl border border-[color:var(--ink-a10)] bg-white px-5 py-3 font-sans text-[0.6875rem] font-bold uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
             >
               Public verify page
             </Link>
@@ -261,13 +261,13 @@ export function WorkProductForm({
             type="submit"
             disabled={submitting || !isValid}
             aria-disabled={submitting || !isValid}
-            className="px-8 py-3 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[11px] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
+            className="px-8 py-3 bg-[color:var(--ink)] hover:bg-[color:var(--ink-2)] disabled:bg-[color:var(--slate-200)] disabled:text-[color:var(--slate-500)] text-[color:var(--cream)] text-[0.6875rem] font-sans font-bold uppercase tracking-widest rounded-xl transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:ring-offset-2"
             aria-label={submitting ? 'Submitting work product…' : 'Submit work product'}
           >
             {submitting ? 'SUBMITTING…' : isResubmission ? 'SUBMIT RESUBMISSION' : 'SUBMIT WORK PRODUCT'}
           </button>
           {!isValid && !submitting && (
-            <p className="mt-2 text-[11px] font-sans text-[color:var(--slate-500)]">
+            <p className="mt-2 text-[0.6875rem] font-sans text-[color:var(--slate-500)]">
               Complete all required fields to enable submission.
             </p>
           )}
