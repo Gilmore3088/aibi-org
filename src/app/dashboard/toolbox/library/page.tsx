@@ -7,9 +7,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
-import { listLibrarySkills } from '@/lib/toolbox/library';
+import { listLibrarySkills, type LibrarySkillSummary } from '@/lib/toolbox/library';
 import { Paywall } from '../_components/Paywall';
 import type { ToolboxKind } from '@/lib/toolbox/types';
+import { ALL_PROMPTS } from '@content/courses/foundation-program/prompt-library';
 
 export const metadata: Metadata = {
   title: 'Toolbox Library | The AI Banking Institute',
@@ -39,9 +40,83 @@ export default async function LibraryPage({
       : undefined;
   const category = sp.category || undefined;
 
-  const skills = await listLibrarySkills({ category, kind });
+  // The synced library needs the database; the curriculum content behind it
+  // does not. A DB outage must degrade to the built-in prompt set, never to
+  // the error boundary (persona audit: a paid learner hit a hard crash here).
+  let skills: LibrarySkillSummary[] = [];
+  let libraryUnavailable = false;
+  try {
+    skills = await listLibrarySkills({ category, kind });
+  } catch (err) {
+    console.warn('[toolbox-library] falling back to built-in prompts:', err);
+    libraryUnavailable = true;
+  }
 
   const categories = Array.from(new Set(skills.map((s) => s.category))).sort();
+
+  if (libraryUnavailable) {
+    return (
+      <main className="min-h-screen bg-[color:var(--cream)]">
+        <div className="border-b border-[color:var(--ink-a10)] bg-white">
+          <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--gold-deep)]">
+                Toolbox · Library
+              </p>
+              <h1 className="mt-2 text-4xl font-bold leading-tight text-[color:var(--ink)] md:text-5xl">
+                Library
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-600)]">
+                Banker-vetted prompts and skills from the AiBI curriculum.
+              </p>
+            </div>
+            <Link
+              href="/dashboard/toolbox"
+              className="inline-flex w-fit items-center rounded-[12px] border border-[color:var(--ink-a15)] bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ink)] transition-colors hover:border-[color:var(--ink)]"
+            >
+              BACK TO TOOLBOX
+            </Link>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+          <p
+            role="status"
+            data-testid="library-fallback-notice"
+            className="rounded-[16px] border border-[color:var(--gold-a30)] bg-[color:var(--gold-a10)] px-4 py-3 text-sm font-semibold text-[color:var(--gold-deep)]"
+          >
+            Showing the built-in prompt library — your saved and synced items are
+            temporarily unavailable. Reload in a minute to reconnect.
+          </p>
+          <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {ALL_PROMPTS.map((prompt) => (
+              <li key={prompt.id}>
+                <details className="block h-full rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-6 shadow-[var(--shadow-soft)]">
+                  <summary className="cursor-pointer list-none">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--slate-500)]">
+                      {prompt.role} · {prompt.difficulty}
+                    </p>
+                    <h2 className="mt-2 text-xl font-bold leading-snug text-[color:var(--ink)]">
+                      {prompt.title}
+                    </h2>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--slate-600)]">
+                      {prompt.whenToUse ?? prompt.expectedOutput}
+                    </p>
+                    <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[color:var(--gold-deep)]">
+                      SHOW PROMPT →
+                    </p>
+                  </summary>
+                  <pre className="mt-4 whitespace-pre-wrap rounded-[12px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] p-4 text-xs leading-relaxed text-[color:var(--ink)]">
+                    {prompt.promptText}
+                  </pre>
+                </details>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[color:var(--cream)]">

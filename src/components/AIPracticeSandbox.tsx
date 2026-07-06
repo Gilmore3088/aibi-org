@@ -281,6 +281,8 @@ export function AIPracticeSandbox({
   const [dataContent, setDataContent] = useState<string | null>(null);
   const [piiWarning, setPiiWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Optional recovery link rendered next to the error (sign-in / support).
+  const [errorAction, setErrorAction] = useState<{ label: string; href: string } | null>(null);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [selectedModel, setSelectedModel] = useState({
     provider: DEFAULT_MODEL.provider,
@@ -369,9 +371,12 @@ export function AIPracticeSandbox({
     {
       label: 'Run',
       body: 'Run one guided start',
-      status: promptPrepared
+      // Done only when a run actually produced output — a failed request must
+      // never show the step as complete (persona audit: 401 left RUN ✓ while
+      // the review panel still said "Run lab first").
+      status: assistantOutputReady
         ? 'done'
-        : predictionReady && dataReady
+        : promptPrepared || (predictionReady && dataReady)
           ? 'current'
           : 'pending',
     },
@@ -550,6 +555,7 @@ export function AIPracticeSandbox({
 
     if (!predictionReady) {
       setError('Save a prediction before running the lab.');
+      setErrorAction(null);
       return;
     }
 
@@ -563,10 +569,12 @@ export function AIPracticeSandbox({
     // Message limit guard
     if (messageCount >= MAX_MESSAGES) {
       setError('Message limit reached. Download your conversation and reset to continue.');
+      setErrorAction(null);
       return;
     }
 
     setError(null);
+    setErrorAction(null);
     setReviewedItems([]);
     setArtifactSavedAt(null);
     const userMessage: SandboxMessage = { role: 'user', content: trimmed };
@@ -593,8 +601,28 @@ export function AIPracticeSandbox({
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.error ?? `Request failed (${response.status})`);
+        const errorData = (await response.json().catch(() => null)) as { error?: string } | null;
+        // Map auth/entitlement statuses to actionable copy + a recovery link
+        // instead of the raw backend string (persona audit: bare
+        // "Authentication required.").
+        if (response.status === 401) {
+          setErrorAction({ label: 'Go to sign-in', href: '/auth/login' });
+          throw new Error(
+            'Sign in to run the lab — your session has expired or you are not signed in on this device.',
+          );
+        }
+        if (response.status === 403) {
+          setErrorAction({ label: 'Get purchase help', href: '/support/purchase-help' });
+          throw new Error(
+            'The lab needs an active course enrollment. If you purchased the course and still see this, purchase help can restore your access.',
+          );
+        }
+        if (response.status === 429) {
+          throw new Error(
+            errorData?.error ?? 'You have hit the lab message limit for now — take a break and try again shortly.',
+          );
+        }
+        throw new Error(errorData?.error ?? `The lab could not run (error ${response.status}). Try again in a moment.`);
       }
 
       if (!response.body) {
@@ -673,6 +701,7 @@ export function AIPracticeSandbox({
     setMessages([]);
     setMessageCount(0);
     setError(null);
+    setErrorAction(null);
     setInput('');
     setPiiWarning(null);
     setReviewedItems([]);
@@ -1154,6 +1183,17 @@ export function AIPracticeSandbox({
       {error && (
         <p className="mb-3 font-sans text-sm text-[color:#9b2226]" role="alert">
           {error}
+          {errorAction && (
+            <>
+              {' '}
+              <a
+                href={errorAction.href}
+                className="font-semibold underline underline-offset-2 text-[color:#9b2226]"
+              >
+                {errorAction.label}
+              </a>
+            </>
+          )}
         </p>
       )}
 
