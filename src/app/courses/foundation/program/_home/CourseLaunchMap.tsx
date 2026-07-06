@@ -6,7 +6,8 @@
 // not marketing copy.
 
 import Link from 'next/link';
-import { modules, getArtifactFirst } from '@content/courses/foundation-program';
+import { modules, getArtifactFirst, TEST_OUT_CHECKS } from '@content/courses/foundation-program';
+import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
 import type { LMSModule } from '@/components/lms';
 
 const FONT_INTER =
@@ -17,6 +18,13 @@ interface CourseLaunchMapProps {
   readonly completedModules: readonly number[];
 }
 
+// Derived so the promise stays true if labs are added/removed — persona
+// audit: "Run the AiBI Lab" was stated as step 02 of every module while
+// only 12 of 18 modules had one.
+const LAB_MODULE_COUNT = Object.keys(SANDBOX_CONFIGS).length;
+const TEST_OUT_MODULE_NUMBERS = TEST_OUT_CHECKS.map((check) => check.moduleNumber);
+const LAST_TEST_OUT_MODULE = Math.max(...TEST_OUT_MODULE_NUMBERS);
+
 const LOOP_STEPS = [
   {
     label: 'Understand',
@@ -25,13 +33,13 @@ const LOOP_STEPS = [
   },
   {
     label: 'Try',
-    title: 'Run the AiBI Lab',
-    body: 'Use sample banking data, not sensitive bank records.',
+    title: 'Practice the move',
+    body: `Guided practice on sample banking data — ${LAB_MODULE_COUNT} of ${modules.length} modules include a live AiBI Lab.`,
   },
   {
     label: 'Build',
     title: 'Shape the artifact',
-    body: 'Turn the lab result into review-ready work product.',
+    body: 'Turn the practice result into review-ready work product.',
   },
   {
     label: 'Save',
@@ -202,6 +210,27 @@ export function CourseLaunchMap({ currentModule, completedModules }: CourseLaunc
               </div>
             ))}
           </div>
+
+          {/* Prior-experience signal: fresh learners should know the ramp is
+              skippable before grinding through it (persona audit: no
+              "where does advanced start" cue existed anywhere). */}
+          {!completedModules.includes(LAST_TEST_OUT_MODULE) && (
+            <p
+              data-testid="launch-map-test-out-note"
+              style={{
+                margin: '0 0 14px',
+                color: 'rgba(255,255,255,0.75)',
+                fontSize: '0.8125rem',
+                lineHeight: 1.5,
+                fontWeight: 600,
+              }}
+            >
+              Already comfortable with the basics? Modules{' '}
+              {TEST_OUT_MODULE_NUMBERS[0]}–{LAST_TEST_OUT_MODULE} each offer a
+              3-question test-out at the top of the module — pass it and the
+              module is marked complete.
+            </p>
+          )}
 
           <div
             className="foundation-launch-map__proof"

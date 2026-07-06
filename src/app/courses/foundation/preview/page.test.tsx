@@ -7,8 +7,13 @@ describe('FoundationPreviewPage', () => {
     render(<FoundationPreviewPage />);
 
     expect(
-      screen.getByText(/free preview · module 1 of 18 — understand section/i),
+      screen.getByText(/free preview · module 1 of 18 — the full module walkthrough/i),
     ).toBeTruthy();
+    // The walkthrough covers all four phases read-only.
+    expect(screen.getByTestId('preview-try')).toBeTruthy();
+    expect(screen.getByTestId('preview-build')).toBeTruthy();
+    expect(screen.getByTestId('preview-save')).toBeTruthy();
+    expect(screen.getByText(/try it now — same drill as the course/i)).toBeTruthy();
     // Real course content renders through LearnSection, not marketing copy.
     expect(screen.getByTestId('foundation-guided-understand')).toBeTruthy();
     expect(screen.getByTestId('foundation-reference-drawer')).toBeTruthy();

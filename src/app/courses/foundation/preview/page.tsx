@@ -14,9 +14,15 @@ import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   foundationCourseConfig,
   foundationDurationLabel,
+  getArtifactFirst,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
+import {
+  getFoundationLabBrief,
+  getFoundationWorkedExample,
+} from '@content/courses/foundation-program/lab-first';
 import { LearnSection } from '../program/_components/LearnSection';
+import { KnowledgeCheck } from '../program/_components/KnowledgeCheck';
 
 const PREVIEW_MODULE_NUMBER = 1;
 const INTER_STACK =
@@ -26,13 +32,44 @@ export const metadata: Metadata = {
   alternates: { canonical: '/courses/foundation/preview' },
   title: 'Free Preview — Module 1 | AiBI Foundation',
   description:
-    'Read the full Understand section of Module 1 of the AiBI Foundation course free — the same material paid learners see, before you enroll.',
+    'Walk through Module 1 of the AiBI Foundation course free — the real Understand, Try, Build, and Save phases paid learners see, before you enroll.',
 };
+
+const PHASE_EYEBROW: React.CSSProperties = {
+  margin: '0 0 10px',
+  fontSize: '0.75rem',
+  fontWeight: 700,
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-deep)',
+};
+
+function PhaseHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <header style={{ margin: '40px 0 16px' }}>
+      <p style={PHASE_EYEBROW}>{eyebrow}</p>
+      <h2
+        style={{
+          margin: 0,
+          fontSize: 'clamp(1.5rem, 2.4vw, 2rem)',
+          lineHeight: 1.12,
+          letterSpacing: '-0.01em',
+          fontWeight: 800,
+        }}
+      >
+        {title}
+      </h2>
+    </header>
+  );
+}
 
 export default function FoundationPreviewPage() {
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(PREVIEW_MODULE_NUMBER);
   const mod = getModuleByNumber(PREVIEW_MODULE_NUMBER);
   const totalModules = foundationCourseConfig.modules.length;
+  const labBrief = getFoundationLabBrief(PREVIEW_MODULE_NUMBER);
+  const workedExample = getFoundationWorkedExample(PREVIEW_MODULE_NUMBER);
+  const artifact = getArtifactFirst(PREVIEW_MODULE_NUMBER);
 
   return (
     <div
@@ -74,7 +111,7 @@ export default function FoundationPreviewPage() {
                 color: 'var(--gold-deep)',
               }}
             >
-              Free preview · Module 1 of {totalModules} — Understand section
+              Free preview · Module 1 of {totalModules} — the full module walkthrough
             </p>
             <p
               style={{
@@ -84,9 +121,10 @@ export default function FoundationPreviewPage() {
                 color: 'var(--slate-600)',
               }}
             >
-              This is the same Understand material paid learners see, not a summary.
-              The guided labs, practice sandbox, saved artifacts, and the Foundation
-              Packet are part of the paid course ({foundationDurationLabel()}).
+              This is the real module — the same Understand, Try, Build, and Save
+              phases paid learners work through, not a summary. What stays paid:
+              the live AI labs, saving your work to the Foundation Packet, and the
+              credential ({foundationDurationLabel()}).
             </p>
           </section>
 
@@ -116,12 +154,98 @@ export default function FoundationPreviewPage() {
             </h1>
           </header>
 
+          <PhaseHeading eyebrow="Phase 1 · Understand" title="The concept, exactly as the course teaches it." />
           <LearnSection
             sections={expandedModule?.sections ?? []}
             keyTakeaways={expandedModule?.takeaways}
             moduleNumber={PREVIEW_MODULE_NUMBER}
             variant="preview"
           />
+
+          {labBrief && (
+            <section aria-label="Try phase preview" data-testid="preview-try">
+              <PhaseHeading eyebrow="Phase 2 · Try" title="The practice task, and a real check you can take now." />
+              <div
+                style={{
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 18,
+                  background: '#fff',
+                  padding: '20px 22px',
+                  marginBottom: 14,
+                }}
+              >
+                <p style={{ ...PHASE_EYEBROW, marginBottom: 8 }}>The task</p>
+                <p style={{ margin: 0, fontSize: '1.0625rem', lineHeight: 1.5, fontWeight: 700 }}>
+                  {labBrief.labTask}
+                </p>
+                <p style={{ ...PHASE_EYEBROW, margin: '16px 0 8px' }}>The model you practice</p>
+                <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.5, color: 'var(--slate-600)' }}>
+                  {labBrief.visualModel.join(' → ')}
+                </p>
+              </div>
+              {labBrief.decisionDrill && (
+                <KnowledgeCheck
+                  prompt={labBrief.decisionDrill.prompt}
+                  options={labBrief.decisionDrill.options}
+                  kicker="Try it now — same drill as the course"
+                />
+              )}
+            </section>
+          )}
+
+          {workedExample && (
+            <section aria-label="Build phase preview" data-testid="preview-build">
+              <PhaseHeading eyebrow="Phase 3 · Build" title="Weak vs. better — the quality bar you build against." />
+              <div
+                style={{
+                  display: 'grid',
+                  gap: 12,
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                }}
+              >
+                <div style={{ border: '1px solid var(--ink-a10)', borderRadius: 18, background: '#fff', padding: '18px 20px' }}>
+                  <p style={{ ...PHASE_EYEBROW, color: 'var(--slate-500)' }}>{workedExample.weakLabel}</p>
+                  <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
+                    {workedExample.weak}
+                  </p>
+                </div>
+                <div style={{ border: '1px solid var(--gold-a40, rgba(197,160,40,0.4))', borderRadius: 18, background: 'var(--cream-2)', padding: '18px 20px' }}>
+                  <p style={{ ...PHASE_EYEBROW }}>{workedExample.strongLabel}</p>
+                  <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, fontWeight: 650 }}>
+                    {workedExample.strong}
+                  </p>
+                </div>
+              </div>
+              <p style={{ margin: '12px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
+                <strong style={{ color: 'var(--ink)' }}>Why the better version works:</strong>{' '}
+                {workedExample.why}
+              </p>
+            </section>
+          )}
+
+          {artifact && (
+            <section aria-label="Save phase preview" data-testid="preview-save">
+              <PhaseHeading eyebrow="Phase 4 · Save" title="What you keep from this module." />
+              <div
+                style={{
+                  border: '1px solid var(--ink-a10)',
+                  borderRadius: 18,
+                  background: '#fff',
+                  padding: '20px 22px',
+                }}
+              >
+                <p style={{ margin: 0, fontSize: '1.0625rem', fontWeight: 800 }}>{artifact.saved}</p>
+                <p style={{ margin: '8px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
+                  {artifact.building}
+                </p>
+                <p style={{ margin: '8px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
+                  <strong style={{ color: 'var(--ink)' }}>Where it earns its keep:</strong>{' '}
+                  {artifact.usedFor} In the paid course this saves into your 18-piece
+                  Foundation Packet with review evidence attached.
+                </p>
+              </div>
+            </section>
+          )}
 
           <section
             aria-label="Enroll in the full course"
