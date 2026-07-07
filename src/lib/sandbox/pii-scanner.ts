@@ -73,6 +73,17 @@ function detectSSN(text: string): Detection | null {
     );
   }
 
+  // XXX XX XXXX / XXX.XX.XXXX — space- or dot-separated variants. The
+  // separator must be consistent, and 3-2-4 grouping is distinctive enough
+  // (phones group 3-3-4) that a bare match is worth flagging.
+  const separated = /(?<!\d)(\d{3})([ .])(\d{2})\2(\d{4})(?!\d)/g;
+  if (separated.exec(text) !== null) {
+    return detection('ssn',
+      'This message appears to contain a Social Security number. ' +
+      'Use the sample data provided instead.',
+    );
+  }
+
   // 9 consecutive digits that are NOT part of a longer digit string.
   const nineDigits = /(?<!\d)(\d{9})(?!\d)/g;
   while ((m = nineDigits.exec(text)) !== null) {

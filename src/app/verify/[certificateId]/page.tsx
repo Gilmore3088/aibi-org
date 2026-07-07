@@ -243,10 +243,14 @@ export default async function CertificateVerificationPage({ params }: PageProps)
   // the AIBIP id space is large, but lookups were completely unthrottled).
   // Fail-open: a rate-limit store outage must not break legitimate
   // verification.
+  // Trust x-real-ip (platform-set on Vercel), else the rightmost
+  // x-forwarded-for hop — the leftmost hops are client-controlled and would
+  // let an enumerator mint a fresh throttle bucket per request.
   const headerList = await headers();
+  const forwarded = headerList.get('x-forwarded-for');
   const ip =
     headerList.get('x-real-ip') ??
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    forwarded?.split(',').at(-1)?.trim() ??
     'unknown';
   const rate = await checkRateLimit({
     key: 'verify-lookup',

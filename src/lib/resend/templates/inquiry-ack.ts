@@ -9,11 +9,20 @@ export interface InquiryAckVars {
   track: string;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 export function inquiryAckHtml(v: InquiryAckVars): string {
   const bodyContent = `
     ${kicker('Inquiry received')}
-    ${heading(`Thanks, ${v.name}.`)}
-    ${body(`We received your inquiry about <strong>${v.track}</strong> from ${v.institution}. We'll follow up within one business day.`)}
+    ${heading(`Thanks, ${escapeHtml(v.name)}.`)}
+    ${body(`We received your inquiry about <strong>${escapeHtml(v.track)}</strong> from ${escapeHtml(v.institution)}. We'll follow up within one business day.`)}
     ${divider()}
     <p style="margin:0;font-size:14px;line-height:1.6;color:#637083">
       While you wait, the free AI Readiness Assessment gives you an instant baseline across four dimensions — no payment required.
@@ -22,7 +31,7 @@ export function inquiryAckHtml(v: InquiryAckVars): string {
   `;
 
   return emailShell({
-    preheader: `We received your ${v.track} inquiry — we'll follow up within one business day`,
+    preheader: `We received your ${escapeHtml(v.track)} inquiry — we'll follow up within one business day`,
     body: bodyContent,
   });
 }
