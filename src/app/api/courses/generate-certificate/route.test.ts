@@ -213,6 +213,18 @@ describe('/api/courses/generate-certificate', () => {
       expect(response.status).toBe(400);
     });
 
+    it('returns 404 and does not issue when the enrollment belongs to another user', async () => {
+      // Ownership read (course_enrollments) returns nothing for this caller.
+      mocks.enrollmentMaybeSingle.mockResolvedValueOnce({ data: null, error: null });
+      const { POST } = await import('./route');
+
+      const response = await POST(postRequest({ enrollmentId: ENROLLMENT_ID }));
+
+      expect(response.status).toBe(404);
+      expect(mocks.issueCertificateForEnrollment).not.toHaveBeenCalled();
+      expect(mocks.submissionMaybeSingle).not.toHaveBeenCalled();
+    });
+
     it('returns 401 when the request has no authenticated session', async () => {
       mocks.getUser.mockResolvedValueOnce({ data: { user: null }, error: null });
       const { POST } = await import('./route');

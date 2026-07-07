@@ -163,33 +163,37 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2c. Extract latest user message for security scans
-  const latestUserMessage = [...messages].reverse().find((m) => m.role === 'user');
-  if (!latestUserMessage) {
+  // 2c. Every user-authored message is forwarded to the provider, so scan
+  // ALL of them — not just the latest. A client could otherwise smuggle PII
+  // or an injection payload in an earlier turn and end with a benign message.
+  const userMessages = messages.filter((m) => m.role === 'user');
+  if (userMessages.length === 0) {
     return NextResponse.json(
       { error: 'Messages must contain at least one user message.' },
       { status: 400 },
     );
   }
 
-  // 3. PII scan on latest user message
-  const piiResult = scanForPII(latestUserMessage.content);
-  if (!piiResult.safe) {
-    return NextResponse.json({ error: piiResult.reason }, { status: 422 });
-  }
+  for (const userMessage of userMessages) {
+    // 5. Per-message character limit
+    if (userMessage.content.length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json(
+        { error: `Message exceeds maximum length of ${MAX_MESSAGE_LENGTH} characters.` },
+        { status: 400 },
+      );
+    }
 
-  // 4. Injection filter on latest user message
-  const injectionResult = scanForInjection(latestUserMessage.content);
-  if (!injectionResult.safe) {
-    return NextResponse.json({ error: injectionResult.reason }, { status: 422 });
-  }
+    // 3. PII scan
+    const piiResult = scanForPII(userMessage.content);
+    if (!piiResult.safe) {
+      return NextResponse.json({ error: piiResult.reason }, { status: 422 });
+    }
 
-  // 5. Per-message character limit
-  if (latestUserMessage.content.length > MAX_MESSAGE_LENGTH) {
-    return NextResponse.json(
-      { error: `Message exceeds maximum length of ${MAX_MESSAGE_LENGTH} characters.` },
-      { status: 400 },
-    );
+    // 4. Injection filter
+    const injectionResult = scanForInjection(userMessage.content);
+    if (!injectionResult.safe) {
+      return NextResponse.json({ error: injectionResult.reason }, { status: 422 });
+    }
   }
 
   // 6. Conversation message count limit

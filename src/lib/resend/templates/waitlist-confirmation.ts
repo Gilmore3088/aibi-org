@@ -1,6 +1,6 @@
 // Email 6: Waitlist confirmation.
 
-import { emailShell, kicker, heading, body, divider } from './base';
+import { emailShell, escapeHtml, kicker, heading, body, divider } from './base';
 
 export interface WaitlistConfirmationVars {
   interestLabel: string;
@@ -8,10 +8,11 @@ export interface WaitlistConfirmationVars {
 }
 
 export function waitlistConfirmationHtml(v: WaitlistConfirmationVars): string {
-  const institution = v.institution || 'your institution';
+  const interestLabel = escapeHtml(v.interestLabel);
+  const institution = escapeHtml(v.institution || 'your institution');
   const bodyContent = `
     ${kicker("You're on the list")}
-    ${heading(`We've got you down for ${v.interestLabel}.`)}
+    ${heading(`We've got you down for ${interestLabel}.`)}
     ${body(`We'll reach out to <strong>${institution}</strong> as soon as a spot opens up. No action needed on your end.`)}
     ${divider()}
     <p style="margin:0;font-size:14px;line-height:1.6;color:#637083">
@@ -21,7 +22,7 @@ export function waitlistConfirmationHtml(v: WaitlistConfirmationVars): string {
   `;
 
   return emailShell({
-    preheader: `You're on the waitlist for ${v.interestLabel}`,
+    preheader: `You're on the waitlist for ${interestLabel}`,
     body: bodyContent,
   });
 }

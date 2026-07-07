@@ -34,7 +34,7 @@ const NAV_LINKS: readonly NavLink[] = [
   { href: "/courses", label: "Course" },
   { href: "/for-institutions", label: "For Institutions" },
   { href: "/resources", label: "Resources" },
-  { href: "/", label: "About" },
+  { href: "/about", label: "About" },
 ] as const;
 
 function isActive(linkHref: string, currentPath: string): boolean {

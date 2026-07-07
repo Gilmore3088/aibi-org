@@ -175,6 +175,37 @@ function resendFailureReason(result: ResendResult): string | null {
   return result.reason;
 }
 
+export interface PurgeExpiredDraftsResult {
+  readonly status: 'ok' | 'skipped';
+  readonly skipped?: 'supabase-not-configured';
+  readonly deleted: number;
+}
+
+/**
+ * Hard-delete assessment resume drafts whose `expires_at` has passed. The
+ * public data-handling page commits to deleting these (email + answers) after
+ * 30 days; read paths already hide expired rows, but the record must actually
+ * leave Postgres for that claim to hold. Runs from a nightly Vercel cron.
+ */
+export async function purgeExpiredAssessmentDrafts(
+  now: Date = new Date(),
+  providedClient?: ServiceClient,
+): Promise<PurgeExpiredDraftsResult> {
+  if (!isSupabaseConfigured()) {
+    return { status: 'skipped', skipped: 'supabase-not-configured', deleted: 0 };
+  }
+  const client = providedClient ?? createServiceRoleClient();
+  const { data, error } = await client
+    .from('assessment_drafts')
+    .delete()
+    .lt('expires_at', now.toISOString())
+    .select('id');
+  if (error) {
+    throw new Error(`purgeExpiredAssessmentDrafts failed: ${error.message}`);
+  }
+  return { status: 'ok', deleted: data?.length ?? 0 };
+}
+
 export async function runAbandonedAssessmentMonitor(
   input: AbandonedAssessmentOptions = {},
   providedClient?: ServiceClient,

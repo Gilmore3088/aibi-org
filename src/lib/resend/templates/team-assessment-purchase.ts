@@ -1,4 +1,4 @@
-import { body, ctaButton, emailShell, heading, kicker, metaRow } from './base';
+import { body, ctaButton, emailShell, escapeHtml, heading, kicker, metaRow } from './base';
 
 export interface TeamAssessmentPurchaseTemplateVars {
   readonly institutionName: string;
@@ -9,15 +9,16 @@ export interface TeamAssessmentPurchaseTemplateVars {
 }
 
 export function teamAssessmentPurchaseHtml(v: TeamAssessmentPurchaseTemplateVars): string {
+  const institutionName = escapeHtml(v.institutionName);
   return emailShell({
-    preheader: `${v.institutionName}'s Team AI Readiness Assessment is ready`,
+    preheader: `${institutionName}'s Team AI Readiness Assessment is ready`,
     body: `
       ${kicker('Team AI readiness assessment')}
       ${heading('Your cohort is ready.')}
-      ${body(`The Team AI Readiness Assessment for ${v.institutionName} has been created. Share the participant link with staff, then use the dashboard to monitor completion and review the aggregate report once 10 people complete it.`)}
+      ${body(`The Team AI Readiness Assessment for ${institutionName} has been created. Share the participant link with staff, then use the dashboard to monitor completion and review the aggregate report once 10 people complete it.`)}
       ${ctaButton('Open team dashboard', v.adminUrl)}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        ${metaRow('Institution', v.institutionName)}
+        ${metaRow('Institution', institutionName)}
         ${metaRow('Seats', String(v.seatsPurchased))}
         ${metaRow('Paid', v.amountPaid)}
       </table>

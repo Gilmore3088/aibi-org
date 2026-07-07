@@ -75,10 +75,17 @@ export async function POST(request: Request): Promise<NextResponse> {
   const provider: ProviderName = body.provider;
   const model: string = body.model;
 
-  const latestUser = [...body.messages].reverse().find((message) => message.role === 'user');
-  if (!latestUser) return NextResponse.json({ error: 'Messages must include a user turn.' }, { status: 400 });
-  if (latestUser.content.length > MAX_MESSAGE_LENGTH) {
-    return NextResponse.json({ error: `Message exceeds ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
+  // Every user-authored turn is forwarded to the provider, so scan them all —
+  // not just the latest — or a client could hide PII/injection in an earlier
+  // turn behind a benign final message.
+  const userMessages = body.messages.filter((message) => message.role === 'user');
+  if (userMessages.length === 0) {
+    return NextResponse.json({ error: 'Messages must include a user turn.' }, { status: 400 });
+  }
+  for (const message of userMessages) {
+    if (message.content.length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json({ error: `Message exceeds ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
+    }
   }
 
   const ip = (request.headers.get('x-forwarded-for') ?? 'unknown').split(',')[0].trim();
@@ -101,7 +108,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   const confirmedFabricated = body.confirmedFabricated === true;
-  const pii = scanForPII(latestUser.content);
+  // First PII hit across any user turn drives the warning/override + audit.
+  const pii = userMessages.map((m) => scanForPII(m.content)).find((r) => !r.safe)
+    ?? ({ safe: true } as ReturnType<typeof scanForPII>);
   if (!pii.safe && !confirmedFabricated) {
     return NextResponse.json(
       { error: pii.reason, kind: 'pii_warning', canOverride: true },
@@ -115,7 +124,8 @@ export async function POST(request: Request): Promise<NextResponse> {
   };
 
   // Injection filter is not user-overridable — it protects the model.
-  const injection = scanForInjection(latestUser.content);
+  const injection = userMessages.map((m) => scanForInjection(m.content)).find((r) => !r.safe)
+    ?? ({ safe: true } as ReturnType<typeof scanForInjection>);
   if (!injection.safe) {
     return NextResponse.json(
       { error: injection.reason, kind: 'injection_blocked', canOverride: false },
