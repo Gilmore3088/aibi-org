@@ -26,7 +26,7 @@ interface RouteCase {
 
 const PUBLIC_ROUTES: readonly RouteCase[] = [
   // Marketing surfaces — highest visibility
-  { path: '/', label: 'homepage', mustContain: /AI use is spreading/i },
+  { path: '/', label: 'homepage', mustContain: /AI is already here/i },
   { path: '/for-institutions', label: 'for-institutions' },
   { path: '/for-institutions/advisory', label: 'for-institutions-advisory' },
   // /education was consolidated into /resources per #420 — removed from audit

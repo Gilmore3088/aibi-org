@@ -9,12 +9,12 @@ on:
 # ~18 public routes at three mobile widths (375 / 390 / 414 px) and asserts
 # no horizontal overflow at each width.
 #
-# `continue-on-error: true` (set on the test step) means a failing route
-# does NOT block the PR. The screenshots and failure list land in the
-# `mobile-viewport-screenshots` artifact for reviewer inspection. This is
-# the right posture during the initial mobile-foundations rollout: surface
-# the failures, fix them incrementally, then flip the step to blocking
-# once the matrix is green.
+# The full matrix (22 public routes × 3 mobile widths) is green, so this
+# check is BLOCKING: a horizontal-overflow regression on any audited route
+# fails the PR. Screenshots + the failure list still land in the
+# `mobile-viewport-screenshots` artifact for inspection. (During the initial
+# rollout the test step was `continue-on-error: true` / advisory; it was
+# flipped to blocking once the matrix went green — the documented trigger.)
 #
 # See #194 for the foundational mobile responsiveness sweep + audit
 # methodology decision.
@@ -59,9 +59,8 @@ jobs:
           cat server.log
           exit 1
       - name: Run mobile viewport audit
-        # NOT blocking during initial rollout. Flip to blocking once the
-        # matrix is green. See #194 for the rollout plan.
-        continue-on-error: true
+        # Blocking: the matrix is green, so any horizontal-overflow regression
+        # fails the PR. See #194 for the rollout plan.
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
         run: npx playwright test e2e/mobile-viewport-audit.spec.ts --project=chromium --reporter=list
