@@ -70,80 +70,16 @@ import {
   type CertificateTransferReminderVars,
 } from './templates/certificate-transfer';
 
-const RESEND_API_URL = 'https://api.resend.com/emails';
-
-function siteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com').replace(/\/+$/, '');
-}
-
-const DEFAULT_FROM = 'hello@aibankinginstitute.com';
-const DEFAULT_FROM_NAME = 'The AI Banking Institute';
-const REPLY_TO = 'hello@aibankinginstitute.com';
-
-export type ResendResult =
-  | { skipped: true; reason: string }
-  | { ok: true; id: string }
-  | { ok: false; error: string };
-
-interface SendInlineInput {
-  readonly to: string;
-  readonly subject: string;
-  readonly html: string;
-  readonly text: string;
-  readonly tag: string;
-}
-
-async function sendInline(input: SendInlineInput): Promise<ResendResult> {
-  if (process.env.SKIP_RESEND === 'true') {
-    console.warn(`${input.tag} SKIPPED — SKIP_RESEND env flag set`);
-    return { skipped: true, reason: 'SKIP_RESEND env flag' };
-  }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn(`${input.tag} SKIPPED — RESEND_API_KEY not configured in this environment`);
-    return { skipped: true, reason: 'RESEND_API_KEY not configured' };
-  }
-
-  const fromAddress = process.env.RESEND_FROM ?? DEFAULT_FROM;
-  const fromName = process.env.RESEND_FROM_NAME ?? DEFAULT_FROM_NAME;
-
-  console.log(`${input.tag} sending to=${input.to} subject="${input.subject}" key-prefix=${apiKey.slice(0, 8)}…`);
-
-  try {
-    const response = await fetch(RESEND_API_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `${fromName} <${fromAddress}>`,
-        to: [input.to],
-        reply_to: REPLY_TO,
-        subject: input.subject,
-        html: input.html,
-        text: input.text,
-      }),
-    });
-
-    if (!response.ok) {
-      const body = await response.text().catch(() => '');
-      const error = `Resend API ${response.status}: ${body.slice(0, 400)}`;
-      console.error(`${input.tag} FAILED — ${error}`);
-      return { ok: false, error };
-    }
-
-    const json = (await response.json().catch(() => ({}))) as { id?: string };
-    console.log(`${input.tag} SENT — id=${json.id ?? 'unknown'}`);
-    return { ok: true, id: json.id ?? 'unknown' };
-  } catch (err) {
-    const error = err instanceof Error ? err.message : 'Unexpected error';
-    console.error(`${input.tag} EXCEPTION — ${error}`);
-    return { ok: false, error };
-  }
-}
-
+import {
+  sendInline,
+  siteUrl,
+  RESEND_API_URL,
+  DEFAULT_FROM,
+  DEFAULT_FROM_NAME,
+  REPLY_TO,
+  type ResendResult,
+} from './_core';
+export type { ResendResult } from './_core';
 // ── Email 1: Assessment results breakdown ───────────────────────────────────
 
 export interface AssessmentBreakdownEmailPayload {

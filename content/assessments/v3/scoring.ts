@@ -24,11 +24,8 @@ export function getTierV3(totalScore: number): Tier {
   return match;
 }
 
-export interface DimensionScore {
-  readonly score: number;
-  readonly maxScore: number;
-  readonly label: string;
-}
+export type { DimensionScore } from '../shared/dimension-score';
+import type { DimensionScore } from '../shared/dimension-score';
 
 // In v3 each dimension has exactly one question, so getDimensionScores
 // returns 12 single-question entries. Kept for shape-compatibility with the
