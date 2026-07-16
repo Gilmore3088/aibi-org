@@ -8,9 +8,8 @@
 // marketing.
 
 import type { CSSProperties } from 'react';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const MONO_STACK =
   'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';

@@ -15,14 +15,13 @@ import Link from 'next/link';
 import { signOutAction } from '@/app/auth/actions';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { SettingsQuestions } from './SettingsQuestions';
+import { INTER_STACK } from '@/lib/ui/fonts';
 import {
   deriveInitialFormState,
   type ExclusiveValue,
   type FormState,
 } from './onboardingFormState';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const ROLE_LABEL: Record<LearnerRole, string> = {
   lending: 'Lending',

@@ -10,9 +10,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { TestOutCheck } from '@content/courses/foundation-program/test-out';
+import { INK } from '@/lib/brand/colors';
+import { GOLD_DEEP_VAR as GOLD_DEEP } from '@/lib/brand/colors';
 
-const INK = '#071A2F';
-const GOLD_DEEP = 'var(--gold-deep, #7A5F1E)';
 const SLATE = '#475569';
 const LINE = 'rgba(7,26,47,.12)';
 const FONT_INTER =

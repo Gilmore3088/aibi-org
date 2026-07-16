@@ -24,6 +24,7 @@ import {
 import { foundationCourseConfig } from '@content/courses/foundation-program';
 import { getEnrollment } from '@/app/courses/foundation/program/_lib/getEnrollment';
 import { ExamRunner } from './_components/ExamRunner';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 export const metadata: Metadata = {
   title: 'Foundation Final Exam | AiBI-Foundation',
@@ -35,8 +36,6 @@ export const metadata: Metadata = {
 // the capstone for AiBI-Foundation, so by default we require every module.
 const REQUIRED_COMPLETED_MODULES = foundationCourseConfig.modules.length;
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 export default async function FoundationExamPage() {
   const enrollment = await getEnrollment();

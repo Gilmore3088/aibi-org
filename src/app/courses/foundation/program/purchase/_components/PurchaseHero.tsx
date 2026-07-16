@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
 import { foundationDurationLabel } from '@content/courses/foundation-program';
 import { SavedPromptCard } from './SavedPromptCard';
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 interface PurchaseHeroProps {
   /** The real checkout button. Rendered directly so the hero CTA starts Stripe

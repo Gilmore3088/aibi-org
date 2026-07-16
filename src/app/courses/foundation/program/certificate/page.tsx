@@ -20,9 +20,8 @@ import { CertificateMeta } from './_components/CertificateMeta';
 import { CertificatePending } from './_components/CertificatePending';
 import { TrainingRecordPanel } from './_components/TrainingRecordPanel';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,

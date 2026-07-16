@@ -6,9 +6,8 @@
 // another route needs it.
 
 import type { CSSProperties } from 'react';
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 interface SavedPromptCardProps {
   title?: string;

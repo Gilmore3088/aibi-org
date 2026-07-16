@@ -23,10 +23,9 @@ import {
 } from '@content/courses/foundation-program/lab-first';
 import { LearnSection } from '../program/_components/LearnSection';
 import { KnowledgeCheck } from '../program/_components/KnowledgeCheck';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 const PREVIEW_MODULE_NUMBER = 1;
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/courses/foundation/preview' },

@@ -18,11 +18,10 @@ import {
   filterOutputExamples,
 } from '@content/courses/foundation-program/output-examples';
 import { OutputExampleCard } from '../_components/OutputExample';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 type RoleFilter = PromptRole | 'all';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const ROLE_FILTER_OPTIONS: readonly { value: RoleFilter; label: string }[] = [
   { value: 'all', label: 'All Roles' },

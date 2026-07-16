@@ -4,9 +4,8 @@
 // server component with no client JS.
 
 import { modules } from '@content/courses/foundation-program';
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 export function CurriculumByArtifact() {
   const ordered = [...modules].sort((a, b) => a.number - b.number);

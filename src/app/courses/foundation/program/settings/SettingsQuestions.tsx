@@ -7,9 +7,8 @@
 
 import type { CSSProperties } from 'react';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const USES_M365_OPTIONS = [
   { value: 'yes' as const, label: 'Yes, we use M365' },

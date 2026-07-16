@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { checkRateLimit, getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
 interface CertificateVerificationResult {
   readonly holder_name: string;
@@ -59,8 +60,6 @@ function formatDate(isoString: string): string {
   }).format(new Date(isoString));
 }
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,

@@ -2,8 +2,8 @@ import type { CSSProperties } from 'react';
 import { PillarTag } from '@/components/lms';
 import type { LMSPillar } from '@/components/lms';
 import type { ModuleStatus } from '../../_lib/courseProgress';
+import { INTER_STACK as FONT_STACK } from '@/lib/ui/fonts';
 
-const FONT_STACK = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER_STYLE: CSSProperties = {
   fontFamily: FONT_STACK,

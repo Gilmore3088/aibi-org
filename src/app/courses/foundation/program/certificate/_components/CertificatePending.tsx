@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const META_LABEL: CSSProperties = {
   fontFamily: INTER_STACK,

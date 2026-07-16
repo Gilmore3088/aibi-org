@@ -1,9 +1,8 @@
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 // ArtifactThumbnails — representative previews from the 18-piece Foundation
 // Packet. Each card shows a recognizable work product a learner walks away
 // with, without making the section read like another long curriculum list.
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 interface Artifact {
   kicker: string;

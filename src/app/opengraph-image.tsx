@@ -1,4 +1,8 @@
 import { ImageResponse } from 'next/og';
+import { INTER_STACK } from '@/lib/ui/fonts';
+import { INK } from '@/lib/brand/colors';
+import { CREAM } from '@/lib/brand/colors';
+import { GOLD } from '@/lib/brand/colors';
 
 // Open Graph image — 1200×630, served at /opengraph-image (Next.js convention).
 // Rendered via @vercel/og at the edge so it has zero static asset size.
@@ -19,14 +23,9 @@ export const alt = 'The AI Banking Institute — Turning Bankers into Builders';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const INK = '#071A2F';
-const CREAM = '#F7F3EA';
-const GOLD = '#C8A24A';
 const GOLD_SOFT = '#E6D39B';
 const ON_DARK_70 = 'rgba(255, 255, 255, 0.70)';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 // Brand v1 — fallback chain for the mark's italic "i". Instrument Serif
 // is not registered with Satori (would require a binary font fetch on
 // every edge invocation); Georgia italic carries the same optical role.

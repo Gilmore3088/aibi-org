@@ -25,11 +25,10 @@ import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
 import { SiteHeader } from '@/components/mockup';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { PurchaseButton } from './_components/PurchaseButton';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 export const dynamic = 'force-dynamic';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 async function getSignedInEmail(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;

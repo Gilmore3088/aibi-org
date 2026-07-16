@@ -10,13 +10,12 @@
 // 2026-05-27: ported to mockup design system (Inter, ink/cream/gold).
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 interface WelcomeFirstPromptProps {
   readonly onContinue: () => void;
 }
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const MONO_STACK =
   'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
