@@ -117,6 +117,15 @@ section.mk-std { padding: 56px 0; }
   line-height: 1.1;
 }
 
+/* Brand lockup swaps to the compact "[Ai]BI" on phones so the header (logo +
+   Menu button) never overflows a 375px viewport. Only one is ever displayed,
+   so only the visible variant is in the accessibility tree. */
+.mk-brand-compact { display: none; }
+@media (max-width: 560px) {
+  .mk-brand-full { display: none; }
+  .mk-brand-compact { display: inline-flex; }
+}
+
 .mk-nav {
   display: none;
   gap: 4px;
