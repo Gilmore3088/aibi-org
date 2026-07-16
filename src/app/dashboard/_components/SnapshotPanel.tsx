@@ -40,7 +40,7 @@ export function SnapshotPanel({
       {!snapshot.isInDepth && !inDepthEntitled && (
         <p className="snap-foot">
           The free scan gives you the headline. The In-Depth Assessment gives you the explanation —
-          eight dimensions, peer-band comparison, and a ninety-day action register.
+          eight dimensions, per-dimension root causes, and a ninety-day action register.
         </p>
       )}
     </div>

@@ -16,7 +16,7 @@ const PRODUCT_SCOPE = [
   {
     title: 'Free and In-Depth Assessments',
     body:
-      'Learners answer readiness questions. The paid assessment adds a written report, peer-band context, and a 90-day action register.',
+      'Learners answer readiness questions. The paid assessment adds a written report, per-dimension root causes, and a 90-day action register.',
   },
   {
     title: 'Foundation Course',

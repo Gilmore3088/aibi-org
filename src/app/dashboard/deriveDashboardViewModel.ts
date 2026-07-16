@@ -215,8 +215,8 @@ export function deriveDashboardViewModel(input: DashboardViewModelInput): Dashbo
     heroPrimary = { href: '/assessment/in-depth', label: 'Take In-Depth · $99' };
     heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };
     heroLede = snapshot
-      ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with peer-band comparison and a ninety-day playbook.`
-      : 'Go deeper with the In-Depth Assessment — forty-eight questions, peer-band comparison, and a starting playbook keyed to your weakest area.';
+      ? `You scored ${snapshot.score}/${snapshot.maxScore} — ${snapshot.tierLabel}. The In-Depth Assessment goes from a three-minute scan to a forty-eight-question diagnostic with per-dimension root causes and a ninety-day playbook.`
+      : 'Go deeper with the In-Depth Assessment — forty-eight questions, per-dimension root causes, and a starting playbook keyed to your weakest area.';
   } else {
     heroPrimary = { href: '/assessment/take', label: 'Take the free assessment' };
     heroSecondary = { href: '/courses/foundation/program', label: 'Preview Foundation' };

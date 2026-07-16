@@ -123,10 +123,10 @@ const IN_DEPTH_STEP: PdfNextStep = {
   title: 'In-Depth Assessment',
   price: '$99 · 30 minutes',
   body:
-    'Eight readiness dimensions for one banking professional, with a personal report, peer-band comparison, and a starting playbook keyed to the weakest dimensions.',
+    'Eight readiness dimensions for one banking professional, with a personal report, per-dimension root causes, and a starting playbook keyed to the weakest dimensions.',
   bullets: [
     'Eight dimensions of individual AI readiness',
-    'Peer-band comparison against community-bank cohort',
+    'Per-dimension root-cause analysis of your weakest areas',
     'Personal action register keyed to the weakest areas',
   ],
   outcome:

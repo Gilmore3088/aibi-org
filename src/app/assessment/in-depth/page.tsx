@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/assessment/in-depth' },
   title: 'In-Depth Assessment | The AI Banking Institute',
   description:
-    'An individual AI readiness report for banking professionals with peer-band comparison, eight-dimension scoring, and a role-level action plan.',
+    'An individual AI readiness report for banking professionals with eight-dimension scoring, per-dimension root-cause analysis, and a role-level action plan.',
 };
 
 interface InDepthAssessmentPageProps {
@@ -137,7 +137,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '56ch',
                 }}
               >
-                Get a written personal report, peer-band comparison, and
+                Get a written personal report, eight-dimension scoring, and a
                 90-day action register keyed to your role. The 48-question
                 diagnostic is the engine behind the report, not the product.
               </p>
@@ -228,7 +228,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   maxWidth: '24ch',
                 }}
               >
-                Your report, peer band, and{' '}
+                Your report, eight scores, and{' '}
                 <span style={{ color: 'var(--gold-deep)' }}>90-day action register.</span>
               </h2>
               <p
@@ -317,8 +317,8 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                     maxWidth: '42ch',
                   }}
                 >
-                  A written report with peer-band comparison, eight-dimension
-                  scoring, and a ninety-day playbook keyed to your weakest
+                  A written report with eight-dimension scoring, per-dimension
+                  root causes, and a ninety-day playbook keyed to your weakest
                   areas.
                 </p>
 
@@ -383,7 +383,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
                   <ul style={{ listStyle: 'none', margin: '14px 0 0', padding: 0, display: 'grid', gap: 12 }}>
                     {[
                       'Forty-eight questions across eight readiness dimensions',
-                      'A personal report with peer-band comparison',
+                      'A personal report with per-dimension root-cause analysis',
                       'Role-level strengths, gaps, and review notes',
                       'A ninety-day action register keyed to your lowest-scoring dimensions',
                     ].map((item) => (

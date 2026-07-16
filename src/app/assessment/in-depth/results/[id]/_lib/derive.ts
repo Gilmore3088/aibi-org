@@ -155,12 +155,14 @@ export function selectDeepDives(rows: readonly DimRow[]): readonly DimRow[] {
   return out.sort((a, b) => b.pct - a.pct);
 }
 
+// Self-referential maturity labels — no peer/percentile framing (we don't
+// hold verified cohort data, so "Top decile"/"Below cohort" were removed).
 export function postureFor(pct: number): string {
-  if (pct >= 85) return 'Top decile';
+  if (pct >= 85) return 'Advanced';
   if (pct >= 70) return 'Strong';
   if (pct >= 55) return 'Coordinated';
   if (pct >= 40) return 'Room to move';
-  return 'Below cohort';
+  return 'Early';
 }
 
 // ── Per-dimension deep-dive content (authored, banker-direct) ───────────────

@@ -19,7 +19,7 @@ export function inDepthAssessmentPurchaseHtml(v: InDepthAssessmentPurchaseVars):
     </p>
     <ul style="margin:0 0 16px;padding-left:20px;font-size:14px;line-height:1.8;color:#475569">
       <li>48 questions across all eight readiness dimensions</li>
-      <li>Personalized Action Packet with peer-band comparison</li>
+      <li>Personalized Action Packet with per-dimension root causes</li>
       <li>90-day action register keyed to your lowest-scoring areas</li>
       <li>Reviewer packet for board and executive presentations</li>
       <li>Retake by request within 12 months</li>
@@ -48,7 +48,7 @@ ${v.assessmentUrl}
 
 What you get:
 - 48 questions across all eight readiness dimensions
-- Personalized Action Packet with peer-band comparison
+- Personalized Action Packet with per-dimension root causes
 - 90-day action register keyed to your lowest-scoring areas
 - Reviewer packet for board and executive presentations
 - Retake by request within 12 months
