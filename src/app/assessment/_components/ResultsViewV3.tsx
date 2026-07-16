@@ -664,7 +664,7 @@ export function ResultsViewV3({
             <p className="mt-5 text-[1.125rem] md:text-[1.25rem] leading-[1.65] text-white/75 max-w-3xl">
               The free snapshot you just took is twelve plain-language signals.
               The In-Depth is a separate diagnostic — forty-eight questions
-              across eight readiness dimensions, peer-band comparison, a
+              across eight readiness dimensions, per-dimension root causes, a
               role-specific 30/60/90 playbook, sample prompts, an evidence
               checklist your reviewer can read, and a reviewer-ready report
               you can forward.

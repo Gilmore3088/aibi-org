@@ -531,7 +531,7 @@ export default function ForInstitutionsPage() {
           </div>
           <ul>
             <li><CheckIcon className="mk-ic" />Demo using your sanitized inputs or comparable public examples</li>
-            <li><CheckIcon className="mk-ic" />Peer-context discussion for your asset class</li>
+            <li><CheckIcon className="mk-ic" />Priority and risk discussion scoped to your asset class</li>
             <li><CheckIcon className="mk-ic" />90-day rollout plan tailored to your shape</li>
             <li><CheckIcon className="mk-ic" />Pricing for your headcount & departments</li>
           </ul>

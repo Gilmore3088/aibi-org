@@ -27,7 +27,7 @@ const TIERS = [
     cadence: 'One-time',
     badge: 'Best first paid step',
     bestFor: 'A manager or executive who needs a written readiness plan.',
-    bullets: ['48-question diagnostic', 'Eight readiness scores and peer-band context', '90-day action register'],
+    bullets: ['48-question diagnostic', 'Eight readiness scores with per-dimension root causes', '90-day action register'],
     action: 'Get the report',
     href: '/assessment/in-depth',
   },

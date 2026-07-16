@@ -185,7 +185,7 @@ function AssessmentPathPreview() {
         <h3>Get the full 90-day plan.</h3>
         <p>
           Forty-eight questions convert the snapshot into a personal report,
-          eight scored dimensions, peer bands, and a 90-day action register.
+          eight scored dimensions, per-dimension root causes, and a 90-day action register.
         </p>
         <div className="mk-paid-meter" aria-label="In-Depth report preview">
           {IN_DEPTH_DIMENSIONS.slice(0, 4).map((dimension) => (

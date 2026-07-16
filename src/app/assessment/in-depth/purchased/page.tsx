@@ -27,7 +27,7 @@ export const dynamic = 'force-dynamic';
 
 const HIGHLIGHTS = [
   '48 questions across all eight readiness dimensions',
-  'Personalized Briefing with peer-band comparison and dimension deep-dives',
+  'Personalized report with per-dimension root causes and deep-dives',
   '90-day action register keyed to your lowest-scoring dimensions',
   'Retake by request within 12 months',
 ] as const;

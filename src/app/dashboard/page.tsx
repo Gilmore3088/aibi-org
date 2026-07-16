@@ -417,7 +417,7 @@ export default function DashboardPage() {
                 } else if (stepAssessment) {
                   assessHref = '/assessment/in-depth';
                   assessCta = 'Go deeper · In-Depth';
-                  assessCopy = 'Eight dimensions, peer-band comparison, a written ninety-day playbook.';
+                  assessCopy = 'Eight dimensions, per-dimension root causes, a written ninety-day playbook.';
                 }
                 return (
                   <Link className="vc" href={assessHref}>

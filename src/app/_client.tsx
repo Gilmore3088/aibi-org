@@ -591,7 +591,7 @@ const PRICE_TIERS: {
     eyebrow: 'Deep dive',
     label: 'In-Depth Report',
     price: '$99',
-    note: 'Written report, peer band, eight scores, and a 90-day action register.',
+    note: 'Written report, eight scores, per-dimension root causes, and a 90-day action register.',
     href: '/assessment/in-depth',
     action: 'View report',
   },
