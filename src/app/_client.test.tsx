@@ -29,12 +29,13 @@ describe('HomePage', () => {
       screen.getByRole('heading', { name: /Is your team ready to use AI safely/i }),
     ).toBeTruthy();
     expect(screen.getByText(/Find out in three minutes/i)).toBeTruthy();
-    expect(screen.getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
     expect(screen.getByText(/Built for community banks/i)).toBeTruthy();
 
-    // Exactly one CTA in the hero copy column — the duplicate sticky CTA and
-    // the second "Start learning" hero button were removed.
+    // The proof line + exactly one CTA live in the hero copy column. Scoped to
+    // the hero because the post-hero result preview reuses the same proof line
+    // and CTA label lower on the page.
     const heroCopy = document.querySelector('.mk-hero-copy') as HTMLElement;
+    expect(within(heroCopy).getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
     expect(within(heroCopy).getAllByRole('link', { name: /Get my readiness score/i })).toHaveLength(1);
     expect(within(heroCopy).queryByRole('link', { name: /Start learning/i })).toBeNull();
   });

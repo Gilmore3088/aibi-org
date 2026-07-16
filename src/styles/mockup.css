@@ -1032,6 +1032,200 @@ section.mk-std { padding: 56px 0; }
   .mk-demo-choice { transition: none; }
 }
 
+/* ── Home "What you get" result preview ─────────────────────────────────────
+   A responsive rendering of the free assessment's output (score ring, band,
+   top gap, starter artifact, and the twelve readiness signals) shown directly
+   under the hero, so the page demonstrates the deliverable before asking for
+   anything. */
+.mk-result-section {
+  padding: clamp(48px, 7vw, 88px) 0;
+  background: var(--cream-1, #FBF7EE);
+}
+.mk-result-inner { text-align: center; }
+.mk-result-caption {
+  max-width: 30ch;
+  margin: 8px auto 0;
+  font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  color: var(--ink);
+}
+.mk-result-card {
+  max-width: 640px;
+  margin: 32px auto 0;
+  padding: clamp(20px, 3vw, 32px);
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+}
+.mk-result-summary {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 4vw, 36px);
+}
+.mk-result-ring-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.mk-result-ring { position: relative; width: 132px; height: 132px; }
+.mk-result-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.mk-result-ring-label strong {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.mk-result-ring-label span {
+  margin-top: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-result-band {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--gold-deep, #7A5F1E);
+  text-align: center;
+}
+.mk-result-facts { flex: 1; margin: 0; display: grid; gap: 14px; min-width: 0; }
+.mk-result-facts > div { display: flex; flex-direction: column; gap: 2px; }
+.mk-result-facts dt {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-result-facts dd {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.mk-result-expand {
+  margin-top: 22px;
+  padding: 10px 4px;
+  border: 0;
+  background: none;
+  color: var(--gold-deep, #7A5F1E);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.mk-result-expand:hover { color: var(--ink); }
+.mk-result-expand:focus-visible,
+.mk-result-link-btn:focus-visible {
+  outline: 2px solid var(--gold-deep, #7A5F1E);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.mk-result-signals { margin-top: 20px; }
+.mk-signals { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.mk-signal {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.2fr) 2fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.mk-signal-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.mk-signal.is-gap .mk-signal-label { color: var(--gold-deep, #7A5F1E); }
+.mk-signal-tag {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-deep, #7A5F1E);
+  border: 1px solid currentColor;
+  border-radius: var(--r-pill);
+  padding: 1px 6px;
+}
+.mk-signal-track {
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--slate-100, #F1F5F9);
+  overflow: hidden;
+}
+.mk-signal-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--gold-deep, #7A5F1E);
+}
+.mk-signal.is-gap .mk-signal-fill { background: #B54708; }
+.mk-signal-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--slate-500);
+  font-variant-numeric: tabular-nums;
+}
+.mk-result-signals-actions { margin-top: 16px; }
+.mk-result-link-btn {
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  color: var(--gold-deep, #7A5F1E);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.mk-result-link-btn:hover { color: var(--ink); }
+.mk-result-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--slate-200);
+}
+.mk-result-cta-note {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+@media (max-width: 560px) {
+  .mk-result-summary { flex-direction: column; align-items: stretch; text-align: center; }
+  .mk-result-facts { text-align: center; }
+  .mk-result-facts > div { align-items: center; }
+  .mk-signal { grid-template-columns: 1fr auto; }
+  .mk-signal-track { grid-column: 1 / -1; order: 3; }
+}
+
+
 /* ── Home "Can we help you today?" lead-capture strip ───────────────────────
    A thin band directly under the hero: two selects + an email, one submit.
    Instant value (a free resource emailed) without leaving the page. */
