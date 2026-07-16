@@ -117,13 +117,17 @@ section.mk-std { padding: 56px 0; }
   line-height: 1.1;
 }
 
-/* Brand lockup swaps to the compact "[Ai]BI" on phones so the header (logo +
-   Menu button) never overflows a 375px viewport. Only one is ever displayed,
-   so only the visible variant is in the accessibility tree. */
-.mk-brand-compact { display: none; }
+/* Full "[Ai] Banking Institute" wordmark, sized by CSS so it scales down a
+   little on phones and still fits beside the Menu button without truncating. */
+.mk-brand-mark { font-size: 1.5rem; }
 @media (max-width: 560px) {
-  .mk-brand-full { display: none; }
-  .mk-brand-compact { display: inline-flex; }
+  .mk-brand-mark { font-size: 1.125rem; }
+  /* Tighten the header so the full wordmark + Menu button fit on phones. */
+  .mk-header-inner { padding-left: 16px; padding-right: 16px; gap: 12px; }
+  .mk-menu-btn { padding: 8px 10px; gap: 6px; }
+}
+@media (max-width: 360px) {
+  .mk-brand-mark { font-size: 1rem; }
 }
 
 .mk-nav {
