@@ -35,11 +35,11 @@ test.describe('parent flows — desktop', () => {
 
   test('/ — hero CTA navigates to /assessment(/take)', async ({ page }) => {
     await gotoStable(page, '/');
-    // The primary CTA on home is "Get my AI readiness score" linking to the
+    // The primary CTA on home is "Get my readiness score" linking to the
     // assessment funnel. Accept either /assessment or /assessment/take as
     // the target — copy / wiring may evolve.
     const cta = page
-      .getByRole('link', { name: /get my ai readiness score|take the assessment|start (the )?assessment/i })
+      .getByRole('link', { name: /get my (ai )?readiness score|take the assessment|start (the )?assessment/i })
       .first();
     await expect(cta).toBeVisible();
     const href = await cta.getAttribute('href');

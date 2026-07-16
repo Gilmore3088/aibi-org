@@ -8,7 +8,6 @@ import {
   Button,
   ArrowGlyph,
   CtaBand,
-  StickyMobileCta,
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
@@ -49,6 +48,11 @@ const ShieldCheckIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
+const CheckGlyph = (p: IconProps) => (
+  <svg {...sw({ ...p, size: p.size ?? 15 })}>
+    <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 const LayersIcon = (p: IconProps) => (
@@ -153,6 +157,48 @@ const HOME_PROMPT_TOKENS: PiiToken[] = [
 const HOME_PROMPT_TRAILING = '. wants them reversed';
 const HOME_TOKEN_COUNT = HOME_PROMPT_TOKENS.length;
 
+// The "safe reusable template" the demo resolves to: the same business task,
+// but the risky data is gone and the three guardrails the whole product teaches
+// are made concrete — an approved source, a required output format, and a named
+// human reviewer. Shown as structured slots, not prose.
+const HOME_SAFE_SLOTS: { label: string; value: string }[] = [
+  { label: 'Source', value: 'your overdraft-fee policy' },
+  { label: 'Format', value: 'a short, plain-language reply' },
+  { label: 'Reviewer', value: 'a named teller-line supervisor' },
+];
+// The three checks under the safe template — each maps to one guardrail the
+// safe version demonstrates. Text + check glyph, never colour alone.
+const HOME_SAFE_CHECKS = [
+  'Sensitive details removed',
+  'Approved source required',
+  'Human review retained',
+] as const;
+
+// The optional decision exercise shown before the comparison is revealed.
+type QuizAnswer = 'allow' | 'review' | 'block';
+const HOME_QUIZ_CHOICES: { id: QuizAnswer; label: string }[] = [
+  { id: 'allow', label: 'Allow' },
+  { id: 'review', label: 'Review first' },
+  { id: 'block', label: 'Block' },
+];
+// What each pasted value exposes, annotated on the revealed unsafe prompt.
+const HOME_RISK_ANNOTATIONS = [
+  'Customer identity exposed',
+  'Account information exposed',
+  'Financial information exposed',
+  'Public tool boundary crossed',
+] as const;
+// Calm, professional feedback — no game-show verdict. "Block" is the
+// recommended answer; the other two are acknowledged without a "wrong" buzzer.
+const HOME_QUIZ_FEEDBACK: Record<QuizAnswer, string> = {
+  allow:
+    'This still leaves customer information inside a public AI tool. Review after pasting does not remove the exposure.',
+  review:
+    'This still leaves customer information inside a public AI tool. Review after pasting does not remove the exposure.',
+  block:
+    'Correct. The task may still be appropriate, but the customer information must be removed and the approved-tool boundary confirmed first.',
+};
+
 function prefersReducedMotion(): boolean {
   return (
     typeof window !== 'undefined' &&
@@ -177,28 +223,18 @@ export default function HomePage() {
           <div className="mk-deco-blur" />
         </div>
         <div className="mk-container mk-hero-inner mk-home-redline-inner">
-          <div>
-            <p className="mk-kicker mk-kicker-gold-soft">For community banks and credit unions</p>
+          <div className="mk-hero-copy">
             <h1>
-              AI is already here. <span className="mk-hero-accent">Let&apos;s make sure your team is ready.</span>
+              Is your team ready to use AI <span className="mk-hero-accent">safely</span>?
+              <br />
+              Find out in three minutes.
             </h1>
-            <p className="mk-lede">
-              Give your staff a practical way to use AI with clear data boundaries,
-              checked sources, and the right human review. See where your
-              institution is ready in three minutes.
-            </p>
-            <p className="mk-hero-role-note">
-              Built for frontline tellers, branch teams, lenders, operations, compliance, and marketing roles.
-            </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Get my AI readiness score <ArrowGlyph />
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                Start learning
+                Get my readiness score <ArrowGlyph />
               </Button>
             </div>
-            <p className="mk-hero-meta">Free · 12 questions · 3 minutes · first working template</p>
+            <p className="mk-hero-meta">Free · 12 questions · Practical next step</p>
           </div>
           <HomeRedlinePrompt />
         </div>
@@ -281,118 +317,198 @@ export default function HomePage() {
         hiddenOnMobile
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
-          { label: 'Get my AI readiness score', href: '/assessment/take', variant: 'gold' },
+          { label: 'Get my readiness score', href: '/assessment/take', variant: 'gold' },
           { label: 'Start learning', href: '/courses', variant: 'ghost-dark' },
         ]}
-      />
-
-      <StickyMobileCta
-        label="Get my AI readiness score"
-        href="/assessment/take"
-        source="home-sticky"
       />
     </div>
   );
 }
 
+// Interactive hero demo — an OPTIONAL decision exercise that opens into the
+// unsafe-vs-safer comparison.
+//
+//   Stage "quiz": one synthetic prompt + "Would you allow this in a public AI
+//     tool?" with Allow / Review first / Block. Entirely optional — a "Skip to
+//     comparison" link bypasses it, and the hero CTA is never gated by it.
+//   Stage "revealed": a calm recommendation (Block) with feedback tailored to
+//     the visitor's choice, the risky data annotated, then two switchable tabs
+//     — Unsafe prompt / Safer template — so visitors can compare repeatedly.
+//
+// Feedback tone is professional, not a game-show buzzer: "Block" is the
+// recommended answer; the other choices are acknowledged, never scolded.
+//
+// Reduced motion / no-JS: choosing an answer (or Skip) reveals the comparison;
+// the safer tab resolves instantly without the redaction sweep.
 function HomeRedlinePrompt() {
-  // Resting state (SSR / no-JS / reduced-motion) is the resolved "safe" frame:
-  // sensitive fields struck, safe prompt shown, green badge — the message lands
-  // even if the animation never runs.
-  const [phase, setPhase] = useState<RedlinePhase>('safe');
-  const [struck, setStruck] = useState(HOME_TOKEN_COUNT);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [stage, setStage] = useState<'quiz' | 'revealed'>('quiz');
+  const [answer, setAnswer] = useState<QuizAnswer | null>(null);
+  const [tab, setTab] = useState<'unsafe' | 'safe'>('unsafe');
+  // 'risk' = unsafe paste, 'redact' = strike sweep, 'safe' = resolved template.
+  const [phase, setPhase] = useState<RedlinePhase>('risk');
+  const [struck, setStruck] = useState(0);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const unsafeTabRef = useRef<HTMLButtonElement>(null);
+  const safeTabRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
+  const clearTimers = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
+  useEffect(() => clearTimers, []);
 
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        timer = setTimeout(resolve, ms);
-      });
+  // Reveal the comparison. `choice` is null when the visitor skips the quiz.
+  const reveal = (choice: QuizAnswer | null) => {
+    clearTimers();
+    setAnswer(choice);
+    setStage('revealed');
+    setTab('unsafe');
+    setPhase('risk');
+    setStruck(0);
+  };
 
-    async function play() {
-      while (!cancelled) {
-        setPhase('risk');
-        setStruck(0);
-        await wait(1300);
-        if (cancelled) return;
-        setPhase('redact');
-        for (let n = 1; n <= HOME_TOKEN_COUNT; n++) {
-          if (cancelled) return;
-          setStruck(n);
-          await wait(380);
-        }
-        await wait(750);
-        if (cancelled) return;
-        setPhase('safe');
-        await wait(4200);
-      }
-    }
-
-    const el = rootRef.current;
-    let started = false;
-    const begin = () => {
-      if (started) return;
-      started = true;
+  const selectTab = (next: 'unsafe' | 'safe') => {
+    clearTimers();
+    setTab(next);
+    if (next === 'unsafe') {
       setPhase('risk');
       setStruck(0);
-      void play();
-    };
+      return;
+    }
+    // → safer. Reduced motion resolves instantly; otherwise sweep each value.
+    if (prefersReducedMotion()) {
+      setPhase('safe');
+      setStruck(HOME_TOKEN_COUNT);
+      return;
+    }
+    setPhase('redact');
+    setStruck(0);
+    for (let n = 1; n <= HOME_TOKEN_COUNT; n++) {
+      timers.current.push(setTimeout(() => setStruck(n), n * 45));
+    }
+    timers.current.push(setTimeout(() => setPhase('safe'), HOME_TOKEN_COUNT * 45 + 150));
+  };
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          begin();
-          io.disconnect();
-        }
-      },
-      { threshold: 0.35 },
+  const onTabKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault();
+    const next = e.key === 'ArrowRight' || e.key === 'End' ? 'safe' : 'unsafe';
+    selectTab(next);
+    (next === 'safe' ? safeTabRef : unsafeTabRef).current?.focus();
+  };
+
+  // ── Stage 1: the optional decision exercise ──────────────────────────────
+  if (stage === 'quiz') {
+    return (
+      <div className="mk-redline-prompt mk-demo-quiz">
+        <p className="mk-demo-audience">Built for community banks &amp; credit unions</p>
+        <div className="mk-demo-quiz-head">
+          <span className="mk-demo-eyebrow">Quick check</span>
+          <span className="mk-demo-synthetic">Illustrative example · Synthetic customer data</span>
+        </div>
+        <div className="mk-redline-body">
+          <p className="mk-redline-prompt-text mk-demo-plain">
+            {HOME_PROMPT_TOKENS.map((token, i) => (
+              <span key={i}>
+                <span className="mk-redline-lead">{token.lead}</span>
+                <span className="mk-redline-lead">{token.value}</span>
+              </span>
+            ))}
+            <span className="mk-redline-lead">{HOME_PROMPT_TRAILING}</span>
+          </p>
+        </div>
+        <div className="mk-demo-quiz-foot">
+          <p className="mk-demo-question" id="mk-demo-question">
+            Would you allow this prompt in a public AI tool?
+          </p>
+          <div className="mk-demo-choices" role="group" aria-labelledby="mk-demo-question">
+            {HOME_QUIZ_CHOICES.map((choice) => (
+              <button
+                key={choice.id}
+                type="button"
+                className="mk-demo-choice"
+                onClick={() => reveal(choice.id)}
+              >
+                {choice.label}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="mk-demo-skip" onClick={() => reveal(null)}>
+            Skip to comparison
+          </button>
+        </div>
+      </div>
     );
-    if (el) io.observe(el);
+  }
 
-    return () => {
-      cancelled = true;
-      if (timer) clearTimeout(timer);
-      io.disconnect();
-    };
-  }, []);
-
-  const isSafe = phase === 'safe';
+  // ── Stage 2: recommendation + annotated comparison ───────────────────────
+  const isSafe = tab === 'safe';
+  const resolved = phase === 'safe';
+  const chosen = answer ? HOME_QUIZ_CHOICES.find((c) => c.id === answer) : null;
+  const answeredWrong = answer !== null && answer !== 'block';
 
   return (
-    <div
-      ref={rootRef}
-      className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}
-      aria-label="A real customer-service prompt typed into a public chatbot, with the customer’s name, account number, DOB, SSN, phone, and balance pasted inline. Each piece of personal data is struck through; the prompt then resolves into a reusable template with placeholders and the unnecessary personal data removed, marked safe for AI."
-    >
-      <div className="mk-redline-head">
-        <span className="mk-redline-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span>{isSafe ? 'Reusable template' : 'Public chatbot'}</span>
-        <span className={`mk-redline-badge${isSafe ? ' is-safe' : ''}`}>
-          {isSafe ? (
-            <>
-              <ShieldCheckIcon size={13} /> Safe for AI
-            </>
-          ) : (
-            <>
-              <AlertIcon size={13} /> Unsafe paste
-            </>
-          )}
-        </span>
+    <div className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}>
+      <p className="mk-demo-audience">Built for community banks &amp; credit unions</p>
+      <div className={`mk-demo-verdict${answeredWrong ? ' is-warn' : ''}`} role="status">
+        {chosen && (
+          <p className="mk-demo-your-answer">
+            You chose <strong>{chosen.label}</strong>
+          </p>
+        )}
+        <p className="mk-demo-reco">
+          {answeredWrong ? <AlertIcon size={15} /> : <ShieldCheckIcon size={15} />}
+          <span>
+            Recommended: <strong>Block</strong>
+          </span>
+        </p>
+        <p className="mk-demo-reco-why">
+          {answer
+            ? HOME_QUIZ_FEEDBACK[answer]
+            : 'This prompt includes customer identity, account, and financial details that should not enter a public AI tool.'}
+        </p>
       </div>
-      <div className="mk-redline-body">
+
+      <div className="mk-demo-tabs" role="tablist" aria-label="Prompt safety comparison" onKeyDown={onTabKeyDown}>
+        <button
+          ref={unsafeTabRef}
+          type="button"
+          role="tab"
+          id="mk-demo-tab-unsafe"
+          aria-selected={!isSafe}
+          aria-controls="mk-demo-panel"
+          tabIndex={isSafe ? -1 : 0}
+          className={`mk-demo-tab${!isSafe ? ' is-active' : ''}`}
+          onClick={() => selectTab('unsafe')}
+        >
+          <AlertIcon size={14} /> Unsafe prompt
+        </button>
+        <button
+          ref={safeTabRef}
+          type="button"
+          role="tab"
+          id="mk-demo-tab-safe"
+          aria-selected={isSafe}
+          aria-controls="mk-demo-panel"
+          tabIndex={isSafe ? 0 : -1}
+          className={`mk-demo-tab${isSafe ? ' is-active' : ''}`}
+          onClick={() => selectTab('safe')}
+        >
+          <ShieldCheckIcon size={14} /> Safer template
+        </button>
+      </div>
+
+      <div
+        className="mk-redline-body"
+        id="mk-demo-panel"
+        role="tabpanel"
+        aria-labelledby={isSafe ? 'mk-demo-tab-safe' : 'mk-demo-tab-unsafe'}
+      >
         <p className="mk-redline-prompt-text">
           {HOME_PROMPT_TOKENS.map((token, i) => {
-            const dropped = isSafe && !token.placeholder;
+            const dropped = resolved && !token.placeholder;
             if (dropped) return null;
-            const showPlaceholder = isSafe && Boolean(token.placeholder);
+            const showPlaceholder = resolved && Boolean(token.placeholder);
             const isStruck = phase === 'redact' && i < struck;
             const tokenClass = `mk-pii${token.placeholder ? '' : ' is-droppable'}${
               isStruck ? ' is-struck' : ''
@@ -405,13 +521,44 @@ function HomeRedlinePrompt() {
             );
           })}
           <span className="mk-redline-lead">{HOME_PROMPT_TRAILING}</span>
-          {!isSafe && <span className="mk-redline-caret" aria-hidden="true" />}
         </p>
+
+        {isSafe && resolved && (
+          <dl className="mk-demo-template">
+            {HOME_SAFE_SLOTS.map(({ label, value }) => (
+              <div key={label} className="mk-demo-slot">
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {!isSafe && (
+          <ul className="mk-demo-annotations" aria-label="What this prompt exposes">
+            {HOME_RISK_ANNOTATIONS.map((note) => (
+              <li key={note}>
+                <AlertIcon size={13} /> {note}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
       <div className="mk-redline-foot">
-        {isSafe
-          ? 'One reusable template, any customer — real data stays in your systems.'
-          : 'Real customer data, about to be pasted into a public chatbot.'}
+        {isSafe ? (
+          <ul className="mk-demo-checks">
+            {HOME_SAFE_CHECKS.map((check) => (
+              <li key={check}>
+                <CheckGlyph /> {check}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <span className="mk-demo-warn">
+            <AlertIcon size={13} /> Synthetic data shown — real customer data must never enter a public tool.
+          </span>
+        )}
       </div>
     </div>
   );
