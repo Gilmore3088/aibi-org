@@ -2,9 +2,8 @@
 
 import { useState, type ReactNode } from 'react';
 import { ModelPicker, type LMSModelId } from './ModelPicker';
+import { INTER_STACK_VAR_INNER as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'var(--font-inter, Inter), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 const MONO_STACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
 
 interface Props {

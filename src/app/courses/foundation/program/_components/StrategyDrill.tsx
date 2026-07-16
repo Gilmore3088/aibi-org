@@ -13,15 +13,15 @@
 import { useCallback, useState, type CSSProperties } from 'react';
 import type { Activity } from '@content/courses/foundation-program';
 import { STRATEGIES, STRATEGY_DEFINITIONS, STRATEGY_ROUNDS, type Strategy } from '../_lib/strategyDrillData';
+import { INTER_STACK_SHORT as INTER } from '@/lib/ui/fonts';
+import { INK } from '@/lib/brand/colors';
+import { GOLD_DEEP_VAR as GOLD_DEEP } from '@/lib/brand/colors';
 
-const INK = '#071A2F';
-const GOLD_DEEP = 'var(--gold-deep, #7A5F1E)';
 const CREAM = 'var(--cream)'; // inherits the course soft-slate override (CourseShell)
 const LINE = 'rgba(7,26,47,.12)';
 const SLATE = '#475569';
 const EMERALD = '#047857';
 const RED = '#B91C1C';
-const INTER = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 export interface StrategyDrillProps {
   readonly activity: Activity;

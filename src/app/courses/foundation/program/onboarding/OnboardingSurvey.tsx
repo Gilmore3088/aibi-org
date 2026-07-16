@@ -17,9 +17,8 @@ import { SurveyBranding } from './SurveyBranding';
 import { SurveyStepContent } from './SurveyStepContent';
 import { WelcomeFirstPrompt } from './WelcomeFirstPrompt';
 import { migrateStorageKey } from '@/lib/storage/migrate';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 // localStorage key — namespaced by enrollment to support multiple bankers
 // sharing a browser (rare, but possible at a branch).

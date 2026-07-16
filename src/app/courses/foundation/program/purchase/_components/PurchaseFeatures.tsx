@@ -1,7 +1,6 @@
 import Link from 'next/link';
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 interface PurchaseFeaturesProps {
   readonly currentModule: number;

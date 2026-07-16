@@ -8,6 +8,7 @@
 // Returns mockup-token input styles via `mockupInputStyle`.
 
 import type { CSSProperties, ReactNode } from 'react';
+import { INTER_STACK_VAR_INNER as INTER_STACK } from '@/lib/ui/fonts';
 
 interface BaseProps {
   readonly label: string;
@@ -18,8 +19,6 @@ interface BaseProps {
   readonly children: ReactNode;
 }
 
-const INTER_STACK =
-  'var(--font-inter, Inter), ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const labelStyle: CSSProperties = {
   display: 'block',

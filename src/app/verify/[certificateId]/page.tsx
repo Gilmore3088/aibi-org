@@ -8,9 +8,10 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 
-import { checkRateLimit } from '@/lib/api/rate-limit';
+import { checkRateLimit, getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
 interface CertificateVerificationResult {
   readonly holder_name: string;
@@ -59,8 +60,6 @@ function formatDate(isoString: string): string {
   }).format(new Date(isoString));
 }
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,
@@ -247,11 +246,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
   // x-forwarded-for hop — the leftmost hops are client-controlled and would
   // let an enumerator mint a fresh throttle bucket per request.
   const headerList = await headers();
-  const forwarded = headerList.get('x-forwarded-for');
-  const ip =
-    headerList.get('x-real-ip') ??
-    forwarded?.split(',').at(-1)?.trim() ??
-    'unknown';
+  const ip = getRequestIpFromHeaders(headerList);
   const rate = await checkRateLimit({
     key: 'verify-lookup',
     scope: 'ip',

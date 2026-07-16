@@ -61,7 +61,9 @@ describe('logStaticResourceDownload', () => {
     );
 
     expect(from).toHaveBeenCalledWith('resource_downloads');
-    expect(mocks.hashIp).toHaveBeenCalledWith('203.0.113.44');
+    // getRequestIpFromHeaders prefers the platform-set x-real-ip over the
+    // client-controllable leftmost x-forwarded-for hop.
+    expect(mocks.hashIp).toHaveBeenCalledWith('198.51.100.10');
     expect(insert).toHaveBeenCalledWith({
       resource_id: null,
       resource_slug: 'aibi-prompt-cards',

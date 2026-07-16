@@ -8,6 +8,7 @@
 
 import { useState, type CSSProperties, type FormEvent } from 'react';
 import { EMAIL_RE } from '@/lib/email/validate';
+import { INTER_STACK } from '@/lib/ui/fonts';
 import {
   buildFreeResourceDownloadHref,
   rememberFreeResourceCapture,
@@ -17,8 +18,6 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 const GUIDE_DOWNLOAD_PATH = '/api/guides/safe-ai-use';
 const GUIDE_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const kickerStyle: CSSProperties = {
   fontFamily: INTER_STACK,

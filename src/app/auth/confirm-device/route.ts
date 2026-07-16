@@ -19,6 +19,7 @@ import {
 } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { generateMagicLink } from '@/lib/supabase/auth-admin';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import {
   consumeDeviceConfirmation,
   issueTrustedDevice,
@@ -98,9 +99,7 @@ export async function GET(request: Request): Promise<NextResponse> {
 
   const headerList = await headers();
   const rawIp =
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    headerList.get('x-real-ip') ??
-    'anonymous';
+    getRequestIpFromHeaders(headerList);
   const userAgent = headerList.get('user-agent');
 
   const issued = await issueTrustedDevice({

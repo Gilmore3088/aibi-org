@@ -26,6 +26,7 @@ import { CurriculumByArtifact } from './_components/CurriculumByArtifact';
 import { PurchaseHero } from './_components/PurchaseHero';
 import { PurchaseFeatures } from './_components/PurchaseFeatures';
 import { PurchaseFinalCTA } from './_components/PurchaseFinalCTA';
+import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
 export const metadata: Metadata = {
   title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
@@ -33,8 +34,6 @@ export const metadata: Metadata = {
     'Enroll in the AiBI-Foundation course. Eighteen bite-sized modules, practical artifacts, and a credential mapped to public references; not regulator-endorsed.',
 };
 
-const INTER_STACK =
-  'var(--font-inter, Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif)';
 
 const SECONDARY_DECISIONS = [
   {

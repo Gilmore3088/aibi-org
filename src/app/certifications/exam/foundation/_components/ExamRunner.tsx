@@ -20,9 +20,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useExam } from '../../_lib/useExam';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const buttonPrimary: CSSProperties = {
   display: 'inline-flex',

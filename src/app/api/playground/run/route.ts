@@ -5,6 +5,7 @@ import { hashIp, logUsage } from '@/lib/ai-harness/rate-limit';
 import { LLMError } from '@/lib/ai-harness/types';
 import { scanForInjection } from '@/lib/sandbox/injection-filter';
 import { scanForPII } from '@/lib/sandbox/pii-scanner';
+import { getRequestIp } from '@/lib/api/rate-limit';
 import {
   PUBLIC_PLAYGROUND_COURSE_SLUG,
   PUBLIC_PLAYGROUND_FEATURE_ID,
@@ -25,14 +26,6 @@ interface PublicPlaygroundBody {
   readonly scenarioTitle?: unknown;
   readonly sampleData?: unknown;
   readonly prompt?: unknown;
-}
-
-function getRequestIp(request: Request): string {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown'
-  );
 }
 
 function cleanText(value: unknown, maxLength: number): string | null {

@@ -9,8 +9,8 @@
 import type { CSSProperties } from 'react';
 import type { ActivityField } from '@content/courses/foundation-program';
 import { FormField, mockupInputStyle } from '@/components/lms';
+import { INTER_STACK_SHORT as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK = 'Inter, ui-sans-serif, system-ui, sans-serif';
 const MONO_STACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
 
 const readOnlyValueStyle: CSSProperties = {

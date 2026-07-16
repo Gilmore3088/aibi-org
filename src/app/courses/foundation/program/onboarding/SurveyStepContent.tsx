@@ -7,6 +7,7 @@
 
 import type { CSSProperties } from 'react';
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
+import { INTER_STACK } from '@/lib/ui/fonts';
 import {
   USES_M365_OPTIONS,
   AI_SUBSCRIPTION_OPTIONS,
@@ -14,8 +15,6 @@ import {
   ROLE_OPTIONS,
 } from './SurveyQuestionOptions';
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const eyebrowStyle: CSSProperties = {
   display: 'block',

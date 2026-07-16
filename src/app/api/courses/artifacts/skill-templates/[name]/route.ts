@@ -18,6 +18,7 @@ import { join } from 'node:path';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { TEMPLATE_FILES } from '@/app/courses/foundation/program/_lib/skillDiagnosisData';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -56,9 +57,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     try {
       const headerList = await headers();
       const ipHeader =
-        headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-        headerList.get('x-real-ip') ??
-        'anonymous';
+        getRequestIpFromHeaders(headerList);
       const service = createServiceRoleClient();
       await service.from('resource_downloads').insert({
         resource_slug: `skill-template-${name.replace(/\.md$/, '')}`,

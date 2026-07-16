@@ -8,6 +8,7 @@ import {
   type CoreKey,
 } from '../_lib/promptWizardData';
 import { getFoundationLabBrief } from '@content/courses/foundation-program';
+import { INTER_STACK as FONT_STACK } from '@/lib/ui/fonts';
 
 interface ModuleInteractiveTakeawayProps {
   readonly moduleNumber: number;
@@ -31,7 +32,6 @@ interface MicroTakeawayStep {
   readonly value: string;
 }
 
-const FONT_STACK = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const CORE_PROMPT_COPY: Record<CoreKey, string> = {
   context: 'You are a branch banking assistant helping a teller answer a member.',

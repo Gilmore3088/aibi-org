@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { INTER_STACK as FONT_STACK } from '@/lib/ui/fonts';
 
 interface ModuleEvidenceTrailProps {
   readonly moduleNumber: number;
@@ -31,7 +32,6 @@ const EMPTY_TRAIL_STATE: TrailState = {
   transferPlan: '',
 };
 
-const FONT_STACK = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 function readLocalStorage(key: string) {
   try {

@@ -8,11 +8,11 @@
 
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
+import { INK } from '@/lib/brand/colors';
+import { CREAM } from '@/lib/brand/colors';
+import { GOLD_DEEP } from '@/lib/brand/colors';
+import { GOLD } from '@/lib/brand/colors';
 
-const INK = '#071A2F';
-const GOLD = '#C8A24A';
-const GOLD_DEEP = '#9A7A2F';
-const CREAM = '#F7F3EA';
 const WHITE = '#ffffff';
 const SLATE = '#475569';
 const BORDER = '#E2E8F0';

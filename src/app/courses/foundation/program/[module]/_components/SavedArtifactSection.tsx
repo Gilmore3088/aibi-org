@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { getArtifactFirst } from '@content/courses/foundation-program';
 import { getFoundationLabBrief } from '@content/courses/foundation-program/lab-first';
+import { INTER_STACK as MOCKUP_FONT } from '@/lib/ui/fonts';
 
-const MOCKUP_FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 interface SavedArtifactSectionProps {
   readonly moduleNum: number;

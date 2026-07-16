@@ -8,6 +8,7 @@ import { canBuildOrRun, getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { buildToolboxSystemPrompt } from '@/lib/toolbox/markdown';
 import { isAllowedModel } from '@/lib/toolbox/playground-models';
 import type { ToolboxMessage, ToolboxSkill } from '@/lib/toolbox/types';
+import { getRequestIp } from '@/lib/api/rate-limit';
 
 const MAX_TOKENS = 8192;
 const MAX_MESSAGES = 20;
@@ -88,7 +89,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
   }
 
-  const ip = (request.headers.get('x-forwarded-for') ?? 'unknown').split(',')[0].trim();
+  const ip = getRequestIp(request);
   const ipHash = hashIp(ip);
 
   const perMinute = await checkPerMinuteLimits({

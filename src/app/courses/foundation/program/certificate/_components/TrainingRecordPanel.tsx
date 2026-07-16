@@ -11,9 +11,8 @@ import {
 } from '@content/courses/foundation-program/course-config';
 import { CopyablePrompt } from '../../_components/CopyablePrompt';
 import { formatDate } from '../_lib/formatDate';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const KICKER: React.CSSProperties = {
   fontFamily: INTER_STACK,

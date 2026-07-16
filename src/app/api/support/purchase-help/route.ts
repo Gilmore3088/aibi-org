@@ -3,6 +3,7 @@ import { getCanonicalSiteUrl } from '@/lib/supabase/auth-admin';
 import { createSupportCase } from '@/lib/support/cases';
 import { checkSupportIntakeLimit, hashIp, logSupportIntake } from '@/lib/support/rate-limit';
 import { getSupportInboxEmail } from '@/lib/support/admin';
+import { getRequestIp } from '@/lib/api/rate-limit';
 import {
   isSupportCaseCategory,
   isValidSupportEmail,
@@ -28,12 +29,6 @@ interface PurchaseHelpPayload {
   readonly message?: unknown;
   readonly stripeSessionId?: unknown;
   readonly product?: unknown;
-}
-
-function getRequestIp(request: Request): string {
-  const xff = request.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0]?.trim() || 'unknown';
-  return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
 function parsePayload(body: PurchaseHelpPayload):

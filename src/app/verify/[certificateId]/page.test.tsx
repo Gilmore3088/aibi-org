@@ -24,6 +24,7 @@ vi.mock('next/headers', () => ({
 
 vi.mock('@/lib/api/rate-limit', () => ({
   checkRateLimit: mocks.checkRateLimit,
+  getRequestIpFromHeaders: (h: Headers) => h.get('x-real-ip') ?? 'unknown',
 }));
 
 describe('CertificateVerificationPage', () => {

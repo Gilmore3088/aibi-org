@@ -7,9 +7,8 @@
 // Ported to mockup design system 2026-05-27 (Inter, ink/gold, mockup radii).
 
 import type { CSSProperties } from 'react';
+import { INTER_STACK_QUOTED as INTER_STACK } from '@/lib/ui/fonts';
 
-const INTER_STACK =
-  '"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const downloadLinkStyle: CSSProperties = {
   display: 'inline-flex',

@@ -36,6 +36,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { backFillProfile } from '@/lib/auth/back-fill-profile';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import {
   issueTrustedDevice,
   isAutoTrustableType,
@@ -185,9 +186,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     if (trustUser && isAutoTrustableType(type)) {
       const headerList = await headers();
       const rawIp =
-        headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-        headerList.get('x-real-ip') ??
-        'anonymous';
+        getRequestIpFromHeaders(headerList);
       const issued = await issueTrustedDevice({
         userId: trustUser.id,
         ipHash: hashIp(rawIp),

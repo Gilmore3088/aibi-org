@@ -66,12 +66,12 @@ import {
   type TestOutCheck,
 } from '@content/courses/foundation-program/test-out';
 import { TestOutCard } from '../_components/TestOutCard';
+import { INTER_STACK as MOCKUP_FONT } from '@/lib/ui/fonts';
 
 interface ModulePageParams {
   readonly params: Promise<{ module: string }>;
 }
 
-const MOCKUP_FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 function LabPracticeBrief({
   brief,

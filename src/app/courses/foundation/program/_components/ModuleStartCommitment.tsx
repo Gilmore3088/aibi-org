@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
+import { INTER_STACK as FONT_STACK } from '@/lib/ui/fonts';
 
-const FONT_STACK = 'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 const TARGET_OPTIONS = [
   'A message or memo',

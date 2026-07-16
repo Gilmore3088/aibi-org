@@ -24,6 +24,10 @@ import { rootCauseFor } from '@content/assessments/v4/root-causes';
 import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
 import { DIMENSION_BRIEF, learningPath, PLAYBOOK_FOR_GAP, type ModuleRec } from '@content/assessments/v4/exec-summary';
 import { ACTION_FOR } from '@content/assessments/v4/action-plan';
+import { INK } from '@/lib/brand/colors';
+import { CREAM } from '@/lib/brand/colors';
+import { GOLD_DEEP } from '@/lib/brand/colors';
+import { GOLD } from '@/lib/brand/colors';
 import {
   getActionPacket,
   classifyDimensions,
@@ -55,12 +59,8 @@ interface PersonalizationPayload {
   readonly generatedAt: string;
 }
 
-const INK = '#071A2F';
-const CREAM = '#F7F3EA';
 const PAPER = '#FFFCF6';
-const GOLD = '#C8A24A';
 const GOLD_SOFT = '#E6D39B';
-const GOLD_DEEP = '#9A7A2F';
 const SLATE = '#637083';
 const SLATE_500 = '#64748B';
 const LINE = 'rgba(7,26,47,.12)';

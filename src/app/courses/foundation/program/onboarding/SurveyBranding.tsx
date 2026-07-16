@@ -11,11 +11,10 @@
 
 import type { OnboardingAnswers, LearnerRole } from '@/types/course';
 import { StartingPointPreview } from './_local/StartingPointPreview';
+import { INTER_STACK } from '@/lib/ui/fonts';
 
 const TOTAL_STEPS = 3;
 
-const INTER_STACK =
-  'Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
 
 interface SurveyBrandingProps {
   readonly step: number;
