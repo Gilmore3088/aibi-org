@@ -3,12 +3,18 @@
 // parse + validation, request-IP extraction, and uniform 400/401/429 error
 // shapes. The handler body is left with just the business logic.
 //
-// Scope: this targets the standard JSON-request/JSON-response shape. Routes
-// with genuinely different shapes keep their own code and do NOT use this:
+// Scope: this targets the standard, NON-DYNAMIC JSON-request/JSON-response
+// shape. Routes with genuinely different shapes keep their own code and do NOT
+// use this:
 //   - Stripe/Resend webhooks (signature verification is the first step)
 //   - cron routes (bearer auth via assertCronAuth)
 //   - streaming responses (ReadableStream)
 //   - routes that return files/PDFs/redirects/cookies as the primary output
+//   - dynamic routes ([id]) that need route params — the wrapper deliberately
+//     exposes only `request`, so the exported handler is a single-argument
+//     function. That is the signature Next.js 15's build-time route validator
+//     accepts unconditionally; adding a params argument re-introduces the
+//     second-argument type constraints this wrapper exists to stay clear of.
 //
 // The error shapes returned here ({ error: string }, statuses 400/401) are the
 // same ones the migrated routes returned by hand, so behavior is unchanged.
@@ -47,24 +53,18 @@ export interface DefineRouteOptions<Body> {
   readonly invalidBodyMessage?: string;
 }
 
-export interface RouteContext<Body, Params> {
+export interface RouteContext<Body> {
   readonly request: Request;
   readonly body: Body;
   readonly user: User | null;
   readonly ip: string;
-  readonly params: Params;
 }
 
-/** Next passes dynamic route params as the second handler argument. */
-interface NextRouteContext<Params> {
-  readonly params?: Promise<Params> | Params;
-}
-
-export function defineRoute<Body = undefined, Params = Record<string, never>>(
+export function defineRoute<Body = undefined>(
   options: DefineRouteOptions<Body>,
-  handler: (ctx: RouteContext<Body, Params>) => Promise<Response> | Response,
-): (request: Request, ctx?: NextRouteContext<Params>) => Promise<Response> {
-  return async (request, ctx) => {
+  handler: (ctx: RouteContext<Body>) => Promise<Response> | Response,
+): (request: Request) => Promise<Response> {
+  return async (request) => {
     const ip = getRequestIp(request);
 
     // Auth is resolved first when required, or when the rate limit is
@@ -114,7 +114,6 @@ export function defineRoute<Body = undefined, Params = Record<string, never>>(
       body = raw;
     }
 
-    const params = (ctx?.params ? await ctx.params : ({} as Params)) as Params;
-    return handler({ request, body, user, ip, params });
+    return handler({ request, body, user, ip });
   };
 }

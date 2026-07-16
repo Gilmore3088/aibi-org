@@ -75,12 +75,4 @@ describe('defineRoute', () => {
       expect.objectContaining({ scope: 'user', identifier: 'user-42' }),
     );
   });
-
-  it('awaits and forwards dynamic route params', async () => {
-    const route = defineRoute<undefined, { id: string }>({}, async ({ params }) =>
-      Response.json({ id: params.id }),
-    );
-    const res = await route(req(), { params: Promise.resolve({ id: 'abc' }) });
-    await expect(res.json()).resolves.toEqual({ id: 'abc' });
-  });
 });
