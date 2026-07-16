@@ -2,6 +2,7 @@ import { headers, cookies } from 'next/headers';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { parseDownloadAttribution } from '@/lib/resources/downloadAttribution';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import {
   FREE_RESOURCE_CAPTURE_COOKIE,
   normalizeCaptureEmail,
@@ -34,9 +35,7 @@ export async function logStaticResourceDownload(
     const cookieStore = await cookies();
     const headerList = await headers();
     const ipHeader =
-      headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-      headerList.get('x-real-ip') ??
-      'anonymous';
+      getRequestIpFromHeaders(headerList);
     const attribution = parseDownloadAttribution(request.url);
 
     const { error } = await service.from('resource_downloads').insert({

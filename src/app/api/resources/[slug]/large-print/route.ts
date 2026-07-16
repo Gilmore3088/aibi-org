@@ -14,6 +14,7 @@ import {
   largePrintFilePath,
 } from '@/lib/resources/freeResources';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -39,9 +40,7 @@ async function logLargePrintDownload(request: Request, slug: string): Promise<vo
   const cookieStore = await cookies();
   const headerList = await headers();
   const ipHeader =
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    headerList.get('x-real-ip') ??
-    'anonymous';
+    getRequestIpFromHeaders(headerList);
   const attribution = parseDownloadAttribution(request.url);
   const { error } = await service.from('resource_downloads').insert({
     resource_id: null,

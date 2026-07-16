@@ -16,6 +16,7 @@ import { createServerClientWithCookies, createServiceRoleClient, isSupabaseConfi
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { getDownloadResource, type DownloadResource } from '@/lib/resources/downloadCatalog';
 import { parseDownloadAttribution } from '@/lib/resources/downloadAttribution';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import {
   FREE_RESOURCE_CAPTURE_COOKIE,
   normalizeCaptureEmail,
@@ -183,9 +184,7 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
 
   const headerList = await headers();
   const ipHeader =
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    headerList.get('x-real-ip') ??
-    'anonymous';
+    getRequestIpFromHeaders(headerList);
   const downloadLog = {
     resource_id: resource.id,
     resource_slug: resource.slug,

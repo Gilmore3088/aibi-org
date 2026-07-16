@@ -30,6 +30,7 @@ import {
   DEVICE_CONFIRMATION_TTL_MINUTES,
 } from '@/lib/auth/trusted-device';
 import { sendDeviceConfirmation } from '@/lib/resend';
+import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -71,9 +72,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   // Untrusted device. Email a one-time confirmation link.
   const headerList = await headers();
   const rawIp =
-    headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    headerList.get('x-real-ip') ??
-    'anonymous';
+    getRequestIpFromHeaders(headerList);
   const userAgent = headerList.get('user-agent');
 
   const confirmation = await createDeviceConfirmation({

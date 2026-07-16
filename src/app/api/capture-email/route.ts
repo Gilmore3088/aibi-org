@@ -28,6 +28,7 @@ import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
 import { EMAIL_RE } from '@/lib/email/validate';
+import { getRequestIp } from '@/lib/api/rate-limit';
 import {
   freeResourceCaptureResponse,
 } from '@/lib/resources/captureCookie';
@@ -52,12 +53,6 @@ import {
 // Per-IP is the wrong dimension for shared-NAT crowds; the proper fix is a
 // per-email cap + Upstash sliding window (tracked). See DECISIONS.md 2026-05-20.
 const RATE_LIMIT_PER_IP_PER_HOUR = 30;
-
-function getRequestIp(request: Request): string {
-  const xff = request.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
-  return request.headers.get('x-real-ip') ?? 'unknown';
-}
 
 
 interface CapturePayload {

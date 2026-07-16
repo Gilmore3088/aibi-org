@@ -120,21 +120,25 @@ export async function rateLimitOrFail(
  * single bucket — intentional, since an attacker stripping the header
  * gets aggregated with everyone else doing the same.
  */
-export function getRequestIp(request: Request): string {
+export function getRequestIpFromHeaders(headers: Headers): string {
   // On Vercel, x-real-ip is the actual client IP set by the platform
   // proxy and is NOT user-controllable. Prefer it over x-forwarded-for,
   // whose leftmost token can be poisoned by a client-set header to bypass
   // per-IP rate limits (the leftmost is the attacker-supplied value if
   // the request is crafted directly).
-  const realIp = request.headers.get('x-real-ip');
+  const realIp = headers.get('x-real-ip');
   if (realIp && realIp.trim().length > 0) return realIp.trim();
   // Fallback: rightmost hop of x-forwarded-for is whatever the closest
   // trusted proxy stamped on the request. Off-Vercel deployments without
   // x-real-ip get a best-effort guard via this.
-  const fwd = request.headers.get('x-forwarded-for');
+  const fwd = headers.get('x-forwarded-for');
   if (fwd) {
     const hops = fwd.split(',').map((s) => s.trim()).filter(Boolean);
     if (hops.length > 0) return hops[hops.length - 1];
   }
   return 'unknown';
+}
+
+export function getRequestIp(request: Request): string {
+  return getRequestIpFromHeaders(request.headers);
 }
