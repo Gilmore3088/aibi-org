@@ -16,9 +16,8 @@ export { EssayMeta } from "./EssayMeta";
 export type { EssayMetaProps } from "./EssayMeta";
 
 // ---- Site chrome ------------------------------------------------------------
-export { SiteNav } from "./SiteNav";
-export { SiteFooter } from "./SiteFooter";
-export type { SiteFooterProps } from "./SiteFooter";
-
+// The legacy global SiteNav/SiteFooter were removed once every route migrated
+// to the mockup design system (each renders its own mockup SiteHeader). This
+// wrapper now only positions the skip link + mockup footer.
 export { LayoutChrome } from "./LayoutChrome";
 export type { LayoutChromeProps } from "./LayoutChrome";

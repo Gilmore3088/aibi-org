@@ -8,7 +8,7 @@ import {
 } from 'next/font/google';
 import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
-import { SiteNav, SiteFooter, LayoutChrome } from '@/components/system';
+import { LayoutChrome } from '@/components/system';
 import { MockupSiteFooter } from '@/components/mockup';
 import { BRAND } from '@content/copy';
 import { organizationJsonLd, websiteJsonLd, jsonLdString } from '@/lib/seo/jsonld';
@@ -215,8 +215,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Skip to main content
             </a>
           }
-          siteNav={<SiteNav />}
-          siteFooter={<SiteFooter />}
           mockupFooter={<MockupSiteFooter />}
         >
           {children}

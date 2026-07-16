@@ -28,40 +28,35 @@ import { usePathname } from 'next/navigation';
 import { isChromeless, isFooterless } from '@/lib/layout/chromePaths';
 
 export interface LayoutChromeProps {
-  /** Skip-to-main-content link. Shown only when the global nav is shown. */
+  /** Skip-to-main-content link. Rendered on every route. */
   readonly skipLink: React.ReactNode;
-  /** Global <SiteNav>. Shown only on non-chromeless routes. */
-  readonly siteNav: React.ReactNode;
-  /** Global system <SiteFooter>. Shown only on non-chromeless routes. */
-  readonly siteFooter: React.ReactNode;
   /** Mockup <MockupSiteFooter>. Shown on chromeless, non-footerless routes. */
   readonly mockupFooter: React.ReactNode;
   readonly children: React.ReactNode;
 }
 
+// Every route now renders its own mockup SiteHeader from @/components/mockup
+// (all routes are in CHROMELESS_PATHS), so the legacy global SiteNav/SiteFooter
+// were removed — they had migrated to zero render sites. This wrapper now only
+// decides mockup-footer visibility; the showMockupFooter condition is
+// unchanged from when the legacy branch still existed.
 export function LayoutChrome({
   skipLink,
-  siteNav,
-  siteFooter,
   mockupFooter,
   children,
 }: LayoutChromeProps) {
   const pathname = usePathname() ?? '/';
-  const chromeless = isChromeless(pathname);
-  const footerless = isFooterless(pathname);
-  const showMockupFooter = chromeless && !footerless;
+  const showMockupFooter = isChromeless(pathname) && !isFooterless(pathname);
 
   return (
     <>
       {/* The #main-content target below exists on every route, so the skip
-          link must too — chromeless (mockup) pages render their own header
-          but keyboard users still need to skip it. */}
+          link must too — mockup pages render their own header but keyboard
+          users still need to skip it. */}
       {skipLink}
-      {!chromeless && siteNav}
       <div id="main-content" className="flex-1">
         {children}
       </div>
-      {!chromeless && siteFooter}
       {showMockupFooter && mockupFooter}
     </>
   );
