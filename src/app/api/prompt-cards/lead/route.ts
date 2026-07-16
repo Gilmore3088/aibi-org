@@ -3,8 +3,8 @@ import { recordLead } from '@/lib/leads/recordLead';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { freeResourceCaptureResponse } from '@/lib/resources/captureCookie';
+import { EMAIL_RE } from '@/lib/email/validate';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROLES = new Set(['practitioner', 'compliance-risk', 'executive', 'training-buyer', 'other']);
 
 interface LeadBody {

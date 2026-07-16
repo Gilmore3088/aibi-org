@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { sanitizeNext } from '@/lib/supabase/auth';
 import { EmailLinkForm, PurchaseRecoveryForm } from '@/components/auth/RecoveryForms';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 // Holding state for the new-device sign-in confirmation flow (#187 PR 2).
 // /auth/login routes here after a successful password sign-in from a
@@ -24,7 +25,6 @@ import { EmailLinkForm, PurchaseRecoveryForm } from '@/components/auth/RecoveryF
 // needing a session) are the escape hatch for exactly that buyer.
 
 // Lenient email-shaped check so we don't prefill garbage from a crafted URL.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const cardStyle: CSSProperties = {
   width: '100%',

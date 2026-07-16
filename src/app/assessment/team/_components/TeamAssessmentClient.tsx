@@ -12,6 +12,7 @@ import {
   type TeamDepartment,
 } from '@/lib/team-assessment/constants';
 import { ROLE_V4_META, ROLES_V4, type RoleV4 } from '@content/assessments/v4/roles';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 type IntakeStatus = 'intake' | 'questions' | 'submitting' | 'done' | 'existing';
 
@@ -34,7 +35,6 @@ interface SubmitResponse {
   readonly error?: string;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const intakeProof = [
   { value: '48', label: 'questions' },

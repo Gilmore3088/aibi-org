@@ -2,20 +2,12 @@
 // Sent after a contact/inquiry form submission.
 
 import { emailShell, kicker, heading, body, divider } from './base';
+import { escapeHtml } from '@/lib/html/escape';
 
 export interface InquiryAckVars {
   name: string;
   institution: string;
   track: string;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
 }
 
 export function inquiryAckHtml(v: InquiryAckVars): string {

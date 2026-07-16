@@ -11,8 +11,8 @@ import { recordLead } from '@/lib/leads/recordLead';
 import { createSupportCase } from '@/lib/support/cases';
 import { getSupportInboxEmail } from '@/lib/support/admin';
 import { setFreeResourceCaptureCookie } from '@/lib/resources/captureCookie';
+import { EMAIL_RE } from '@/lib/email/validate';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Input-length caps. The pre-existing validator only checked non-empty;
 // any unbounded field could be emailed to ops via Resend or templated

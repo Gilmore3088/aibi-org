@@ -18,11 +18,11 @@ import {
   sendTeamAssessmentReportUnlocked,
 } from '@/lib/resend';
 import { generateMagicLink } from '@/lib/supabase/auth-admin';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface SubmitPayload {
   email?: unknown;

@@ -10,13 +10,13 @@ import {
 import { TEAM_ASSESSMENT_MIN_SEATS } from '@/lib/team-assessment/constants';
 import { getTeamAssessmentOrigin } from '@/lib/team-assessment/db';
 import { isTeamAssessmentSelfServeEnabled } from '@/lib/team-assessment/self-serve';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 async function getStripe() {
   const { stripe } = await import('@/lib/stripe');
   return stripe;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface CheckoutBody {
   buyer_email?: unknown;

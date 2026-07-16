@@ -15,8 +15,8 @@ import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertProficiencyResult } from '@/lib/supabase/user-profiles';
 import { getAuthUser } from '@/lib/api/auth';
+import { EMAIL_RE } from '@/lib/email/validate';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface SaveProficiencyPayload {
   email?: unknown;

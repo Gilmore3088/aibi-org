@@ -4,6 +4,7 @@
 // transfer prompts. Auth mirrors the other Vercel cron routes.
 
 import { NextResponse } from 'next/server';
+import { assertCronAuth } from '@/lib/api/cron-auth';
 import { notifyOpsAlert } from '@/lib/ops/alerts';
 import { runCertificateTransferMonitor } from '@/lib/support/certificate-transfer';
 import { runPaidReengagementMonitor } from '@/lib/support/paid-reengagement';
@@ -13,19 +14,10 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
-function cronAuthorized(request: Request): boolean {
-  if (process.env.SKIP_CRON_AUTH === 'true') return true;
-  // Fail closed when the secret is unset — otherwise an empty Bearer token
-  // would authenticate.
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  return request.headers.get('authorization') === `Bearer ${secret}`;
-}
 
 export async function GET(request: Request) {
-  if (!cronAuthorized(request)) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  const denied = assertCronAuth(request);
+  if (denied) return denied;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'supabase-not-configured' }, { status: 503 });

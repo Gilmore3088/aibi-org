@@ -1,18 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getPlaybookAsset } from '@content/playbook-assets/data';
+import { escapeHtml } from '@/lib/html/escape';
 
 export const runtime = 'nodejs';
 
 interface RouteContext {
   readonly params: Promise<{ readonly role: string; readonly asset: string }>;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 function filenameFromParts(role: string, asset: string): string {

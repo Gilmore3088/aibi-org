@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { resetPassword, sanitizeNext } from '@/lib/supabase/auth';
+import { EMAIL_RE as EMAIL_SHAPE } from '@/lib/email/validate';
 
 // Lenient email-shaped check so a crafted ?email= can't pre-fill garbage.
-const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const cardStyle: CSSProperties = {
   width: '100%',

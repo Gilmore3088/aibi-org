@@ -17,8 +17,8 @@ import { NextResponse } from 'next/server';
 import { getProfileByEmail } from '@/lib/supabase/user-profiles';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { getAuthUser } from '@/lib/api/auth';
+import { EMAIL_RE } from '@/lib/email/validate';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function GET(request: Request) {
   if (!isSupabaseConfigured()) {

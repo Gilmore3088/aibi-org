@@ -17,6 +17,7 @@
 import { NextResponse } from 'next/server';
 import { hasLockedInstitutionDiscount } from '@/lib/stripe/institution-discount';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { EMAIL_RE } from '@/lib/email/validate';
 import {
   checkoutIdempotencyKey,
   dynamicPaymentMethodDefaults,
@@ -29,7 +30,6 @@ async function getStripe() {
   return stripe;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface CheckoutBody {
   mode?: unknown;

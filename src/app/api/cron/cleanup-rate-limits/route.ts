@@ -8,6 +8,7 @@
 //   { "path": "/api/cron/cleanup-rate-limits", "schedule": "0 4 * * *" }
 
 import { NextResponse } from 'next/server';
+import { assertCronAuth } from '@/lib/api/cron-auth';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 export const runtime = 'nodejs';
@@ -17,15 +18,8 @@ export const maxDuration = 30;
 const RETENTION_HOURS = 24;
 
 export async function GET(request: Request) {
-  // Fail closed when the secret is unset — otherwise an empty Bearer token
-  // would authenticate.
-  const secret = process.env.CRON_SECRET;
-  const authorized =
-    process.env.SKIP_CRON_AUTH === 'true' ||
-    (Boolean(secret) && request.headers.get('authorization') === `Bearer ${secret}`);
-  if (!authorized) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  const denied = assertCronAuth(request);
+  if (denied) return denied;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'supabase-not-configured' }, { status: 503 });

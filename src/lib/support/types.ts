@@ -1,3 +1,5 @@
+import { EMAIL_RE } from '@/lib/email/validate';
+
 export const SUPPORT_CASE_CATEGORIES = [
   'access',
   'missing_email',
@@ -101,7 +103,7 @@ export function normalizeBuyerEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 
-export const SUPPORT_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const SUPPORT_EMAIL_RE = EMAIL_RE;
 
 export function isValidSupportEmail(email: string): boolean {
   return SUPPORT_EMAIL_RE.test(email.trim());

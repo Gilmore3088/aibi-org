@@ -5,11 +5,11 @@ import { sendAuthSignInLink } from '@/lib/resend';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { normalizeProduct } from '@/lib/products/normalize';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface Payload {
   readonly email?: unknown;

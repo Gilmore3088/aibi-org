@@ -35,6 +35,7 @@ import {
   assessmentOptionsHtml,
   assessmentOptionsText,
 } from './templates/assessment-options';
+import { escapeHtml as escapeInlineHtml } from '@/lib/html/escape';
 import {
   inquiryAckHtml,
   inquiryAckText,
@@ -522,14 +523,6 @@ export function sendResourceDelivery(
 
 // ── Support ops ─────────────────────────────────────────────────────────────
 
-function escapeInlineHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
-}
-
 function supportShell(title: string, body: string): string {
   return `<!doctype html>
 <html><body style="font-family:system-ui,-apple-system,sans-serif;color:#071A2F;background:#F7F3EA;margin:0;padding:24px">
@@ -915,3 +908,4 @@ This link expires in ${payload.expiresInMinutes} minutes. If this wasn't you, ig
     return { ok: false, error };
   }
 }
+
