@@ -7,13 +7,13 @@
 // gold CTA. Voice is matter-of-fact — no "powered by" marketing.
 
 import { useState, type CSSProperties, type FormEvent } from 'react';
+import { EMAIL_RE } from '@/lib/email/validate';
 import {
   buildFreeResourceDownloadHref,
   rememberFreeResourceCapture,
 } from '@/lib/resources/freeResourceCapture';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const GUIDE_DOWNLOAD_PATH = '/api/guides/safe-ai-use';
 const GUIDE_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 

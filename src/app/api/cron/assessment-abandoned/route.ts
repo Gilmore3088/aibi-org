@@ -2,6 +2,7 @@
 // Sends one resume reminder to stale free-assessment drafts.
 
 import { NextResponse } from 'next/server';
+import { assertCronAuth } from '@/lib/api/cron-auth';
 import { runAbandonedAssessmentMonitor } from '@/lib/assessment/abandoned-drafts';
 import { notifyOpsAlert } from '@/lib/ops/alerts';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
@@ -10,19 +11,10 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
-function cronAuthorized(request: Request): boolean {
-  if (process.env.SKIP_CRON_AUTH === 'true') return true;
-  // Fail closed when the secret is unset — otherwise an empty Bearer token
-  // would authenticate.
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  return request.headers.get('authorization') === `Bearer ${secret}`;
-}
 
 export async function GET(request: Request): Promise<NextResponse> {
-  if (!cronAuthorized(request)) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  const denied = assertCronAuth(request);
+  if (denied) return denied;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'supabase-not-configured' }, { status: 503 });

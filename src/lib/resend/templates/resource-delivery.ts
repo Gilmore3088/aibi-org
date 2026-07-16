@@ -5,6 +5,7 @@
 // download that is easy to lose.
 
 import { emailShell, kicker, heading, body, ctaButton, divider } from './base';
+import { escapeHtml } from '@/lib/html/escape';
 
 export interface ResourceDeliveryVars {
   /** Human title of the resource, e.g. "IT / InfoSec Playbook". */
@@ -13,14 +14,6 @@ export interface ResourceDeliveryVars {
   downloadUrl: string;
   /** Optional first name for a personalized greeting. */
   firstName?: string;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
 }
 
 export function resourceDeliveryHtml(v: ResourceDeliveryVars): string {

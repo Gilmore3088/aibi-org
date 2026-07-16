@@ -1,12 +1,12 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { questions as questionPool } from '@content/assessments/v3/questions';
 import { getCanonicalSiteUrl } from '@/lib/supabase/auth-admin';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 export const ASSESSMENT_DRAFT_TTL_DAYS = 30;
 export const ASSESSMENT_DRAFT_QUESTIONS_PER_SESSION = 12;
 export type AssessmentPhase = 'questions' | 'score' | 'results';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
 const VALID_PHASES: ReadonlySet<AssessmentPhase> = new Set(['questions', 'score', 'results']);
 const QUESTION_IDS = new Set(questionPool.map((question) => question.id));

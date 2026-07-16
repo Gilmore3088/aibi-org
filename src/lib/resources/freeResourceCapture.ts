@@ -1,9 +1,9 @@
+import { EMAIL_RE } from '@/lib/email/validate';
+
 export const FREE_RESOURCE_UNLOCK_KEY = 'aibi.freeResource.emailCaptured';
 export const FREE_RESOURCE_EMAIL_KEY = 'aibi.freeResource.email';
 export const FREE_RESOURCE_CONTEXT_KEY = 'aibi.freeResource.context';
 export const FREE_RESOURCE_CAPTURE_COOKIE = 'aibi_free_resource_email';
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export interface FreeResourceCaptureContext {
   readonly email: string;

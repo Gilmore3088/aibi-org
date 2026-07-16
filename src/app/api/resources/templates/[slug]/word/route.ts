@@ -1,18 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getTemplate } from '@/app/resources/templates/data';
+import { escapeHtml } from '@/lib/html/escape';
 
 export const runtime = 'nodejs';
 
 interface RouteContext {
   readonly params: Promise<{ readonly slug: string }>;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 function filenameFromSlug(slug: string): string {

@@ -5,6 +5,7 @@
 // Refs: docs/superpowers/specs/2026-05-04-assessment-results-spec-2-pdf.md
 
 import { NextResponse } from 'next/server';
+import { assertCronAuth } from '@/lib/api/cron-auth';
 import { deleteOldPdfs } from '@/lib/pdf/storage';
 
 export const runtime = 'nodejs';
@@ -14,15 +15,8 @@ export const maxDuration = 30;
 const RETENTION_DAYS = 30;
 
 export async function GET(request: Request) {
-  // Fail closed when the secret is unset — otherwise an empty Bearer token
-  // would authenticate.
-  const secret = process.env.CRON_SECRET;
-  const authorized =
-    process.env.SKIP_CRON_AUTH === 'true' ||
-    (Boolean(secret) && request.headers.get('authorization') === `Bearer ${secret}`);
-  if (!authorized) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  const denied = assertCronAuth(request);
+  if (denied) return denied;
 
   try {
     const result = await deleteOldPdfs(RETENTION_DAYS);

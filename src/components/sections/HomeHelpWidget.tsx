@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FREE_ROLES, FREE_ROLE_LABEL, type FreeRole } from '@content/assessments/v3/roles';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 // A thin "instant value + email capture" strip that sits directly under the
 // hero. Two questions (role, what they need) + an email, then a free resource
@@ -68,7 +69,6 @@ const ROLE_PLAYBOOK: Record<FreeRole, { slug: string; title: string }> = {
   other: { slug: 'governance-starter-kit', title: 'AI Governance Starter Kit' },
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 

@@ -6,10 +6,10 @@ import { useSearchParams } from 'next/navigation';
 
 import { signUp, resetPassword, sanitizeNext } from '@/lib/supabase/auth';
 import { MIN_PASSWORD_LENGTH, PASSWORD_HINT, validatePassword } from '@/lib/auth/password-policy';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
 // a crafted URL. The form's own type="email" validation is the real gate.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ── Shared inline styles (mockup tokens) ─────────────────────────────────────
 

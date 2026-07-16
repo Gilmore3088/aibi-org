@@ -1,4 +1,5 @@
 import { generatePdfFromHtml } from './generate';
+import { escapeHtml } from '@/lib/html/escape';
 
 export interface AcceptableUseCardHtmlInput {
   readonly roleContext: string;
@@ -13,25 +14,6 @@ export function formatAcceptableUseCardDate(date: Date = new Date()): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  });
-}
-
-export function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => {
-    switch (character) {
-      case '&':
-        return '&amp;';
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '"':
-        return '&quot;';
-      case "'":
-        return '&#39;';
-      default:
-        return character;
-    }
   });
 }
 

@@ -16,6 +16,7 @@
 
 import { useState } from 'react';
 import { trackPurchaseInitiated } from '@/lib/analytics/events';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 type Size = 'card' | 'hero' | 'compact';
 
@@ -27,7 +28,6 @@ interface PurchaseButtonProps {
   readonly className?: string;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Inline-style size map — mockup-system pill buttons with consistent
 // padding + font scale across hero / card / compact surfaces.

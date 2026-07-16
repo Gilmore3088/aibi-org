@@ -5,6 +5,7 @@
 // email + answers, not just hidden on read.
 
 import { NextResponse } from 'next/server';
+import { assertCronAuth } from '@/lib/api/cron-auth';
 import { purgeExpiredAssessmentDrafts } from '@/lib/assessment/abandoned-drafts';
 
 export const runtime = 'nodejs';
@@ -12,15 +13,8 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 export async function GET(request: Request) {
-  // Fail closed when the secret is unset — otherwise an empty Bearer token
-  // would authenticate.
-  const secret = process.env.CRON_SECRET;
-  const authorized =
-    process.env.SKIP_CRON_AUTH === 'true' ||
-    (Boolean(secret) && request.headers.get('authorization') === `Bearer ${secret}`);
-  if (!authorized) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
+  const denied = assertCronAuth(request);
+  if (denied) return denied;
 
   try {
     const result = await purgeExpiredAssessmentDrafts();

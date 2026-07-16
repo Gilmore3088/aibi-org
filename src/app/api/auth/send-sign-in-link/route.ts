@@ -3,11 +3,11 @@ import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { sendAuthSignInLink } from '@/lib/resend';
 import { sanitizeNext } from '@/lib/supabase/auth';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface Payload {
   readonly email?: unknown;

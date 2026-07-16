@@ -1,3 +1,4 @@
+export { escapeHtml } from '@/lib/html/escape';
 // Shared HTML email shell for all transactional templates.
 // Brand v1 palette: cream background, ink primary, gold accent.
 // "The AI Banking Institute" — correct canonical name.
@@ -8,15 +9,6 @@
  * escaping is applied at the call site to each attacker-influenced value
  * (institution name, holder name, interest label) — not inside the helpers.
  */
-export function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
 export function emailShell({
   preheader,
   body,
@@ -107,3 +99,4 @@ export function metaRow(label: string, value: string): string {
     <td style="padding:8px 0 8px 16px;border-bottom:1px solid rgba(7,26,47,.08);font-size:13px;color:#071A2F;font-weight:600;vertical-align:top">${value}</td>
   </tr>`;
 }
+

@@ -27,6 +27,7 @@ import {
 import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
+import { EMAIL_RE } from '@/lib/email/validate';
 import {
   freeResourceCaptureResponse,
 } from '@/lib/resources/captureCookie';
@@ -58,7 +59,6 @@ function getRequestIp(request: Request): string {
   return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface CapturePayload {
   email?: unknown;

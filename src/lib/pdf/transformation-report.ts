@@ -1,4 +1,5 @@
 import { generatePdfFromHtml } from './generate';
+import { escapeHtml } from '@/lib/html/escape';
 
 export interface SkillEntry {
   readonly name: string;
@@ -39,25 +40,6 @@ export interface TransformationReportProps {
 }
 
 const FOOTER_TEXT = 'The AI Banking Institute | AIBankingInstitute.com | Confidential';
-
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => {
-    switch (character) {
-      case '&':
-        return '&amp;';
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '"':
-        return '&quot;';
-      case "'":
-        return '&#39;';
-      default:
-        return character;
-    }
-  });
-}
 
 function safeText(value: string | null | undefined, fallback = 'Not recorded'): string {
   const trimmed = value?.trim() ?? '';

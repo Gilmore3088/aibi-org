@@ -8,8 +8,8 @@ import { generatePdfFromHtml } from '@/lib/pdf/generate';
 import {
   buildAcceptableUseCardHtml,
   buildAcceptableUseCardPdfBuffer,
-  escapeHtml,
 } from './acceptable-use-card';
+import { escapeHtml } from '@/lib/html/escape';
 
 describe('acceptable use card PDF rendering', () => {
   it('escapes learner-provided text before building print HTML', () => {

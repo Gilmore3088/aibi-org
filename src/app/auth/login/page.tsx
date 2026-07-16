@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 import { signIn, sanitizeNext } from '@/lib/supabase/auth';
 import { EmailLinkForm, PurchaseRecoveryForm } from '@/components/auth/RecoveryForms';
+import { EMAIL_RE as EMAIL_RE_LOGIN } from '@/lib/email/validate';
 
 // ── Shared inline styles (mockup tokens) ─────────────────────────────────────
 
@@ -269,7 +270,6 @@ function PasswordForm({ redirectTo, prefillEmail }: { redirectTo: string; prefil
 
 // Lenient email-shaped check just to avoid pre-filling random garbage from
 // a crafted URL. The form's own type="email" validation is the real gate.
-const EMAIL_RE_LOGIN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginPage() {
   const searchParams = useSearchParams();

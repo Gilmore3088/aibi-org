@@ -37,6 +37,7 @@ import {
   type RoiAssessmentContext,
 } from '@/lib/roi/assessment-context';
 import { rememberFreeResourceCapture } from '@/lib/resources/freeResourceCapture';
+import { EMAIL_RE } from '@/lib/email/validate';
 
 // Free-funnel role taxonomy (FREE_ROLES / FREE_ROLE_LABEL / FREE_ROLE_TO_V2)
 // lives in @content/assessments/v3/roles, shared with /api/capture-email so
@@ -73,7 +74,6 @@ interface EmailGateProps {
 
 type Status = 'idle' | 'submitting' | 'error';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Free-mail providers — if one of these is used without an institution
 // name, the gate softly asks the user to add the institution. With an

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { EMAIL_RE } from '@/lib/email/validate';
 import {
   getCompletedTeamResponses,
   getExistingTeamResponse,
@@ -10,7 +11,6 @@ import {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface StartPayload {
   email?: unknown;
