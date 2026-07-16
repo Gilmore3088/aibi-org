@@ -1,10 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from './_client';
 
-// matchMedia is stubbed to report reduced-motion, so switching to the safe tab
-// resolves synchronously (no strike-sweep timers) — the template frame renders
-// on the next tick and the DOM assertions below are deterministic.
+// matchMedia is stubbed to report reduced-motion, so revealing the comparison
+// and switching to the safer tab resolve synchronously (no strike-sweep
+// timers) — the DOM assertions below are deterministic.
 describe('HomePage', () => {
   beforeEach(() => {
     vi.stubGlobal(
@@ -17,8 +17,10 @@ describe('HomePage', () => {
     );
   });
 
-  const goSafe = () =>
-    fireEvent.click(screen.getByRole('tab', { name: /Safe reusable template/i }));
+  const panel = () => document.getElementById('mk-demo-panel')!;
+  const click = (name: RegExp) => fireEvent.click(screen.getByRole('button', { name }));
+  const reveal = () => fireEvent.click(screen.getByRole('button', { name: /Skip to comparison/i }));
+  const openSafer = () => fireEvent.click(screen.getByRole('tab', { name: /Safer template/i }));
 
   it('leads with the safety question, one CTA, and the assessment demo', () => {
     render(<HomePage />);
@@ -30,56 +32,82 @@ describe('HomePage', () => {
     expect(screen.getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
     expect(screen.getByText(/Built for community banks/i)).toBeTruthy();
 
-    // Exactly one primary readiness CTA in the hero (the duplicate sticky CTA
-    // and the second "Start learning" button were removed).
-    const heroCtas = screen.getAllByRole('link', { name: /Get my readiness score/i });
-    expect(heroCtas).toHaveLength(1);
+    // Exactly one CTA in the hero copy column — the duplicate sticky CTA and
+    // the second "Start learning" hero button were removed.
+    const heroCopy = document.querySelector('.mk-hero-copy') as HTMLElement;
+    expect(within(heroCopy).getAllByRole('link', { name: /Get my readiness score/i })).toHaveLength(1);
+    expect(within(heroCopy).queryByRole('link', { name: /Start learning/i })).toBeNull();
   });
 
-  it('opens on the unsafe paste — real customer data on show', () => {
+  it('opens on the optional decision check with the synthetic prompt', () => {
     render(<HomePage />);
 
-    // The demo hooks with the risk: the default tab is the unsafe paste, so the
-    // real (fictional) customer data is visible until the visitor acts.
-    const panel = document.getElementById('mk-demo-panel')!;
-    expect(panel.textContent).toContain('John Smith');
-    expect(panel.textContent).toContain('0042871');
-    expect(panel.textContent).toContain('$83.17');
+    expect(screen.getByText(/Would you allow this prompt in a public AI tool/i)).toBeTruthy();
+    expect(screen.getByText(/Synthetic customer data/i)).toBeTruthy();
+    // The (fictional) prompt is shown so the visitor can form a judgement.
+    expect(screen.getByText(/John Smith/)).toBeTruthy();
+    // Three choices plus an optional skip; the comparison is not revealed yet.
+    expect(screen.getByRole('button', { name: /^Allow$/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Review first/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^Block$/i })).toBeTruthy();
+    expect(document.getElementById('mk-demo-panel')).toBeNull();
   });
 
-  it('resolves into a reusable template when the safe tab is chosen', () => {
+  it('recommends Block and affirms a correct answer, with risk annotations', () => {
     render(<HomePage />);
-    goSafe();
+    click(/^Block$/i);
 
-    const panel = document.getElementById('mk-demo-panel')!;
+    // Calm, specific feedback — not a game-show verdict.
+    expect(screen.getByText(/^Correct\./i)).toBeTruthy();
+    expect(screen.queryByText(/wrong/i)).toBeNull();
+    // The exposed data is annotated on the revealed unsafe prompt.
+    expect(screen.getByText(/Customer identity exposed/i)).toBeTruthy();
+    expect(screen.getByText(/Public tool boundary crossed/i)).toBeTruthy();
+  });
+
+  it('acknowledges an unsafe answer without scolding', () => {
+    render(<HomePage />);
+    click(/^Allow$/i);
+
+    expect(
+      screen.getByText(/Review after pasting does not remove the exposure/i),
+    ).toBeTruthy();
+    expect(screen.queryByText(/wrong/i)).toBeNull();
+  });
+
+  it('reveals real data on the unsafe tab and a reusable template on the safer tab', () => {
+    render(<HomePage />);
+    reveal();
+
+    // Unsafe tab is the default after reveal — real (fictional) data on show.
+    expect(panel().textContent).toContain('John Smith');
+    expect(panel().textContent).toContain('$83.17');
+
+    openSafer();
     // Needed values become bracketed template slots…
-    expect(panel.textContent).toContain('[customer name]');
-    expect(panel.textContent).toContain('[account number]');
-    expect(panel.textContent).toContain('[amount]');
-    // …the real customer data is gone from the DOM…
-    expect(panel.textContent).not.toContain('John Smith');
-    expect(panel.textContent).not.toContain('0042871');
-    expect(panel.textContent).not.toContain('$83.17');
-    // …the complaint context survives (that's what makes the template usable)…
-    expect(panel.textContent).toContain('overdraft');
-
+    expect(panel().textContent).toContain('[customer name]');
+    expect(panel().textContent).toContain('[account number]');
+    expect(panel().textContent).toContain('[amount]');
+    // …the real customer data is gone…
+    expect(panel().textContent).not.toContain('John Smith');
+    expect(panel().textContent).not.toContain('$83.17');
+    // …the complaint context survives…
+    expect(panel().textContent).toContain('overdraft');
     // …and the three guardrails are shown, not just described.
-    expect(screen.getByText(/Real data removed/i)).toBeTruthy();
+    expect(screen.getByText(/Sensitive details removed/i)).toBeTruthy();
     expect(screen.getByText(/Approved source required/i)).toBeTruthy();
-    expect(screen.getByText(/Human review before use/i)).toBeTruthy();
+    expect(screen.getByText(/Human review retained/i)).toBeTruthy();
   });
 
   it('drops PII the task never needed (DOB, SSN, phone) from the template', () => {
     render(<HomePage />);
-    goSafe();
+    reveal();
+    openSafer();
 
-    // The lesson isn't "mask everything" — a fee-reversal reply never needs a
-    // DOB, SSN, or phone number, so the template omits them entirely rather than
-    // leaving placeholder slots for data nobody should collect for this task.
-    const panel = document.getElementById('mk-demo-panel')!;
-    expect(panel.textContent).not.toContain('04/12/1981');
-    expect(panel.textContent).not.toContain('(555) 123-4567');
-    expect(panel.textContent).not.toMatch(/ssn/i);
-    expect(panel.textContent).not.toMatch(/\bdob\b/i);
+    const p = panel();
+    expect(p.textContent).not.toContain('04/12/1981');
+    expect(p.textContent).not.toContain('(555) 123-4567');
+    expect(p.textContent).not.toMatch(/ssn/i);
+    expect(p.textContent).not.toMatch(/\bdob\b/i);
   });
 });

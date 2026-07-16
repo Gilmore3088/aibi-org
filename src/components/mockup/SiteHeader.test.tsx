@@ -3,16 +3,15 @@ import { describe, expect, it } from 'vitest';
 import { SiteHeader } from './SiteHeader';
 
 describe('SiteHeader', () => {
-  it('places Pricing after Institutions in the desktop navigation', () => {
+  it('lists destination nouns without a redundant Home item (logo links home)', () => {
     render(<SiteHeader activePath="/pricing" />);
 
     const desktopNav = screen.getByRole('navigation', { name: /^Primary$/i });
     expect(within(desktopNav).getAllByRole('link').map((link) => link.textContent)).toEqual([
-      'Home',
       'Assessment',
-      'Learn',
+      'Training',
       'Resources',
-      'Institutions',
+      'For Institutions',
       'Pricing',
     ]);
   });

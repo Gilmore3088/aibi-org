@@ -9,28 +9,28 @@ import { Wordmark } from '@/components/brand';
 // Sandbox + Toolbox are product surfaces that confuse first-time visitors;
 // they live inside the signed-in experience (dashboard chrome) and as
 // references inside the course/assessment pages, not in the top nav.
+// Nav items are destinations, so each uses the noun. "Home" is intentionally
+// absent — the logo links home, so a redundant Home item just adds a cell.
 const PRIMARY_NAV: { label: string; href: string }[] = [
-  { label: 'Home', href: '/' },
   { label: 'Assessment', href: '/assessment' },
-  { label: 'Learn', href: '/courses' },
+  { label: 'Training', href: '/courses' },
   { label: 'Resources', href: '/resources' },
-  { label: 'Institutions', href: '/for-institutions' },
+  { label: 'For Institutions', href: '/for-institutions' },
   { label: 'Pricing', href: '/pricing' },
 ];
 
-// Mobile primary nav — core routes + a "More" overflow. Labels shortened
-// ("Assessment" → "Assess") so the five mobile cells breathe at narrow
-// widths. Institutions live in the More panel. About + Security + FAQ live in
-// the footer, not nav (2026-05-28 user direction).
+// Mobile primary nav — core routes + a "More" overflow. Same nouns as desktop
+// (no "Assess"/"Assessment" split). For Institutions + Pricing live in the More
+// panel. About + Security + FAQ live in the footer, not nav (2026-05-28 user
+// direction).
 const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Assess', href: '/assessment' },
-  { label: 'Learn', href: '/courses' },
+  { label: 'Assessment', href: '/assessment' },
+  { label: 'Training', href: '/courses' },
   { label: 'Resources', href: '/resources' },
 ];
 
 const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
-  { label: 'Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
+  { label: 'For Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
   { label: 'Pricing', href: '/pricing', helper: 'Compare free, individual, course, and team options' },
 ];
 
