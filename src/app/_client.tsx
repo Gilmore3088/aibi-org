@@ -13,6 +13,7 @@ import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 import { TrustAnchor } from '@/components/sections/TrustAnchor';
 import { HomeHelpWidget } from '@/components/sections/HomeHelpWidget';
+import { HomeResultPreview } from '@/components/sections/HomeResultPreview';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -89,11 +90,11 @@ const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconPro
 const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [string, string][] }> = {
   Assess: {
     label: 'Sample readiness output',
-    title: 'Score, top gap, first working template',
+    title: 'Score, top gap, and starter artifact',
     rows: [
-      ['Readiness', '32 / 48'],
-      ['Top gap', 'Workflow documentation'],
-      ['Starter', 'AI Workflow SOP'],
+      ['Readiness', '36 / 48'],
+      ['Top gap', 'Documentation'],
+      ['Starter', 'AI Recordkeeping Template'],
     ],
   },
   Train: {
@@ -240,7 +241,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <HomeHelpWidget />
+      <HomeResultPreview />
 
       <Section variant="std" surface="white">
         <SectionHead
@@ -312,6 +313,10 @@ export default function HomePage() {
           />
         </div>
       </Section>
+
+      {/* General "what are you working on" resource-request form — kept low in
+          the page so it never interrupts the readiness-assessment journey. */}
+      <HomeHelpWidget />
 
       <CtaBand
         hiddenOnMobile
@@ -577,7 +582,7 @@ const PRICE_TIERS: {
     eyebrow: 'Start here',
     label: 'Readiness baseline',
     price: 'Free',
-    note: '12 questions. Score, top gap, and a first working template.',
+    note: '12 questions. Score, top gap, and a starter artifact.',
     href: '/assessment/take',
     action: 'Start free',
     featured: true,

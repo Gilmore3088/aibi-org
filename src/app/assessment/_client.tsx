@@ -59,12 +59,15 @@ const IN_DEPTH_DIMENSIONS = [
 ];
 
 // Sample free outcome — illustrative numbers so the buyer sees the shape.
+// Illustrative numbers so the buyer sees the shape. Kept consistent with the
+// home page's result preview, and internally correct: 36/48 lands in the 33–40
+// "Building Momentum" band (the previous 32 was actually the Early Stage band).
 const SAMPLE = {
-  score: 32,
+  score: 36,
   max: 48,
   tier: 'Building Momentum',
-  topGap: 'Workflow documentation',
-  artifact: 'AI Workflow SOP Template',
+  topGap: 'Documentation',
+  artifact: 'AI Recordkeeping Template',
 };
 
 // ---------- Page ----------
@@ -85,8 +88,8 @@ export default function AssessmentLandingPage() {
             <p className="mk-kicker-gold-soft">Assessment</p>
             <h1>Find your AI starting point.</h1>
             <p className="mk-lede">
-              12 questions in three minutes give you a score, top gap, and
-              30-day starter move. The paid assessment adds deeper diagnostic
+              12 questions in three minutes give you a score, top gap, and a
+              starter artifact. The paid assessment adds deeper diagnostic
               detail across eight scored readiness dimensions.
             </p>
             <p className="mk-hero-role-note">
@@ -150,7 +153,7 @@ function HeroReportPreview() {
         </div>
       </div>
       <div className="mk-assessment-artifact">
-        <span>30-day starter artifact</span>
+        <span>Your starter artifact</span>
         <strong>{SAMPLE.artifact}</strong>
       </div>
     </aside>
@@ -170,7 +173,7 @@ function AssessmentPathPreview() {
         <ul>
           <li><CheckIcon className="mk-ic" /> Score out of 48</li>
           <li><CheckIcon className="mk-ic" /> Top readiness gap</li>
-          <li><CheckIcon className="mk-ic" /> 30-day starter artifact</li>
+          <li><CheckIcon className="mk-ic" /> Your starter artifact</li>
         </ul>
         <Button variant="ink" size="lg" href="/assessment/take">
           Start free
