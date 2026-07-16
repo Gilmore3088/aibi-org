@@ -145,6 +145,130 @@ section.mk-std { padding: 56px 0; }
   color: #fff;
 }
 
+/* Mobile menu trigger — hidden on desktop, shown below 1180px. */
+.mk-menu-btn {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--r-md);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mk-menu-btn:hover { background: var(--cream); }
+.mk-menu-btn:focus-visible {
+  outline: 2px solid var(--gold-deep, #7A5F1E);
+  outline-offset: 2px;
+}
+
+/* Mobile navigation drawer. */
+.mk-drawer-root { position: fixed; inset: 0; z-index: 80; }
+.mk-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  animation: mk-drawer-fade 0.2s ease;
+}
+.mk-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(86vw, 340px);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  background: var(--cream-1, #FBF7EE);
+  box-shadow: -12px 0 40px rgba(15, 23, 42, 0.24);
+  overflow-y: auto;
+  animation: mk-drawer-slide 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mk-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.mk-drawer-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+.mk-drawer-close:hover { background: rgba(15, 23, 42, 0.06); }
+.mk-drawer-close:focus-visible,
+.mk-drawer-link:focus-visible {
+  outline: 2px solid var(--gold-deep, #7A5F1E);
+  outline-offset: 2px;
+}
+.mk-drawer-nav { display: flex; flex-direction: column; gap: 2px; }
+.mk-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  border-left: 3px solid transparent;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mk-drawer-link:hover { background: rgba(15, 23, 42, 0.04); }
+/* Active route: a left bar + a "Current" pill + bold — not colour alone. */
+.mk-drawer-link.is-active {
+  border-left-color: var(--gold-deep, #7A5F1E);
+  background: #fff;
+  font-weight: 700;
+}
+.mk-drawer-current {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-deep, #7A5F1E);
+  border: 1px solid currentColor;
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+}
+.mk-drawer-cta { margin-top: auto; padding-top: 16px; }
+.mk-drawer-cta .mk-btn { width: 100%; }
+@keyframes mk-drawer-slide {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes mk-drawer-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-drawer-panel,
+  .mk-drawer-backdrop { animation: none; }
+}
+
 .mk-nav-mobile {
   display: flex;
   gap: 8px;
@@ -6470,15 +6594,19 @@ section.mk-std { padding: 56px 0; }
      a "More" button that expands an inline panel below
    - The More panel hosts Pricing + Institutions (About + Security + FAQ live in the footer) */
 @media (max-width: 1179px) {
-  /* Center brand, hide desktop CTA. */
+  /* Logo left, menu button right; hide the desktop nav + CTA. */
   .mk-header-inner {
-    justify-content: center;
+    justify-content: space-between;
   }
   .mk-header-cta {
     display: none;
   }
+  .mk-menu-btn {
+    display: inline-flex;
+  }
 
-  /* Mobile nav pill — 5-column grid (4 primary + More button). */
+  /* Legacy mobile nav pill (now replaced by the drawer) — kept hidden in case
+     any stale markup renders. */
   .mk-nav-mobile-wrap {
     padding-bottom: 12px;
   }

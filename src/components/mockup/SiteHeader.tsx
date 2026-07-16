@@ -1,16 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Button } from './Button';
 import { Wordmark } from '@/components/brand';
 
-// Desktop primary nav — buyer-facing destinations only.
-// Sandbox + Toolbox are product surfaces that confuse first-time visitors;
-// they live inside the signed-in experience (dashboard chrome) and as
-// references inside the course/assessment pages, not in the top nav.
 // Nav items are destinations, so each uses the noun. "Home" is intentionally
 // absent — the logo links home, so a redundant Home item just adds a cell.
+// The same list drives the desktop bar and the mobile drawer.
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Assessment', href: '/assessment' },
   { label: 'Training', href: '/courses' },
@@ -19,28 +17,31 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Pricing', href: '/pricing' },
 ];
 
-// Mobile primary nav — core routes + a "More" overflow. Same nouns as desktop
-// (no "Assess"/"Assessment" split). For Institutions + Pricing live in the More
-// panel. About + Security + FAQ live in the footer, not nav (2026-05-28 user
-// direction).
-const PRIMARY_MOBILE_NAV: { label: string; href: string }[] = [
-  { label: 'Assessment', href: '/assessment' },
-  { label: 'Training', href: '/courses' },
-  { label: 'Resources', href: '/resources' },
-];
+function MenuIcon() {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
 
-const MORE_MOBILE_NAV: { label: string; href: string; helper: string }[] = [
-  { label: 'For Institutions', href: '/for-institutions', helper: 'Team rollout and briefing' },
-  { label: 'Pricing', href: '/pricing', helper: 'Compare free, individual, course, and team options' },
-];
+function CloseIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+}
 
 export interface SiteHeaderProps {
   /** Active route path (e.g. '/courses'). The matching nav item gets the
    * active styling. Pass `undefined` to render no active state. */
   activePath?: string;
-  /** Primary CTA in the top-right (desktop only — hidden on mobile because
-   * the sticky bottom CTA covers the same surface). Defaults to "Get
-   * readiness score" → /assessment. */
+  /** Primary CTA — top-right on desktop, dominant action at the bottom of the
+   * mobile drawer. Defaults to "Get readiness score" → /assessment/take. */
   cta?: { label: string; href: string };
 }
 
@@ -48,10 +49,61 @@ export function SiteHeader({
   activePath,
   cta = { label: 'Get readiness score', href: '/assessment/take' },
 }: SiteHeaderProps) {
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreActive = MORE_MOBILE_NAV.some((item) => activePath === item.href);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const isActive = (href: string) => activePath === href;
+  const closeMenu = () => setMenuOpen(false);
+
+  // While the drawer is open: lock background scroll (without a layout shift —
+  // pad by the scrollbar width), move focus into the drawer, trap Tab inside
+  // it, close on Escape, and return focus to the menu button on close.
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const menuButton = menuButtonRef.current;
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    const prevOverflow = document.body.style.overflow;
+    const prevPad = document.body.style.paddingRight;
+    document.body.style.overflow = 'hidden';
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
+
+    const focusables = () =>
+      Array.from(
+        panelRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? [],
+      );
+    focusables()[0]?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setMenuOpen(false);
+        return;
+      }
+      if (e.key === 'Tab') {
+        const items = focusables();
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPad;
+      menuButton?.focus();
+    };
+  }, [menuOpen]);
 
   return (
     <header className="mk-header">
@@ -73,60 +125,67 @@ export function SiteHeader({
           ))}
         </nav>
 
-        {/* Desktop-only CTA — hidden on mobile via .mk-header-cta CSS so the
-            mobile header is just centered logo + nav pill. */}
+        {/* Desktop-only CTA. */}
         <div className="mk-header-cta">
           <Button variant="gold" href={cta.href}>
             {cta.label}
           </Button>
         </div>
+
+        {/* Mobile-only menu trigger. */}
+        <button
+          ref={menuButtonRef}
+          type="button"
+          className="mk-menu-btn"
+          aria-expanded={menuOpen}
+          aria-controls="mk-mobile-drawer"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <MenuIcon />
+          <span>Menu</span>
+        </button>
       </div>
 
-      <div className="mk-container mk-nav-mobile-wrap">
-        <nav className="mk-nav-mobile" aria-label="Primary (mobile)">
-          {PRIMARY_MOBILE_NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={isActive(item.href) ? 'is-active' : ''}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <button
-            type="button"
-            onClick={() => setMoreOpen((v) => !v)}
-            className={`mk-nav-mobile-more${moreActive || moreOpen ? ' is-active' : ''}`}
-            aria-expanded={moreOpen}
-            aria-controls="mk-nav-mobile-more-panel"
-          >
-            {moreOpen ? 'Close' : 'More'}
-          </button>
-        </nav>
+      {/* Portalled to <body> so the fixed overlay escapes the header's
+          backdrop-filter containing block (which would otherwise clip it). */}
+      {menuOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="mk-drawer-root" role="dialog" aria-modal="true" aria-label="Menu">
+            <div className="mk-drawer-backdrop" onClick={closeMenu} aria-hidden="true" />
+            <div ref={panelRef} id="mk-mobile-drawer" className="mk-drawer-panel">
+              <div className="mk-drawer-head">
+                <span className="mk-drawer-title">Menu</span>
+                <button type="button" className="mk-drawer-close" onClick={closeMenu} aria-label="Close menu">
+                  <CloseIcon />
+                </button>
+              </div>
 
-        {moreOpen && (
-          <div
-            id="mk-nav-mobile-more-panel"
-            className="mk-nav-mobile-more-panel"
-            role="region"
-            aria-label="More navigation"
-          >
-            {MORE_MOBILE_NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`mk-nav-mobile-more-link${isActive(item.href) ? ' is-active' : ''}`}
-                onClick={() => setMoreOpen(false)}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
-                <span className="mk-nav-mobile-more-link-label">{item.label}</span>
-                <span className="mk-nav-mobile-more-link-helper">{item.helper}</span>
-              </Link>
-            ))}
-          </div>
+              <nav className="mk-drawer-nav" aria-label="Site">
+                {PRIMARY_NAV.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`mk-drawer-link${isActive(item.href) ? ' is-active' : ''}`}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                    onClick={closeMenu}
+                  >
+                    <span>{item.label}</span>
+                    {isActive(item.href) && <span className="mk-drawer-current">Current</span>}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="mk-drawer-cta">
+                <Button variant="gold" size="lg" href={cta.href} onClick={closeMenu}>
+                  Get my readiness score
+                </Button>
+              </div>
+            </div>
+          </div>,
+          document.body,
         )}
-      </div>
     </header>
   );
 }
