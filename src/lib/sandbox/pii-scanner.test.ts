@@ -10,6 +10,8 @@ describe('scanForPII', () => {
 
   it.each([
     ['ssn', 'Customer wrote SSN 123-45-6789 on the form.'],
+    ['ssn', 'Customer wrote 123 45 6789 on the intake sheet.'],
+    ['ssn', 'The application lists 123.45.6789 as the identifier.'],
     ['email', 'Send the note to borrower@example.com.'],
     ['phone', 'Call the member at (206) 555-0147 today.'],
     ['date_of_birth', 'DOB: 03/14/1982'],

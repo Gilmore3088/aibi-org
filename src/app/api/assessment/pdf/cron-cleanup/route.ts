@@ -14,9 +14,13 @@ export const maxDuration = 30;
 const RETENTION_DAYS = 30;
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  const expected = `Bearer ${process.env.CRON_SECRET ?? ''}`;
-  if (process.env.SKIP_CRON_AUTH !== 'true' && authHeader !== expected) {
+  // Fail closed when the secret is unset — otherwise an empty Bearer token
+  // would authenticate.
+  const secret = process.env.CRON_SECRET;
+  const authorized =
+    process.env.SKIP_CRON_AUTH === 'true' ||
+    (Boolean(secret) && request.headers.get('authorization') === `Bearer ${secret}`);
+  if (!authorized) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 

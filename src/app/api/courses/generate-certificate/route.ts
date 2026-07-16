@@ -101,8 +101,27 @@ export async function POST(request: Request): Promise<Response> {
 
   const authResult = await authenticate();
   if (authResult.error) return authResult.error;
+  const { userId } = authResult;
 
   const serviceClient = createServiceRoleClient();
+
+  // Verify the caller owns this enrollment before issuing — otherwise any
+  // authenticated user who guesses/leaks an enrollment UUID could force
+  // first-issuance of another learner's certificate (holder-name PII) and
+  // trigger the issuance email. Mirrors the GET handler's ownership check.
+  const { data: ownedEnrollment, error: ownershipError } = await serviceClient
+    .from('course_enrollments')
+    .select('id')
+    .eq('id', enrollmentId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (ownershipError) {
+    return jsonError('Failed to verify enrollment ownership.', 500);
+  }
+  if (!ownedEnrollment) {
+    return jsonError('Enrollment not found.', 404);
+  }
 
   // T-08-01: Re-read review_status from DB — do not trust caller's claim of approval
   const { data: submissionData, error: submissionError } = await serviceClient

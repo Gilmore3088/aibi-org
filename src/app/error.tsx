@@ -49,8 +49,8 @@ export default function ErrorPage({
           className="text-lg leading-relaxed"
           style={{ color: 'var(--slate-600)' }}
         >
-          Our end, not yours. The issue has been logged. Try again below to pick
-          up where you were, or head back to the home page.
+          Our end, not yours. Try again below to pick up where you were, or head
+          back to the home page.
         </p>
         {error.digest && (
           <p

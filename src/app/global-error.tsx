@@ -41,8 +41,7 @@ export default function GlobalError({
             The page failed to load.
           </h1>
           <p style={{ fontSize: '1.125rem', opacity: 0.75, marginBottom: '2rem' }}>
-            Something fundamental broke. The issue has been logged. Please reload
-            the page or return shortly.
+            Something fundamental broke. Please reload the page or return shortly.
           </p>
           {error.digest && (
             <p

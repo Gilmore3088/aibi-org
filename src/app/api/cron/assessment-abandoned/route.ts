@@ -11,9 +11,12 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 function cronAuthorized(request: Request): boolean {
-  const authHeader = request.headers.get('authorization');
-  const expected = `Bearer ${process.env.CRON_SECRET ?? ''}`;
-  return process.env.SKIP_CRON_AUTH === 'true' || authHeader === expected;
+  if (process.env.SKIP_CRON_AUTH === 'true') return true;
+  // Fail closed when the secret is unset — otherwise an empty Bearer token
+  // would authenticate.
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  return request.headers.get('authorization') === `Bearer ${secret}`;
 }
 
 export async function GET(request: Request): Promise<NextResponse> {

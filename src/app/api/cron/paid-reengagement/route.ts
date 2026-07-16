@@ -14,9 +14,12 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 function cronAuthorized(request: Request): boolean {
-  const authHeader = request.headers.get('authorization');
-  const expected = `Bearer ${process.env.CRON_SECRET ?? ''}`;
-  return process.env.SKIP_CRON_AUTH === 'true' || authHeader === expected;
+  if (process.env.SKIP_CRON_AUTH === 'true') return true;
+  // Fail closed when the secret is unset — otherwise an empty Bearer token
+  // would authenticate.
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  return request.headers.get('authorization') === `Bearer ${secret}`;
 }
 
 export async function GET(request: Request) {
@@ -67,6 +70,7 @@ export async function GET(request: Request) {
         route: '/api/cron/paid-reengagement',
       },
     });
-    return NextResponse.json({ error: 'paid-reengagement-monitor-failed', detail: message }, { status: 500 });
+    // Full message goes to logs + ops alert above; keep the response generic.
+    return NextResponse.json({ error: 'paid-reengagement-monitor-failed' }, { status: 500 });
   }
 }

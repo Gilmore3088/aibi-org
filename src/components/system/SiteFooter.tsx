@@ -29,7 +29,9 @@ const LINK_GROUPS: readonly LinkGroup[] = [
   {
     label: "Institute",
     links: [
+      { href: "/about", label: "About" },
       { href: "/security", label: "Security & Governance" },
+      { href: "mailto:hello@aibankinginstitute.com", label: "Contact support" },
       // "/verify" landing was removed because only "/verify/[certificateId]" exists —
       // third parties verify with the URL printed on the credential itself, which
       // already includes the ID. Restore this when/if a credential-ID input page
@@ -41,6 +43,7 @@ const LINK_GROUPS: readonly LinkGroup[] = [
 const LEGAL_LINKS: readonly { readonly href: string; readonly label: string }[] = [
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
+  { href: "/terms", label: "Refunds" },
   { href: "/ai-use-disclaimer", label: "AI Use Disclaimer" },
 ];
 

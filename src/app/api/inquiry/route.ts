@@ -121,8 +121,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 });
   }
 
+  // Redact PII from platform logs: keep routing fields, drop free text,
+  // and mask the email local part (same posture as capture-email).
   console.info('[inquiry]', {
-    ...body,
+    type: body.type,
+    track: body.track,
+    email: body.email.replace(/^(.).*(@.*)$/, '$1***$2'),
+    hasNotes: body.notes.trim().length > 0,
     at: new Date().toISOString(),
   });
 

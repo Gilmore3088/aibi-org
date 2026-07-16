@@ -13,6 +13,7 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
+import { checkProfileWriteAccess } from '@/lib/assessment/profile-write-access';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -152,6 +153,14 @@ export async function PATCH(request: Request): Promise<NextResponse> {
   }
 
   const client = createServiceRoleClient();
+
+  // A signed-in caller may only write their own profile.
+  const access = await checkProfileWriteAccess(client, resolvedProfileId);
+  if (!access.ok) {
+    const error = access.status === 404 ? 'Profile not found.' : 'Not authorized to edit this profile.';
+    return NextResponse.json({ error }, { status: access.status });
+  }
+
   const { error: writeError } = await client
     .from('user_profiles')
     .update({ institution_context: sanitized })

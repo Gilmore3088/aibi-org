@@ -1,7 +1,7 @@
 // Email 3: AiBI-Foundation institution/team purchase confirmation.
 // Sent to the purchaser (admin) when a multi-seat order completes.
 
-import { emailShell, kicker, heading, body, ctaButton, divider, metaRow } from './base';
+import { emailShell, escapeHtml, kicker, heading, body, ctaButton, divider, metaRow } from './base';
 
 export interface CoursePurchaseInstitutionVars {
   institutionName: string;
@@ -12,15 +12,16 @@ export interface CoursePurchaseInstitutionVars {
 }
 
 export function coursePurchaseInstitutionHtml(v: CoursePurchaseInstitutionVars): string {
+  const institutionName = escapeHtml(v.institutionName);
   const bodyContent = `
     ${kicker('Purchase confirmed')}
-    ${heading(`${v.institutionName} — your AiBI-Foundation seats are ready.`)}
+    ${heading(`${institutionName} — your AiBI-Foundation seats are ready.`)}
     ${body(`${v.seatsPurchased} seat${v.seatsPurchased === 1 ? '' : 's'} are active. Use the admin link below to view and manage enrollments.`)}
     ${ctaButton('Open admin dashboard →', v.adminUrl)}
     ${divider()}
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
       <tbody>
-        ${metaRow('Institution', v.institutionName)}
+        ${metaRow('Institution', institutionName)}
         ${metaRow('Seats', String(v.seatsPurchased))}
         ${metaRow('Amount', v.amountPaid)}
         ${metaRow('Access', 'Ongoing under current offer')}
@@ -36,7 +37,7 @@ export function coursePurchaseInstitutionHtml(v: CoursePurchaseInstitutionVars):
   `;
 
   return emailShell({
-    preheader: `${v.institutionName} — ${v.seatsPurchased} AiBI-Foundation seat${v.seatsPurchased === 1 ? '' : 's'} confirmed`,
+    preheader: `${institutionName} — ${v.seatsPurchased} AiBI-Foundation seat${v.seatsPurchased === 1 ? '' : 's'} confirmed`,
     body: bodyContent,
   });
 }

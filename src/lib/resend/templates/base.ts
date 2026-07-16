@@ -2,6 +2,21 @@
 // Brand v1 palette: cream background, ink primary, gold accent.
 // "The AI Banking Institute" — correct canonical name.
 
+/**
+ * Escape user-controlled strings before interpolating them into email HTML.
+ * The shell helpers (heading/body/…) accept trusted markup by design, so
+ * escaping is applied at the call site to each attacker-influenced value
+ * (institution name, holder name, interest label) — not inside the helpers.
+ */
+export function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 export function emailShell({
   preheader,
   body,

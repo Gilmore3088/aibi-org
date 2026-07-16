@@ -34,6 +34,9 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  // Drop the `X-Powered-By: Next.js` response header — no functional value,
+  // and it fingerprints the framework/version for opportunistic scanners.
+  poweredByHeader: false,
   // The default Next.js dev indicator renders as a small floating "N" in
   // local builds. It confused first-time mobile assessment QA as an unlabeled
   // product control, so keep the dev overlay available through errors while
