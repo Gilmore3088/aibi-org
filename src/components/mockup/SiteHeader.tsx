@@ -109,7 +109,11 @@ export function SiteHeader({
     <header className="mk-header">
       <div className="mk-container mk-header-inner">
         <Link className="mk-brand" href="/" aria-label="The AI Banking Institute home">
-          <Wordmark variant="full" tone="dark" size={24} />
+          {/* Full lockup on wider screens; the compact "[Ai]BI" on phones, where
+              the full wordmark + Menu button would overflow a 375px header. Only
+              the visible one is in the a11y tree (display:none removes it). */}
+          <Wordmark variant="full" tone="dark" size={24} className="mk-brand-full" />
+          <Wordmark variant="compact" tone="dark" size={24} className="mk-brand-compact" />
         </Link>
 
         <nav className="mk-nav" aria-label="Primary">
