@@ -8,7 +8,6 @@ import {
   Button,
   ArrowGlyph,
   CtaBand,
-  StickyMobileCta,
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
@@ -49,6 +48,11 @@ const ShieldCheckIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
+const CheckGlyph = (p: IconProps) => (
+  <svg {...sw({ ...p, size: p.size ?? 15 })}>
+    <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 const LayersIcon = (p: IconProps) => (
@@ -153,6 +157,23 @@ const HOME_PROMPT_TOKENS: PiiToken[] = [
 const HOME_PROMPT_TRAILING = '. wants them reversed';
 const HOME_TOKEN_COUNT = HOME_PROMPT_TOKENS.length;
 
+// The "safe reusable template" the demo resolves to: the same business task,
+// but the risky data is gone and the three guardrails the whole product teaches
+// are made concrete — an approved source, a required output format, and a named
+// human reviewer. Shown as structured slots, not prose.
+const HOME_SAFE_SLOTS: { label: string; value: string }[] = [
+  { label: 'Source', value: 'your overdraft-fee policy' },
+  { label: 'Format', value: 'a short, plain-language reply' },
+  { label: 'Reviewer', value: 'a named teller-line supervisor' },
+];
+// The three checks under the safe template — each maps to one guardrail the
+// safe version demonstrates. Text + check glyph, never colour alone.
+const HOME_SAFE_CHECKS = [
+  'Real data removed',
+  'Approved source required',
+  'Human review before use',
+] as const;
+
 function prefersReducedMotion(): boolean {
   return (
     typeof window !== 'undefined' &&
@@ -177,28 +198,18 @@ export default function HomePage() {
           <div className="mk-deco-blur" />
         </div>
         <div className="mk-container mk-hero-inner mk-home-redline-inner">
-          <div>
-            <p className="mk-kicker mk-kicker-gold-soft">For community banks and credit unions</p>
+          <div className="mk-hero-copy">
             <h1>
-              AI is already here. <span className="mk-hero-accent">Let&apos;s make sure your team is ready.</span>
+              Is your team ready to use AI <span className="mk-hero-accent">safely</span>?
+              <br />
+              Find out in three minutes.
             </h1>
-            <p className="mk-lede">
-              Give your staff a practical way to use AI with clear data boundaries,
-              checked sources, and the right human review. See where your
-              institution is ready in three minutes.
-            </p>
-            <p className="mk-hero-role-note">
-              Built for frontline tellers, branch teams, lenders, operations, compliance, and marketing roles.
-            </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Get my AI readiness score <ArrowGlyph />
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/courses">
-                Start learning
+                Get my readiness score <ArrowGlyph />
               </Button>
             </div>
-            <p className="mk-hero-meta">Free · 12 questions · 3 minutes · first working template</p>
+            <p className="mk-hero-meta">Free · 12 questions · Practical next step</p>
           </div>
           <HomeRedlinePrompt />
         </div>
@@ -285,114 +296,112 @@ export default function HomePage() {
           { label: 'Start learning', href: '/courses', variant: 'ghost-dark' },
         ]}
       />
-
-      <StickyMobileCta
-        label="Get my AI readiness score"
-        href="/assessment/take"
-        source="home-sticky"
-      />
     </div>
   );
 }
 
+// Interactive hero demo. Two visitor-driven tabs — "Unsafe paste" vs "Safe
+// reusable template" — showing the same business task before and after the
+// three guardrails the product teaches (real data removed, approved source,
+// human review). Switching to the safe tab plays a short redaction sweep so
+// the sensitive values visibly become template slots. The demo carries the
+// explanation the left column used to spell out.
+//
+// SSR / no-JS / reduced-motion: renders the "unsafe" frame as a coherent, static
+// hook (real customer data about to be pasted into a public chatbot); the tabs
+// still switch state, just without the sweep animation.
 function HomeRedlinePrompt() {
-  // Resting state (SSR / no-JS / reduced-motion) is the resolved "safe" frame:
-  // sensitive fields struck, safe prompt shown, green badge — the message lands
-  // even if the animation never runs.
-  const [phase, setPhase] = useState<RedlinePhase>('safe');
-  const [struck, setStruck] = useState(HOME_TOKEN_COUNT);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [tab, setTab] = useState<'unsafe' | 'safe'>('unsafe');
+  // 'risk' = plain unsafe paste, 'redact' = strike sweep in progress,
+  // 'safe' = resolved template. Drives which tokens are struck/placeheld.
+  const [phase, setPhase] = useState<RedlinePhase>('risk');
+  const [struck, setStruck] = useState(0);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const unsafeTabRef = useRef<HTMLButtonElement>(null);
+  const safeTabRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
+  const clearTimers = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
+  useEffect(() => clearTimers, []);
 
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        timer = setTimeout(resolve, ms);
-      });
-
-    async function play() {
-      while (!cancelled) {
-        setPhase('risk');
-        setStruck(0);
-        await wait(1300);
-        if (cancelled) return;
-        setPhase('redact');
-        for (let n = 1; n <= HOME_TOKEN_COUNT; n++) {
-          if (cancelled) return;
-          setStruck(n);
-          await wait(380);
-        }
-        await wait(750);
-        if (cancelled) return;
-        setPhase('safe');
-        await wait(4200);
-      }
-    }
-
-    const el = rootRef.current;
-    let started = false;
-    const begin = () => {
-      if (started) return;
-      started = true;
+  const selectTab = (next: 'unsafe' | 'safe') => {
+    clearTimers();
+    setTab(next);
+    if (next === 'unsafe') {
       setPhase('risk');
       setStruck(0);
-      void play();
-    };
+      return;
+    }
+    // → safe. Reduced motion resolves instantly; otherwise sweep each value.
+    if (prefersReducedMotion()) {
+      setPhase('safe');
+      setStruck(HOME_TOKEN_COUNT);
+      return;
+    }
+    setPhase('redact');
+    setStruck(0);
+    for (let n = 1; n <= HOME_TOKEN_COUNT; n++) {
+      timers.current.push(setTimeout(() => setStruck(n), n * 45));
+    }
+    timers.current.push(setTimeout(() => setPhase('safe'), HOME_TOKEN_COUNT * 45 + 150));
+  };
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          begin();
-          io.disconnect();
-        }
-      },
-      { threshold: 0.35 },
-    );
-    if (el) io.observe(el);
+  // Standard tablist keyboard model: arrows move between the two tabs.
+  const onTabKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault();
+    const next = e.key === 'ArrowRight' || e.key === 'End' ? 'safe' : 'unsafe';
+    selectTab(next);
+    (next === 'safe' ? safeTabRef : unsafeTabRef).current?.focus();
+  };
 
-    return () => {
-      cancelled = true;
-      if (timer) clearTimeout(timer);
-      io.disconnect();
-    };
-  }, []);
-
-  const isSafe = phase === 'safe';
+  const isSafe = tab === 'safe';
+  const resolved = phase === 'safe';
 
   return (
-    <div
-      ref={rootRef}
-      className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}
-      aria-label="A real customer-service prompt typed into a public chatbot, with the customer’s name, account number, DOB, SSN, phone, and balance pasted inline. Each piece of personal data is struck through; the prompt then resolves into a reusable template with placeholders and the unnecessary personal data removed, marked safe for AI."
-    >
-      <div className="mk-redline-head">
-        <span className="mk-redline-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span>{isSafe ? 'Reusable template' : 'Public chatbot'}</span>
-        <span className={`mk-redline-badge${isSafe ? ' is-safe' : ''}`}>
-          {isSafe ? (
-            <>
-              <ShieldCheckIcon size={13} /> Safe for AI
-            </>
-          ) : (
-            <>
-              <AlertIcon size={13} /> Unsafe paste
-            </>
-          )}
-        </span>
+    <div className={`mk-redline-prompt${isSafe ? ' is-safe' : ''}`}>
+      <p className="mk-demo-audience">Built for community banks &amp; credit unions</p>
+      <div className="mk-demo-tabs" role="tablist" aria-label="Prompt safety demo" onKeyDown={onTabKeyDown}>
+        <button
+          ref={unsafeTabRef}
+          type="button"
+          role="tab"
+          id="mk-demo-tab-unsafe"
+          aria-selected={!isSafe}
+          aria-controls="mk-demo-panel"
+          tabIndex={isSafe ? -1 : 0}
+          className={`mk-demo-tab${!isSafe ? ' is-active' : ''}`}
+          onClick={() => selectTab('unsafe')}
+        >
+          <AlertIcon size={14} /> Unsafe paste
+        </button>
+        <button
+          ref={safeTabRef}
+          type="button"
+          role="tab"
+          id="mk-demo-tab-safe"
+          aria-selected={isSafe}
+          aria-controls="mk-demo-panel"
+          tabIndex={isSafe ? 0 : -1}
+          className={`mk-demo-tab${isSafe ? ' is-active' : ''}`}
+          onClick={() => selectTab('safe')}
+        >
+          <ShieldCheckIcon size={14} /> Safe reusable template
+        </button>
       </div>
-      <div className="mk-redline-body">
+      <div
+        className="mk-redline-body"
+        id="mk-demo-panel"
+        role="tabpanel"
+        aria-labelledby={isSafe ? 'mk-demo-tab-safe' : 'mk-demo-tab-unsafe'}
+      >
         <p className="mk-redline-prompt-text">
           {HOME_PROMPT_TOKENS.map((token, i) => {
-            const dropped = isSafe && !token.placeholder;
+            const dropped = resolved && !token.placeholder;
             if (dropped) return null;
-            const showPlaceholder = isSafe && Boolean(token.placeholder);
+            const showPlaceholder = resolved && Boolean(token.placeholder);
             const isStruck = phase === 'redact' && i < struck;
             const tokenClass = `mk-pii${token.placeholder ? '' : ' is-droppable'}${
               isStruck ? ' is-struck' : ''
@@ -405,13 +414,33 @@ function HomeRedlinePrompt() {
             );
           })}
           <span className="mk-redline-lead">{HOME_PROMPT_TRAILING}</span>
-          {!isSafe && <span className="mk-redline-caret" aria-hidden="true" />}
+          {phase === 'risk' && <span className="mk-redline-caret" aria-hidden="true" />}
         </p>
+        {resolved && (
+          <dl className="mk-demo-template">
+            {HOME_SAFE_SLOTS.map(({ label, value }) => (
+              <div key={label} className="mk-demo-slot">
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
       <div className="mk-redline-foot">
-        {isSafe
-          ? 'One reusable template, any customer — real data stays in your systems.'
-          : 'Real customer data, about to be pasted into a public chatbot.'}
+        {isSafe ? (
+          <ul className="mk-demo-checks">
+            {HOME_SAFE_CHECKS.map((check) => (
+              <li key={check}>
+                <CheckGlyph /> {check}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <span className="mk-demo-warn">
+            <AlertIcon size={13} /> Real customer data, about to be pasted into a public chatbot.
+          </span>
+        )}
       </div>
     </div>
   );

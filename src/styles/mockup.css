@@ -646,6 +646,121 @@ section.mk-std { padding: 56px 0; }
   }
 }
 
+/* ── Interactive hero demo: tabs, safe-template slots, guardrail checks ─────── */
+.mk-demo-audience {
+  margin: 0;
+  padding: 13px 18px 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-demo-tabs {
+  display: flex;
+  gap: 5px;
+  margin: 11px 14px 2px;
+  padding: 4px;
+  background: var(--slate-100, #F1F5F9);
+  border-radius: 11px;
+}
+.mk-demo-tab {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--slate-600, #475569);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.mk-demo-tab svg { width: 14px; height: 14px; flex-shrink: 0; }
+.mk-demo-tab:hover { color: var(--ink); }
+.mk-demo-tab.is-active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.1);
+}
+/* Reinforce the state on the active tab with a matching accent (never colour
+   alone — the label + icon already carry the meaning). */
+.mk-redline-prompt:not(.is-safe) .mk-demo-tab.is-active { color: #B42318; }
+.mk-redline-prompt.is-safe .mk-demo-tab.is-active { color: #047857; }
+.mk-demo-tab:focus-visible {
+  outline: 2px solid var(--gold-deep, #7A5F1E);
+  outline-offset: 2px;
+}
+/* Safe template slots: the same task, with the data replaced by named,
+   reusable slots. Bracketed to read as template fields, not real values. */
+.mk-demo-template {
+  margin: 15px 0 4px;
+  display: grid;
+  gap: 9px;
+}
+.mk-demo-slot {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  align-items: baseline;
+  gap: 10px;
+}
+.mk-demo-slot dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+.mk-demo-slot dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #047857;
+}
+.mk-demo-slot dd::before { content: '['; }
+.mk-demo-slot dd::after { content: ']'; }
+/* Three guardrail checks in the safe foot. */
+.mk-demo-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+}
+.mk-demo-checks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #047857;
+}
+.mk-demo-checks li svg { width: 15px; height: 15px; flex-shrink: 0; }
+.mk-demo-warn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mk-demo-warn svg { width: 13px; height: 13px; flex-shrink: 0; color: #B42318; }
+@media (max-width: 640px) {
+  .mk-demo-tabs { margin: 10px 12px 2px; }
+  .mk-demo-tab { font-size: 0.75rem; padding: 8px 6px; gap: 5px; }
+  .mk-demo-slot { grid-template-columns: 68px 1fr; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-demo-tab { transition: none; }
+}
+
 /* ── Home "Can we help you today?" lead-capture strip ───────────────────────
    A thin band directly under the hero: two selects + an email, one submit.
    Instant value (a free resource emailed) without leaving the page. */
@@ -6173,29 +6288,30 @@ section.mk-std { padding: 56px 0; }
    ("Get my AI readiness score") still fit on a 360px phone. 2026-05-28
    user direction: "ensure cta buttons on 1 line instead of 2". */
 @media (max-width: 640px) {
+  /* One primary hero CTA now — full-width, single line, never wraps. */
   .mk-hero .mk-ctas {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
-    margin-top: 28px;
+    margin-top: 24px;
     flex-wrap: nowrap;
   }
   .mk-hero .mk-ctas > * {
     width: 100%;
     min-width: 0;
-    padding-inline: 12px;
-    font-size: 0.8125rem;
+    padding-inline: 18px;
+    font-size: 1rem;
     justify-content: center;
     text-align: center;
-    white-space: normal;
+    white-space: nowrap;
     line-height: 1.2;
   }
 }
-@media (max-width: 380px) {
-  /* Very narrow phones — drop font + padding one more notch. */
+@media (max-width: 340px) {
+  /* Only the very smallest phones need a nudge to keep the label on one line. */
   .mk-hero .mk-ctas > * {
-    padding-inline: 8px;
-    font-size: 0.75rem;
+    padding-inline: 12px;
+    font-size: 0.9375rem;
     letter-spacing: -0.01em;
   }
 }

@@ -1,7 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from './_client';
 
+// matchMedia is stubbed to report reduced-motion, so switching to the safe tab
+// resolves synchronously (no strike-sweep timers) — the template frame renders
+// on the next tick and the DOM assertions below are deterministic.
 describe('HomePage', () => {
   beforeEach(() => {
     vi.stubGlobal(
@@ -14,51 +17,69 @@ describe('HomePage', () => {
     );
   });
 
-  it('names the ICP and three-minute assessment value in the hero', () => {
+  const goSafe = () =>
+    fireEvent.click(screen.getByRole('tab', { name: /Safe reusable template/i }));
+
+  it('leads with the safety question, one CTA, and the assessment demo', () => {
     render(<HomePage />);
 
-    expect(screen.getByText(/For community banks and credit unions/i)).toBeTruthy();
-    const heading = screen.getByRole('heading', {
-      name: /AI is already here\. Let.s make sure your team is ready\./i,
-    });
-    expect(heading).toBeTruthy();
-    expect(screen.getByText(/Free .* 12 questions .* 3 minutes .* first working template/i)).toBeTruthy();
-    expect(screen.getByText(/frontline tellers, branch teams, lenders/i)).toBeTruthy();
+    expect(
+      screen.getByRole('heading', { name: /Is your team ready to use AI safely/i }),
+    ).toBeTruthy();
+    expect(screen.getByText(/Find out in three minutes/i)).toBeTruthy();
+    expect(screen.getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
+    expect(screen.getByText(/Built for community banks/i)).toBeTruthy();
 
-    const proofObject = screen.getByLabelText(/typed into a public chatbot/i);
-    expect(heading.compareDocumentPosition(proofObject) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Exactly one primary readiness CTA in the hero (the duplicate sticky CTA
+    // and the second "Start learning" button were removed).
+    const heroCtas = screen.getAllByRole('link', { name: /Get my readiness score/i });
+    expect(heroCtas).toHaveLength(1);
   });
 
-  it('renders the safe hero as a reusable template — placeholders shown, raw PII never', () => {
+  it('opens on the unsafe paste — real customer data on show', () => {
     render(<HomePage />);
 
-    // Resting state (reduced-motion) is the resolved "safe" frame: the card must
-    // teach templating, so the needed values become bracketed placeholders and
-    // the real customer data is gone from the DOM.
-    const card = screen.getByLabelText(/typed into a public chatbot/i);
-    expect(card.textContent).toContain('[customer name]');
-    expect(card.textContent).toContain('[account number]');
-    expect(card.textContent).toContain('[amount]');
+    // The demo hooks with the risk: the default tab is the unsafe paste, so the
+    // real (fictional) customer data is visible until the visitor acts.
+    const panel = document.getElementById('mk-demo-panel')!;
+    expect(panel.textContent).toContain('John Smith');
+    expect(panel.textContent).toContain('0042871');
+    expect(panel.textContent).toContain('$83.17');
+  });
 
-    // The real PII must not be rendered in the safe/template frame.
-    expect(card.textContent).not.toContain('John Smith');
-    expect(card.textContent).not.toContain('0042871');
-    expect(card.textContent).not.toContain('$83.17');
+  it('resolves into a reusable template when the safe tab is chosen', () => {
+    render(<HomePage />);
+    goSafe();
 
-    // The complaint context survives — that's what makes the template usable.
-    expect(card.textContent).toContain('overdraft');
+    const panel = document.getElementById('mk-demo-panel')!;
+    // Needed values become bracketed template slots…
+    expect(panel.textContent).toContain('[customer name]');
+    expect(panel.textContent).toContain('[account number]');
+    expect(panel.textContent).toContain('[amount]');
+    // …the real customer data is gone from the DOM…
+    expect(panel.textContent).not.toContain('John Smith');
+    expect(panel.textContent).not.toContain('0042871');
+    expect(panel.textContent).not.toContain('$83.17');
+    // …the complaint context survives (that's what makes the template usable)…
+    expect(panel.textContent).toContain('overdraft');
+
+    // …and the three guardrails are shown, not just described.
+    expect(screen.getByText(/Real data removed/i)).toBeTruthy();
+    expect(screen.getByText(/Approved source required/i)).toBeTruthy();
+    expect(screen.getByText(/Human review before use/i)).toBeTruthy();
   });
 
   it('drops PII the task never needed (DOB, SSN, phone) from the template', () => {
     render(<HomePage />);
+    goSafe();
 
-    // The lesson isn't just "mask everything" — a fee-reversal reply never needs
-    // a DOB, SSN, or phone number, so the template omits them entirely rather
-    // than leaving placeholder slots for data nobody should collect for this task.
-    const card = screen.getByLabelText(/typed into a public chatbot/i);
-    expect(card.textContent).not.toContain('04/12/1981');
-    expect(card.textContent).not.toContain('(555) 123-4567');
-    expect(card.textContent).not.toMatch(/ssn/i);
-    expect(card.textContent).not.toMatch(/\bdob\b/i);
+    // The lesson isn't "mask everything" — a fee-reversal reply never needs a
+    // DOB, SSN, or phone number, so the template omits them entirely rather than
+    // leaving placeholder slots for data nobody should collect for this task.
+    const panel = document.getElementById('mk-demo-panel')!;
+    expect(panel.textContent).not.toContain('04/12/1981');
+    expect(panel.textContent).not.toContain('(555) 123-4567');
+    expect(panel.textContent).not.toMatch(/ssn/i);
+    expect(panel.textContent).not.toMatch(/\bdob\b/i);
   });
 });

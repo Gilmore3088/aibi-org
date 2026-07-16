@@ -9,9 +9,9 @@ test.describe('marketing smoke', () => {
   test('homepage renders with hero headline', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/AI Banking Institute/i);
-    // Current hero H1 — collaborative readiness positioning.
+    // Current hero H1 — product-led readiness positioning.
     await expect(
-      page.getByRole('heading', { level: 1, name: /AI is already here\. Let.s make sure your team is ready\./i }),
+      page.getByRole('heading', { level: 1, name: /Is your team ready to use AI safely/i }),
     ).toBeVisible();
   });
 
