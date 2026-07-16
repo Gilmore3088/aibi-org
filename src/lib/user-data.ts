@@ -5,11 +5,9 @@
 
 const STORAGE_KEY = 'aibi-user';
 
-export interface DimensionScoreSerialized {
-  readonly score: number;
-  readonly maxScore: number;
-  readonly label: string;
-}
+import type { DimensionScore } from '@content/assessments/shared/dimension-score';
+
+export type DimensionScoreSerialized = DimensionScore;
 
 export interface ReadinessResult {
   readonly score: number;

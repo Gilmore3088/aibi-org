@@ -42,11 +42,8 @@ export function getTierInDepth(rawScore: number, maxScore: number): Tier {
   return tiers[0];
 }
 
-export interface DimensionScore {
-  readonly score: number;
-  readonly maxScore: number;
-  readonly label: string;
-}
+export type { DimensionScore } from '../shared/dimension-score';
+import type { DimensionScore } from '../shared/dimension-score';
 
 export function getDimensionScores(
   answers: readonly number[],
