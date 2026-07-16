@@ -14,74 +14,55 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { upsertProficiencyResult } from '@/lib/supabase/user-profiles';
-import { getAuthUser } from '@/lib/api/auth';
+import { defineRoute } from '@/lib/api/handler';
 import { EMAIL_RE } from '@/lib/email/validate';
 
-
 interface SaveProficiencyPayload {
-  email?: unknown;
-  pctCorrect?: unknown;
-  levelId?: unknown;
-  levelLabel?: unknown;
-  topicScores?: unknown;
-  completedAt?: unknown;
-}
-
-function isValidPayload(p: SaveProficiencyPayload): p is {
   email: string;
   pctCorrect: number;
   levelId: string;
   levelLabel: string;
   topicScores: unknown[];
   completedAt: string;
-} {
-  if (typeof p.email !== 'string' || !EMAIL_RE.test(p.email)) return false;
-  if (typeof p.pctCorrect !== 'number' || p.pctCorrect < 0 || p.pctCorrect > 100) return false;
-  if (typeof p.levelId !== 'string' || p.levelId.length === 0) return false;
-  if (typeof p.levelLabel !== 'string' || p.levelLabel.length === 0) return false;
-  if (!Array.isArray(p.topicScores)) return false;
-  if (typeof p.completedAt !== 'string' || p.completedAt.length === 0) return false;
+}
+
+function isValidPayload(p: unknown): p is SaveProficiencyPayload {
+  if (typeof p !== 'object' || p === null) return false;
+  const b = p as Record<string, unknown>;
+  if (typeof b.email !== 'string' || !EMAIL_RE.test(b.email)) return false;
+  if (typeof b.pctCorrect !== 'number' || b.pctCorrect < 0 || b.pctCorrect > 100) return false;
+  if (typeof b.levelId !== 'string' || b.levelId.length === 0) return false;
+  if (typeof b.levelLabel !== 'string' || b.levelLabel.length === 0) return false;
+  if (!Array.isArray(b.topicScores)) return false;
+  if (typeof b.completedAt !== 'string' || b.completedAt.length === 0) return false;
   return true;
 }
 
-export async function POST(request: Request) {
-  const user = await getAuthUser();
-  if (!user) {
-    return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
-  }
+export const POST = defineRoute(
+  { requireAuth: true, unauthorizedMessage: 'Authentication required.', validate: isValidPayload },
+  async ({ body, user }) => {
+    const { email, pctCorrect, levelId, levelLabel, topicScores, completedAt } = body;
 
-  let body: SaveProficiencyPayload;
-  try {
-    body = (await request.json()) as SaveProficiencyPayload;
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
-  }
+    // Email in the payload must match the authenticated session. Without
+    // this check a logged-in user could overwrite anyone else's exam
+    // history by passing a different email.
+    if (user!.email?.toLowerCase() !== email.toLowerCase()) {
+      return NextResponse.json(
+        { error: 'Payload email does not match session.' },
+        { status: 403 },
+      );
+    }
 
-  if (!isValidPayload(body)) {
-    return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 });
-  }
+    if (isSupabaseConfigured()) {
+      await upsertProficiencyResult(email, {
+        pctCorrect,
+        levelId,
+        levelLabel,
+        topicScores: topicScores as Parameters<typeof upsertProficiencyResult>[1]['topicScores'],
+        completedAt,
+      }).catch((err) => console.warn('[save-proficiency] supabase skip', err));
+    }
 
-  const { email, pctCorrect, levelId, levelLabel, topicScores, completedAt } = body;
-
-  // Email in the payload must match the authenticated session. Without
-  // this check a logged-in user could overwrite anyone else's exam
-  // history by passing a different email.
-  if (user.email?.toLowerCase() !== email.toLowerCase()) {
-    return NextResponse.json(
-      { error: 'Payload email does not match session.' },
-      { status: 403 },
-    );
-  }
-
-  if (isSupabaseConfigured()) {
-    await upsertProficiencyResult(email, {
-      pctCorrect,
-      levelId,
-      levelLabel,
-      topicScores: topicScores as Parameters<typeof upsertProficiencyResult>[1]['topicScores'],
-      completedAt,
-    }).catch((err) => console.warn('[save-proficiency] supabase skip', err));
-  }
-
-  return NextResponse.json({ ok: true });
-}
+    return NextResponse.json({ ok: true });
+  },
+);
