@@ -1243,10 +1243,10 @@ section.mk-std { padding: 56px 0; }
    A thin band directly under the hero: two selects + an email, one submit.
    Instant value (a free resource emailed) without leaving the page. */
 .mk-help {
-  background: var(--ink);
-  color: #fff;
-  border-top: 1px solid var(--on-dark-08);
-  border-bottom: 1px solid var(--on-dark-08);
+  background: var(--cream);
+  color: var(--ink);
+  border-top: 1px solid var(--ink-a10);
+  border-bottom: 1px solid var(--ink-a10);
 }
 .mk-help-inner {
   padding: 22px 0;
@@ -1262,14 +1262,14 @@ section.mk-std { padding: 56px 0; }
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-soft);
+  color: var(--gold-deep);
 }
 .mk-help-copy h2 {
   margin: 4px 0 0;
   font-size: 1.1875rem;
   line-height: 1.35;
   font-weight: 600;
-  color: #fff;
+  color: var(--ink);
   max-width: 60ch;
 }
 .mk-help-fields {
@@ -1288,7 +1288,7 @@ section.mk-std { padding: 56px 0; }
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--on-dark-50, rgba(255, 255, 255, 0.6));
+  color: var(--slate-500);
 }
 .mk-help-field select,
 .mk-help-field input {
@@ -1296,9 +1296,9 @@ section.mk-std { padding: 56px 0; }
   height: 44px;
   padding: 0 12px;
   border-radius: var(--r-md, 10px);
-  border: 1px solid var(--on-dark-08);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  border: 1px solid var(--ink-a10);
+  background: #fff;
+  color: var(--ink);
   font-size: 0.875rem;
   font-weight: 500;
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -1306,21 +1306,21 @@ section.mk-std { padding: 56px 0; }
 .mk-help-field select:focus,
 .mk-help-field input:focus {
   outline: none;
-  border-color: var(--gold-soft);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--gold);
+  background: #fff;
 }
 .mk-help-field select option {
   color: var(--ink);
 }
 .mk-help-field input::placeholder {
-  color: var(--on-dark-50, rgba(255, 255, 255, 0.45));
+  color: var(--slate-400);
 }
 .mk-help-submit {
   height: 44px;
   padding: 0 22px;
   border: 0;
   border-radius: var(--r-md, 10px);
-  background: var(--gold-soft);
+  background: var(--gold);
   color: var(--ink);
   font-size: 0.875rem;
   font-weight: 800;
@@ -1338,10 +1338,10 @@ section.mk-std { padding: 56px 0; }
 .mk-help-note {
   margin: 0;
   font-size: 0.75rem;
-  color: var(--on-dark-50, rgba(255, 255, 255, 0.55));
+  color: var(--slate-500);
 }
 .mk-help-note.is-error {
-  color: #FDA29B;
+  color: #B42318;
 }
 /* Inline success — replaces the form, keeps the visitor on the page. */
 .mk-help-done {
@@ -1355,19 +1355,19 @@ section.mk-std { padding: 56px 0; }
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #6CE9A6;
+  color: var(--emerald-700);
 }
 .mk-help-done h2 {
   margin: 2px 0 0;
   font-size: 1.25rem;
   line-height: 1.3;
   font-weight: 600;
-  color: #fff;
+  color: var(--ink);
 }
 .mk-help-done-sub {
   margin: 0;
   font-size: 0.8438rem;
-  color: var(--on-dark-50, rgba(255, 255, 255, 0.65));
+  color: var(--slate-600);
 }
 .mk-help-done-links {
   display: flex;
@@ -1378,7 +1378,7 @@ section.mk-std { padding: 56px 0; }
 .mk-help-done-links a {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: var(--gold-soft);
+  color: var(--gold-deep);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1531,7 +1531,7 @@ section.mk-std { padding: 56px 0; }
 .mk-path-eyebrow {
   color: var(--gold-deep);
   font-size: 0.6875rem;
-  font-weight: 850;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -1543,7 +1543,7 @@ section.mk-std { padding: 56px 0; }
   color: var(--ink);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   line-height: 1;
-  font-weight: 750;
+  font-weight: 700;
 }
 .mk-assessment-path-card.is-paid h3 {
   color: #fff;
@@ -1598,7 +1598,7 @@ section.mk-std { padding: 56px 0; }
 .mk-paid-meter span {
   color: #fff;
   font-size: 0.8125rem;
-  font-weight: 750;
+  font-weight: 700;
 }
 .mk-paid-meter i {
   display: block;
@@ -1872,6 +1872,12 @@ section.mk-std { padding: 56px 0; }
    Mockup site footer (2026-05-26)
    ============================================================ */
 .mk-footer {
+  /* Rendered outside .mockup-scope, so it inherits the legacy serif body base.
+     Pin it to the exact Inter stack .mockup-scope uses — mockup is the single
+     design system. (var(--font-sans) resolves empty out here and falls back to
+     the serif body, so use the literal stack that always paints Inter.) */
+  font-family: var(--font-inter), "Inter", ui-sans-serif, system-ui,
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
   background: var(--ink); color: #fff;
   padding: 64px 0 32px;
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -3807,7 +3813,7 @@ section.mk-std { padding: 56px 0; }
 .aibi-about-hero h1,
 .aibi-about-section h2 {
   margin: 0;
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: 0;
 }
 .aibi-about-hero h1 {
@@ -3852,7 +3858,7 @@ section.mk-std { padding: 56px 0; }
   margin: 0;
   color: #fff;
   font-size: 2rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.08;
   letter-spacing: 0;
 }
@@ -3923,7 +3929,7 @@ section.mk-std { padding: 56px 0; }
   margin: 0;
   color: var(--ink);
   font-size: 1.125rem;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -4056,7 +4062,7 @@ section.mk-std { padding: 56px 0; }
   padding: 18px 0;
   color: rgba(255,255,255,0.76);
   border-bottom: 1px solid rgba(255,255,255,0.18);
-  font-weight: 650;
+  font-weight: 600;
 }
 @media (min-width: 900px) {
   .aibi-about-boundaries p {
@@ -4218,7 +4224,7 @@ section.mk-std { padding: 56px 0; }
 .mk-price-strip-copy h2 {
   margin: 8px 0 0;
   font-size: clamp(1.625rem, 3vw, 2.5rem);
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.015em;
   color: var(--ink);
@@ -4236,7 +4242,7 @@ section.mk-std { padding: 56px 0; }
   margin-top: 18px;
   color: var(--gold-deep);
   font-size: 0.8125rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-decoration: none;
   text-transform: uppercase;
@@ -4372,7 +4378,7 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-final .mk-k {
   margin: 0;
   font-size: 0.6875rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--gold-deep);
@@ -4385,7 +4391,7 @@ section.mk-std { padding: 56px 0; }
   max-width: 11ch;
   color: #fff;
   font-size: 4.5rem;
-  font-weight: 640;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 0.98;
 }
@@ -4449,7 +4455,7 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-path-step strong {
   color: #fff;
   font-size: 1.125rem;
-  font-weight: 720;
+  font-weight: 700;
   line-height: 1.15;
 }
 .mk-pricing-path-step em {
@@ -4492,7 +4498,7 @@ section.mk-std { padding: 56px 0; }
   min-height: 58px;
   color: inherit;
   font-size: 1.5rem;
-  font-weight: 680;
+  font-weight: 700;
   line-height: 1.12;
   letter-spacing: 0;
   overflow-wrap: anywhere;
@@ -4523,7 +4529,7 @@ section.mk-std { padding: 56px 0; }
   min-height: 42px;
   align-items: flex-end;
   font-size: 2.625rem;
-  font-weight: 640;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   line-height: 0.95;
   letter-spacing: 0;
@@ -4550,7 +4556,7 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-tier-label {
   color: var(--ink);
   font-size: 0.75rem;
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1.1;
   text-transform: uppercase;
 }
@@ -4587,7 +4593,7 @@ section.mk-std { padding: 56px 0; }
   min-height: 44px;
   color: inherit;
   font-size: 0.8125rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0;
   text-decoration: none;
   text-transform: uppercase;
@@ -4612,7 +4618,7 @@ section.mk-std { padding: 56px 0; }
   margin: 0;
   color: var(--ink);
   font-size: 2.625rem;
-  font-weight: 660;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0;
 }
@@ -4637,7 +4643,7 @@ section.mk-std { padding: 56px 0; }
 .mk-pricing-table th {
   color: var(--ink);
   font-size: 0.8125rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -4731,7 +4737,7 @@ section.mk-std { padding: 56px 0; }
   border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
   font-size: 0.8125rem;
-  font-weight: 850;
+  font-weight: 800;
   text-decoration: none;
 }
 .mk-pricing-final-links a:hover {
@@ -4848,7 +4854,7 @@ section.mk-std { padding: 56px 0; }
     content: attr(data-label);
     color: var(--ink);
     font-size: 0.6875rem;
-    font-weight: 900;
+    font-weight: 800;
     text-transform: uppercase;
   }
 }
@@ -4869,7 +4875,7 @@ section.mk-std { padding: 56px 0; }
   margin: 0 0 14px;
   color: var(--gold-deep);
   font-size: 0.6875rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -7201,7 +7207,7 @@ section.mk-std { padding: 56px 0; }
 .mk-lesson-simple-step > span {
   color: var(--gold-deep);
   font-size: 0.75rem;
-  font-weight: 850;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -7218,7 +7224,7 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-600);
   font-size: 0.875rem;
   line-height: 1.45;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .mk-lesson-simple-save {
@@ -7282,7 +7288,7 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-700);
   font-size: 0.875rem;
   line-height: 1.45;
-  font-weight: 650;
+  font-weight: 600;
   padding-left: 18px;
   position: relative;
 }
@@ -7345,7 +7351,7 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-600);
   font-size: 0.75rem;
   line-height: 1.45;
-  font-weight: 650;
+  font-weight: 600;
   border-top: 1px solid var(--slate-200);
   padding-top: 14px;
 }
@@ -7440,7 +7446,7 @@ section.mk-std { padding: 56px 0; }
   color: rgba(255,255,255,0.82);
   font-size: 0.875rem;
   line-height: 1.4;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .mk-course-enroll-list svg {
@@ -7550,7 +7556,7 @@ section.mk-std { padding: 56px 0; }
    ============================================================ */
 .mk-ppath {
   padding: clamp(56px, 7vw, 96px) 0;
-  background: var(--cream-2);
+  background: var(--ink);
 }
 .mk-ppath-head {
   text-align: center;
@@ -7559,7 +7565,7 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-ppath-kicker {
   margin: 0 0 12px;
-  color: var(--gold-deep);
+  color: var(--gold-soft);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -7571,7 +7577,7 @@ section.mk-std { padding: 56px 0; }
   line-height: 1.02;
   letter-spacing: -0.02em;
   font-weight: 700;
-  color: var(--ink);
+  color: #fff;
 }
 .mk-ppath-grid {
   display: grid;
@@ -7594,7 +7600,7 @@ section.mk-std { padding: 56px 0; }
   place-items: center;
   background: var(--gold);
   color: var(--ink);
-  font-weight: 900;
+  font-weight: 800;
 }
 .mk-ppath-object {
   min-height: 320px;
@@ -7610,7 +7616,7 @@ section.mk-std { padding: 56px 0; }
 .mk-ppath-price {
   color: var(--gold-deep);
   font-size: 12px;
-  font-weight: 850;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -7631,7 +7637,7 @@ section.mk-std { padding: 56px 0; }
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-weight: 850;
+  font-weight: 800;
   color: var(--ink);
   text-decoration: none;
 }
@@ -7651,15 +7657,15 @@ section.mk-std { padding: 56px 0; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--gold-deep);
+  color: var(--gold-soft);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
 }
 .mockup-scope .mk-ppath-compare a:hover {
-  color: var(--ink);
+  color: #fff;
 }
 .mk-ppath-compare svg {
   width: 14px;
@@ -7764,7 +7770,7 @@ section.mk-std { padding: 56px 0; }
   background: var(--gold-a10);
   color: var(--gold-deep);
   font-size: 9px;
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -7811,7 +7817,7 @@ section.mk-std { padding: 56px 0; }
   background: #fff;
   display: grid;
   place-items: center;
-  font-weight: 900;
+  font-weight: 800;
   color: var(--ink);
 }
 .mk-dashboard-bars {
@@ -7871,7 +7877,7 @@ section.mk-std { padding: 56px 0; }
   margin: 0 0 14px;
   color: var(--gold-deep);
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
