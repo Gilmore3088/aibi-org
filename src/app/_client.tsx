@@ -1,19 +1,17 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   SiteHeader,
-  Section,
-  SectionHead,
   Button,
   ArrowGlyph,
   CtaBand,
 } from '@/components/mockup';
-import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
-import { TrustAnchor } from '@/components/sections/TrustAnchor';
-import { HomeHelpWidget } from '@/components/sections/HomeHelpWidget';
 import { HomeResultPreview } from '@/components/sections/HomeResultPreview';
+import { ProductProgression } from '@/components/sections/ProductProgression';
+import { HomeOrigin } from '@/components/sections/HomeOrigin';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
 
@@ -39,12 +37,6 @@ const AlertIcon = (p: IconProps) => (
     <line x1="12" y1="17" x2="12.01" y2="17" />
   </svg>
 );
-const CheckSquareIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M9 11l3 3L22 4" />
-    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-  </svg>
-);
 const ShieldCheckIcon = (p: IconProps) => (
   <svg {...sw(p)}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -56,75 +48,7 @@ const CheckGlyph = (p: IconProps) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
-const LayersIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-    <path d="M6 12v5c3 3 9 3 12 0v-5" />
-  </svg>
-);
-const FlaskIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <path d="M10 2v7.31" />
-    <path d="M14 9.3V2" />
-    <path d="M8.5 2h7" />
-    <path d="M14 9.3a6.5 6.5 0 1 1-4 0" />
-  </svg>
-);
-const ToolboxStackIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <polyline points="22 19 12 24 2 19" />
-    <polyline points="22 12 12 17 2 12" />
-    <polygon points="12 2 22 7 12 12 2 7" />
-  </svg>
-);
-
 // ---------- Static data ----------
-
-const VALUE_PATH: { step: string; title: string; body: string; icon: (p: IconProps) => JSX.Element; tier: 'free' | 'paid' }[] = [
-  { step: 'Assess', title: 'Find readiness gaps', body: 'Twelve questions, three minutes. Score, tier, and a starter artifact.', icon: CheckSquareIcon, tier: 'free' },
-  { step: 'Train', title: 'Learn by role', body: 'Foundation Course modules that map to compliance, retail, ops, and marketing work.', icon: LayersIcon, tier: 'paid' },
-  { step: 'Practice', title: 'Use safe scenarios', body: 'Realistic synthetic banking scenarios. Compare model output before you take it to real work.', icon: FlaskIcon, tier: 'paid' },
-  { step: 'Build', title: 'Save reviewed workflows', body: 'Prompts, SOPs, and review checklists you keep — reusable across your team.', icon: ToolboxStackIcon, tier: 'paid' },
-];
-
-const VALUE_PREVIEWS: Record<string, { label: string; title: string; rows: [string, string][] }> = {
-  Assess: {
-    label: 'Sample readiness output',
-    title: 'Score, top gap, and starter artifact',
-    rows: [
-      ['Readiness', '36 / 48'],
-      ['Top gap', 'Documentation'],
-      ['Starter', 'AI Recordkeeping Template'],
-    ],
-  },
-  Train: {
-    label: 'Foundation course output',
-    title: 'Module work becomes a packet',
-    rows: [
-      ['Module', 'Data boundary'],
-      ['Practice', 'Sanitized prompt run'],
-      ['Artifact', 'Acceptable Use card'],
-    ],
-  },
-  Practice: {
-    label: 'Sandbox run',
-    title: 'Scenario before real work',
-    rows: [
-      ['Data', 'Synthetic only'],
-      ['Output', 'Draft job aid'],
-      ['Review', 'Manager checklist'],
-    ],
-  },
-  Build: {
-    label: 'Saved workflow',
-    title: 'Prompt becomes reusable',
-    rows: [
-      ['Asset', 'Campaign review skill'],
-      ['Owner', 'Marketing + compliance'],
-      ['Status', 'Reviewed v1.1'],
-    ],
-  },
-};
 
 type PiiToken = {
   /** Plain text that precedes this token in the run-on prompt. */
@@ -210,10 +134,6 @@ function prefersReducedMotion(): boolean {
 // ---------- Page ----------
 
 export default function HomePage() {
-  const [activeValueStep, setActiveValueStep] = useState(VALUE_PATH[0].step);
-  const activePreview = VALUE_PREVIEWS[activeValueStep];
-  const activeValueId = activeValueStep.toLowerCase();
-
   return (
     <div className="mockup-scope">
       <SiteHeader activePath="/" />
@@ -226,7 +146,7 @@ export default function HomePage() {
         <div className="mk-container mk-hero-inner mk-home-redline-inner">
           <div className="mk-hero-copy">
             <h1>
-              Is your team ready to use AI <span className="mk-hero-accent">safely</span>?
+              Are you ready to use AI <span className="mk-hero-accent">safely at work?</span>
               <br />
               Find out in three minutes.
             </h1>
@@ -236,6 +156,10 @@ export default function HomePage() {
               </Button>
             </div>
             <p className="mk-hero-meta">Free · 12 questions · Practical next step</p>
+            <p className="mk-hero-team">
+              Assessing a team?{' '}
+              <Link className="mk-hero-team-link" href="/for-institutions">Explore team readiness</Link> &rarr;
+            </p>
           </div>
           <HomeRedlinePrompt />
         </div>
@@ -243,87 +167,22 @@ export default function HomePage() {
 
       <HomeResultPreview />
 
-      <Section variant="std" surface="white">
-        <SectionHead
-          kicker="The value path"
-          heading={<>Start with readiness. Leave with reviewed workflows.</>}
-        />
-        <div className="mk-value-proof">
-          <div className="mk-value-proof-steps" role="tablist" aria-label="Value path preview">
-            {VALUE_PATH.map(({ step, title, body, icon: Icon, tier }) => (
-              <button
-                key={step}
-                id={`value-${step.toLowerCase()}-tab`}
-                type="button"
-                role="tab"
-                aria-selected={activeValueStep === step}
-                aria-controls={`value-${step.toLowerCase()}-panel`}
-                className={activeValueStep === step ? 'is-active' : undefined}
-                onClick={() => setActiveValueStep(step)}
-              >
-                <span className="mk-pic">
-                  <Icon className="mk-ic-lg" size={20} />
-                </span>
-                <span className="mk-k">{step}</span>
-                <strong>{title}</strong>
-                <span>{body}</span>
-                <em>{tier === 'free' ? 'Free' : 'In Foundation course'}</em>
-              </button>
-            ))}
-          </div>
-          <div
-            id={`value-${activeValueId}-panel`}
-            className="mk-value-proof-panel"
-            role="tabpanel"
-            aria-labelledby={`value-${activeValueId}-tab`}
-          >
-            <p className="mk-k">{activePreview.label}</p>
-            <h3>{activePreview.title}</h3>
-            <div className="mk-value-proof-rows">
-              {activePreview.rows.map(([label, value]) => (
-                <div key={label}>
-                  <span>{label}</span>
-                  <strong>{value}</strong>
-                </div>
-              ))}
-            </div>
-            <p className="mk-value-proof-note">
-              Each step produces a concrete artifact your team can review, save, and reuse.
-            </p>
-          </div>
-        </div>
-      </Section>
+      <ProductProgression />
 
-      <TrustAnchor />
+      <HomeOrigin />
       <AdvisorsStrip />
 
-      <PriceStrip />
-
-      <Section id="roi-calculator" variant="std">
-        <SectionHead
-          kicker="Impact"
-          heading={<>What could one hour saved per employee be worth?</>}
-          lede={<>Adjust team size, cost, and the low/high range of hours automatable per week. See annual value, hours recaptured, and payroll percentage.</>}
-        />
-        <div className="mk-roi-wrap">
-          <ROICalculatorBody
-            ctaLabel="Take the Assessment"
-            ctaHref="/assessment/take"
-            briefingSource="home"
-          />
-        </div>
-      </Section>
-
-      {/* General "what are you working on" resource-request form — kept low in
-          the page so it never interrupts the readiness-assessment journey. */}
-      <HomeHelpWidget />
+      <p className="mk-home-resource-link">
+        Not ready to assess?{' '}
+        <Link href="/resources">Get a free guide for your role</Link> &rarr;
+      </p>
 
       <CtaBand
         hiddenOnMobile
-        heading={<>Start with readiness. Leave with reviewed workflows.</>}
+        heading={<>Find your starting point in three minutes.</>}
         actions={[
           { label: 'Get my readiness score', href: '/assessment/take', variant: 'gold' },
-          { label: 'Start learning', href: '/courses', variant: 'ghost-dark' },
+          { label: 'See team options', href: '/for-institutions', variant: 'ghost-dark' },
         ]}
       />
     </div>
@@ -566,83 +425,5 @@ function HomeRedlinePrompt() {
         )}
       </div>
     </div>
-  );
-}
-
-const PRICE_TIERS: {
-  eyebrow: string;
-  label: string;
-  price: string;
-  note: string;
-  href: string;
-  action: string;
-  featured?: boolean;
-}[] = [
-  {
-    eyebrow: 'Start here',
-    label: 'Readiness baseline',
-    price: 'Free',
-    note: '12 questions. Score, top gap, and a starter artifact.',
-    href: '/assessment/take',
-    action: 'Start free',
-    featured: true,
-  },
-  {
-    eyebrow: 'Deep dive',
-    label: 'In-Depth Report',
-    price: '$99',
-    note: 'Written report, eight scores, per-dimension root causes, and a 90-day action register.',
-    href: '/assessment/in-depth',
-    action: 'View report',
-  },
-  {
-    eyebrow: 'Capability',
-    label: 'AiBI-Foundation',
-    price: '$295',
-    note: '18 modules with saved prompts, workflow templates, and a Foundation Packet.',
-    href: '/courses',
-    action: 'Explore course',
-  },
-  {
-    eyebrow: 'Teams',
-    label: 'Institutional rollout',
-    price: 'Custom',
-    note: 'Cohorts, seats, reporting, and advisory support.',
-    href: '/for-institutions',
-    action: 'Talk to us',
-  },
-];
-
-function PriceStrip() {
-  return (
-    <section className="mk-price-strip" aria-labelledby="home-price-strip-heading">
-      <div className="mk-container mk-price-strip-inner">
-        <div className="mk-price-strip-copy">
-          <p className="mk-k">Choose a path</p>
-          <h2 id="home-price-strip-heading">Start small or build the full capability.</h2>
-          <p>Each path leads to a concrete output, not another generic AI webinar.</p>
-          <a href="/pricing" className="mk-price-compare-link">
-            Compare all pricing <ArrowGlyph />
-          </a>
-        </div>
-        <div className="mk-price-options">
-          {PRICE_TIERS.map(({ eyebrow, label, price, note, href, action, featured }) => (
-            <a
-              key={label}
-              href={href}
-              className={`mk-price-option${featured ? ' is-featured' : ''}`}
-            >
-              <span className="mk-price-eyebrow">{eyebrow}</span>
-              <span className="mk-price-amount">{price}</span>
-              <span className="mk-price-label">{label}</span>
-              <span className="mk-price-note">{note}</span>
-              <span className="mk-price-action">
-                {action} <ArrowGlyph />
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
