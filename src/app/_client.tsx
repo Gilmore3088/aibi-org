@@ -11,6 +11,7 @@ import {
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
 import { HomeHelpWidget } from '@/components/sections/HomeHelpWidget';
 import { ProductProgression } from '@/components/sections/ProductProgression';
+import { EducationEmpowerment } from '@/components/sections/EducationEmpowerment';
 import { HomeOrigin } from '@/components/sections/HomeOrigin';
 
 // ---------- Stroke icons (inline SVGs to keep the bundle lean) ----------
@@ -143,6 +144,8 @@ export default function HomePage() {
       <HomeHelpWidget />
 
       <ProductProgression />
+
+      <EducationEmpowerment />
 
       <HomeOrigin />
       <AdvisorsStrip />
