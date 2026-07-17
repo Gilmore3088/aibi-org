@@ -28,30 +28,27 @@ export function HomeOrigin(): JSX.Element {
       <div className="mk-origin-top">
         <div className="mk-origin-copy">
           <p className="mk-origin-k">Why this exists</p>
-          <h2 id="origin-title">AI was everywhere. The operating plan wasn&apos;t.</h2>
+          <h2 id="origin-title">For everyone who didn&apos;t raise their hand.</h2>
           <p>
-            Built to give community banks and credit unions a practical starting
-            point — not a demo pretending to be a strategy.
+            At a banking conference, a keynote speaker asked who had a plan for
+            AI. Half the room didn&apos;t raise a hand. In the hallways it was the
+            same — leaders unsure what to use it for, what the policy should be,
+            or where to start. The Institute exists to fill that gap.
           </p>
           <Link className="mk-origin-link" href="/about">
             Read why we built it
           </Link>
         </div>
 
-        <figure className="mk-origin-notes">
-          <figcaption>Banking conference notes</figcaption>
-          <ul className="mk-origin-notes-have">
-            <li>AI keynotes</li>
-            <li>Vendor demos</li>
-            <li>Big promises</li>
-          </ul>
-          <ul className="mk-origin-notes-open">
-            <li>Which workflows do we start with?</li>
-            <li>What data can staff use?</li>
-            <li>Who owns the result?</li>
-          </ul>
-          <p className="mk-origin-notes-foot">That gap became the Institute.</p>
-        </figure>
+        <div className="mk-origin-principles">
+          <p className="mk-origin-principles-k">How we approach AI in banking</p>
+          <ol>
+            <li>Safe use starts with people.</li>
+            <li>Training should fit the job.</li>
+            <li>Policy should enable &mdash; not only block.</li>
+            <li>Keep a human owner.</li>
+          </ol>
+        </div>
       </div>
 
       <div className="mk-origin-strip">

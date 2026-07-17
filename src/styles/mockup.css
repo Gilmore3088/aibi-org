@@ -7557,7 +7557,7 @@ section.mk-std { padding: 56px 0; }
   display: grid;
   grid-template-columns: 44px 1fr;
   gap: 18px;
-  padding-bottom: 36px;
+  padding-bottom: 22px;
 }
 .mk-prog-step:last-child {
   padding-bottom: 0;
@@ -7601,7 +7601,7 @@ section.mk-std { padding: 56px 0; }
 @media (min-width: 860px) {
   .mk-prog-body {
     grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
-    align-items: center;
+    align-items: start;
     gap: 28px;
   }
 }
@@ -7688,14 +7688,14 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-prog-preview-rows {
   display: grid;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 12px;
 }
 .mk-prog-preview-rows div {
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border: 1px solid var(--ink-a10);
   border-radius: var(--r-md);
   background: var(--slate-50);
@@ -7718,7 +7718,7 @@ section.mk-std { padding: 56px 0; }
 .mk-prog-compare {
   display: flex;
   justify-content: center;
-  margin: 36px 0 0;
+  margin: 22px 0 0;
 }
 .mockup-scope .mk-prog-compare a {
   display: inline-flex;
@@ -7912,4 +7912,50 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-600);
   font-size: 13.5px;
   line-height: 1.5;
+}
+
+/* Origin section — the four-principle card (right column, section 05) */
+.mk-origin-principles {
+  padding: 24px 26px;
+  border-radius: var(--r-2xl);
+  background: #fff;
+  border: 1px solid var(--ink-a10);
+  box-shadow: var(--shadow-feature);
+}
+.mk-origin-principles-k {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.mk-origin-principles ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: principle;
+}
+.mk-origin-principles li {
+  counter-increment: principle;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-top: 1px solid var(--ink-a10);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.mk-origin-principles li:first-child {
+  border-top: 0;
+}
+.mk-origin-principles li::before {
+  content: counter(principle);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-deep);
 }

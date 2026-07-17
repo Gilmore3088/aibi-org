@@ -57,7 +57,6 @@ const STAGES: readonly Stage[] = [
       title: 'Eight dimensions scored',
       rows: [
         ['Governance', 'Building'],
-        ['Data handling', 'Strong'],
         ['Root cause', 'Named per dimension'],
         ['Plan', '90-day action register'],
       ],
@@ -75,7 +74,6 @@ const STAGES: readonly Stage[] = [
       label: 'Saved work product',
       title: 'Campaign review prompt',
       rows: [
-        ['Type', 'Reusable prompt'],
         ['Owner', 'Marketing + Compliance'],
         ['Status', 'Reviewed v1.1'],
         ['Packet', '1 of 18 work products'],
@@ -96,7 +94,6 @@ const STAGES: readonly Stage[] = [
       rows: [
         ['Retail', 'Building'],
         ['Lending', 'Early stage'],
-        ['Operations', 'Building'],
         ['Compliance', 'Ready to scale'],
       ],
     },
