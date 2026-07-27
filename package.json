@@ -50,7 +50,7 @@
     "@types/mdx": "^2.0.14",
     "@vercel/analytics": "^2.0.1",
     "geist": "^1.7.2",
-    "next": "15.5.19",
+    "next": "15.5.22",
     "openai": "^6.44.0",
     "puppeteer-core": "^25.1.0",
     "react": "^19.2.7",
