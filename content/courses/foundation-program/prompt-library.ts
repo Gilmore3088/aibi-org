@@ -817,7 +817,7 @@ Constraints:
     expectedOutput: 'A structured 5-question scoring framework that produces a 0–100 vendor score across data security, regulatory alignment, explainability, vendor stability, and total cost — with a recommendation threshold and a hard stop on fair lending failures.',
     promptText: `You are a Senior IT Risk Officer at a community bank ($600M in assets) evaluating an AI vendor for a specific use case: [DESCRIBE USE CASE — e.g., AI-assisted underwriting support, AI document extraction, AI customer service routing].
 
-Your institution follows SR 11-7 model risk management guidance, interagency TPRM principles (OCC Bulletin 2023-17), and the AIEOG AI Lexicon definitions for explainability and human-in-the-loop controls.
+Your institution follows SR 26-2 model risk management guidance, interagency TPRM principles (OCC Bulletin 2023-17), and the AIEOG AI Lexicon definitions for explainability and human-in-the-loop controls.
 
 Task: Produce a 5-question scoring framework — one master question per domain — that yields a 100-point vendor evaluation score. Each question must:
 
@@ -828,7 +828,7 @@ Task: Produce a 5-question scoring framework — one master question per domain 
 
 The five domains are:
 1. Customer data handling and PII controls (25 points)
-2. Regulatory alignment — SR 11-7, ECOA/Reg B, UDAP (20 points)
+2. Regulatory alignment — SR 26-2, ECOA/Reg B, UDAP (20 points)
 3. Explainability and human-in-the-loop controls per AIEOG Lexicon (20 points)
 4. Vendor financial stability and community banking references (15 points)
 5. All-in pricing and exit provisions (20 points)
@@ -840,7 +840,7 @@ After the scorecard, produce:
 - A one-paragraph recommendation narrative template for the board risk committee
 
 Constraints:
-- All regulatory citations must be specific and correct. Use "SR 11-7" not "Fed guidance." Use "AIEOG AI Lexicon" not "industry definitions."
+- All regulatory citations must be specific and correct. Use "SR 26-2" not "Fed guidance." Use "AIEOG AI Lexicon" not "industry definitions."
 - The HITL definition must match the AIEOG Lexicon: a human with appropriate authority, information, and time to intervene before the AI decision takes effect
 - Do not create criteria that a vendor can satisfy with marketing materials alone. Evidence must be documentary (SOC 2, validation reports, contract language)`,
     tags: ['vendor-evaluation', 'TPRM', 'scorecard', 'IT-risk', 'advanced'],
@@ -913,7 +913,7 @@ Slide structure:
 2. What Our Peers Are Doing — community bank AI adoption data (cite Jack Henry 2025 report)
 3. What We Are Already Doing — current AI tool inventory (use [TOOL LIST] placeholder)
 4. The Efficiency Opportunity — ROI model using institution's own FTE count and efficiency ratio
-5. Regulatory Landscape — what examiners are looking for (SR 11-7, TPRM, AIEOG Lexicon)
+5. Regulatory Landscape — what examiners are looking for (SR 26-2, TPRM, AIEOG Lexicon)
 6. Our Governance Framework — three-layer model: policy, oversight, training
 7. Risk Assessment — what we are managing, what we are watching, what we are avoiding
 8. The 12-Month Roadmap — three phases with named owners and success metrics

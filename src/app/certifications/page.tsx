@@ -53,7 +53,7 @@ export default function CertificationsPage() {
         {
           kicker: 'Claim boundary',
           heading: <>Aligned to public references. Not regulator-endorsed.</>,
-          lede: <>No federal or state regulator issues, approves, recognizes, or endorses the AiBI-Foundation credential. The curriculum maps to SR 11-7, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon as public references for bank review.</>,
+          lede: <>No federal or state regulator issues, approves, recognizes, or endorses the AiBI-Foundation credential. The curriculum maps to SR 26-2, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon as public references for bank review.</>,
           surface: 'white',
         },
       ]}

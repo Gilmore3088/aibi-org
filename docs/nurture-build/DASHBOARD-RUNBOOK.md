@@ -3,6 +3,14 @@
 What the API/connector already did, and the exact dashboard steps it could **not** do.
 Account: hello@aibankinginstitute.com (ID 2331976). **Everything stays disabled until the SR 26-2 / SR 11-7 copy sweep is done.**
 
+> **Sweep status 2026-08-10: repo copy is DONE.** All site/content/email SR 11-7
+> references were re-anchored on SR 26-2 (with historical framing where SR 11-7
+> is mentioned), the FDIC efficiency citation was refreshed to QBP Q1 2026, and
+> FS AI RMF was added to the Early Stage day-3 anchors. Enforcement now lives in
+> `content/claims/registry.json` + `scripts/check-claims.mjs` (CI: claims.yml),
+> plus a monthly re-verification routine. Remaining before enable: paste the
+> updated bodies into MailerLite (the dashboard steps below) and test-send.
+
 The per-step HTML is in the build guide (`nurture-build/index.html`) with **Copy HTML** buttons, or in `nurture-build/emails/` and `mailerlite-emails/`.
 
 ---

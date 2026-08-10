@@ -303,7 +303,7 @@ export const examQuestions: readonly ExamQuestion[] = [
     stem: 'An examiner asks your bank to explain how you govern your use of AI tools. You currently have no written AI use policy. The best immediate response is:',
     options: [
       { label: 'Tell the examiner the bank does not use AI', key: 'a' },
-      { label: 'Acknowledge the gap, describe the specific AI tools currently in use, explain your plans for a formal policy aligned with SR 11-7 and the AIEOG AI Lexicon, and provide a timeline for completion', key: 'b' },
+      { label: 'Acknowledge the gap, describe the specific AI tools currently in use, explain your plans for a formal policy aligned with SR 26-2 and the AIEOG AI Lexicon, and provide a timeline for completion', key: 'b' },
       { label: 'Promise to stop using all AI tools immediately', key: 'c' },
       { label: 'Blame the IT department for not creating a policy sooner', key: 'd' },
     ],

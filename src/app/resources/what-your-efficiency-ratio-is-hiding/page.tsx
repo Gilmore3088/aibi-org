@@ -213,7 +213,7 @@ export default function EfficiencyRatioArticle() {
           <p>
             AI efficiency gains do not exist independently of governance.
             A loan processing tool that reduces processing time by 50% but
-            creates SR&nbsp;11-7 model risk exposure because it influences
+            creates SR&nbsp;26-2 model risk exposure because it influences
             credit decisions without proper validation does not improve the
             institution&rsquo;s net position &mdash; it trades operational
             savings for examination risk.

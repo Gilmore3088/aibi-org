@@ -355,7 +355,7 @@ export const questions: readonly AssessmentQuestion[] = [
       { label: 'We have no formal guidelines; staff use of AI tools is unrestricted and untracked.', points: 1 },
       { label: 'We have informal guidance but no written policy or oversight process.', points: 2 },
       { label: 'We have a written AI use policy that references existing risk and vendor frameworks.', points: 3 },
-      { label: 'We have a governance framework aligned with SR 11-7 and TPRM guidance, reviewed regularly.', points: 4 },
+      { label: 'We have a governance framework aligned with SR 26-2 and TPRM guidance, reviewed regularly.', points: 4 },
     ],
   },
   {
@@ -383,10 +383,10 @@ export const questions: readonly AssessmentQuestion[] = [
   {
     id: 'sp-04',
     dimension: 'security-posture',
-    prompt: 'Has your institution assessed whether any AI tools it uses trigger model risk management obligations under SR 11-7 or equivalent guidance?',
+    prompt: 'Has your institution assessed whether any AI tools it uses trigger model risk management obligations under SR 26-2 or equivalent guidance?',
     options: [
       { label: 'We have not reviewed our AI tool use against model risk guidance.', points: 1 },
-      { label: 'We are aware of SR 11-7 but have not mapped our current AI tool use to its requirements.', points: 2 },
+      { label: 'We are aware of SR 26-2 but have not mapped our current AI tool use to its requirements.', points: 2 },
       { label: 'We have conducted a gap assessment and are addressing identified exposures.', points: 3 },
       { label: 'We have a current MRM inventory for all AI tools with documented validation, monitoring, and approval records.', points: 4 },
     ],

@@ -6,7 +6,7 @@ import { GuideRequestForm } from './_components/GuideRequestForm';
 export const metadata: Metadata = {
   title: 'Security & Governance — AI built for regulated institutions',
   description:
-    'Aligned with SR 11-7, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon. Free Safe AI Use Guide for community banks and credit unions.',
+    'Aligned with SR 26-2, Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon. Free Safe AI Use Guide for community banks and credit unions.',
   alternates: { canonical: '/security' },
 };
 
@@ -22,7 +22,7 @@ const GUIDE_CHAPTERS = [
       'When private inference is required, when a public model is acceptable, and the decision tree every staff member should run before pasting anything into a tool.',
   },
   {
-    title: 'Mapping to SR 11-7',
+    title: 'Mapping to SR 26-2',
     body:
       'How model risk management guidance applies to generative AI, with specific language you can drop into your AI governance framework.',
   },
@@ -50,7 +50,7 @@ const DATA_HANDLING_RULES = [
 ] as const;
 
 const REGULATORY_REFERENCES = [
-  'SR 11-7 — Model Risk',
+  'SR 26-2 — Model Risk',
   'Interagency TPRM Guidance',
   'ECOA / Reg B',
   'AIEOG AI Lexicon',
@@ -115,7 +115,7 @@ export default function SecurityPage() {
               never raw prompt text.
             </li>
             <li>
-              Written to hold up in SR 11-7, Interagency TPRM, and ECOA / Reg B
+              Written to hold up in SR 26-2, Interagency TPRM, and ECOA / Reg B
               conversations.
             </li>
           </ul>

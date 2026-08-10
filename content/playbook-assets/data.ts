@@ -9,7 +9,7 @@
 //
 // Content discipline (CLAUDE.md §15):
 //   - No unsourced statistics. If a section references a regulation,
-//     cite it: SR 11-7, AIEOG AI Lexicon (Feb 2026), Interagency TPRM
+//     cite it: SR 26-2, AIEOG AI Lexicon (Feb 2026), Interagency TPRM
 //     Guidance, ECOA/Reg B, FinCEN typology vocabulary.
 //   - The asset body fields below are intentionally lean — the
 //     structural PR ships the routes and styling; SMEs flesh out the
@@ -266,7 +266,7 @@ const COMPLIANCE: readonly PlaybookAsset[] = [
     readMinutes: 8,
     sourcedFrom: [
       'AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, Feb 2026)',
-      'SR 11-7 (Model Risk Management)',
+      'SR 26-2 (Model Risk Management)',
     ],
     sections: [
       {
@@ -301,7 +301,7 @@ const COMPLIANCE: readonly PlaybookAsset[] = [
     dek: 'A standard operating procedure shell for AI-assisted workflows — the fields examiners actually look at: inputs, prompt boundary, review step, escalation path.',
     audience: 'Compliance officers and process owners',
     readMinutes: 6,
-    sourcedFrom: ['SR 11-7', 'AIEOG AI Lexicon (Feb 2026)'],
+    sourcedFrom: ['SR 26-2', 'AIEOG AI Lexicon (Feb 2026)'],
     sections: [
       {
         heading: 'What this SOP enforces',
@@ -323,7 +323,7 @@ const COMPLIANCE: readonly PlaybookAsset[] = [
     dek: 'The pre-flight checklist a human reviewer runs before AI output is used externally — accuracy, bias, sourcing, disclosure.',
     audience: 'Human reviewers in any AI-assisted workflow',
     readMinutes: 4,
-    sourcedFrom: ['SR 11-7', 'ECOA / Reg B'],
+    sourcedFrom: ['SR 26-2', 'ECOA / Reg B'],
     sections: [
       {
         heading: 'Before this output leaves your institution',
@@ -508,7 +508,7 @@ const LENDING: readonly PlaybookAsset[] = [
     dek: 'A consistent decision-memo shell for loan approvals, denials, and counter-offers — the documentation an examiner expects to see and a successor reviewer can read cold.',
     audience: 'Loan reviewers and credit officers',
     readMinutes: 6,
-    sourcedFrom: ['SR 11-7', 'Interagency Fair Lending Examination Procedures'],
+    sourcedFrom: ['SR 26-2', 'Interagency Fair Lending Examination Procedures'],
     sections: [
       {
         heading: 'What this memo captures',
@@ -530,7 +530,7 @@ const LENDING: readonly PlaybookAsset[] = [
     dek: 'A short, repeatable format for credit-policy exceptions — what the standard is, why this case warrants deviation, who authorized the override.',
     audience: 'Loan reviewers and credit committee members',
     readMinutes: 4,
-    sourcedFrom: ['SR 11-7'],
+    sourcedFrom: ['SR 26-2'],
     sections: [
       {
         heading: 'What this memo captures',
@@ -739,7 +739,7 @@ const EXECUTIVE: readonly PlaybookAsset[] = [
     dek: 'A one-page thesis that states where AI earns its keep this year, who owns it, and what "good" looks like — the document every other AI decision hangs off.',
     audience: 'CEOs, COOs, and executive sponsors of AI adoption',
     readMinutes: 7,
-    sourcedFrom: ['SR 11-7 (Model Risk Management)', 'AIEOG AI Lexicon (Feb 2026)'],
+    sourcedFrom: ['SR 26-2 (Model Risk Management)', 'AIEOG AI Lexicon (Feb 2026)'],
     sections: [
       {
         heading: 'What this thesis commits to',
@@ -800,7 +800,7 @@ const EXECUTIVE: readonly PlaybookAsset[] = [
     dek: 'A plain-English board update that turns pilot activity into the three things directors actually need: what we did, what it returned, and what risk now sits where.',
     audience: 'Executives reporting AI activity to the board or a board committee',
     readMinutes: 6,
-    sourcedFrom: ['SR 11-7', 'Interagency TPRM Guidance'],
+    sourcedFrom: ['SR 26-2', 'Interagency TPRM Guidance'],
     sections: [
       {
         heading: 'What this briefing covers',
@@ -860,7 +860,7 @@ const OPERATIONS: readonly PlaybookAsset[] = [
     dek: 'A standard operating procedure shell for an AI-assisted task — input, AI step, review checkpoint, output — written so a colleague could run it cold.',
     audience: 'Operations leads and process owners',
     readMinutes: 6,
-    sourcedFrom: ['SR 11-7'],
+    sourcedFrom: ['SR 26-2'],
     sections: [
       {
         heading: 'What this SOP names',
@@ -910,7 +910,7 @@ const OPERATIONS: readonly PlaybookAsset[] = [
     dek: 'A worksheet that makes the human review step explicit for any AI-assisted workflow — who reviews, against what criteria, and what they sign.',
     audience: 'Process owners defining a review step',
     readMinutes: 4,
-    sourcedFrom: ['SR 11-7'],
+    sourcedFrom: ['SR 26-2'],
     sections: [
       {
         heading: 'What this worksheet pins down',

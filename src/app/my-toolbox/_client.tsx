@@ -58,7 +58,7 @@ const CATEGORIES: { icon: typeof ChatIcon; ct: string; title: string; desc: stri
   { icon: ShieldIcon, ct: '3 lists', title: 'Risk Checklists', desc: 'Guardrails for safe use and escalation. Specific to the use case, not generic AI principles.', items: [['PII handling', 'All roles'], ['Disclosure review', 'Marketing'], ['Fair lending', 'Lending']] },
   { icon: InboxIcon, ct: '4 books', title: 'Role Playbooks', desc: 'End-to-end examples for compliance, retail, marketing, and lending. Real scenarios, real artifacts.', items: [['Compliance playbook', 'Compliance'], ['Branch playbook', 'Retail'], ['Marketing playbook', 'Marketing']] },
   { icon: SettingsIcon, ct: '3 builders', title: 'Skill Builders', desc: 'Turn one-off prompts into reusable tools with structured inputs and named outputs.', items: [['Skill Builder tool', 'Tool'], ['Procedure cleaner', 'Skill'], ['Disclosure auditor', 'Skill']] },
-  { icon: BadgeIcon, ct: '2 cards', title: 'Reference Cards', desc: 'Short summaries of rules and standards. The one-pagers you wish your compliance team would write.', items: [['SR 11-7 in 1 page', 'Reference'], ['AIEOG Lexicon', 'Reference']] },
+  { icon: BadgeIcon, ct: '2 cards', title: 'Reference Cards', desc: 'Short summaries of rules and standards. The one-pagers you wish your compliance team would write.', items: [['SR 26-2 in 1 page', 'Reference'], ['AIEOG Lexicon', 'Reference']] },
 ];
 
 const PROMPT_BODY = `[ROLE] You are a community bank compliance officer producing a one-page frontline guide for tellers.
@@ -235,7 +235,7 @@ export default function ToolboxPage() {
             <div className="mk-badges">
               <span className="mk-badge mk-gold">Compliance</span>
               <span className="mk-badge">All roles</span>
-              <span className="mk-badge">SR 11-7 aware</span>
+              <span className="mk-badge">SR 26-2 aware</span>
             </div>
             <div className="mk-field"><div className="mk-k">Use case</div><div className="mk-v">Turn a dense KYC procedure into a one-page frontline guide</div></div>
             <div className="mk-field"><div className="mk-k">Inputs</div><div className="mk-v">Source procedure text · target audience</div></div>

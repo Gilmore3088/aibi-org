@@ -216,7 +216,7 @@ Target audience: {{audience}}
                 </div>
                 <div className="mk-crow">
                   <FileIcon size={16} />
-                  <div className="mk-t">Reference Card — SR 11-7 in 1 page</div>
+                  <div className="mk-t">Reference Card — SR 26-2 in 1 page</div>
                 </div>
               </div>
             </div>

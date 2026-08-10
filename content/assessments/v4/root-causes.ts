@@ -5,7 +5,7 @@
 // a confidence level. Authored per dimension (the reasons are the common
 // failure modes when that dimension is weak at a community bank / credit
 // union), shown for the taker's priority gaps. Grounded in the same
-// supervisory frame as the dimensions themselves (SR 11-7, TPRM, ECOA,
+// supervisory frame as the dimensions themselves (SR 26-2, TPRM, ECOA,
 // GLBA-class data rules).
 
 import type { Dimension } from './types';
@@ -29,7 +29,7 @@ export const ROOT_CAUSES: Record<Dimension, RootCause> = {
   },
   'model-risk-validation': {
     reasons: [
-      'AI-assisted outputs are not treated as model output under SR 11-7',
+      'AI-assisted outputs are not treated as model output under SR 26-2',
       'No documented validation or back-testing of the tools in use',
       'No defined performance thresholds or drift monitoring',
       'No owner accountable for model risk on AI tooling',

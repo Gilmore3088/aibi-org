@@ -147,7 +147,7 @@ export default async function OpengraphImage() {
             }}
           >
             <span style={{ color: ON_DARK_70 }}>
-              SR 11-7 &middot; TPRM &middot; ECOA / Reg B aligned
+              SR 26-2 &middot; TPRM &middot; ECOA / Reg B aligned
             </span>
             <span style={{ color: GOLD }}>aibankinginstitute.com</span>
           </div>

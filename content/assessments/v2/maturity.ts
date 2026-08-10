@@ -164,7 +164,7 @@ export const DIMENSION_TIER_LADDER: readonly DimensionTierMeaning[] = [
   { dimension: 'security-posture', tierId: 'building-momentum',
     meaning: 'A written AI acceptable-use policy exists, a use-case inventory is maintained, and named owners are accountable for AI risk inside the institution.' },
   { dimension: 'security-posture', tierId: 'ready-to-scale',
-    meaning: 'AI risk is integrated into existing third-party and model risk programs (SR 11-7, TPRM). Reviews happen on schedule. Examiner questions have defensible answers.' },
+    meaning: 'AI risk is integrated into existing third-party and model risk programs (SR 26-2, TPRM). Reviews happen on schedule. Examiner questions have defensible answers.' },
 
   // training-infrastructure
   { dimension: 'training-infrastructure', tierId: 'starting-point',

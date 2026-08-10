@@ -1,0 +1,147 @@
+{
+  "$comment": "Registry of external factual claims (regulatory citations + statistics) used in marketing emails, site copy, and course content. Every regulatory token or sourced statistic in a scanned surface must be covered by an entry here, and every entry has a reviewBy date. scripts/check-claims.mjs enforces both in CI. Re-verify claims before their reviewBy date (see docs: monthly re-verification routine).",
+  "lastFullVerification": "2026-08-10",
+  "claims": [
+    {
+      "id": "sr-26-2",
+      "claim": "SR 26-2 is the revised interagency guidance on model risk management (FRB/OCC/FDIC, April 17, 2026); it supersedes SR 11-7. Non-binding; generative and agentic AI are outside its formal scope while agencies gather input.",
+      "source": "Federal Reserve SR letter 26-2",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
+      "asOf": "2026-04-17",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["SR 26-2", "SR&nbsp;26-2"]
+    },
+    {
+      "id": "sr-11-7-historical",
+      "claim": "SR 11-7 (2011) may be mentioned only as history: as the guidance SR 26-2 superseded. It must not appear as a standing anchor on its own.",
+      "source": "Federal Reserve SR letter 11-7 (superseded)",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm",
+      "asOf": "2026-04-17",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["SR 11-7", "SR&nbsp;11-7"],
+      "requireContext": ["supersed", "SR 26-2", "SR&nbsp;26-2", "2011", "original guidance", "formerly"]
+    },
+    {
+      "id": "aieog-lexicon",
+      "claim": "The AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC) was released February 19, 2026 and defines shared AI terms for the financial sector, including 'AI use case inventory'. Non-binding.",
+      "source": "FSSCC / Treasury press release",
+      "url": "https://fsscc.org/wp-content/uploads/2026/02/AIEOG-AI-Lexicon-February-2026.pdf",
+      "asOf": "2026-02-19",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["AIEOG"]
+    },
+    {
+      "id": "fs-ai-rmf",
+      "claim": "Treasury also released the Financial Services AI Risk Management Framework (FS AI RMF) in February 2026 alongside the Lexicon. Non-binding.",
+      "source": "Treasury / FSSCC AI deliverables",
+      "url": "https://fsscc.org/aieog-ai-deliverables/",
+      "asOf": "2026-02-19",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["FS AI RMF", "AI Risk Management Framework"]
+    },
+    {
+      "id": "tprm-2023",
+      "claim": "Interagency Guidance on Third-Party Relationships: Risk Management (88 FR 37920, June 2023) remains current guidance.",
+      "source": "Federal Register",
+      "url": "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
+      "asOf": "2023-06-09",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["Interagency TPRM", "TPRM Guidance", "Third-Party Risk Management Guidance", "Interagency Third-Party Risk"]
+    },
+    {
+      "id": "gao-25-107197",
+      "claim": "GAO-25-107197 (May 2025) found no comprehensive AI-specific banking regulation exists; oversight works through extensions of existing frameworks. Still accurate after SR 26-2 (which is model-risk guidance, non-binding, and excludes generative AI).",
+      "source": "US Government Accountability Office",
+      "url": "https://www.gao.gov/products/gao-25-107197",
+      "asOf": "2025-05-01",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["GAO-25-107197"]
+    },
+    {
+      "id": "gartner-jack-henry-governance-stats",
+      "claim": "55% of FIs have no AI governance framework; 57% report team-level skill gaps; 48% say leadership lacks clarity on AI's business impact (Gartner Peer Community data, via Jack Henry, 2025). A 2026 Jack Henry Strategy Benchmark now exists; refresh or knowingly retain the 2025 citation.",
+      "source": "Jack Henry 'Getting Started in AI' (2025), citing Gartner Peer Community",
+      "url": "https://discover.jackhenry.com/strategy-benchmark-study-2026",
+      "asOf": "2025-06-01",
+      "verified": "2026-08-10",
+      "reviewBy": "2026-11-10",
+      "match": ["55%", "57%", "48%", "Gartner Peer Community", "Jack Henry"]
+    },
+    {
+      "id": "bank-director-ai-budget-66",
+      "claim": "66% of banks are discussing AI budget allocation (Bank Director 2024 Technology Survey, via Jack Henry). Figure still circulating and accurate as cited in Aug 2026; Bank Director 2026 Risk / Compensation surveys offer fresher numbers.",
+      "source": "Bank Director 2024 Technology Survey",
+      "url": "https://www.emarketer.com/content/two-thirds-of-bank-execs-budgeting-ai",
+      "asOf": "2024-09-01",
+      "verified": "2026-08-10",
+      "reviewBy": "2026-11-10",
+      "match": ["66%", "Bank Director"]
+    },
+    {
+      "id": "fdic-qbp-efficiency",
+      "claim": "~56.0% is the industry-wide efficiency ratio (FDIC Quarterly Banking Profile, Q1 2026; was 55.7% at Q4 2025). Refresh each QBP release.",
+      "source": "FDIC Quarterly Banking Profile Q1 2026 / CEIC",
+      "url": "https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-q1-2026",
+      "asOf": "2026-05-28",
+      "verified": "2026-08-10",
+      "reviewBy": "2026-12-10",
+      "match": ["56.0%", "FDIC Quarterly Banking Profile"]
+    },
+    {
+      "id": "fdic-community-median-65",
+      "claim": "~65% is the long-run median efficiency ratio for community banks (FDIC data via CEIC, 1992-2025). Note: cohort medians improved 4-7 points between 1Q24 and 1Q26, so this long-run figure is drifting from current-period medians.",
+      "source": "FDIC / CEIC",
+      "url": "https://www.ceicdata.com/en/united-states/performance-and-condition-ratios/fdic-commercial-banks-efficiency-ratio",
+      "asOf": "2025-12-31",
+      "verified": "2026-08-10",
+      "reviewBy": "2026-12-10",
+      "match": ["65%", "CEIC"]
+    },
+    {
+      "id": "personetics-switch-84",
+      "claim": "84% of consumers would likely switch to a bank providing timely, relevant AI-driven financial advice (Personetics global survey, Feb 2025, via Apiture).",
+      "source": "Personetics 'Understanding Consumer Demand in the AI-Banking Era'",
+      "url": "https://personetics.com/resource-center/84-of-bank-customers-would-switch-for-ai-powered-insights/",
+      "asOf": "2025-02-25",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["84%", "Personetics"]
+    },
+    {
+      "id": "motley-fool-digital-76",
+      "claim": "76% of consumers would switch FIs for a better digital experience (Motley Fool, via Apiture 2025). NOT independently re-verified on 2026-08-10 - verify primary source before next use in new copy.",
+      "source": "Motley Fool via Apiture",
+      "url": "https://www.apiture.com/",
+      "asOf": "2025-01-01",
+      "verified": "2026-08-10",
+      "reviewBy": "2026-09-10",
+      "match": ["76%", "Motley Fool"]
+    },
+    {
+      "id": "sr-21-8",
+      "claim": "SR 21-8 (April 2021) is the interagency statement on model risk management for bank systems supporting BSA/AML compliance; SR 26-2 supersedes it where applicable.",
+      "source": "Federal Reserve SR letter 21-8",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2108.htm",
+      "asOf": "2021-04-09",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-02-10",
+      "match": ["SR 21-8", "SR&nbsp;21-8"]
+    },
+    {
+      "id": "ecoa-reg-b",
+      "claim": "ECOA / Regulation B govern fair lending, including adverse action requirements as applied to AI-assisted credit decisions.",
+      "source": "CFPB Regulation B",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1002/",
+      "asOf": "2026-08-10",
+      "verified": "2026-08-10",
+      "reviewBy": "2027-08-10",
+      "match": ["ECOA", "Reg B", "Regulation B"]
+    }
+  ]
+}

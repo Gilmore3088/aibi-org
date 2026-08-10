@@ -46,7 +46,7 @@ export const PRINCIPLES = [
   {
     number: "03",
     title: "Regulator-aligned by design.",
-    body: "Curriculum maps to SR 11-7, TPRM, ECOA / Reg B, and the AIEOG lexicon — not as a footnote, as the structure.",
+    body: "Curriculum maps to SR 26-2, TPRM, ECOA / Reg B, and the AIEOG lexicon — not as a footnote, as the structure.",
   },
   {
     number: "04",
