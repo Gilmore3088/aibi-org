@@ -32,6 +32,7 @@ import {
   sendTeamAssessmentPurchase,
 } from '@/lib/resend';
 import { notifyOpsAlert } from '@/lib/ops/alerts';
+import { markPurchaseSignal } from '@/lib/mailerlite/purchase-signals';
 
 function nextPathForProduct(
   product: string | undefined,
@@ -448,12 +449,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             amountPaid,
             magicLinkUrl: magicLinkUrl ?? undefined,
           }), { product: 'in-depth-assessment', email, stripeSessionId: session.id });
+          // Nurture exit condition: mark the buyer so automations stop
+          // pitching the $99 diagnostic. Fire-and-forget by design.
+          void markPurchaseSignal(email, 'in_depth');
         } else {
           monitorPurchaseEmail(sendCoursePurchaseIndividual({
             email,
             amountPaid,
             magicLinkUrl: magicLinkUrl ?? undefined,
           }), { product: product ?? 'foundation', email, stripeSessionId: session.id });
+          void markPurchaseSignal(email, 'foundation');
         }
       } else if (result.type === 'institution') {
         const institutionName = session.metadata?.institution_name ?? 'Your institution';
@@ -467,6 +472,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           amountPaid,
           magicLinkUrl: magicLinkUrl ?? undefined,
         }), { product: 'foundation-institution', email, stripeSessionId: session.id });
+        void markPurchaseSignal(email, 'foundation');
       }
     }
   }
