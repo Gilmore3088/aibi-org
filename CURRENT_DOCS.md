@@ -26,6 +26,7 @@ were archived locally outside the repo at:
 | Site E2E review (10 buyer personas, funnel friction) | [Persona E2E review 2026-06-22](docs/reviews/persona-e2e-review-2026-06-22.md) |
 | Adversarial red-team review (GTM plan + site) | [Red-team review 2026-06-22](docs/reviews/red-team-review-2026-06-22.md) |
 | Consolidated GTM readiness review (10 consumers + 10 expert lenses) | [20-persona GTM review 2026-06-23](docs/reviews/gtm-20-persona-review-2026-06-23.md) |
+| Free assessment re-base onto the 8-dimension framework (DECISIONS §1–4) | [Free assessment re-base plan 2026-08-10](Plans/free-assessment-rebase-plan-2026-08-10.md) |
 | Current prioritized persona remediation plans | [20-persona prioritized remediation plans 2026-06-23](Plans/20-persona-prioritized-remediation-plans-2026-06-23.md) |
 | 20-person remediation comparison | [20-persona remediation comparison 2026-06-23](Plans/20-persona-remediation-comparison-2026-06-23.md) |
 | Finalized 50-person GTM readiness review | [50-persona GTM readiness review 2026-06-23](Plans/50-persona-gtm-readiness-review-2026-06-23.md) |
