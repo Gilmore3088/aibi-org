@@ -21,6 +21,17 @@ const eslintConfig = [
   ...coreWebVitals,
   ...typescript,
   {
+    // Pin the React version for eslint-plugin-react instead of 'detect'.
+    // Detection resolves react/package.json per linted file via
+    // context.getFilename(), an API removed from the ESLint 10 rule
+    // context, so every react/* rule crashes at load time under
+    // eslint-config-next 16 ("contextOrFilename.getFilename is not a
+    // function"). Keep in sync with the installed react major.minor.
+    settings: {
+      react: { version: '19.2' },
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
