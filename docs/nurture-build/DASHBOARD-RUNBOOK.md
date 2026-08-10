@@ -29,19 +29,27 @@ The connector can create an email **step** (subject only) but **cannot author HT
 
 ---
 
-## STEP 1 — Set the 5 segment filter rules
+## STEP 1 — ✅ DONE via connector (2026-08-10) — segment rules are set
 
-Subscribers → Segments → open each → Edit conditions → add the single rule, save.
+The original rule-less placeholder segments could not take filters via API, so
+they were replaced: deleted and re-created with the `resource_category`
+filter built in (`text_field_contains` on field 1356062). **New segment IDs:**
 
 | Segment | Rule | Segment ID |
 |---|---|---|
-| Resource · Governance | `resource_category` **is** `governance` | 191402350108214805 |
-| Resource · Compliance | `resource_category` **is** `compliance` | 191402350883112482 |
-| Resource · Role | `resource_category` **is** `role` | 191402351693661759 |
-| Resource · InfoSec | `resource_category` **is** `infosec` | 191402352441296472 |
-| Resource · Lending | `resource_category` **is** `lending` | 191402353228777094 |
+| Resource · Governance | `resource_category` contains `governance` | 195384706993227223 |
+| Resource · Compliance | `resource_category` contains `compliance` | 195384998627378188 |
+| Resource · Role | `resource_category` contains `role` | 195384999113917523 |
+| Resource · InfoSec | `resource_category` contains `infosec` | 195385000638547088 |
+| Resource · Lending | `resource_category` contains `lending` | 195385001743746299 |
 
-> These stay empty until the capture-code change writes `resource_category` on capture. That's expected.
+> Still required in the dashboard: **bind each resource automation's trigger**
+> to its segment above — the automations' `subscriber_joins_segment` triggers
+> were found with an empty `segment_id` (never bound), and the API cannot edit
+> automation triggers. Open each automation → trigger → pick the segment.
+>
+> Segments stay at 0 subscribers until the capture-code change writes
+> `resource_category` on capture. That's expected.
 
 ---
 
