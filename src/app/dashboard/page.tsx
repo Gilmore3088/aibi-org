@@ -631,7 +631,7 @@ export default function DashboardPage() {
                   Turn the <strong>skill</strong> into operating capability.
                 </h3>
                 <p className="copy">
-                  {modules.length} bite-sized modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with source-aware rigor and reviewable evidence. Aligned with SR 11-7 and TPRM.
+                  {modules.length} bite-sized modules of structured exercises, working artifacts, and a banker-tested prompt library — taught with source-aware rigor and reviewable evidence. Aligned with SR 26-2 and TPRM.
                 </p>
                 <div className="ctas">
                   <Link href="/courses/foundation/program" className="btn btn-paper">

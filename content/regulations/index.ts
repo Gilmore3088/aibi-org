@@ -16,11 +16,13 @@ export interface Regulation {
 
 export const REGULATIONS: readonly Regulation[] = [
   {
+    // Slug kept stable ("sr-11-7") — it is an internal key referenced by
+    // consumers like TrustAnchor. SR 26-2 (Apr 17, 2026) supersedes SR 11-7.
     slug: "sr-11-7",
-    short: "SR 11-7",
-    long: "Supervisory Letter 11-7 — Guidance on Model Risk Management",
-    issuer: "Federal Reserve & OCC",
-    url: "https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm",
+    short: "SR 26-2",
+    long: "Supervisory Letter 26-2 — Revised Interagency Guidance on Model Risk Management (supersedes SR 11-7)",
+    issuer: "Federal Reserve, OCC & FDIC",
+    url: "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
   },
   {
     slug: "tprm",

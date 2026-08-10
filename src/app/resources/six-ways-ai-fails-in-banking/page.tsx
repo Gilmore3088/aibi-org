@@ -121,8 +121,9 @@ export default function SixWaysAIFailsArticle() {
           <p>
             The GAO confirmed in its May 2025 report (GAO-25-107197) that
             there is no comprehensive AI-specific banking regulation yet
-            &mdash; what exists is a set of extensions: SR&nbsp;11-7 applied to
-            AI models, TPRM guidance extended to AI vendors, ECOA enforced
+            &mdash; what exists is a set of extensions: model risk guidance
+            (SR&nbsp;26-2, which revised and superseded SR&nbsp;11-7 in April
+            2026) applied to AI models, TPRM guidance extended to AI vendors, ECOA enforced
             against algorithmic decisions. Those extensions do not relax
             the requirement for accuracy; they add regulatory accountability
             on top of it.
@@ -231,8 +232,9 @@ export default function SixWaysAIFailsArticle() {
             <strong>The defense:</strong> Never use AI outputs in credit
             decisions without human review by someone trained to identify
             disparate impact. Document that review in the credit file. This is
-            not a theoretical requirement &mdash; it is the SR&nbsp;11-7 human
-            oversight standard applied to AI models.
+            not a theoretical requirement &mdash; it is the SR&nbsp;26-2 human
+            oversight standard (carried forward from SR&nbsp;11-7) applied to
+            AI models.
           </p>
 
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
@@ -421,10 +423,11 @@ export default function SixWaysAIFailsArticle() {
             Accountability Office, May 2025 (no comprehensive AI-specific
             banking framework confirmed). Getting Started in AI, Jack Henry &amp;
             Associates, 2025, citing Gartner Peer Community data (55% of FIs
-            have no AI governance framework). SR 11-7, Federal Reserve / OCC,
-            2011 (model risk management requirements). ECOA / Regulation B,
+            have no AI governance framework). SR 26-2, Federal Reserve / OCC / FDIC,
+            April 2026 (revised model risk management guidance; supersedes
+            SR 11-7, 2011). ECOA / Regulation B,
             CFPB (adverse action requirements). Figures verified as of
-            April 2026.
+            August 2026.
           </p>
         </footer>
       </article>

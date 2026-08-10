@@ -403,7 +403,7 @@ const COMPLIANCE_RISK: ActionPacket = {
   actionStrip: [
     { title: 'Inventory the uses', desc: 'Catalogue every place AI touches work today.' },
     { title: 'Tier by risk', desc: 'Customer-facing · Internal · Experimental.' },
-    { title: 'Map to controls', desc: 'SR 11-7, TPRM, ECOA where applicable.' },
+    { title: 'Map to controls', desc: 'SR 26-2, TPRM, ECOA where applicable.' },
     { title: 'Set review tiers', desc: 'Low / Medium / High — named reviewers for High.' },
     { title: 'Open the playbook', desc: 'Follow the Compliance path.' },
   ],
@@ -463,7 +463,7 @@ Output format:
       phase: 'Days 31–60',
       heading: 'Map controls and review tiers',
       checks: [
-        'Map each High-tier use case to SR 11-7 / TPRM / ECOA where applicable.',
+        'Map each High-tier use case to SR 26-2 / TPRM / ECOA where applicable.',
         'Define Low / Medium / High review tiers with named reviewers for High.',
         'Build the AI Output Review Checklist tied to your review tiers.',
         'Run one High-tier use case through the full review and document it.',
@@ -489,7 +489,7 @@ Output format:
     },
     {
       name: 'Control Mapping Sheet',
-      desc: 'Use case → SR 11-7 / TPRM / ECOA / state-law citation.',
+      desc: 'Use case → SR 26-2 / TPRM / ECOA / state-law citation.',
     },
     {
       name: 'Quarterly Drift Note',

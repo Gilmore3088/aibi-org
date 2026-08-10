@@ -79,7 +79,7 @@ export const questions: readonly AssessmentQuestion[] = [
       { label: 'We have no formal guidelines; staff use of AI tools is unrestricted and untracked.', points: 1 },
       { label: 'We have informal guidance but no written policy or oversight process.', points: 2 },
       { label: 'We have a written AI use policy that references existing risk and vendor frameworks.', points: 3 },
-      { label: 'We have a governance framework aligned with SR 11-7 and TPRM guidance, reviewed regularly.', points: 4 },
+      { label: 'We have a governance framework aligned with SR 26-2 and TPRM guidance, reviewed regularly.', points: 4 },
     ],
   },
   {

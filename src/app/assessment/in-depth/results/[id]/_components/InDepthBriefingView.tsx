@@ -111,7 +111,7 @@ function radarLabels(rows: readonly DimRow[]): ReactElement[] {
 // frame your assessment maps against," not as personal findings.
 const REGULATORY_ROWS = [
   {
-    ref: 'SR 11-7',
+    ref: 'SR 26-2',
     refSub: 'Model Risk Management · 2011 · FRB / OCC',
     what: 'Inventory, validation, and ongoing monitoring of any model used in business decisions.',
     statusClass: 'part',
@@ -372,7 +372,7 @@ export function InDepthBriefingView({
             <a href="#ch01"><span className="n">01</span><span className="t">The synthesis<small>Composite score · phase · the big finding</small></span><span className="pg">p. 02</span></a>
             <a href="#ch02"><span className="n">02</span><span className="t">The eight dimensions, at a glance<small>One line per dimension · scores · pillars</small></span><span className="pg">p. 03</span></a>
             <a href="#ch03"><span className="n">03</span><span className="t">Dimension deep dives<small>Narrative · score · three recommendations each</small></span><span className="pg">p. 04</span></a>
-            <a href="#ch04"><span className="n">04</span><span className="t">Regulatory frame<small>SR 11-7 · FFIEC · NCUA · FinCEN · CFPB · GLBA</small></span><span className="pg">p. 06</span></a>
+            <a href="#ch04"><span className="n">04</span><span className="t">Regulatory frame<small>SR 26-2 · FFIEC · NCUA · FinCEN · CFPB · GLBA</small></span><span className="pg">p. 06</span></a>
             <a href="#ch05"><span className="n">05</span><span className="t">Your action register + re-read<small>Eight verbs · owners · 90-day window</small></span><span className="pg">p. 07</span></a>
           </div>
         </div>

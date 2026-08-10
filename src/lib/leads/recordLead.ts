@@ -16,6 +16,7 @@
 
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { subscribeToGroup } from '@/lib/mailerlite';
+import { resourceCategoryForSlug } from '@/lib/mailerlite/resource-category';
 
 export type LeadSourceType = 'assessment' | 'prompt-cards' | 'resource-gate' | 'inquiry';
 
@@ -74,10 +75,14 @@ export async function recordLead(input: RecordLeadInput): Promise<RecordLeadResu
   let mailerlite: RecordLeadResult['mailerlite'] = 'skipped';
   let subscriberId: string | undefined;
   if (marketingOptIn && (input.syncMailerlite ?? true)) {
+    // resource_category drives the five resource nurture segments; null for
+    // resources outside those tracks (they stay on the generic library path).
+    const resourceCategory = resourceCategoryForSlug(input.requestedArtifact);
     const fields: Record<string, string | number | boolean | null> = {
       lead_source_path: input.source,
       ...(input.leadSource ? { lead_source: input.leadSource } : {}),
       ...(input.requestedArtifact ? { requested_artifact: input.requestedArtifact } : {}),
+      ...(resourceCategory ? { resource_category: resourceCategory } : {}),
       ...(input.role ? { lead_role: input.role } : {}),
       ...(input.institution ? { company: input.institution } : {}),
     };

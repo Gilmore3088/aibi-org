@@ -1,0 +1,26 @@
+name: Claims
+
+on:
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+# Gates every PR on content/claims/registry.json: no unregistered regulatory
+# citations or email statistics, no claims past their reviewBy date, and no
+# SR 11-7 mention without historical framing (superseded by SR 26-2,
+# April 2026). Companion to the monthly re-verification routine.
+concurrency:
+  group: claims-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Claims registry check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+      - run: node scripts/check-claims.mjs
