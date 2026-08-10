@@ -45,7 +45,7 @@ export interface RegulatoryCitation {
 
 export const PDF_REGULATORY_CITATIONS: ReadonlyArray<RegulatoryCitation> = [
   {
-    source: 'SR 11-7 — Guidance on Model Risk Management',
+    source: 'SR 26-2 — Revised Guidance on Model Risk Management',
     year: 'Federal Reserve, 2011 (re-affirmed 2024)',
     relevance:
       "AI-driven decisioning models fall within the Fed's definition of a \"model\" requiring documented validation, ongoing monitoring, and governance.",

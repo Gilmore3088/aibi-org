@@ -185,11 +185,11 @@ const GROUPS: readonly FaqGroup[] = [
       {
         q: 'Does any regulator formally recognize the AiBI-Foundation credential?',
         schemaAnswer:
-          'No federal or state regulator formally issues or endorses the credential. The curriculum is aligned with SR 11-7, Interagency TPRM Guidance, ECOA / Regulation B, and the AIEOG AI Lexicon.',
+          'No federal or state regulator formally issues or endorses the credential. The curriculum is aligned with SR 26-2, Interagency TPRM Guidance, ECOA / Regulation B, and the AIEOG AI Lexicon.',
         a: (
           <>
             Not as an official designation. The curriculum is{' '}
-            <em>aligned with</em> SR 11-7 (model risk management),
+            <em>aligned with</em> SR 26-2 (model risk management),
             Interagency TPRM Guidance, ECOA / Regulation B, and the AIEOG
             AI Lexicon (US Treasury, FBIIC, FSSCC, February 2026) — but
             no federal or state regulator issues or endorses the credential

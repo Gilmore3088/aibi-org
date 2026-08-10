@@ -64,7 +64,7 @@ the exam is easier than building it during one.
 ## Citations
 
 - AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
+- SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC (supersedes SR 11-7)
 `,
   },
 
@@ -165,7 +165,7 @@ optional.
 ## Citations
 
 - AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026 — official definitions for hallucination, AI governance, HITL
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
+- SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC (supersedes SR 11-7)
 `,
   },
 
@@ -265,7 +265,7 @@ We do not have a model risk inventory."
 
 **4. What we are proposing for the next 90 days.** One paragraph.
 Examples: complete an AI use registry; establish a written
-acceptable-use policy aligned to SR 11-7 and TPRM guidance; pilot
+acceptable-use policy aligned to SR 26-2 and TPRM guidance; pilot
 one internal-only use case; train every staff member on a four-term
 literacy primer.
 
@@ -294,7 +294,7 @@ as clearly as the action.
 ## Citations
 
 - Bank Director 2024 Technology Survey, via Jack Henry & Associates 2025
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
+- SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC (supersedes SR 11-7)
 - Interagency Guidance on Third-Party Relationships: Risk Management, FDIC / OCC / Fed, 2023
 `,
   },
@@ -363,7 +363,7 @@ thereafter.
 
 - AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026 — third-party AI risk, AI governance
 - Interagency Guidance on Third-Party Relationships: Risk Management, FDIC / OCC / Fed, 2023
-- SR 11-7 Guidance on Model Risk Management, Federal Reserve / OCC
+- SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC (supersedes SR 11-7)
 - ECOA / Regulation B, Consumer Financial Protection Bureau
 `,
   },

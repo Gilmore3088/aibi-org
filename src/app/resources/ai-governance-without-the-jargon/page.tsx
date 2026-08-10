@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 const FRAMEWORKS = [
   {
-    code: 'SR 11-7',
-    fullName: 'Model Risk Management Guidance',
-    body: 'Federal Reserve / OCC',
+    code: 'SR 26-2',
+    fullName: 'Revised Model Risk Management Guidance (supersedes SR 11-7)',
+    body: 'Federal Reserve / OCC / FDIC',
     level: 'Critical',
     oneLiner: 'If the AI touches a credit decision, you must be able to explain it.',
   },
@@ -92,7 +92,7 @@ export default function AIGovernanceWithoutJargonArticle() {
           items={[
             {
               label: 'Credit work',
-              body: 'SR 11-7 and ECOA / Reg B decide whether an AI-supported output is explainable enough to use.',
+              body: 'SR 26-2 and ECOA / Reg B decide whether an AI-supported output is explainable enough to use.',
             },
             {
               label: 'Vendor work',
@@ -121,20 +121,26 @@ export default function AIGovernanceWithoutJargonArticle() {
           </p>
 
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
-            SR&nbsp;11-7 &mdash; Model Risk Management.
+            SR&nbsp;26-2 &mdash; Model Risk Management.
           </h2>
           <p>
-            SR&nbsp;11-7 was published by the Federal Reserve and OCC in 2011
-            as guidance on managing the risk of quantitative models used in
-            credit underwriting, risk scoring, and investment analysis. The
-            guidance requires that models be validated, documented, and
-            monitored through their full lifecycle.
+            The original guidance, SR&nbsp;11-7, was published by the Federal
+            Reserve and OCC in 2011 to govern the risk of quantitative models
+            used in credit underwriting, risk scoring, and investment
+            analysis. In April 2026 the Federal Reserve, OCC, and FDIC issued
+            SR&nbsp;26-2, revised interagency guidance that supersedes
+            SR&nbsp;11-7. The core requirements carry forward: models must be
+            validated, documented, and monitored through their full lifecycle.
           </p>
           <p>
-            When AI arrived, regulators applied SR&nbsp;11-7 by extension:
-            any AI system that produces outputs used in credit, risk, or
-            compliance decisions is a &ldquo;model&rdquo; under this framework.
-            The SR&nbsp;11-7 requirements follow.
+            When AI arrived, regulators applied the model risk framework by
+            extension: any AI system that produces outputs used in credit,
+            risk, or compliance decisions is a &ldquo;model&rdquo; under this
+            framework, and the requirements follow. One important nuance in
+            SR&nbsp;26-2: generative and agentic AI are explicitly outside its
+            formal scope for now &mdash; the agencies are still gathering
+            input &mdash; but the guidance is clear that existing risk
+            management principles still apply to those systems.
           </p>
           <p>
             <strong>What this means for your daily work:</strong> If an AI
@@ -148,7 +154,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             is documentation.
           </p>
           <p>
-            SR&nbsp;11-7 also requires <em>conceptual soundness</em> and
+            SR&nbsp;26-2 also requires <em>conceptual soundness</em> and
             <em>transparency</em>. Black-box AI outputs that cannot be traced
             to specific input factors fail this test for credit use cases.
             The model must be explainable &mdash; a word the AIEOG Lexicon
@@ -241,7 +247,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             documentation and auditability standards as manual monitoring
             processes. Model performance must be validated. If your
             institution is using an AI-enabled monitoring system, the
-            system itself is a model under SR&nbsp;11-7 and requires
+            system itself is a model under SR&nbsp;26-2 and requires
             appropriate documentation.
           </p>
 
@@ -354,8 +360,9 @@ export default function AIGovernanceWithoutJargonArticle() {
             banking regulation confirmed). AIEOG AI Lexicon, US Treasury /
             FBIIC / FSSCC, February 2026 (definitions: hallucination, AI
             governance, HITL, third-party AI risk, explainability, AI use
-            case inventory). SR 11-7: Guidance on Model Risk Management,
-            Federal Reserve / OCC, 2011. Interagency Third-Party Risk
+            case inventory). SR 26-2: Revised Guidance on Model Risk
+            Management, Federal Reserve / OCC / FDIC, April 2026 (supersedes
+            SR 11-7, 2011). Interagency Third-Party Risk
             Management Guidance, 2023. Equal Credit Opportunity Act /
             Regulation B, CFPB. Bank Secrecy Act / Anti-Money Laundering
             requirements, FinCEN. Getting Started in AI, Jack Henry &amp;

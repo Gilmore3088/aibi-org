@@ -446,7 +446,7 @@
       "variants": { "pdf": "aibi-safe-ai-use-guide.pdf", "word": null, "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/guides/safe-ai-use",
-      "sourceCitations": ["SR 11-7", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon"],
+      "sourceCitations": ["SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon"],
       "gatePolicy": "free-email-gated",
       "assessmentMapping": { "roles": ["compliance", "infosec", "training-hr"], "tierLabels": ["Starting Point", "Early Stage"], "topGaps": ["governance", "data-handling"] },
       "status": "public"

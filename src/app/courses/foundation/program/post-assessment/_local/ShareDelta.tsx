@@ -32,7 +32,7 @@ function buildDraft(args: {
     '',
     'What actually changed: I now have a small library of saved prompts I run on Monday-morning work — exception report drafting, deposit-trend summaries, examiner-prep questions. Each one strips identifiers before it leaves the bank, and each one gets reviewed before it leaves my desk.',
     '',
-    'For my peers in community banking — the course was built for our shape of work. SR 11-7 thinking, Reg B awareness, no vendor lock-in.',
+    'For my peers in community banking — the course was built for our shape of work. SR 26-2 thinking, Reg B awareness, no vendor lock-in.',
     '',
     '#CommunityBanking #AIGovernance #AiBI',
   ].join('\n');

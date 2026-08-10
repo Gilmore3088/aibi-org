@@ -1276,7 +1276,7 @@ existing ad hoc use without an institutional framework. Inaction carries its own
    permitted tools, data classification rules, and prohibited uses. This is a prerequisite
    for any expanded deployment.
    [RISK FLAG: Operating without an AUP while staff use consumer AI tools creates
-   regulatory exposure under SR 11-7 and Interagency TPRM Guidance.]
+   regulatory exposure under SR 26-2 and Interagency TPRM Guidance.]
 
 2. **Expand M365 Copilot to Operations and Compliance — Owner: IT. Due: May 30, 2026.**
    Incremental cost: approximately $[VERIFY: pull current M365 Copilot per-seat pricing].
@@ -1385,13 +1385,13 @@ Score: [  ]
 
 ## Section 2 — Regulatory Alignment (20 points)
 
-**2a. SR 11-7 model risk management alignment (10 pts)**
-The Federal Reserve's SR 11-7 guidance requires validation, documentation, and ongoing
+**2a. SR 26-2 model risk management alignment (10 pts)**
+The interagency SR 26-2 guidance (which superseded SR 11-7 in April 2026) requires validation, documentation, and ongoing
 monitoring of models used in banking decisions. Applies to AI used in credit, fraud, or
 BSA contexts.
 - [ ] Vendor provides model validation documentation and supports ongoing monitoring (10 pts)
-- [ ] Vendor acknowledges SR 11-7 applicability; documentation partially available (6 pts)
-- [ ] Vendor unfamiliar with SR 11-7 or disputes applicability (2 pts)
+- [ ] Vendor acknowledges SR 26-2 applicability; documentation partially available (6 pts)
+- [ ] Vendor unfamiliar with SR 26-2 or disputes applicability (2 pts)
 Evidence collected: [  ]
 Score: [  ]
 
@@ -1473,7 +1473,7 @@ indemnification language.]`,
       },
       {
         heading: 'Regulatory citations are specific and accurate',
-        detail: 'SR 11-7, ECOA/Reg B, and the AIEOG AI Lexicon definition of explainability are cited with specific context so risk, compliance, and legal reviewers can verify the standards before use.',
+        detail: 'SR 26-2, ECOA/Reg B, and the AIEOG AI Lexicon definition of explainability are cited with specific context so risk, compliance, and legal reviewers can verify the standards before use.',
       },
       {
         heading: 'Hard stop on fair lending score is non-negotiable',
@@ -1545,7 +1545,7 @@ Examiners are paying attention. Per GAO-25-107197 (May 2025), there is
 currently no comprehensive federal AI-specific banking framework, but
 existing guidance applies directly:
 
-  SR 11-7 (Federal Reserve, 2011) — Model risk management. Applies to
+  SR 26-2 (Federal Reserve / OCC / FDIC, April 2026; supersedes SR 11-7) — Model risk management. Applies to
   any AI used in credit, fraud, BSA, or pricing decisions. Requires
   validation, documentation, and ongoing monitoring.
 
@@ -1572,7 +1572,7 @@ What We Are Doing
 - Phase 3 (Q4 2026): Staff certification program — AiBI-Foundation for first 30 users
 
 SPEAKER NOTE: Some directors will want to wait for clearer federal guidance.
-The response: the guidance is already here — SR 11-7, TPRM, ECOA. We are not
+The response: the guidance is already here — SR 26-2, TPRM, ECOA. We are not
 waiting for new rules; we are implementing the ones that already apply.`,
     whatMakesItEffective: [
       {

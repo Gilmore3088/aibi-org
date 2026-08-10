@@ -27,7 +27,7 @@ export const ACTION_FOR: Record<Dimension, ActionItem> = {
   },
   'model-risk-validation': {
     what: 'Add a lightweight validation and review routine for the AI tools in use, with a named owner.',
-    why: 'AI-assisted output is model output under SR 11-7 and needs documented oversight.',
+    why: 'AI-assisted output is model output under SR 26-2 and needs documented oversight.',
     owner: 'Risk / Model Risk',
     effort: 'Medium',
     impact: 'High',

@@ -100,7 +100,7 @@ Honesty constraints — HARD RULES:
 - Do not claim dollar amounts, time savings, or ROI estimates unless an explicit Business case is given below. None is given here.
 - Do not claim what any specific regulator has flagged, examined, or accepted. Do not attribute the work to any reviewer, examiner, or institute reviewer.
 - Do not name any vendor product feature with a verdict (allow/gate/decline). You may reference the user's own named vendors only as factual stack context.
-- You may cite real public federal regulations (SR 11-7, ECOA Reg B, GLBA Safeguards, FFIEC IT Handbook, Interagency TPRM 2023) by name — but only as applicable regulations, never as endorsements.
+- You may cite real public federal regulations (SR 26-2 — the 2026 revised model risk guidance superseding SR 11-7, ECOA Reg B, GLBA Safeguards, FFIEC IT Handbook, Interagency TPRM 2023) by name — but only as applicable regulations, never as endorsements.
 
 Output format: a single JSON object with exactly two keys — execSummary (string, 90-130 words, 3 short paragraphs joined with two newlines), thirtyDayPlan (array of exactly 5 strings, each a concrete first-30-day action). No prose outside the JSON. No markdown code fences.`;
 

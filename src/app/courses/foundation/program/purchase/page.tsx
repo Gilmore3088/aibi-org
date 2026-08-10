@@ -92,7 +92,7 @@ const ROLE_BANNER: Record<string, { label: string; lede: string }> = {
   },
   compliance: {
     label: 'Compliance',
-    lede: 'Modules 2, 4, 7, and 11 are the compliance spine — use-case intake, the human-review step, audit trails, and the AIEOG / SR 11-7 lens.',
+    lede: 'Modules 2, 4, 7, and 11 are the compliance spine — use-case intake, the human-review step, audit trails, and the AIEOG / SR 26-2 lens.',
   },
   infosec: {
     label: 'IT / InfoSec',

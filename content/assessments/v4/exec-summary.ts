@@ -21,7 +21,7 @@ export const DIMENSION_BRIEF: Record<Dimension, DimensionBrief> = {
       'improving Approved AI Access by standing up a single approved gateway with role-based access and prompt logging',
   },
   'model-risk-validation': {
-    risk: 'AI-assisted output treated as fact with no validation under SR 11-7.',
+    risk: 'AI-assisted output treated as fact with no validation under SR 26-2.',
     opportunity: 'A lightweight validation and review routine for the tools in use.',
     recommendation:
       'improving Model Oversight by treating AI tools as model output and adding a documented validation and review routine',

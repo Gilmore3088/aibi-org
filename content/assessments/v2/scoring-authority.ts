@@ -25,7 +25,7 @@ export const SCORE_AUTHORITY: ScoreAuthority = {
     'A per-dimension breakdown that surfaces the limiting capability — the dimension that, raised one tier, lifts the overall posture.',
   ],
   whatItDoesNotClaim: [
-    'A model-risk audit. The score does not substitute for SR 11-7, TPRM, or any internal control review.',
+    'A model-risk audit. The score does not substitute for SR 26-2, TPRM, or any internal control review.',
     'A peer benchmark. The institution is not yet ranked against a calibrated cohort; benchmarks will be introduced when the dataset supports them honestly.',
     'A regulatory finding. The score is a self-reported diagnostic and is not produced by, sponsored by, or filed with any examining authority.',
   ],

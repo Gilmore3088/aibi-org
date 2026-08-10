@@ -126,7 +126,7 @@ const instrumentSerif = Instrument_Serif({
 // in display copy / email addresses and is NOT the canonical web origin.
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://www.${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
-  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
+  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 26-2, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
 
 // Explicit viewport so every public route gets the mobile-first defaults.
 // Without this, Next.js 14 falls back to its own defaults — same values,
@@ -155,7 +155,7 @@ export const metadata: Metadata = {
     'AI banking',
     'community bank AI',
     'credit union AI',
-    'AI governance SR 11-7',
+    'AI governance SR 26-2',
     'AI readiness assessment',
     'AI proficiency training',
     'community bank AI training',

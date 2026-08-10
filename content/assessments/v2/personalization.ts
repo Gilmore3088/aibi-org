@@ -477,7 +477,7 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
   'security-posture': {
     title: 'Document one approved AI workflow end-to-end',
     riskLevel: 'Low',
-    timeSaved: 'Removes the SR 11-7 question your examiner is going to ask',
+    timeSaved: 'Removes the SR 26-2 question your examiner is going to ask',
     owner: 'Compliance + Ops',
     explanation:
       'One workflow, written down: which tool, what data goes in, what review happens, who signs off. This is the artifact your examiner wants to see, and the artifact your team needs to scale safely. Start with the workflow you already trust.',
@@ -669,7 +669,7 @@ export const FINANCIAL_IMPLICATIONS: Record<Tier['id'], FinancialImplications> =
     operational:
       "Time is being saved on individual desks but it never rolls up to a number you can show the board. Without sanctioned workflows, the program cannot be staffed or budgeted with confidence.",
     risk:
-      "Staff are pasting work into public AI tools without policy or audit trail. Under SR 11-7 and the AIEOG Lexicon, examiners will ask what tools you approve, for what data, with what review — and that question cannot yet be answered on paper.",
+      "Staff are pasting work into public AI tools without policy or audit trail. Under SR 26-2 and the AIEOG Lexicon, examiners will ask what tools you approve, for what data, with what review — and that question cannot yet be answered on paper.",
     cost:
       "Every workflow improvement still needs a vendor or consultant. Spend repeats instead of compounding into capability your team owns.",
   },

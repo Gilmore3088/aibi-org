@@ -31,12 +31,12 @@ export function organizationJsonLd(): Record<string, unknown> {
     logo: `${SITE_URL}/icon.svg`,
     slogan: 'Turning Bankers into Builders',
     description:
-      'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 11-7, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
+      'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 26-2, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.',
     email: 'hello@aibankinginstitute.com',
     foundingDate: '2026',
     knowsAbout: [
       'AI governance',
-      'SR 11-7 model risk management',
+      'SR 26-2 model risk management',
       'Interagency TPRM Guidance',
       'ECOA / Regulation B',
       'AIEOG AI Lexicon',
