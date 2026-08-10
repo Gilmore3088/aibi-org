@@ -13,6 +13,7 @@ import { whatsAiReadyScript } from "./scripts/whats-ai-ready";
 import { blankCursorScript } from "./scripts/blank-cursor";
 import { bankersIntoBuildersScript } from "./scripts/bankers-into-builders";
 import { ProductHero, productHeroFrames } from "./ProductHero";
+import { CrossOutV2, crossOutFrames } from "./CrossOutV2";
 import { totalFrames } from "./scripted/types";
 
 export const RemotionRoot: React.FC = () => {
@@ -87,6 +88,18 @@ export const RemotionRoot: React.FC = () => {
         id="ProductHero"
         component={ProductHero}
         durationInFrames={productHeroFrames}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* Video 7 — "The Cross-Out", the :45 NPI hero spot. Bad prompt with
+          customer PII → struck through → gold placeholder chips → the real
+          loan calculator (terms only). Synthesized sound bed. */}
+      <Composition
+        id="CrossOutV2"
+        component={CrossOutV2}
+        durationInFrames={crossOutFrames}
         fps={30}
         width={1920}
         height={1080}

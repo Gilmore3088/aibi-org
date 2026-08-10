@@ -11,3 +11,4 @@ out/
 public/narration/
 # Generated / downloaded footage (re-create with `npm run shots`)
 public/footage/
+public/artifacts/_calc/
