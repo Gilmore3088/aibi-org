@@ -1,11 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import {
+  ArrowGlyph,
+  Button,
+  GuidedPathStrip,
+  READINESS_SCORE_CTA,
+  SiteHeader,
+} from '@/components/mockup';
 import { foundationDurationLabel } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
-  title: 'Pricing | The AI Banking Institute',
+  title: 'Pricing',
   description:
     'Choose between the free AI Readiness Snapshot, In-Depth Assessment, AiBI Foundation, and institution rollout paths.',
 };
@@ -18,7 +24,7 @@ const TIERS = [
     badge: 'Start here',
     bestFor: 'A banker who wants a quick starting point before buying anything.',
     bullets: ['12-question snapshot', 'Maturity tier and top gap', 'Starter prompt and recommended path'],
-    action: 'Start free',
+    action: READINESS_SCORE_CTA.label,
     href: '/assessment/take',
   },
   {
@@ -62,12 +68,8 @@ const TIERS = [
   },
 ] as const;
 
-const PATH_STEPS = [
-  ['Snapshot', 'Free start'],
-  ['Report', 'Written plan'],
-  ['Foundation', 'Individual capability'],
-  ['Rollout', 'Team implementation'],
-] as const;
+const [SNAPSHOT_TIER, REPORT_TIER, FOUNDATION_TIER, TEAM_TIER] = TIERS;
+const INDIVIDUAL_TIERS = [SNAPSHOT_TIER, REPORT_TIER, FOUNDATION_TIER] as const;
 
 const COMPARISON_ROWS = [
   {
@@ -119,10 +121,46 @@ const EMPHASIZED_CARD_TERMS = [
   },
 ] as const;
 
+type PricingTier = (typeof TIERS)[number];
+
+function PricingTierCard({
+  tier,
+  className,
+}: {
+  readonly tier: PricingTier;
+  readonly className?: string;
+}) {
+  return (
+    <article className={['mk-pricing-tier', className ?? ''].filter(Boolean).join(' ')}>
+      <p className="mk-pricing-tier-badge">{tier.badge}</p>
+      <h2>{tier.name}</h2>
+      <div className="mk-pricing-tier-price">
+        <strong>{tier.price}</strong>
+        <span>{tier.cadence}</span>
+      </div>
+      <div className="mk-pricing-tier-copy">
+        <span className="mk-pricing-tier-label">Best for</span>
+        <p>{tier.bestFor}</p>
+      </div>
+      <div className="mk-pricing-tier-copy">
+        <span className="mk-pricing-tier-label">You get</span>
+      </div>
+      <ul>
+        {tier.bullets.map((bullet) => (
+          <li key={bullet}>{bullet}</li>
+        ))}
+      </ul>
+      <Link href={tier.href} className="mk-pricing-tier-link">
+        {tier.action} <ArrowGlyph size={14} />
+      </Link>
+    </article>
+  );
+}
+
 export default function PricingPage() {
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/pricing" cta={{ label: 'Start free', href: '/assessment/take' }} />
+      <SiteHeader activePath="/pricing" />
       <main className="mk-pricing-page">
         <section className="mk-pricing-hero">
           <div className="mk-pricing-hero-copy">
@@ -134,7 +172,7 @@ export default function PricingPage() {
             </p>
             <div className="mk-pricing-hero-actions">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Start free <ArrowGlyph />
+                Get readiness score <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#compare">
                 Compare plans
@@ -142,43 +180,33 @@ export default function PricingPage() {
             </div>
           </div>
 
-          <div className="mk-pricing-path" aria-label="Pricing path">
-            {PATH_STEPS.map(([name, outcome], index) => (
-              <div key={name} className="mk-pricing-path-step">
-                <span>{index + 1}</span>
-                <strong>{name}</strong>
-                <em>{outcome}</em>
-              </div>
-            ))}
-          </div>
+          <GuidedPathStrip
+            className="mk-pricing-guided-path"
+            currentStep="score"
+            tone="dark"
+          />
         </section>
 
-        <section className="mk-pricing-tier-grid" aria-label="Pricing options">
-          {TIERS.map((tier) => (
-            <article key={tier.name} className="mk-pricing-tier">
-              <p className="mk-pricing-tier-badge">{tier.badge}</p>
-              <h2>{tier.name}</h2>
-              <div className="mk-pricing-tier-price">
-                <strong>{tier.price}</strong>
-                <span>{tier.cadence}</span>
-              </div>
-              <div className="mk-pricing-tier-copy">
-                <span className="mk-pricing-tier-label">Best for</span>
-                <p>{tier.bestFor}</p>
-              </div>
-              <div className="mk-pricing-tier-copy">
-                <span className="mk-pricing-tier-label">You get</span>
-              </div>
-              <ul>
-                {tier.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-              <Link href={tier.href} className="mk-pricing-tier-link">
-                {tier.action} <ArrowGlyph size={14} />
-              </Link>
-            </article>
-          ))}
+        <section className="mk-pricing-lanes" aria-label="Pricing options">
+          <div className="mk-pricing-lane">
+            <div className="mk-pricing-lane-head">
+              <p className="mk-k">Individual path</p>
+              <h2>Start with a score, then buy only the depth you need.</h2>
+            </div>
+            <div className="mk-pricing-tier-grid" aria-label="Individual pricing options">
+              {INDIVIDUAL_TIERS.map((tier) => (
+                <PricingTierCard key={tier.name} tier={tier} />
+              ))}
+            </div>
+          </div>
+
+          <div className="mk-pricing-lane mk-pricing-team-lane">
+            <div className="mk-pricing-lane-head">
+              <p className="mk-k">Team rollout</p>
+              <h2>Move to cohorts when the institution is ready.</h2>
+            </div>
+            <PricingTierCard tier={TEAM_TIER} className="mk-pricing-tier-team" />
+          </div>
         </section>
 
         <section id="compare" className="mk-pricing-compare" aria-labelledby="compare-heading">
@@ -230,7 +258,7 @@ export default function PricingPage() {
 
         <section className="mk-pricing-final" aria-labelledby="pricing-final-heading">
           <p className="mk-k">Next step</p>
-          <h2 id="pricing-final-heading">Start free, then choose the path that matches the work.</h2>
+          <h2 id="pricing-final-heading">Get your readiness score, then choose the path that matches the work.</h2>
           <p>
             A quick read costs nothing. A written report, Foundation course, or
             team rollout comes later.

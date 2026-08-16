@@ -28,6 +28,7 @@ import { getTierV2 } from '@content/assessments/v2/scoring';
 import { getStarterArtifact } from '@content/assessments/v2/starter-artifacts';
 import type { Dimension } from '@content/assessments/v2/types';
 import { EMAIL_RE } from '@/lib/email/validate';
+import { redactEmail } from '@/lib/email/redact';
 import { getRequestIp } from '@/lib/api/rate-limit';
 import {
   freeResourceCaptureResponse,
@@ -80,12 +81,6 @@ const LEAD_SOURCE_MAX_LEN = 64;
 const ARTIFACT_MAX_LEN = 128;
 function captureResponse(body: Record<string, unknown>, email: string): NextResponse {
   return freeResourceCaptureResponse(body, email);
-}
-
-function redactEmail(email: string): string {
-  const [local = '', domain = ''] = email.split('@');
-  const localPrefix = local.slice(0, 2);
-  return `${localPrefix || '**'}***@${domain || 'unknown'}`;
 }
 
 interface DimensionEntry {

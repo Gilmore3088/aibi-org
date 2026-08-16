@@ -3,14 +3,9 @@ import {
   allDownloadHrefs,
   deskCards,
   paidPreviews,
-  problemPaths,
   rolePlaybooks,
   starterKits,
 } from '../src/app/resources/data';
-
-function escapeRegex(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 // /resources — Artifact Library
 //
@@ -24,9 +19,9 @@ test.describe('/resources page', () => {
     await page.goto('/resources');
     await expect(page).toHaveTitle(/Resources.*AI Banking Institute/i);
     await expect(
-      page.getByRole('heading', { level: 1, name: /Start with the artifact, not a blank page/i }),
+      page.getByRole('heading', { level: 1, name: /Find the right AI artifact for the job/i }),
     ).toBeVisible();
-    await expect(page.getByRole('link', { name: /^Browse kits$/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Browse resources/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /get readiness score/i }).first()).toBeVisible();
   });
 
@@ -34,7 +29,7 @@ test.describe('/resources page', () => {
     await page.goto('/resources');
 
     await expect(page.getByRole('heading', { level: 2, name: /Pick the work you need/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /I need rules/i })).toHaveAttribute(
+    await expect(page.getByRole('link', { name: /I need AI rules/i })).toHaveAttribute(
       'href',
       '/resources/templates/ai-use-policy-starter',
     );
@@ -56,82 +51,53 @@ test.describe('/resources page', () => {
   test('every starter kit card exposes a ZIP download link to a valid path', async ({ page }) => {
     await page.goto('/resources');
     for (const kit of starterKits) {
-      const card = page.locator(`[data-kit-id="${kit.id}"]`);
+      const card = page.locator('article', {
+        has: page.getByRole('heading', { level: 3, name: kit.title, exact: true }),
+      });
       await expect(card).toBeVisible();
       const zipGate = card.getByRole('button', { name: new RegExp(`Get ZIP for ${kit.title}`, 'i') });
       await expect(zipGate, `kit ${kit.id} ZIP gate`).toBeVisible();
     }
   });
 
-  test('featured-kit panel ZIP CTA updates when selection changes', async ({ page }) => {
+  test('role chips narrow the grouped resource grids', async ({ page }) => {
     await page.goto('/resources');
-    const featured = page.getByTestId('featured-kit');
-    // Default selection is governance.
-    const governanceKit = starterKits.find((k) => k.id === 'governance')!;
-    await expect(
-      featured.getByRole('button', { name: new RegExp(`Get ZIP for ${governanceKit.title}`, 'i') }),
-    ).toBeVisible();
-
-    // Select Lending Review Kit and confirm the CTA flips.
-    const lendingKit = starterKits.find((k) => k.id === 'lending')!;
-    await page.getByRole('button', { name: /Preview Lending Review Kit in the featured panel/i }).click();
-    await expect(
-      featured.getByRole('button', { name: new RegExp(`Get ZIP for ${lendingKit.title}`, 'i') }),
-    ).toBeVisible();
+    const filters = page.locator('#resource-filters');
+    await filters.getByRole('button', { name: 'Lending' }).click();
+    await expect(filters.getByRole('button', { name: 'Lending' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await expect(page.getByRole('heading', { level: 3, name: 'Lending' })).toBeVisible();
+    await expect(page.locator('[role="status"][aria-live="polite"]')).toContainText(/artifacts? shown/i);
   });
 
-  test('starter-kit chooser updates the recommended-kit panel', async ({ page }) => {
+  test('search finds a matching artifact and reset restores the library', async ({ page }) => {
     await page.goto('/resources');
-    const featuredTitle = page.getByTestId('featured-kit-title');
-    await expect(featuredTitle).toHaveText(/AI Governance Starter Kit/i);
-
-    // Click a second kit card and confirm the featured panel updates.
-    await page.getByRole('button', { name: /Preview Lending Review Kit in the featured panel/i }).click();
-    await expect(featuredTitle).toHaveText(/Lending Review Kit/i);
-
-    // The featured panel should now list the lending playbook artifact.
+    const filters = page.locator('#resource-filters');
+    await filters.getByRole('searchbox', { name: /Search resources/i }).fill('Board');
     await expect(
-      page.getByRole('button', { name: /Lending Playbook/i }).first(),
+      page.getByRole('heading', { level: 3, name: /Board.*Briefing Checklist/i }),
     ).toBeVisible();
+    await filters.getByRole('button', { name: /Reset/i }).click();
+    await expect(page.getByRole('heading', { level: 2, name: /Starter kits/i })).toBeVisible();
   });
 
-  test('filter rail narrows resources by role, format, and search', async ({ page }) => {
+  test('inline filters narrow resources by role and search', async ({ page }) => {
     await page.goto('/resources');
 
-    const filters = page.getByRole('complementary', { name: /Filter artifacts/i });
+    const filters = page.locator('#resource-filters');
     await expect(filters).toBeVisible();
-    const mobileFilterSummary = filters.locator('details.rx-filter-rail-mobile summary');
-    if (await mobileFilterSummary.isVisible()) {
-      await mobileFilterSummary.click();
-    }
 
     await filters.getByRole('button', { name: 'BSA/AML' }).click();
     await expect(filters.getByRole('button', { name: 'BSA/AML' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.locator('[role="status"][aria-live="polite"]')).toContainText('2 filtered artifacts shown.');
-    await expect(
-      page.getByRole('heading', { level: 2, name: /1 playbook for the role you picked/i }),
-    ).toBeVisible();
+    await expect(page.locator('[role="status"][aria-live="polite"]')).toContainText(/artifacts? shown/i);
     await expect(page.getByRole('heading', { level: 3, name: 'BSA / AML' })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 3, name: 'SAR Narrative Template' })).toBeVisible();
 
-    await filters.getByRole('button', { name: /Reset all filters/i }).click();
+    await filters.getByRole('button', { name: /Reset/i }).click();
     await filters.getByRole('button', { name: 'Training/HR' }).click();
     await expect(filters.getByRole('button', { name: 'Training/HR' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(
-      page.getByRole('heading', { level: 2, name: /1 playbook for the role you picked/i }),
-    ).toBeVisible();
     await expect(page.getByRole('heading', { level: 3, name: 'Training / HR' })).toBeVisible();
-
-    await filters.getByRole('button', { name: /Reset all filters/i }).click();
-    await filters.getByRole('button', { name: 'Template' }).click();
-    await expect(filters.getByRole('button', { name: 'Template' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByRole('heading', { level: 2, name: /Start your next meeting with these templates/i })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 3, name: 'AI Workflow SOP' })).toBeVisible();
-
-    await filters.getByRole('searchbox', { name: /Search/i }).fill('Board');
-    await expect(
-      page.getByRole('heading', { level: 3, name: 'Board / Leadership Briefing Checklist' }),
-    ).toBeVisible();
   });
 
   test('every role playbook card has Open + PDF links pointing at real routes', async ({ page }) => {
@@ -154,31 +120,14 @@ test.describe('/resources page', () => {
     }
   });
 
-  test('problem paths are visible and wired to public resources', async ({ page }) => {
+  test('governance review paths are visible and wired', async ({ page }) => {
     await page.goto('/resources');
-    const problemSection = page.locator('#problem-paths');
-    await expect(problemSection.getByRole('heading', { level: 2, name: /Pick the job, then open the artifact/i })).toBeVisible();
-
-    for (const path of problemPaths) {
-      await expect(
-        problemSection.getByRole('heading', { level: 3, name: path.title }),
-        `problem path ${path.title}`,
-      ).toBeVisible();
-
-      if (path.href.startsWith('/api/resources/')) {
-        const actionLabel = path.format === 'Sample' ? 'Get sample' : 'Get PDF';
-        await expect(
-          problemSection.getByRole('button', {
-            name: new RegExp(`${actionLabel} for ${escapeRegex(path.artifact)}`, 'i'),
-          }),
-          `download gate for ${path.artifact}`,
-        ).toBeVisible();
-      } else {
-        await expect(
-          problemSection.locator(`a[href="${path.href}"]`).first(),
-          `link for ${path.artifact}`,
-        ).toBeVisible();
-      }
+    const governance = page.locator('#security-governance');
+    await expect(
+      governance.getByRole('heading', { level: 2, name: /review path before you download/i }),
+    ).toBeVisible();
+    for (const href of ['/security', '/security/data-handling', '/security/it-approval']) {
+      await expect(governance.locator(`a[href="${href}"]`)).toBeVisible();
     }
   });
 
@@ -284,10 +233,10 @@ test.describe('/resources page', () => {
     });
     await page.goto('/'); // land on a page that links to /resources
     await page.waitForLoadState('networkidle');
-    await page.getByRole('link', { name: 'Resources' }).first().click(); // soft nav -> RSC fetch
+    await page.locator('a[href="/resources"]:visible').first().click(); // soft nav -> RSC fetch
     await expect(page).toHaveURL(/\/resources$/);
     await expect(
-      page.getByRole('heading', { level: 1, name: /Start with the artifact/i }),
+      page.getByRole('heading', { level: 1, name: /Find the right AI artifact/i }),
     ).toBeVisible();
     await page.waitForLoadState('networkidle');
     const hydration = fatal.filter((e) =>

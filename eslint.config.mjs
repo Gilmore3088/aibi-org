@@ -1,15 +1,13 @@
-// Flat ESLint config (ESLint 9 / eslint-config-next 16).
-//
-// Replaces the legacy .eslintrc.json. eslint-config-next 16 ships native
-// flat-config arrays (one per entry point), so we spread them directly
-// rather than bridging eslintrc-style `extends` through FlatCompat — the
-// shared configs are now flat and FlatCompat can't serialize them. This
-// mirrors the old `extends: [next/core-web-vitals, next/typescript]`. The
-// lone custom rule (underscore-prefixed unused vars are intentional) is
-// preserved verbatim from the old .eslintrc.json.
+// Flat ESLint config for ESLint 9 and eslint-config-next 15. Next 15 still
+// publishes eslintrc-style configs, so FlatCompat bridges those into the flat
+// config consumed by the repository's `eslint src` command.
 
-import coreWebVitals from 'eslint-config-next/core-web-vitals';
-import typescript from 'eslint-config-next/typescript';
+import { FlatCompat } from '@eslint/eslintrc';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const baseDirectory = path.dirname(fileURLToPath(import.meta.url));
+const compat = new FlatCompat({ baseDirectory });
 
 const eslintConfig = [
   // Build output / generated files ESLint should never scan. Flat config
@@ -18,19 +16,7 @@ const eslintConfig = [
   {
     ignores: ['.next/**', 'out/**', 'build/**', 'coverage/**', 'next-env.d.ts'],
   },
-  ...coreWebVitals,
-  ...typescript,
-  {
-    // Pin the React version for eslint-plugin-react instead of 'detect'.
-    // Detection resolves react/package.json per linted file via
-    // context.getFilename(), an API removed from the ESLint 10 rule
-    // context, so every react/* rule crashes at load time under
-    // eslint-config-next 16 ("contextOrFilename.getFilename is not a
-    // function"). Keep in sync with the installed react major.minor.
-    settings: {
-      react: { version: '19.2' },
-    },
-  },
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -40,17 +26,6 @@ const eslintConfig = [
           varsIgnorePattern: '^_',
         },
       ],
-      // react-hooks 7 (pulled in by eslint-config-next 16) ships the new
-      // "React Compiler" rule set. eslint-config-next 15 never enforced
-      // these, so turning them on here would bundle a ~30-site refactor into
-      // a tooling bump. Keep lint policy stable for now and disable them; the
-      // classic rules-of-hooks / exhaustive-deps checks stay active. Adopting
-      // the React Compiler rules is a deliberate follow-up, not a dep bump.
-      'react-hooks/set-state-in-effect': 'off',
-      'react-hooks/refs': 'off',
-      'react-hooks/purity': 'off',
-      'react-hooks/immutability': 'off',
-      'react-hooks/preserve-manual-memoization': 'off',
     },
   },
 ];

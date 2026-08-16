@@ -35,11 +35,21 @@ async function settle(page: Page) {
   await page.waitForTimeout(400);
 }
 
+async function gotoAfterDevReload(page: Page, path: string) {
+  try {
+    await page.goto(path);
+  } catch (error) {
+    if (!/interrupted by another navigation/i.test(String(error))) throw error;
+    await page.waitForTimeout(250);
+    await page.goto(path);
+  }
+}
+
 test.describe('customer journey snapshot walk', () => {
   test('01 — landing and primary CTAs', async ({ page }) => {
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { level: 1, name: /AI training that becomes real banking work/i }),
+      page.getByRole('heading', { level: 1, name: /Is your team ready to use AI safely/i }),
     ).toBeVisible();
     await settle(page);
     await shot(page, '01-landing');
@@ -155,7 +165,7 @@ test.describe('customer journey snapshot walk', () => {
     await shot(page, '09a-for-institutions');
 
     // Open a representative inquiry form (certifications page hosts one).
-    await page.goto('/certifications');
+    await gotoAfterDevReload(page, '/certifications');
     await settle(page);
     await shot(page, '09b-certifications-inquiry');
   });

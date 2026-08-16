@@ -28,6 +28,11 @@ import { TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-device';
 const PROTECTED_ROUTES = ['/my-toolbox', '/assessment/in-depth/access'] as const;
 
 test.describe('trusted-device gate at layout level (fix #2)', () => {
+  test.skip(
+    process.env.E2E_ALLOW_PRODUCTION_SUPABASE !== 'true',
+    'Requires explicit Supabase seed opt-in: E2E_ALLOW_PRODUCTION_SUPABASE=true',
+  );
+
   let user: SeededUser;
 
   test.beforeAll(async () => {

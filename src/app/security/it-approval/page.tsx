@@ -4,7 +4,7 @@ import { MockupShell } from '@/components/mockup';
 import { BRAND } from '@content/copy';
 
 export const metadata: Metadata = {
-  title: 'IT Review Packet — The AI Banking Institute',
+  title: 'IT Review Packet',
   description:
     'A forwardable IT, risk, and procurement review summary for The AI Banking Institute products, data posture, support path, and trust boundaries.',
   alternates: { canonical: '/security/it-approval' },
@@ -277,4 +277,3 @@ export default function ITApprovalPage() {
     />
   );
 }
-

@@ -20,7 +20,11 @@
 // Migration: supabase/migrations/00031_rate_limits.sql
 
 import { NextResponse } from 'next/server';
-import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import {
+  createServiceRoleClient,
+  isSupabaseConfigured,
+  isSupabaseServiceRoleConfigured,
+} from '@/lib/supabase/client';
 
 export interface RateLimitResult {
   readonly allowed: boolean;
@@ -56,6 +60,11 @@ export async function checkRateLimit(config: RateLimitConfig): Promise<RateLimit
 
   if (!isSupabaseConfigured()) {
     console.warn('[rate-limit] Supabase not configured; allowing request');
+    return fallback;
+  }
+
+  if (!isSupabaseServiceRoleConfigured()) {
+    console.warn('[rate-limit] Supabase service role not configured; allowing request');
     return fallback;
   }
 

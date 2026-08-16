@@ -390,14 +390,14 @@ export function ResourcesExperience() {
         heading={<>Get the recommended resource path.</>}
         body={<>The readiness assessment recommends a role path, top gap, and starter artifact.</>}
         actions={[
-          { label: 'Get readiness score', href: '/assessment', variant: 'gold' },
+          { label: 'Get readiness score', href: '/assessment/take', variant: 'gold' },
           { label: 'Browse all downloads', href: '#templates', variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
         label="Get readiness score"
-        href="/assessment"
+        href="/assessment/take"
         source="sticky-mobile-cta-resources"
       />
     </div>

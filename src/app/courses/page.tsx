@@ -5,6 +5,8 @@ import {
   foundationCourseConfig,
   getFoundationTrainingRecord,
 } from '@content/courses/foundation-program';
+import { jsonLdString } from '@/lib/seo/jsonld';
+import { FOUNDATION_COURSE_JSONLD } from './foundation/program/_lib/programJsonLd';
 
 const MODULE_COUNT = foundationCourseConfig.modules.length;
 const ARTIFACT_COUNT = Object.keys(ARTIFACT_FIRST_BY_MODULE).length;
@@ -14,7 +16,6 @@ const courseOverviewFacts = {
   moduleCount: MODULE_COUNT,
   artifactCount: ARTIFACT_COUNT,
   individualPriceLabel: '$295',
-  teamSeatPriceLabel: '$199',
   durationLabel: `~${getFoundationTrainingRecord().hours} hours self-paced`,
   samplePacketSlots: SAMPLE_PACKET_MODULES.map((moduleNumber) => ({
     moduleNumber,
@@ -43,5 +44,13 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <CoursesIndexPage facts={courseOverviewFacts} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString(FOUNDATION_COURSE_JSONLD) }}
+      />
+      <CoursesIndexPage facts={courseOverviewFacts} />
+    </>
+  );
 }

@@ -164,7 +164,7 @@ export function HomeResultPreview() {
 
           <div className="mk-result-cta">
             <Link href="/assessment/take" className="mk-btn mk-btn-gold mk-btn-lg">
-              Get my readiness score
+              Get readiness score
             </Link>
             <span className="mk-result-cta-note">Free · 12 questions · Practical next step</span>
           </div>

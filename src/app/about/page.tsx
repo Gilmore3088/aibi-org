@@ -5,7 +5,7 @@ import { BRAND, PRINCIPLES } from '@content/copy';
 import { REGULATIONS } from '@content/regulations';
 
 export const metadata: Metadata = {
-  title: 'About — The AI Banking Institute',
+  title: 'About',
   description:
     'How The AI Banking Institute helps community banks and credit unions turn AI interest into safe, reviewable work.',
   alternates: { canonical: '/about' },
@@ -235,7 +235,7 @@ export default function AboutPage() {
           <>The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.</>
         }
         actions={[
-          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
+          { label: 'Get readiness score', href: '/assessment/take', variant: 'gold' },
           { label: 'View the course', href: '/courses', variant: 'ghost-dark' },
         ]}
       />

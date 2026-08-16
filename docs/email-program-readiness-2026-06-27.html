@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Email Program — Readiness Status &amp; Remaining Actions</title>
+<style>
+:root{--ink:#071A2F;--gold:#C8A24A;--gold-deep:#9A7A2F;--cream:#F7F3EA;--s200:#E2E8F0;--s500:#64748B;--s600:#475569;--rose:#B91C1C;--amber:#B45309;--emerald:#047857}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px 90px}
+header{background:var(--ink);color:var(--cream);padding:38px 0 30px}header .wrap{padding-bottom:0}
+.kick{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#E6D39B;font-weight:600;margin:0 0 8px}
+header h1{margin:0 0 8px;font-size:25px}header p{margin:0;color:#C9D4E0;max-width:72ch;font-size:14px}
+h2{font-size:20px;margin:34px 0 6px}h2 .n{color:var(--gold-deep);font-weight:800;margin-right:8px}
+.card{background:#fff;border:1px solid var(--s200);border-radius:14px;padding:6px 20px;margin:14px 0}
+.f{border-bottom:1px solid var(--s200);padding:14px 0}.f:last-child{border-bottom:0}
+.f h4{margin:0 0 5px;font-size:15px;display:flex;align-items:center;gap:9px}
+.f p{margin:4px 0;font-size:14.5px;color:var(--s600)}
+.f .do{font-size:14px;color:var(--ink);background:var(--cream);border-radius:9px;padding:9px 12px;margin:7px 0 0}
+.f .do b{color:var(--gold-deep)}
+.b{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.done{background:#DCFCE7;color:var(--emerald)}.act{background:#FEF3C7;color:var(--amber)}.blk{background:#FEE2E2;color:var(--rose)}
+code{background:#F1F5F9;border:1px solid var(--s200);border-radius:5px;padding:1px 6px;font-size:13px;font-family:ui-monospace,Menlo,monospace}
+.chk li{margin:7px 0;font-size:14.5px}.chk b{color:var(--ink)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--s200);color:var(--s500);font-size:13px}
+</style></head><body>
+<header><div class="wrap"><p class="kick">Email Program · Go-Live Readiness</p>
+<h1>Readiness Status &amp; Remaining Actions</h1>
+<p>What got done in this pass (SR sweep, duplicate subjects, bounce-sync, verification) and the specific external actions still needed before the nurture can be enabled. Items map to the prior compliance review.</p></div></header>
+<div class="wrap">
+
+<h2><span class="n">✓</span>Done in this pass</h2>
+<div class="card">
+  <div class="f"><h4><span class="b done">Done</span> SR 11-7 → SR 26-2 sweep</h4>
+    <p>Site-wide. Central <code>content/regulations/index.ts</code> entry → SR 26-2; hard "aligned with SR 11-7" claims softened to "informed by current model-risk guidance where applicable"; the "every AI use is a model" overclaim corrected (gen/agentic AI governed by controls, not formal model-risk guidance). 44 files. <b>Branch:</b> <code>content/sr-26-2-sweep</code>. tsc + lint clean; 693/696 tests (3 failures pre-existing &amp; unrelated). <i>Fair-lending "disparate-impact" overclaims flagged for a follow-on copy sweep — not changed here.</i></p></div>
+  <div class="f"><h4><span class="b done">Done</span> Duplicate subject lines fixed</h4>
+    <p>InfoSec Day-14 → "Stop maintaining the allowlist"; Lending Day-14 → "When the file has to explain itself." Regenerated; build guide + draft updated.</p></div>
+  <div class="f"><h4><span class="b done">Done</span> Bounce/complaint suppression sync (code)</h4>
+    <p>A Resend hard bounce / complaint now also suppresses the MailerLite contact (bounce → <code>bounced</code>, complaint → <code>junk</code>), so we stop mailing dead/hostile addresses. <b>Branch:</b> <code>feat/email-bounce-suppression-sync</code>. Webhook suite 6/6.</p></div>
+  <div class="f"><h4><span class="b done">Verified</span> DMARC, Resend DKIM, funnel instrumentation</h4>
+    <p><b>DMARC ✅</b> published &amp; enforcing (<code>p=quarantine</code>, relaxed alignment). <b>Resend DKIM ✅</b> (<code>resend._domainkey</code> present; domain verified). <b>Funnel ✅ already instrumented</b> — <code>funnel_contacts / funnel_scorecard / funnel_stage_distribution</code> views derive download → assessment → $99 (<code>in-depth-assessment</code>) → Foundation from the source tables, surfaced at <code>/admin/funnel</code>.</p></div>
+</div>
+
+<h2><span class="n">!</span>Remaining actions (you / dashboard — none are code)</h2>
+<div class="card">
+  <div class="f"><h4><span class="b blk">Blocker</span> Complete MailerLite domain authentication (DKIM)</h4>
+    <p>MailerLite has <b>no DKIM records</b> under any selector for <code>aibankinginstitute.com</code>. Because DMARC is <code>p=quarantine</code> with relaxed alignment, MailerLite emails sent as <code>@aibankinginstitute.com</code> will likely <b>fail DKIM alignment and be quarantined</b> — the nurture would land in spam.</p>
+    <p class="do"><b>Do:</b> in MailerLite → Settings → Domains, authenticate <code>aibankinginstitute.com</code> and publish the DKIM (and return-path/SPF) records it gives you in DNS. Re-check alignment before enabling any automation.</p></div>
+  <div class="f"><h4><span class="b blk">Blocker</span> Physical postal address</h4>
+    <p>No business mailing address exists yet, and CAN-SPAM requires one in every commercial email. </p>
+    <p class="do"><b>Do:</b> obtain a mailing address you're willing to publish (a P.O. box or a registered-agent/commercial address is fine — it does not have to be a home address), then enter it in MailerLite → account/company details so it auto-appends to marketing emails. Once you have it, I'll also bake it into the Resend templates if needed.</p></div>
+  <div class="f"><h4><span class="b act">Action</span> Confirm reply-to is monitored</h4>
+    <p>Reply-to is <code>hello@aibankinginstitute.com</code>, and two CTAs ask people to "reply 'institution' / 'review'." Replies are the highest-intent signal.</p>
+    <p class="do"><b>Do:</b> confirm <code>hello@</code> forwards to a person who triages it, with a response SLA. Set MailerLite's sender reply-to to the same.</p></div>
+  <div class="f"><h4><span class="b act">Action</span> Turn on send-time optimization</h4>
+    <p>Steps currently fire on elapsed delay regardless of local time.</p>
+    <p class="do"><b>Do:</b> in each MailerLite automation, enable timezone-based / optimal send-time delivery, targeting Tue–Thu mid-morning for bank buyers.</p></div>
+  <div class="f"><h4><span class="b act">Action</span> Stand up a weekly funnel review</h4>
+    <p>The data is already there (the <code>funnel_*</code> views + <code>/admin/funnel</code>). The gap is a habit, not a build.</p>
+    <p class="do"><b>Do:</b> review download → assessment-start → completion → $99 → Foundation weekly; judge on those, not opens. UTMs are now on the new emails for per-email attribution.</p></div>
+</div>
+
+<h2><span class="n">✓</span>Updated go-live gate</h2>
+<div class="card"><div class="f"><ul class="chk">
+<li><b>[x] SR 26-2 copy sweep</b> — done (branch <code>content/sr-26-2-sweep</code>, pending merge)</li>
+<li><b>[x] Duplicate Day-14 subjects</b> — fixed</li>
+<li><b>[x] Bounce/complaint suppression sync</b> — done (branch <code>feat/email-bounce-suppression-sync</code>, pending merge)</li>
+<li><b>[x] DMARC + Resend DKIM</b> — verified present</li>
+<li><b>[ ] MailerLite DKIM / domain authentication</b> — <b>blocker</b></li>
+<li><b>[ ] Physical postal address</b> — <b>blocker</b> (obtain + set in MailerLite)</li>
+<li><b>[ ] Reply-to monitored</b> + send-time optimization</li>
+<li><b>[ ] Cross-track suppression</b> + category-tag-at-capture code (still outstanding from the build)</li>
+<li><b>[ ] CTA URLs confirmed</b>; test sends reviewed (jlgilmore2@gmail.com, james.gilmore@csiweb.com)</li>
+</ul></div></div>
+
+<footer>Two branches ready for review/merge: <code>content/sr-26-2-sweep</code> and <code>feat/email-bounce-suppression-sync</code> (neither pushed). The remaining gate items are dashboard/DNS/operational, not code — except cross-track suppression + the category-tag-at-capture code, which are still on the build list. 2026-06-27.</footer>
+</div></body></html>

@@ -34,13 +34,13 @@ test.describe('foundation purchase — public page', () => {
     expect(body).toMatch(/AiBI-Foundation|AI Banking\s*Foundation/i);
   });
 
-  test('§6.169 institutional pricing ($199 at 10+ seats) renders', async ({ page }) => {
+  test('§6.169 institutional volume seats are routed to assisted sales', async ({ page }) => {
     await page.goto('/courses/foundation/program/purchase');
     await page.waitForLoadState('networkidle');
 
     const body = await page.locator('body').innerText();
-    expect(body).toMatch(/\$199/);
-    expect(body).toMatch(/10\+\s*seats/i);
+    expect(body).toMatch(/volume seats (?:by|are scoped by) request/i);
+    await expect(page.getByRole('link', { name: /institution inquiry/i }).first()).toBeVisible();
   });
 });
 
@@ -54,6 +54,11 @@ test.describe('foundation purchase — public page', () => {
 // without any external dependency. A correctly-shaped request returns 503
 // when no price id is configured (local/preview) or 200 with a Stripe url
 // when it is — we accept both so the test is environment-agnostic.
+
+const CHECKOUT_TARGET_IS_EXTERNAL = Boolean(
+  (process.env.PLAYWRIGHT_BASE_URL ?? process.env.VERCEL_URL) &&
+  !(process.env.PLAYWRIGHT_BASE_URL ?? process.env.VERCEL_URL)?.includes('localhost'),
+);
 
 test.describe('create-checkout — request validation', () => {
   test('§6 rejects a missing / invalid mode with 400', async ({ request }) => {
@@ -107,6 +112,10 @@ test.describe('create-checkout — request validation', () => {
   test('§6.170 a well-formed individual request reaches the Stripe step (200 or 503, never a validation 400)', async ({
     request,
   }) => {
+    test.skip(
+      CHECKOUT_TARGET_IS_EXTERNAL && process.env.E2E_STRIPE_ROUNDTRIP !== 'true',
+      'Creating a Stripe Checkout Session against an external target requires E2E_STRIPE_ROUNDTRIP=true.',
+    );
     // Past validation, the route either creates a session (200 {url}) or
     // returns 503 when STRIPE_FOUNDATION_PRICE_ID isn't configured. It must
     // NOT return a 400 — that would mean a validation regression.
@@ -160,7 +169,6 @@ test.describe('stripe webhook — signature gate', () => {
       },
     });
     expect([400, 503], `unexpected status ${res.status()}`).toContain(res.status());
-    expect(res.status()).toBeLessThan(500);
   });
 });
 

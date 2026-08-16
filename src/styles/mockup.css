@@ -367,14 +367,14 @@ section.mk-std { padding: 56px 0; }
 .mk-card-white {
   background: #fff;
   border: 1px solid var(--ink-a10);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-sm);
   padding: 24px;
   box-shadow: var(--shadow-card);
 }
 .mk-card-cream {
   background: var(--cream);
   border: 1px solid var(--ink-a10);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-sm);
   padding: 24px;
 }
 .mk-card-shadow { box-shadow: var(--shadow-feature); }
@@ -395,6 +395,153 @@ section.mk-std { padding: 56px 0; }
 .mk-infobox .mk-v {
   font-weight: 600;
   margin-top: 4px;
+}
+
+/* ============================================================
+   Guided public path strip
+   ============================================================ */
+
+.mk-guided-path-band {
+  padding: 22px 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--ink-a10);
+}
+.mk-guided-path-band.is-white {
+  background: #fff;
+}
+.mk-guided-path {
+  display: grid;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--ink-a10);
+  border-radius: var(--r-sm);
+  background: #fff;
+  color: var(--ink);
+}
+.mk-guided-path-intro { min-width: 0; }
+.mk-guided-path-k {
+  margin: 0 0 6px;
+  color: var(--gold-deep);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.mk-guided-path-title {
+  max-width: 54ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 760;
+  line-height: 1.2;
+}
+.mk-guided-path-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mk-guided-path-steps li { min-width: 0; }
+.mk-guided-path-steps a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 100%;
+  padding: 13px;
+  border: 1px solid var(--ink-a10);
+  border-radius: var(--r-sm);
+  background: var(--cream);
+  color: inherit;
+  text-decoration: none;
+}
+.mk-guided-path-steps a:hover {
+  border-color: var(--gold-a40);
+  background: #fff;
+}
+.mk-guided-path-num {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.mk-guided-path-steps strong,
+.mk-guided-path-steps em {
+  display: block;
+  min-width: 0;
+}
+.mk-guided-path-steps strong {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+.mk-guided-path-steps em {
+  margin-top: 4px;
+  color: var(--slate-600);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.mk-guided-path-steps li.is-current a {
+  border-color: var(--gold-a40);
+  background: rgba(200, 162, 74, 0.13);
+}
+.mk-guided-path--dark {
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.mk-guided-path--dark .mk-guided-path-k { color: var(--gold-soft); }
+.mk-guided-path--dark .mk-guided-path-title,
+.mk-guided-path--dark .mk-guided-path-steps strong {
+  color: #fff;
+}
+.mk-guided-path--dark .mk-guided-path-steps a {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+}
+.mk-guided-path--dark .mk-guided-path-steps a:hover,
+.mk-guided-path--dark .mk-guided-path-steps li.is-current a {
+  border-color: rgba(200, 162, 74, 0.48);
+  background: rgba(200, 162, 74, 0.14);
+}
+.mk-guided-path--dark .mk-guided-path-num {
+  background: var(--gold);
+  color: var(--ink);
+}
+.mk-guided-path--dark .mk-guided-path-steps em {
+  color: rgba(255,255,255,0.68);
+}
+@media (min-width: 1020px) {
+  .mk-guided-path {
+    grid-template-columns: minmax(240px, 0.48fr) minmax(0, 1fr);
+    padding: 20px;
+  }
+  .mk-guided-path-title {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 760px) {
+  .mk-guided-path { padding: 14px; }
+  .mk-guided-path-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 430px) {
+  .mk-guided-path-band { padding: 16px 0; }
+  .mk-guided-path-steps { grid-template-columns: 1fr; }
+  .mk-guided-path-steps a {
+    min-height: 0;
+    padding: 12px;
+  }
 }
 
 /* Icon badges (ink+gold or gold+ink, 48×48) */
@@ -606,7 +753,7 @@ section.mk-std { padding: 56px 0; }
 .mk-redline-prompt {
   background: #fff;
   color: var(--ink);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-sm);
   box-shadow: var(--shadow-hero);
   overflow: hidden;
   border: 1px solid var(--on-dark-08);
@@ -755,16 +902,33 @@ section.mk-std { padding: 56px 0; }
   border-top-color: #A6F4C5;
 }
 @media (max-width: 640px) {
+  .mk-home-redline-inner {
+    gap: 18px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  .mk-home-redline-hero h1 {
+    font-size: 2.25rem;
+  }
+  .mk-home-redline-hero .mk-ctas {
+    margin-top: 18px;
+  }
+  .mk-home-redline-hero .mk-hero-meta {
+    margin-top: 8px;
+  }
+  .mk-redline-prompt {
+    box-shadow: var(--shadow-card);
+  }
   .mk-redline-head {
     align-items: center;
     gap: 8px;
   }
   .mk-redline-body {
-    padding: 18px 16px 6px;
+    padding: 12px 14px 4px;
   }
   .mk-redline-prompt-text {
-    font-size: 0.9375rem;
-    line-height: 1.65;
+    font-size: 0.875rem;
+    line-height: 1.45;
   }
   .mk-redline-foot {
     padding: 12px 16px;
@@ -890,6 +1054,9 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-demo-warn svg { width: 13px; height: 13px; flex-shrink: 0; color: #B42318; }
 @media (max-width: 640px) {
+  .mk-demo-audience {
+    padding: 10px 14px 0;
+  }
   .mk-demo-tabs { margin: 10px 12px 2px; }
   .mk-demo-tab { font-size: 0.75rem; padding: 8px 6px; gap: 5px; }
   .mk-demo-slot { grid-template-columns: 68px 1fr; gap: 8px; }
@@ -1031,8 +1198,25 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-demo-annotations li svg { flex-shrink: 0; color: #D92D20; }
 @media (max-width: 640px) {
-  .mk-demo-quiz-head { padding: 12px 16px 0; }
-  .mk-demo-quiz-foot { padding: 4px 16px 16px; }
+  .mk-demo-quiz-head {
+    gap: 4px 8px;
+    padding: 8px 14px 0;
+  }
+  .mk-demo-quiz-foot {
+    margin-top: 8px;
+    padding: 0 14px 12px;
+  }
+  .mk-demo-question {
+    margin: 10px 0 8px;
+    font-size: 0.875rem;
+  }
+  .mk-demo-choice {
+    min-height: 40px;
+    padding: 8px 10px;
+  }
+  .mk-demo-skip {
+    margin-top: 8px;
+  }
   .mk-demo-verdict { padding: 13px 16px; }
   .mk-demo-annotations { grid-template-columns: 1fr; gap: 6px; }
 }
@@ -1070,7 +1254,7 @@ section.mk-std { padding: 56px 0; }
   padding: clamp(20px, 3vw, 32px);
   background: #fff;
   border: 1px solid var(--slate-200);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-sm);
   box-shadow: var(--shadow-soft);
   text-align: left;
 }
@@ -1445,7 +1629,7 @@ section.mk-std { padding: 56px 0; }
   background: #fff;
   color: var(--ink);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 28px;
+  border-radius: var(--r-sm);
   padding: 20px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
 }
@@ -1478,7 +1662,7 @@ section.mk-std { padding: 56px 0; }
 .mk-assessment-score-row div {
   background: var(--cream);
   border: 1px solid var(--ink-a10);
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   padding: 14px;
 }
 .mk-assessment-score-row p {
@@ -1495,7 +1679,7 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-assessment-artifact {
   padding: 16px;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   background: var(--ink);
   color: #fff;
 }
@@ -1519,7 +1703,7 @@ section.mk-std { padding: 56px 0; }
   min-height: 100%;
   padding: clamp(24px, 3vw, 34px);
   border: 1px solid var(--ink-a10);
-  border-radius: 26px;
+  border-radius: var(--r-sm);
   background: var(--cream);
 }
 .mk-assessment-path-card.is-paid {
@@ -1586,7 +1770,7 @@ section.mk-std { padding: 56px 0; }
   gap: 11px;
   margin: 2px 0 24px;
   padding: 16px;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   background: rgba(255, 255, 255, 0.07);
 }
 .mk-paid-meter div {
@@ -1639,7 +1823,7 @@ section.mk-std { padding: 56px 0; }
   }
   .mk-assessment-report {
     padding: 16px;
-    border-radius: 22px;
+    border-radius: var(--r-sm);
   }
   .mk-assessment-report-top {
     padding-bottom: 12px;
@@ -1657,7 +1841,7 @@ section.mk-std { padding: 56px 0; }
   .mk-assessment-score-row div,
   .mk-assessment-artifact {
     padding: 12px;
-    border-radius: 14px;
+    border-radius: var(--r-sm);
   }
   .mk-assessment-path-card {
     padding: 22px;
@@ -2008,7 +2192,17 @@ section.mk-std { padding: 56px 0; }
   font-size: 0.6875rem; font-weight: 600; color: var(--slate-500);
 }
 @media (max-width: 419px) {
-  .mk-take-flow-status { display: none; }
+  .mk-take-flow-meta {
+    display: grid;
+    gap: 2px;
+    justify-items: end;
+  }
+  .mk-take-flow-status {
+    display: block;
+    order: 2;
+  }
+  .mk-take-flow-count { display: none; }
+  .mk-take-flow-exit { order: 1; }
 }
 .mk-take-flow-exit {
   font-size: 0.8125rem; font-weight: 600; color: var(--gold-deep);
@@ -2870,6 +3064,10 @@ section.mk-std { padding: 56px 0; }
 
 /* 5-step chain */
 .mk-chain { display: grid; gap: 16px; grid-template-columns: 1fr; }
+.mk-chain:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 4px;
+}
 @media (min-width: 760px) { .mk-chain { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) { .mk-chain { grid-template-columns: repeat(5, 1fr); } }
 
@@ -4367,6 +4565,7 @@ section.mk-std { padding: 56px 0; }
   }
 }
 .mk-pricing-hero .mk-k,
+.mk-pricing-lane-head .mk-k,
 .mk-pricing-section-head .mk-k,
 .mk-pricing-support .mk-k,
 .mk-pricing-final .mk-k {
@@ -4401,6 +4600,17 @@ section.mk-std { padding: 56px 0; }
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 30px;
+}
+.mk-pricing-guided-path {
+  align-self: end;
+  grid-template-columns: 1fr;
+  max-width: 560px;
+}
+.mk-pricing-guided-path .mk-guided-path-title {
+  font-size: 1.25rem;
+}
+.mk-pricing-guided-path .mk-guided-path-steps {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .mk-pricing-path {
   display: grid;
@@ -4459,11 +4669,38 @@ section.mk-std { padding: 56px 0; }
   font-weight: 700;
   line-height: 1.35;
 }
+.mk-pricing-lanes {
+  display: grid;
+  gap: 32px;
+  padding: 64px max(18px, calc((100vw - 1180px) / 2));
+}
+@media (min-width: 1120px) {
+  .mk-pricing-lanes {
+    grid-template-columns: minmax(0, 3fr) minmax(300px, 1fr);
+    align-items: stretch;
+  }
+}
+.mk-pricing-lane {
+  min-width: 0;
+}
+.mk-pricing-lane-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.mk-pricing-lane-head h2 {
+  max-width: 720px;
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.875rem;
+  font-weight: 680;
+  line-height: 1.12;
+}
 .mk-pricing-tier-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  padding: 64px max(18px, calc((100vw - 1180px) / 2));
+  padding: 0;
 }
 @media (min-width: 720px) {
   .mk-pricing-tier-grid {
@@ -4472,7 +4709,7 @@ section.mk-std { padding: 56px 0; }
 }
 @media (min-width: 1120px) {
   .mk-pricing-tier-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 .mk-pricing-tier {
@@ -4594,6 +4831,30 @@ section.mk-std { padding: 56px 0; }
 }
 .mk-pricing-tier-link:hover {
   color: var(--gold-deep);
+}
+.mk-pricing-tier-team {
+  background: var(--ink);
+  border-color: transparent;
+  color: #fff;
+}
+.mk-pricing-tier-team .mk-pricing-tier-badge {
+  border-color: rgba(230, 211, 155, 0.42);
+  background: rgba(200, 162, 74, 0.16);
+  color: var(--gold-soft);
+}
+.mk-pricing-tier-team .mk-pricing-tier-price {
+  border-bottom-color: rgba(255,255,255,0.14);
+}
+.mk-pricing-tier-team .mk-pricing-tier-price span,
+.mk-pricing-tier-team .mk-pricing-tier-copy p,
+.mk-pricing-tier-team li {
+  color: rgba(255,255,255,0.72);
+}
+.mk-pricing-tier-team .mk-pricing-tier-label {
+  color: rgba(255,255,255,0.88);
+}
+.mk-pricing-tier-team .mk-pricing-tier-link:hover {
+  color: var(--gold-soft);
 }
 .mk-pricing-compare,
 .mk-pricing-support,
@@ -4794,7 +5055,7 @@ section.mk-std { padding: 56px 0; }
   .mk-pricing-tier ul {
     min-height: 0;
   }
-  .mk-pricing-tier-grid,
+  .mk-pricing-lanes,
   .mk-pricing-compare,
   .mk-pricing-support,
   .mk-pricing-final {

@@ -76,10 +76,12 @@ test.describe('Resource delivery - manifest download routes', () => {
 test.describe('Resource delivery - ZIP bundle routes', () => {
   test('manifest exposes starter-kit ZIP routes', () => {
     expect([...bundleRoutes.map((route) => route.slug)].sort()).toEqual([
+      'banker-builder-brief-kit',
       'frontline-enablement-kit',
       'governance-starter-kit',
       'lending-review-kit',
       'marketing-review-kit',
+      'prompting-foundation-kit',
     ].sort());
   });
 

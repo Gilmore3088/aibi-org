@@ -31,7 +31,18 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
 <header><div class="wrap"><p class="kick">Operator Guide · MailerLite</p><h1>Nurture Build &amp; Paste Guide</h1>
 <p>Everything to assemble the two nurture automations in MailerLite: per-automation steps, triggers, delays, suppression, and the exact HTML to paste into each email step. The API can't author HTML or activate — so this is the dashboard build kit.</p></div></header>
 <div class="wrap">
-<div class="blocker">⛔ DO NOT ENABLE / ACTIVATE any automation until the SR 26-2 / SR 11-7 copy sweep is complete (pre-live blocker). Build everything as disabled drafts, test-send, then enable.</div>
+<div class="blocker">⛔ DO NOT ENABLE / ACTIVATE until BOTH remaining blockers clear: (1) <b>MailerLite domain authentication / DKIM</b> — under DMARC <code>p=quarantine</code> the nurture will be quarantined; (2) <b>physical postal address</b> in the footer (CAN-SPAM). ✅ The SR 26-2 copy sweep is DONE (branch <code>content/sr-26-2-sweep</code>, pending merge). Build everything as disabled drafts, test-send to jlgilmore2@gmail.com &amp; james.gilmore@csiweb.com, then enable.</div>
+<div class="card" style="border-color:#FCA5A5"><h3>Pre-go-live gate</h3><ul style="font-size:14px;margin:0;color:var(--s600)">
+<li>✅ SR 26-2 copy sweep — done (branch <code>content/sr-26-2-sweep</code>)</li>
+<li>✅ Duplicate Day-14 subjects — fixed (InfoSec "Stop maintaining the allowlist"; Lending "When the file has to explain itself")</li>
+<li>✅ Bounce/complaint suppression — synced Resend→MailerLite in code (branch <code>feat/email-bounce-suppression-sync</code>)</li>
+<li>✅ DMARC + Resend DKIM — verified present</li>
+<li>⛔ <b>MailerLite DKIM / domain authentication</b> — not set up (blocker)</li>
+<li>⛔ <b>Physical postal address</b> — none yet; obtain + set in MailerLite company details (blocker)</li>
+<li>☐ Cross-track suppression (one active journey per person) + category-tag-at-capture code</li>
+<li>☐ Reply-to (<code>hello@</code>) monitored + send-time optimization enabled</li>
+<li>☐ CTA URLs confirmed; test sends reviewed</li>
+</ul></div>
 
 <div class="card">
 <h3>How to use this page</h3>
@@ -40,7 +51,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
 <li>For each email step, add a <b>Custom HTML</b> block and paste the HTML from that step's box (use the <b>Copy HTML</b> button).</li>
 <li>Set the <b>subject</b> (shown on each step) and the trigger/delays/suppression from the spec box.</li>
 <li>Send a <b>test</b> to jlgilmore2@gmail.com and james.gilmore@csiweb.com.</li>
-<li>Leave everything OFF until the SR sweep is done; then enable.</li>
+<li>Leave everything OFF until both remaining blockers clear (MailerLite DKIM + physical address); then enable.</li>
 </ol>
 <p class="toc"><a href="#prep">Prep</a><a href="#cta">CTA URLs</a><a href="#assess">Assessment track</a><a href="#resource">Resource track</a></p>
 </div>
@@ -52,6 +63,11 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
 <tr><td>Category tag at capture</td><td><b>Code change (pending):</b> map each resource slug → one of <code>governance / compliance / role / infosec / lending</code> and write it to the lead's <code>resource_category</code> on capture, so the segments populate. Until this ships, the resource segments stay empty.</td></tr>
 <tr><td>Segments</td><td>Create one segment per tier (<code>tier_label is …</code>) and per resource category (<code>resource_category is …</code>) to use as automation triggers.</td></tr>
 <tr><td>"Customer" signals for suppression</td><td>Ensure $99 purchase and Foundation enrollment tag the subscriber (group or field) so suppression conditions can reference them.</td></tr>
+<tr><td><b>MailerLite DKIM / domain auth</b></td><td><b>⛔ BLOCKER — pending:</b> not set up. Under DMARC <code>p=quarantine</code>, MailerLite mail as <code>@aibankinginstitute.com</code> will be quarantined. MailerLite → Settings → Domains: authenticate the domain &amp; publish its DKIM/return-path records in DNS before enabling.</td></tr>
+<tr><td><b>Physical postal address</b></td><td><b>⛔ BLOCKER — pending:</b> none exists. CAN-SPAM requires one in every marketing email. Obtain a publishable address (P.O. box / registered agent OK) and set it in MailerLite → company details so it auto-appends.</td></tr>
+<tr><td>Bounce/complaint suppression</td><td><b>Done (code) ✓</b> — a Resend hard bounce/complaint now suppresses the MailerLite contact (branch <code>feat/email-bounce-suppression-sync</code>). MailerLite also auto-handles its own bounces/complaints.</td></tr>
+<tr><td>Cross-track suppression</td><td><b>Pending:</b> set "one active journey per person" — if already in the assessment nurture, do not also enter a resource nurture (and vice-versa). Prevents overlapping sends.</td></tr>
+<tr><td>Send-time optimization</td><td>In each automation, enable timezone / optimal-time delivery; target Tue–Thu mid-morning for bank buyers.</td></tr>
 </table>
 </div>
 
@@ -70,7 +86,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>tier_label is “Starting Point”</code> (group “AI Readiness Assessment”).</div>
       <div><b>Delays between steps:</b> 3 days · 4 days · 7 days (sends land Day 0 / 3 / 7 / 14).</div>
-      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought.</div>
+      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought. <b>One journey per person:</b> assessment track wins — a contact already here should not also enter a resource nurture.</div>
       
     </div>
     <div class="step">
@@ -247,7 +263,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>tier_label is “Early Stage”</code> (group “AI Readiness Assessment”).</div>
       <div><b>Delays between steps:</b> 3 days · 4 days · 7 days (sends land Day 0 / 3 / 7 / 14).</div>
-      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought.</div>
+      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought. <b>One journey per person:</b> assessment track wins — a contact already here should not also enter a resource nurture.</div>
       
     </div>
     <div class="step">
@@ -422,7 +438,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>tier_label is “Building Momentum”</code> (group “AI Readiness Assessment”).</div>
       <div><b>Delays between steps:</b> 3 days · 4 days · 7 days (sends land Day 0 / 3 / 7 / 14).</div>
-      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought.</div>
+      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought. <b>One journey per person:</b> assessment track wins — a contact already here should not also enter a resource nurture.</div>
       
     </div>
     <div class="step">
@@ -596,7 +612,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>tier_label is “Ready to Scale”</code> (group “AI Readiness Assessment”).</div>
       <div><b>Delays between steps:</b> 3 days · 4 days · 7 days (sends land Day 0 / 3 / 7 / 14).</div>
-      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought.</div>
+      <div><b>Suppression (set as automation exit conditions):</b> stop when the subscriber buys the $99 In-Depth, and stop when they enroll in Foundation. Never pitch what they bought. <b>One journey per person:</b> assessment track wins — a contact already here should not also enter a resource nurture.</div>
       <div class="note">For team-intent leads (multiple from same domain, institution/pricing visit, reply), swap the Day-14 step to the team version below.</div>
     </div>
     <div class="step">
@@ -810,7 +826,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>resource_category is “governance”</code> (group “Resource Library Leads”).</div>
       <div><b>Delays between steps:</b> 1 day · 3 days · 4 days · 6 days (sends land Day 1 / 4 / 8 / 14).</div>
-      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment.</div>
+      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment. <b>One journey per person:</b> do not enter a contact already in the assessment nurture.</div>
     </div>
     <div class="step">
     <div class="step-head"><span class="day">Day 1</span><span class="subj">Your AI Governance Starter Kit — use this page first</span>
@@ -960,7 +976,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>resource_category is “compliance”</code> (group “Resource Library Leads”).</div>
       <div><b>Delays between steps:</b> 1 day · 3 days · 4 days · 6 days (sends land Day 1 / 4 / 8 / 14).</div>
-      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment.</div>
+      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment. <b>One journey per person:</b> do not enter a contact already in the assessment nurture.</div>
     </div>
     <div class="step">
     <div class="step-head"><span class="day">Day 1</span><span class="subj">Your Compliance AI Playbook — start with the risk line</span>
@@ -1105,7 +1121,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>resource_category is “role”</code> (group “Resource Library Leads”).</div>
       <div><b>Delays between steps:</b> 1 day · 3 days · 4 days · 6 days (sends land Day 1 / 4 / 8 / 14).</div>
-      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment.</div>
+      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment. <b>One journey per person:</b> do not enter a contact already in the assessment nurture.</div>
     </div>
     <div class="step">
     <div class="step-head"><span class="day">Day 1</span><span class="subj">Your role playbook — run page one this week</span>
@@ -1250,7 +1266,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>resource_category is “infosec”</code> (group “Resource Library Leads”).</div>
       <div><b>Delays between steps:</b> 1 day · 3 days · 4 days · 6 days (sends land Day 1 / 4 / 8 / 14).</div>
-      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment.</div>
+      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment. <b>One journey per person:</b> do not enter a contact already in the assessment nurture.</div>
     </div>
     <div class="step">
     <div class="step-head"><span class="day">Day 1</span><span class="subj">Your InfoSec AI kit — draw the data line first</span>
@@ -1396,7 +1412,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--s200);color:v
     <div class="spec">
       <div><b>Trigger:</b> subscriber matches segment <code>resource_category is “lending”</code> (group “Resource Library Leads”).</div>
       <div><b>Delays between steps:</b> 1 day · 3 days · 4 days · 6 days (sends land Day 1 / 4 / 8 / 14).</div>
-      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment.</div>
+      <div><b>Suppression (exit conditions):</b> stop &amp; move to the assessment track when they complete the assessment (tier_label set); stop on $99 purchase; stop on Foundation enrollment. <b>One journey per person:</b> do not enter a contact already in the assessment nurture.</div>
     </div>
     <div class="step">
     <div class="step-head"><span class="day">Day 1</span><span class="subj">Your high-stakes AI review kit — start where the file has to hold up</span>

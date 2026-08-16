@@ -12,7 +12,11 @@
 // return v3-shaped tier + dimension keys; v2 / v1 / null versions
 // continue to return v2 shape.
 
-import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import {
+  createServiceRoleClient,
+  isSupabaseConfigured,
+  isSupabaseServiceRoleConfigured,
+} from '@/lib/supabase/client';
 import { getTierV2, getTierInDepth } from '@content/assessments/v2/scoring';
 import { getTierV3 } from '@content/assessments/v3/scoring';
 import { getMaturityBand } from '@content/assessments/v4/scoring';
@@ -109,7 +113,7 @@ export type AssessmentResponseLoaded =
 export async function loadAssessmentResponse(
   id: string,
 ): Promise<AssessmentResponseLoaded | null> {
-  if (!isSupabaseConfigured()) return null;
+  if (!isSupabaseConfigured() || !isSupabaseServiceRoleConfigured()) return null;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
 
   // The id parameter is user_profiles.id, used as a bearer token.

@@ -4,10 +4,16 @@ import { test, expect } from '@playwright/test';
 // Covers §10.313-342 + §14 SEO assertions + 2026 brand invariants.
 
 test.describe('marketing — content + brand invariants', () => {
-  test('§10.319 /certifications inquiry-only (no Stripe CTAs per Phase 1 gate)', async ({ page }) => {
+  test('§10.319 /certifications explains the earned Foundation credential', async ({ page }) => {
     await page.goto('/certifications');
-    // /certifications redirects to /education per next.config.mjs.
-    await expect(page).toHaveURL(/\/education/);
+    await expect(page).toHaveURL(/\/certifications/);
+    await expect(
+      page.getByRole('heading', { level: 1, name: /AiBI-Foundation credential/i }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: /Enroll in Foundation/i }).first()).toHaveAttribute(
+      'href',
+      '/courses/foundation',
+    );
   });
 
   test('§10.323 /security renders with download/CTA', async ({ page }) => {
@@ -73,8 +79,8 @@ test.describe('marketing — SEO', () => {
     expect(allLd).toMatch(/The AI Banking Institute/);
   });
 
-  test('§14.410 Course JSON-LD on /courses/foundation/program', async ({ page }) => {
-    await page.goto('/courses/foundation/program');
+  test('§14.410 Course JSON-LD on the public /courses page', async ({ page }) => {
+    await page.goto('/courses');
     const scripts = await page.locator('script[type="application/ld+json"]').allTextContents();
     const allLd = scripts.join('\n');
     expect(allLd).toMatch(/"@type":\s*"Course"/);
@@ -119,6 +125,8 @@ test.describe('marketing — public routes render (200 + H1, no auth)', () => {
   // here to avoid duplicating that assertion.
   const ROUTES: ReadonlyArray<{ path: string; item: string }> = [
     { path: '/education', item: '§10.317' },
+    { path: '/courses', item: '§10' },
+    { path: '/certifications', item: '§10.319' },
     { path: '/for-institutions', item: '§10.318' },
     { path: '/about', item: '§10.321' },
     { path: '/resources', item: '§10.322' },
@@ -155,7 +163,14 @@ test.describe('marketing — chrome + a11y (§10.328/.329/.341/.342)', () => {
 
   test('§10.328 primary nav landmark renders on marketing pages', async ({ page }) => {
     await page.goto('/for-institutions');
-    await expect(page.getByRole('navigation', { name: /Primary/i })).toBeVisible();
+    const desktopNav = page.getByRole('navigation', { name: /Primary/i });
+    if (await desktopNav.isVisible()) {
+      await expect(desktopNav).toBeVisible();
+      return;
+    }
+
+    await page.getByRole('button', { name: /Open menu/i }).click();
+    await expect(page.getByRole('navigation', { name: /Site/i })).toBeVisible();
   });
 
   test('§10.329 footer renders with Privacy + Terms links', async ({ page }) => {
@@ -178,17 +193,18 @@ test.describe('marketing — chrome + a11y (§10.328/.329/.341/.342)', () => {
 });
 
 test.describe('marketing — per-route SEO meta (§10.336/.337/.338/.340)', () => {
-  test('§10.336 /education has its own title + meta description', async ({ page }) => {
+  test('§10.336 /education resolves to canonical course metadata', async ({ page }) => {
     await page.goto('/education');
-    expect(await page.title()).toMatch(/Education/i);
+    await expect(page).toHaveURL(/\/courses$/);
+    expect(await page.title()).toMatch(/Foundation Course/i);
     const desc = await page.locator('meta[name="description"]').getAttribute('content');
     expect((desc ?? '').length).toBeGreaterThan(50);
   });
 
-  test('§10.336 self-referencing canonical link present', async ({ page }) => {
+  test('§10.336 canonical link follows the /education to /courses redirect', async ({ page }) => {
     await page.goto('/education');
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-    expect(canonical).toMatch(/aibankinginstitute\.com\/education$/);
+    expect(canonical).toMatch(/aibankinginstitute\.com\/courses$/);
   });
 
   test('§10.338 Twitter summary_large_image card meta present', async ({ page }) => {
@@ -264,10 +280,8 @@ test.describe('marketing — legacy redirects', () => {
 
   const REDIRECTS: ReadonlyArray<{ from: string; toMatch: RegExp }> = [
     { from: '/services', toMatch: /\/for-institutions/ },
-    { from: '/foundations', toMatch: /\/education/ },
-    { from: '/courses', toMatch: /\/education/ },
-    { from: '/certifications', toMatch: /\/education/ },
-    { from: '/consulting', toMatch: /\/for-institutions\/advisory/ },
+    { from: '/foundations', toMatch: /\/courses/ },
+    { from: '/consulting', toMatch: /\/for-institutions/ },
     { from: '/practitioner', toMatch: /\/courses\/foundation\/program/ },
     { from: '/research', toMatch: /\/resources/ },
     { from: '/courses/aibi-p', toMatch: /\/courses\/foundation\/program/ },
@@ -276,9 +290,10 @@ test.describe('marketing — legacy redirects', () => {
   ];
 
   for (const { from, toMatch } of REDIRECTS) {
-    test(`legacy ${from} redirects correctly`, async ({ page }) => {
-      const res = await page.goto(from);
-      expect(res?.url()).toMatch(toMatch);
+    test(`legacy ${from} redirects correctly`, async ({ request }) => {
+      const res = await request.get(from, { maxRedirects: 0 });
+      expect([307, 308]).toContain(res.status());
+      expect(res.headers().location).toMatch(toMatch);
     });
   }
 });

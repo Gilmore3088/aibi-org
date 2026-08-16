@@ -135,6 +135,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
   }
 
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('[create-checkout] STRIPE_SECRET_KEY is not set.');
+    return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
+  }
+
   if (mode === 'institution' && !foundationInstitutionPriceId) {
     console.error('[create-checkout] STRIPE_FOUNDATION_INSTITUTION_PRICE_ID (or legacy STRIPE_AIBIP_INSTITUTION_PRICE_ID) is not set.');
     return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });

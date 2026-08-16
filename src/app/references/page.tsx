@@ -7,7 +7,7 @@ import { REFERENCE_SOURCES } from '@content/references';
 import { CITATIONS } from '@content/citations';
 
 export const metadata: Metadata = {
-  title: 'Sources & references — The AI Banking Institute',
+  title: 'Sources & references',
   description:
     'Every regulation, standard, government report, and statistic the Institute cites — with links to the original source. Curriculum copy links here instead of restating citations.',
   alternates: { canonical: '/references' },
@@ -139,7 +139,7 @@ export default function ReferencesPage() {
         </>
       }
       heroActions={[
-        { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
+        { label: 'Get readiness score', href: '/assessment/take', variant: 'gold' },
         { label: 'Security & governance', href: '/security', variant: 'ghost-dark' },
       ]}
       sections={[

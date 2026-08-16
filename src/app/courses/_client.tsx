@@ -149,10 +149,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
 
   return (
     <div className="mockup-scope mk-learn-page">
-      <SiteHeader
-        activePath="/courses"
-        cta={{ label: `Enroll · ${facts.individualPriceLabel}`, href: '/courses/foundation/program/purchase' }}
-      />
+      <SiteHeader activePath="/courses" />
 
       <section className="mk-hero">
         <div className="mk-deco">

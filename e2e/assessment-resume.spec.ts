@@ -10,8 +10,8 @@
 // position is restored and the resume token is stripped from the URL.
 //
 // Requires a real Supabase project the test runner can write to AND read back:
-// when NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are unset the whole
-// describe block is skipped with a clear message rather than passing vacuously.
+// when credentials or the explicit production-write acknowledgment are unset,
+// the whole describe block is skipped with a clear message.
 // Set SKIP_RESEND=true so the POST flow never sends a live email; this spec only
 // uses the service-role seed, so no email is sent regardless.
 
@@ -28,7 +28,7 @@ const supabaseReady = isSupabaseConfiguredForE2E();
 test.describe('free assessment — cross-device resume round-trip', () => {
   test.skip(
     !supabaseReady,
-    'Resume round-trip needs a real Supabase (NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY). Set them in .env.local and rerun.',
+    'Resume round-trip needs Supabase credentials and E2E_ALLOW_PRODUCTION_SUPABASE=true.',
   );
 
   const seeded: SeededAssessmentDraft[] = [];

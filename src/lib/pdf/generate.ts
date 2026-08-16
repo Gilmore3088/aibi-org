@@ -9,6 +9,13 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import puppeteer, { type Browser, type PDFOptions } from 'puppeteer-core';
 
+type VercelChromiumConfig = {
+  readonly args: string[];
+  readonly executablePath: string;
+};
+
+let vercelChromiumPromise: Promise<VercelChromiumConfig> | null = null;
+
 interface GenerateOptions {
   readonly profileId: string;
   readonly origin: string;
@@ -120,18 +127,29 @@ async function withBrowserPdf(
   // hands the navigation off to the user's existing Chrome instance
   // and the print page opens as a real visible tab.
   const userDataDir = await mkdtemp(join(tmpdir(), 'aibi-pdf-chrome-'));
-  const launchArgs = useSparticuz
-    ? args
-    : [...args, `--user-data-dir=${userDataDir}`];
-
-  const browser: Browser = await puppeteer.launch({
-    args: launchArgs,
-    defaultViewport: options.viewport,
-    executablePath,
-    headless: true,
-  });
+  let browser: Browser | null = null;
 
   try {
+    // Sparticuz extracts its executable to a shared /tmp path. Concurrent
+    // cold-start requests can briefly see the binary as busy while that
+    // extraction finishes, so retry only that transient spawn condition.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        browser = await puppeteer.launch({
+          args,
+          defaultViewport: options.viewport,
+          executablePath,
+          headless: true,
+          userDataDir,
+        });
+        break;
+      } catch (error) {
+        if (!isExecutableBusyError(error) || attempt === 2) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 150 * (attempt + 1)));
+      }
+    }
+
+    if (!browser) throw new Error('Chromium failed to launch.');
     const page = await browser.newPage();
     await loadPage(page);
 
@@ -146,11 +164,17 @@ async function withBrowserPdf(
 
     return buffer as Buffer;
   } finally {
-    await browser.close();
+    await browser?.close().catch(() => {});
     // Clean up the temp profile dir. Best-effort — if Chrome left a
     // lock file we still don't want to leak it forever.
     await rm(userDataDir, { recursive: true, force: true }).catch(() => {});
   }
+}
+
+function isExecutableBusyError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  const code = 'code' in error ? String(error.code) : '';
+  return code === 'ETXTBSY' || /\bETXTBSY\b/i.test(error.message);
 }
 
 /**
@@ -161,10 +185,21 @@ async function loadVercelChromium(): Promise<{
   readonly args: string[];
   readonly executablePath: string;
 }> {
-  const mod = await import('@sparticuz/chromium');
-  const chromium = mod.default;
-  return {
-    args: chromium.args,
-    executablePath: await chromium.executablePath(),
-  };
+  if (!vercelChromiumPromise) {
+    vercelChromiumPromise = (async () => {
+      const mod = await import('@sparticuz/chromium');
+      const chromium = mod.default;
+      return {
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
+      };
+    })();
+  }
+
+  try {
+    return await vercelChromiumPromise;
+  } catch (error) {
+    vercelChromiumPromise = null;
+    throw error;
+  }
 }

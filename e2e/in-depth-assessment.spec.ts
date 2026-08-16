@@ -20,8 +20,8 @@ test.describe('in-depth assessment — public surface', () => {
 
     // Primary CTA must lead with the paid product (Wave 1 fix per
     // 2026-05-17 commit ba87655 — was previously buried below the fold).
-    const primary = page.getByRole('link', {
-      name: /purchase in-depth assessment.*99/i,
+    const primary = page.getByRole('button', {
+      name: /purchase in-depth.*99/i,
     });
     await expect(primary.first()).toBeVisible({ timeout: 5_000 });
 

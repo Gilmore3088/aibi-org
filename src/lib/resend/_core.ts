@@ -3,6 +3,8 @@
 // share one HTTP/config path. Best-effort, non-blocking, no-op when env vars
 // are unset.
 
+import { redactEmail } from '@/lib/email/redact';
+
 export const RESEND_API_URL = 'https://api.resend.com/emails';
 
 export function siteUrl(): string {
@@ -41,7 +43,7 @@ export async function sendInline(input: SendInlineInput): Promise<ResendResult> 
   const fromAddress = process.env.RESEND_FROM ?? DEFAULT_FROM;
   const fromName = process.env.RESEND_FROM_NAME ?? DEFAULT_FROM_NAME;
 
-  console.log(`${input.tag} sending to=${input.to} subject="${input.subject}" key-prefix=${apiKey.slice(0, 8)}…`);
+  console.log(`${input.tag} sending to=${redactEmail(input.to)}`);
 
   try {
     const response = await fetch(RESEND_API_URL, {
@@ -76,4 +78,3 @@ export async function sendInline(input: SendInlineInput): Promise<ResendResult> 
     return { ok: false, error };
   }
 }
-

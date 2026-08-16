@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Wordmark } from '@/components/brand';
 
 // Auth surfaces — login, signup, password reset, magic-link callback.
@@ -8,6 +9,14 @@ export const metadata: Metadata = {
   title: 'Sign in',
   robots: { index: false, follow: false },
 };
+
+function AuthRouteFallback() {
+  return (
+    <div className="min-h-52 w-full" aria-busy="true">
+      <span className="sr-only">Loading account page</span>
+    </div>
+  );
+}
 
 // 2026-05-27 — ported from Ledger to mockup design system.
 // Auth routes are CHROMELESS_PATHS in src/app/layout.tsx, so this
@@ -36,7 +45,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <Wordmark variant="full" tone="dark" size={22} />
         </Link>
 
-        {children}
+        <Suspense fallback={<AuthRouteFallback />}>{children}</Suspense>
       </main>
     </div>
   );

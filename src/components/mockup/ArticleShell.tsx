@@ -63,7 +63,7 @@ export function ArticleShell({
       {showTOC && <ArticleTOC />}
       {children}
       <StickyMobileCta
-        label="Take the free assessment"
+        label="Get readiness score"
         href="/assessment/take"
         source="sticky-mobile-cta-research-article"
       />

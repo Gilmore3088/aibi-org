@@ -9,6 +9,7 @@ import {
   SectionHead,
   Button,
   CtaBand,
+  READINESS_SCORE_CTA,
   StickyMobileCta,
 } from '@/components/mockup';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
@@ -71,7 +72,7 @@ const TIERS = [
       'A starter artifact you can take to your team this week',
     ],
     ctaHref: PRIMARY_ENTRY_PATH,
-    ctaLabel: 'Take the assessment',
+    ctaLabel: READINESS_SCORE_CTA.label,
     ctaVariant: 'gold' as const,
   },
   {
@@ -110,7 +111,7 @@ export default function ForInstitutionsPage() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/for-institutions" cta={{ label: 'Take assessment', href: PRIMARY_ENTRY_PATH }} />
+      <SiteHeader activePath="/for-institutions" />
 
       {/* HERO */}
       <section className="mk-hero">
@@ -139,13 +140,10 @@ export default function ForInstitutionsPage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
-                Take the free assessment <ArrowR className="mk-ic" />
+                Get readiness score <ArrowR className="mk-ic" />
               </Button>
               <Button variant="ghost-dark" size="lg" href={BRIEFING_URL}>
                 Book executive briefing
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="#engagement">
-                See enrollment options
               </Button>
             </div>
           </div>
@@ -451,7 +449,12 @@ export default function ForInstitutionsPage() {
           heading={<>Assess. Train. Document. Govern. Operate.</>}
           lede={<>Five steps, in order. We don't sell a policy shortcut. We help the team produce reviewable work before you scale it.</>}
         />
-        <div className="mk-chain">
+        <div
+          className="mk-chain"
+          role="region"
+          aria-label="Institution engagement steps"
+          tabIndex={0}
+        >
           {[
             { icon: TargetIcon, num: '01 · Assess', h: 'Baseline your readiness', p: 'Every employee takes the assessment. Org and department breakdowns surface where the readiness gaps live.' },
             { icon: LayersIcon, num: '02 · Train', h: 'Close the skill gaps by role', p: 'Assign Foundation course seats by role. Pair the institutional rollout with a coached cohort for the people who need depth.' },
@@ -710,13 +713,13 @@ export default function ForInstitutionsPage() {
           </>
         }
         actions={[
-          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'Book briefing', href: BRIEFING_URL, variant: 'ghost-dark' },
+          { label: 'Get readiness score', href: '/assessment/take', variant: 'gold' },
+          { label: 'Book executive briefing', href: BRIEFING_URL, variant: 'ghost-dark' },
         ]}
       />
 
       <StickyMobileCta
-        label="Take the free assessment"
+        label="Get readiness score"
         href={PRIMARY_ENTRY_PATH}
         source="institutions-sticky"
       />

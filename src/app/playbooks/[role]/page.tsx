@@ -21,10 +21,10 @@ export async function generateMetadata(
   const { role } = await params;
   const playbook = (PLAYBOOKS as Record<string, { eyebrow?: string; lede?: string } | undefined>)[role];
   if (!playbook) {
-    return { title: 'Role Playbook — The AI Banking Institute' };
+    return { title: 'Role Playbook' };
   }
   return {
-    title: `${playbook.eyebrow ?? 'Role Playbook'} — The AI Banking Institute`,
+    title: playbook.eyebrow ?? 'Role Playbook',
     ...(playbook.lede ? { description: playbook.lede } : {}),
   };
 }

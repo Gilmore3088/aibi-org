@@ -4,7 +4,7 @@ import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { BriefingButton } from '@/components/analytics/BriefingButton';
 
 export const metadata: Metadata = {
-  title: 'Efficiency Ratio Workbook | For Institutions · The AI Banking Institute',
+  title: 'Efficiency Ratio Workbook | For Institutions',
   description:
     'Model your community bank or credit union’s automation ceiling with your own FTE, cost, and hours estimates. The same labor-reallocation math we walk through in an Executive Briefing — free, no email required.',
 };

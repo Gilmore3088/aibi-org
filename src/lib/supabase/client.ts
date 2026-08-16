@@ -27,6 +27,11 @@ export const isSupabaseConfigured = (): boolean => {
   return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 };
 
+/** Returns true when server-side service-role operations are available. */
+export const isSupabaseServiceRoleConfigured = (): boolean => {
+  return Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
+};
+
 /**
  * Browser client — use in Client Components ('use client').
  * Maintains session via cookies automatically.

@@ -5,17 +5,11 @@
 // outside the repo. It is a cheap pre-promotion/CI guard against committing
 // live Stripe/Supabase/Resend-style secrets into source, docs, or artifacts.
 
-import { lstatSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { lstatSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const ROOT = process.cwd();
-const EXCLUDE_DIRS = new Set([
-  '.git',
-  '.next',
-  'node_modules',
-  'coverage',
-  'playwright-report',
-]);
 const EXCLUDE_FILES = new Set([
   'package-lock.json',
 ]);
@@ -43,28 +37,32 @@ const PATTERNS = [
   },
 ];
 
-function walk(dir) {
-  const files = [];
-  for (const entry of readdirSync(dir)) {
-    if (EXCLUDE_DIRS.has(entry)) continue;
-    if (EXCLUDE_FILES.has(entry)) continue;
-    const full = join(dir, entry);
-    let linkStat;
-    try {
-      linkStat = lstatSync(full);
-    } catch {
-      continue;
-    }
-    if (linkStat.isSymbolicLink()) continue;
-
-    const stat = statSync(full);
-    if (stat.isDirectory()) {
-      files.push(...walk(full));
-    } else if (stat.isFile() && stat.size <= 5_000_000) {
-      files.push(full);
-    }
+function repositoryFiles() {
+  let output;
+  try {
+    output = execFileSync(
+      'git',
+      ['ls-files', '--cached', '--others', '--exclude-standard', '-z'],
+      { cwd: ROOT, encoding: 'utf8' },
+    );
+  } catch {
+    console.error('Secret scan failed: unable to list repository files with Git.');
+    process.exit(2);
   }
-  return files;
+
+  return output
+    .split('\0')
+    .filter(Boolean)
+    .filter((file) => !EXCLUDE_FILES.has(file))
+    .map((file) => join(ROOT, file))
+    .filter((file) => {
+      try {
+        const linkStat = lstatSync(file);
+        return !linkStat.isSymbolicLink() && linkStat.isFile() && statSync(file).size <= 5_000_000;
+      } catch {
+        return false;
+      }
+    });
 }
 
 function lineAndColumn(source, index) {
@@ -78,7 +76,7 @@ function lineAndColumn(source, index) {
 
 const findings = [];
 
-for (const file of walk(ROOT)) {
+for (const file of repositoryFiles()) {
   let source;
   try {
     source = readFileSync(file, 'utf8');

@@ -155,7 +155,7 @@ test.describe('parent flows — mobile', () => {
   test('/ — hero CTA visible + tappable on mobile', async ({ page }) => {
     await gotoStable(page, '/');
     const cta = page
-      .getByRole('link', { name: /get my ai readiness score|start (the )?assessment/i })
+      .getByRole('link', { name: /get my (?:ai )?readiness score|start (the )?assessment/i })
       .first();
     await expect(cta).toBeVisible();
     // Mobile tap target: at least 36px tall is the conservative floor.

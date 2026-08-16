@@ -41,7 +41,7 @@ describe('SiteHeader', () => {
     expect(within(drawer).getByText(/^Current$/)).toBeTruthy();
 
     // The readiness CTA is the dominant action in the drawer.
-    expect(within(drawer).getByRole('link', { name: /Get my readiness score/i })).toBeTruthy();
+    expect(within(drawer).getByRole('link', { name: /Get readiness score/i })).toBeTruthy();
   });
 
   it('closes the drawer on Escape and when a route is selected', () => {

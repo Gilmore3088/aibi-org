@@ -317,6 +317,7 @@ test.describe('§7 module route — invalid module guard', () => {
 // ---------------------------------------------------------------------------
 
 const LOCAL_COURSE_PREVIEW =
+  process.env.E2E_COURSE_PREVIEW === 'true' &&
   !process.env.VERCEL_URL &&
   (!process.env.PLAYWRIGHT_BASE_URL ||
     process.env.PLAYWRIGHT_BASE_URL.includes('localhost'));
@@ -400,8 +401,16 @@ test.describe('§7 local course preview — micro-module UX contract', () => {
       const buildTab = rail.getByRole('tab', { name: 'Build' });
       await buildTab.click();
       await expect(buildTab).toHaveAttribute('aria-selected', 'true');
-      await expect(page.getByRole('heading', { name: `Build: ${microModule.saveArtifact}` })).toBeVisible();
-      await expect(page.getByRole('button', { name: 'Save artifact step' })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: `Build ${microModule.saveArtifact}`, exact: true }),
+      ).toBeVisible();
+      if (microModule.number === 3) {
+        await expect(
+          page.getByText('Prompt wizard · Build a prompt that gets to the CORE', { exact: true }),
+        ).toBeVisible();
+      } else {
+        await expect(page.getByRole('button', { name: 'Save artifact step' })).toBeVisible();
+      }
 
       const saveTab = rail.getByRole('tab', { name: 'Save' });
       await saveTab.click();

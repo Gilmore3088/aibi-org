@@ -5,7 +5,7 @@ import { CREAM } from '@/lib/brand/colors';
 import { GOLD } from '@/lib/brand/colors';
 
 // Open Graph image — 1200×630, served at /opengraph-image (Next.js convention).
-// Rendered via @vercel/og at the edge so it has zero static asset size.
+// Rendered at build time via ImageResponse so it has zero committed asset size.
 //
 // Mockup palette (matches src/styles/tokens-mockup.css):
 //   --ink     #071A2F  (primary dark)
@@ -18,7 +18,6 @@ import { GOLD } from '@/lib/brand/colors';
 // isn't registered in Satori; the silhouette of an italic serif "i"
 // reads correctly on social previews even without the precise face.
 
-export const runtime = 'edge';
 export const alt = 'The AI Banking Institute — Turning Bankers into Builders';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';

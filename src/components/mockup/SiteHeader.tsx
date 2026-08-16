@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Button } from './Button';
+import { READINESS_SCORE_CTA } from './siteCtas';
 import { Wordmark } from '@/components/brand';
 
 // Nav items are destinations, so each uses the noun. "Home" is intentionally
@@ -47,7 +48,7 @@ export interface SiteHeaderProps {
 
 export function SiteHeader({
   activePath,
-  cta = { label: 'Get readiness score', href: '/assessment/take' },
+  cta = READINESS_SCORE_CTA,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -183,7 +184,7 @@ export function SiteHeader({
 
               <div className="mk-drawer-cta">
                 <Button variant="gold" size="lg" href={cta.href} onClick={closeMenu}>
-                  Get my readiness score
+                  {cta.label}
                 </Button>
               </div>
             </div>

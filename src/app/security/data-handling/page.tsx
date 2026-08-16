@@ -4,7 +4,7 @@ import { MockupShell } from '@/components/mockup';
 import { BRAND } from '@content/copy';
 
 export const metadata: Metadata = {
-  title: 'LLM Data Handling — The AI Banking Institute',
+  title: 'LLM Data Handling',
   description:
     'How AiBI course labs and Toolbox features handle prompts, AI providers, PII checks, usage logs, and saved artifacts.',
   alternates: { canonical: '/security/data-handling' },

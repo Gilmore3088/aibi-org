@@ -3,7 +3,7 @@ import { MockupShell } from '@/components/mockup';
 import { VerifyLookupForm } from './VerifyLookupForm';
 
 export const metadata: Metadata = {
-  title: 'Verify Certificate — The AI Banking Institute',
+  title: 'Verify Certificate',
   description:
     'Look up an AI Banking Institute certificate by ID. Verification confirms the certificate record only, not regulator or third-party endorsement.',
   alternates: { canonical: '/verify' },
@@ -13,7 +13,7 @@ export default function VerifyCertificateLookupPage() {
   return (
     <MockupShell
       activePath="/verify"
-      cta={{ label: 'Start free assessment', href: '/assessment/take' }}
+      cta={{ label: 'Get readiness score', href: '/assessment/take' }}
       eyebrow="Certificate lookup"
       title={
         <>

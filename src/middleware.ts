@@ -37,6 +37,13 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return response;
   }
 
+  const hasAuthCookie = request.cookies.getAll().some(
+    ({ name }) => name.startsWith('sb-') && name.includes('-auth-token'),
+  );
+  if (!hasAuthCookie) {
+    return response;
+  }
+
   // Create a server client that reads/writes cookies on the request/response pair.
   // The getAll/setAll pattern is required by @supabase/ssr 0.5+.
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -44,7 +51,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       getAll() {
         return request.cookies.getAll();
       },
-      setAll(cookiesToSet) {
+      setAll(cookiesToSet, responseHeaders) {
         // Write each cookie onto the request (so downstream server code sees it)
         // and onto the response (so the browser receives it).
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
@@ -56,6 +63,9 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         });
         response.headers.set('x-pathname', request.nextUrl.pathname);
         response.headers.set('x-search', request.nextUrl.search);
+        Object.entries(responseHeaders).forEach(([key, value]) =>
+          response.headers.set(key, value),
+        );
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options),
         );
@@ -63,14 +73,15 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     },
   });
 
-  // Calling getUser() triggers a token refresh if the access token is near expiry.
+  // Calling getClaims() verifies the token and triggers a refresh when needed.
   // We intentionally ignore the result — route-level auth checks happen in page/layout code.
-  await supabase.auth.getUser();
+  await supabase.auth.getClaims();
 
   return response;
 }
 
 export const config = {
+  runtime: 'nodejs',
   matcher: [
     // Apply to all routes except static files and Next.js internals.
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',

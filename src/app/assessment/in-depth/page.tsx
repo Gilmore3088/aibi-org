@@ -53,7 +53,7 @@ async function getSignedInEmail(): Promise<string | null> {
 
 export const metadata: Metadata = {
   alternates: { canonical: '/assessment/in-depth' },
-  title: 'In-Depth Assessment | The AI Banking Institute',
+  title: 'In-Depth Assessment',
   description:
     'An individual AI readiness report for banking professionals with eight-dimension scoring, per-dimension root-cause analysis, and a role-level action plan.',
 };

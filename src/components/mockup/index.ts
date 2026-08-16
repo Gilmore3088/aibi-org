@@ -11,6 +11,11 @@ export type { ButtonProps } from './Button';
 export { SiteHeader } from './SiteHeader';
 export type { SiteHeaderProps } from './SiteHeader';
 
+export { GuidedPathStrip } from './GuidedPathStrip';
+export type { GuidedPathStripProps } from './GuidedPathStrip';
+
+export { READINESS_SCORE_CTA } from './siteCtas';
+
 export { SiteFooter as MockupSiteFooter } from './SiteFooter';
 
 export { Section, SectionHead } from './Section';

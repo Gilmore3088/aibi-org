@@ -5,41 +5,41 @@ import { createHash, randomBytes } from 'node:crypto';
 import {
   DIMENSION_LABELS,
   type Dimension,
-} from '@content/assessments/v2/types';
+} from '@content/assessments/v3/types';
 import { questions as v3Questions } from '@content/assessments/v3/questions';
 
-// Helpers for driving the free 12-question v2 assessment from e2e tests.
+// Helpers for driving the free 12-question v3 assessment from e2e tests.
 //
 // Why these exist (and why the selectors are safe):
-//   - Each QuestionCard renders its 4 options as role="radio" buttons in
-//     ASCENDING points order — verified across all 48 questions in
-//     content/assessments/v2/questions.ts (option index 0 == 1 point,
+//   - The take page renders four `.mk-take-q-option` buttons in ASCENDING
+//     points order — verified in content/assessments/v3/questions.ts (option
+//     index 0 == 1 point,
 //     index 3 == 4 points). So clicking radios.nth(i) reliably scores
 //     (i + 1) points regardless of WHICH questions the random rotation
 //     picked. This is the load-bearing fact behind every score-band test.
 //   - The hook auto-advances on click (no Continue button) and transitions
 //     to the score/email-gate phase once 12 answers are recorded.
-//   - The QuestionCard header surfaces the raw dimension key (e.g.
-//     "current-ai-usage"), which we read to target a specific dimension's
-//     score for the weakest-dimension / starter-artifact tests.
+//   - The question eyebrow surfaces the human dimension label, which we map
+//     back to its key for weakest-dimension / starter-artifact tests.
 
 export const QUESTION_COUNT = 12;
 
-/** All eight v2 dimension keys, in the order getDimensionScores fills them. */
+/** All twelve v3 dimension keys, in the order getDimensionScores fills them. */
 export const DIMENSION_KEYS = Object.keys(DIMENSION_LABELS) as Dimension[];
 
 /**
- * Read the dimension key the current question card is tagged with. The card
- * renders the raw key (e.g. "leadership-buy-in") in its editorial header.
+ * Read the dimension key the current question card is tagged with.
  */
 export async function currentDimension(page: Page): Promise<Dimension> {
-  const radios = page.getByRole('radio');
-  await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
-  const text = await page.locator('main').innerText();
-  const match = DIMENSION_KEYS.find((k) => text.includes(k));
+  const options = page.locator('.mk-take-q-option');
+  await options.first().waitFor({ state: 'visible', timeout: 5_000 });
+  const label = (await page.locator('.mk-take-q-prompt .mk-k').innerText()).trim();
+  const match = DIMENSION_KEYS.find(
+    (key) => DIMENSION_LABELS[key].toLocaleLowerCase() === label.toLocaleLowerCase(),
+  );
   if (!match) {
     throw new Error(
-      `Could not read a known v2 dimension key from the question card. Saw:\n${text.slice(0, 400)}`,
+      `Could not map question dimension label: ${label}`,
     );
   }
   return match;
@@ -51,10 +51,10 @@ export async function currentDimension(page: Page): Promise<Dimension> {
  * mount.
  */
 export async function answerCurrent(page: Page, optionIndex: number): Promise<void> {
-  const radios = page.getByRole('radio');
-  await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
-  await radios.nth(optionIndex).click();
-  // The next radiogroup remounts; give React a beat (matches the cadence
+  const options = page.locator('.mk-take-q-option');
+  await options.first().waitFor({ state: 'visible', timeout: 5_000 });
+  await options.nth(optionIndex).click();
+  // The next question remounts; give React a beat (matches the cadence
   // the existing suite uses for auto-advance).
   await page.waitForTimeout(150);
 }
@@ -98,15 +98,28 @@ export async function submitEmailGate(
   page: Page,
   email = 'e2e@examplebank.test',
 ): Promise<void> {
+  // These tests assert the client-side gate and inline report transition, not
+  // live lead capture. Intercept the request so a normal E2E run cannot create
+  // Supabase users/leads or contact MailerLite/Resend through a locally loaded
+  // production configuration.
+  await page.route('**/api/capture-email', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ok: true,
+        profileId: null,
+        mailerliteTagAdded: false,
+        magicLinkUrl: null,
+      }),
+    });
+  });
+
   const field = page.getByRole('textbox', { name: /email/i }).first();
   await expect(field).toBeVisible({ timeout: 10_000 });
   await field.fill(email);
-  await page.getByRole('button', { name: /show my full results/i }).click();
-  // The report (ScoreRing) only mounts in the results phase, after the
-  // capture-email round-trip resolves.
-  await expect(
-    page.getByRole('img', { name: /Your AI readiness score is \d+ out of \d+/i }),
-  ).toBeVisible({ timeout: 15_000 });
+  await page.getByRole('button', { name: /send my report/i }).click();
+  await expect(page.getByTestId('readiness-result-hero')).toBeVisible({ timeout: 15_000 });
 }
 
 /**
@@ -126,7 +139,7 @@ export async function installAnalyticsRecorder(page: Page): Promise<void> {
       __vaEvents?: Array<{ name: string; data?: Record<string, unknown> }>;
     };
     w.__vaEvents = [];
-    w.va = (...args: unknown[]) => {
+    const recorder = (...args: unknown[]) => {
       const [kind, payload] = args as [
         string,
         { name?: string; data?: Record<string, unknown> } | undefined,
@@ -135,6 +148,14 @@ export async function installAnalyticsRecorder(page: Page): Promise<void> {
         w.__vaEvents!.push({ name: payload.name, data: payload.data });
       }
     };
+    // Vercel Analytics may assign its own queue function after hydration.
+    // Keep the recorder installed for the duration of the test instead of
+    // allowing that assignment to replace the observation point.
+    Object.defineProperty(window, 'va', {
+      configurable: true,
+      get: () => recorder,
+      set: () => undefined,
+    });
   });
 }
 
@@ -165,10 +186,14 @@ export function dimensionLabel(dim: Dimension): string {
 // committed GET /api/assessment/drafts/[token] route resolves the same hash.
 // ---------------------------------------------------------------------------
 
-/** True when a real Supabase project is wired in (e2e draft tests need it). */
+/** True when a real Supabase project is wired in and writes are acknowledged. */
 export function isSupabaseConfiguredForE2E(): boolean {
   const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  return Boolean(url && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return Boolean(
+    url &&
+      process.env.SUPABASE_SERVICE_ROLE_KEY &&
+      process.env.E2E_ALLOW_PRODUCTION_SUPABASE === 'true',
+  );
 }
 
 function draftServiceRoleClient(): SupabaseClient {
@@ -178,6 +203,12 @@ function draftServiceRoleClient(): SupabaseClient {
     throw new Error(
       'Assessment draft helpers require SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY. ' +
         'Set them in .env.local before running the resume round-trip test.',
+    );
+  }
+  if (process.env.E2E_ALLOW_PRODUCTION_SUPABASE !== 'true') {
+    throw new Error(
+      'Assessment draft seeding requires E2E_ALLOW_PRODUCTION_SUPABASE=true. ' +
+        'This acknowledges that the test writes temporary rows to the real Supabase project.',
     );
   }
   return createClient(url, serviceRole, {

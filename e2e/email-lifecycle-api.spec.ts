@@ -21,6 +21,13 @@
 
 import { test, expect } from '@playwright/test';
 
+const EMAIL_TARGET_IS_EXTERNAL = Boolean(
+  (process.env.PLAYWRIGHT_BASE_URL ?? process.env.VERCEL_URL) &&
+  !(process.env.PLAYWRIGHT_BASE_URL ?? process.env.VERCEL_URL)?.includes('localhost'),
+);
+const ALLOW_EXTERNAL_EMAIL_MUTATIONS =
+  process.env.E2E_ALLOW_EXTERNAL_SIDE_EFFECTS === 'true';
+
 // ── Email 1 / 6 / 7: capture-email (assessment breakdown, waitlist, options) ──
 
 test.describe('Email triggers — /api/capture-email', () => {
@@ -41,6 +48,10 @@ test.describe('Email triggers — /api/capture-email', () => {
   });
 
   test('does not 404 or 500 on well-formed but rate-limited request', async ({ request }) => {
+    test.skip(
+      EMAIL_TARGET_IS_EXTERNAL && !ALLOW_EXTERNAL_EMAIL_MUTATIONS,
+      'External lead and email mutations require E2E_ALLOW_EXTERNAL_SIDE_EFFECTS=true.',
+    );
     // We use a .test TLD address (RFC 6761 — never reaches a real inbox)
     // so even if the route sends, nothing lands in a real inbox.
     // Rate limiting or SKIP_RESEND may short-circuit; any 2xx or 4xx is acceptable.
@@ -61,6 +72,10 @@ test.describe('Email triggers — /api/capture-email', () => {
   });
 
   test('waitlist interest path does not 404 or 500', async ({ request }) => {
+    test.skip(
+      EMAIL_TARGET_IS_EXTERNAL && !ALLOW_EXTERNAL_EMAIL_MUTATIONS,
+      'External lead and email mutations require E2E_ALLOW_EXTERNAL_SIDE_EFFECTS=true.',
+    );
     const res = await request.post('/api/capture-email', {
       data: {
         email: `e2e+waitlist-${Date.now()}@aibankinginstitute.test`,
@@ -156,6 +171,10 @@ test.describe('Email triggers — /api/inquiry', () => {
   });
 
   test('does not 404 or 500 on well-formed inquiry', async ({ request }) => {
+    test.skip(
+      EMAIL_TARGET_IS_EXTERNAL && !ALLOW_EXTERNAL_EMAIL_MUTATIONS,
+      'External inquiry and email mutations require E2E_ALLOW_EXTERNAL_SIDE_EFFECTS=true.',
+    );
     const res = await request.post('/api/inquiry', {
       data: {
         name: 'E2E Tester',

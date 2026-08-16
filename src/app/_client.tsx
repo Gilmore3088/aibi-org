@@ -8,6 +8,7 @@ import {
   Button,
   ArrowGlyph,
   CtaBand,
+  GuidedPathStrip,
 } from '@/components/mockup';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { AdvisorsStrip } from '@/components/sections/AdvisorsStrip';
@@ -232,12 +233,18 @@ export default function HomePage() {
             </h1>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Get my readiness score <ArrowGlyph />
+                Get readiness score <ArrowGlyph />
               </Button>
             </div>
             <p className="mk-hero-meta">Free · 12 questions · Practical next step</p>
           </div>
           <HomeRedlinePrompt />
+        </div>
+      </section>
+
+      <section className="mk-guided-path-band" aria-label="AiBI guided path">
+        <div className="mk-container">
+          <GuidedPathStrip currentStep="score" />
         </div>
       </section>
 
@@ -307,7 +314,7 @@ export default function HomePage() {
         />
         <div className="mk-roi-wrap">
           <ROICalculatorBody
-            ctaLabel="Take the Assessment"
+            ctaLabel="Get readiness score"
             ctaHref="/assessment/take"
             briefingSource="home"
           />
@@ -322,7 +329,7 @@ export default function HomePage() {
         hiddenOnMobile
         heading={<>Start with readiness. Leave with reviewed workflows.</>}
         actions={[
-          { label: 'Get my readiness score', href: '/assessment/take', variant: 'gold' },
+          { label: 'Get readiness score', href: '/assessment/take', variant: 'gold' },
           { label: 'Start learning', href: '/courses', variant: 'ghost-dark' },
         ]}
       />
@@ -584,7 +591,7 @@ const PRICE_TIERS: {
     price: 'Free',
     note: '12 questions. Score, top gap, and a starter artifact.',
     href: '/assessment/take',
-    action: 'Start free',
+    action: 'Get readiness score',
     featured: true,
   },
   {

@@ -79,6 +79,14 @@ function webhookError(
   return NextResponse.json(body, { status });
 }
 
+function unverifiedWebhookError(body: { error: string }, status: number): NextResponse {
+  // Missing/invalid signatures are untrusted internet traffic. Sending an ops
+  // email or creating a support case for each request lets an attacker flood
+  // both channels. Keep the forensic server log, but reserve alerts for
+  // failures that occur after Stripe has authenticated the event.
+  return NextResponse.json(body, { status });
+}
+
 function monitorPurchaseEmail(
   promise: Promise<ResendResult>,
   context: Record<string, unknown>,
@@ -135,14 +143,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.error(
       '[webhook] No signing secret configured (STRIPE_WEBHOOK_SECRET / STRIPE_WEBHOOK_SECRET_TEST).',
     );
-    return webhookError(
-      { error: 'Webhook not configured.' },
-      503,
-      {
-        title: 'Stripe webhook not configured',
-        message: 'Stripe sent a webhook, but no signing secret is configured.',
-      },
-    );
+    return unverifiedWebhookError({ error: 'Webhook not configured.' }, 503);
   }
 
   // Read raw body — signature verification requires the exact bytes received.
@@ -150,14 +151,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const sig = request.headers.get('stripe-signature');
 
   if (!sig) {
-    return webhookError(
-      { error: 'Missing stripe-signature header.' },
-      400,
-      {
-        title: 'Stripe webhook missing signature',
-        message: 'A webhook request reached the endpoint without a stripe-signature header.',
-      },
-    );
+    console.warn('[webhook] Missing stripe-signature header.');
+    return unverifiedWebhookError({ error: 'Missing stripe-signature header.' }, 400);
   }
 
   // Lazy-import to avoid module-level throw at build time when env var not set.
@@ -178,14 +173,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       `[webhook] Signature verification failed against ${webhookSecrets.length} secret(s):`,
       lastErr,
     );
-    return webhookError(
+    return unverifiedWebhookError(
       { error: 'Webhook signature verification failed.' },
       400,
-      {
-        title: 'Stripe webhook signature verification failed',
-        message: 'Stripe webhook signature verification failed against configured secret(s).',
-        context: { configuredSecrets: webhookSecrets.length },
-      },
     );
   }
 

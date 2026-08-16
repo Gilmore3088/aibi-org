@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { getPaidToolboxAccess } from '@/lib/toolbox/access';
 import { ToolboxApp } from './ToolboxApp';
 import { ContextStrip } from './_components/ContextStrip';
@@ -53,7 +54,15 @@ export default async function ToolboxPage() {
         </div>
         <ContextStrip />
       </div>
-      <ToolboxApp tier={access.tier} />
+      <Suspense
+        fallback={
+          <div className="min-h-[50vh]" aria-busy="true">
+            <span className="sr-only">Loading toolbox</span>
+          </div>
+        }
+      >
+        <ToolboxApp tier={access.tier} />
+      </Suspense>
     </main>
   );
 }

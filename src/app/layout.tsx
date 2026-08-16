@@ -14,15 +14,6 @@ import { BRAND } from '@content/copy';
 import { organizationJsonLd, websiteJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 import './globals.css';
 
-// The root layout previously read headers() (x-pathname) to pick the chrome,
-// which forced dynamic rendering app-wide. The hydration fix removed that
-// header read (chrome now derives from usePathname in LayoutChrome), which
-// made every page static-generation-eligible and surfaced
-// useSearchParams-without-Suspense prerender errors on the client auth pages.
-// Restore the prior app-wide dynamic rendering explicitly — it matches what
-// production does today and keeps the deterministic-chrome fix intact.
-export const dynamic = 'force-dynamic';
-
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
 // were declared here but had zero references anywhere in src/. They were
 // blocking the LCP element (the H1 in Newsreader) by competing for the

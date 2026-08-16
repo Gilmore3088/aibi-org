@@ -24,6 +24,9 @@ PLAYWRIGHT_BASE_URL=https://aibi-org-git-feature-x.vercel.app npm run e2e
 # Against staging
 PLAYWRIGHT_BASE_URL=https://staging.aibankinginstitute.com npm run e2e
 
+# Local paid-course preview coverage (uses the dev-only enrollment bypass)
+npm run e2e:course-preview
+
 # Single test file
 npx playwright test e2e/auth.spec.ts
 
@@ -40,8 +43,8 @@ TLD never reaches a real inbox, and the cleanup helper deletes them
 by email LIKE after each test.
 
 The seed helper requires `E2E_ALLOW_PRODUCTION_SUPABASE=true` as an
-explicit acknowledgment. Set it in `.env.local` for local runs and as
-a CI secret for the auth job.
+explicit acknowledgment. Prefer setting it for a single command rather than
+leaving it in `.env.local`.
 
 To purge any stranded test users:
 
@@ -60,16 +63,26 @@ Tests need:
 | `SUPABASE_SERVICE_ROLE_KEY` | For server-side test seeding |
 | `STRIPE_TEST_SECRET_KEY` | For purchase-flow tests (test mode only) |
 
+Normal local runs start an isolated dev server with Resend, MailerLite,
+Supabase service-role writes, Stripe, and ops-alert delivery disabled. The
+following opt-ins restore operator-only integrations for a single run:
+
+| Env var | Effect |
+|---|---|
+| `E2E_ALLOW_PRODUCTION_SUPABASE=true` | Allows temporary `.test` users/rows in the configured Supabase project |
+| `E2E_STRIPE_ROUNDTRIP=true` | Allows Stripe test-mode checkout calls |
+| `E2E_ALLOW_EXTERNAL_SIDE_EFFECTS=true` | Allows configured Resend, MailerLite, and ops channels |
+| `E2E_COURSE_PREVIEW=true` | Enables the local synthetic enrollment bypass |
+
 In CI these come from GitHub secrets. Locally, the existing
 `.env.local` works as long as you're pointing at the staging or dev
 Supabase project.
 
 ## What's covered (and what's not)
 
-This scaffold covers §3 (auth flows) of the launch checklist. The
-remaining E2E sections (§4 free assessment, §5 in-depth, §6 course
-purchase, §7 course modules, §8 exam, §9 email, §10 marketing) follow
-the same patterns — copy `e2e/auth.spec.ts` and adapt.
+The suite covers public, auth, assessment, purchase validation, course-preview,
+resource, accessibility, and responsive flows. Database-seeded auth/course
+tests and provider round-trips remain operator-gated.
 
 Stripe purchase tests use Stripe test mode card numbers
 (`4242 4242 4242 4242`) and run against `checkout.stripe.com`. They

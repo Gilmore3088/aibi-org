@@ -99,7 +99,7 @@ export function PromptCardsExperience() {
 
   return (
     <div className="mockup-scope">
-      <SiteHeader activePath="/resources" cta={{ label: 'Take assessment', href: '/assessment/take' }} />
+      <SiteHeader activePath="/resources" />
       <main className="bg-[color:var(--cream)]">
         <section className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-20">

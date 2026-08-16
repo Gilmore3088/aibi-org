@@ -11,7 +11,7 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
     await page.goto('/resources/templates/ai-workflow-sop');
     await expect(page).toHaveTitle(/AI Workflow SOP.*AI Banking Institute/i);
     await expect(
-      page.getByRole('heading', { level: 1, name: /Document one AI-assisted workflow end to end/i }),
+      page.getByRole('heading', { level: 1, name: /Document one AI-assisted workflow with controls/i }),
     ).toBeVisible();
     await expect(page.getByTestId('sop-hero-card')).toBeVisible();
     await expect(page.getByTestId('markdown-preview')).toBeVisible();
@@ -38,24 +38,27 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
   test('review checklist updates counter and unlocks Mark SOP reviewed', async ({ page }) => {
     await page.goto('/resources/templates/ai-workflow-sop');
     const counter = page.getByTestId('review-counter');
-    await expect(counter).toContainText('0/8 complete');
+    await expect(counter).toContainText('0/11 complete');
     const markBtn = page.getByRole('button', { name: /Mark SOP reviewed/i });
     await expect(markBtn).toBeDisabled();
 
     for (const item of [
+      'Front-page control fields are complete',
       'Business purpose is clear',
       'Approved tool is named',
       'Allowed inputs are defined',
       'Prohibited inputs are explicit',
       'Human reviewer is identified',
+      'Monitoring thresholds are written',
+      'Pause and restart approvals are defined',
       'Approval checkpoint is documented',
-      'Retention rule is defined',
+      'Records retained are defined',
       'Escalation triggers are listed',
     ]) {
       await page.getByLabel(item).check();
     }
 
-    await expect(counter).toContainText('8/8 complete');
+    await expect(counter).toContainText('11/11 complete');
     await expect(markBtn).toBeEnabled();
   });
 
@@ -74,7 +77,7 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
     await expect(page.getByRole('button', { name: /Copy Markdown/i })).toHaveCount(0);
 
     await page
-      .getByRole('button', { name: /Get Markdown for AI Workflow SOP Markdown/i })
+      .getByRole('button', { name: /Get Markdown for Bank AI Workflow SOP Markdown/i })
       .first()
       .click();
     await page.getByLabel(/Work email/i).fill('ops@bank.com');
@@ -96,7 +99,7 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
     await page.goto('/resources/templates/ai-workflow-sop');
     await expect(page.getByRole('button', { name: /Download \.md/i })).toHaveCount(0);
     await page
-      .getByRole('button', { name: /Get \.md for AI Workflow SOP Markdown file/i })
+      .getByRole('button', { name: /Get \.md for Bank AI Workflow SOP Markdown file/i })
       .first()
       .click();
     await page.getByLabel(/Work email/i).fill('ops@bank.com');
@@ -120,7 +123,7 @@ test.describe('/resources/templates/ai-workflow-sop builder', () => {
     await sopOpen.click();
     await expect(page).toHaveURL(/\/resources\/templates\/ai-workflow-sop/);
     await expect(
-      page.getByRole('heading', { level: 1, name: /Document one AI-assisted workflow/i }),
+      page.getByRole('heading', { level: 1, name: /Document one AI-assisted workflow with controls/i }),
     ).toBeVisible();
   });
 });

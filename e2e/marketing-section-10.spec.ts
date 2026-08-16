@@ -21,7 +21,8 @@ const MARKETING_ROUTES: ReadonlyArray<{
   redirectsTo?: RegExp;
 }> = [
   { name: 'home', path: '/' },
-  { name: 'education', path: '/education' },
+  { name: 'education (→ courses)', path: '/education', redirectsTo: /\/courses/ },
+  { name: 'courses', path: '/courses' },
   { name: 'for-institutions', path: '/for-institutions' },
   { name: 'for-institutions/advisory', path: '/for-institutions/advisory' },
   { name: 'about', path: '/about' },
@@ -32,7 +33,7 @@ const MARKETING_ROUTES: ReadonlyArray<{
   { name: 'terms', path: '/terms' },
   { name: 'privacy', path: '/privacy' },
   // Legacy redirects (preserved per next.config.mjs)
-  { name: 'certifications (→ education)', path: '/certifications', redirectsTo: /\/education/ },
+  { name: 'certifications', path: '/certifications' },
   { name: 'research (→ resources)', path: '/research', redirectsTo: /\/resources/ },
 ];
 
@@ -57,16 +58,14 @@ test.describe('§10 — public route rendering (items 313–327)', () => {
 
   test('§10.314 homepage hero, tagline, and content sections present', async ({ page }) => {
     await page.goto('/');
-    // Hero H1 carries the tagline.
+    // Hero leads with the readiness decision and the three-step value path.
     await expect(
-      page.getByRole('heading', { level: 1, name: /Turning Bankers into Builders/i }),
+      page.getByRole('heading', { level: 1, name: /Is your team ready to use AI safely/i }),
     ).toBeVisible();
-    // Three-tile ladder (Free / In-Depth / Foundation) — h2 headings.
-    const h2s = await page.locator('h2').allTextContents();
-    const joined = h2s.join(' | ');
-    expect(joined, 'homepage should expose the three-tile ladder').toMatch(/Readiness/i);
-    expect(joined).toMatch(/In-/i);
-    expect(joined).toMatch(/Foundation/i);
+    const valuePath = page.getByRole('tablist', { name: /Value path preview/i });
+    await expect(valuePath.getByRole('tab', { name: /Assess/i })).toBeVisible();
+    await expect(valuePath.getByRole('tab', { name: /Learn/i })).toBeVisible();
+    await expect(valuePath.getByRole('tab', { name: /Build/i })).toBeVisible();
   });
 
   test('§10.326 unknown route renders the not-found page', async ({ page }) => {
@@ -92,24 +91,9 @@ test.describe('§10 — public route rendering (items 313–327)', () => {
 });
 
 test.describe('§10.315–316 — ROI calculator (homepage client island)', () => {
-  // ROIDossier is dynamic-imported with ssr:false. Hydration depends on
-  // the dynamic chunk loading, which in `next dev` requires 'unsafe-eval'
-  // in the CSP — the production CSP intentionally excludes it. As a
-  // result these tests only pass against a production build:
-  //   PLAYWRIGHT_BASE_URL=https://aibankinginstitute.com  npx playwright …
-  //   or `npm run build && npm run start` locally.
-  // Track CSP env-awareness as a separate follow-up.
-  test.skip(
-    !!process.env.PLAYWRIGHT_BASE_URL?.includes('localhost'),
-    'ROI dynamic chunk needs prod CSP (dev blocks unsafe-eval) — run against prod or preview',
-  );
-
   test('§10.315 ROI calculator hydrates and renders a currency result', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
-    // The dossier is dynamic-imported with ssr:false — wait for the section
-    // anchor to appear after the chunk loads, then for the sliders to
-    // mount inside it.
-    const section = page.locator('#roi-dossier');
+    const section = page.locator('#roi-calculator');
     await section.waitFor({ state: 'attached', timeout: 15_000 });
     await section.scrollIntoViewIfNeeded();
     const sliders = section.locator('input[type="range"]');
@@ -121,7 +105,7 @@ test.describe('§10.315–316 — ROI calculator (homepage client island)', () =
 
   test('§10.316 ROI calculator handles boundary inputs (min slider values)', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
-    const section = page.locator('#roi-dossier');
+    const section = page.locator('#roi-calculator');
     await section.waitFor({ state: 'attached', timeout: 15_000 });
     await section.scrollIntoViewIfNeeded();
     const sliders = section.locator('input[type="range"]');
@@ -276,25 +260,21 @@ test.describe('§10.341–342 — a11y chrome', () => {
 
   test('§10.342 primary nav is keyboard-navigable via Tab', async ({ page }) => {
     await page.goto('/');
-    // After the skip link, Tab should walk through the nav links. We don't
-    // assert specific link order — just that we hit at least 3 anchors in
-    // the nav before leaving it.
-    const navLinkCount = await page.locator('header a').count();
-    expect(navLinkCount, 'site nav should expose at least 3 anchor links').toBeGreaterThanOrEqual(
-      3,
-    );
-    let anchorsHit = 0;
-    for (let i = 0; i < 12; i++) {
-      await page.keyboard.press('Tab');
-      const isNavAnchor = await page.evaluate(() => {
-        const el = document.activeElement;
-        if (!el) return false;
-        if (el.tagName !== 'A') return false;
-        return !!el.closest('header');
-      });
-      if (isNavAnchor) anchorsHit++;
-      if (anchorsHit >= 3) break;
+    let nav = page.getByRole('navigation', { name: /Primary/i });
+    if (!(await nav.isVisible())) {
+      const menuButton = page.getByRole('button', { name: /Open menu/i });
+      await menuButton.focus();
+      await expect(menuButton).toBeFocused();
+      await page.keyboard.press('Enter');
+      nav = page.getByRole('navigation', { name: /Site/i });
+      await expect(nav).toBeVisible();
     }
-    expect(anchorsHit, 'should reach at least 3 header anchors via Tab').toBeGreaterThanOrEqual(3);
+
+    const links = nav.getByRole('link');
+    expect(await links.count(), 'site nav should expose at least 3 anchor links').toBeGreaterThanOrEqual(3);
+    for (let index = 0; index < 3; index++) {
+      await links.nth(index).focus();
+      await expect(links.nth(index)).toBeFocused();
+    }
   });
 });

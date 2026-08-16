@@ -29,21 +29,10 @@ const NEXT = '/assessment/in-depth/take';
 
 test.describe('confirm-device-pending recovery (auth-login fix)', () => {
   test('exposes sessionless recovery forms and forwards next', async ({ page }) => {
-    await page.goto(
-      `/auth/confirm-device-pending?email=${encodeURIComponent(EMAIL)}&next=${encodeURIComponent(NEXT)}`,
-      { waitUntil: 'commit' },
-    );
-
-    // (2) Both recovery buttons must exist. Pre-fix they did not — this is the
-    //     proof the gap is closed.
-    const emailLinkButton = page.getByRole('button', { name: /email me a sign-in link/i });
-    const purchaseLinkButton = page.getByRole('button', { name: /resend purchase link/i });
-    await expect(emailLinkButton).toBeVisible();
-    await expect(purchaseLinkButton).toBeVisible();
-
     // (3) Intercept the sessionless send-sign-in-link endpoint and assert the
     //     forwarded next + email reach the request body (proves GAP B), then
-    //     return the generic anti-enumeration success copy.
+    //     return the generic anti-enumeration success copy. Register before
+    //     navigation so this remains deterministic with service workers.
     let sentBody: { email?: string; next?: string } | null = null;
     await page.route('**/api/auth/send-sign-in-link', async (route) => {
       sentBody = JSON.parse(route.request().postData() ?? '{}');
@@ -56,6 +45,18 @@ test.describe('confirm-device-pending recovery (auth-login fix)', () => {
         }),
       });
     });
+
+    await page.goto(
+      `/auth/confirm-device-pending?email=${encodeURIComponent(EMAIL)}&next=${encodeURIComponent(NEXT)}`,
+      { waitUntil: 'load' },
+    );
+
+    // (2) Both recovery buttons must exist. Pre-fix they did not — this is the
+    //     proof the gap is closed.
+    const emailLinkButton = page.getByRole('button', { name: /email me a sign-in link/i });
+    const purchaseLinkButton = page.getByRole('button', { name: /resend purchase link/i });
+    await expect(emailLinkButton).toBeVisible();
+    await expect(purchaseLinkButton).toBeVisible();
 
     // The page may prefill the email; set it explicitly to be deterministic.
     const emailLinkForm = page.locator('form', { has: emailLinkButton });

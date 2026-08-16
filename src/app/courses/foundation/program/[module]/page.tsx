@@ -38,7 +38,11 @@ import {
 import { DEV_COURSE_ENROLLMENT_ID, getEnrollment } from '../_lib/getEnrollment';
 import { canAccessModule } from '../_lib/courseProgress';
 import { getRoleSpotlight } from '../_lib/contentRouting';
-import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import {
+  createServiceRoleClient,
+  isSupabaseConfigured,
+  isSupabaseServiceRoleConfigured,
+} from '@/lib/supabase/client';
 import type { ActivityResponse } from '@/types/course';
 import { AIPracticeSandbox } from '@/components/AIPracticeSandbox';
 import { SANDBOX_CONFIGS } from '@content/sandbox-data/foundation-program';
@@ -254,7 +258,11 @@ export default async function ModulePage(props: ModulePageParams) {
   const moduleTables = expandedModule ? undefined : mod.tables;
 
   const existingResponses: Record<string, Record<string, string>> = {};
-  if (isSupabaseConfigured() && moduleActivities.length > 0) {
+  if (
+    isSupabaseConfigured() &&
+    isSupabaseServiceRoleConfigured() &&
+    moduleActivities.length > 0
+  ) {
     const serviceClient = createServiceRoleClient();
     const { data: responses } = await serviceClient
       .from('activity_responses')

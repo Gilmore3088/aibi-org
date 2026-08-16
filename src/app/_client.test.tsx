@@ -36,7 +36,7 @@ describe('HomePage', () => {
     // and CTA label lower on the page.
     const heroCopy = document.querySelector('.mk-hero-copy') as HTMLElement;
     expect(within(heroCopy).getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
-    expect(within(heroCopy).getAllByRole('link', { name: /Get my readiness score/i })).toHaveLength(1);
+    expect(within(heroCopy).getAllByRole('link', { name: /Get readiness score/i })).toHaveLength(1);
     expect(within(heroCopy).queryByRole('link', { name: /Start learning/i })).toBeNull();
   });
 

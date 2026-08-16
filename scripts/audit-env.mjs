@@ -12,8 +12,16 @@
 
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import nextEnv from '@next/env';
 
 const ROOT = process.cwd();
+const { loadEnvConfig } = nextEnv;
+const isProductionFlag =
+  process.argv.includes('--production') || process.env.NODE_ENV === 'production';
+
+// Standalone Node scripts do not inherit Next.js environment-file loading.
+loadEnvConfig(ROOT, !isProductionFlag);
+
 const SRC_DIRS = ['src'];
 const ROOT_FILES = ['next.config.mjs', 'middleware.ts', 'src/middleware.ts'];
 const EXTENSIONS = new Set(['.ts', '.tsx', '.mjs', '.js']);
@@ -25,11 +33,20 @@ const OPTIONAL = new Set([
   'ABANDONED_ASSESSMENT_LOOKBACK_DAYS',
   'ABANDONED_ASSESSMENT_MAX_REMINDERS',
   'ABANDONED_ASSESSMENT_REMINDER_AFTER_HOURS',
+  'ADMIN_DASHBOARD_EXCLUDED_EMAILS',
+  'ADMIN_DASHBOARD_EXCLUDED_EMAIL_PATTERNS',
+  'ADMIN_SUPPORT_EMAILS',
+  'CERTIFICATE_TRANSFER_LOOKBACK_DAYS',
+  'CERTIFICATE_TRANSFER_MAX_CHECKS',
   'CI',
   'COMING_SOON',
   'E2E_ALLOW_PRODUCTION_SUPABASE',
   'ENABLE_TEAM_ASSESSMENT_SELF_SERVE_CHECKOUT',
+  'FUNNEL_ADMIN_EMAILS',
   'GEMINI_API_KEY',
+  'MAILERLITE_GROUP_ID_ASSESSMENT',
+  'MAILERLITE_GROUP_ID_PLAYBOOK',
+  'NEXT_PUBLIC_CALENDLY_URL',
   'NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL',
   'NEXT_PUBLIC_LINKEDIN_URL',
   'NEXT_PUBLIC_TWITTER_URL',
@@ -46,6 +63,10 @@ const OPTIONAL = new Set([
   'PLAYWRIGHT_BASE_URL',
   'PREVIEW_AUTH_BYPASS',
   'PUPPETEER_LOCAL_CHROME',
+  'PUBLIC_PLAYGROUND_DAILY_CAP_CENTS',
+  'PUBLIC_PLAYGROUND_PER_IP_PER_DAY',
+  'PUBLIC_PLAYGROUND_PER_IP_PER_MINUTE',
+  'RESEND_WEBHOOK_SECRET',
   'SKIP_CONVERTKIT',
   'SKIP_CRON_AUTH',
   'SKIP_DEV_BYPASS',
@@ -63,6 +84,7 @@ const OPTIONAL = new Set([
   'STRIPE_FOUNDATIONS_INSTITUTION_PRICE_ID',
   'STRIPE_FOUNDATIONS_PRICE_ID',
   'STRIPE_FOUNDATION_INSTITUTION_PRICE_ID',
+  'STRIPE_FOUNDATION_PRICE_ID',
   'STRIPE_TEAM_ASSESSMENT_PRICE_ID',
   'STRIPE_WEBHOOK_SECRET_TEST',
   'VERCEL',
@@ -86,6 +108,30 @@ const PRODUCTION_GROUPS = [
     message:
       'Set OPS_ALERT_WEBHOOK_URL or OPS_ALERT_EMAIL before paid promotion so webhook/email failures alert an operator.',
   },
+  {
+    label: 'Foundation individual Stripe price',
+    names: [
+      'STRIPE_FOUNDATION_PRICE_ID',
+      'STRIPE_FOUNDATIONS_PRICE_ID',
+      'STRIPE_AIBIP_PRICE_ID',
+    ],
+    message:
+      'Set STRIPE_FOUNDATION_PRICE_ID (or a supported legacy fallback) before enabling Foundation checkout.',
+  },
+  {
+    label: 'institution booking URL',
+    names: ['NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL', 'NEXT_PUBLIC_CALENDLY_URL'],
+    message:
+      'Set NEXT_PUBLIC_EXECUTIVE_BRIEFING_URL or NEXT_PUBLIC_CALENDLY_URL for institution inquiry calls to action.',
+  },
+];
+
+const PRODUCTION_REQUIRED = [
+  'ADMIN_SUPPORT_EMAILS',
+  'FUNNEL_ADMIN_EMAILS',
+  'MAILERLITE_GROUP_ID_ASSESSMENT',
+  'MAILERLITE_GROUP_ID_PLAYBOOK',
+  'RESEND_WEBHOOK_SECRET',
 ];
 
 const PRODUCTION_MUST_NOT_EQUAL = [
@@ -118,7 +164,7 @@ const PRODUCTION_MUST_NOT_EQUAL = [
 
 const isStrict = process.argv.includes('--strict');
 const isProductionAudit =
-  process.argv.includes('--production') || process.env.VERCEL_ENV === 'production';
+  isProductionFlag || process.env.VERCEL_ENV === 'production';
 
 function walk(dir) {
   const out = [];
@@ -207,6 +253,16 @@ for (const name of names) {
 }
 
 if (isProductionAudit) {
+  for (const name of PRODUCTION_REQUIRED) {
+    if (!process.env[name]) {
+      productionFailures.push({
+        label: name,
+        message: `${name} is required in the production environment.`,
+        names: [name],
+      });
+    }
+  }
+
   for (const group of PRODUCTION_GROUPS) {
     const configured = group.names.some((name) => process.env[name]);
     if (!configured) {

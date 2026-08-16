@@ -18,8 +18,8 @@ import { loginViaUI } from './helpers/auth';
 test.describe('auth — public pages (logged out)', () => {
   test('§3.42 visit /auth/login — form renders', async ({ page }) => {
     await page.goto('/auth/login');
-    await expect(page.getByLabel(/email/i)).toBeVisible();
-    await expect(page.getByLabel(/password/i)).toBeVisible();
+    await expect(page.locator('#login-email')).toBeVisible();
+    await expect(page.locator('#login-password')).toBeVisible();
     await expect(page.getByRole('button', { name: /sign in|log in/i })).toBeVisible();
   });
 
@@ -55,8 +55,8 @@ test.describe('auth — public pages (logged out)', () => {
     // Use a clearly non-existent account; server should not leak that the
     // email is unknown (vs known-but-wrong-password).
     await page.goto('/auth/login');
-    await page.getByLabel(/email/i).fill('does-not-exist@aibankinginstitute.test');
-    await page.getByLabel(/password/i).fill('definitely-wrong-password');
+    await page.locator('#login-email').fill('does-not-exist@aibankinginstitute.test');
+    await page.locator('#login-password').fill('definitely-wrong-password');
     await page.getByRole('button', { name: /sign in|log in/i }).click();
     await expect(page.getByText(/invalid|incorrect|could not/i)).toBeVisible({ timeout: 5_000 });
   });
@@ -99,14 +99,12 @@ test.describe('auth — public pages (logged out)', () => {
 
   test('§3.87 login form Enter-key submission works', async ({ page }) => {
     await page.goto('/auth/login');
-    await page.getByLabel(/email/i).fill('does-not-exist@aibankinginstitute.test');
-    await page.getByLabel(/password/i).fill('definitely-wrong-password');
-    await page.getByLabel(/password/i).press('Enter');
-    // Either a Supabase error (real submit) or stayed-on-page (still proves
-    // Enter triggered something). Wait for either.
-    await expect(page.getByText(/invalid|incorrect|could not|sign in|error/i)).toBeVisible({
-      timeout: 5_000,
-    });
+    await page.locator('#login-email').fill('does-not-exist@aibankinginstitute.test');
+    await page.locator('#login-password').fill('definitely-wrong-password');
+    await page.locator('#login-password').press('Enter');
+    await expect(
+      page.locator('[role="alert"]:not(#__next-route-announcer__)'),
+    ).toContainText(/invalid|incorrect|could not|error/i, { timeout: 5_000 });
   });
 
   test('§3.68 /auth/callback without token returns a graceful error', async ({ page }) => {
@@ -157,6 +155,11 @@ test.describe('auth — protected routes (logged out)', () => {
 });
 
 test.describe('auth — logged-in flows', () => {
+  test.skip(
+    process.env.E2E_ALLOW_PRODUCTION_SUPABASE !== 'true',
+    'Requires explicit Supabase seed opt-in: E2E_ALLOW_PRODUCTION_SUPABASE=true',
+  );
+
   let user: SeededUser | null = null;
 
   test.beforeEach(async () => {
@@ -210,8 +213,8 @@ test.describe('auth — logged-in flows', () => {
   test('§3.54 login respects ?next= redirect', async ({ page }) => {
     if (!user) throw new Error('user not seeded');
     await page.goto('/auth/login?next=/dashboard/toolbox');
-    await page.getByLabel(/email/i).fill(user.email);
-    await page.getByLabel(/password/i).fill(user.password);
+    await page.locator('#login-email').fill(user.email);
+    await page.locator('#login-password').fill(user.password);
     await page.getByRole('button', { name: /sign in|log in/i }).click();
     await expect(page).toHaveURL(/\/dashboard\/toolbox/);
   });

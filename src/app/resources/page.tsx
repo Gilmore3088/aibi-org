@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ResourcesExperience } from './ResourcesExperience';
 
 export const metadata: Metadata = {
-  title: 'AI Resources for Community Banks & Credit Unions | The AI Banking Institute',
+  title: 'AI Resources for Community Banks & Credit Unions',
   description:
     'Policy starters, workflow SOPs, review checklists, prompt cards, and role playbooks built for banking teams.',
   alternates: { canonical: 'https://www.aibankinginstitute.com/resources' },

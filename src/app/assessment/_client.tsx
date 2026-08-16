@@ -15,6 +15,7 @@ import {
   Section,
   SectionHead,
   Button,
+  GuidedPathStrip,
   StickyMobileCta,
 } from '@/components/mockup';
 
@@ -98,10 +99,10 @@ export default function AssessmentLandingPage() {
             </p>
             <div className="mk-ctas">
               <Button variant="gold" size="lg" href="/assessment/take">
-                Start free assessment <ArrowR className="mk-ic" />
+                Get readiness score <ArrowR className="mk-ic" />
               </Button>
-              <Button variant="ghost-light" size="lg" href="/assessment/in-depth">
-                See paid assessment
+              <Button variant="ghost-dark" size="lg" href="/assessment/in-depth">
+                Compare assessment paths
               </Button>
             </div>
           </div>
@@ -109,11 +110,17 @@ export default function AssessmentLandingPage() {
         </div>
       </section>
 
+      <section className="mk-guided-path-band is-white" aria-label="Assessment path">
+        <div className="mk-container">
+          <GuidedPathStrip currentStep="score" />
+        </div>
+      </section>
+
       {/* ── OUTPUT CHOICE ───────────────────────────────────────── */}
       <Section variant="std" surface="white" id="sample">
         <SectionHead
           kicker="Two outputs"
-          heading={<>Start free. Upgrade for the 90-day report.</>}
+          heading={<>Start with your readiness score. Upgrade for the 90-day report.</>}
           lede={
             <>
               The free path gives the first month. The paid path gives the
@@ -125,7 +132,7 @@ export default function AssessmentLandingPage() {
       </Section>
 
       <StickyMobileCta
-        label="Start the free assessment"
+        label="Get readiness score"
         href="/assessment/take"
         source="sticky-mobile-cta-assessment"
       />
@@ -176,7 +183,7 @@ function AssessmentPathPreview() {
           <li><CheckIcon className="mk-ic" /> Your starter artifact</li>
         </ul>
         <Button variant="ink" size="lg" href="/assessment/take">
-          Start free
+          Get readiness score
         </Button>
       </article>
 

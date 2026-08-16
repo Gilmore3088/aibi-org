@@ -2,10 +2,6 @@
 
 import {
   sendInline,
-  RESEND_API_URL,
-  DEFAULT_FROM,
-  DEFAULT_FROM_NAME,
-  REPLY_TO,
   type ResendResult,
 } from '../_core';
 import { supportShell, type SupportAccessRescuePayload } from './support';
@@ -45,19 +41,6 @@ export async function sendDeviceConfirmation(
   payload: DeviceConfirmationPayload,
 ): Promise<ResendResult> {
   const tag = '[resend:device-confirmation]';
-
-  if (process.env.SKIP_RESEND === 'true') {
-    console.warn(`${tag} SKIPPED — SKIP_RESEND env flag set`);
-    return { skipped: true, reason: 'SKIP_RESEND env flag' };
-  }
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn(`${tag} SKIPPED — RESEND_API_KEY not configured`);
-    return { skipped: true, reason: 'RESEND_API_KEY not configured' };
-  }
-
-  const fromAddress = process.env.RESEND_FROM ?? DEFAULT_FROM;
-  const fromName = process.env.RESEND_FROM_NAME ?? DEFAULT_FROM_NAME;
 
   const safeAgent = (payload.userAgent ?? 'an unknown browser').slice(0, 200);
   const safeIp = payload.ipApprox ?? 'unknown';
@@ -101,37 +84,11 @@ This link expires in ${payload.expiresInMinutes} minutes. If this wasn't you, ig
 
 — The AI Banking Institute`;
 
-  console.log(`${tag} sending to=${payload.email} key-prefix=${apiKey.slice(0, 8)}…`);
-
-  try {
-    const response = await fetch(RESEND_API_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `${fromName} <${fromAddress}>`,
-        to: [payload.email],
-        reply_to: REPLY_TO,
-        subject: 'Confirm your sign-in — The AI Banking Institute',
-        html,
-        text,
-      }),
-    });
-
-    if (!response.ok) {
-      const body = await response.text().catch(() => '');
-      const error = `Resend API ${response.status}: ${body.slice(0, 400)}`;
-      console.error(`${tag} FAILED — ${error}`);
-      return { ok: false, error };
-    }
-    const json = (await response.json().catch(() => ({}))) as { id?: string };
-    console.log(`${tag} SENT — id=${json.id ?? 'unknown'}`);
-    return { ok: true, id: json.id ?? 'unknown' };
-  } catch (err) {
-    const error = err instanceof Error ? err.message : 'Unexpected error';
-    console.error(`${tag} EXCEPTION — ${error}`);
-    return { ok: false, error };
-  }
+  return sendInline({
+    to: payload.email,
+    subject: 'Confirm your sign-in — The AI Banking Institute',
+    html,
+    text,
+    tag,
+  });
 }

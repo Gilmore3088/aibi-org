@@ -13,10 +13,9 @@ import {
 // Free assessment flow — covers §4.88-127 of tasks/launch-checklist.md.
 //
 // These tests focus on the PUBLIC path (no auth, no DB seeding). They
-// validate the assessment is reachable, questions advance, and the
-// pre-email-gate score/tier display is visible per the 2026-04-27
-// decision ("score + tier visible without email; dimension breakdown +
-// starter artifact gated").
+// validate the assessment is reachable, questions advance, and the full
+// report stays gated until a work email is captured. Capture requests are
+// mocked by submitEmailGate so these remain provider-free UI tests.
 //
 // What's NOT here:
 //   - Email-gate submission tests (need MailerLite/Supabase seeding
@@ -34,7 +33,11 @@ test.describe('free assessment — public flow', () => {
     expect(body.length).toBeGreaterThan(200);
   });
 
-  test('§4.89 assessment loads under 4s on default network', async ({ page }) => {
+  test('§4.89 assessment loads under 4s on default network', async ({ page, browserName }) => {
+    test.skip(
+      browserName !== 'chromium',
+      'The wall-clock performance budget is measured once; cross-browser behavior is covered separately.',
+    );
     const start = Date.now();
     await page.goto('/assessment', { waitUntil: 'load' });
     const elapsed = Date.now() - start;
@@ -45,7 +48,7 @@ test.describe('free assessment — public flow', () => {
   });
 
   test('§4.90/.91 answer selection enables/gates the Next control', async ({ page }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     // Look for the first radio/button group representing answer options.
@@ -57,10 +60,10 @@ test.describe('free assessment — public flow', () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  test('§4.92 / §4.97 complete all 12 questions → score + tier visible WITHOUT email gate', async ({
+  test('§4.92 / §4.97 complete all 12 questions → score preview and email gate', async ({
     page,
   }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     // QUESTIONS_PER_SESSION = 12 per src/app/assessment/_lib/useAssessmentV2.ts.
@@ -70,65 +73,50 @@ test.describe('free assessment — public flow', () => {
     //
     // We pick the FIRST radio option on each question, which yields the
     // lowest tier ('starting-point'). That's deterministic across runs.
-    for (let i = 0; i < 12; i++) {
-      const radios = page.getByRole('radio');
-      await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
-      await radios.first().click();
-      // Tiny pause so the next radiogroup mounts before we re-query.
-      await page.waitForTimeout(150);
-    }
+    for (let i = 0; i < 12; i++) await answerCurrent(page, 0);
 
-    // After 12 answers, the score+tier surface should be visible without
-    // any email submission. ScoreRing has aria-label "Your AI readiness
-    // score is N out of M, placing you in the X tier." — easy to assert on.
+    // The score/tier receipt is visible, while the detailed report remains
+    // gated until submitEmailGate completes.
     await expect(
-      page.getByLabel(/Your AI readiness score is \d+ out of \d+/i),
+      page.getByRole('textbox', { name: /email/i }).first(),
     ).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('Preview score')).toBeVisible();
+    await expect(page.getByText('Starting Point', { exact: true })).toBeVisible();
   });
 
   test('§4.98 dimension breakdown is gated behind the email capture', async ({ page }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     // Complete the 12 questions as above.
-    for (let i = 0; i < 12; i++) {
-      const radios = page.getByRole('radio');
-      await radios.first().waitFor({ state: 'visible', timeout: 5_000 });
-      await radios.first().click();
-      await page.waitForTimeout(150);
-    }
+    for (let i = 0; i < 12; i++) await answerCurrent(page, 0);
 
     // After scoring, an email capture form is visible (per the 2026-04-27
     // decision: dimension breakdown is gated until email is captured).
     await expect(
       page.getByRole('textbox', { name: /email/i }).first(),
     ).toBeVisible({ timeout: 10_000 });
+    await expect(
+      page.getByRole('figure', { name: /eight-dimension readiness chart/i }),
+    ).toHaveCount(0);
   });
 
   test('§4.120 progress indicator updates as questions are answered', async ({ page }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
-    // ProgressBar renders the fraction answered. We can't directly query
-    // its visual fill, but the page text typically includes "Question N
-    // of 12" or a percentage. Verify the question index advances.
-    const initialText = await page.locator('body').innerText();
-    expect(initialText).toMatch(/question\s+1\s+of\s+12|1\s*\/\s*12|question 1/i);
+    const progress = page.getByRole('progressbar', { name: 'Assessment progress' });
+    await expect(progress).toHaveAttribute('aria-valuenow', '0');
 
-    // Answer Q1; expect text to reflect Q2.
-    await page.getByRole('radio').first().click();
-    await page.waitForTimeout(300);
-    const afterFirstAnswer = await page.locator('body').innerText();
-    expect(afterFirstAnswer).toMatch(/question\s+2\s+of\s+12|2\s*\/\s*12|question 2/i);
+    // One of twelve questions rounds to eight percent.
+    await answerCurrent(page, 0);
+    await expect(progress).toHaveAttribute('aria-valuenow', '8');
   });
 
-  test('§4.97 tagline mentions "Turning Bankers into Builders"', async ({ page }) => {
-    // The assessment page often surfaces the brand tagline; if not, the
-    // homepage does. Either is acceptable — the tagline must exist
-    // somewhere reachable from the assessment entry.
+  test('§4.97 homepage promise connects readiness to reviewed workflows', async ({ page }) => {
     await page.goto('/');
     const body = await page.locator('body').innerText();
-    expect(body).toMatch(/Turning Bankers into Builders/i);
+    expect(body).toMatch(/Start with readiness\. Leave with reviewed workflows\./i);
   });
 
   test('§4.106 /api/capture-email rejects invalid email format', async ({ request }) => {
@@ -224,7 +212,7 @@ test.describe('free assessment — score bands (#135 §4)', () => {
     test(`uniform answers land in "${band.name}" (score ${band.total})`, async ({
       page,
     }) => {
-      await page.goto('/assessment');
+      await page.goto('/assessment/take');
       await page.waitForLoadState('networkidle');
 
       const total = await answerAllUniform(page, band.optionIndex);
@@ -232,22 +220,10 @@ test.describe('free assessment — score bands (#135 §4)', () => {
 
       await submitEmailGate(page);
 
-      // The inline report's ScoreRing carries both the numeric score and the
-      // tier label in its aria-label — assert both in one selector.
+      const hero = page.getByTestId('readiness-result-hero');
+      await expect(hero).toContainText(String(band.total));
       await expect(
-        page.getByRole('img', {
-          name: new RegExp(
-            `Your AI readiness score is ${band.total} out of 48, placing you in the ${band.name} tier`,
-            'i',
-          ),
-        }),
-      ).toBeVisible({ timeout: 15_000 });
-
-      // The tier label is also surfaced as visible copy somewhere in the
-      // report (ScoreRing caption / dashboard phase line) — guard the
-      // user-facing string, not just the aria attribute.
-      await expect(
-        page.getByText(band.name, { exact: false }).first(),
+        hero.getByRole('heading', { name: new RegExp(`Your result: ${band.name}`, 'i') }),
       ).toBeVisible();
     });
   }
@@ -256,33 +232,28 @@ test.describe('free assessment — score bands (#135 §4)', () => {
 // ---------------------------------------------------------------------------
 // #135 §4 — Email gate contract.
 //
-// Critical UX rule (CLAUDE.md + DECISIONS.md 2026-05-18): score, tier,
-// dimension breakdown, and starter artifact are ALL hidden until a work
-// email is submitted, then the full report renders INLINE on the same page
-// (no redirect, no "check your inbox" wait state).
+// Critical UX rule: score, tier, and top-gap preview are the receipt for
+// completing the questions. Topic detail and takeaways render only after the
+// user submits or explicitly chooses the no-email summary lane.
 // ---------------------------------------------------------------------------
 
 test.describe('free assessment — email gate (#135 §4)', () => {
   test('full report is hidden until email submit, then renders inline', async ({
     page,
   }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     await answerAllUniform(page, 1); // → Early Stage
 
-    // Before email: the email-gate form is showing and NONE of the report
-    // surfaces (score ring, dimension chart, starter artifact) are present.
+    // Before email: the receipt and form are visible, but the detailed topic
+    // summary and working artifact are not mounted.
     await expect(
       page.getByRole('textbox', { name: /email/i }).first(),
     ).toBeVisible({ timeout: 10_000 });
-    await expect(
-      page.getByRole('img', { name: /Your AI readiness score is/i }),
-    ).toHaveCount(0);
-    await expect(
-      page.getByRole('figure', { name: /eight-dimension readiness chart/i }),
-    ).toHaveCount(0);
-    await expect(page.getByText(/your starter artifact/i)).toHaveCount(0);
+    await expect(page.getByText('Preview score')).toBeVisible();
+    await expect(page.getByTestId('readiness-result-hero')).toHaveCount(0);
+    await expect(page.getByTestId('working-artifact')).toHaveCount(0);
 
     // Tag the live document so we can prove the report renders in the SAME
     // page (inline) rather than via a navigation/redirect to a new document.
@@ -302,11 +273,9 @@ test.describe('free assessment — email gate (#135 §4)', () => {
     );
     expect(sameDocument).toBe(true);
     expect(page.url()).toMatch(/\/(assessment|results\/[0-9a-f-]+)/i);
+    await expect(page.getByTestId('readiness-result-hero')).toBeVisible();
     await expect(
-      page.getByRole('img', { name: /Your AI readiness score is/i }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('figure', { name: /eight-dimension readiness chart/i }),
+      page.getByRole('heading', { name: /Your 12 answers, grouped by topic/i }),
     ).toBeVisible();
   });
 });
@@ -323,7 +292,7 @@ test.describe('free assessment — email gate (#135 §4)', () => {
 
 test.describe('free assessment — starter artifact (#135 §4)', () => {
   test('starter artifact is tailored to the weakest dimension', async ({ page }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     const weakDimension = await answerWithOneWeakDimension(page);
@@ -331,30 +300,21 @@ test.describe('free assessment — starter artifact (#135 §4)', () => {
 
     await submitEmailGate(page);
 
-    // The "first AI move" section names the weakest dimension explicitly.
-    await expect(
-      page.getByText(
-        new RegExp(`Surfaced by your weakest dimension:\\s*${weakLabel}`, 'i'),
-      ),
-    ).toBeVisible({ timeout: 15_000 });
-
-    // The collapsible starter artifact is tailored to that same top gap.
-    await page
-      .getByText(/show printable starter artifact/i)
-      .click();
-    await expect(
-      page.getByText(
-        new RegExp(`Tailored to your top gap:\\s*${weakLabel}`, 'i'),
-      ),
-    ).toBeVisible();
+    const hero = page.getByTestId('readiness-result-hero');
+    await expect(hero).toHaveAttribute('data-focus-gap', weakDimension);
+    await expect(hero.getByText(weakLabel, { exact: true })).toBeVisible();
+    await expect(page.getByTestId('working-artifact')).toHaveAttribute(
+      'data-artifact-dimension',
+      weakDimension,
+    );
   });
 });
 
 // ---------------------------------------------------------------------------
 // #135 §4 — sessionStorage persistence.
 //
-// useAssessmentV2 syncs { selectedQuestionIds, answers, currentQuestion } to
-// sessionStorage key "aibi-assessment-v2" on every answer, restores it on
+// useAssessmentV3 syncs { selectedQuestionIds, answers, currentQuestion } to
+// sessionStorage key "aibi-assessment-v3" on every answer, restores it on
 // mount (rebuilding question order by id), and clears it on restart. After
 // email capture the report renders from in-memory state; the persistence
 // key is no longer needed for an in-progress run.
@@ -362,7 +322,7 @@ test.describe('free assessment — starter artifact (#135 §4)', () => {
 
 test.describe('free assessment — sessionStorage persistence (#135 §4)', () => {
   test('refresh mid-assessment restores answers and position', async ({ page }) => {
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     // Answer the first three questions, leaving us mid-flow on Q4.
@@ -374,7 +334,7 @@ test.describe('free assessment — sessionStorage persistence (#135 §4)', () =>
 
     // sessionStorage should hold three answers and currentQuestion === 3.
     const persisted = await page.evaluate(() =>
-      window.sessionStorage.getItem('aibi-assessment-v2'),
+      window.sessionStorage.getItem('aibi-assessment-v3'),
     );
     expect(persisted).not.toBeNull();
     const parsed = JSON.parse(persisted as string) as {
@@ -393,7 +353,7 @@ test.describe('free assessment — sessionStorage persistence (#135 §4)', () =>
     await expect(page.locator('body')).toContainText(/question\s+4\s+of\s+12|04\s*\/\s*12/i);
 
     const afterReload = await page.evaluate(() =>
-      window.sessionStorage.getItem('aibi-assessment-v2'),
+      window.sessionStorage.getItem('aibi-assessment-v3'),
     );
     const reParsed = JSON.parse(afterReload as string) as {
       selectedQuestionIds: string[];
@@ -404,31 +364,31 @@ test.describe('free assessment — sessionStorage persistence (#135 §4)', () =>
     expect(reParsed.currentQuestion).toBe(3);
   });
 
-  test('sessionStorage is cleared after email capture', async ({ page }) => {
-    await page.goto('/assessment');
+  test('sessionStorage records the completed results phase after email capture', async ({ page }) => {
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     await answerAllUniform(page, 1);
 
     // Mid/late flow the key exists.
     const beforeCapture = await page.evaluate(() =>
-      window.sessionStorage.getItem('aibi-assessment-v2'),
+      window.sessionStorage.getItem('aibi-assessment-v3'),
     );
     expect(beforeCapture).not.toBeNull();
 
     await submitEmailGate(page);
 
-    // After capture the in-progress key must be cleared so a later return to
-    // /assessment starts a fresh run rather than resuming a finished one.
+    // The inline fallback has no server row, so the completed state remains in
+    // sessionStorage and can survive a refresh of this tab.
     await expect
       .poll(
-        () =>
-          page.evaluate(() =>
-            window.sessionStorage.getItem('aibi-assessment-v2'),
-          ),
+        () => page.evaluate(() => {
+          const raw = window.sessionStorage.getItem('aibi-assessment-v3');
+          return raw ? (JSON.parse(raw) as { phase?: string }).phase : null;
+        }),
         { timeout: 10_000 },
       )
-      .toBeNull();
+      .toBe('results');
   });
 });
 
@@ -447,7 +407,7 @@ test.describe('free assessment — analytics (#135 §4)', () => {
     page,
   }) => {
     await installAnalyticsRecorder(page);
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     await answerAllUniform(page, 1); // → Early Stage, score 24
@@ -483,7 +443,7 @@ test.describe('free assessment — analytics (#135 §4)', () => {
 
   test('assessment_start fires on mount', async ({ page }) => {
     await installAnalyticsRecorder(page);
-    await page.goto('/assessment');
+    await page.goto('/assessment/take');
     await page.waitForLoadState('networkidle');
 
     await expect

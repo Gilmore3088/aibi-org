@@ -10,6 +10,7 @@ vi.mock('@/lib/supabase/client', () => {
   return {
     createServiceRoleClient: vi.fn(() => client),
     isSupabaseConfigured: vi.fn(() => true),
+    isSupabaseServiceRoleConfigured: vi.fn(() => true),
     __mock: { maybeSingle, eq, select, from },
   };
 });
@@ -51,10 +52,22 @@ describe('loadAssessmentResponse', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (supabaseClient.isSupabaseConfigured as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    (
+      supabaseClient.isSupabaseServiceRoleConfigured as ReturnType<typeof vi.fn>
+    ).mockReturnValue(true);
   });
 
   it('returns null when Supabase is not configured', async () => {
     (supabaseClient.isSupabaseConfigured as ReturnType<typeof vi.fn>).mockReturnValue(false);
+    const result = await loadAssessmentResponse(VALID_UUID);
+    expect(result).toBeNull();
+    expect(mock.maybeSingle).not.toHaveBeenCalled();
+  });
+
+  it('returns null when the Supabase service role is not configured', async () => {
+    (
+      supabaseClient.isSupabaseServiceRoleConfigured as ReturnType<typeof vi.fn>
+    ).mockReturnValue(false);
     const result = await loadAssessmentResponse(VALID_UUID);
     expect(result).toBeNull();
     expect(mock.maybeSingle).not.toHaveBeenCalled();

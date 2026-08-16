@@ -11,7 +11,7 @@ import { PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 const PLAYBOOK_COUNT = PLAYBOOK_INDEX.length;
 
 export const metadata: Metadata = {
-  title: 'Role Playbooks — The AI Banking Institute',
+  title: 'Role Playbooks',
   description:
     'Nine role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, IT/InfoSec, executive, operations, and training/HR. Reviewed prompts and reusable templates.',
 };
