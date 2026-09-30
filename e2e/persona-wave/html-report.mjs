@@ -11,7 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ALL_QUOTAS as JOURNEY_QUOTAS } from './personas.mjs';
 
-const [runDir, outDir] = process.argv.slice(2);
+const [runDir, outDir, wave2Dir] = process.argv.slice(2);
 if (!runDir || !outDir) {
   console.error('usage: node e2e/persona-wave/html-report.mjs <run-out-dir> <findings-dir>');
   process.exit(2);
@@ -52,8 +52,10 @@ function trimTimeline(tl) {
   return out;
 }
 
-const personas = results.map((r) => ({
-  id: r.persona.id,
+function shapePersona(r, wave) {
+  return {
+  id: wave === 2 ? `W2-${r.persona.id}` : r.persona.id,
+  wave,
   role: r.persona.role,
   fi: r.persona.fiType,
   temperament: r.persona.temperament,
@@ -77,7 +79,23 @@ const personas = results.map((r) => ({
   timeline: trimTimeline(
     r.timeline.map((t) => ({ s: Math.round(t.ms / 1000), c: t.clicks, a: t.action, n: t.note.replace(/\s+/g, ' ').slice(0, 140), u: t.url })),
   ),
-}));
+  };
+}
+const personas = results.map((r) => shapePersona(r, 1));
+
+// Optional second wave (feature sweep).
+let wave2 = null;
+if (wave2Dir) {
+  const w2 = JSON.parse(fs.readFileSync(path.join(wave2Dir, 'results.json'), 'utf8'));
+  const w2s = JSON.parse(fs.readFileSync(path.join(wave2Dir, 'summary.json'), 'utf8'));
+  personas.push(...w2.results.map((r) => shapePersona(r, 2)));
+  wave2 = {
+    meta: w2.meta,
+    totals: w2s.totals,
+    journeys: w2s.journeys,
+    issues: w2s.issues.slice(0, 60).map((i) => ({ kind: i.kind, detail: i.detail.slice(0, 200), personas: i.personas.length, severity: i.severity, env: !!i.env, paths: i.paths.slice(0, 3) })),
+  };
+}
 
 // Some module page titles weren't loaded when recorded; take the first
 // non-empty title seen for each module across all personas.
@@ -88,6 +106,7 @@ const typedCertificate = results.filter((r) => r.persona.courseDepth >= 18 && r.
 
 const data = {
   typedCertificate,
+  wave2,
   meta,
   totals: summary.totals,
   journeys: summary.journeys,

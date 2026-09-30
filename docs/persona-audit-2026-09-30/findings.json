@@ -1,7 +1,7 @@
 {
-  "title": "Persona Wave · Sep 30",
+  "title": "Persona Waves · Sep 30",
   "runDate": "2026-09-30",
-  "scope": "Local dev server with the course enrollment bypass. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, download, lab, and certificate flows are marked as not tested.",
+  "scope": "Two local runs of 100 personas each on a dev build with the course enrollment bypass. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
   "findings": [
     {
       "id": "next-module",
@@ -20,9 +20,46 @@
       "after": "shots/after-fix-save-step-next-link.png"
     },
     {
+      "id": "exam-b",
+      "title": "Exam could be passed by always choosing “b”",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Certification",
+      "summary": "37 of 41 exam answers were “b” and options were never shuffled. Answering “b” to every question scored 83%, “Advanced”.",
+      "evidence": [
+        "Probe answered b ×12 → 83% Advanced",
+        "Question bank: 37 b, 2 a, 2 c"
+      ],
+      "fix": "Options are shuffled every time an exam is drawn and lettered by position; scoring keys are unchanged. A test proves fixed-position guessing stays near chance."
+    },
+    {
+      "id": "exam-longest",
+      "title": "Exam’s correct answer is almost always the longest",
+      "status": "open",
+      "severity": "high",
+      "area": "Certification",
+      "summary": "In 39 of 40 questions the correct option is the longest. Even with shuffling, “pick the longest answer” passes. Distractors need rewriting to similar length and specificity.",
+      "evidence": [
+        "39 of 40 parsed questions"
+      ],
+      "fix": "Course content: rewrite distractors, then add a content test that fails if more than 40% of correct answers are the longest."
+    },
+    {
+      "id": "sample-send",
+      "title": "Sample report “Send PDF” was fake",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Assessment",
+      "summary": "The form said “Summary on its way. Check your inbox” but sent nothing and captured no lead.",
+      "evidence": [
+        "No network request on submit"
+      ],
+      "fix": "Now posts to /api/capture-email with the sample report; offers a direct download if sending fails. 2 tests."
+    },
+    {
       "id": "certificate-link",
       "title": "Course home never links to the certificate",
-      "status": "open",
+      "status": "fixed",
       "severity": "medium",
       "area": "Course",
       "summary": "All 10 completers had to type the certificate address. The course home has no link to the final packet, certificate, or post-assessment. Only the end-of-module-18 card and the dashboard link to the packet.",
@@ -30,7 +67,19 @@
         "10 of 10 completers typed /courses/foundation/program/certificate",
         "Course home HTML contains no submit, certificate, or post-assessment link"
       ],
-      "fix": "Suggested: show a “Submit final packet / view certificate” card on the course home once all 18 modules are complete."
+      "fix": "Course home now shows a “Course complete” card linking to submit packet, certificate, and growth check. The certificate outage screen also links to the packet and support."
+    },
+    {
+      "id": "free-download",
+      "title": "Free downloads failed whenever the database was unreachable",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Resources",
+      "summary": "The download route returned 503 before reaching its own static-file fallback, and visitors landed on a raw JSON error page.",
+      "evidence": [
+        "Prompt card, playbook and template downloads returned 503 locally"
+      ],
+      "fix": "Free files are served straight from the deploy; paid files stay gated. 2 tests. Raw-JSON error pages for other failures remain open (plan B2)."
     },
     {
       "id": "module3-gate",
@@ -47,13 +96,33 @@
       "before": "shots/P026-03-no-save-button.png"
     },
     {
+      "id": "auth-wording",
+      "title": "Account pages showed a developer error to visitors",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Account",
+      "summary": "Sign-up, sign-in and password reset showed “Auth is not configured. Set Supabase environment variables.” when auth was down.",
+      "fix": "Replaced with a plain message and the support email."
+    },
+    {
+      "id": "settings-hint",
+      "title": "Course settings Save disabled with no explanation",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Course",
+      "summary": "Save stays disabled until all three profile questions are answered, with nothing saying so.",
+      "fix": "Adds “Answer all three questions to save.”"
+    },
+    {
       "id": "react-key",
       "title": "React “unique key” warning on every module page",
       "status": "open",
       "severity": "low",
       "area": "Course",
       "summary": "Development-only console warning on every module page. Not visible to learners, but it hides real warnings. It comes from content ModulePage passes into ModuleTabs; the tab bar’s own keys are fine.",
-      "evidence": ["Seen by 36 of 40 learners"]
+      "evidence": [
+        "Seen by 36 of 40 learners"
+      ]
     },
     {
       "id": "main-landmark",
@@ -62,7 +131,9 @@
       "severity": "low",
       "area": "Accessibility",
       "summary": "“Skip to main content” targets a plain div, and the home, assessment, resources, courses, institutions, practice, and verify pages have no <main> element. Course pages already have their own, so check nesting before changing the shared wrapper.",
-      "evidence": ["26 personas saw it on the home page alone"]
+      "evidence": [
+        "26 personas saw it on the home page alone"
+      ]
     },
     {
       "id": "indepth-cta",
@@ -71,32 +142,155 @@
       "severity": "low",
       "area": "Assessment",
       "summary": "3 of 8 In-Depth buyers found no upgrade button on their free result and typed the address. The other 5 found “Get 90-day playbook”. May depend on the result variant, or be a harness miss.",
-      "evidence": ["3 of 8 assessment-to-In-Depth personas"]
+      "evidence": [
+        "3 of 8 assessment-to-In-Depth personas"
+      ]
     },
     {
       "id": "prompt-card",
       "title": "“Download prompt card” gave no file or message",
-      "status": "unconfirmed",
+      "status": "fixed",
       "severity": "low",
       "area": "Resources",
-      "summary": "On the Prompt Like a Banker page, clicking Download produced no file and no confirmation for 3 personas. Most likely the download route needs the database, which was missing here.",
-      "evidence": ["3 resource hunters"],
+      "summary": "On the Prompt Like a Banker page, clicking Download produced no file and no confirmation for 3 personas. Most likely the download route needs the database, which was missing here. Root cause was the database-only download path; now served from the deploy.",
+      "evidence": [
+        "3 resource hunters"
+      ],
       "before": "shots/P031-03-download-no-file.png"
     }
   ],
   "notTested": [
-    { "flow": "$99 In-Depth checkout", "saw": "503 “Payment system not configured.”", "next": "Re-run on a preview with Stripe test keys" },
-    { "flow": "$295 Foundation checkout", "saw": "Purchase page forwards into the course (test bypass treats everyone as enrolled)", "next": "Same preview run" },
-    { "flow": "Institution inquiry", "saw": "502, and the page shows an “email us directly” fallback", "next": "Preview with Supabase" },
-    { "flow": "Resource downloads", "saw": "503 from the download route", "next": "Preview with Supabase" },
-    { "flow": "AiBI Lab in modules", "saw": "401: the test bypass has no signed-in learner", "next": "Preview with a seeded learner" },
-    { "flow": "Certificate page", "saw": "“The certificate service is not configured”", "next": "Preview with Supabase" }
+    {
+      "flow": "$99 In-Depth checkout",
+      "saw": "503 “Payment system not configured.”",
+      "next": "Re-run on a preview with Stripe test keys"
+    },
+    {
+      "flow": "$295 Foundation checkout",
+      "saw": "Purchase page forwards into the course (test bypass treats everyone as enrolled)",
+      "next": "Same preview run"
+    },
+    {
+      "flow": "Institution inquiry",
+      "saw": "502, and the page shows an “email us directly” fallback",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Resource downloads",
+      "saw": "503 from the download route",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "AiBI Lab in modules",
+      "saw": "401: the test bypass has no signed-in learner",
+      "next": "Preview with a seeded learner"
+    },
+    {
+      "flow": "Certificate page",
+      "saw": "“The certificate service is not configured”",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Assessment resume link",
+      "saw": "503, with “Resume links are temporarily unavailable” shown",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Purchase-help support request",
+      "saw": "503, with “Support intake is temporarily unavailable” shown",
+      "next": "Preview with Supabase"
+    }
   ],
   "housekeeping": [
-    { "item": "47 finished branches", "state": "ready", "detail": "Merged, or PR merged before the history rewrite. Delete command sent as delete-finished-branches.sh; this session was not allowed to delete branches." },
-    { "item": "5 branches with unmerged work", "state": "kept", "detail": "rescue/2026-08-15, feature/home-refocus, two video-ad branches, repo-cleanup-pruning. Suggest a draft PR each to review before unifying." },
-    { "item": "Dependabot", "state": "done", "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578. #581 conflicts after the others merged; Dependabot usually rebases it. #585 holds back (smoke, Lighthouse, mobile checks fail)." },
-    { "item": "Major upgrades", "state": "kept", "detail": "TypeScript 7, jsdom 30, jest-dom 7 left open." },
-    { "item": "Expired claim fails CI everywhere", "state": "blocked", "detail": "content/claims/registry.json: “motley-fool-digital-76” was due for re-check on Sep 10. Someone needs to re-verify the source, then bump reviewBy." }
-  ]
+    {
+      "item": "47 finished branches",
+      "state": "ready",
+      "detail": "Merged, or PR merged before the history rewrite. Delete command sent as delete-finished-branches.sh; this session was not allowed to delete branches."
+    },
+    {
+      "item": "5 branches with unmerged work",
+      "state": "kept",
+      "detail": "rescue/2026-08-15, feature/home-refocus, two video-ad branches, repo-cleanup-pruning. Suggest a draft PR each to review before unifying."
+    },
+    {
+      "item": "Dependabot",
+      "state": "done",
+      "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578. #581 conflicts after the others merged; Dependabot usually rebases it. #585 holds back (smoke, Lighthouse, mobile checks fail)."
+    },
+    {
+      "item": "Major upgrades",
+      "state": "kept",
+      "detail": "TypeScript 7, jsdom 30, jest-dom 7 left open."
+    },
+    {
+      "item": "Expired claim fails CI everywhere",
+      "state": "blocked",
+      "detail": "content/claims/registry.json: “motley-fool-digital-76” was due for re-check on Sep 10. Someone needs to re-verify the source, then bump reviewBy."
+    }
+  ],
+  "plan": {
+    "done": "Every wave-1 rage-quit traced to a product dead end, and all four causes are fixed. Wave 2 had no rage-quits.",
+    "definition": [
+      "0 rage-quits across both waves",
+      "Every goal-directed persona reaches value (explorers excluded)",
+      "0 product dead ends: no page without a way forward, no raw error",
+      "Every failure shows a plain message and a next step"
+    ],
+    "steps": [
+      {
+        "p": "P0",
+        "id": "A1",
+        "title": "Run both waves on a configured preview",
+        "detail": "Stripe test keys, Supabase, AI keys, Resend test mode. Every remaining “env” row becomes a real result: checkout, inquiries, downloads, lab, certificate, resume links, support, quick wins, accounts, cookbook, exam saving."
+      },
+      {
+        "p": "P1",
+        "id": "B1",
+        "title": "Rewrite exam distractors",
+        "detail": "Correct answer is the longest option in 39 of 40 questions. Balance length and specificity, then add a guard test."
+      },
+      {
+        "p": "P1",
+        "id": "B2",
+        "title": "No raw JSON for failed downloads",
+        "detail": "Browser navigations to failing /api download routes should get a readable page or a redirect with a message."
+      },
+      {
+        "p": "P1",
+        "id": "B3",
+        "title": "Module 3 workshop exit",
+        "detail": "Hint after 3 failed CORE attempts; “Save with coach notes” after 6."
+      },
+      {
+        "p": "P2",
+        "id": "B4",
+        "title": "Silent artifact saves",
+        "detail": "3 of 320 saves gave no feedback. Reproduce on the preview."
+      },
+      {
+        "p": "P2",
+        "id": "B5",
+        "title": "In-Depth button on every free result",
+        "detail": "3 of 8 buyers could not find it."
+      },
+      {
+        "p": "P2",
+        "id": "B7",
+        "title": "Main landmark on marketing pages",
+        "detail": "Skip link targets a div."
+      },
+      {
+        "p": "P2",
+        "id": "B8",
+        "title": "React key warning on module pages",
+        "detail": "Dev-only noise."
+      },
+      {
+        "p": "P3",
+        "id": "C1",
+        "title": "Wave 3: the last 40 pages",
+        "detail": "Paid In-Depth and team flows, email-link pages, dynamic library/skill/practice pages. Admin and design-system excluded."
+      }
+    ]
+  }
 }

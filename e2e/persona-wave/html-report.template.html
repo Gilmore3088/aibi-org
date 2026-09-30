@@ -239,7 +239,7 @@ footer { color: var(--faint); font-size: 12.5px; padding-block: 24px 40px; borde
 <header class="top wrap">
   <div class="eyebrow">AI Banking Institute · Synthetic user research</div>
   <h1 id="title"></h1>
-  <p class="lede">100 synthetic bankers walked the site on randomized, goal-driven paths while a browser recorded every click, error and dead end. This report shows where they got value, where they got stuck, and what the course actually delivered.</p>
+  <p class="lede">Synthetic bankers walked the site on randomized, goal-driven paths while a browser recorded every click, error and dead end. Wave 1 covered the core journeys; wave 2 swept the features wave 1 skipped. This report shows where they got value, where they got stuck, what the course delivered, and the plan to close every gap.</p>
   <div class="meta" id="meta"></div>
 </header>
 
@@ -270,17 +270,19 @@ const VALUE_LABELS = {
   course_home: 'Opened course', module_content: 'Read module content', try_completed: 'Finished a Try activity',
   artifact_saved: 'Saved an artifact', certificate_reached: 'Reached certificate',
 };
+const valueLabel = (id) => VALUE_LABELS[id] || id.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
 const OUTCOME_LABELS = { 'goal-finished': 'Finished goal', behavior: 'Stopped as planned', frustration: 'Rage-quit', patience: 'Ran out of patience', crash: 'Harness error' };
 const outcomeClass = (k) => ({ 'goal-finished': 's-value', behavior: 's-behavior', frustration: 's-frustration', patience: 's-patience', crash: 's-crash' }[k] || 's-low');
 const STATUS_LABELS = { fixed: 'Fixed', open: 'Open', watch: 'Watch', unconfirmed: 'Unconfirmed' };
+const W1 = () => D.personas.filter((p) => p.wave === 1);
 const jl = (j) => D.journeyLabels[j] || j;
 
 document.title = D.findings.title;
 $('#title').textContent = D.findings.title;
 $('#meta').innerHTML = [
-  `<span class="chip mono">seed ${D.meta.seed}</span>`,
-  `<span class="chip">${D.meta.personas} personas</span>`,
-  `<span class="chip">${Math.round(D.meta.durationMs / 60000)} min run</span>`,
+  D.wave2 ? `<span class="chip">2 waves</span>` : `<span class="chip mono">seed ${D.meta.seed}</span>`,
+  `<span class="chip">${D.personas.length} personas</span>`,
+  `<span class="chip">${Math.round((D.meta.durationMs + (D.wave2?.meta.durationMs ?? 0)) / 60000)} min of runs</span>`,
   `<span class="chip">${esc(D.findings.runDate)}</span>`,
   `<span class="chip">Local test build</span>`,
 ].join('');
@@ -289,13 +291,14 @@ $('#meta').innerHTML = [
 const VIEWS = [
   { id: 'overview', label: 'Overview', render: renderOverview },
   { id: 'findings', label: 'Findings', count: () => D.findings.findings.length, render: renderFindings },
+  { id: 'plan', label: 'Plan', render: renderPlan },
   { id: 'course', label: 'Course', render: renderCourse },
   { id: 'journeys', label: 'Journeys', count: () => D.journeys.length, render: renderJourneys },
   { id: 'personas', label: 'Personas', count: () => D.personas.length, render: renderPersonas },
   { id: 'untested', label: 'Not tested', count: () => D.findings.notTested.length, render: renderUntested },
   { id: 'repo', label: 'Repo', render: renderRepo },
 ];
-let personaFilter = { q: '', journey: '', device: '', result: '' };
+let personaFilter = { q: '', journey: '', device: '', result: '', wave: '' };
 
 function buildTabs(active) {
   $('#tabs').innerHTML = VIEWS.map((v) => `<button class="tab" role="tab" id="tab-${v.id}" aria-selected="${v.id === active}" data-view="${v.id}">${v.label}${v.count ? `<span class="count">${v.count()}</span>` : ''}</button>`).join('');
@@ -335,6 +338,7 @@ function renderOverview() {
   const jsorted = [...D.journeys].sort((a, b) => b.reachedValue / b.n - a.reachedValue / a.n);
   return `
     <div class="kpis">${tiles.map((k) => `<div class="panel kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div>${k.m != null ? `<div class="meter"><i style="width:${k.m}%"></i></div>` : ''}</div>`).join('')}</div>
+    ${D.wave2 ? waveCompare() : ''}
     <div class="note">${esc(D.findings.scope)}</div>
     <div class="two">
       <div class="panel">
@@ -347,22 +351,54 @@ function renderOverview() {
       </div>
     </div>`;
 }
+function waveCompare() {
+  const a = D.totals, b = D.wave2.totals;
+  const rows = [
+    ['Reached value', `${a.reachedValue} / ${a.personas}`, `${b.reachedValue} / ${b.personas}`],
+    ['Rage-quits', a.frustratedQuits, b.frustratedQuits],
+    ['Personas hitting a dead end', a.personasWithDeadEnd, b.personasWithDeadEnd],
+    ['Median clicks to value', a.medianClicksToValue, b.medianClicksToValue],
+    ['Average experience', a.avgExperience, b.avgExperience],
+  ];
+  return `<div class="panel tablewrap"><table><thead><tr><th>Two waves</th><th class="n">Wave 1 · core journeys</th><th class="n">Wave 2 · skipped features</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r[0]}</td><td class="n num">${r[1]}</td><td class="n num">${r[2]}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderPlan() {
+  const pl = D.findings.plan;
+  const fixed = D.findings.findings.filter((f) => f.status === 'fixed');
+  const pri = { P0: 's-high', P1: 's-medium', P2: 's-low', P3: 's-env' };
+  return `
+    ${head('Plan: no rage-quits, value for every visitor', esc(pl.done))}
+    <div class="panel pad" style="display:grid;gap:10px">
+      <h3>Done means</h3>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:4px">${pl.definition.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+      <p class="muted" style="margin:0;font-size:13px">Measured by re-running both waves against a configured preview (step A1).</p>
+    </div>
+    <div class="panel">
+      <div class="pad" style="padding-bottom:6px"><h3>Fixed in this branch · ${fixed.length}</h3></div>
+      <div class="flist">${fixed.map((f) => `<button class="frow" data-view="findings" data-finding="${f.id}">${pill('s-fixed', 'Fixed')}<span><b>${esc(f.title)}</b><br><span class="area">${esc(f.area)}</span></span>${pill('s-' + f.severity, f.severity)}</button>`).join('')}</div>
+    </div>
+    <div class="panel">
+      <div class="pad" style="padding-bottom:6px"><h3>Still to do, in order</h3></div>
+      <div class="hk">${pl.steps.map((st) => `<div><b>${esc(st.id)} · ${esc(st.title)}</b>${pill(pri[st.p] || 's-low', st.p)}<p>${esc(st.detail)}</p></div>`).join('')}</div>
+    </div>`;
+}
 function barRow(j) {
   const p = pct(j.reachedValue, j.n);
   return `<button class="bar" data-journey="${j.journey}" title="${esc(j.label)}"><span class="name">${esc(shortJourney(j.journey))} <span class="muted">· ${j.n}</span></span><span class="track"><span class="fill ${p ? '' : 'zero'}" style="width:${p}%;display:block"></span></span><span class="val">${p}%</span></button>`;
 }
 function shortJourney(j) {
-  return ({ 'course-sampler': 'Course · samplers', 'course-quitter': 'Course · stall at 3–5', 'course-steady': 'Course · 6–12 modules', 'course-completer': 'Course · completers', 'course-shopper': 'Course shoppers', 'free-assessment': 'Free assessment', 'assessment-to-indepth': 'Free → $99 In-Depth', 'resource-hunter': 'Resource hunters', 'practice-tinkerer': 'Practice sandbox', 'institution-buyer': 'Institution buyers', 'pricing-skeptic': 'Pricing skeptics', 'cert-verifier': 'Certificate check', explorer: 'Random explorers' })[j] || j;
+  return ({ 'course-sampler': 'Course · samplers', 'course-quitter': 'Course · stall at 3–5', 'course-steady': 'Course · 6–12 modules', 'course-completer': 'Course · completers', 'course-shopper': 'Course shoppers', 'free-assessment': 'Free assessment', 'assessment-to-indepth': 'Free → $99 In-Depth', 'resource-hunter': 'Resource hunters', 'practice-tinkerer': 'Practice sandbox', 'institution-buyer': 'Institution buyers', 'pricing-skeptic': 'Pricing skeptics', 'cert-verifier': 'Certificate check', explorer: 'Random explorers' })[j] || D.journeyLabels[j] || j;
 }
 
 // Findings
 let findingStatus = 'all';
 let issueScope = 'product';
+let issueWave = 1;
 function renderFindings() {
   const all = D.findings.findings;
   const counts = all.reduce((a, f) => ((a[f.status] = (a[f.status] || 0) + 1), a), {});
   const shown = all.filter((f) => findingStatus === 'all' || f.status === findingStatus);
-  const issues = D.issues.filter((i) => (issueScope === 'all' ? true : issueScope === 'env' ? i.env : !i.env)).filter((i) => i.kind !== 'slow_page' || issueScope === 'all');
+  const issues = (issueWave === 2 && D.wave2 ? D.wave2.issues : D.issues).filter((i) => (issueScope === 'all' ? true : issueScope === 'env' ? i.env : !i.env)).filter((i) => i.kind !== 'slow_page' || issueScope === 'all');
   return `
     ${head('Findings', 'Each one was checked against the code or reproduced in a browser. Status says what happens next.')}
     <div class="filters" role="group" aria-label="Filter by status">
@@ -373,6 +409,7 @@ function renderFindings() {
       <div class="pad" style="display:grid;gap:12px">
         ${head('Every signal from the run', 'Raw issues grouped by type, before hand-verification. Environment signals come from missing keys in the test build.')}
         <div class="filters" role="group" aria-label="Issue scope">
+          ${D.wave2 ? [1, 2].map((w) => `<button class="fbtn" data-iwave="${w}" aria-pressed="${issueWave === w}">Wave ${w}</button>`).join('') + '<span style="width:12px"></span>' : ''}
           ${[['product', 'Product'], ['env', 'Environment'], ['all', 'All incl. slow pages']].map(([k, l]) => `<button class="fbtn" data-scope="${k}" aria-pressed="${issueScope === k}">${l}</button>`).join('')}
         </div>
       </div>
@@ -421,7 +458,7 @@ function renderCourse() {
   });
   svg += '</svg>';
   const m = ms.find((x) => x.number === selectedModule) || ms[0];
-  const learners = D.personas.filter((p) => p.modules);
+  const learners = W1().filter((p) => p.modules);
   const mobileLearners = learners.filter((p) => p.device === 'mobile');
   const stuckMobile = mobileLearners.filter((p) => p.friction.some((f) => f.kind === 'no_next_module_link')).length;
   return `
@@ -467,14 +504,18 @@ function renderCourse() {
 function renderJourneys() {
   return `
     ${head('Journeys', 'What each group of personas was trying to do and how it went. Click a row to open those personas.')}
-    <div class="panel tablewrap"><table>
+    ${journeyTable('Wave 1 · core journeys', D.journeys, 1)}
+    ${D.wave2 ? journeyTable('Wave 2 · features wave 1 skipped', D.wave2.journeys, 2) : ''}
+    <div class="note">Course shoppers and institution buyers in wave 1, and resume-link and support personas in wave 2, show 0% because those flows need Stripe or the database, which the test build did not have. See Not tested.</div>`;
+}
+function journeyTable(title, rows, wave) {
+  return `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>${esc(title)}</h3></div><table>
       <thead><tr><th>Journey</th><th class="n">n</th><th>Reached value</th><th class="n">Clicks to value</th><th class="n">Secs to value</th><th class="n">Experience</th><th class="n">Rage-quits</th></tr></thead>
-      <tbody>${D.journeys.map((j) => {
+      <tbody>${rows.map((j) => {
         const p = pct(j.reachedValue, j.n);
-        return `<tr class="click" data-journey="${j.journey}" tabindex="0"><td><b>${esc(shortJourney(j.journey))}</b><div class="muted" style="font-size:12.5px">${esc(j.label)}</div></td><td class="n">${j.n}</td><td style="min-width:10rem"><span class="score" style="grid-template-columns:2.6em 1fr;width:100%"><span class="num">${p}%</span><i><b style="width:${p}%;background:var(--accent-fill)"></b></i></span></td><td class="n">${j.medianClicksToValue ?? '—'}</td><td class="n">${j.medianSecondsToValue ?? '—'}</td><td class="n">${scoreCell(j.avgExperience)}</td><td class="n">${j.frustratedQuits}</td></tr>`;
+        return `<tr class="click" data-journey="${j.journey}" data-wave="${wave}" tabindex="0"><td><b>${esc(shortJourney(j.journey))}</b><div class="muted" style="font-size:12.5px">${esc(j.label)}</div></td><td class="n">${j.n}</td><td style="min-width:10rem"><span class="score" style="grid-template-columns:2.6em 1fr;width:100%"><span class="num">${p}%</span><i><b style="width:${p}%;background:var(--accent-fill)"></b></i></span></td><td class="n">${j.medianClicksToValue ?? '—'}</td><td class="n">${j.medianSecondsToValue ?? '—'}</td><td class="n">${scoreCell(j.avgExperience)}</td><td class="n">${j.frustratedQuits}</td></tr>`;
       }).join('')}</tbody>
-    </table></div>
-    <div class="note">Course shoppers and institution buyers show 0% because checkout and the inquiry form need Stripe and the database, which the test build did not have. See Not tested.</div>`;
+    </table></div>`;
 }
 function scoreCell(v) {
   const color = v >= 90 ? 'var(--good)' : v >= 70 ? 'var(--warn)' : 'var(--bad)';
@@ -485,6 +526,7 @@ function scoreCell(v) {
 function filteredPersonas() {
   const q = personaFilter.q.trim().toLowerCase();
   return D.personas.filter((p) => {
+    if (personaFilter.wave && String(p.wave) !== personaFilter.wave) return false;
     if (personaFilter.journey && p.journey !== personaFilter.journey) return false;
     if (personaFilter.device && p.device !== personaFilter.device) return false;
     if (personaFilter.result === 'value' && !p.firstValue) return false;
@@ -503,6 +545,7 @@ function renderPersonas() {
     <div class="ptools">
       <label class="sr" for="pq" hidden>Search</label>
       <input id="pq" type="search" placeholder="Search role, institution, source…" value="${esc(personaFilter.q)}">
+      <select id="pw" aria-label="Wave">${opt('', 'Both waves', personaFilter.wave)}${opt('1', 'Wave 1', personaFilter.wave)}${opt('2', 'Wave 2', personaFilter.wave)}</select>
       <select id="pj" aria-label="Journey">${opt('', 'All journeys', personaFilter.journey)}${js.map((j) => opt(j, shortJourney(j), personaFilter.journey)).join('')}</select>
       <select id="pd" aria-label="Device">${opt('', 'Any device', personaFilter.device)}${opt('desktop', 'Desktop', personaFilter.device)}${opt('mobile', 'Mobile', personaFilter.device)}</select>
       <select id="pr" aria-label="Result">${opt('', 'Any result', personaFilter.result)}${opt('value', 'Reached value', personaFilter.result)}${opt('novalue', 'No value', personaFilter.result)}${opt('deadend', 'Hit a dead end', personaFilter.result)}${opt('quit', 'Rage-quit', personaFilter.result)}</select>
@@ -520,7 +563,7 @@ function fillPersonaRows() {
     <td class="mono">${p.id}</td>
     <td class="who"><b>${esc(p.role)}</b><span>${esc(p.fi)} · ${esc(p.temperament)} · ${p.device}</span></td>
     <td>${esc(shortJourney(p.journey))}${p.depth ? ` <span class="muted num">(${p.depth})</span>` : ''}</td>
-    <td>${p.firstValue ? esc(VALUE_LABELS[p.firstValue.id] || p.firstValue.id) : '<span class="muted">none</span>'}</td>
+    <td>${p.firstValue ? esc(valueLabel(p.firstValue.id)) : '<span class="muted">none</span>'}</td>
     <td class="n">${p.firstValue ? p.firstValue.clicks : '—'}</td>
     <td class="n">${scoreCell(p.experience)}</td>
     <td>${pill(outcomeClass(p.outcome.kind), OUTCOME_LABELS[p.outcome.kind] || p.outcome.kind)}</td>
@@ -545,7 +588,7 @@ function openPersona(id) {
         <div><div class="k">Experience</div><div class="v">${p.experience}</div><div class="k">out of 100</div></div>
         <div><div class="k">Visit</div><div class="v">${p.clicks} clicks</div><div class="k">${secs(p.ms)}</div></div>
       </div>
-      ${p.values.length ? `<div><h3 style="margin-bottom:8px">Value reached</h3><div class="tags">${p.values.map((v) => `<span class="pill s-value">${esc(VALUE_LABELS[v] || v)}</span>`).join('')}</div></div>` : ''}
+      ${p.values.length ? `<div><h3 style="margin-bottom:8px">Value reached</h3><div class="tags">${p.values.map((v) => `<span class="pill s-value">${esc(valueLabel(v))}</span>`).join('')}</div></div>` : ''}
       ${mods}
       ${fr.length ? `<div><h3 style="margin-bottom:8px">Friction <span class="muted" style="font-weight:400">· ${fr.length}</span></h3><ul style="margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px">${fr.slice(0, 12).map((f) => `<li>${f.env ? pill('s-env', 'env') + ' ' : ''}${esc(f.detail)}</li>`).join('')}${fr.length > 12 ? `<li class="muted">and ${fr.length - 12} more</li>` : ''}</ul></div>` : ''}
       <div><h3 style="margin-bottom:6px">Visit replay</h3>
@@ -591,12 +634,13 @@ function renderRepo() {
 // Wiring per view
 function wire(id) {
   document.querySelectorAll('[data-journey]').forEach((el) => el.addEventListener('click', () => {
-    personaFilter = { q: '', journey: el.dataset.journey, device: '', result: '' };
+    personaFilter = { q: '', journey: el.dataset.journey, device: '', result: '', wave: el.dataset.wave || '' };
     show('personas');
   }));
   if (id === 'findings') {
     document.querySelectorAll('[data-status]').forEach((b) => b.addEventListener('click', () => { findingStatus = b.dataset.status; show('findings', { scroll: false }); }));
     document.querySelectorAll('[data-scope]').forEach((b) => b.addEventListener('click', () => { issueScope = b.dataset.scope; show('findings', { scroll: false }); }));
+    document.querySelectorAll('[data-iwave]').forEach((b) => b.addEventListener('click', () => { issueWave = Number(b.dataset.iwave); show('findings', { scroll: false }); }));
     if (pendingFinding) { const d = $(`#f-${pendingFinding}`); if (d) { d.open = true; d.scrollIntoView({ block: 'start' }); } pendingFinding = null; }
   }
   if (id === 'course') {
@@ -605,7 +649,7 @@ function wire(id) {
   if (id === 'personas') {
     fillPersonaRows();
     $('#pq').addEventListener('input', (e) => { personaFilter.q = e.target.value; fillPersonaRows(); });
-    [['#pj', 'journey'], ['#pd', 'device'], ['#pr', 'result']].forEach(([sel, key]) => $(sel).addEventListener('change', (e) => { personaFilter[key] = e.target.value; fillPersonaRows(); }));
+    [['#pw', 'wave'], ['#pj', 'journey'], ['#pd', 'device'], ['#pr', 'result']].forEach(([sel, key]) => $(sel).addEventListener('change', (e) => { personaFilter[key] = e.target.value; fillPersonaRows(); }));
     $('#prows').addEventListener('click', (e) => { const tr = e.target.closest('[data-persona]'); if (tr) openPersona(tr.dataset.persona); });
   }
 }
