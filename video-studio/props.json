@@ -1,0 +1,16 @@
+{
+  "result": {
+    "name": "First National Trust",
+    "overall": 84,
+    "dimensions": [
+      { "label": "Approved AI Access", "score": 88 },
+      { "label": "Model Oversight", "score": 79 },
+      { "label": "Compliance Clarity", "score": 86 },
+      { "label": "Data Safety", "score": 91 },
+      { "label": "Workflow Fit", "score": 80 },
+      { "label": "Human Control", "score": 83 },
+      { "label": "Vendor Control", "score": 72 },
+      { "label": "People & Governance", "score": 85 }
+    ]
+  }
+}

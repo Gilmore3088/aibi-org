@@ -6,6 +6,11 @@
 .pnp.js
 .yarn/install-state.gz
 
+# video-studio screen-capture tooling (regenerate via video-studio/scripts/capture-screens.sh)
+/public/lms-prototype/vendor/
+/public/lms-prototype/capture.html
+/public/lms-prototype/lms/cap-mount.jsx
+
 # testing
 /coverage
 
