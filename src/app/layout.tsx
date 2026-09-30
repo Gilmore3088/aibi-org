@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import {
-  Cormorant_SC,
-  Inter,
-  Instrument_Serif,
-  Newsreader,
-  JetBrains_Mono,
-} from 'next/font/google';
+import localFont from 'next/font/local';
 import { GeistSans } from 'geist/font/sans';
 import { Analytics } from '@vercel/analytics/next';
 import { LayoutChrome } from '@/components/system';
@@ -23,20 +17,28 @@ import './globals.css';
 // production does today and keeps the deterministic-chrome fix intact.
 export const dynamic = 'force-dynamic';
 
+// 2026-09-30: all Google-served families switched to self-hosted woff2s in
+// src/app/fonts (latin subsets from the @fontsource builds of the same
+// Google Fonts releases, SIL OFL). next/font/google fetches
+// fonts.googleapis.com during `next build`, and that fetch is the repo's
+// only recurring CI flake — it killed unrelated runs on 2026-08-17 and
+// 2026-09-30. next/font/local reads metrics from the committed files, so
+// builds are hermetic and the fallback metrics no longer depend on
+// @next/font's bundled Google metrics database.
+//
 // 2026-05-17: Cormorant Garamond, DM Sans, and DM Mono removed — they
 // were declared here but had zero references anywhere in src/. They were
 // blocking the LCP element (the H1 in Newsreader) by competing for the
 // font network budget. Cormorant SC stays because tokens.css's
-// --font-serif-sc still maps to it for small-caps surfaces.
-// 2026-05-17 perf: dropped weights 500/600/700 — every `.font-serif-sc`
-// usage in src/ inherits the default 400 weight (no font-bold / font-medium
-// utilities applied). Cuts ~3 KB of @font-face declarations from the
-// shared layout CSS (18 declarations × 6 unicode subsets).
-const cormorantSC = Cormorant_SC({
-  subsets: ['latin'],
-  weight: ['400'],
+// --font-serif-sc still maps to it for small-caps surfaces; only the 400
+// weight ships (every `.font-serif-sc` usage inherits the default weight).
+const cormorantSC = localFont({
+  src: './fonts/cormorant-sc-latin-400-normal.woff2',
+  weight: '400',
+  style: 'normal',
   variable: '--font-cormorant-sc',
   display: 'swap',
+  adjustFontFallback: 'Times New Roman',
 });
 
 // Ledger brand-refresh fonts (2026-05-09). Loaded as the primary stack
@@ -57,40 +59,43 @@ const cormorantSC = Cormorant_SC({
 //     browser resolves heavy weights to newsreaderHeavy's family when
 //     they're requested. (Spec said "both bind --font-newsreader" but a
 //     single variable can't expose two families — see audit trail.)
-// The Next build still logs "Failed to find font override values for font
-// `Newsreader`" four times — @next/font/google's metric database doesn't
-// include Newsreader. We compensate manually: globals.css declares a
-// "Newsreader Fallback" @font-face that wraps Times New Roman with
-// size-adjust + ascent/descent overrides matching Newsreader's metrics,
-// and tokens.css chains it between the loading Newsreader family and the
-// generic serif chain. No CLS hop on first paint.
-const newsreaderHero = Newsreader({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal', 'italic'],
+// The hero/heavy split survives self-hosting, but both configs now point at
+// the same [opsz,wght] variable files (the same axes Google was serving), so
+// "heavy" costs no extra download — the browser reuses the cached file and
+// resolves 500-700 from the wght axis. The manual "Newsreader Fallback"
+// @font-face in globals.css stays: tokens.css chains it independently, and
+// next/font/local's own synthesized fallback (computed from the committed
+// file's real metrics) now layers on top instead of failing like the old
+// Google metrics lookup did.
+const newsreaderHero = localFont({
+  src: [
+    { path: './fonts/newsreader-latin-opsz-normal.woff2', style: 'normal' },
+    { path: './fonts/newsreader-latin-opsz-italic.woff2', style: 'italic' },
+  ],
+  weight: '200 800',
   variable: '--font-newsreader-hero',
   display: 'swap',
   preload: true,
+  adjustFontFallback: 'Times New Roman',
 });
 
-const newsreaderHeavy = Newsreader({
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  style: ['normal'],
+const newsreaderHeavy = localFont({
+  src: [{ path: './fonts/newsreader-latin-opsz-normal.woff2', style: 'normal' }],
+  weight: '200 800',
   variable: '--font-newsreader-heavy',
   display: 'swap',
   preload: false,
+  adjustFontFallback: 'Times New Roman',
 });
 
 // Geist ships its own variable font wrapper — `--font-geist-sans`.
 // We re-export GeistSans's variable as `--font-geist` on the body class
 // so legacy consumers (Ledger-era fallback chains) continue to resolve.
-// 2026-05-17 perf: dropped weight 500 — no `font-mono font-medium` usage
-// in src/. Weights 400 (default) and 600 (font-semibold on mono buttons,
-// kicker labels, plan markers) cover every observed usage.
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '600'],
+// The variable file covers the full wght axis in one 40 KB download —
+// smaller than the two static instances (400 + 600) it replaces.
+const jetbrainsMono = localFont({
+  src: [{ path: './fonts/jetbrains-mono-latin-wght-normal.woff2', style: 'normal' }],
+  weight: '100 800',
   variable: '--font-jetbrains-mono',
   display: 'swap',
 });
@@ -99,9 +104,9 @@ const jetbrainsMono = JetBrains_Mono({
 // cover every observed use in public/sketches/_mockup.css and the per-page
 // sketches. Exposed as --font-inter; mockup.css references it via the
 // "Inter" family-name fallback chain so a missing variable still resolves.
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+const inter = localFont({
+  src: [{ path: './fonts/inter-latin-wght-normal.woff2', style: 'normal' }],
+  weight: '100 900',
   variable: '--font-inter',
   display: 'swap',
 });
@@ -112,12 +117,13 @@ const inter = Inter({
 // only — nothing else loads. Display 'swap' is safe: the mark falls back
 // to Newsreader italic from --font-mark-serif before Instrument Serif
 // arrives, and Newsreader is already on the critical font budget.
-const instrumentSerif = Instrument_Serif({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['italic'],
+const instrumentSerif = localFont({
+  src: './fonts/instrument-serif-latin-400-italic.woff2',
+  weight: '400',
+  style: 'italic',
   variable: '--font-instrument-serif',
   display: 'swap',
+  adjustFontFallback: 'Times New Roman',
 });
 
 // Apex `aibankinginstitute.com` 301s to `www.aibankinginstitute.com` at the
