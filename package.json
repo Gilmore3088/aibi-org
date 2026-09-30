@@ -63,7 +63,7 @@
     "@next/bundle-analyzer": "^16.3.0",
     "@playwright/test": "^1.62.1",
     "@resvg/resvg-js": "^2.6.2",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.3",
     "@types/node": "^26.1.2",
@@ -73,7 +73,7 @@
     "@vitest/ui": "^4.1.10",
     "eslint": "^10.8.0",
     "eslint-config-next": "^16.3.0",
-    "jsdom": "^29.1.1",
+    "jsdom": "^30.0.1",
     "marked": "^18.0.9",
     "postcss": "^8.5.26",
     "satori": "^0.29.0",
@@ -84,6 +84,6 @@
   },
   "overrides": {
     "postcss": "$postcss",
-    "undici": "^7.29.0"
+    "undici": "^7.30.0"
   }
 }
