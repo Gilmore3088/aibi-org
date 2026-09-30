@@ -27,6 +27,7 @@ import { MODULE_3_PROMPTING_ACTIVITIES } from '@content/courses/foundation-progr
 import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
+import { SaveStepNavigation } from '../_components/SaveStepNavigation';
 import { ModuleTabs } from '../_components/ModuleTabs';
 import {
   CourseShell,
@@ -589,6 +590,11 @@ export default async function ModulePage(props: ModulePageParams) {
                   totalModules={modules.length}
                   isAlreadyCompleted={isAlreadyCompleted}
                   artifactLabel={artifactFirst?.saved ?? mod.keyOutput}
+                />
+                <SaveStepNavigation
+                  moduleNumber={moduleNum}
+                  isLastModule={isLastModule}
+                  isAlreadyCompleted={isAlreadyCompleted}
                 />
               </section>
             }
