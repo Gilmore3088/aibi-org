@@ -17,12 +17,13 @@ import { fileURLToPath } from 'node:url';
 import { chromium, devices } from 'playwright';
 import { generatePersonas, makeRng, personaLabel } from './personas.mjs';
 import { FEATURE_JOURNEYS } from './features.mjs';
+import { COVERAGE_JOURNEYS } from './coverage.mjs';
 import { writeReport } from './report.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const BASE = (process.env.WAVE_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 const SET = process.env.WAVE_SET ?? 'core';
-const SEED = Number(process.env.WAVE_SEED ?? (SET === 'features' ? 20261001 : 20260930));
+const SEED = Number(process.env.WAVE_SEED ?? { features: 20261001, coverage: 20261002 }[SET] ?? 20260930);
 const CONCURRENCY = Number(process.env.WAVE_CONCURRENCY ?? 4);
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const OUT = process.env.WAVE_OUT ?? path.join(HERE, 'out', STAMP);
@@ -1030,6 +1031,15 @@ async function runSteps(s, steps) {
       const words = (await s.page.locator(ROOT).first().innerText().catch(() => '')).split(/\s+/).filter(Boolean).length;
       if (words >= (st.min ?? 200)) s.value(st.read, `${words} words`);
       else await s.addFriction('thin_content', `${normPath(s.page.url())} has ${words} words (expected ${st.min ?? 200}+)`, 0.5);
+    } else if (st.assess) {
+      await assessPage(s);
+    } else if (st.click && st.primary) {
+      // The page's own first call to action, whatever it is called.
+      const cta = s.page.locator(`${ROOT} :is(a[href]:not([href^="#"]):not([href^="mailto:"]), button):visible:not(header *, nav *, footer *)`);
+      if (await cta.count()) {
+        const ok = await s.click(cta.first(), st.label);
+        if (ok) s.value('next_step_opened', normPath(s.page.url()));
+      }
     } else if (st.click) {
       const ok = await s.clickCta(st.click, st.label, { required: !st.optional, severity: st.value ? 1 : 0.5 });
       if (ok && st.value) s.value(st.value, st.label);
@@ -1082,6 +1092,30 @@ async function runSteps(s, steps) {
       else await s.addFriction('no_feedback', `${st.label}: expected confirmation not shown`, 1);
     }
   }
+}
+
+// Wave 3: does this page give the visitor something? Real content, or a
+// clear message (not found, sign in, unavailable, needs purchase) plus a way
+// forward, both count. A message with nowhere to go, or a near-empty page,
+// is a dead end.
+const MESSAGE_RE = /not found|could not find|couldn.t find|unavailable|sign in|log in|expired|invalid|no longer|not available|check your (email|inbox)|purchase|enroll|access|link/i;
+async function assessPage(s) {
+  const facts = await s.page.evaluate(() => {
+    const vis = (el) => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    const root = document.querySelector('main, [role="main"], #main-content') || document.body;
+    const text = (root.innerText || '').trim();
+    const forward = [...root.querySelectorAll('a[href], button')]
+      .filter(vis)
+      .filter((el) => !el.closest('header, nav, footer'))
+      .filter((el) => el.tagName === 'BUTTON' ? !el.disabled : !/^(#|mailto:|tel:)/.test(el.getAttribute('href') || '')).length;
+    return { words: text.split(/\s+/).filter(Boolean).length, text: text.slice(0, 1500), forward };
+  });
+  const where = normPath(s.page.url());
+  const message = (facts.text.match(new RegExp(`[^\\n]*(${MESSAGE_RE.source})[^\\n]*`, 'i')) ?? [''])[0].slice(0, 120);
+  if (facts.words >= 120 && facts.forward > 0) s.value('page_delivered', `${where} · ${facts.words} words`);
+  else if (message && facts.forward > 0) s.value('graceful_message', `${where} · "${message}"`);
+  else if (message) await s.addFriction('message_no_way_forward', `${where}: "${message}" with no link or button forward`, 1);
+  else await s.addFriction('thin_page', `${where}: ${facts.words} words, ${facts.forward} ways forward`, 1);
 }
 
 async function firstVisible(s, selector) {
@@ -1212,7 +1246,7 @@ async function runPersona(persona, browser) {
     await s.open();
     await s.goto(persona.entry, `landed from ${persona.source}`);
     await s.maybeWander();
-    const journey = JOURNEYS[persona.journey] ?? ((sess) => runSteps(sess, FEATURE_JOURNEYS[persona.journey][persona.variant ?? 0]));
+    const journey = JOURNEYS[persona.journey] ?? ((sess) => runSteps(sess, (FEATURE_JOURNEYS[persona.journey] ?? COVERAGE_JOURNEYS[persona.journey])[persona.variant ?? 0]));
     let timer;
     await Promise.race([
       journey(s),

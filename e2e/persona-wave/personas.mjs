@@ -100,10 +100,11 @@ const SOURCES = [
 // Journey quotas (sum = 100). The course carries 40 of 100 personas because
 // that is where delivered value has to be proven.
 import { FEATURE_JOURNEYS, FEATURE_QUOTAS } from './features.mjs';
+import { COVERAGE_JOURNEYS, COVERAGE_QUOTAS } from './coverage.mjs';
 
 // Wave 2 personas land where their chosen variant starts.
 function featureSource(journey, rng) {
-  const variants = FEATURE_JOURNEYS[journey];
+  const variants = FEATURE_JOURNEYS[journey] ?? COVERAGE_JOURNEYS[journey];
   const variant = rng.int(0, variants.length - 1);
   const entry = variants[variant].find((st) => st.enter)?.enter ?? '/';
   const source = entry === '/' ? rng.pick(['Google search', 'LinkedIn post', 'Typed URL']) : rng.pick(['Trade newsletter', 'Peer referral', 'Google search', 'Email link']);
@@ -148,11 +149,12 @@ function courseDepth(journey, rng) {
 }
 
 export function quotasFor(set = 'core') {
+  if (set === 'coverage') return COVERAGE_QUOTAS;
   return set === 'features' ? FEATURE_QUOTAS : JOURNEY_QUOTAS;
 }
 
 // Every journey label across both waves (for reports).
-export const ALL_QUOTAS = [...JOURNEY_QUOTAS, ...FEATURE_QUOTAS];
+export const ALL_QUOTAS = [...JOURNEY_QUOTAS, ...FEATURE_QUOTAS, ...COVERAGE_QUOTAS];
 
 export function generatePersonas(seed = 20260930, total = 100, set = 'core') {
   const rng = makeRng(seed);
@@ -163,7 +165,7 @@ export function generatePersonas(seed = 20260930, total = 100, set = 'core') {
   return journeys.map((journey, i) => {
     const role = rng.pick(ROLES);
     const temper = rng.pick(TEMPERAMENTS);
-    const src = set === 'features' ? featureSource(journey, rng) : sourceFor(journey, rng);
+    const src = set === 'features' || set === 'coverage' ? featureSource(journey, rng) : sourceFor(journey, rng);
     const mobile = rng.chance(temper.temperament === 'time-starved' ? 0.6 : 0.3);
     const id = `P${String(i + 1).padStart(3, '0')}`;
     const courseDepthFor = courseDepth(journey, rng);
@@ -184,7 +186,7 @@ export function generatePersonas(seed = 20260930, total = 100, set = 'core') {
       // Course learners' patience is already expressed as courseDepth.
       clickBudget: journey.startsWith('course-') && journey !== 'course-shopper'
         ? 60 + 60 * courseDepthFor
-        : Math.round((set === 'features' ? 60 : 30) * temper.patience),
+        : Math.round((set === 'core' ? 30 : 60) * temper.patience),
       // Dead ends / errors tolerated before rage-quitting.
       frustrationTolerance: Math.max(1, Math.round(3 * temper.patience)),
       // Probability of wandering off-goal on any given step.
