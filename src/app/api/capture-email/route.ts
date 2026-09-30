@@ -44,6 +44,7 @@ import {
   type FreeAssetBand,
   parseFreeAssetBand,
 } from '@content/assessments/v3/asset-bands';
+import { redactEmail } from '@/lib/email/redact';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person
@@ -80,12 +81,6 @@ const LEAD_SOURCE_MAX_LEN = 64;
 const ARTIFACT_MAX_LEN = 128;
 function captureResponse(body: Record<string, unknown>, email: string): NextResponse {
   return freeResourceCaptureResponse(body, email);
-}
-
-function redactEmail(email: string): string {
-  const [local = '', domain = ''] = email.split('@');
-  const localPrefix = local.slice(0, 2);
-  return `${localPrefix || '**'}***@${domain || 'unknown'}`;
 }
 
 interface DimensionEntry {
