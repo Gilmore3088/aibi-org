@@ -1,0 +1,102 @@
+{
+  "title": "Persona Wave · Sep 30",
+  "runDate": "2026-09-30",
+  "scope": "Local dev server with the course enrollment bypass. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, download, lab, and certificate flows are marked as not tested.",
+  "findings": [
+    {
+      "id": "next-module",
+      "title": "No way forward at the end of a module",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Course",
+      "summary": "Modules run Understand → Try → Build → Save, but the only Next-module button sat at the bottom of Build. On phones the module list is folded away, so learners finishing Save saw no way to continue.",
+      "evidence": [
+        "All 16 mobile learners hit it, 3–10 times each",
+        "Save ended with “Next: carry it into …” and no link",
+        "After the fix, 5 mobile learners re-run: 0 dead ends (were 3–10 each)"
+      ],
+      "fix": "Save now ends with “Replay, then continue · Module N”. It unlocks in the same visit when Build completes the module. Commit 3a20bbae, 5 new tests.",
+      "before": "shots/P001-01-no-next-module-link.png",
+      "after": "shots/after-fix-save-step-next-link.png"
+    },
+    {
+      "id": "certificate-link",
+      "title": "Course home never links to the certificate",
+      "status": "open",
+      "severity": "medium",
+      "area": "Course",
+      "summary": "All 10 completers had to type the certificate address. The course home has no link to the final packet, certificate, or post-assessment. Only the end-of-module-18 card and the dashboard link to the packet.",
+      "evidence": [
+        "10 of 10 completers typed /courses/foundation/program/certificate",
+        "Course home HTML contains no submit, certificate, or post-assessment link"
+      ],
+      "fix": "Suggested: show a “Submit final packet / view certificate” card on the course home once all 18 modules are complete."
+    },
+    {
+      "id": "module3-gate",
+      "title": "Module 3 save is locked behind a prompt score",
+      "status": "watch",
+      "severity": "low",
+      "area": "Course",
+      "summary": "The CORE prompt workshop offers “Save & continue” only after the learner’s prompt passes C·O·R·E scoring. Synthetic learners typing generic text never passed. Real learners will do better, but this is the one step with no way past a failing score.",
+      "evidence": [
+        "6 of 30 synthetic learners could not save module 3",
+        "Attempts are capped at 6"
+      ],
+      "fix": "Check in real sessions: after repeated failed attempts, is there a hint or an exit?",
+      "before": "shots/P026-03-no-save-button.png"
+    },
+    {
+      "id": "react-key",
+      "title": "React “unique key” warning on every module page",
+      "status": "open",
+      "severity": "low",
+      "area": "Course",
+      "summary": "Development-only console warning on every module page. Not visible to learners, but it hides real warnings. It comes from content ModulePage passes into ModuleTabs; the tab bar’s own keys are fine.",
+      "evidence": ["Seen by 36 of 40 learners"]
+    },
+    {
+      "id": "main-landmark",
+      "title": "Marketing pages have no main landmark",
+      "status": "open",
+      "severity": "low",
+      "area": "Accessibility",
+      "summary": "“Skip to main content” targets a plain div, and the home, assessment, resources, courses, institutions, practice, and verify pages have no <main> element. Course pages already have their own, so check nesting before changing the shared wrapper.",
+      "evidence": ["26 personas saw it on the home page alone"]
+    },
+    {
+      "id": "indepth-cta",
+      "title": "In-Depth upgrade not found from some free results",
+      "status": "unconfirmed",
+      "severity": "low",
+      "area": "Assessment",
+      "summary": "3 of 8 In-Depth buyers found no upgrade button on their free result and typed the address. The other 5 found “Get 90-day playbook”. May depend on the result variant, or be a harness miss.",
+      "evidence": ["3 of 8 assessment-to-In-Depth personas"]
+    },
+    {
+      "id": "prompt-card",
+      "title": "“Download prompt card” gave no file or message",
+      "status": "unconfirmed",
+      "severity": "low",
+      "area": "Resources",
+      "summary": "On the Prompt Like a Banker page, clicking Download produced no file and no confirmation for 3 personas. Most likely the download route needs the database, which was missing here.",
+      "evidence": ["3 resource hunters"],
+      "before": "shots/P031-03-download-no-file.png"
+    }
+  ],
+  "notTested": [
+    { "flow": "$99 In-Depth checkout", "saw": "503 “Payment system not configured.”", "next": "Re-run on a preview with Stripe test keys" },
+    { "flow": "$295 Foundation checkout", "saw": "Purchase page forwards into the course (test bypass treats everyone as enrolled)", "next": "Same preview run" },
+    { "flow": "Institution inquiry", "saw": "502, and the page shows an “email us directly” fallback", "next": "Preview with Supabase" },
+    { "flow": "Resource downloads", "saw": "503 from the download route", "next": "Preview with Supabase" },
+    { "flow": "AiBI Lab in modules", "saw": "401: the test bypass has no signed-in learner", "next": "Preview with a seeded learner" },
+    { "flow": "Certificate page", "saw": "“The certificate service is not configured”", "next": "Preview with Supabase" }
+  ],
+  "housekeeping": [
+    { "item": "47 finished branches", "state": "ready", "detail": "Merged, or PR merged before the history rewrite. Delete command sent as delete-finished-branches.sh; this session was not allowed to delete branches." },
+    { "item": "5 branches with unmerged work", "state": "kept", "detail": "rescue/2026-08-15, feature/home-refocus, two video-ad branches, repo-cleanup-pruning. Suggest a draft PR each to review before unifying." },
+    { "item": "Dependabot", "state": "done", "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578. #581 conflicts after the others merged; Dependabot usually rebases it. #585 holds back (smoke, Lighthouse, mobile checks fail)." },
+    { "item": "Major upgrades", "state": "kept", "detail": "TypeScript 7, jsdom 30, jest-dom 7 left open." },
+    { "item": "Expired claim fails CI everywhere", "state": "blocked", "detail": "content/claims/registry.json: “motley-fool-digital-76” was due for re-check on Sep 10. Someone needs to re-verify the source, then bump reviewBy." }
+  ]
+}

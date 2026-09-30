@@ -38,7 +38,7 @@ Each module runs Understand → Try → Build → **Save**. The Save step ended 
 CTA sat at the bottom of the Build step. On mobile the course sidebar is
 collapsed, so there was **no visible link to the next module at all**.
 
-- Hit by 16 of 17 mobile learners, 3–10 times each (per-module).
+- Hit by all 16 mobile learners, 3–10 times each (once per module finished).
 - Before: [`shots/P001-01-no-next-module-link.png`](shots/P001-01-no-next-module-link.png)
 - Fix: `SaveStepNavigation` renders the existing `ModuleNavigation` in the
   Save step. `ModuleContentClient` hands off in-session completion via an event
