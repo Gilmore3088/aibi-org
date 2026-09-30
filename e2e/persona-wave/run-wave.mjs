@@ -165,6 +165,8 @@ class Session {
         body = (await r.text()).slice(0, 400);
       } catch {}
       const isDoc = r.request().resourceType() === 'document';
+      // A made-up ID should 404; assessPage() judges whether the 404 page helps.
+      if (isDoc && r.status() === 404 && this.expectMissing) return;
       this.recordError(isDoc ? 'page_http_error' : 'api_http_error', `${r.status()} ${r.request().method()} ${normPath(url)}`, url, body);
     });
   }
