@@ -127,7 +127,8 @@ function band(score: number) {
 export default function ResultsPage() {
   const [animated, setAnimated] = useState(false);
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [sendStatus, setSendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const sent = sendStatus === 'sent';
 
   // Animate bars on mount.
   useEffect(() => {
@@ -135,11 +136,28 @@ export default function ResultsPage() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  function submitEmail(e: React.FormEvent) {
+  // Previously this only flipped a "Sent" flag: nothing was emailed and no
+  // lead was captured. It now goes through the same capture route as the
+  // home help widget, which emails the sample report's download link.
+  async function submitEmail(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
-    setSent(true);
-    setTimeout(() => setSent(false), 4500);
+    if (!email.trim() || sendStatus === 'sending') return;
+    setSendStatus('sending');
+    try {
+      const res = await fetch('/api/capture-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          lead_source: 'results-sample',
+          requested_artifact: 'sample-readiness-report',
+        }),
+      });
+      if (!res.ok) throw new Error(`capture failed: ${res.status}`);
+      setSendStatus('sent');
+    } catch {
+      setSendStatus('error');
+    }
   }
 
   return (
@@ -376,12 +394,19 @@ export default function ResultsPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button type="submit" className="mk-btn mk-btn-gold">
-                  {sent ? '✓ Sent' : 'Send PDF'}
+                <button type="submit" className="mk-btn mk-btn-gold" disabled={sendStatus === 'sending'}>
+                  {sent ? '✓ Sent' : sendStatus === 'sending' ? 'Sending…' : 'Send PDF'}
                 </button>
               </form>
-              <div className={`mk-email-toast${sent ? ' is-shown' : ''}`}>
-                ✓ Summary on its way. Check your inbox in a minute.
+              <div className={`mk-email-toast${sendStatus === 'sent' || sendStatus === 'error' ? ' is-shown' : ''}`} role="status">
+                {sendStatus === 'error' ? (
+                  <>
+                    We couldn&apos;t send it just now.{' '}
+                    <a href="/api/resources/sample-readiness-report/download">Download the PDF directly</a>.
+                  </>
+                ) : (
+                  '✓ Summary on its way. Check your inbox in a minute.'
+                )}
               </div>
             </div>
 

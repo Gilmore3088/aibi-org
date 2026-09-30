@@ -87,16 +87,22 @@ async function staticDownloadResponse(
 }
 
 export async function GET(request: Request, context: RouteContext): Promise<Response> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
-  }
-
   const { slug } = await context.params;
   if (!slug || typeof slug !== 'string') {
     return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
   }
 
   const staticResource = getDownloadResource(slug);
+
+  // Free files ship with every deploy, so a missing or unreachable database
+  // must not block them (the catch below already does this when the service
+  // client fails). Only logging/attribution is lost in that case.
+  if (!isSupabaseConfigured()) {
+    if (staticResource?.tier_required === 'free') {
+      return staticDownloadResponse(staticResource);
+    }
+    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+  }
   let service: ReturnType<typeof createServiceRoleClient>;
   try {
     service = createServiceRoleClient();

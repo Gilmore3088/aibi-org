@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArticleShell, ArticleVisualSummary, RiskMatrix } from "@/components/mockup";
 import { articleJsonLd, jsonLdString } from '@/lib/seo/jsonld';
@@ -351,6 +352,13 @@ export default function AIGovernanceWithoutJargonArticle() {
           >
             Request an Executive Briefing
           </a>
+          <p className="mt-5 text-sm text-[color:var(--ink)]/70">
+            Want a quick read on your own readiness first?{' '}
+            <Link href="/assessment/take" className="underline text-[color:var(--ink)]">
+              Take the free three-minute assessment
+            </Link>
+            .
+          </p>
         </aside>
 
         <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
