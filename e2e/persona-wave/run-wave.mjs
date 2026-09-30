@@ -1137,7 +1137,11 @@ async function submitStep(s, st) {
     return;
   }
   if (await btn.first().isDisabled().catch(() => false)) {
-    await s.addFriction('submit_disabled', `${st.label}: button stayed disabled after filling the form`, 1);
+    // A disabled button that says why (e.g. a required file upload the
+    // harness cannot provide) is expected; a silent one is friction.
+    const why = (await s.page.locator(ROOT).first().innerText().catch(() => '')).match(/[^\n]*(complete all required|required field|upload|answer all)[^\n]*/i)?.[0];
+    if (why) await s.addFriction('submit_needs_more', `${st.label}: disabled with explanation "${why.slice(0, 80)}"`, 0);
+    else await s.addFriction('submit_disabled', `${st.label}: button stayed disabled with no explanation`, 1);
     return;
   }
   const before = await s.page.locator(ROOT).first().innerText().catch(() => '');
@@ -1247,6 +1251,9 @@ async function runPersona(persona, browser) {
   const s = new Session(persona, browser);
   try {
     await s.open();
+    // Wave-3 pages with made-up IDs expect a 404 from the very first load.
+    const firstStep = (FEATURE_JOURNEYS[persona.journey] ?? COVERAGE_JOURNEYS[persona.journey])?.[persona.variant ?? 0]?.[0];
+    s.expectMissing = !!firstStep?.expectMissing;
     await s.goto(persona.entry, `landed from ${persona.source}`);
     await s.maybeWander();
     const journey = JOURNEYS[persona.journey] ?? ((sess) => runSteps(sess, (FEATURE_JOURNEYS[persona.journey] ?? COVERAGE_JOURNEYS[persona.journey])[persona.variant ?? 0]));
