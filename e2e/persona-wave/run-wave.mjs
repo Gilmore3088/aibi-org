@@ -163,7 +163,12 @@ class Session {
   recordError(type, message, url, body = '') {
     // No backend keys exist in the harness env, so any 5xx from an API route is
     // presumed environmental until reproduced on a configured preview.
-    const env = ENV_HINTS.test(message) || ENV_HINTS.test(body) || (type === 'api_http_error' && /^5\d\d /.test(message));
+    // 401/403 from the AiBI Lab: the dev enrollment bypass has no auth session.
+    const env =
+      ENV_HINTS.test(message) ||
+      ENV_HINTS.test(body) ||
+      (type === 'api_http_error' && /^5\d\d /.test(message)) ||
+      (type === 'api_http_error' && /^40[13] POST \/api\/sandbox\/chat/.test(message));
     const key = `${type}|${message}`;
     const first = !this.seenErrorKeys.has(key);
     this.seenErrorKeys.add(key);
@@ -305,7 +310,7 @@ class Session {
     if (loadMs > SLOW_MS) await this.addFriction('slow_page', `${p} took ${(loadMs / 1000).toFixed(1)}s`, 0.25);
     if (status >= 400 || facts.heads.some((h) => ERROR_PAGE.test(h))) {
       await this.addFriction('error_page', `${p} → ${status || ''} ${facts.heads[0] ?? ''}`.trim(), 1);
-    } else if (/temporarily unavailable/i.test(facts.text)) {
+    } else if (/temporarily unavailable|not configured|service unavailable/i.test(facts.text)) {
       await this.addFriction('feature_unavailable', `${p} shows "temporarily unavailable"`, 0.5, { env: true });
     } else if (facts.words < 25) {
       await this.addFriction('near_empty_page', `${p} has ${facts.words} words`, 1);

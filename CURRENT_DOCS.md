@@ -23,6 +23,7 @@ were archived locally outside the repo at:
 | Paid buyer support (Stripe/Supabase/Resend + macros) | [Paid buyer support runbook](docs/paid-buyer-support-runbook.md) |
 | Proof collection and attribution approval | [Proof collection runbook](docs/proof-collection-runbook.md) |
 | Assessment flow and taxonomy | [Assessment flow and taxonomy](docs/assessment-flow-and-taxonomy.md) |
+| 100-persona synthetic wave: click-to-value, course delivery, dead ends | [Persona wave 2026-09-30](docs/persona-audit-2026-09-30/README.md) |
 | Site E2E review (10 buyer personas, funnel friction) | [Persona E2E review 2026-06-22](docs/reviews/persona-e2e-review-2026-06-22.md) |
 | Adversarial red-team review (GTM plan + site) | [Red-team review 2026-06-22](docs/reviews/red-team-review-2026-06-22.md) |
 | Consolidated GTM readiness review (10 consumers + 10 expert lenses) | [20-persona GTM review 2026-06-23](docs/reviews/gtm-20-persona-review-2026-06-23.md) |
