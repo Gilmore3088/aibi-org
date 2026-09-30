@@ -8,7 +8,7 @@
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createServerClientWithCookies, isSupabaseConfigured } from '@/lib/supabase/client';
-import { sanitizeNext } from '@/lib/supabase/auth';
+import { AUTH_UNAVAILABLE, sanitizeNext } from '@/lib/supabase/auth';
 import { ensureAuthUser, generateMagicLink } from '@/lib/supabase/auth-admin';
 import { sendIndepthAssessmentPurchase } from '@/lib/resend';
 import { clearAuthCookiesForSignOut } from './signOutCookies';
@@ -28,7 +28,7 @@ export async function sendInDepthAccessLinkAction(
   email: string,
 ): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   try {
     await ensureAuthUser(email); // idempotent — guarantees the auth row exists
@@ -64,7 +64,7 @@ export async function sendPasswordSetupAction(
   redirectTo?: string,
 ): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   const requestHeaders = await headers();
   const host = requestHeaders.get('x-forwarded-host') ?? requestHeaders.get('host');

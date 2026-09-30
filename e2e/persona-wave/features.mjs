@@ -75,7 +75,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/resources/templates/gtm-plan' }, { download: /get word doc|download|pdf|word/i, value: 'resource_download', label: 'template download' }],
   ],
   'prompt-card-download': [
-    [{ enter: '/prompt-cards' }, { read: 'cards_read', min: 200 }, { download: /download|pdf|get the cards|zip/i, value: 'resource_download', label: 'prompt cards download' }],
+    [{ enter: '/prompt-cards' }, { read: 'cards_read', min: 200 }, { download: /download|pdf|get the (aibi )?prompt cards|get the cards|zip/i, value: 'resource_download', label: 'prompt cards download' }],
     [{ enter: '/resources/prompting-foundation' }, { download: /download prompt card/i, value: 'resource_download', label: 'prompt card download' }, { download: /examples pdf|^zip$|^pdf$/i, value: 'resource_download', label: 'examples download' }],
   ],
   'playbook-asset': [
