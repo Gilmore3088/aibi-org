@@ -1,10 +1,16 @@
 # Remediation plan: no rage-quits, value for every visitor
 
-Source: two 100-persona waves (2026-09-30).
+Source: three 100-persona waves (2026-09-30).
 - Wave 1 (`WAVE_SET=core`): core journeys, 29 of 97 pages.
 - Wave 2 (`WAVE_SET=features`): the 68 pages and features wave 1 skipped, including the home "Can we help you today?" resource widget, all download types, toolbox, course extras, exam, and account and support forms.
+- Wave 3 (`WAVE_SET=coverage`): the 40 pages neither wave reached. That is 34 public pages at 2–3 personas each, plus 6 internal admin and design-system pages, which are excluded.
 
-Together the waves reached 57 of 97 pages.
+**Coverage: every public page (90 of 90).**
+- 81 were loaded directly.
+- 8 are redirect stubs that land on a working page.
+- 1 was checked by hand: `/resources/[slug]` has no essays registered, so it only serves a 404 with a way forward.
+
+The 7 internal routes are excluded. Check with `node e2e/persona-wave/route-coverage.mjs <run dirs>`.
 
 ## Definition of done
 
@@ -19,12 +25,17 @@ Local runs can't prove 2 for flows that need keys (checkout, lab, certificate, i
 
 ## Where we are
 
-| | Wave 1 (core) | Wave 2 (features) |
-|---|---|---|
-| Reached value | 82 / 100 | 85 / 100 |
-| Rage-quits | 4 | 0 |
-| Product dead ends | 22 | 19 (mostly harness or env, see below) |
-| Uncaught JS errors | 0 | 1 (dev live-reload socket, not the site) |
+| | Wave 1 (core) | Wave 2 (features) | Wave 3 (coverage), first run | Wave 3, after fixes |
+|---|---|---|---|---|
+| Reached value | 82 / 100 | 85 / 100 | 92 / 100 | **100 / 100** |
+| Rage-quits | 4 | 0 | 5 | **0** |
+| Product dead ends | 22 | 19 (mostly harness or env, see below) | 2 outage screens + harness misreads | **0** |
+| Uncaught JS errors | 0 | 1 (dev live-reload socket, not the site) | 0 | **0** |
+
+Wave 3 details:
+- The five first-run rage-quits came from two things. First, two outage screens with no way forward, fixed as F11 and F12. Second, harness misreads: expected 404s scored as dead ends, and client-rendered pages judged before they filled in.
+- What is left in the final run is dev-server slowness (pages over 8s while `next dev` compiles) and one explained disabled button: the final packet needs a file upload.
+- There were also two hydration-attribute warnings on `/auth/login` and `/auth/confirm-device-pending`. Both came from the last two personas of the run and did not reproduce in 6 fresh loads. Re-check on the preview.
 
 Every wave-1 rage-quit traced to a product dead end. All four are now fixed:
 - Three completers reached a certificate page with no way out.
@@ -63,17 +74,23 @@ Wave-2 download personas re-run after F6: templates, prompt cards and playbooks 
 | F7 | Governance brief's only next step was an email link | 1+2 | Adds the free assessment link | — |
 | F8 | Sign-up, sign-in and reset showed "Auth is not configured. Set Supabase environment variables." to visitors | 2 | Visitor-facing message with the support email | auth tests pass |
 | F9 | Course settings Save stayed disabled with no reason given | 2 | "Answer all three questions to save." under the button | settings tests pass |
+| F10 | **Exam: correct answer was the longest option in 39 of 40 questions** (B1) | 2 | 117 distractors rewritten as plausible mistakes of similar length. Correct answers, keys and explanations are unchanged | longest is now 6/40; guard tests fail above 40% |
+| F11 | Toolbox library skill page threw a 500 on a database error | 3 | "Temporarily unavailable" with links to the library and support | wave 3: 3/3 value |
+| F12 | In-Depth assessment outage said "isn't configured in this environment", with no way forward | 3 | Plain-language copy with Try again and Contact support | wave 3: 3/3 value |
+| F13 | **Failed downloads showed raw JSON** (B2) | 1+2 | `withReadableDownloadErrors` on all 14 visitor-facing file routes. Page loads get a short page: what happened, plus Try again / Sign in / pricing / library, Go back, Contact support. Script callers still get JSON. A bad link reads "link may be out of date" | 8 tests; checked live |
+| F14 | About half the pages had no main landmark (B7) | 1 | `#main-content` gets role=main when a page has no `<main>` | exactly one landmark on 10 page types |
 
 ## B. To do, in priority order
 
 ### P0: prove the untested flows (blocks the definition of done)
 
-**A1. Run both waves against a configured preview.**
+**A1. Run all three waves against a configured preview.** *Blocked in this sandbox. The environment can't reach `*.vercel.app` or the live domain and has no keys. Runbook: `e2e/persona-wave/README.md` → "Running against a configured preview".*
 1. Deploy this branch to a Vercel preview with Stripe **test** keys, Supabase (a non-production project, or the e2e seed opt-in), `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, Resend in test mode, and `SKIP_MAILERLITE=false` pointed at a test group.
 2. Run:
    ```
    WAVE_BASE_URL=<preview> npm run e2e:persona-wave
    WAVE_BASE_URL=<preview> WAVE_SET=features npm run e2e:persona-wave
+   WAVE_BASE_URL=<preview> WAVE_SET=coverage npm run e2e:persona-wave
    ```
 3. Treat every row still tagged `env` as a product bug.
 
@@ -92,13 +109,17 @@ This covers what could only be marked "not tested" locally:
 
 ### P1: product fixes
 
-**B1. Exam: correct answer is the longest option in 39 of 40 questions.**
+**B1. Done (F10).** Subject-matter review of the rewritten distractors is still worthwhile before the next cohort.
+
+~~Exam: correct answer is the longest option in 39 of 40 questions.~~
 - Shuffling (F4) stops position guessing, but "pick the longest answer" still passes.
 - Rewrite distractors in `content/exams/foundation-program/questions.ts` so options have similar length and specificity.
 - Then add a content test that fails when more than 40% of correct answers are the longest option.
 - Owner: course content, with subject-matter review. The credential's credibility depends on it.
 
-**B2. Never leave a visitor on raw JSON.**
+**B2. Done (F13).**
+
+~~Never leave a visitor on raw JSON.~~
 - When a browser navigates to `/api/resources/*/download` and the route fails, it shows `{"error":"..."}`.
 - For navigations (`Accept: text/html`), return a small HTML page or redirect back with a message: "This download is temporarily unavailable. We emailed it to you" or "Try again".
 - F6 removes the most common cause. Paid-file failures and 404s remain.
@@ -113,13 +134,15 @@ This covers what could only be marked "not tested" locally:
 ### P2: friction and polish
 
 - **B4.** Artifact save "no feedback" (3 of 320 in wave 1) did not reproduce by hand. Every save tried showed "Saved", and the re-run traced it to harness timeouts under dev-server load. Re-check on the preview, where there is no dev compile.
-- **B5.** In-Depth upgrade button missing from some free results (3 of 8 buyers typed the URL). Check each result tier shows "Get 90-day playbook / In-Depth".
-- **B7.** Marketing pages have no `<main>` landmark. "Skip to main content" targets a div in `LayoutChrome`. Make it `<main>`, checking course pages that already render their own.
-- **B8.** React "unique key" warning on every module page, from content `ModulePage` passes to `ModuleTabs`.
+- **B5. Closed, no change needed.** The In-Depth call to action is on every result tier. The three buyers who missed it were non-emailing personas stuck at the email gate. The harness now uses the gate's "View your summary without email" exit.
+- **B7. Done (F14).**
+- **B8. Closed, dev-only.** React's "unique key" warning on module pages. Every list is keyed. Bisecting shows the warning persists with the suspect components removed. It is a React 19 development-mode quirk with server-to-client elements, and production builds don't emit it. Re-check the preview console.
 
-### P3: coverage (wave 3)
+### P3: coverage (wave 3). Done
 
-These 40 pages were never visited.
+Wave 3 covers all 34 public pages below: 100/100 reached value, 0 rage-quits, 0 dead ends. Pages that need a purchase, sign-in or real ID pass when they show a clear message with a next step. Made-up IDs pass when they return a helpful 404. The preview run (A1) will exercise them with real data.
+
+These 40 pages were never visited by waves 1–2.
 
 **Needs seeded data or a purchase (run on the preview):**
 - In-Depth access, purchased, take and results
@@ -134,7 +157,7 @@ These 40 pages were never visited.
 - course gallery, onboarding, submit and prompt library
 - dynamic library, cookbook, skill and practice-rep pages
 
-Add a `WAVE_SET=coverage` quota that guarantees each one at least once.
+`WAVE_SET=coverage` (`e2e/persona-wave/coverage.mjs`) guarantees each one 2–3 visits.
 
 **Internal, excluded:** `/admin/*`, `/design-system`.
 
@@ -151,6 +174,7 @@ Add a `WAVE_SET=coverage` quota that guarantees each one at least once.
 ## D. Harness notes
 
 - Harness: `e2e/persona-wave/`
-- Wave-2 journeys: data in `features.mjs`
+- Wave-2 journeys: data in `features.mjs`. Wave-3 pages: `coverage.mjs`
+- Route coverage across runs: `route-coverage.mjs`
 - HTML report: `html-report.mjs`
 - Verified by hand after each run: the exam flow, settings save, sign-up message, workbook link, Toolbox tour persistence, and the phone menu's Training link.

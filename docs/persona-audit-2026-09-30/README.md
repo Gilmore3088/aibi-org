@@ -1,4 +1,25 @@
-# 100-persona synthetic wave, 2026-09-30
+# 100-persona synthetic waves, 2026-09-30
+
+## Current status (after three waves)
+
+**Open the interactive report: [`index.html`](index.html).** The plan and each item's status are in [`REMEDIATION-PLAN.md`](REMEDIATION-PLAN.md).
+
+| | Wave 1 · core | Wave 2 · features | Wave 3 · remaining pages |
+|---|---|---|---|
+| Reached value | 82 / 100 | 85 / 100 | 100 / 100 |
+| Rage-quits | 4 → **0** on re-run | 0 | 5 → **0** after fixes |
+
+- Every public page is covered (90 of 90). Admin and design-system pages are excluded.
+- Every rage-quit traced to a product dead end, and each one is fixed.
+- Failed downloads now show a readable page with next steps on all 14 file routes.
+- The exam can no longer be passed by picking "b" or the longest answer.
+- Still open: A1, the run against a configured preview with Stripe, Supabase and AI keys. This sandbox can't reach the preview or the live site. Runbook: [`e2e/persona-wave/README.md`](../../e2e/persona-wave/README.md#running-against-a-configured-preview-the-real-test).
+
+Raw run reports: wave 1 [`wave-report.md`](wave-report.md), wave 3 [`wave3-report.md`](wave3-report.md).
+
+---
+
+## Wave 1 write-up (original, statuses updated)
 
 Harness: [`e2e/persona-wave/`](../../e2e/persona-wave/README.md). Run it with
 `npm run e2e:persona-wave` against `SKIP_ENROLLMENT_GATE=true npm run dev`.
@@ -31,7 +52,7 @@ environment), institution buyers (5, inquiry API 502, environment), explorers
 
 ## Product findings (verified)
 
-### 1. No way forward at the end of a module (fixed in this branch)
+### 1. No way forward at the end of a module. **Fixed**
 
 Each module runs Understand → Try → Build → **Save**. The Save step ended with
 "Next: … carry it into *&lt;next module&gt;*" but no link. The only next-module
@@ -47,7 +68,7 @@ collapsed, so there was **no visible link to the next module at all**.
 - After: [`shots/after-fix-save-step-next-link.png`](shots/after-fix-save-step-next-link.png).
   Re-running five mobile learners gave 0 next-module dead ends (previously 3–10 each).
 
-### 2. Course home has no link to the final packet / certificate
+### 2. Course home has no link to the final packet / certificate. **Fixed** (course-complete card)
 
 All 10 completers had to type `/courses/foundation/program/certificate`. The
 course home HTML links to no `submit`, `certificate`, or `post-assessment`
@@ -58,7 +79,7 @@ packet / view certificate" card on the course home once all 18 modules are
 complete. (The module-18 CompletionCTA path itself could not be exercised
 under the bypass.)
 
-### 3. Module 3 Build is gated on a scored prompt
+### 3. Module 3 Build is gated on a scored prompt. **Closed** (starter prompt, hints, and a no-penalty exit after 6 attempts already exist)
 
 The CORE prompt workshop only offers "Save & continue" after the learner's
 prompt passes C·O·R·E scoring. 6 of 30 synthetic learners wrote generic text
@@ -67,7 +88,7 @@ This is partly a harness limit (real learners write real prompts), but it is
 the one step in the course with no way past a failing score. Worth watching
 in real sessions: after 6 failed attempts, is there a hint or an exit?
 
-### 4. React key warning on every module page (low)
+### 4. React key warning on every module page (low). **Closed** (dev-only React 19 quirk)
 
 `Each child in a list should have a unique "key" prop … Check the render
 method of ModuleTabs. It was passed a child from ModulePage.` It appears on
@@ -75,7 +96,7 @@ every module page (36 personas). This is dev-only noise, not user-visible, but
 it hides real warnings. The source is in the content `ModulePage` passes into
 `ModuleTabs`; the tab rail's own keys are correct.
 
-### 5. Marketing pages have no `<main>` landmark (low, accessibility)
+### 5. Marketing pages have no `<main>` landmark (low, accessibility). **Fixed**
 
 "Skip to main content" targets `<div id="main-content">` in
 `src/components/system/LayoutChrome.tsx`, and most marketing pages (home,
@@ -83,7 +104,7 @@ it hides real warnings. The source is in the content `ModulePage` passes into
 `/verify`) have no `<main>`. Course pages already render their own `<main>`,
 so switching the wrapper to `<main>` needs a check for nesting.
 
-### Unconfirmed (needs a configured preview)
+### Unconfirmed at the time. Since resolved: In-Depth CTA closed, prompt card fixed, silent saves were harness timeouts
 
 - 3 of 8 In-Depth buyers found no In-Depth CTA on their free result and typed
   the URL; the other 5 found "Get 90-day playbook". This may be result-variant

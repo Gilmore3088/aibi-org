@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds a self-contained, interactive HTML report from a persona-wave run.
 //
-//   node e2e/persona-wave/html-report.mjs <run-out-dir> <findings-dir>
+//   node e2e/persona-wave/html-report.mjs <run-out-dir> <findings-dir> [wave2-dir] [wave3-dir]
 //
 // <run-out-dir> holds results.json + summary.json from run-wave.mjs.
 // <findings-dir> holds findings.json (hand-verified conclusions) and any
@@ -11,9 +11,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ALL_QUOTAS as JOURNEY_QUOTAS } from './personas.mjs';
 
-const [runDir, outDir, wave2Dir] = process.argv.slice(2);
+const [runDir, outDir, wave2Dir, wave3Dir] = process.argv.slice(2);
 if (!runDir || !outDir) {
-  console.error('usage: node e2e/persona-wave/html-report.mjs <run-out-dir> <findings-dir>');
+  console.error('usage: node e2e/persona-wave/html-report.mjs <run-out-dir> <findings-dir> [wave2-dir] [wave3-dir]');
   process.exit(2);
 }
 
@@ -54,7 +54,7 @@ function trimTimeline(tl) {
 
 function shapePersona(r, wave) {
   return {
-  id: wave === 2 ? `W2-${r.persona.id}` : r.persona.id,
+  id: wave > 1 ? `W${wave}-${r.persona.id}` : r.persona.id,
   wave,
   role: r.persona.role,
   fi: r.persona.fiType,
@@ -83,19 +83,21 @@ function shapePersona(r, wave) {
 }
 const personas = results.map((r) => shapePersona(r, 1));
 
-// Optional second wave (feature sweep).
-let wave2 = null;
-if (wave2Dir) {
-  const w2 = JSON.parse(fs.readFileSync(path.join(wave2Dir, 'results.json'), 'utf8'));
-  const w2s = JSON.parse(fs.readFileSync(path.join(wave2Dir, 'summary.json'), 'utf8'));
-  personas.push(...w2.results.map((r) => shapePersona(r, 2)));
-  wave2 = {
-    meta: w2.meta,
-    totals: w2s.totals,
-    journeys: w2s.journeys,
-    issues: w2s.issues.slice(0, 60).map((i) => ({ kind: i.kind, detail: i.detail.slice(0, 200), personas: i.personas.length, severity: i.severity, env: !!i.env, paths: i.paths.slice(0, 3) })),
+// Optional later waves (2: feature sweep, 3: remaining pages).
+function loadWave(dir, n) {
+  if (!dir) return null;
+  const w = JSON.parse(fs.readFileSync(path.join(dir, 'results.json'), 'utf8'));
+  const ws = JSON.parse(fs.readFileSync(path.join(dir, 'summary.json'), 'utf8'));
+  personas.push(...w.results.map((r) => shapePersona(r, n)));
+  return {
+    meta: w.meta,
+    totals: ws.totals,
+    journeys: ws.journeys,
+    issues: ws.issues.slice(0, 60).map((i) => ({ kind: i.kind, detail: i.detail.slice(0, 200), personas: i.personas.length, severity: i.severity, env: !!i.env, paths: i.paths.slice(0, 3) })),
   };
 }
+const wave2 = loadWave(wave2Dir, 2);
+const wave3 = loadWave(wave3Dir, 3);
 
 // Some module page titles weren't loaded when recorded; take the first
 // non-empty title seen for each module across all personas.
@@ -107,6 +109,7 @@ const typedCertificate = results.filter((r) => r.persona.courseDepth >= 18 && r.
 const data = {
   typedCertificate,
   wave2,
+  wave3,
   meta,
   totals: summary.totals,
   journeys: summary.journeys,

@@ -105,7 +105,7 @@ h3 { font: 600 15px/1.35 var(--body); margin: 0; }
 .s-fixed, .s-done, .s-value { color: var(--good); background: var(--good-soft); }
 .s-open, .s-blocked, .s-frustration { color: var(--bad); background: var(--bad-soft); }
 .s-watch, .s-ready, .s-patience { color: var(--warn); background: var(--warn-soft); }
-.s-unconfirmed, .s-kept, .s-env, .s-behavior { color: var(--env); background: var(--env-soft); }
+.s-unconfirmed, .s-closed, .s-kept, .s-env, .s-behavior { color: var(--env); background: var(--env-soft); }
 .s-crash { color: var(--bad); background: var(--bad-soft); }
 .s-high { color: var(--bad); background: var(--bad-soft); }
 .s-medium { color: var(--warn); background: var(--warn-soft); }
@@ -239,7 +239,7 @@ footer { color: var(--faint); font-size: 12.5px; padding-block: 24px 40px; borde
 <header class="top wrap">
   <div class="eyebrow">AI Banking Institute · Synthetic user research</div>
   <h1 id="title"></h1>
-  <p class="lede">Synthetic bankers walked the site on randomized, goal-driven paths while a browser recorded every click, error and dead end. Wave 1 covered the core journeys; wave 2 swept the features wave 1 skipped. This report shows where they got value, where they got stuck, what the course delivered, and the plan to close every gap.</p>
+  <p class="lede">Synthetic bankers walked the site on randomized, goal-driven paths while a browser recorded every click, error and dead end. Wave 1 covered the core journeys; wave 2 swept the features wave 1 skipped; wave 3 visited every remaining public page. This report shows where they got value, where they got stuck, what the course delivered, and the plan to close every gap.</p>
   <div class="meta" id="meta"></div>
 </header>
 
@@ -273,16 +273,16 @@ const VALUE_LABELS = {
 const valueLabel = (id) => VALUE_LABELS[id] || id.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
 const OUTCOME_LABELS = { 'goal-finished': 'Finished goal', behavior: 'Stopped as planned', frustration: 'Rage-quit', patience: 'Ran out of patience', crash: 'Harness error' };
 const outcomeClass = (k) => ({ 'goal-finished': 's-value', behavior: 's-behavior', frustration: 's-frustration', patience: 's-patience', crash: 's-crash' }[k] || 's-low');
-const STATUS_LABELS = { fixed: 'Fixed', open: 'Open', watch: 'Watch', unconfirmed: 'Unconfirmed' };
+const STATUS_LABELS = { fixed: 'Fixed', closed: 'Closed', open: 'Open', watch: 'Watch', unconfirmed: 'Unconfirmed', done: 'Done', blocked: 'Blocked' };
 const W1 = () => D.personas.filter((p) => p.wave === 1);
 const jl = (j) => D.journeyLabels[j] || j;
 
 document.title = D.findings.title;
 $('#title').textContent = D.findings.title;
 $('#meta').innerHTML = [
-  D.wave2 ? `<span class="chip">2 waves</span>` : `<span class="chip mono">seed ${D.meta.seed}</span>`,
+  D.wave2 ? `<span class="chip">${D.wave3 ? 3 : 2} waves</span>` : `<span class="chip mono">seed ${D.meta.seed}</span>`,
   `<span class="chip">${D.personas.length} personas</span>`,
-  `<span class="chip">${Math.round((D.meta.durationMs + (D.wave2?.meta.durationMs ?? 0)) / 60000)} min of runs</span>`,
+  `<span class="chip">${Math.round((D.meta.durationMs + (D.wave2?.meta.durationMs ?? 0) + (D.wave3?.meta.durationMs ?? 0)) / 60000)} min of runs</span>`,
   `<span class="chip">${esc(D.findings.runDate)}</span>`,
   `<span class="chip">Local test build</span>`,
 ].join('');
@@ -352,15 +352,16 @@ function renderOverview() {
     </div>`;
 }
 function waveCompare() {
-  const a = D.totals, b = D.wave2.totals;
+  const cols = [[D.totals, 'Wave 1 · core journeys'], [D.wave2.totals, 'Wave 2 · skipped features']];
+  if (D.wave3) cols.push([D.wave3.totals, 'Wave 3 · remaining pages']);
   const rows = [
-    ['Reached value', `${a.reachedValue} / ${a.personas}`, `${b.reachedValue} / ${b.personas}`],
-    ['Rage-quits', a.frustratedQuits, b.frustratedQuits],
-    ['Personas hitting a dead end', a.personasWithDeadEnd, b.personasWithDeadEnd],
-    ['Median clicks to value', a.medianClicksToValue, b.medianClicksToValue],
-    ['Average experience', a.avgExperience, b.avgExperience],
+    ['Reached value', (t) => `${t.reachedValue} / ${t.personas}`],
+    ['Rage-quits', (t) => t.frustratedQuits],
+    ['Personas hitting a dead end', (t) => t.personasWithDeadEnd],
+    ['Median clicks to value', (t) => t.medianClicksToValue],
+    ['Average experience', (t) => t.avgExperience],
   ];
-  return `<div class="panel tablewrap"><table><thead><tr><th>Two waves</th><th class="n">Wave 1 · core journeys</th><th class="n">Wave 2 · skipped features</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r[0]}</td><td class="n num">${r[1]}</td><td class="n num">${r[2]}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="panel tablewrap"><table><thead><tr><th>${cols.length === 3 ? 'Three' : 'Two'} waves</th>${cols.map((c) => `<th class="n">${c[1]}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr><td>${r[0]}</td>${cols.map((c) => `<td class="n num">${r[1](c[0])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function renderPlan() {
   const pl = D.findings.plan;
@@ -371,16 +372,16 @@ function renderPlan() {
     <div class="panel pad" style="display:grid;gap:10px">
       <h3>Done means</h3>
       <ul style="margin:0;padding-left:18px;display:grid;gap:4px">${pl.definition.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-      <p class="muted" style="margin:0;font-size:13px">Measured by re-running both waves against a configured preview (step A1).</p>
+      <p class="muted" style="margin:0;font-size:13px">Measured by re-running all waves against a configured preview (step A1).</p>
     </div>
-    ${pl.verification ? `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>Re-run of the same personas after the fixes</h3></div><table><thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th></tr></thead><tbody>${pl.verification.map((r) => `<tr><td>${esc(r[0])}</td><td class="n num">${esc(r[1])}</td><td class="n num" style="color:var(--good);font-weight:600">${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    ${pl.verification ? `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>Before and after the fixes</h3></div><table><thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th></tr></thead><tbody>${pl.verification.map((r) => `<tr><td>${esc(r[0])}</td><td class="n num">${esc(r[1])}</td><td class="n num" style="color:var(--good);font-weight:600">${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>` : ''}
     <div class="panel">
       <div class="pad" style="padding-bottom:6px"><h3>Fixed in this branch · ${fixed.length}</h3></div>
       <div class="flist">${fixed.map((f) => `<button class="frow" data-view="findings" data-finding="${f.id}">${pill('s-fixed', 'Fixed')}<span><b>${esc(f.title)}</b><br><span class="area">${esc(f.area)}</span></span>${pill('s-' + f.severity, f.severity)}</button>`).join('')}</div>
     </div>
     <div class="panel">
-      <div class="pad" style="padding-bottom:6px"><h3>Still to do, in order</h3></div>
-      <div class="hk">${pl.steps.map((st) => `<div><b>${esc(st.id)} · ${esc(st.title)}</b>${pill(pri[st.p] || 's-low', st.p)}<p>${esc(st.detail)}</p></div>`).join('')}</div>
+      <div class="pad" style="padding-bottom:6px"><h3>${pl.steps.every((st) => st.status) ? 'Plan status, in order' : 'Still to do, in order'}</h3></div>
+      <div class="hk">${pl.steps.map((st) => `<div><b>${esc(st.id)} · ${esc(st.title)}</b><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:start">${pill(pri[st.p] || 's-low', st.p)}${st.status ? pill('s-' + st.status, STATUS_LABELS[st.status]) : ''}</span><p>${esc(st.detail)}</p></div>`).join('')}</div>
     </div>`;
 }
 function barRow(j) {
@@ -399,18 +400,18 @@ function renderFindings() {
   const all = D.findings.findings;
   const counts = all.reduce((a, f) => ((a[f.status] = (a[f.status] || 0) + 1), a), {});
   const shown = all.filter((f) => findingStatus === 'all' || f.status === findingStatus);
-  const issues = (issueWave === 2 && D.wave2 ? D.wave2.issues : D.issues).filter((i) => (issueScope === 'all' ? true : issueScope === 'env' ? i.env : !i.env)).filter((i) => i.kind !== 'slow_page' || issueScope === 'all');
+  const issues = (issueWave === 3 && D.wave3 ? D.wave3.issues : issueWave === 2 && D.wave2 ? D.wave2.issues : D.issues).filter((i) => (issueScope === 'all' ? true : issueScope === 'env' ? i.env : !i.env)).filter((i) => i.kind !== 'slow_page' || issueScope === 'all');
   return `
     ${head('Findings', 'Each one was checked against the code or reproduced in a browser. Status says what happens next.')}
     <div class="filters" role="group" aria-label="Filter by status">
-      ${['all', 'fixed', 'open', 'watch', 'unconfirmed'].filter((s) => s === 'all' || counts[s]).map((s) => `<button class="fbtn" data-status="${s}" aria-pressed="${findingStatus === s}">${s === 'all' ? 'All' : STATUS_LABELS[s]} <span class="muted num">${s === 'all' ? all.length : counts[s]}</span></button>`).join('')}
+      ${['all', 'fixed', 'closed', 'open', 'watch', 'unconfirmed'].filter((s) => s === 'all' || counts[s]).map((s) => `<button class="fbtn" data-status="${s}" aria-pressed="${findingStatus === s}">${s === 'all' ? 'All' : STATUS_LABELS[s]} <span class="muted num">${s === 'all' ? all.length : counts[s]}</span></button>`).join('')}
     </div>
     <div style="display:grid;gap:12px">${shown.map(findingCard).join('')}</div>
     <div class="panel">
       <div class="pad" style="display:grid;gap:12px">
         ${head('Every signal from the run', 'Raw issues grouped by type, before hand-verification. Environment signals come from missing keys in the test build.')}
         <div class="filters" role="group" aria-label="Issue scope">
-          ${D.wave2 ? [1, 2].map((w) => `<button class="fbtn" data-iwave="${w}" aria-pressed="${issueWave === w}">Wave ${w}</button>`).join('') + '<span style="width:12px"></span>' : ''}
+          ${D.wave2 ? (D.wave3 ? [1, 2, 3] : [1, 2]).map((w) => `<button class="fbtn" data-iwave="${w}" aria-pressed="${issueWave === w}">Wave ${w}</button>`).join('') + '<span style="width:12px"></span>' : ''}
           ${[['product', 'Product'], ['env', 'Environment'], ['all', 'All incl. slow pages']].map(([k, l]) => `<button class="fbtn" data-scope="${k}" aria-pressed="${issueScope === k}">${l}</button>`).join('')}
         </div>
       </div>
@@ -507,6 +508,7 @@ function renderJourneys() {
     ${head('Journeys', 'What each group of personas was trying to do and how it went. Click a row to open those personas.')}
     ${journeyTable('Wave 1 · core journeys', D.journeys, 1)}
     ${D.wave2 ? journeyTable('Wave 2 · features wave 1 skipped', D.wave2.journeys, 2) : ''}
+    ${D.wave3 ? journeyTable('Wave 3 · every remaining public page', D.wave3.journeys, 3) : ''}
     <div class="note">Course shoppers and institution buyers in wave 1, and resume-link and support personas in wave 2, show 0% because those flows need Stripe or the database, which the test build did not have. See Not tested.</div>`;
 }
 function journeyTable(title, rows, wave) {
@@ -546,7 +548,7 @@ function renderPersonas() {
     <div class="ptools">
       <label class="sr" for="pq" hidden>Search</label>
       <input id="pq" type="search" placeholder="Search role, institution, source…" value="${esc(personaFilter.q)}">
-      <select id="pw" aria-label="Wave">${opt('', 'Both waves', personaFilter.wave)}${opt('1', 'Wave 1', personaFilter.wave)}${opt('2', 'Wave 2', personaFilter.wave)}</select>
+      <select id="pw" aria-label="Wave">${opt('', D.wave3 ? 'All waves' : 'Both waves', personaFilter.wave)}${opt('1', 'Wave 1', personaFilter.wave)}${opt('2', 'Wave 2', personaFilter.wave)}${D.wave3 ? opt('3', 'Wave 3', personaFilter.wave) : ''}</select>
       <select id="pj" aria-label="Journey">${opt('', 'All journeys', personaFilter.journey)}${js.map((j) => opt(j, shortJourney(j), personaFilter.journey)).join('')}</select>
       <select id="pd" aria-label="Device">${opt('', 'Any device', personaFilter.device)}${opt('desktop', 'Desktop', personaFilter.device)}${opt('mobile', 'Mobile', personaFilter.device)}</select>
       <select id="pr" aria-label="Result">${opt('', 'Any result', personaFilter.result)}${opt('value', 'Reached value', personaFilter.result)}${opt('novalue', 'No value', personaFilter.result)}${opt('deadend', 'Hit a dead end', personaFilter.result)}${opt('quit', 'Rage-quit', personaFilter.result)}</select>
