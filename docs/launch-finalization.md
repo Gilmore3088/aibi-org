@@ -47,16 +47,24 @@ state and is superseded; see git history.
 - Weekly engagement digest (Mondays) and monthly claims re-verification
   routines active. Funnel views live at `/admin` and `/admin/funnel`.
 
-## Remaining before enable — operator (dashboard, ~10 min)
+## Remaining before enable — operator (dashboard, ~5 min)
 
-Verified still outstanding on 2026-08-15 (re-verify before enabling):
+2026-09-30: the connector's email tools were fixed upstream (subjects now
+update in place; a new content tool writes full HTML bodies from the repo's
+canonical files), so the long-stalled API-unsafe items were fixed and
+re-verified via API — no dashboard work needed for them:
 
-- [ ] Starting Point Day 0 subject → `Your assessment result: Starting Point`
-      (holds Day 7's subject — swapped during an API repair; fix in the
-      dashboard ONLY, the connector's subject tool destroys pasted bodies).
-- [ ] Starting Point Day 7 subject → `Three board-ready AI numbers`.
-- [ ] Starting Point final delay 5 → 7 days (so Day 14 lands on day 14);
-      glance at the same delay in the other three assessment automations.
+- [x] Starting Point Day 0 / Day 7 subjects corrected; both bodies re-written
+      from `docs/mailerlite-emails/` canonical HTML and verified designed.
+- [x] Early Stage Day 3 / Day 7 subjects + bodies same treatment.
+- [x] Final delay set to 7 days (Day 14 lands on day 14) in all four
+      assessment automations (Starting Point, Early Stage, Building
+      Momentum, Ready to Scale); all other subjects audited correct.
+      Day 14 keeps the operator's custom subjects on Building Momentum and
+      Ready to Scale — intentional.
+
+Still outstanding (operator, dashboard):
+
 - [ ] Review the delivered test emails in hello@: rendering, full
       "[Ai] Banking Institute" wordmark, unsubscribe/address footer present.
 - [ ] Exit conditions per automation: assessment stop on `purchased_in_depth`
