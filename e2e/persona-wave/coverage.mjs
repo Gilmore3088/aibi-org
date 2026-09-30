@@ -8,20 +8,22 @@
 
 const FAKE_UUID = '00000000-0000-4000-8000-000000000000';
 
-const read = (path) => [{ enter: path }, { assess: true }, { click: /./, label: 'primary next step', optional: true, primary: true }];
+const read = (path, opts = {}) => [{ enter: path, expectMissing: !!opts.missing }, { assess: true }, { click: /./, label: 'primary next step', optional: true, primary: true }];
+// Made-up IDs: a clear 404 with a way forward is the correct outcome.
+const missing = (path) => read(path, { missing: true });
 
 export const COVERAGE_PAGES = {
   'cov-indepth-access': read('/assessment/in-depth/access'),
   'cov-indepth-purchased': read('/assessment/in-depth/purchased'),
-  'cov-indepth-results': read(`/assessment/in-depth/results/${FAKE_UUID}`),
+  'cov-indepth-results': missing(`/assessment/in-depth/results/${FAKE_UUID}`),
   'cov-indepth-take': read('/assessment/in-depth/take'),
-  'cov-results-print': read(`/assessment/results/print/${FAKE_UUID}`),
+  'cov-results-print': missing(`/assessment/results/print/${FAKE_UUID}`),
   'cov-assessment-start': read('/assessment/start'),
-  'cov-team-token': read('/assessment/team/not-a-real-token'),
-  'cov-team-admin': read(`/assessment/team/admin/${FAKE_UUID}`),
-  'cov-team-admin-print': read(`/assessment/team/admin/${FAKE_UUID}/print`),
+  'cov-team-token': missing('/assessment/team/not-a-real-token'),
+  'cov-team-admin': missing(`/assessment/team/admin/${FAKE_UUID}`),
+  'cov-team-admin-print': missing(`/assessment/team/admin/${FAKE_UUID}/print`),
   'cov-team-purchased': read('/assessment/team/purchased'),
-  'cov-team-results': read(`/assessment/team/results/${FAKE_UUID}`),
+  'cov-team-results': missing(`/assessment/team/results/${FAKE_UUID}`),
   'cov-auth-confirm': read('/auth/confirm'),
   'cov-auth-device-pending': read('/auth/confirm-device-pending'),
   'cov-auth-login': [
@@ -46,8 +48,8 @@ export const COVERAGE_PAGES = {
   ],
   'cov-dashboard': read('/dashboard'),
   'cov-dashboard-assessments': read('/dashboard/assessments'),
-  'cov-cookbook-recipe': read('/dashboard/toolbox/cookbook/not-a-recipe'),
-  'cov-library-skill': read('/dashboard/toolbox/library/not-a-skill'),
+  'cov-cookbook-recipe': missing('/dashboard/toolbox/cookbook/not-a-recipe'),
+  'cov-library-skill': missing('/dashboard/toolbox/library/not-a-skill'),
   'cov-toolbox-skill': read('/my-toolbox/skills/kyc-refresh-guide'),
   'cov-practice-rep': [
     { enter: '/practice/safe-prompt-conversion' }, { assess: true },
@@ -57,9 +59,9 @@ export const COVERAGE_PAGES = {
   'cov-brief-members': read('/resources/members-will-switch'),
   'cov-brief-skill': read('/resources/the-skill-not-the-prompt'),
   'cov-brief-efficiency': read('/resources/what-your-efficiency-ratio-is-hiding'),
-  'cov-verify-id': read('/verify/AIBIP-2026-0000'),
-  'cov-verify-print': read('/verify/AIBIP-2026-0000/print'),
-  'cov-results-id': read(`/results/${FAKE_UUID}`),
+  'cov-verify-id': missing('/verify/AIBIP-2026-0000'),
+  'cov-verify-print': missing('/verify/AIBIP-2026-0000/print'),
+  'cov-results-id': missing(`/results/${FAKE_UUID}`),
 };
 
 const IDS = Object.keys(COVERAGE_PAGES);

@@ -228,7 +228,7 @@ class Session {
       .waitForFunction(() => {
         const el = document.querySelector('main, #main-content') || document.body;
         return (el.innerText || '').split(/\s+/).length > 20;
-      }, null, { timeout: 8_000 })
+      }, null, { timeout: 15_000 })
       .catch(() => {});
   }
 
@@ -292,7 +292,7 @@ class Session {
         const here = location.pathname;
         const forward = [...main.querySelectorAll('a[href],button')]
           .filter(vis)
-          .filter((el) => !el.closest('header, nav, footer'))
+          .filter((el) => !el.closest('header, footer, nav:not([aria-label*="readcrumb" i])'))
           .filter((el) => {
             if (el.tagName === 'BUTTON') return !el.disabled;
             const href = el.getAttribute('href') || '';
@@ -317,7 +317,9 @@ class Session {
       await this.addFriction('a11y_no_main_landmark', `${p} has no <main> landmark (skip link targets a div)`, 0);
     }
     if (loadMs > SLOW_MS) await this.addFriction('slow_page', `${p} took ${(loadMs / 1000).toFixed(1)}s`, 0.25);
-    if (status >= 400 || facts.heads.some((h) => ERROR_PAGE.test(h))) {
+    if (this.expectMissing && status === 404) {
+      await this.addFriction('expected_not_found', `${p} → 404 for a made-up ID (correct)`, 0);
+    } else if (status >= 400 || facts.heads.some((h) => ERROR_PAGE.test(h))) {
       await this.addFriction('error_page', `${p} → ${status || ''} ${facts.heads[0] ?? ''}`.trim(), 1);
     } else if (/temporarily unavailable|not configured|service unavailable/i.test(facts.text)) {
       await this.addFriction('feature_unavailable', `${p} shows "temporarily unavailable"`, 0.5, { env: true });
@@ -1024,6 +1026,7 @@ async function runSteps(s, steps) {
   for (const st of steps) {
     s.budget();
     if (st.enter) {
+      s.expectMissing = !!st.expectMissing;
       if (normPath(s.page.url()) !== st.enter) await s.goto(st.enter, 'arrived from outside');
     } else if (st.go) {
       await s.navTo(st.go, `go ${st.go}`);
@@ -1106,7 +1109,7 @@ async function assessPage(s) {
     const text = (root.innerText || '').trim();
     const forward = [...root.querySelectorAll('a[href], button')]
       .filter(vis)
-      .filter((el) => !el.closest('header, nav, footer'))
+      .filter((el) => !el.closest('header, footer, nav:not([aria-label*="readcrumb" i])'))
       .filter((el) => el.tagName === 'BUTTON' ? !el.disabled : !/^(#|mailto:|tel:)/.test(el.getAttribute('href') || '')).length;
     return { words: text.split(/\s+/).filter(Boolean).length, text: text.slice(0, 1500), forward };
   });

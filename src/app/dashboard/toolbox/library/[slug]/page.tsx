@@ -21,7 +21,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const access = await getPaidToolboxAccess();
   if (!access) return { title: 'Toolbox Library | The AI Banking Institute' };
-  const detail = await getLibrarySkill(slug);
+  const detail = await getLibrarySkill(slug).catch(() => null);
   if (!detail) return { title: 'Library skill not found | The AI Banking Institute' };
   return {
     title: `${detail.skill.title} — Toolbox Library | The AI Banking Institute`,
@@ -38,7 +38,15 @@ export default async function LibrarySkillPage({
   if (!access) return <Paywall />;
 
   const { slug } = await params;
-  const detail = await getLibrarySkill(slug);
+  // A database outage used to throw here and render the 500 error page
+  // (persona wave 3). Show a plain message with a way back instead.
+  let detail: Awaited<ReturnType<typeof getLibrarySkill>>;
+  try {
+    detail = await getLibrarySkill(slug);
+  } catch (err) {
+    console.warn('[toolbox-library] skill detail unavailable:', err);
+    return <LibrarySkillUnavailable />;
+  }
   if (!detail) notFound();
 
   const { skill, currentVersion } = detail;
@@ -253,5 +261,27 @@ function Section({ label, children }: { label: string; children: React.ReactNode
       </h2>
       <div className="mt-3">{children}</div>
     </section>
+  );
+}
+
+function LibrarySkillUnavailable() {
+  return (
+    <main className="min-h-screen bg-[color:var(--cream)] px-6 py-20">
+      <div className="mx-auto max-w-xl rounded-[24px] border border-[color:var(--ink-a15)] bg-white p-8">
+        <h1 className="text-2xl font-semibold text-[color:var(--ink)]">This skill is temporarily unavailable</h1>
+        <p className="mt-3 text-[color:var(--slate-600)]">
+          The library could not load it just now. Your saved work is safe. Try again in a few minutes, or use the
+          built-in prompts in the library meanwhile.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/dashboard/toolbox/library" className="rounded-[12px] bg-[color:var(--ink)] px-4 py-2 text-sm font-semibold text-[color:var(--cream)]">
+            Back to the library
+          </Link>
+          <Link href="/support/purchase-help" className="rounded-[12px] border border-[color:var(--ink-a15)] px-4 py-2 text-sm font-semibold text-[color:var(--ink)]">
+            Contact support
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }
