@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { JOURNEY_QUOTAS } from './personas.mjs';
+import { ALL_QUOTAS as JOURNEY_QUOTAS } from './personas.mjs';
 
 const median = (xs) => {
   const a = xs.filter((x) => Number.isFinite(x)).sort((x, y) => x - y);

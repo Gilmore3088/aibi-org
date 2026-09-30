@@ -9,7 +9,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { JOURNEY_QUOTAS } from './personas.mjs';
+import { ALL_QUOTAS as JOURNEY_QUOTAS } from './personas.mjs';
 
 const [runDir, outDir] = process.argv.slice(2);
 if (!runDir || !outDir) {

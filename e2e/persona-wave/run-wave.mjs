@@ -16,11 +16,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, devices } from 'playwright';
 import { generatePersonas, makeRng, personaLabel } from './personas.mjs';
+import { FEATURE_JOURNEYS } from './features.mjs';
 import { writeReport } from './report.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const BASE = (process.env.WAVE_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
-const SEED = Number(process.env.WAVE_SEED ?? 20260930);
+const SET = process.env.WAVE_SET ?? 'core';
+const SEED = Number(process.env.WAVE_SEED ?? (SET === 'features' ? 20261001 : 20260930));
 const CONCURRENCY = Number(process.env.WAVE_CONCURRENCY ?? 4);
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const OUT = process.env.WAVE_OUT ?? path.join(HERE, 'out', STAMP);
@@ -50,6 +52,12 @@ export const VALUE_WEIGHTS = {
   artifact_saved: 2,
   certificate_reached: 5,
 };
+
+// Wave-2 value ids default to 2 (a delivered outcome); pure reading counts 1.
+export function valueWeight(id) {
+  if (id in VALUE_WEIGHTS) return VALUE_WEIGHTS[id];
+  return /_read$/.test(id) ? 1 : 2;
+}
 
 const ENV_HINTS = /not configured|temporarily unavailable|supabase|stripe is not|missing (api )?key|service unavailable|ERR_TUNNEL|ENOTFOUND|fetch failed/i;
 const ERROR_PAGE = /(this page could not be found|page not found|^404$|application error|something went wrong|unhandled runtime error|internal server error)/i;
@@ -324,7 +332,7 @@ class Session {
   cta(re, scope = ROOT) {
     const chrome = scope === ROOT ? ':not(header *, nav *, footer *)' : '';
     return this.page
-      .locator(`:is(${scope}) :is(a, button, [role=button]):visible${chrome}`)
+      .locator(`:is(${scope}) :is(a, button, [role=button], summary):visible${chrome}`)
       .filter({ hasText: re });
   }
 
@@ -563,8 +571,13 @@ async function fillForm(s, scope) {
       if (tag === 'SELECT') {
         const opts = await f.locator('option').count();
         if (opts > 1) await f.selectOption({ index: 1 + s.rng.int(0, opts - 2) });
+      } else if (type === 'file' || type === 'hidden') {
+        continue;
+      } else if (type === 'password') {
+        await f.fill('WaveTest!2026-pass');
       } else if (type === 'checkbox' || type === 'radio') {
-        if (s.rng.chance(0.7)) await f.check();
+        // Consent boxes (terms, privacy) are always ticked; others sometimes.
+        if (/terms|agree|consent|privacy/.test(name) || s.rng.chance(0.7)) await f.check();
       } else if (type === 'email' || name.includes('email')) {
         await f.fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
       } else if (type === 'number' || name.includes('seat') || name.includes('size')) {
@@ -983,6 +996,179 @@ async function courseLearner(s) {
   throw new Abandon(`stopped after module ${s.p.courseDepth} (planned depth)`, 'behavior');
 }
 
+// ── Wave 2: data-driven feature journeys (see features.mjs) ──
+
+async function runSteps(s, steps) {
+  for (const st of steps) {
+    s.budget();
+    if (st.enter) {
+      if (normPath(s.page.url()) !== st.enter) await s.goto(st.enter, 'arrived from outside');
+    } else if (st.go) {
+      await s.navTo(st.go, `go ${st.go}`);
+    } else if (st.read) {
+      const words = (await s.page.locator(ROOT).first().innerText().catch(() => '')).split(/\s+/).filter(Boolean).length;
+      if (words >= (st.min ?? 200)) s.value(st.read, `${words} words`);
+      else await s.addFriction('thin_content', `${normPath(s.page.url())} has ${words} words (expected ${st.min ?? 200}+)`, 0.5);
+    } else if (st.click) {
+      const ok = await s.clickCta(st.click, st.label, { required: !st.optional, severity: st.value ? 1 : 0.5 });
+      if (ok && st.value) s.value(st.value, st.label);
+    } else if (st.fill) {
+      const scope = await firstVisible(s, st.fill);
+      if (!scope) {
+        await s.addFriction('form_missing', `no form for "${st.fill}" on ${normPath(s.page.url())}`, 1);
+        continue;
+      }
+      const n = await fillForm(s, scope);
+      s.clicks += Math.min(n, 6);
+      s.log('FILL', `${n} fields`);
+    } else if (st.submit) {
+      await submitStep(s, st);
+    } else if (st.download) {
+      await downloadStep(s, st);
+    } else if (st.answer) {
+      await answerStep(s, st);
+    } else if (st.chips) {
+      const loc = s.page.locator(`${ROOT} ${st.chips}`).filter({ visible: true });
+      const n = await loc.count();
+      for (let i = 0; i < Math.min(st.n ?? 1, n); i += 1) {
+        const el = loc.nth(s.rng.int(0, n - 1));
+        const tag = await el.evaluate((e) => e.tagName).catch(() => '');
+        if (tag === 'SELECT') {
+          const opts = await el.locator('option').count();
+          if (opts > 1) await el.selectOption({ index: s.rng.int(1, opts - 1) }).catch(() => {});
+          s.clicks += 1;
+        } else await s.click(el, 'toggle filter/option');
+      }
+    } else if (st.sliders) {
+      const r = s.page.locator(`${ROOT} input[type=range]:visible`);
+      const n = await r.count();
+      if (!n) {
+        await s.addFriction('control_missing', `no sliders on ${normPath(s.page.url())}`, 1);
+        continue;
+      }
+      for (let i = 0; i < Math.min(st.sliders, n); i += 1) {
+        await r.nth(i).focus().catch(() => {});
+        for (let k = 0; k < s.rng.int(2, 6); k += 1) await s.page.keyboard.press(s.rng.chance(0.7) ? 'ArrowRight' : 'ArrowLeft').catch(() => {});
+        s.clicks += 1;
+      }
+      const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+      if (/\$[\d,]{4,}/.test(t)) s.value(st.value, (t.match(/\$[\d,]{4,}/) ?? [''])[0]);
+      else await s.addFriction('no_estimate', 'sliders moved but no dollar estimate shown', 1);
+    } else if (st.expectText) {
+      await s.page.waitForTimeout(800);
+      const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+      if (st.expectText.test(t)) s.value(st.value, st.label);
+      else await s.addFriction('no_feedback', `${st.label}: expected confirmation not shown`, 1);
+    }
+  }
+}
+
+async function firstVisible(s, selector) {
+  for (const sel of selector.split(/,\s*(?![^()]*\))/)) {
+    const loc = s.page.locator(`${ROOT} ${sel}`.replace(`${ROOT} main`, ROOT)).filter({ visible: true });
+    if (await loc.count().catch(() => 0)) return `${ROOT} ${sel}`.replace(`${ROOT} main`, ROOT);
+  }
+  return null;
+}
+
+async function submitStep(s, st) {
+  const scope = (st.scope && (await firstVisible(s, st.scope))) || ROOT;
+  const btn = s.page.locator(`${scope} :is(button, [role=button], input[type=submit]):visible`).filter({ hasText: st.submit });
+  if (!(await btn.count())) {
+    await s.addFriction('missing_cta', `${st.label}: no "${st.submit.source}" button`, 1);
+    return;
+  }
+  if (await btn.first().isDisabled().catch(() => false)) {
+    await s.addFriction('submit_disabled', `${st.label}: button stayed disabled after filling the form`, 1);
+    return;
+  }
+  const before = await s.page.locator(ROOT).first().innerText().catch(() => '');
+  const resp = s.page.waitForResponse((r) => st.api.test(r.url()) && r.request().method() !== 'GET', { timeout: 15_000 }).catch(() => null);
+  await s.click(btn.first(), st.label);
+  const r = await resp;
+  await s.page.waitForTimeout(900);
+  const after = await s.page.locator(ROOT).first().innerText().catch(() => '');
+  const newText = after.replace(before, '').slice(0, 400);
+  const uiMsg = (after.match(/[^\n]*(sent|thank|check your|on its way|received|saved|logged|error|could not|couldn.t|try again|unavailable|not configured|invalid|required|please)[^\n]*/i) ?? [''])[0].slice(0, 140);
+  if (r && r.status() < 400) {
+    s.value(st.value, `${r.status()} ${normPath(r.url())}${uiMsg ? ` — "${uiMsg}"` : ''}`);
+    if (!uiMsg && after === before) await s.addFriction('silent_success', `${st.label}: request succeeded but the page showed no confirmation`, 0.5);
+  } else if (r) {
+    let body = '';
+    try { body = (await r.text()).slice(0, 160); } catch {}
+    const env = r.status() >= 500 || r.status() === 401 || ENV_HINTS.test(body);
+    if (st.uiOk && st.uiOk.test(after)) s.value(st.value, `handled: "${uiMsg}"`);
+    await s.addFriction(`${st.value}_failed`, `${st.label}: ${r.status()} ${normPath(r.url())}${uiMsg ? ` — UI: "${uiMsg}"` : ' — no message shown'}`, uiMsg ? 0.5 : 1, { env });
+  } else if (st.uiOk && st.uiOk.test(after)) {
+    s.value(st.value, `UI: "${uiMsg}"`);
+  } else if (after !== before && /required|please|invalid|enter a/i.test(newText + uiMsg)) {
+    await s.addFriction('validation_blocked', `${st.label}: form rejected the input — "${uiMsg}"`, 0.5);
+  } else {
+    await s.addFriction('submit_no_response', `${st.label}: nothing happened${uiMsg ? ` ("${uiMsg}")` : ''}`, 1);
+  }
+}
+
+async function downloadStep(s, st) {
+  const dl = s.page.waitForEvent('download', { timeout: 15_000 }).catch(() => null);
+  const fileResp = s.page.waitForResponse((r) => /\/download|\.pdf($|\?)|\.zip($|\?)|\.docx?($|\?)/.test(r.url()), { timeout: 15_000 }).catch(() => null);
+  const popup = s.context.waitForEvent('page', { timeout: 6_000 }).catch(() => null);
+  if (!(await s.clickCta(st.download, st.label, { required: true, severity: 1 }))) return;
+  const email = s.page.locator(`${ROOT} input[type=email]:visible`);
+  if (await email.count()) {
+    await email.first().fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
+    await email.first().press('Enter').catch(() => {});
+    s.clicks += 1;
+    s.log('INFO', 'download behind email gate');
+  }
+  const [d, r, pop] = await Promise.all([dl, fileResp, popup]);
+  // A failed download that navigates the tab leaves the visitor on raw JSON.
+  if (normPath(s.page.url()).startsWith('/api/')) {
+    const raw = (await s.page.locator('body').innerText().catch(() => '')).slice(0, 120);
+    await s.addFriction('raw_error_page', `${st.label}: visitor left on ${normPath(s.page.url())} showing ${raw}`, 0.5);
+    await s.page.goBack().catch(() => {});
+    await s.settle();
+  }
+  if (d) s.value(st.value, d.suggestedFilename());
+  else if (r && r.status() < 400) s.value(st.value, normPath(r.url()));
+  else if (pop) {
+    s.value(st.value, `opened ${normPath(pop.url())}`);
+    await pop.close().catch(() => {});
+  } else if (r) {
+    await s.addFriction('download_failed', `${st.label}: ${r.status()} ${normPath(r.url())}`, 1, { env: r.status() >= 500 });
+  } else {
+    const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+    if (/sent|check your|on its way|emailed/i.test(t)) s.value(st.value, 'emailed');
+    else await s.addFriction('download_no_file', `${st.label}: no file, no email confirmation`, 1);
+  }
+}
+
+async function answerStep(s, st) {
+  let answered = 0;
+  const skip = /menu|course overview|back|previous|^←|sign ?out|enroll|\$|^\d{2}/i;
+  for (let i = 0; i < (st.max ?? 12); i += 1) {
+    const next = st.next ? s.page.locator(`${ROOT} button:visible:enabled`).filter({ hasText: st.next }) : null;
+    const opts = s.page.locator(`${ROOT} ${st.answer}:visible`).filter({ hasNotText: st.next ?? /^$/ });
+    const n = await opts.count();
+    const choices = [];
+    for (let j = 0; j < Math.min(n, 30); j += 1) {
+      const t = ((await opts.nth(j).innerText().catch(() => '')) || '').trim();
+      if (t && !skip.test(t) && !(await opts.nth(j).isDisabled().catch(() => true))) choices.push(j);
+    }
+    if (!choices.length) break;
+    if (!(await s.click(opts.nth(choices[s.rng.int(0, choices.length - 1)]), `answer ${i + 1}`))) break;
+    answered += 1;
+    if (st.stopEarly && answered >= (st.max ?? 3)) break;
+    if (next && (await next.count())) await s.click(next.first(), 'next');
+    // Stop once a result is on screen; otherwise we'd click "Retake".
+    const now = await s.page.locator(ROOT).first().innerText().catch(() => '');
+    if (/you scored|your score|\bscore\b[\s\S]{0,40}\d+%|results?\s*\n/i.test(now) && /retake|score/i.test(now)) break;
+  }
+  if (!st.value) return;
+  const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+  if (answered > 0 && /score|result|passed|complete|you scored|growth|\d+\s*\/\s*\d+|%/i.test(t)) s.value(st.value, `${answered} answers`);
+  else await s.addFriction('quiz_no_result', `answered ${answered}, no result shown on ${normPath(s.page.url())}`, 1);
+}
+
 const JOURNEYS = {
   'free-assessment': (s) => freeAssessment(s),
   'assessment-to-indepth': (s) => freeAssessment(s, { thenInDepth: true }),
@@ -1005,7 +1191,7 @@ async function runPersona(persona, browser) {
     await s.open();
     await s.goto(persona.entry, `landed from ${persona.source}`);
     await s.maybeWander();
-    const journey = JOURNEYS[persona.journey];
+    const journey = JOURNEYS[persona.journey] ?? ((sess) => runSteps(sess, FEATURE_JOURNEYS[persona.journey][persona.variant ?? 0]));
     let timer;
     await Promise.race([
       journey(s),
@@ -1027,8 +1213,8 @@ async function runPersona(persona, browser) {
 }
 
 function summarize(s) {
-  const first = s.values.find((v) => VALUE_WEIGHTS[v.id] > 0);
-  const valueIndex = s.values.reduce((sum, v) => sum + (VALUE_WEIGHTS[v.id] ?? 0), 0);
+  const first = s.values.find((v) => valueWeight(v.id) > 0);
+  const valueIndex = s.values.reduce((sum, v) => sum + valueWeight(v.id), 0);
   const productFriction = s.friction.filter((f) => !f.env && f.severity > 0);
   const jsUnique = new Set(s.errors.filter((e) => e.type === 'js_exception').map((e) => e.message)).size;
   const apiProduct = new Set(s.errors.filter((e) => /http_error/.test(e.type) && !e.env).map((e) => e.message)).size;
@@ -1059,7 +1245,7 @@ function summarize(s) {
 
 async function main() {
   fs.mkdirSync(SHOTS, { recursive: true });
-  let personas = generatePersonas(SEED);
+  let personas = generatePersonas(SEED, 100, SET);
   if (process.env.WAVE_ONLY) {
     const ids = new Set(process.env.WAVE_ONLY.split(',').map((x) => x.trim()));
     personas = personas.filter((p) => ids.has(p.id));
@@ -1099,7 +1285,7 @@ async function main() {
   await browser.close();
 
   results.sort((a, b) => a.persona.id.localeCompare(b.persona.id));
-  const meta = { base: BASE, seed: SEED, startedAt: new Date(t0).toISOString(), durationMs: Date.now() - t0, personas: results.length, concurrency: CONCURRENCY };
+  const meta = { set: SET, base: BASE, seed: SEED, startedAt: new Date(t0).toISOString(), durationMs: Date.now() - t0, personas: results.length, concurrency: CONCURRENCY };
   fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ meta, results }, null, 1));
   const reportPath = writeReport(OUT, meta, results);
   console.log(`[wave] done in ${((Date.now() - t0) / 60000).toFixed(1)} min → ${reportPath}`);
