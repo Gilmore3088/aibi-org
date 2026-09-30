@@ -37,3 +37,26 @@ describe('exam option shuffling', () => {
     }
   });
 });
+
+describe('exam question bank has no answer-length tell', () => {
+  const stats = examQuestions.map((q) => {
+    const lengths = q.options.map((o) => o.label.length);
+    const correct = q.options.find((o) => o.key === q.correctKey)!.label.length;
+    return { longest: correct === Math.max(...lengths), shortest: correct === Math.min(...lengths) };
+  });
+
+  it('every question has its correct key among its options', () => {
+    for (const q of examQuestions) {
+      expect(q.options.some((o) => o.key === q.correctKey)).toBe(true);
+    }
+  });
+
+  it('the correct answer is rarely the longest option', () => {
+    // Was 39 of 40 before the 2026-09-30 rewrite; "pick the longest" passed.
+    expect(stats.filter((s) => s.longest).length / stats.length).toBeLessThanOrEqual(0.4);
+  });
+
+  it('the correct answer is rarely the shortest option either', () => {
+    expect(stats.filter((s) => s.shortest).length / stats.length).toBeLessThanOrEqual(0.4);
+  });
+});

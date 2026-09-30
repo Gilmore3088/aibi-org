@@ -82,6 +82,36 @@ frustration; past the tolerance, the persona rage-quits and the report records w
   the Try activity reached its completion counter, Build fields completed,
   save API status, AiBI Lab run status, time, and clicks.
 
+## Running against a configured preview (the real test)
+
+Local runs can't test checkout, inquiries, the AiBI Lab, certificates, resume
+links, support requests, quick wins, or accounts, because they need keys.
+To test them:
+
+1. Deploy the branch to a Vercel **preview**. `VERCEL_ENV` must be `preview`,
+   never `production`. Set these in Vercel → Settings → Environment
+   Variables, **Preview** scope:
+   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+     `SUPABASE_SERVICE_ROLE_KEY`: a non-production project
+   - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and the price IDs
+     (`STRIPE_FOUNDATION_PRICE_ID`, `STRIPE_INDEPTH_PRICE_ID`, and the
+     institution variants): **test mode** keys and prices, with the webhook
+     pointed at the preview
+   - `OPENAI_API_KEY` and/or `ANTHROPIC_API_KEY`
+   - `RESEND_API_KEY`, sending to a test domain; `SKIP_MAILERLITE=true` is
+     fine on preview
+   - `PREVIEW_AUTH_BYPASS=true`, so the course opens without a purchase.
+     Checkout still exercises Stripe test mode.
+2. Run all three waves from a machine that can reach the preview:
+   ```bash
+   export WAVE_BASE_URL=https://<preview>.vercel.app WAVE_SLOW_MS=5000 WAVE_PREWARM=false
+   npm run e2e:persona-wave                        # wave 1, core journeys
+   WAVE_SET=features npm run e2e:persona-wave      # wave 2, features
+   WAVE_SET=coverage npm run e2e:persona-wave      # wave 3, remaining pages
+   ```
+3. Every row still tagged `env` is now a real bug. Done means 0 rage-quits,
+   every goal-directed persona reaching value, and 0 product dead ends.
+
 ## Reading results honestly
 
 The default local run has **no Supabase, Stripe, OpenAI/Anthropic, or outbound
