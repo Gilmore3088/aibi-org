@@ -14,6 +14,7 @@
 - Failed downloads now show a readable page with next steps on all 14 file routes.
 - The exam can no longer be passed by picking "b" or the longest answer.
 - Still open: A1, the run against a configured preview with Stripe, Supabase and AI keys. This sandbox can't reach the preview or the live site. Runbook: [`e2e/persona-wave/README.md`](../../e2e/persona-wave/README.md#running-against-a-configured-preview-the-real-test).
+- Also open: Dependabot #589 is held on a Stripe API-version decision, and the 47 finished branches need a person to delete them. See section E of the plan.
 
 Raw run reports: wave 1 [`wave-report.md`](wave-report.md), wave 3 [`wave3-report.md`](wave3-report.md).
 

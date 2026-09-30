@@ -178,3 +178,15 @@ These 40 pages were never visited by waves 1–2.
 - Route coverage across runs: `route-coverage.mjs`
 - HTML report: `html-report.mjs`
 - Verified by hand after each run: the exam flow, settings save, sign-up message, workbook link, Toolbox tour persistence, and the phone menu's Training link.
+
+## E. Repo and dependency housekeeping (2026-09-30)
+
+| Item | Status |
+|---|---|
+| Expired claim `motley-fool-digital-76` (failed CI everywhere) | **Done.** Re-verified on fool.com. The site copy said "would switch for a better digital experience"; the survey says "likely to switch banks for one that better meets their needs". Copy corrected, review date 2027-03-30. |
+| Dependabot #581 | **Merged** (all checks green). |
+| Dependabot #589 (26 grouped updates, replaced #585) | **Held.** Stripe 22.6 requires API version `2026-08-26.dahlia`, but `src/lib/stripe.ts` pins `2026-07-29.dahlia`. The type check fails, so smoke, mobile and Lighthouse fail too. Changing the payments API version is an owner decision. |
+| Dependabot #574 (TypeScript 7) | Open, major upgrade. |
+| 5 kept branches | **Unified.** Merged in here: `repo-cleanup-pruning`, plus both video-tool branches in `video-studio/` and `walkthrough/`, which are excluded from the site's type check, lint and deploys. Ported from `rescue/2026-08-15`: email redaction in server logs. Kept as a record by decision: the rest of `rescue/2026-08-15`. Kept separate by decision: `feature/home-refocus`, which ships as its own reviewed change. |
+| 47 finished branches | **Ready, needs a person.** This session can't delete remote branches. Run `delete-finished-branches.sh`. After this branch merges, the three branches merged into it can be deleted too. |
+| Production build | Now passes locally, since main self-hosts fonts (#590). |

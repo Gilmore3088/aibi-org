@@ -236,27 +236,27 @@
     {
       "item": "47 finished branches",
       "state": "ready",
-      "detail": "Merged, or PR merged before the history rewrite. Delete command sent as delete-finished-branches.sh; this session was not allowed to delete branches."
+      "detail": "Still present (re-checked 2026-09-30). This session is not permitted to delete remote branches. Run delete-finished-branches.sh from any clone. After this branch merges, the three branches unified into it can go too: claude/repo-cleanup-pruning-b58o5h, claude/openmontage-aini-video-v0xg48, claude/website-walkthrough."
     },
     {
-      "item": "5 branches with unmerged work",
-      "state": "kept",
-      "detail": "rescue/2026-08-15, feature/home-refocus, two video-ad branches, repo-cleanup-pruning. Suggest a draft PR each to review before unifying."
+      "item": "5 branches with unmerged work: unified",
+      "state": "done",
+      "detail": "Merged into this branch: repo-cleanup-pruning (≈20 MB of auth screenshots removed, old reports moved to archive/) and both video-tool branches (video-studio/ and walkthrough/, excluded from the site build). From rescue/2026-08-15, the email-redaction fix was ported; the rest stays as an archived record by decision, since its edits predate 37 newer commits. feature/home-refocus stays separate by decision, to be reviewed and shipped as its own change."
     },
     {
       "item": "Dependabot",
       "state": "done",
-      "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578. #581 conflicts after the others merged; Dependabot usually rebases it. #585 holds back (smoke, Lighthouse, mobile checks fail)."
+      "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578, and #581 once Dependabot rebased it. #585 was replaced by the grouped #589, which is held: Stripe 22.6 requires API version 2026-08-26.dahlia, but src/lib/stripe.ts pins 2026-07-29.dahlia. The build fails the type check, and changing the payments API version needs an owner decision."
     },
     {
       "item": "Major upgrades",
       "state": "kept",
-      "detail": "TypeScript 7, jsdom 30, jest-dom 7 left open."
+      "detail": "TypeScript 7 (#574) left open."
     },
     {
-      "item": "Expired claim fails CI everywhere",
-      "state": "blocked",
-      "detail": "content/claims/registry.json: “motley-fool-digital-76” was due for re-check on Sep 10. Someone needs to re-verify the source, then bump reviewBy."
+      "item": "Expired claim",
+      "state": "done",
+      "detail": "motley-fool-digital-76 re-verified against fool.com. The survey says 76% are likely to switch banks for one that better meets their needs, not \"for a better digital experience\". Site copy now matches the source; review date 2027-03-30. Main had re-dated the claim separately (#586); the merge keeps the corrected wording."
     }
   ],
   "plan": {
