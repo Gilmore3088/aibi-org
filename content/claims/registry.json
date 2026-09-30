@@ -10,7 +10,10 @@
       "asOf": "2026-04-17",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["SR 26-2", "SR&nbsp;26-2"]
+      "match": [
+        "SR 26-2",
+        "SR&nbsp;26-2"
+      ]
     },
     {
       "id": "sr-11-7-historical",
@@ -20,8 +23,18 @@
       "asOf": "2026-04-17",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["SR 11-7", "SR&nbsp;11-7"],
-      "requireContext": ["supersed", "SR 26-2", "SR&nbsp;26-2", "2011", "original guidance", "formerly"]
+      "match": [
+        "SR 11-7",
+        "SR&nbsp;11-7"
+      ],
+      "requireContext": [
+        "supersed",
+        "SR 26-2",
+        "SR&nbsp;26-2",
+        "2011",
+        "original guidance",
+        "formerly"
+      ]
     },
     {
       "id": "aieog-lexicon",
@@ -31,7 +44,9 @@
       "asOf": "2026-02-19",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["AIEOG"]
+      "match": [
+        "AIEOG"
+      ]
     },
     {
       "id": "fs-ai-rmf",
@@ -41,7 +56,10 @@
       "asOf": "2026-02-19",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["FS AI RMF", "AI Risk Management Framework"]
+      "match": [
+        "FS AI RMF",
+        "AI Risk Management Framework"
+      ]
     },
     {
       "id": "tprm-2023",
@@ -51,7 +69,12 @@
       "asOf": "2023-06-09",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["Interagency TPRM", "TPRM Guidance", "Third-Party Risk Management Guidance", "Interagency Third-Party Risk"]
+      "match": [
+        "Interagency TPRM",
+        "TPRM Guidance",
+        "Third-Party Risk Management Guidance",
+        "Interagency Third-Party Risk"
+      ]
     },
     {
       "id": "gao-25-107197",
@@ -61,7 +84,9 @@
       "asOf": "2025-05-01",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["GAO-25-107197"]
+      "match": [
+        "GAO-25-107197"
+      ]
     },
     {
       "id": "gartner-jack-henry-governance-stats",
@@ -71,7 +96,13 @@
       "asOf": "2025-06-01",
       "verified": "2026-08-10",
       "reviewBy": "2026-11-10",
-      "match": ["55%", "57%", "48%", "Gartner Peer Community", "Jack Henry"]
+      "match": [
+        "55%",
+        "57%",
+        "48%",
+        "Gartner Peer Community",
+        "Jack Henry"
+      ]
     },
     {
       "id": "bank-director-ai-budget-66",
@@ -81,7 +112,10 @@
       "asOf": "2024-09-01",
       "verified": "2026-08-10",
       "reviewBy": "2026-11-10",
-      "match": ["66%", "Bank Director"]
+      "match": [
+        "66%",
+        "Bank Director"
+      ]
     },
     {
       "id": "fdic-qbp-efficiency",
@@ -91,7 +125,10 @@
       "asOf": "2026-05-28",
       "verified": "2026-08-10",
       "reviewBy": "2026-12-10",
-      "match": ["56.0%", "FDIC Quarterly Banking Profile"]
+      "match": [
+        "56.0%",
+        "FDIC Quarterly Banking Profile"
+      ]
     },
     {
       "id": "fdic-community-median-65",
@@ -101,7 +138,10 @@
       "asOf": "2025-12-31",
       "verified": "2026-08-10",
       "reviewBy": "2026-12-10",
-      "match": ["65%", "CEIC"]
+      "match": [
+        "65%",
+        "CEIC"
+      ]
     },
     {
       "id": "personetics-switch-84",
@@ -111,17 +151,23 @@
       "asOf": "2025-02-25",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["84%", "Personetics"]
+      "match": [
+        "84%",
+        "Personetics"
+      ]
     },
     {
       "id": "motley-fool-digital-76",
-      "claim": "76% of consumers would switch FIs for a better digital experience (Motley Fool, via Apiture 2025). NOT independently re-verified on 2026-08-10 - verify primary source before next use in new copy.",
-      "source": "Motley Fool via Apiture",
-      "url": "https://www.apiture.com/",
-      "asOf": "2025-01-01",
-      "verified": "2026-08-10",
-      "reviewBy": "2026-09-10",
-      "match": ["76%", "Motley Fool"]
+      "claim": "76% of consumers are likely to switch banks for one that better fits their needs (Motley Fool Money survey via Pollfish, Jan 2024; up from 52% in 2020). Apiture and the site's copy render this as 'would switch FIs for a better digital experience' \u2014 acceptable gloss given the survey's digital-banking-trends context. Verified against the fool.com primary source 2026-09-30.",
+      "source": "The Motley Fool 'Online Banking Trends and Consumer Priorities' (via Apiture)",
+      "url": "https://www.fool.com/money/research/digital-banking-trends/",
+      "asOf": "2024-01-04",
+      "verified": "2026-09-30",
+      "reviewBy": "2027-03-30",
+      "match": [
+        "76%",
+        "Motley Fool"
+      ]
     },
     {
       "id": "sr-21-8",
@@ -131,7 +177,10 @@
       "asOf": "2021-04-09",
       "verified": "2026-08-10",
       "reviewBy": "2027-02-10",
-      "match": ["SR 21-8", "SR&nbsp;21-8"]
+      "match": [
+        "SR 21-8",
+        "SR&nbsp;21-8"
+      ]
     },
     {
       "id": "ecoa-reg-b",
@@ -141,7 +190,11 @@
       "asOf": "2026-08-10",
       "verified": "2026-08-10",
       "reviewBy": "2027-08-10",
-      "match": ["ECOA", "Reg B", "Regulation B"]
+      "match": [
+        "ECOA",
+        "Reg B",
+        "Regulation B"
+      ]
     }
   ]
 }
