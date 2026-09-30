@@ -7,10 +7,10 @@ Current docs index: [Current Docs](../CURRENT_DOCS.md).
 
 Related June 23 readiness artifacts:
 
-- [20-persona prioritized remediation plans](20-persona-prioritized-remediation-plans-2026-06-23.md)
-- [20-persona remediation comparison](20-persona-remediation-comparison-2026-06-23.md)
-- [50-persona GTM readiness review](50-persona-gtm-readiness-review-2026-06-23.md)
-- [100-persona audit action items](../docs/persona-audit-2026-06-23/03-action-items.md)
+- [20-persona prioritized remediation plans](../archive/Plans/20-persona-prioritized-remediation-plans-2026-06-23.md)
+- [20-persona remediation comparison](../archive/Plans/20-persona-remediation-comparison-2026-06-23.md)
+- [50-persona GTM readiness review](../archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md)
+- [100-persona audit action items](../archive/docs/persona-audit-2026-06-23/03-action-items.md)
 
 ## Executive Position
 
