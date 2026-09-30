@@ -15,11 +15,12 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 const PDF_FILENAME = 'AiBI-Skill-Template-Library.pdf';
 const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-skill-template-library.pdf');
 
-export async function GET(): Promise<Response> {
+async function handleGET(): Promise<Response> {
   // When Supabase is not configured (local dev), serve the PDF without auth check
   if (isSupabaseConfigured()) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -68,3 +69,5 @@ export async function GET(): Promise<Response> {
     });
   }
 }
+
+export const GET = withReadableDownloadErrors(handleGET);

@@ -34,9 +34,10 @@ describe('readable download errors', () => {
     expect(html).toContain('/auth/login?next=%2Fresources%2Fprompting-foundation');
   });
 
-  it('points a 403 at pricing and a 404 at the library', async () => {
+  it('points a 403 at pricing and a bad or missing file at the library', async () => {
     expect(await (await failing(403)(new Request('http://localhost/api/f', { headers: BROWSER }))).text()).toContain('href="/pricing"');
     expect(await (await failing(404)(new Request('http://localhost/api/f', { headers: BROWSER }))).text()).toContain('We could not find that file');
+    expect(await (await failing(400)(new Request('http://localhost/api/f', { headers: BROWSER }))).text()).toContain('The link may be out of date');
   });
 
   it('turns a thrown handler into a readable page for browsers', async () => {

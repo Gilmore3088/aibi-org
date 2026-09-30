@@ -9,7 +9,7 @@
 //
 // Audit ref: C2 — every module yields a real downloadable artifact.
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { isSupabaseConfigured, createServiceRoleClient } from '@/lib/supabase/client';
 import {
   DEV_COURSE_ENROLLMENT_ID,
@@ -19,10 +19,11 @@ import { getModuleActivitySpec } from '@content/courses/foundation-program/modul
 import { FOUNDATION_FINAL_MODULE_NUMBER } from '@content/courses/foundation-program';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
 import { brandMarkdownArtifact } from '@/lib/markdown/brandArtifact';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 const LAST_MODULE = FOUNDATION_FINAL_MODULE_NUMBER;
 
-export async function GET(request: NextRequest) {
+async function handleGET(request: Request) {
   const url = new URL(request.url);
   const moduleParam = url.searchParams.get('module');
   const moduleNum = moduleParam ? Number.parseInt(moduleParam, 10) : NaN;
@@ -135,3 +136,5 @@ export async function GET(request: NextRequest) {
     },
   });
 }
+
+export const GET = withReadableDownloadErrors(handleGET);

@@ -48,6 +48,7 @@ function copyFor(status: number, backPath: string, retryPath: string): ErrorCopy
         body: 'It is included with the AiBI-Foundation course or the In-Depth Assessment. If you have already bought one, sign in with the email you used at checkout.',
         primary: { label: 'See what is included', href: '/pricing' },
       };
+    case 400:
     case 404:
       return {
         title: 'We could not find that file',
