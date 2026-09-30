@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getPlaybookAsset } from '@content/playbook-assets/data';
 import { escapeHtml } from '@/lib/html/escape';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const runtime = 'nodejs';
 
@@ -15,7 +16,7 @@ function filenameFromParts(role: string, asset: string): string {
     .join('-');
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(_request: Request, context: RouteContext): Promise<Response> {
   const { role, asset: assetSlug } = await context.params;
   const asset = getPlaybookAsset(assetSlug);
 
@@ -94,3 +95,6 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     },
   });
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

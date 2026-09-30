@@ -21,6 +21,7 @@ import {
   FREE_RESOURCE_CAPTURE_COOKIE,
   normalizeCaptureEmail,
 } from '@/lib/resources/freeResourceCapture';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -86,7 +87,7 @@ async function staticDownloadResponse(
   }
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { slug } = await context.params;
   if (!slug || typeof slug !== 'string') {
     return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
@@ -235,3 +236,6 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
 
   return NextResponse.redirect(signed.signedUrl, { status: 302 });
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

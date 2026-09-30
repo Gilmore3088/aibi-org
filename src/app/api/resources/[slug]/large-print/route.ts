@@ -15,6 +15,7 @@ import {
 } from '@/lib/resources/freeResources';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -59,7 +60,7 @@ async function logLargePrintDownload(request: Request, slug: string): Promise<vo
   }
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { slug } = await context.params;
   const resource = getFreeResource(slug);
 
@@ -84,3 +85,6 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     return NextResponse.json({ error: 'Large-print resource unavailable.' }, { status: 503 });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);
