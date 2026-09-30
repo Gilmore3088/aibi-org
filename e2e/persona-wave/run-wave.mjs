@@ -286,7 +286,7 @@ class Session {
       .evaluate(() => {
         const vis = (el) => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
         const main = document.querySelector('main, #main-content') || document.body;
-        const hasMain = !!document.querySelector('main');
+        const hasMain = !!document.querySelector('main, [role="main"]');
         const heads = [...document.querySelectorAll('h1,h2')].filter(vis).map((h) => h.textContent.trim()).slice(0, 4);
         const here = location.pathname;
         const forward = [...main.querySelectorAll('a[href],button')]
@@ -433,8 +433,12 @@ async function freeAssessment(s, { thenInDepth = false } = {}) {
     return;
   }
 
-  // Optional email capture for the full breakdown.
+  // Optional email capture for the full breakdown. Visitors who won't share
+  // an email take the gate's "View your summary without email" exit.
   const email = s.page.locator(ROOT + ' input[type=email]:visible');
+  if ((await email.count()) && !s.p.emailsForReport) {
+    await s.clickCta(/view (your )?summary without email/i, 'skip email gate', { required: false });
+  }
   if ((await email.count()) && s.p.emailsForReport) {
     await email.first().fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
     const resp = s.page.waitForResponse((r) => /\/api\/(capture-email|assessment)/.test(r.url()), { timeout: 10_000 }).catch(() => null);

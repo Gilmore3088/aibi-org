@@ -24,6 +24,7 @@
  * never imports the server chrome directly.
  */
 
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { isChromeless, isFooterless } from '@/lib/layout/chromePaths';
 
@@ -47,6 +48,18 @@ export function LayoutChrome({
 }: LayoutChromeProps) {
   const pathname = usePathname() ?? '/';
   const showMockupFooter = isChromeless(pathname) && !isFooterless(pathname);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // About half the routes render their own <main>; the rest (home, resources,
+  // playbooks, legal pages...) had no main landmark at all. Give the wrapper
+  // the main role only where the page lacks one, so there is always exactly
+  // one. Applied after hydration so server and client markup still match.
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    if (el.querySelector('main, [role="main"]:not(#main-content)')) el.removeAttribute('role');
+    else el.setAttribute('role', 'main');
+  }, [pathname]);
 
   return (
     <>
@@ -54,7 +67,7 @@ export function LayoutChrome({
           link must too — mockup pages render their own header but keyboard
           users still need to skip it. */}
       {skipLink}
-      <div id="main-content" className="flex-1">
+      <div id="main-content" ref={contentRef} className="flex-1">
         {children}
       </div>
       {showMockupFooter && mockupFooter}
