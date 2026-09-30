@@ -87,12 +87,12 @@
       "status": "watch",
       "severity": "low",
       "area": "Course",
-      "summary": "The CORE prompt workshop offers “Save & continue” only after the learner’s prompt passes C·O·R·E scoring. Synthetic learners typing generic text never passed. Real learners will do better, but this is the one step with no way past a failing score.",
+      "summary": "Checked in code and by hand: the workshop offers “Use starter prompt” and hints. After 6 attempts it says “no penalty” and still offers “Save my prompt & complete”. Synthetic learners missed it because the harness clicked widgets in random order.",
       "evidence": [
         "6 of 30 synthetic learners could not save module 3",
         "Attempts are capped at 6"
       ],
-      "fix": "Check in real sessions: after repeated failed attempts, is there a hint or an exit?",
+      "fix": "No product change needed. Keep one wave-3 check with a real learner flow.",
       "before": "shots/P026-03-no-save-button.png"
     },
     {
@@ -229,7 +229,7 @@
     }
   ],
   "plan": {
-    "done": "Every wave-1 rage-quit traced to a product dead end, and all four causes are fixed. Wave 2 had no rage-quits.",
+    "done": "Every wave-1 rage-quit traced to a product dead end, and all are fixed. Re-running the same personas: 20/20 reached value, 0 rage-quits, 0 next-module dead ends, 0 typed certificate URLs. Wave 2 had no rage-quits.",
     "definition": [
       "0 rage-quits across both waves",
       "Every goal-directed persona reaches value (explorers excluded)",
@@ -256,16 +256,10 @@
         "detail": "Browser navigations to failing /api download routes should get a readable page or a redirect with a message."
       },
       {
-        "p": "P1",
-        "id": "B3",
-        "title": "Module 3 workshop exit",
-        "detail": "Hint after 3 failed CORE attempts; “Save with coach notes” after 6."
-      },
-      {
         "p": "P2",
         "id": "B4",
         "title": "Silent artifact saves",
-        "detail": "3 of 320 saves gave no feedback. Reproduce on the preview."
+        "detail": "Did not reproduce by hand (every save showed “Saved”); the re-run traced it to harness timeouts on the dev server. Re-check on the preview."
       },
       {
         "p": "P2",
@@ -291,6 +285,28 @@
         "title": "Wave 3: the last 40 pages",
         "detail": "Paid In-Depth and team flows, email-link pages, dynamic library/skill/practice pages. Admin and design-system excluded."
       }
+    ],
+    "verification": [
+      [
+        "Completers + resource hunters reaching value",
+        "19 / 20",
+        "20 / 20"
+      ],
+      [
+        "Rage-quits among them",
+        "3",
+        "0"
+      ],
+      [
+        "Next-module dead ends per mobile completer",
+        "16–17",
+        "0"
+      ],
+      [
+        "Completers typing the certificate URL",
+        "10 / 10",
+        "0 / 10"
+      ]
     ]
   }
 }

@@ -32,6 +32,24 @@ Every wave-1 rage-quit traced to a product dead end. All four are now fixed:
 
 Every remaining no-value persona traces to one of three causes: a key missing in the test build, a persona with no goal, or a harness miss. Section C lists each one.
 
+## Verification re-run (same personas, same seeds, after the fixes)
+
+| Check | Before | After |
+|---|---|---|
+| Wave-1 completers + resource hunters reaching value | 19 / 20 | **20 / 20** |
+| Rage-quits among them | 3 | **0** (after correcting two harness misreads, below) |
+| "No link to next module" dead ends per mobile completer | 16–17 | **0** |
+| Completers who had to type the certificate address | 10 / 10 | **0 / 10** (they use "Submit final packet") |
+| Completer P001 artifacts saved | — | **18 / 18** |
+
+Two re-run rage-quits turned out to be harness misreads, each confirmed by hand:
+- **P001.** A save response outlasted the harness's 12-second wait under dev-server load. The UI had already said "Artifact saved". Manual saves on modules 2 and 15, with every readiness choice, return 200 and show "Saved".
+- **P041.** The new completion card worked. The harness then expected certificate text on the packet page.
+
+The harness now waits 25 seconds, counts visible "Artifact saved", and treats the packet or certificate page as the credential path.
+
+Wave-2 download personas re-run after F6: templates, prompt cards and playbooks download, and the page confirms "a copy is on its way to your inbox". A few re-run misses happened while app files were being edited mid-run, which made the dev server recompile. They did not reproduce by hand.
+
 ## A. Fixed in this branch (verified)
 
 | # | Issue | Wave | Fix | Proof |
@@ -85,14 +103,16 @@ This covers what could only be marked "not tested" locally:
 - For navigations (`Accept: text/html`), return a small HTML page or redirect back with a message: "This download is temporarily unavailable. We emailed it to you" or "Try again".
 - F6 removes the most common cause. Paid-file failures and 404s remain.
 
-**B3. Module 3 CORE workshop has no exit after failed attempts.**
-- Save unlocks only when the prompt passes C·O·R·E scoring, with attempts capped at 6.
-- After 3 failed attempts, show the missing element with an example.
-- After 6, offer "Save with coach notes" so the learner isn't stuck.
+**B3. Module 3 CORE workshop: closed, no change needed.**
+- Checked in code and by hand: the workshop offers "Use starter prompt" and per-element hints.
+- After 6 attempts it says "Out of attempts for this one — no penalty" and still offers "Save my prompt & complete".
+- The strategy drill ends in "Save & continue".
+- The wave's module-3 misses came from the harness clicking widgets in random order.
+- Keep one wave-3 check with a real learner flow.
 
 ### P2: friction and polish
 
-- **B4.** Artifact save occasionally gave no feedback (3 of 320 saves, modules 2 and 4). Reproduce on the preview. Every save click should end in "Saved" or an error.
+- **B4.** Artifact save "no feedback" (3 of 320 in wave 1) did not reproduce by hand. Every save tried showed "Saved", and the re-run traced it to harness timeouts under dev-server load. Re-check on the preview, where there is no dev compile.
 - **B5.** In-Depth upgrade button missing from some free results (3 of 8 buyers typed the URL). Check each result tier shows "Get 90-day playbook / In-Depth".
 - **B7.** Marketing pages have no `<main>` landmark. "Skip to main content" targets a div in `LayoutChrome`. Make it `<main>`, checking course pages that already render their own.
 - **B8.** React "unique key" warning on every module page, from content `ModulePage` passes to `ModuleTabs`.

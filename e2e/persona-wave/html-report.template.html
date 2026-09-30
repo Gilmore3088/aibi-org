@@ -373,6 +373,7 @@ function renderPlan() {
       <ul style="margin:0;padding-left:18px;display:grid;gap:4px">${pl.definition.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
       <p class="muted" style="margin:0;font-size:13px">Measured by re-running both waves against a configured preview (step A1).</p>
     </div>
+    ${pl.verification ? `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>Re-run of the same personas after the fixes</h3></div><table><thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th></tr></thead><tbody>${pl.verification.map((r) => `<tr><td>${esc(r[0])}</td><td class="n num">${esc(r[1])}</td><td class="n num" style="color:var(--good);font-weight:600">${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>` : ''}
     <div class="panel">
       <div class="pad" style="padding-bottom:6px"><h3>Fixed in this branch · ${fixed.length}</h3></div>
       <div class="flist">${fixed.map((f) => `<button class="frow" data-view="findings" data-finding="${f.id}">${pill('s-fixed', 'Fixed')}<span><b>${esc(f.title)}</b><br><span class="area">${esc(f.area)}</span></span>${pill('s-' + f.severity, f.severity)}</button>`).join('')}</div>

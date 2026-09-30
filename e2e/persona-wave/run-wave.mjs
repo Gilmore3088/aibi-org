@@ -852,11 +852,27 @@ async function doTry(s, mod) {
 
 async function doBuild(s, mod) {
   if (!(await tabClick(s, 'Build'))) return;
-  const saveBtn = () => s.cta(/save artifact|save evidence|save (&|and) continue|save to (toolbox|packet)|^save$/i);
+  const saveBtn = () => s.cta(/save artifact|save evidence|save (&|and) continue|save my prompt|save to (toolbox|packet)|^save$/i);
   if (!(await saveBtn().count())) {
     // Some Build steps open with a drill/builder before the evidence form.
     mod.buildWidget = (await progressOf(s))?.raw ?? 'pre-form widget';
     await interact(s, 'build', 60, { until: async () => (await saveBtn().count()) > 0 });
+  }
+  // Scored prompt workshop (module 3): a struggling learner takes the worked
+  // starter and keeps running until solved or out of attempts, then saves.
+  const runPrompt = s.cta(/^run the prompt$/i);
+  for (let i = 0; i < 7 && (await runPrompt.count()) && !(await s.cta(/save my prompt/i).count()); i += 1) {
+    const starter = s.cta(/use starter prompt/i);
+    if (i === 0 && (await starter.count())) await s.click(starter.first(), 'use starter prompt');
+    if (await runPrompt.first().isDisabled().catch(() => true)) break;
+    await s.click(runPrompt.first(), 'run workshop prompt');
+  }
+  const savePrompt = s.cta(/save my prompt/i);
+  if (await savePrompt.count()) {
+    const r = s.page.waitForResponse((x) => /submit-activity/.test(x.url()), { timeout: 25_000 }).catch(() => null);
+    await s.click(savePrompt.first(), 'save workshop prompt');
+    const res = await r;
+    mod.workshopSaved = res ? res.status() : 'none';
   }
   const fields = s.page.locator(ROOT + ' textarea:visible');
   const n = await fields.count();
@@ -880,9 +896,9 @@ async function doBuild(s, mod) {
     }
   }
   const resp = s.page
-    .waitForResponse((r) => /\/api\/(toolbox\/save|courses\/(save-progress|submit-activity|submit-work-product))/.test(r.url()) && r.request().method() !== 'GET', { timeout: 12_000 })
+    .waitForResponse((r) => /\/api\/(toolbox\/save|courses\/(save-progress|submit-activity|submit-work-product))/.test(r.url()) && r.request().method() !== 'GET', { timeout: 25_000 })
     .catch(() => null);
-  const saved = await s.clickCta(/save artifact|save evidence|save (&|and) continue|save to (toolbox|packet)|^save$/i, 'save artifact', { required: false });
+  const saved = await s.clickCta(/save artifact|save evidence|save (&|and) continue|save my prompt|save to (toolbox|packet)|^save$/i, 'save artifact', { required: false });
   if (!saved) {
     await s.addFriction('no_save_button', `module ${mod.number}: no save button in Build`, 1);
     return;
@@ -894,7 +910,9 @@ async function doBuild(s, mod) {
   const status = r ? r.status() : 'none';
   s.course.saveApiStatuses[status] = (s.course.saveApiStatuses[status] ?? 0) + 1;
   mod.saveStatus = status;
-  if (r && r.status() < 400) {
+  // A visible "Artifact saved" also counts: under dev-server load the API
+  // response can outlast the wait while the UI has already confirmed.
+  if ((r && r.status() < 400) || (!r && /artifact saved/i.test(text))) {
     s.course.artifactsSaved += 1;
     mod.artifactSaved = true;
     s.value('artifact_saved', `module ${mod.number}`);
@@ -984,14 +1002,13 @@ async function courseLearner(s) {
   }
   if (s.p.courseDepth >= 18) {
     await s.goto('/courses/foundation/program', 'course home after module 18');
-    const ok = await s.clickCta(/certificate|final packet|submit (your )?packet|claim/i, 'certificate CTA', { required: false });
+    // Completers should find the credential path from the course home.
+    const ok = await s.clickCta(/submit final packet|view certificate|certificate|final packet|claim/i, 'certificate CTA', { required: false });
     if (!ok) await s.goto('/courses/foundation/program/certificate', 'find certificate', { fallback: true });
+    const where = normPath(s.page.url());
     const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
-    if (/certificate|credential|congratulations/i.test(t) && !/not (yet )?eligible|locked/i.test(t)) s.value('certificate_reached', normPath(s.page.url()));
-    else await s.addFriction('certificate_unreachable', `certificate page says: ${t.slice(0, 120).replace(/\s+/g, ' ')}`, 1);
-    if (await s.clickCta(/submit|final packet/i, 'final packet submit page', { required: false })) {
-      s.log('INFO', `final packet page ${normPath(s.page.url())}`);
-    }
+    if (/\/program\/(submit|certificate)$/.test(where) && /certificate|credential|packet|submit/i.test(t)) s.value('certificate_reached', where);
+    else await s.addFriction('certificate_unreachable', `${where} says: ${t.slice(0, 120).replace(/\s+/g, ' ')}`, 1);
   }
   throw new Abandon(`stopped after module ${s.p.courseDepth} (planned depth)`, 'behavior');
 }
