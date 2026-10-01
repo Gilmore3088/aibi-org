@@ -7527,13 +7527,13 @@ section.mk-std { padding: 56px 0; }
   letter-spacing: 0.12em;
 }
 
-.mk-briefing {
+.mk-post {
   max-width: 720px;
   padding-top: 24px;
   padding-bottom: 72px;
 }
-.mk-briefing-head { margin-bottom: 28px; }
-.mk-briefing-head .mk-k {
+.mk-post-head { margin-bottom: 28px; }
+.mk-post-head .mk-k {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -7541,13 +7541,13 @@ section.mk-std { padding: 56px 0; }
   color: var(--gold-deep);
   margin: 0 0 12px;
 }
-.mk-briefing-head h1 {
+.mk-post-head h1 {
   font-size: clamp(1.75rem, 4.5vw, 2.5rem);
   line-height: 1.15;
   color: var(--ink);
   margin: 0 0 14px;
 }
-.mk-briefing-dek {
+.mk-post-dek {
   font-size: 1.125rem;
   line-height: 1.55;
   color: var(--slate-600);
@@ -7625,12 +7625,12 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-500);
 }
 
-.mk-briefing-sources {
+.mk-post-sources {
   margin-top: 48px;
   padding-top: 24px;
   border-top: 1px solid var(--slate-200);
 }
-.mk-briefing-sources h2 {
+.mk-post-sources h2 {
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -7638,15 +7638,15 @@ section.mk-std { padding: 56px 0; }
   color: var(--slate-500);
   margin: 0 0 12px;
 }
-.mk-briefing-sources ol {
+.mk-post-sources ol {
   margin: 0;
   padding-left: 1.3em;
   font-size: 0.9375rem;
   line-height: 1.6;
   color: var(--slate-600);
 }
-.mk-briefing-sources li { margin-bottom: 6px; }
-.mk-briefing-sources a {
+.mk-post-sources li { margin-bottom: 6px; }
+.mk-post-sources a {
   color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--gold);

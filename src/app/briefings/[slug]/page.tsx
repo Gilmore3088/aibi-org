@@ -85,19 +85,19 @@ export default async function BriefingPage({ params }: Params) {
         backLabel="← Briefings"
         activePath="/briefings"
       >
-        <article className="mk-container mk-briefing">
-          <header className="mk-briefing-head">
+        <article className="mk-container mk-post">
+          <header className="mk-post-head">
             <p className="mk-k">
               {meta.category} · {formatDate(meta.date)}
             </p>
             <h1>{meta.title}</h1>
-            {meta.dek && <p className="mk-briefing-dek">{meta.dek}</p>}
+            {meta.dek && <p className="mk-post-dek">{meta.dek}</p>}
           </header>
           <div className="mk-prose">
             <Body />
           </div>
           {meta.sources && meta.sources.length > 0 && (
-            <footer className="mk-briefing-sources">
+            <footer className="mk-post-sources">
               <h2>Sources</h2>
               <ol>
                 {meta.sources.map((s, i) => (
