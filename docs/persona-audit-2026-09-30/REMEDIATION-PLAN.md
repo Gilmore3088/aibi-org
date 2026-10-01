@@ -84,7 +84,7 @@ Wave-2 download personas re-run after F6: templates, prompt cards and playbooks 
 
 ### P0: prove the untested flows (blocks the definition of done)
 
-**A1. Run all three waves against a configured preview.** *Blocked in this sandbox. The environment can't reach `*.vercel.app` or the live domain and has no keys. Runbook: `e2e/persona-wave/README.md` → "Running against a configured preview".*
+**A1. Run all three waves against a configured preview.** *Deferred by the owner on 2026-10-01 as a follow-up. Blocked in this sandbox: The environment can't reach `*.vercel.app` or the live domain and has no keys. Runbook: `e2e/persona-wave/README.md` → "Running against a configured preview".*
 1. Deploy this branch to a Vercel preview with Stripe **test** keys, Supabase (a non-production project, or the e2e seed opt-in), `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, Resend in test mode, and `SKIP_MAILERLITE=false` pointed at a test group.
 2. Run:
    ```
@@ -188,5 +188,5 @@ These 40 pages were never visited by waves 1–2.
 | Dependabot #589 (26 grouped updates, replaced #585) | **Done in this branch.** The 25 non-Stripe updates are applied here (React 19.3, Next 15.5.26, Supabase, Anthropic SDK 0.128, and others). Checked with the type check, lint, 830 tests, production build, claims check, secret scan, and a smoke test of key pages on the production server. Stripe stays at 22.4.0 by the owner's decision; `dependabot.yml` ignores it, and its API-version move is a separate, tested upgrade. Dependabot closes #589 once this branch merges. |
 | Dependabot #574 (TypeScript 7) | Open, major upgrade. |
 | 5 kept branches | **Unified.** Merged in here: `repo-cleanup-pruning`, plus both video-tool branches in `video-studio/` and `walkthrough/`, which are excluded from the site's type check, lint and deploys. Ported from `rescue/2026-08-15`: email redaction in server logs. Kept as a record by decision: the rest of `rescue/2026-08-15`. Kept separate by decision: `feature/home-refocus`, which ships as its own reviewed change. |
-| 47 finished branches | **Needs a person.** Re-verified 2026-10-01: 25 are contained in main and 21 had their PR merged. `codex/pending-persona-support-work` is kept, because its PR #516 closed unmerged. The delete was approved but refused by this session's git proxy, which only allows pushes to the session's own branch. Run [`delete-finished-branches.sh`](delete-finished-branches.sh) (46 branches) from any clone. |
+| 46 finished branches | **Owner runs the script** (decision 2026-10-01). Re-verified: 25 contained in main, 21 with merged PRs; `codex/pending-persona-support-work` kept (PR #516 closed unmerged). This session's git proxy only allows pushes to its own branch. Run [`delete-finished-branches.sh`](delete-finished-branches.sh). |
 | Production build | Now passes locally, since main self-hosts fonts (#590). |
