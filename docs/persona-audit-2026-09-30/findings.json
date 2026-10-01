@@ -234,9 +234,9 @@
   ],
   "housekeeping": [
     {
-      "item": "47 finished branches",
+      "item": "46 finished branches",
       "state": "ready",
-      "detail": "Still present (re-checked 2026-09-30). This session is not permitted to delete remote branches. Run delete-finished-branches.sh from any clone. After this branch merges, the three branches unified into it can go too: claude/repo-cleanup-pruning-b58o5h, claude/openmontage-aini-video-v0xg48, claude/website-walkthrough."
+      "detail": "Re-verified 2026-10-01: 25 contained in main, 21 with merged PRs. codex/pending-persona-support-work kept (PR #516 closed unmerged). The delete was approved but refused by this session’s git proxy, which only allows pushes to its own branch. Run docs/persona-audit-2026-09-30/delete-finished-branches.sh from any clone. After this branch merges, the three branches unified into it can go too."
     },
     {
       "item": "5 branches with unmerged work: unified",
@@ -245,8 +245,8 @@
     },
     {
       "item": "Dependabot",
-      "state": "done",
-      "detail": "Merged #571, #584 (Next 15.5.25), #583, #582, #579, #578, and #581 once Dependabot rebased it. #585 was replaced by the grouped #589, which is held: Stripe 22.6 requires API version 2026-08-26.dahlia, but src/lib/stripe.ts pins 2026-07-29.dahlia. The build fails the type check, and changing the payments API version needs an owner decision."
+      "state": "ready",
+      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. #589: Stripe held back by owner decision (@dependabot ignore stripe, plus dependabot.yml). The other 25 updates were tested on main with Stripe at 22.4: type check, 802 tests, lint and build pass. Merge once Dependabot’s rebuilt PR is green."
     },
     {
       "item": "Major upgrades",
