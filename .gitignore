@@ -43,7 +43,10 @@ next-env.d.ts
 /.vscode
 
 # Claude Code / MCP session state (local-only, never commit)
-.claude/
+# Local Claude session settings stay untracked; the skills directory is
+# versioned — it holds the editorial pipeline the content routines run on.
+.claude/*
+!.claude/skills/
 .mcp.json
 
 # Superpowers brainstorm session runtime state

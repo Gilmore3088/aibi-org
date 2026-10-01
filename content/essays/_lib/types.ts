@@ -18,7 +18,15 @@ export interface EssayMeta {
   readonly order?: number;
   /** Set to true to exclude from the public archive (drafts). */
   readonly draft?: boolean;
+  /**
+   * Briefings tier. `pulse` = short daily note (AiBI Research Desk byline),
+   * `deep-dive` = weekly researched article. Absent on the pre-briefings
+   * legacy essays, which render without a tier chip.
+   */
+  readonly tier?: BriefingTier;
 }
+
+export type BriefingTier = "pulse" | "deep-dive";
 
 export type EssayCategory =
   | "Governance"
@@ -27,4 +35,9 @@ export type EssayCategory =
   | "Member impact"
   | "Foundations work"
   | "Examiner trends"
-  | "Methodology";
+  | "Methodology"
+  // Briefings beats (2026-10): the four coverage lanes of the daily pulse.
+  | "Regulators"
+  | "Banks"
+  | "Fintechs"
+  | "AI models";

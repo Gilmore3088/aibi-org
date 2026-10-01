@@ -9,6 +9,8 @@
 //      line carries the required historical framing.
 //   3. Statistic tokens (NN% / NN.N%) in the *email text* (tags stripped, so
 //      CSS percentages don't count) must be covered by a registry entry.
+//   4. The same statistic rule applies to briefings MDX (content/briefings) -
+//      the auto-publish surface. Code fences and JSX tags are stripped first.
 //
 // Run: node scripts/check-claims.mjs   (CI: .github/workflows/claims.yml)
 
@@ -107,6 +109,29 @@ for (const dir of EMAIL_DIRS) {
       const token = m[0];
       if (!findEntry(token)) {
         errors.push(`UNREGISTERED STAT: "${token}" in ${rel} - every statistic in outbound email must have a registry entry with a source and reviewBy date.`);
+      }
+    }
+  }
+}
+
+// ---------- 3b. Statistics in briefings (the auto-publish surface) ----------
+{
+  let briefingFiles = [];
+  try {
+    briefingFiles = [...walk(join(ROOT, 'content/briefings'))].filter((f) => f.endsWith('.mdx'));
+  } catch { /* no briefings yet */ }
+  for (const file of briefingFiles) {
+    const rel = relative(ROOT, file);
+    // Strip fenced/inline code and JSX/HTML tags so markup never counts as a
+    // claim; everything else (prose, meta title/dek/sources) is fair game.
+    const textOnly = readFileSync(file, 'utf8')
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`[^`]*`/g, ' ')
+      .replace(/<[^>]+>/g, ' ');
+    for (const m of textOnly.matchAll(STAT)) {
+      const token = m[0];
+      if (!findEntry(token)) {
+        errors.push(`UNREGISTERED STAT: "${token}" in ${rel} - every statistic in a published briefing must have a registry entry with a source and reviewBy date.`);
       }
     }
   }

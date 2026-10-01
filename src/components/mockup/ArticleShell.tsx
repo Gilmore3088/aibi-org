@@ -27,6 +27,11 @@ export interface ArticleShellProps {
   readonly byline?: string;
   /** Whether to render the auto-TOC. Defaults to false until an article opts in. */
   readonly showTOC?: boolean;
+  /** Back-crumb destination. Defaults preserve the six legacy /resources articles. */
+  readonly backHref?: string;
+  readonly backLabel?: string;
+  /** Which nav item reads as active in the SiteHeader. */
+  readonly activePath?: string;
 }
 
 export function ArticleShell({
@@ -35,14 +40,17 @@ export function ArticleShell({
   lastUpdated,
   byline,
   showTOC = false,
+  backHref = '/resources',
+  backLabel = '← Research',
+  activePath = '/resources',
 }: ArticleShellProps) {
   const hasChips = readMinutes != null || lastUpdated != null || byline != null;
   return (
     <div className="mockup-scope" style={{ background: 'var(--cream)' }}>
-      <SiteHeader activePath="/resources" />
+      <SiteHeader activePath={activePath} />
       <div className="mk-article-head">
-        <Link href="/resources" className="mk-article-back">
-          ← Research
+        <Link href={backHref} className="mk-article-back">
+          {backLabel}
         </Link>
         {hasChips && (
           <div className="mk-article-chips" aria-label="Article metadata">

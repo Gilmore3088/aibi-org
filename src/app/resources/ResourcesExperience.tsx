@@ -368,6 +368,19 @@ export function ResourcesExperience() {
           </Section>
         )}
 
+        {/* Briefings cross-link — the editorial feed lives at /briefings;
+            this library stays downloads-and-tools only. */}
+        <Section variant="std" surface="cream" id="briefings-link">
+          <SectionHead
+            kicker="Research &amp; analysis"
+            heading="Looking for the articles?"
+            lede="Daily pulse briefings and weekly deep dives on AI in banking now live in one dated feed."
+          />
+          <Button variant="ink" href="/briefings">
+            Browse the Briefings
+          </Button>
+        </Section>
+
         {/* Governance review paths — for IT / risk / compliance who need the
             boundary before downloading. Kept compact, at the end. */}
         <Section variant="std" surface="white" id="security-governance">

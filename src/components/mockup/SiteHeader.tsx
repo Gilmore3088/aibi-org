@@ -13,6 +13,7 @@ const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: 'Assessment', href: '/assessment' },
   { label: 'Training', href: '/courses' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Briefings', href: '/briefings' },
   { label: 'For Institutions', href: '/for-institutions' },
   { label: 'Pricing', href: '/pricing' },
 ];
