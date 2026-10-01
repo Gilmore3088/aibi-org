@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { PLAYBOOK_INDEX } from './playbooks/data';
 import { TEMPLATES } from './resources/templates/data';
 import { PLAYBOOK_ASSETS } from '@content/playbook-assets/data';
+import { listAllBriefings } from '@content/briefings/_lib/registry';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
@@ -98,12 +99,35 @@ const ROUTES = [
   { path: '/ai-use-disclaimer', priority: 0.3, changeFrequency: 'yearly' as const },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  return ROUTES.map((r) => ({
+  const staticEntries = ROUTES.map((r) => ({
     url: `${SITE_URL}${r.path}`,
     lastModified,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }));
+
+  // Briefings come from the filesystem registry so new MDX posts are indexed
+  // without touching this file. Legacy essays (href under /resources) are
+  // already in ROUTES above and are filtered out here to avoid duplicates.
+  const briefings = await listAllBriefings();
+  const briefingEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/briefings`,
+      lastModified,
+      changeFrequency: 'daily' as const,
+      priority: 0.85,
+    },
+    ...briefings
+      .filter((b) => b.href.startsWith('/briefings/'))
+      .map((b) => ({
+        url: `${SITE_URL}${b.href}`,
+        lastModified: new Date(`${b.date}T12:00:00Z`),
+        changeFrequency: 'monthly' as const,
+        priority: b.tier === 'deep-dive' ? 0.8 : 0.7,
+      })),
+  ];
+
+  return [...staticEntries, ...briefingEntries];
 }

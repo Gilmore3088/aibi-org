@@ -11,6 +11,7 @@ describe('SiteHeader', () => {
       'Assessment',
       'Training',
       'Resources',
+      'Briefings',
       'For Institutions',
       'Pricing',
     ]);
@@ -33,7 +34,7 @@ describe('SiteHeader', () => {
       within(drawerNav)
         .getAllByRole('link')
         .map((link) => link.textContent?.replace('Current', '').trim()),
-    ).toEqual(['Assessment', 'Training', 'Resources', 'For Institutions', 'Pricing']);
+    ).toEqual(['Assessment', 'Training', 'Resources', 'Briefings', 'For Institutions', 'Pricing']);
 
     // Current page: aria-current AND a visible, non-colour "Current" label.
     const resources = within(drawerNav).getByRole('link', { name: /Resources/i });

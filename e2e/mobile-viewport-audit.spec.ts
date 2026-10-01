@@ -35,6 +35,12 @@ const PUBLIC_ROUTES: readonly RouteCase[] = [
   { path: '/security/data-handling', label: 'security-data-handling' },
   { path: '/security/it-approval', label: 'security-it-approval' },
   { path: '/resources', label: 'resources' },
+  { path: '/briefings', label: 'briefings' },
+  {
+    path: '/briefings/fs-ai-rmf-what-examiners-read',
+    label: 'briefings-article',
+    mustContain: /FS AI RMF/i,
+  },
 
   // Free assessment flow — CLAUDE.md MVP gate
   { path: '/assessment', label: 'assessment-landing' },
