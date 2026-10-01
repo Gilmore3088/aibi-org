@@ -89,7 +89,9 @@ test.describe('marketing smoke', () => {
     await page.goto('/briefings/fs-ai-rmf-what-examiners-read');
     const bodyText = await page.locator('body').innerText();
     expect(bodyText).toMatch(/FS AI RMF/);
-    expect(bodyText).toMatch(/Sources/);
+    // Case-insensitive: the sources heading renders uppercase via CSS
+    // text-transform, and innerText returns rendered text.
+    expect(bodyText).toMatch(/Sources/i);
   });
 
   test('legacy /resources/archive redirects to /briefings', async ({ page }) => {
