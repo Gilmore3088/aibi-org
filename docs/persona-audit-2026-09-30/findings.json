@@ -245,8 +245,8 @@
     },
     {
       "item": "Dependabot",
-      "state": "ready",
-      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. #589: Stripe held back by owner decision (@dependabot ignore stripe, plus dependabot.yml). The other 25 updates were tested on main with Stripe at 22.4: type check, 802 tests, lint and build pass. Merge once Dependabot’s rebuilt PR is green."
+      "state": "done",
+      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. #589: the 25 non-Stripe updates are applied in this branch and checked (tsc, lint, 830 tests, build, claims, secrets, prod-server smoke). Stripe is held at 22.4.0 by owner decision (dependabot.yml ignore). TypeScript 7 (#574) is open as a major upgrade."
     },
     {
       "item": "Major upgrades",
