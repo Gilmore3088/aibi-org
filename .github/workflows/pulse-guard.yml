@@ -1,0 +1,45 @@
+# Pulse auto-merge guard.
+#
+# Runs on every PR so it can be a required check under branch protection.
+# Unlabeled PRs pass trivially; PRs labeled `pulse-auto` must satisfy
+# scripts/check-pulse-pr.mjs (path scope, additive-only registry, one fresh
+# pulse briefing, size caps) — the containment that makes it safe for the
+# daily pulse routine to enable GitHub auto-merge on its own PRs.
+#
+# Branch-name enforcement lives here (the script can't see the ref).
+
+name: Pulse guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  pulse-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pass trivially (unlabeled PR)
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
+        run: echo "No pulse-auto label — guard not applicable."
+
+      - uses: actions/checkout@v5
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
+        with:
+          fetch-depth: 0
+
+      - name: Enforce pulse branch naming
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          case "$HEAD_REF" in
+            claude/pulse-*) echo "branch ok: $HEAD_REF" ;;
+            *) echo "::error::pulse-auto PRs must come from claude/pulse-* (got $HEAD_REF)"; exit 1 ;;
+          esac
+
+      - name: Run pulse PR checks
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
+        run: node scripts/check-pulse-pr.mjs ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
