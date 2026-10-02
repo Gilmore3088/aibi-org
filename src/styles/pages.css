@@ -100,3 +100,17 @@
 .pb-doc-sources ul { margin: 8px 0 0; padding-left: 18px; font-size: 0.875rem; line-height: 1.6; color: #46505E; }
 .pb-doc .ax-prompt { background: #0D1F35; border-color: rgba(200, 162, 74, 0.35); --on-dark-20: rgba(255, 255, 255, 0.2); }
 .pb-doc .ax-prompt .ax-k { color: var(--gold-soft); }
+
+/* ---- Assessment landing ---- */
+.as-land-q { margin: 0 0 16px; font-family: var(--font-serif); font-size: clamp(1.375rem, 2.2vw, 1.625rem); line-height: 1.2; color: var(--ink); }
+.as-land-opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.as-land-opts li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid rgba(7, 26, 47, 0.1); border-radius: 10px; background: #fff; font-size: 0.875rem; line-height: 1.45; color: #2A3442; }
+.as-land-opts li:nth-child(3) { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.as-land-letter { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(7, 26, 47, 0.18); font-family: var(--font-mono); font-size: 0.6875rem; color: #4B5563; }
+.as-land-opts li:nth-child(3) .as-land-letter { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.as-land-note { margin: 16px 0 0; font-size: 0.8125rem; line-height: 1.5; color: #4B5563; }
+.as-land-paths { max-width: 900px; }
+@media (min-width: 1180px) { .as-land-paths { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.as-land-paths .ax-tier-art { height: 240px; }
+.as-land-name { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.625rem; line-height: 1.1; }
+.as-land-actions { margin-top: 40px; }
