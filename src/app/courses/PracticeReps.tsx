@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Monogram } from '@/components/brand';
 import { getPracticeRepById } from '@content/practice-reps/foundation-program';
 import type { PracticeRep } from '@/types/lms';
 
@@ -61,7 +62,7 @@ export function PracticeReps() {
             <p className="hm-msg hm-msg-user">{rep.starterPrompt}</p>
             <div className="hm-msg hm-msg-ai">
               <span className="hm-ai-badge" aria-hidden="true">
-                AI
+                <Monogram tone="light" />
               </span>
               <p>{rep.modelAnswer}</p>
             </div>

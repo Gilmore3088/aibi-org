@@ -95,12 +95,10 @@ body:has(.hm) { background: var(--ink); }
 }
 .hm-msg-ai { display: flex; gap: 12px; max-width: 94%; }
 .hm-msg-ai p { margin: 0; }
+/* The assistant is signed with the brand's own [Ai] monogram. */
 .hm-ai-badge {
-  flex: none;
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.6875rem; color: var(--gold);
+  flex: none; min-width: 34px; padding-top: 1px;
+  font-size: 0.9375rem; line-height: 1.6;
 }
 .hm-thinking { display: flex; gap: 5px; margin: 4px 2px; }
 .hm-thinking span {

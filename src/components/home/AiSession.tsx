@@ -1,5 +1,6 @@
 'use client';
 
+import { Monogram } from '@/components/brand';
 import { useEffect, useRef, useState } from 'react';
 
 // A real practice-rep exchange, played once: the prompt types into the
@@ -139,7 +140,7 @@ export function AiSession({ label, prompt, answer, checks = [], footnote }: AiSe
         <div className="hm-session-layer hm-session-ghost" aria-hidden="true">
           <p className="hm-msg hm-msg-user">{prompt}</p>
           <div className="hm-msg hm-msg-ai">
-            <span className="hm-ai-badge">AI</span>
+            <span className="hm-ai-badge"><Monogram tone="light" /></span>
             <p>{answer}</p>
           </div>
           {checks.length > 0 && (
@@ -162,7 +163,7 @@ export function AiSession({ label, prompt, answer, checks = [], footnote }: AiSe
           {(phase === 'streaming' || phase === 'done') && (
             <div className="hm-msg hm-msg-ai">
               <span className="hm-ai-badge" aria-hidden="true">
-                AI
+                <Monogram tone="light" />
               </span>
               <p>{words.slice(0, shownWords).join(' ')}</p>
             </div>
