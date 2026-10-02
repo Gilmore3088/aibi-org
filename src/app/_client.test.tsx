@@ -83,10 +83,13 @@ describe('HomePage', () => {
     expect((screen.getByRole('button', { name: /Copy safer version/i }) as HTMLButtonElement).disabled).toBe(true);
   });
 
-  it('links each resource cover to its real resource page', () => {
+  it('links each resource cover to a page that exists (no /resources/<slug> dead ends)', () => {
     render(<HomePage />);
-    for (const slug of ['banker-prompt-formula-card', 'compliance-playbook', 'prompt-output-review-checklist']) {
-      expect(document.querySelector(`a[href="/resources/${slug}"] img`)).toBeTruthy();
+    const covers = Array.from(document.querySelectorAll('.hm-kit-stack a')) as HTMLAnchorElement[];
+    expect(covers).toHaveLength(4);
+    for (const a of covers) {
+      expect(a.getAttribute('href')).toMatch(/^\/(resources#starter-kits|playbooks\/[a-z-]+)$/);
+      expect(a.querySelector('img')).toBeTruthy();
     }
   });
 });

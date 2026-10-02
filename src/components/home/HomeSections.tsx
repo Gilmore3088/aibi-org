@@ -8,11 +8,14 @@ import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program/mi
 /* ── Real downloads, shown as their actual first pages ───────────────── */
 
 // Covers are rendered from the committed PDFs by scripts/render-pdf-covers.sh.
+// Each cover links to where that download actually lives on the site (the
+// gated download flow on /resources, or the role playbook page) — free
+// resources have no standalone /resources/<slug> page.
 const COVERS = [
-  { slug: 'banker-prompt-formula-card', title: 'The Banker Prompt Formula' },
-  { slug: 'artifact-data-handling-reference-card', title: 'Data Handling Reference Card' },
-  { slug: 'compliance-playbook', title: 'The Compliance Officer’s AI Governance Playbook' },
-  { slug: 'prompt-output-review-checklist', title: 'Prompt Output Review Checklist' },
+  { slug: 'banker-prompt-formula-card', title: 'The Banker Prompt Formula', href: '/resources#starter-kits' },
+  { slug: 'artifact-data-handling-reference-card', title: 'Data Handling Reference Card', href: '/resources#starter-kits' },
+  { slug: 'compliance-playbook', title: 'The Compliance Officer’s AI Governance Playbook', href: '/playbooks/compliance' },
+  { slug: 'prompt-output-review-checklist', title: 'Prompt Output Review Checklist', href: '/resources#starter-kits' },
 ] as const;
 
 export function ResourceCovers() {
@@ -31,7 +34,7 @@ export function ResourceCovers() {
         <ul className="hm-kit-stack">
           {COVERS.map((c) => (
             <li key={c.slug}>
-              <Link href={`/resources/${c.slug}`} aria-label={c.title}>
+              <Link href={c.href} aria-label={c.title}>
                 <Image
                   src={`/downloads/covers/${c.slug}.jpg`}
                   alt={`${c.title} — first page`}

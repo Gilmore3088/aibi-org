@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import Link from 'next/link';
@@ -192,7 +191,7 @@ export default function ForInstitutionsPage() {
           </AxWindow>
         </div>
         <p className="ax-files-link">
-          <Link href="/resources/governance-starter-kit" className="ax-link-mono">
+          <Link href="/resources#starter-kits" className="ax-link-mono">
             download the governance starter kit →
           </Link>
         </p>
