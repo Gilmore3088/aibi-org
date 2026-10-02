@@ -115,7 +115,7 @@ export function OfferPair() {
             <span className="hm-offer-title">Report + 90-day playbook. $99.</span>
           </span>
         </Link>
-        <Link href="/courses" className="hm-offer hm-offer-gold">
+        <Link href="/courses" className="hm-offer">
           <Image
             src="/downloads/covers/prompting-foundation-guide.jpg"
             alt="Prompt Like a Banker card, first page"
@@ -124,7 +124,7 @@ export function OfferPair() {
             sizes="120px"
           />
           <span>
-            <span className="hm-k">AiBI Foundation</span>
+            <span className="hm-k hm-gold">AiBI Foundation</span>
             <span className="hm-offer-title">
               {FOUNDATION_MICRO_MODULES.length} modules. Real practice. $295.
             </span>

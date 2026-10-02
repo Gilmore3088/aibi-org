@@ -255,9 +255,7 @@ body:has(.hm) { background: var(--ink); }
 }
 .hm-offer > span { display: flex; flex-direction: column; gap: 10px; }
 .hm-offer-title { font-family: var(--font-serif); font-size: clamp(1.625rem, 2.6vw, 2.25rem); line-height: 1.08; }
-.hm-offer-gold { background: var(--gold); border-color: var(--gold); color: var(--ink); }
 .hm-offer:hover { border-color: var(--gold); }
-.hm-offer-gold:hover { background: var(--gold-2); }
 
 /* ── Closing CTA ──────────────────────────────────────────── */
 .hm-close { padding: 128px 0; text-align: center; border-top: 1px solid var(--on-dark-08); }
