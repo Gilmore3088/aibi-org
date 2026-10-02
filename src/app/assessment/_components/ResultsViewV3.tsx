@@ -22,6 +22,7 @@ import type { FreeRole } from '@content/assessments/v3/roles';
 import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
 import { PLAYBOOK_INDEX, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
 import { SiteHeader } from '@/components/mockup';
+import { CopyPrompt } from '@/components/ax';
 import { PdfDownloadButton } from './PdfDownloadButton';
 import { getStarterArtifact } from '@content/assessments/v3/starter-artifacts';
 import {
@@ -87,24 +88,6 @@ function pillFor(band: SignalBand): string {
   if (band === 'high') return 'Strong';
   if (band === 'low') return 'Needs structure';
   return 'Developing';
-}
-
-function bandClasses(band: SignalBand): string {
-  if (band === 'high') return 'bg-[#F0FDF8] border-[#0E7A5540]';
-  if (band === 'low') return 'bg-[#FFF4F3] border-[#B4231840]';
-  return 'bg-[#FEF7DA] border-[#B7791F40]';
-}
-
-function pillClasses(band: SignalBand): string {
-  if (band === 'high') return 'bg-[#D1FADF] text-[#05603A]';
-  if (band === 'low') return 'bg-[#FEE4E2] text-[#912018]';
-  return 'bg-[#FEF0C7] text-[#93370D]';
-}
-
-function barClasses(band: SignalBand): string {
-  if (band === 'high') return 'bg-[#0E7A55]';
-  if (band === 'low') return 'bg-[#B42318]';
-  return 'bg-[#B7791F]';
 }
 
 const MISSION_INSTITUTION_PATTERN =
@@ -183,7 +166,7 @@ export function ResultsViewV3({
   const matchedPlaybookPath = `/playbooks/${matchedPlaybook}`;
 
   return (
-    <>
+    <div className="rv">
       <ResultPrintStyles />
       <div className="mockup-scope" data-print-hide="true">
         <SiteHeader
@@ -192,424 +175,255 @@ export function ResultsViewV3({
         />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto mt-8 space-y-12 px-4 pb-12 md:mt-10 md:space-y-16 md:pb-16 text-[1.0625rem] md:text-[1.125rem]">
-
-      {showPersonalEmailNote && (
-        <aside
-          aria-label="Personal email notice"
-          className="rounded-[20px] border border-[color:var(--gold)] bg-[color:var(--cream)] p-5 md:p-6"
-        >
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Note
-          </p>
-          <p className="mt-2 text-[1rem] md:text-[1.0625rem] leading-[1.65] text-[color:var(--slate-700)]">
-            You submitted a personal email. The report below is tailored using the
-            institution you provided. If you&rsquo;d prefer follow-up emails to land at
-            your work address, just retake the assessment with your work email and
-            we&rsquo;ll merge the records.
-          </p>
-        </aside>
-      )}
-
-      {/* HERO */}
-      <section
-        className="rounded-[30px] bg-[color:var(--ink)] text-white p-7 md:p-10 grid grid-cols-1 xl:grid-cols-[260px_1fr_360px] gap-7 md:gap-9 items-center"
-        style={{ boxShadow: 'var(--shadow-hero)' }}
-      >
-        <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-            Your score
-          </p>
-          <p className="mt-4 text-[5.5rem] md:text-[6.75rem] font-bold leading-[0.88] text-[color:var(--gold-soft)] tabular-nums">
-            {score}
-            <span className="text-[1rem] md:text-[1.125rem] text-white/55 font-normal tracking-normal ml-1">
-              / {V3_MAX_SCORE}
-            </span>
-          </p>
-        </div>
-        <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-            AI Readiness Snapshot
-          </p>
-          <h1 className="mt-3 text-[2.25rem] md:text-[3.5rem] font-semibold leading-[1.04] text-white">
-            {resultHeadline}
-          </h1>
-          {gap && (
-            <p className="mt-5 text-[1.125rem] md:text-[1.25rem] leading-[1.6] text-white/78 max-w-3xl">
-              {gap.oneLine}
+      <div className="rv-inner">
+        {showPersonalEmailNote && (
+          <aside aria-label="Personal email notice" className="rv-note">
+            <p className="rv-k">Note</p>
+            <p>
+              You submitted a personal email. The report below is tailored using the
+              institution you provided. If you&rsquo;d prefer follow-up emails to land at
+              your work address, just retake the assessment with your work email and
+              we&rsquo;ll merge the records.
             </p>
-          )}
-        </div>
-        <div className="bg-white/8 border border-white/12 rounded-[22px] p-5 md:p-6 space-y-4">
-          {focusGap && (
-            <div>
-              <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-                Top gap
-              </p>
-              <p className="mt-1.5 text-[1.1875rem] font-semibold text-white">{focusGap.label}</p>
-            </div>
-          )}
-          {recommendation && (
-            <div className="border-t border-white/12 pt-3">
-              <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-                Quick win
-              </p>
-              <p className="mt-1.5 text-[1.1875rem] font-semibold text-white leading-snug">
-                {recommendation.title}
-              </p>
-            </div>
-          )}
-          {artifact && (
-            <div className="border-t border-white/12 pt-3">
-              <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-                Starter template
-              </p>
-              <p className="mt-1.5 text-[1.125rem] text-white/90 leading-snug">{artifact.title}</p>
-            </div>
-          )}
-        </div>
-      </section>
+          </aside>
+        )}
 
-      {roiContext && (
-        <RoiContextPanel roiContext={roiContext} />
-      )}
-
-      <QuickActionStrip
-        matchedPlaybookPath={matchedPlaybookPath}
-        profileId={profileId}
-      />
-
-      {missionName && (
-        <section
-          className="rounded-[24px] border border-[color:var(--gold)]/45 bg-[color:var(--cream)] p-6 md:p-7"
-          aria-label="Mission lens"
-        >
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Mission lens
-          </p>
-          <h2 className="mt-3 text-[1.75rem] md:text-[2.25rem] font-semibold leading-[1.06] text-[color:var(--ink)]">
-            Read this result through {missionName}&rsquo;s capacity and trust goals.
-          </h2>
-          <p className="mt-4 max-w-4xl text-[1rem] md:text-[1.125rem] leading-[1.65] text-[color:var(--slate-700)]">
-            For MDI, CDFI, and community-development institutions, the first AI win should
-            not be novelty. Start with an internal workflow that protects member or borrower
-            trust, documents human review, and gives staff more time for mission work.
-          </p>
-          <ul className="mt-5 grid gap-3 md:grid-cols-3">
-            {[
-              'Pick a low-risk internal workflow before any customer-facing use.',
-              'Name the human reviewer and keep the reviewed artifact.',
-              'Measure recaptured staff time alongside service quality and fairness checks.',
-            ].map((item) => (
-              <li
-                key={item}
-                className="rounded-[16px] border border-[color:var(--ink-a10)] bg-white p-4 text-[0.9375rem] leading-[1.55] text-[color:var(--ink)]"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+        {/* HERO — the score as a dial, the headline, and the three facts that matter. */}
+        <section className="rv-hero" aria-label="Your result">
+          <ScoreDial score={score} max={V3_MAX_SCORE} tierLabel={tier.label} />
+          <div className="rv-hero-copy">
+            <p className="rv-k rv-gold">AI Readiness Snapshot</p>
+            <h1 className="rv-display">{resultHeadline}</h1>
+            {gap && <p className="rv-lede">{gap.oneLine}</p>}
+          </div>
+          <dl className="rv-readout">
+            {focusGap && (
+              <div>
+                <dt>Top gap</dt>
+                <dd>{focusGap.label}</dd>
+              </div>
+            )}
+            {recommendation && (
+              <div>
+                <dt>Quick win</dt>
+                <dd>{recommendation.title}</dd>
+              </div>
+            )}
+            {artifact && (
+              <div>
+                <dt>Starter template</dt>
+                <dd>{artifact.title}</dd>
+              </div>
+            )}
+          </dl>
         </section>
-      )}
 
-      {staffingReality && (
-        <section
-          className="rounded-[24px] border border-[color:var(--ink-a10)] bg-[color:var(--cream)] p-6 md:p-7"
-          aria-label="Staffing reality"
-          data-testid="staffing-reality"
-        >
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Staffing reality
-          </p>
-          <h2 className="mt-3 text-[1.5rem] md:text-[1.875rem] font-semibold leading-[1.1] text-[color:var(--ink)]">
-            {staffingReality.headline}
-          </h2>
-          <p className="mt-4 max-w-4xl text-[1rem] md:text-[1.0625rem] leading-[1.65] text-[color:var(--slate-700)]">
-            {staffingReality.body}
-          </p>
-        </section>
-      )}
+        {roiContext && <RoiContextPanel roiContext={roiContext} />}
 
-      {/* FREE SNAPSHOT TOPICS — not the paid 8-dimension diagnostic. */}
-      <section className="grid lg:grid-cols-2 gap-8 items-start">
-        <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            12-question snapshot summary
-          </p>
-          <h2 className="mt-3 text-[2.125rem] md:text-[2.875rem] font-semibold leading-[1.03] text-[color:var(--ink)]">
-            Your 12 answers, grouped by topic.
-          </h2>
-          <p className="mt-5 text-[1.0625rem] md:text-[1.125rem] leading-[1.65] text-[color:var(--slate-600)] max-w-prose">
-            The free snapshot uses twelve plain-language questions to estimate
-            where to start. The In-Depth Assessment is a separate
-            eight-dimension diagnostic for a fuller action plan.
-          </p>
-          {signals.filter((s) => bandForSignal(s) === bandForSignal(signals[0])).length >= 8 && (
-            <p
-              data-testid="uniform-band-note"
-              className="mt-4 text-[0.9375rem] leading-[1.6] text-[color:var(--slate-600)] max-w-prose"
-            >
-              Most of your topics landed at the same stage — that&rsquo;s normal
-              for a first pass, not a data problem. The one to act on is the top
-              gap above; the rest will move together as the basics go in.
+        <QuickActionStrip matchedPlaybookPath={matchedPlaybookPath} profileId={profileId} />
+
+        {missionName && (
+          <section className="rv-panel" aria-label="Mission lens">
+            <p className="rv-k rv-gold">Mission lens</p>
+            <h2 className="rv-h2">
+              Read this result through {missionName}&rsquo;s capacity and trust goals.
+            </h2>
+            <p className="rv-body">
+              For MDI, CDFI, and community-development institutions, the first AI win should
+              not be novelty. Start with an internal workflow that protects member or borrower
+              trust, documents human review, and gives staff more time for mission work.
             </p>
-          )}
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-          {signals.map((s) => {
-            const band = bandForSignal(s);
-            const pct = s.maxScore > 0 ? Math.round((s.score / s.maxScore) * 100) : 0;
-            return (
-              <div
-                key={s.id}
-                className={`rounded-[18px] border p-4 min-h-[132px] flex flex-col justify-between gap-3 ${bandClasses(band)}`}
-              >
-                <div>
-                  <p className="text-[1rem] font-semibold leading-snug text-[color:var(--ink)]">
-                    {s.label}
-                  </p>
+            <ul className="rv-checks rv-checks-3">
+              {[
+                'Pick a low-risk internal workflow before any customer-facing use.',
+                'Name the human reviewer and keep the reviewed artifact.',
+                'Measure recaptured staff time alongside service quality and fairness checks.',
+              ].map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {staffingReality && (
+          <section className="rv-panel" aria-label="Staffing reality" data-testid="staffing-reality">
+            <p className="rv-k rv-gold">Staffing reality</p>
+            <h2 className="rv-h2">{staffingReality.headline}</h2>
+            <p className="rv-body">{staffingReality.body}</p>
+          </section>
+        )}
+
+        {/* FREE SNAPSHOT TOPICS — one bar per answer, weakest first. Not the
+            paid 8-dimension diagnostic. */}
+        <section className="rv-section rv-split">
+          <div>
+            <p className="rv-k rv-gold">12-question snapshot summary</p>
+            <h2 className="rv-h2">Your 12 answers, grouped by topic.</h2>
+            <p className="rv-body">
+              The free snapshot uses twelve plain-language questions to estimate
+              where to start. The In-Depth Assessment is a separate
+              eight-dimension diagnostic for a fuller action plan.
+            </p>
+            {signals.filter((s) => bandForSignal(s) === bandForSignal(signals[0])).length >= 8 && (
+              <p data-testid="uniform-band-note" className="rv-body rv-muted">
+                Most of your topics landed at the same stage — that&rsquo;s normal
+                for a first pass, not a data problem. The one to act on is the top
+                gap above; the rest will move together as the basics go in.
+              </p>
+            )}
+            <p className="rv-legend" aria-hidden="true">
+              <span className="is-low" /> Needs structure <span className="is-mid" /> Developing{' '}
+              <span className="is-high" /> Strong
+            </p>
+          </div>
+          <ol className="rv-bars">
+            {signals.map((s, i) => {
+              const band = bandForSignal(s);
+              return (
+                <li key={s.id} className={`is-${band}${i === 0 ? ' is-top' : ''}`}>
+                  <span className="rv-bar-label">{s.label}</span>
                   <span
-                    className={`mt-2 inline-block rounded-full px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.03em] ${pillClasses(band)}`}
-                  >
-                    {pillFor(band)}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-[1.5rem] font-bold tabular-nums text-[color:var(--ink)]">
-                    {s.score}
-                    <span className="text-[0.875rem] font-semibold text-[color:var(--slate-500)]">
-                      /{s.maxScore}
-                    </span>
-                  </p>
-                  <div
-                    className="mt-2 h-2 rounded-full bg-[color:var(--ink-a10)] overflow-hidden"
+                    className="rv-bar-track"
                     role="progressbar"
                     aria-valuenow={s.score}
                     aria-valuemin={0}
                     aria-valuemax={s.maxScore}
                     aria-label={`${s.label}: ${s.score} of ${s.maxScore}`}
                   >
-                    <div
-                      className={`h-full rounded-full ${barClasses(band)}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* SIGNAL DETAIL — collapsed by default. Shows the lowest signals
-          with the GAP_CONTENT one-liner so the user understands the band. */}
-      {lowest.length > 0 && (
-        <details className="bg-white border border-[color:var(--ink-a10)] rounded-[24px] p-5 md:p-6">
-          <summary className="font-semibold text-[1.0625rem] cursor-pointer text-[color:var(--ink)]">
-            View signal detail
-          </summary>
-          <div className="mt-4 grid gap-3">
-            {lowest.map((s) => {
-              const band = bandForSignal(s);
-              const c = GAP_CONTENT[s.id];
-              return (
-                <div
-                  key={s.id}
-                  className="grid grid-cols-1 md:grid-cols-[220px_1fr_auto] gap-3 md:items-center border-t border-[color:var(--ink-a10)] pt-3"
-                >
-                  <p className="text-[1rem] font-semibold text-[color:var(--ink)]">{s.label}</p>
-                  <p className="text-[0.9375rem] md:text-[1rem] text-[color:var(--slate-600)] leading-[1.55]">{c.oneLine}</p>
-                  <span
-                    className={`inline-block self-start rounded-full px-3 py-1.5 text-[0.75rem] font-semibold ${pillClasses(band)}`}
-                  >
-                    {pillFor(band)}
+                    {Array.from({ length: s.maxScore }, (_, k) => (
+                      <span key={k} className={k < s.score ? 'is-on' : undefined} />
+                    ))}
                   </span>
-                </div>
+                  <span className="rv-bar-val">
+                    {s.score}/{s.maxScore}
+                  </span>
+                  <span className="rv-bar-band">{i === 0 ? 'Top gap' : pillFor(band)}</span>
+                </li>
               );
             })}
-          </div>
-        </details>
-      )}
-
-      {/* TOP GAP EXPLAINED */}
-      {focusGap && gap && (
-        <section
-          className="rounded-[28px] overflow-hidden bg-white border border-[color:var(--ink-a10)]"
-          style={{ boxShadow: 'var(--shadow-soft)' }}
-        >
-          <div className="bg-[color:var(--ink)] text-white p-6 md:p-8">
-            <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-              Top gap explained
-            </p>
-            <h2 className="mt-3 text-[2.125rem] md:text-[2.875rem] font-semibold leading-[1.05] text-white">
-              What is {focusGap.label}?
-            </h2>
-            <p className="mt-5 text-[1.125rem] md:text-[1.25rem] leading-[1.65] text-white/75 max-w-3xl">
-              {gap.explanation}
-            </p>
-          </div>
-          <div className="p-6 md:p-7 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <MiniCard label="What this leads to" items={gap.impacts} />
-            <MiniCard label="What good looks like" items={gap.whatGoodLooksLike} />
-            <MiniCard
-              label="Your first move"
-              items={recommendation ? [recommendation.inPractice] : ['Take the first move from your recommended starter artifact.']}
-            />
-          </div>
+          </ol>
         </section>
-      )}
 
-      {/* THREE TAKEAWAYS — prompt / helper tool / artifact.
-          Per operator: "more takeaways, fewer diagnostic scores." */}
-      {focusGap && (
-        <section>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Three things you can use this week
-          </p>
-          <h2 className="mt-3 text-[2.125rem] md:text-[2.875rem] font-semibold leading-[1.03] text-[color:var(--ink)]">
-            Not theory. Actual next actions.
-          </h2>
-          <div className="mt-7 grid md:grid-cols-3 gap-5">
-            {/* 1. Prompt to try */}
-            {starterPrompt && (
-              <article
-                className="bg-white border border-[color:var(--ink-a10)] border-t-[6px] border-t-[color:var(--gold)] rounded-[24px] p-6 md:p-7"
-                style={{ boxShadow: 'var(--shadow-soft)' }}
-              >
-                <TakeawayNum n={1} />
-                <h3 className="mt-4 text-[1.375rem] font-semibold text-[color:var(--ink)]">
-                  Prompt to try
-                </h3>
-                <p className="mt-2 text-[1rem] md:text-[1.0625rem] text-[color:var(--slate-600)] leading-[1.6]">
-                  {starterPrompt.label}
-                </p>
-                <pre className="mt-4 bg-[color:var(--ink)] text-[color:var(--gold-soft)] rounded-[16px] p-4 text-[0.875rem] leading-[1.6] font-mono whitespace-pre-wrap break-words">
-                  {starterPrompt.prompt}
-                </pre>
-              </article>
-            )}
-
-            {/* 2. Helper tool */}
-            <article
-              className="bg-white border border-[color:var(--ink-a10)] border-t-[6px] border-t-[#0E7A55] rounded-[24px] p-6 md:p-7"
-              style={{ boxShadow: 'var(--shadow-soft)' }}
-            >
-              <TakeawayNum n={2} />
-              <h3 className="mt-4 text-[1.375rem] font-semibold text-[color:var(--ink)]">
-                Helper tool
-              </h3>
-              <p className="mt-2 text-[1rem] md:text-[1.0625rem] text-[color:var(--slate-600)] leading-[1.6]">
-                A quick task-fit check before testing any AI workflow.
-              </p>
-              <ul className="mt-4 pl-5 list-disc text-[1rem] md:text-[1.0625rem] text-[color:var(--slate-600)] leading-[1.7] space-y-1">
-                <li>Is the task internal?</li>
-                <li>Is the source approved?</li>
-                <li>Can a human review it?</li>
-                <li>Does it avoid real customer data?</li>
-                <li>Can success be measured?</li>
-              </ul>
-            </article>
-
-            {/* 3. Working artifact */}
-            {artifact && (
-              <article
-                className="bg-white border border-[color:var(--ink-a10)] border-t-[6px] border-t-[#B7791F] rounded-[24px] p-6 md:p-7 flex flex-col"
-                style={{ boxShadow: 'var(--shadow-soft)' }}
-              >
-                <TakeawayNum n={3} />
-                <h3 className="mt-4 text-[1.375rem] font-semibold text-[color:var(--ink)]">
-                  Working artifact
-                </h3>
-                <p className="mt-2 text-[1rem] md:text-[1.0625rem] text-[color:var(--slate-600)] leading-[1.6]">
-                  {artifact.subtitle}
-                </p>
-                {profileId ? (
-                  <div className="mt-auto pt-4">
-                    <PdfDownloadButton profileId={profileId} />
-                  </div>
-                ) : (
-                  <div className="mt-auto pt-4" data-print-hide="true">
-                    <PrintReportButton label="Print report" />
-                  </div>
-                )}
-              </article>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* 7-DAY PLAN — fully visible. */}
-      <section>
-        <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-          Your 7-day starter plan
-        </p>
-        <h2 className="mt-3 text-[2.125rem] md:text-[2.625rem] font-semibold leading-[1.03] text-[color:var(--ink)]">
-          One small step per day.
-        </h2>
-        <ol className="mt-7 grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
-          {SEVEN_DAY_PLAN.map((d) => (
-            <li
-              key={d.day}
-              className="bg-white border border-[color:var(--ink-a10)] rounded-[18px] p-5"
-            >
-              <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-                Day {d.day}
-              </p>
-              <p className="mt-2 text-[1rem] leading-[1.6] text-[color:var(--ink)]">{d.action}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* 30/60/90 PLAN — phase 1 fully visible; phases 2 + 3 partially
-          locked with explicit "Unlocks in In-Depth" framing. */}
-      <section>
-        <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-          30 / 60 / 90 plan
-        </p>
-        <h2 className="mt-3 max-w-5xl text-[2rem] md:text-[2.625rem] font-semibold leading-[1.04] text-[color:var(--ink)]">
-          Start with the first 30 days. Unlock the deployment plan when you need the detail.
-        </h2>
-        <div className="mt-7 grid items-stretch gap-4 md:grid-cols-3">
-          {/* Days 1–30 — fully visible */}
-          <div
-            className="flex h-full flex-col bg-white border border-[color:var(--gold)]/55 rounded-[24px] p-6 md:p-7"
-            style={{ boxShadow: 'var(--shadow-soft)' }}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-                  Days 1–30
-                </p>
-                <h3 className="mt-3 text-[1.4375rem] font-semibold text-[color:var(--ink)]">
-                  Map, educate, select
-                </h3>
-              </div>
-              <span className="shrink-0 rounded-full bg-[color:var(--cream)] px-3 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-[color:var(--gold-deep)]">
-                Included
-              </span>
-            </div>
-            <ul className="mt-5 space-y-3 text-[1rem] md:text-[1.0625rem] leading-[1.55] text-[color:var(--slate-700)]">
-              {[
-                'Choose one safe internal workflow.',
-                'Build a reusable AI working brief.',
-                'Apply Green / Yellow / Red data safety and name the reviewer.',
-                'Run one low-risk test and measure draft time.',
-              ].map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span
-                    aria-hidden
-                    className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[color:var(--gold)]"
-                  />
-                  <span>{item}</span>
-                </li>
+        {/* SIGNAL DETAIL — collapsed by default. */}
+        {lowest.length > 0 && (
+          <details className="rv-details">
+            <summary>View signal detail</summary>
+            <dl>
+              {lowest.map((s) => (
+                <div key={s.id}>
+                  <dt>{s.label}</dt>
+                  <dd>{GAP_CONTENT[s.id].oneLine}</dd>
+                  <span className={`rv-pill is-${bandForSignal(s)}`}>{pillFor(bandForSignal(s))}</span>
+                </div>
               ))}
-            </ul>
-            <div className="mt-auto border-t border-[color:var(--ink-a10)] pt-5" data-print-hide="true">
-              <p className="text-[1rem] font-semibold text-[color:var(--ink)]">
-                Keep the first 30 days moving.
-              </p>
-              <div className="mt-3 grid gap-2">
+            </dl>
+          </details>
+        )}
+
+        {/* TOP GAP EXPLAINED */}
+        {focusGap && gap && (
+          <section className="rv-panel rv-gap">
+            <p className="rv-k rv-gold">Top gap explained</p>
+            <h2 className="rv-h2">What is {focusGap.label}?</h2>
+            <p className="rv-body rv-wide">{gap.explanation}</p>
+            <div className="rv-cols-3">
+              <MiniCard label="What this leads to" items={gap.impacts} />
+              <MiniCard label="What good looks like" items={gap.whatGoodLooksLike} />
+              <MiniCard
+                label="Your first move"
+                items={recommendation ? [recommendation.inPractice] : ['Take the first move from your recommended starter artifact.']}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* THREE TAKEAWAYS — prompt / helper tool / artifact. */}
+        {focusGap && (
+          <section className="rv-section">
+            <p className="rv-k rv-gold">Three things you can use this week</p>
+            <h2 className="rv-h2">Not theory. Actual next actions.</h2>
+            <div className="rv-takeaways">
+              {starterPrompt && (
+                <article className="rv-take rv-take-prompt">
+                  <TakeawayNum n={1} />
+                  <h3>Prompt to try</h3>
+                  <p className="rv-muted">{starterPrompt.label}</p>
+                  <CopyPrompt label="Paste into your approved AI tool" prompt={starterPrompt.prompt} />
+                </article>
+              )}
+              <article className="rv-take">
+                <TakeawayNum n={2} />
+                <h3>Helper tool</h3>
+                <p className="rv-muted">A quick task-fit check before testing any AI workflow.</p>
+                <ul className="rv-checks">
+                  <li>Is the task internal?</li>
+                  <li>Is the source approved?</li>
+                  <li>Can a human review it?</li>
+                  <li>Does it avoid real customer data?</li>
+                  <li>Can success be measured?</li>
+                </ul>
+              </article>
+              {artifact && (
+                <article className="rv-take">
+                  <TakeawayNum n={3} />
+                  <h3>Working artifact</h3>
+                  <p className="rv-muted">{artifact.subtitle}</p>
+                  {profileId ? (
+                    <div className="rv-take-foot">
+                      <PdfDownloadButton profileId={profileId} />
+                    </div>
+                  ) : (
+                    <div className="rv-take-foot" data-print-hide="true">
+                      <PrintReportButton label="Print report" />
+                    </div>
+                  )}
+                </article>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* 7-DAY PLAN — a timeline, one step per day. */}
+        <section className="rv-section">
+          <p className="rv-k rv-gold">Your 7-day starter plan</p>
+          <h2 className="rv-h2">One small step per day.</h2>
+          <ol className="rv-days">
+            {SEVEN_DAY_PLAN.map((d) => (
+              <li key={d.day}>
+                <span className="rv-day-n">Day {d.day}</span>
+                <p>{d.action}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* 30/60/90 PLAN — phase 1 visible; phases 2 + 3 partially locked. */}
+        <section className="rv-section">
+          <p className="rv-k rv-gold">30 / 60 / 90 plan</p>
+          <h2 className="rv-h2">
+            Start with the first 30 days. Unlock the deployment plan when you need the detail.
+          </h2>
+          <div className="rv-cols-3 rv-phases">
+            <div className="rv-phase is-open">
+              <div className="rv-phase-head">
+                <div>
+                  <p className="rv-k rv-gold">Days 1–30</p>
+                  <h3>Map, educate, select</h3>
+                </div>
+                <span className="rv-pill is-high">Included</span>
+              </div>
+              <ul className="rv-checks">
+                {[
+                  'Choose one safe internal workflow.',
+                  'Build a reusable AI working brief.',
+                  'Apply Green / Yellow / Red data safety and name the reviewer.',
+                  'Run one low-risk test and measure draft time.',
+                ].map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <div className="rv-phase-foot" data-print-hide="true">
+                <p>Keep the first 30 days moving.</p>
                 <ResultActionLink href={matchedPlaybookPath} variant="ink" fullWidth>
                   Open your role playbook
                 </ResultActionLink>
@@ -618,50 +432,35 @@ export function ResultsViewV3({
                 </ResultActionLink>
               </div>
             </div>
+            <PartialLockedPhase
+              label="Days 31–60"
+              title="Prototype and secure"
+              visibleItem="Turn the tested prompt into a reusable skill."
+              lockedItems={[
+                'Define allowed and blocked inputs.',
+                'Create the workflow SOP.',
+                'Track correction rate and reuse count.',
+              ]}
+            />
+            <PartialLockedPhase
+              label="Days 61–90"
+              title="Deploy and validate"
+              visibleItem="Train one role group on the reviewed workflow."
+              lockedItems={[
+                'Publish the reviewed artifact.',
+                'Report usage and savings.',
+                'Decide whether to scale.',
+              ]}
+            />
           </div>
+        </section>
 
-          {/* Days 31–60 — partial visibility, rest locked */}
-          <PartialLockedPhase
-            label="Days 31–60"
-            title="Prototype and secure"
-            visibleItem="Turn the tested prompt into a reusable skill."
-            lockedItems={[
-              'Define allowed and blocked inputs.',
-              'Create the workflow SOP.',
-              'Track correction rate and reuse count.',
-            ]}
-          />
-
-          {/* Days 61–90 — partial visibility, rest locked */}
-          <PartialLockedPhase
-            label="Days 61–90"
-            title="Deploy and validate"
-            visibleItem="Train one role group on the reviewed workflow."
-            lockedItems={[
-              'Publish the reviewed artifact.',
-              'Report usage and savings.',
-              'Decide whether to scale.',
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* LOCKED PAID DIAGNOSTIC PREVIEW — explicit upsell.
-          The 8 paid dimensions named here so the buyer knows exactly
-          what they unlock. */}
-      <section
-        className="rounded-[28px] bg-[color:var(--ink)] text-white p-7 md:p-10"
-        style={{ boxShadow: 'var(--shadow-hero)' }}
-      >
-        <div className="grid md:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
+        {/* LOCKED PAID DIAGNOSTIC PREVIEW — the 8 paid dimensions, named. */}
+        <section className="rv-panel rv-upsell">
           <div>
-            <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-              A separate diagnostic
-            </p>
-            <h2 className="mt-3 text-[2.125rem] md:text-[2.875rem] font-semibold leading-[1.05] text-white">
-              The 8-dimension In-Depth Diagnostic.
-            </h2>
-            <p className="mt-5 text-[1.125rem] md:text-[1.25rem] leading-[1.65] text-white/75 max-w-3xl">
+            <p className="rv-k rv-gold">A separate diagnostic</p>
+            <h2 className="rv-h2">The 8-dimension In-Depth Diagnostic.</h2>
+            <p className="rv-body">
               The free snapshot you just took is twelve plain-language signals.
               The In-Depth is a separate diagnostic — forty-eight questions
               across eight readiness dimensions, per-dimension root causes, a
@@ -669,88 +468,96 @@ export function ResultsViewV3({
               checklist your reviewer can read, and a reviewer-ready report
               you can forward.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <a
-                href="/assessment/in-depth"
-                className="inline-flex min-h-12 items-center justify-center px-7 py-3.5 rounded-full bg-[color:var(--gold)] text-[color:var(--ink)] text-[0.875rem] font-bold uppercase tracking-[0.1em] hover:bg-[color:var(--gold-2)] transition-colors"
-              >
+            <div className="rv-actions">
+              <a href="/assessment/in-depth" className="rv-btn rv-btn-gold">
                 Take the In-Depth · $99
               </a>
               <a
                 href={cta.tertiary.href}
                 data-plausible-event-source={cta.tertiary.source}
-                className="inline-flex min-h-12 items-center justify-center px-7 py-3.5 rounded-full border border-white/30 text-white text-[0.875rem] font-bold uppercase tracking-[0.1em] hover:bg-white/5"
+                className="rv-btn rv-btn-ghost"
               >
                 Or talk to us
               </a>
             </div>
           </div>
-          <div className="bg-white/8 border border-white/12 rounded-[24px] p-6 md:p-7">
-            <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-soft)]">
-              8-dimension diagnostic
-            </p>
-            <ul className="mt-4 space-y-2.5">
-              {Object.values(V4_DIMENSION_LABELS).map((d) => (
-                <li
-                  key={d}
-                  className="flex items-center gap-3 text-[1.0625rem] text-white/85"
-                >
-                  <span
-                    aria-hidden
-                    className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--gold-soft)] shrink-0"
-                  />
+          <div className="rv-dims">
+            <p className="rv-k rv-gold">8-dimension diagnostic</p>
+            <ol>
+              {Object.values(V4_DIMENSION_LABELS).map((d, i) => (
+                <li key={d}>
+                  <span>{String(i + 1).padStart(2, '0')}</span>
                   {d}
                 </li>
               ))}
-            </ul>
-            <p className="mt-5 text-[0.9375rem] text-white/65 italic leading-[1.6]">
+            </ol>
+            <p className="rv-muted">
               Plus role-specific roadmap, sample prompts, evidence checklist,
               and a reviewer-ready PDF.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ROLE PLAYBOOKS — subtle, helpful, not pushy. */}
-      <section className="grid md:grid-cols-[0.42fr_0.58fr] gap-6 items-start">
-        <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Role playbooks
-          </p>
-          <h2 className="mt-3 text-[2.125rem] md:text-[2.625rem] font-semibold leading-[1.03] text-[color:var(--ink)]">
-            Useful next reads.
-          </h2>
-          <p className="mt-4 text-[1.0625rem] text-[color:var(--slate-600)] leading-[1.6]">
-            Free reading by the seat you sit in — no email gate.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[...PLAYBOOK_INDEX]
-            // Surface the best-match playbook first, then the rest in index
-            // order, capped so the section stays a teaser, not a directory.
-            .sort((a, b) => {
-              if (a.slug === matchedPlaybook) return -1;
-              if (b.slug === matchedPlaybook) return 1;
-              return 0;
-            })
-            .slice(0, PLAYBOOK_CARD_LIMIT)
-            .map((p) => {
-              const isMatch = p.slug === matchedPlaybook;
-              return (
-                <PlaybookCard
-                  key={p.slug}
-                  tag={isMatch ? 'Best match' : PLAYBOOK_TAG[p.slug]}
-                  title={p.title}
-                  body={p.desc}
-                  href={`/playbooks/${p.slug}`}
-                  highlight={isMatch}
-                />
-              );
-            })}
-        </div>
-      </section>
+        {/* ROLE PLAYBOOKS — a short list, best match first. */}
+        <section className="rv-section rv-split">
+          <div>
+            <p className="rv-k rv-gold">Role playbooks</p>
+            <h2 className="rv-h2">Useful next reads.</h2>
+            <p className="rv-body">Free reading by the seat you sit in — no email gate.</p>
+          </div>
+          <div className="rv-playbooks">
+            {[...PLAYBOOK_INDEX]
+              .sort((a, b) => {
+                if (a.slug === matchedPlaybook) return -1;
+                if (b.slug === matchedPlaybook) return 1;
+                return 0;
+              })
+              .slice(0, PLAYBOOK_CARD_LIMIT)
+              .map((p) => {
+                const isMatch = p.slug === matchedPlaybook;
+                return (
+                  <PlaybookCard
+                    key={p.slug}
+                    tag={isMatch ? 'Best match' : PLAYBOOK_TAG[p.slug]}
+                    title={p.title}
+                    body={p.desc}
+                    href={`/playbooks/${p.slug}`}
+                    highlight={isMatch}
+                  />
+                );
+              })}
+          </div>
+        </section>
       </div>
-    </>
+    </div>
+  );
+}
+
+/** Score as a gold arc on a dark ring, the tier underneath. */
+function ScoreDial({ score, max, tierLabel }: { readonly score: number; readonly max: number; readonly tierLabel: string }) {
+  const r = 70;
+  const c = 2 * Math.PI * r;
+  const frac = max > 0 ? Math.min(Math.max(score / max, 0), 1) : 0;
+  return (
+    <div className="rv-dial">
+      <svg viewBox="0 0 168 168" aria-hidden="true">
+        <circle cx="84" cy="84" r={r} className="rv-dial-track" />
+        <circle
+          cx="84"
+          cy="84"
+          r={r}
+          className="rv-dial-arc"
+          strokeDasharray={`${c * frac} ${c}`}
+          transform="rotate(-90 84 84)"
+        />
+      </svg>
+      <p className="rv-dial-num">
+        <span className="rv-k">Your score</span>
+        <strong>{score}</strong>
+        <span className="rv-dial-max">/ {max}</span>
+      </p>
+      <p className="rv-dial-tier">{tierLabel}</p>
+    </div>
   );
 }
 
@@ -760,36 +567,26 @@ function RoiContextPanel({
   readonly roiContext: RoiAssessmentContext;
 }) {
   return (
-    <section className="rounded-[24px] border border-[color:var(--gold)]/35 bg-white p-5 md:p-6">
-      <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Your ROI scenario
-          </p>
-          <h2 className="mt-2 text-[1.5rem] md:text-[2rem] font-semibold leading-tight text-[color:var(--ink)]">
-            Keep the value model attached to the readiness work.
-          </h2>
-          <p className="mt-3 text-[1rem] md:text-[1.0625rem] leading-[1.65] text-[color:var(--slate-600)] max-w-3xl">
-            You modeled {formatRoiNumber(roiContext.fte)} employees at{' '}
-            {formatRoiCurrency(roiContext.costPerFTE)} loaded cost and{' '}
-            {roiContext.loHours}-{roiContext.hiHours} hours per week. The
-            assessment below points to the first workflow discipline to improve
-            before treating the estimate as achievable.
-          </p>
-        </div>
-        <div className="rounded-[18px] bg-[color:var(--cream)] border border-[color:var(--ink-a10)] p-4 min-w-[240px]">
-          <p className="text-[0.6875rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            Estimated annual capacity
-          </p>
-          <p className="mt-2 text-[2rem] font-bold tabular-nums text-[color:var(--ink)]">
-            {formatRoiCurrency(roiContext.mid)}
-          </p>
-          <p className="mt-2 text-[0.8125rem] leading-[1.55] text-[color:var(--slate-600)]">
-            Range {formatRoiCurrency(roiContext.low)}-{formatRoiCurrency(roiContext.high)} ·{' '}
-            {formatRoiNumber(roiContext.hoursPerYear)} hours/year · ~
-            {roiContext.payrollRecaptured}% of payroll.
-          </p>
-        </div>
+    <section className="rv-panel rv-roi">
+      <div>
+        <p className="rv-k rv-gold">Your ROI scenario</p>
+        <h2 className="rv-h2">Keep the value model attached to the readiness work.</h2>
+        <p className="rv-body">
+          You modeled {formatRoiNumber(roiContext.fte)} employees at{' '}
+          {formatRoiCurrency(roiContext.costPerFTE)} loaded cost and{' '}
+          {roiContext.loHours}-{roiContext.hiHours} hours per week. The
+          assessment below points to the first workflow discipline to improve
+          before treating the estimate as achievable.
+        </p>
+      </div>
+      <div className="rv-roi-figure">
+        <p className="rv-k">Estimated annual capacity</p>
+        <strong>{formatRoiCurrency(roiContext.mid)}</strong>
+        <p>
+          Range {formatRoiCurrency(roiContext.low)}-{formatRoiCurrency(roiContext.high)} ·{' '}
+          {formatRoiNumber(roiContext.hoursPerYear)} hours/year · ~
+          {roiContext.payrollRecaptured}% of payroll.
+        </p>
       </div>
     </section>
   );
@@ -833,29 +630,20 @@ function QuickActionStrip({
   return (
     <section
       id="download-report"
-      className="grid gap-4 rounded-[26px] border border-[color:var(--ink-a10)] bg-white p-5 md:grid-cols-[1fr_auto] md:items-center md:p-6"
-      style={{ boxShadow: 'var(--shadow-soft)' }}
+      className="rv-strip"
       data-print-hide="true"
       aria-label="Recommended next actions"
     >
       <div>
-        <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-          Start here
-        </p>
-        <h2 className="mt-2 text-[1.5rem] md:text-[1.875rem] font-semibold leading-tight text-[color:var(--ink)]">
-          Turn the snapshot into one visible next move.
-        </h2>
+        <p className="rv-k rv-gold">Start here</p>
+        <h2 className="rv-strip-title">Turn the snapshot into one visible next move.</h2>
       </div>
-      <div className="flex flex-wrap gap-2 md:justify-end">
+      <div className="rv-actions">
         <ResultActionLink href={matchedPlaybookPath} variant="ink">
           Open role playbook
         </ResultActionLink>
         {profileId ? (
-          <PdfDownloadButton
-            profileId={profileId}
-            compact
-            label="Download report"
-          />
+          <PdfDownloadButton profileId={profileId} compact label="Download report" />
         ) : (
           <PrintReportButton compact label="Print report" />
         )}
@@ -874,15 +662,11 @@ function PrintReportButton({
   readonly compact?: boolean;
   readonly label: string;
 }) {
-  const classes = compact
-    ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--ink-a15)] bg-white px-5 py-2.5 text-[0.875rem] font-bold text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]'
-    : 'inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--ink-a15)] bg-white px-6 py-3 font-sans text-[0.875rem] font-semibold uppercase tracking-[1.2px] text-[color:var(--ink)] transition-colors hover:bg-[color:var(--cream)]';
-
   return (
     <button
       type="button"
       data-print-hide="true"
-      className={classes}
+      className={`rv-btn rv-btn-ghost${compact ? '' : ' rv-btn-block'}`}
       onClick={() => window.print()}
     >
       {label}
@@ -901,15 +685,10 @@ function ResultActionLink({
   readonly fullWidth?: boolean;
   readonly children: ReactNode;
 }) {
-  const classes =
-    variant === 'ink'
-      ? 'bg-[color:var(--ink)] !text-white hover:bg-[color:var(--ink)]/90'
-      : 'bg-[color:var(--gold)] !text-[color:var(--ink)] hover:bg-[color:var(--gold-2)]';
-
   return (
     <Link
       href={href}
-      className={`${fullWidth ? 'flex w-full' : 'inline-flex'} min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-center text-[0.875rem] font-bold no-underline transition-colors ${classes}`}
+      className={`rv-btn ${variant === 'gold' ? 'rv-btn-gold' : 'rv-btn-ghost'}${fullWidth ? ' rv-btn-block' : ''}`}
     >
       {children}
     </Link>
@@ -918,11 +697,9 @@ function ResultActionLink({
 
 function MiniCard({ label, items }: { readonly label: string; readonly items: readonly string[] }) {
   return (
-    <div className="bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[20px] p-5 md:p-6">
-      <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-        {label}
-      </p>
-      <ul className="mt-4 space-y-2 text-[1rem] md:text-[1.0625rem] leading-[1.65] text-[color:var(--slate-700)]">
+    <div className="rv-mini">
+      <p className="rv-k rv-gold">{label}</p>
+      <ul>
         {items.map((item, i) => (
           <li key={i}>{item}</li>
         ))}
@@ -932,11 +709,7 @@ function MiniCard({ label, items }: { readonly label: string; readonly items: re
 }
 
 function TakeawayNum({ n }: { readonly n: number }) {
-  return (
-    <span className="inline-grid place-items-center w-10 h-10 rounded-[12px] bg-[color:var(--cream)] text-[color:var(--gold-deep)] font-bold text-[0.9375rem]">
-      {n}
-    </span>
-  );
+  return <span className="rv-take-n">{String(n).padStart(2, '0')}</span>;
 }
 
 function PartialLockedPhase({
@@ -951,45 +724,32 @@ function PartialLockedPhase({
   readonly lockedItems: readonly string[];
 }) {
   return (
-    <div
-      className="flex h-full flex-col bg-white border border-[color:var(--ink-a10)] rounded-[24px] p-6 md:p-7"
-      style={{ boxShadow: 'var(--shadow-soft)' }}
-    >
-      <div className="flex items-start justify-between gap-4">
+    <div className="rv-phase">
+      <div className="rv-phase-head">
         <div>
-          <p className="text-[0.75rem] uppercase tracking-[0.18em] font-semibold text-[color:var(--gold-deep)]">
-            {label}
-          </p>
-          <h3 className="mt-3 text-[1.4375rem] font-semibold text-[color:var(--ink)]">
-            {title}
-          </h3>
+          <p className="rv-k rv-gold">{label}</p>
+          <h3>{title}</h3>
         </div>
-        <span className="shrink-0 rounded-full border border-[color:var(--ink-a10)] px-3 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-[color:var(--slate-500)]">
-          Paid
-        </span>
+        <span className="rv-pill">Paid</span>
       </div>
-      <div className="mt-5 bg-[color:var(--cream)] border border-[color:var(--ink-a10)] rounded-[16px] p-4">
-        <p className="text-[0.6875rem] uppercase tracking-[0.16em] font-semibold text-[color:var(--gold-deep)]">
-          Preview
-        </p>
-        <p className="text-[1rem] md:text-[1.0625rem] font-semibold text-[color:var(--ink)] leading-[1.5]">
-          {visibleItem}
-        </p>
+      <div className="rv-phase-preview">
+        <p className="rv-k">Preview</p>
+        <p>{visibleItem}</p>
       </div>
-      <ul className="mt-4 space-y-2.5 text-[0.9375rem] leading-[1.55] text-[color:var(--slate-600)]">
+      <ul className="rv-locked">
         {lockedItems.map((item, i) => (
-          <li key={i} className="flex items-center gap-3 rounded-[14px] border border-[color:var(--ink-a10)] bg-white px-3.5 py-3">
-            <span className="rounded-full bg-[color:var(--cream)] px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-[color:var(--gold-deep)]">
+          <li key={i}>
+            <span className="rv-lock" aria-label="Locked">
               Locked
             </span>
             <span>{item}</span>
           </li>
         ))}
       </ul>
-      <div className="mt-auto bg-[color:var(--ink)] !text-white rounded-[16px] p-4 text-center">
-        <p className="text-[1rem] font-semibold !text-white">Detailed in the In-Depth</p>
-        <p className="mt-1.5 text-[0.875rem] !text-white/75">The 8-dimension diagnostic carries this through with deployment specifics.</p>
-      </div>
+      <p className="rv-phase-note">
+        <strong>Detailed in the In-Depth</strong> — the 8-dimension diagnostic carries this through with
+        deployment specifics.
+      </p>
     </div>
   );
 }
@@ -1008,19 +768,13 @@ function PlaybookCard({
   readonly highlight?: boolean;
 }) {
   return (
-    <a
-      href={href}
-      className={`block bg-white rounded-[20px] p-5 md:p-6 transition-colors hover:bg-[color:var(--cream)] ${
-        highlight
-          ? 'border-2 border-[color:var(--gold)] shadow-[0_0_0_4px_rgba(200,162,74,0.12)]'
-          : 'border border-[color:var(--ink-a10)]'
-      }`}
-    >
-      <span className="inline-flex rounded-full bg-[color:var(--cream)] px-3 py-1.5 text-[0.75rem] font-bold text-[color:var(--gold-deep)] uppercase tracking-[0.1em]">
-        {tag}
+    <a href={href} className={`rv-playbook${highlight ? ' is-match' : ''}`}>
+      <span className="rv-k rv-gold">{tag}</span>
+      <span className="rv-playbook-title">{title}</span>
+      <span className="rv-playbook-body">{body}</span>
+      <span className="rv-playbook-arrow" aria-hidden="true">
+        →
       </span>
-      <h3 className="mt-4 text-[1.3125rem] font-semibold text-[color:var(--ink)]">{title}</h3>
-      <p className="mt-2 text-[1rem] text-[color:var(--slate-600)] leading-[1.6]">{body}</p>
     </a>
   );
 }

@@ -269,15 +269,15 @@ export function EmailGate({
   return (
     <div className="w-full max-w-5xl mx-auto">
       <section
-        className="rounded-[28px] overflow-hidden grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr]"
+        className="rounded-[28px] overflow-hidden grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr] border border-[color:var(--gold)]/35 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)]"
         style={{ boxShadow: 'var(--shadow-hero)' }}
       >
         {/* LEFT — pitch / receipt framing */}
-        <div className="bg-[color:var(--ink)] text-white p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+        <div className="bg-[color:var(--ink)] text-white p-8 md:p-10 lg:p-12 flex flex-col justify-start">
           <span className="inline-flex w-max items-center gap-2 px-3.5 py-2 rounded-full border border-[color:var(--gold)]/45 bg-[color:var(--gold)]/8 text-[color:var(--gold-soft)] text-[0.75rem] font-semibold">
             12 of 12 complete
           </span>
-          <h1 className="mt-5 text-[2.25rem] md:text-[3.25rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
+          <h1 className="mt-5 font-serif text-[2.25rem] md:text-[3.25rem] font-normal leading-[1.02] tracking-[-0.01em] text-white">
             Your AI readiness snapshot is ready.
           </h1>
           {/* Promise only what is actually delivered after email — the
