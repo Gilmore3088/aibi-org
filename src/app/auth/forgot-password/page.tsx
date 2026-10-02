@@ -21,7 +21,8 @@ const cardStyle: CSSProperties = {
 
 const eyebrowStyle: CSSProperties = {
   fontSize: '0.6875rem',
-  fontWeight: 700,
+  fontWeight: 400,
+  fontFamily: 'var(--font-mono)',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   color: 'var(--gold-deep)',
@@ -30,9 +31,10 @@ const eyebrowStyle: CSSProperties = {
 
 const h1Style: CSSProperties = {
   fontSize: '2rem',
-  fontWeight: 700,
+  fontWeight: 400,
+  fontFamily: 'var(--font-serif)',
   lineHeight: 1.1,
-  letterSpacing: '-0.02em',
+  letterSpacing: '-0.01em',
   color: 'var(--ink)',
   margin: '6px 0 0',
 };
