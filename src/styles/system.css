@@ -839,7 +839,7 @@ body:has(.ax-page) { background: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   .as-focus .mk-take-q-prompt, .as-focus .mk-take-q-options { animation: none; }
 }
-.as-focus .mk-take-flow-exit { white-space: nowrap; }
+@media (min-width: 420px) { .as-focus .mk-take-flow-exit { white-space: nowrap; } }
 
 /* ============================================================
    Results (ResultsViewV3) — the free snapshot on ink. Score as a
