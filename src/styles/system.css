@@ -1,0 +1,255 @@
+/* ============================================================
+   AI-native system layer (2026-10 rebrand).
+   Loaded last. Brings every mockup-system page in line with the
+   rebuilt homepage without touching page markup:
+
+   1. One surface per section. Cards are hairline panels, never
+      colour-filled chips.
+   2. Containers read as software: mono labels, a gold ">" prompt
+      marker on eyebrows, dot-grid texture on dark surfaces.
+   3. Gold is an accent — primary button, cursor, active state,
+      one word — not a fill.
+   4. Display type is the Newsreader serif at regular weight,
+      matching the homepage.
+   ============================================================ */
+
+/* ── Labels: mono, quiet, prompt-like ────────────────────── */
+.mockup-scope .mk-section-head .k,
+.mockup-scope .mk-cta-band .mk-k,
+.mockup-scope .mk-kicker-gold-soft,
+.mockup-scope .mk-eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mockup-scope .mk-section-head .k::before,
+.mockup-scope .mk-cta-band .mk-k::before {
+  content: '> ';
+  color: var(--gold);
+}
+
+/* Eyebrow chip → a command-line label, not a filled pill. */
+.mockup-scope .mk-eyebrow {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--gold-soft);
+}
+.mockup-scope .mk-eyebrow::before {
+  content: '>';
+  color: var(--gold);
+}
+.mockup-scope .mk-eyebrow svg { display: none; }
+
+/* ── Display type ─────────────────────────────────────────── */
+.mockup-scope .mk-hero h1,
+.mockup-scope .mk-section-head h2,
+.mockup-scope .mk-cta-band h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* ── Dark surfaces carry the dot grid ─────────────────────── */
+.mockup-scope .mk-hero,
+.mockup-scope .mk-cta,
+.hm-hero,
+.hm-offers,
+.hm-close {
+  background-color: var(--ink);
+  background-image: radial-gradient(rgba(247, 243, 234, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.mockup-scope .mk-hero .mk-deco { display: none; }
+
+/* CTA band: a window on the grid, not a tinted slab. */
+.mockup-scope .mk-cta-band {
+  border-radius: 16px;
+  border: 1px solid var(--on-dark-20);
+  background: rgba(7, 26, 47, 0.85);
+}
+
+/* ── Cards: flat hairline panels ──────────────────────────── */
+.mockup-scope .mk-card-white,
+.mockup-scope .mk-card-cream {
+  border-radius: 14px;
+  box-shadow: none;
+}
+.mockup-scope .mk-card-cream { background: #fff; }
+.mockup-scope .mk-card-shadow { box-shadow: var(--shadow-soft); }
+.mockup-scope .mk-infobox { border-radius: 10px; }
+
+/* Icon badges: outlined, so a grid of them never reads as swatches. */
+.mockup-scope .mk-icon-ink,
+.mockup-scope .mk-icon-gold {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: transparent;
+}
+.mockup-scope .mk-icon-ink { border: 1px solid var(--ink-a15); color: var(--ink-2); }
+.mockup-scope .mk-icon-gold { border: 1px solid var(--gold-a40); color: var(--gold-deep); }
+
+/* ============================================================
+   ax- primitives — the shared AI-native building blocks used by
+   rebuilt pages (see src/components/ax/). Dark grid page, command
+   line hero, document windows, log rows, hairline tables.
+   ============================================================ */
+
+.ax-page {
+  background-color: var(--ink);
+  background-image: radial-gradient(rgba(247, 243, 234, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+/* Text colour on the sections, not the wrapper — SiteHeader renders inside. */
+.ax-page .ax-hero,
+.ax-page .ax-section { color: var(--cream); }
+body:has(.ax-page) { background: var(--ink); }
+
+.ax-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+  font-size: clamp(2.25rem, 4.6vw, 3.75rem);
+}
+.ax-k {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-50);
+}
+.ax-gold { color: var(--gold); }
+.ax-muted { color: var(--on-dark-65); }
+
+.ax-section { padding: 88px 0; }
+.ax-section + .ax-section { border-top: 1px solid var(--on-dark-08); }
+.ax-section-head { margin-bottom: 36px; display: grid; gap: 14px; max-width: 760px; }
+.ax-section-head p { margin: 0; font-size: 1.0625rem; line-height: 1.6; color: var(--on-dark-65); }
+
+/* Hero: command line → headline → lede → actions */
+.ax-hero { padding: 56px 0 72px; }
+@media (min-width: 1024px) { .ax-hero { padding: 72px 0 88px; } }
+.ax-cmd {
+  margin: 0 0 24px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--on-dark-50);
+  overflow-wrap: anywhere;
+}
+.ax-cmd::before { content: '> '; color: var(--gold); }
+.ax-hero h1 { font-size: clamp(2.75rem, 6.4vw, 5.25rem); line-height: 0.98; max-width: 16ch; }
+.ax-hero .ax-lede { margin: 28px 0 0; max-width: 56ch; font-size: 1.125rem; line-height: 1.6; color: var(--on-dark-65); }
+.ax-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; align-items: center; }
+
+/* Window: a titled hairline panel that reads as software */
+.ax-window {
+  border: 1px solid var(--on-dark-20);
+  border-radius: 16px;
+  background: rgba(7, 26, 47, 0.88);
+  overflow: hidden;
+  min-width: 0;
+}
+.ax-window-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--on-dark-10);
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--on-dark-50);
+}
+.ax-window-body { padding: clamp(22px, 3.4vw, 40px); }
+
+/* Log rows: an archive that reads like a feed, not a tile wall */
+.ax-log { border-top: 1px solid var(--on-dark-20); }
+.ax-log-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px 28px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--on-dark-10);
+  color: var(--cream);
+  text-decoration: none;
+}
+@media (min-width: 760px) { .ax-log-row { grid-template-columns: 200px minmax(0, 1fr) 24px; align-items: baseline; } }
+.ax-log-meta { font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.7; color: var(--on-dark-50); }
+.ax-log-title { font-family: var(--font-serif); font-size: clamp(1.375rem, 2.2vw, 1.625rem); line-height: 1.15; }
+.ax-log-dek { margin: 8px 0 0; font-size: 0.9375rem; line-height: 1.55; color: var(--on-dark-65); }
+.ax-log-arrow { font-family: var(--font-mono); color: var(--on-dark-50); transition: transform var(--t-med) var(--ease), color var(--t-med); }
+.ax-log-row:hover .ax-log-title,
+.ax-log-row:focus-visible .ax-log-title { color: var(--gold-soft); }
+.ax-log-row:hover .ax-log-arrow { color: var(--gold); transform: translateX(4px); }
+
+/* Mono toggles (filters) */
+.ax-toggles { display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--font-mono); font-size: 0.8125rem; }
+.ax-toggles button {
+  min-height: 36px; padding: 0 12px; border-radius: 6px;
+  border: 1px solid var(--on-dark-20); background: transparent; color: var(--on-dark-70);
+  font: inherit; cursor: pointer;
+}
+.ax-toggles button[aria-pressed='true'] { border-color: var(--gold-a40); background: var(--gold-a10); color: var(--gold-soft); }
+
+/* Copyable prompt */
+.ax-prompt { border: 1px solid var(--gold-a40); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
+.ax-prompt p { margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.65; color: var(--cream); white-space: pre-wrap; }
+.ax-btn-line {
+  justify-self: start; min-height: 36px; padding: 0 14px; border-radius: 8px;
+  border: 1px solid var(--on-dark-20); background: transparent; color: var(--cream);
+  font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer;
+}
+.ax-btn-line:hover { border-color: var(--gold); color: var(--gold-soft); }
+
+/* Citations */
+.ax-cite { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--gold); vertical-align: super; margin-left: 2px; }
+.ax-sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; font-size: 0.875rem; line-height: 1.45; }
+.ax-sources li { display: grid; grid-template-columns: auto 1fr; gap: 10px; }
+.ax-sources a { color: var(--cream); }
+.ax-sources small { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--on-dark-50); }
+
+/* Hairline table */
+.ax-table-wrap { overflow-x: auto; border: 1px solid var(--on-dark-20); border-radius: 16px; }
+.ax-table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 0.9375rem; }
+.ax-table th {
+  padding: 14px 20px; text-align: left; font-weight: 400;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--on-dark-50); border-bottom: 1px solid var(--on-dark-20);
+}
+.ax-table td { padding: 20px; vertical-align: top; border-bottom: 1px solid var(--on-dark-08); color: var(--on-dark-80); }
+.ax-table tr:last-child td { border-bottom: 0; }
+.ax-table .ax-cell-title { font-family: var(--font-serif); font-size: 1.375rem; color: var(--cream); }
+.ax-table .ax-cell-mono { font-family: var(--font-mono); font-size: 0.875rem; color: var(--cream); }
+.ax-link-mono { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--gold-soft); text-decoration: none; white-space: nowrap; }
+.ax-link-mono:hover { color: #fff; }
+
+/* Command-line form (subscribe etc.) */
+.ax-cli-form {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  border: 1px solid var(--on-dark-20); border-radius: 12px; padding: 8px 8px 8px 16px;
+  font-family: var(--font-mono);
+}
+.ax-cli-form::before { content: '>'; color: var(--gold); }
+.ax-cli-form input {
+  flex: 1; min-width: 200px; min-height: 44px; border: 0; background: transparent;
+  color: var(--cream); font: inherit; font-size: 0.9375rem;
+}
+.ax-cli-form input:focus { outline: none; }
+.ax-cli-form:focus-within { border-color: var(--gold-a40); }
+
+.ax-hero-split { display: grid; gap: 48px; align-items: center; }
+@media (min-width: 1024px) { .ax-hero-split { grid-template-columns: 0.95fr 1.05fr; gap: 56px; } }
+
+/* Briefings lead + archive */
+.ax-lead { display: grid; }
+@media (min-width: 960px) { .ax-lead { grid-template-columns: 1.7fr 1fr; } }
+.ax-lead-main { padding: clamp(24px, 4vw, 48px); display: grid; gap: 20px; align-content: start; }
+.ax-lead-title { font-family: var(--font-serif); font-size: clamp(1.875rem, 3.6vw, 3rem); line-height: 1.05; color: var(--cream); text-decoration: none; }
+.ax-lead-title:hover { color: var(--gold-soft); }
+.ax-lead-dek { margin: 0; font-size: 1.125rem; line-height: 1.6; color: var(--on-dark-70); max-width: 60ch; }
+.ax-lead-aside { padding: clamp(24px, 4vw, 40px); display: grid; gap: 28px; align-content: start; border-top: 1px solid var(--on-dark-10); }
+@media (min-width: 960px) { .ax-lead-aside { border-top: 0; border-left: 1px solid var(--on-dark-10); } }
+.ax-lead-aside .ax-k { margin-bottom: 14px; }
+.ax-archive-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 20px; }
