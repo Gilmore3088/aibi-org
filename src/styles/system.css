@@ -17,6 +17,7 @@
 .mockup-scope .mk-section-head .k,
 .mockup-scope .mk-cta-band .mk-k,
 .mockup-scope .mk-kicker-gold-soft,
+.mockup-scope .rx-hero-kicker,
 .mockup-scope .mk-eyebrow {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -430,3 +431,21 @@ body:has(.ax-page) { background: var(--ink); }
 .ax-status { border: 1px solid var(--gold-a40); border-radius: 12px; padding: 16px 20px; }
 .ax-status p:last-child { margin: 8px 0 0; color: var(--on-dark-80); line-height: 1.55; }
 .ax-buy { max-width: 1040px; }
+
+/* ============================================================
+   Library pages (light "paper" mode) — /resources and other long
+   reading or download surfaces. Same type, labels and hairline
+   panels as the dark story pages; one cream surface, no alternating
+   white/cream bands, no lifted card shadows.
+   ============================================================ */
+.rx-resources-page section.mk-std { background: var(--cream) !important; border-top: 1px solid var(--ink-a10); }
+.rx-resources-page section.mk-std .mk-section-head h2 { font-size: clamp(2rem, 3.6vw, 2.75rem); }
+.rx-resources-page article,
+.rx-resources-page .rx-pb-card {
+  box-shadow: none !important;
+  border-radius: 14px !important;
+}
+.rx-resources-page .rx-hero .mk-lede { color: var(--on-dark-70); }
+.rx-resources-page .rx-filterbar { background: var(--cream) !important; border-bottom: 1px solid var(--ink-a10); }
+.rx-resources-page .rx-chip,
+.rx-resources-page .rx-pill { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.02em; }
