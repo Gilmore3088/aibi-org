@@ -58,6 +58,15 @@ describe('HomePage', () => {
     expect(step('build')).toContain('[BSA REVIEW — DO NOT RESOLVE WITHOUT COMPLIANCE]');
   });
 
+  it('shows the ROI calculator with a live currency result', () => {
+    render(<HomePage />);
+    const roi = document.getElementById('roi-calculator')!;
+    expect(within(roi).getByLabelText('Full-time employees')).toBeTruthy();
+    expect(roi.querySelector('.mk-roi-result-value')!.textContent).toMatch(/^\$[\d,]+$/);
+    fireEvent.change(within(roi).getByLabelText('Full-time employees'), { target: { value: '100' } });
+    expect(roi.textContent).toContain('$715,144');
+  });
+
   it('checks a prompt in the browser and proposes a placeholder version', () => {
     render(<HomePage />);
     const input = screen.getByLabelText('Your prompt') as HTMLTextAreaElement;

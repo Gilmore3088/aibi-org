@@ -5,6 +5,7 @@ import { AiSession } from '@/components/home/AiSession';
 import { HowItWorks } from '@/components/home/HowItWorks';
 import { ResourceCovers, OfferPair } from '@/components/home/HomeSections';
 import { PromptChecker } from '@/components/home/PromptChecker';
+import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { getPracticeRepById } from '@content/practice-reps/foundation-program';
 
 // Homepage — "Vault" rebuild. One idea per section, real artifacts instead of
@@ -64,6 +65,20 @@ export default function HomePage() {
 
       <PromptChecker />
       <ResourceCovers />
+
+      <section id="roi-calculator" className="hm-roi" aria-labelledby="hm-roi-title">
+        <div className="mk-container">
+          <p className="hm-k hm-gold">Impact</p>
+          <h2 id="hm-roi-title" className="hm-display">
+            What are a few hours a week <span className="hm-gold">worth</span>?
+          </h2>
+          <p className="hm-roi-lede">Set your team size, cost and hours. The value updates as you move.</p>
+          <div className="hm-roi-window">
+            <ROICalculatorBody ctaLabel="Take the Assessment" ctaHref="/assessment/take" briefingSource="home" />
+          </div>
+        </div>
+      </section>
+
       <OfferPair />
 
       <section className="hm-close">

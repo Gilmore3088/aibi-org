@@ -371,3 +371,22 @@ body:has(.hm) { background: var(--ink); }
 .hm-sheet-md .hm-t-out { color: #2A3646; }
 .hm-sheet-md .hm-t-flag { color: #A3341C; background: #FDF1EE; }
 .hm-light .hm-display { margin-bottom: 56px; }
+
+/* ── ROI calculator: the value case before the offers ── */
+.hm-roi { padding: 112px 0 96px; color: var(--cream); }
+.hm-roi .hm-display { margin: 10px 0 16px; font-size: clamp(2.5rem, 5.4vw, 4.5rem); }
+.hm-roi-lede { margin: 0 0 40px; max-width: 52ch; font-size: 1.0625rem; line-height: 1.6; color: var(--on-dark-65); }
+.hm-roi-window .mk-roi-calculator {
+  background: #0D1F35; color: var(--cream); border: 1px solid var(--edge-gold, rgba(200,162,74,0.32));
+  border-radius: 18px; box-shadow: var(--lift);
+}
+.hm-roi-window .mk-roi-slider-label,
+.hm-roi-window .mk-roi-result-label,
+.hm-roi-window .mk-roi-result-meta,
+.hm-roi-window .mk-roi-methodology { color: var(--on-dark-65); }
+.hm-roi-window .mk-roi-slider-label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.02em; }
+.hm-roi-window .mk-roi-slider-value { color: var(--cream); font-family: var(--font-mono); }
+.hm-roi-window .mk-roi-result { border-color: var(--on-dark-10) !important; }
+.hm-roi-window .mk-roi-result-value { color: var(--gold); font-family: var(--font-serif); font-weight: 400; }
+.hm-roi-window .mk-roi-methodology a { color: var(--gold-soft); }
+.hm-roi-window .mk-roi-range { accent-color: var(--gold); }
