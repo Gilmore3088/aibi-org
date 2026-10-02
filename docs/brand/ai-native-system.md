@@ -31,7 +31,7 @@ JetBrains Mono for labels.
    session, code windows, cover wells) stays dark. Gold is the one accent.
 7. **Show the file.** Library cards lead with page 1 of the real PDF
    (`scripts/render-resource-covers.sh`, which skips any page that cites
-   SR 11-7). Briefing cards quote their key figure verbatim from the dek
+   SR 11-7 as current). Briefing cards quote their key figure verbatim from the dek
    (`src/app/briefings/covers.test.ts` enforces it). Pricing plans each lead
    with what the buyer receives.
 
@@ -43,11 +43,29 @@ JetBrains Mono for labels.
   `InventoryPreview`.
 - `src/styles/home.css` + `src/components/home/` — homepage pieces,
   including the in-browser prompt checker (`src/lib/prompt-check/`).
+- `src/styles/pages.css` — page-level pieces: playbook register and
+  document layouts (`pb-`), the article masthead and reading column
+  (`ax-article`, used by `ArticleShell`), assessment landing (`as-land-`),
+  the example certificate, auth band, and dark-island token restores.
+- `MockupShell` renders the content pages (security, FAQ, legal,
+  references, certifications, verify) on the system: navy hero, cream
+  sections, navy close.
+- Link previews: `src/lib/og/articleCard.tsx` (one card for the default,
+  each briefing, and each role playbook). Static font instances for it and
+  for the template PDFs live in `assets/brand-fonts/`.
+- Downloadable PDFs render from `public/downloads/source/*.html`
+  (`scripts/generate-source-html-pdfs.mjs`) and the templates from
+  `scripts/generate-template-pdfs.ts`; both use the site's faces.
 
 ## Pages rebuilt on the system
 
-`/`, `/briefings`, `/for-institutions`, `/courses`, `/pricing`, `/about`,
-`/assessment/in-depth`, `/resources`.
+Every public and signed-in page: home, assessment (landing, take,
+results, sample, paid report), pricing, courses and the course interior,
+for-institutions, briefings (index and articles), resources (library,
+essays, templates), playbooks (index, roles, templates), security, FAQ,
+certifications, references, legal, verify, dashboard, toolbox, prompt
+cards, practice, auth, purchase confirmations, and 404. Internal tools
+(`/admin`, `/design-system`) and print views are intentionally unchanged.
 
 ## Guardrails
 
