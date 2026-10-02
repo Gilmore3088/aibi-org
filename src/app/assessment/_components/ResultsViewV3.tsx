@@ -20,7 +20,7 @@ import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
 import type { FreeRole } from '@content/assessments/v3/roles';
 import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
-import { PLAYBOOK_INDEX, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
+import { PLAYBOOK_INDEX, PLAYBOOKS, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
 import { SiteHeader } from '@/components/mockup';
 import { CopyPrompt } from '@/components/ax';
 import { PdfDownloadButton } from './PdfDownloadButton';
@@ -114,9 +114,6 @@ const PLAYBOOK_TAG: Record<RoleSlug, string> = {
   operations: 'Workflow',
   'training-hr': 'Enablement',
 };
-
-// How many playbook cards to surface (best match + the next most useful).
-const PLAYBOOK_CARD_LIMIT = 6;
 
 function bestMatchPlaybook(role: FreeRole | null | undefined): RoleSlug {
   return role ? FREE_ROLE_TO_PLAYBOOK[role] : 'retail';
@@ -519,34 +516,29 @@ export function ResultsViewV3({
       </div>
       <div className="rv-band is-light">
       <div className="rv-inner">
-        {/* ROLE PLAYBOOKS — a short list, best match first. */}
-        <section className="rv-section rv-split">
-          <div>
+        {/* ROLE PLAYBOOKS — the best match opened as a file, the rest as an index. */}
+        <section className="rv-section">
+          <div className="rv-section-head">
             <p className="rv-k rv-gold">Role playbooks</p>
-            <h2 className="rv-h2">Useful next reads.</h2>
-            <p className="rv-body">Free reading by the seat you sit in — no email gate.</p>
+            <h2 className="rv-h2">Your seat, written down.</h2>
+            <p className="rv-body">Free to read, no email gate.</p>
           </div>
-          <div className="rv-playbooks">
-            {[...PLAYBOOK_INDEX]
-              .sort((a, b) => {
-                if (a.slug === matchedPlaybook) return -1;
-                if (b.slug === matchedPlaybook) return 1;
-                return 0;
-              })
-              .slice(0, PLAYBOOK_CARD_LIMIT)
-              .map((p) => {
-                const isMatch = p.slug === matchedPlaybook;
-                return (
-                  <PlaybookCard
-                    key={p.slug}
-                    tag={isMatch ? 'Best match' : PLAYBOOK_TAG[p.slug]}
-                    title={p.title}
-                    body={p.desc}
-                    href={`/playbooks/${p.slug}`}
-                    highlight={isMatch}
-                  />
-                );
-              })}
+          <div className="rv-pb">
+            <PlaybookPreview slug={matchedPlaybook} />
+            <nav className="rv-pb-index" aria-label="Other role playbooks">
+              <p className="rv-k">Other seats</p>
+              <ul>
+                {PLAYBOOK_INDEX.filter((p) => p.slug !== matchedPlaybook).map((p) => (
+                  <li key={p.slug}>
+                    <a href={`/playbooks/${p.slug}`}>
+                      <span className="rv-pb-index-title">{p.title}</span>
+                      <span className="rv-pb-index-tag">{PLAYBOOK_TAG[p.slug]}</span>
+                      <span className="rv-pb-index-arrow" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </section>
       </div>
@@ -776,26 +768,36 @@ function PartialLockedPhase({
   );
 }
 
-function PlaybookCard({
-  tag,
-  title,
-  body,
-  href,
-  highlight,
-}: {
-  readonly tag: string;
-  readonly title: string;
-  readonly body: string;
-  readonly href: string;
-  readonly highlight?: boolean;
-}) {
+const RISK_LABEL = { high: 'High review', med: 'Review', low: 'Low risk' } as const;
+
+/** The best-match playbook shown as the document it is: its real use cases
+ *  and the artifact each one leaves behind. */
+function PlaybookPreview({ slug }: { readonly slug: RoleSlug }) {
+  const pb = PLAYBOOKS[slug];
   return (
-    <a href={href} className={`rv-playbook${highlight ? ' is-match' : ''}`}>
-      <span className="rv-k rv-gold">{tag}</span>
-      <span className="rv-playbook-title">{title}</span>
-      <span className="rv-playbook-body">{body}</span>
-      <span className="rv-playbook-arrow" aria-hidden="true">
-        →
+    <a href={`/playbooks/${slug}`} className="rv-pb-file">
+      <span className="rv-pb-bar">
+        <span>playbooks/{slug}</span>
+        <span className="rv-pb-match">Best match</span>
+      </span>
+      <span className="rv-pb-body">
+        <span className="rv-k rv-gold">{pb.eyebrow}</span>
+        <span className="rv-pb-title">{pb.title}</span>
+        <span className="rv-pb-lede">{pb.lede}</span>
+        <span className="rv-pb-uses">
+          {pb.uses.slice(0, 3).map((u) => (
+            <span key={u.title} className="rv-pb-use">
+              <span className="rv-pb-use-title">{u.title}</span>
+              <span className="rv-pb-use-meta">
+                <span className="rv-pb-artifact">{u.artifact}</span>
+                <span className={`rv-pb-risk is-${u.risk}`}>{RISK_LABEL[u.risk]}</span>
+              </span>
+            </span>
+          ))}
+        </span>
+        <span className="rv-pb-open">
+          Open the playbook <span aria-hidden="true">→</span>
+        </span>
       </span>
     </a>
   );
