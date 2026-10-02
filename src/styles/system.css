@@ -1347,3 +1347,42 @@ body:has(.ax-page) { background: var(--ink); }
   .ax-table.ax-guide { min-width: 0 !important; }
 }
 @media (max-width: 720px) { .ax-table.ax-guide th.ax-guide-need, .ax-table.ax-guide td { padding: 0 !important; } }
+
+/* ============================================================
+   Course interior (.lms-system) — the same quiet system as the site:
+   regular-weight Newsreader headlines instead of black-weight, mono
+   labels, paper cards with a hairline and soft shadow, gold accents.
+   Many course components set weight inline, so headings are
+   normalised here with !important rather than across 150 files.
+   ============================================================ */
+.lms-system { -webkit-font-smoothing: antialiased; }
+.lms-system :is(h1, h2, h3) {
+  font-family: var(--font-serif) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+}
+.lms-system h4 { font-weight: 600 !important; }
+/* Small uppercase eyebrows become mono labels */
+.lms-system :is(p, span, div, small)[style*="text-transform:uppercase"],
+.lms-system :is(p, span, div, small)[style*="text-transform: uppercase"],
+.lms-system .uppercase {
+  font-family: var(--font-mono) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+}
+/* Soften the heaviest inline weights on body copy */
+.lms-system [style*="font-weight:850"], .lms-system [style*="font-weight:900"],
+.lms-system [style*="font-weight: 850"], .lms-system [style*="font-weight: 900"] { font-weight: 650 !important; }
+/* Paper cards */
+.lms-system main [style*="background:#fff"], .lms-system main [style*="background: #fff"],
+.lms-system main [style*="background:var(--cream-2)"], .lms-system main [style*="background: var(--cream-2)"] {
+  box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 16px 36px -26px rgba(7, 26, 47, 0.3);
+}
+/* Sidebar: paper column, gold active row */
+.lms-system > aside { background: #FBF8F1 !important; border-right: 1px solid rgba(7, 26, 47, 0.08) !important; }
+.lms-system :is(h1, h2, h3, h4)[style*="uppercase"],
+.lms-system :is(h1, h2, h3, h4).uppercase { font-family: var(--font-mono) !important; font-weight: 500 !important; letter-spacing: 0.1em !important; }
+
+/* /results/sample banner — the one thing that differs from a real result */
+.rv-sample-bar { position: relative; z-index: 31; margin: 0; padding: 10px 20px; text-align: center; background: var(--gold); color: var(--ink); font-size: 0.875rem; line-height: 1.5; }
+.rv-sample-bar a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
