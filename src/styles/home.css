@@ -261,3 +261,41 @@ body:has(.hm) { background: var(--ink); }
 .hm-close { padding: 128px 0; text-align: center; border-top: 1px solid var(--on-dark-08); }
 .hm-close .hm-display { font-size: clamp(2.75rem, 6.4vw, 5.5rem); margin-bottom: 40px; }
 .hm-close .hm-gold { display: block; }
+
+/* ── Prompt checker (inside the redline band) ─────────────── */
+.hm-redline-lede { margin: -28px 0 40px; max-width: 58ch; font-size: 1.0625rem; line-height: 1.6; color: var(--on-dark-65); }
+.hm-redline-before,
+.hm-redline-after { display: flex; flex-direction: column; gap: 16px; }
+.hm-redline .hm-k { margin-bottom: 0; }
+.hm-check-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.hm-check-actions { display: flex; gap: 6px; }
+.hm-check-actions button {
+  min-height: 32px; padding: 0 10px; border-radius: 6px;
+  border: 1px solid var(--on-dark-20); background: transparent; color: var(--on-dark-70);
+  font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer;
+}
+.hm-check-actions button:hover { border-color: var(--on-dark-50); color: var(--cream); }
+.hm-check-input {
+  width: 100%; box-sizing: border-box; resize: vertical; min-height: 150px;
+  padding: 14px 16px; border-radius: 12px;
+  border: 1px solid var(--on-dark-20); background: rgba(255, 255, 255, 0.03); color: var(--cream);
+  font-family: var(--font-mono); font-size: 0.9375rem; line-height: 1.7;
+}
+.hm-check-input:focus { outline: 2px solid var(--gold-a40); outline-offset: 1px; border-color: transparent; }
+.hm-check-findings ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.hm-check-findings li {
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 8px 0; border-bottom: 1px solid var(--on-dark-08); font-size: 0.875rem;
+}
+.hm-check-findings li span { color: var(--on-dark-70); }
+.hm-check-findings li s { font-family: var(--font-mono); color: var(--cream); }
+.hm-check-clean { margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; color: #9EE6C7; }
+.hm-check-output { min-height: 150px; overflow-wrap: anywhere; }
+.hm-check-output mark.is-remove { background: #7A1F10; color: #FDECE8; }
+.hm-check-dim { color: var(--slate-500); }
+.hm-check-foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 0.8125rem; color: var(--slate-600); }
+.hm-check-copy {
+  min-height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #0A0A0A;
+  background: #0A0A0A; color: var(--cream); font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer;
+}
+.hm-check-copy:disabled { opacity: 0.4; cursor: not-allowed; }

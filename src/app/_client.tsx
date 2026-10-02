@@ -3,7 +3,8 @@
 import { SiteHeader, Button, ArrowGlyph } from '@/components/mockup';
 import { AiSession } from '@/components/home/AiSession';
 import { HowItWorks } from '@/components/home/HowItWorks';
-import { RedlineBand, ResourceCovers, OfferPair } from '@/components/home/HomeSections';
+import { ResourceCovers, OfferPair } from '@/components/home/HomeSections';
+import { PromptChecker } from '@/components/home/PromptChecker';
 import { getPracticeRepById } from '@content/practice-reps/foundation-program';
 
 // Homepage — "Vault" rebuild. One idea per section, real artifacts instead of
@@ -61,7 +62,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <RedlineBand />
+      <PromptChecker />
       <ResourceCovers />
       <OfferPair />
 

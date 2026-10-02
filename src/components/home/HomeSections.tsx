@@ -3,55 +3,7 @@ import Link from 'next/link';
 import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program/micro-modules';
 
 // Static homepage sections for the "Vault" rebuild. Every visual is a real
-// artifact — the actual prompt people paste, the template we teach, and the
-// first page of real downloads — not an illustration of one.
-
-/* ── Redline band: what people paste vs. what we teach ───────────────── */
-
-// Synthetic example. The struck values are the PII a careless prompt carries;
-// the template keeps only the slots the reply needs plus the three guardrails.
-const PASTED: ReadonlyArray<{ lead: string; value?: string }> = [
-  { lead: 'write a quick reply to ', value: 'John Smith' },
-  { lead: ' — he’s furious we charged him ', value: '3 overdraft fees' },
-  { lead: ' in one day on account ', value: '0042871' },
-  { lead: '. dob ', value: '04/12/1981' },
-  { lead: ', ssn ', value: '•••–••–4829' },
-  { lead: ', cell ', value: '(555) 123-4567' },
-  { lead: '. wants them reversed' },
-];
-
-export function RedlineBand() {
-  return (
-    <section className="hm-redline" aria-labelledby="hm-redline-title">
-      <div className="mk-container">
-        <h2 id="hm-redline-title" className="hm-display">
-          Customer data stays <span className="hm-red">out</span>.
-        </h2>
-        <div className="hm-redline-grid">
-          <div className="hm-redline-before">
-            <p className="hm-k hm-red">What people paste</p>
-            <p className="hm-mono">
-              {PASTED.map((p) => (
-                <span key={p.lead}>
-                  {p.lead}
-                  {p.value && <s className="hm-strike">{p.value}</s>}
-                </span>
-              ))}
-            </p>
-          </div>
-          <div className="hm-redline-after">
-            <p className="hm-k hm-gold-deep">What we teach</p>
-            <p className="hm-mono">
-              write a quick reply to <mark>[customer name]</mark> about <mark>[number] overdraft fees</mark>.
-              Source: your overdraft-fee policy. Reviewer: a named teller-line supervisor.
-            </p>
-          </div>
-        </div>
-        <p className="hm-redline-note">Illustrative example · synthetic customer data</p>
-      </div>
-    </section>
-  );
-}
+// artifact — the first pages of real downloads — not an illustration of one.
 
 /* ── Real downloads, shown as their actual first pages ───────────────── */
 
