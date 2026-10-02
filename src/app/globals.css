@@ -17,6 +17,7 @@
 @import "../styles/print.css";
 @import "../styles/mockup.css";
 @import "../styles/resources.css";
+@import "../styles/home.css";
 
 /* ---- Newsreader fallback metrics (E.1 fix) ---------------------------
  * Next 14.2.x's @next/font/google bundle doesn't include metric data for
