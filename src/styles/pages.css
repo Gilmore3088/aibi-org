@@ -114,3 +114,84 @@
 .as-land-paths .ax-tier-art { height: 240px; }
 .as-land-name { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.625rem; line-height: 1.1; }
 .as-land-actions { margin-top: 40px; }
+
+/* ============================================================
+   Articles (ArticleShell): briefings and the legacy essays.
+   A navy masthead runs from the nav through the headline, then
+   the body sits on cream in a 68ch column with numbered sections.
+   Selectors are scoped under .ax-article so they outrank the
+   Tailwind utilities on the legacy pages without !important.
+   ============================================================ */
+.ax-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 60; pointer-events: none; }
+.ax-progress span { display: block; height: 100%; background: var(--gold); transform-origin: 0 50%; }
+.ax-article { background: var(--cream); counter-reset: axsec; }
+
+/* Masthead: the crumb row and the article header share one navy band. */
+.ax-article .mk-article-head,
+.ax-article article > header {
+  background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax);
+}
+.ax-article .mk-article-head { max-width: 760px; margin: 0 auto; padding: 28px 24px 0; }
+.ax-article .mk-article-back { color: var(--gold-soft); font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; }
+.ax-article .mk-article-back:hover { color: var(--cream); }
+.ax-article .mk-article-chip { background: transparent; border-color: rgba(255, 255, 255, 0.16); color: rgba(247, 243, 234, 0.8); font-family: var(--font-mono); font-weight: 400; font-size: 0.6875rem; letter-spacing: 0; }
+.ax-article .mk-article-chip-muted { color: rgba(247, 243, 234, 0.6); }
+.ax-article main { padding-top: 0; }
+.ax-article article > header { margin: 0 0 56px; padding: 40px 0 64px; }
+.ax-article article > header > p:first-child,
+.ax-article article > header .mk-k { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-soft); margin: 0 0 18px; }
+.ax-article article > header h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.5rem, 5.4vw, 4rem); line-height: 1.02; letter-spacing: -0.01em; color: var(--cream); margin: 0 0 22px; }
+.ax-article article > header h1 + p,
+.ax-article article > header .mk-post-dek { font-style: normal; font-size: 1.1875rem; line-height: 1.6; color: rgba(247, 243, 234, 0.72); margin: 0; max-width: 60ch; }
+.ax-article article > header :is(a) { color: var(--gold-soft); }
+
+/* Body column */
+.ax-article article { max-width: 760px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
+.ax-article main > article { padding-left: 0; padding-right: 0; }
+.ax-article article :is(section, .mk-prose) { font-size: 1.125rem; line-height: 1.75; color: #2A3442; }
+.ax-article article :is(section, .mk-prose) p { max-width: 68ch; }
+.ax-article article h2:not(header h2) {
+  counter-increment: axsec; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.12; color: var(--ink); margin: 2.2em 0 0.6em; padding-top: 0;
+}
+.ax-article article h2:not(header h2)::before {
+  content: counter(axsec, decimal-leading-zero); display: block; margin-bottom: 10px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--gold-deep);
+}
+.ax-article article h3 { font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.25; color: var(--ink); }
+.ax-article article strong { color: var(--ink); font-weight: 600; }
+.ax-article article blockquote { border-left: 3px solid var(--gold); padding: 6px 0 6px 22px; margin: 1.75em 0; font-family: var(--font-serif); font-style: normal; font-size: 1.375rem; line-height: 1.45; color: var(--ink); }
+.ax-article article section a:not([class*="bg-"]), .ax-article .mk-prose a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* Sources */
+.ax-article .mk-post-sources { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(7, 26, 47, 0.14); }
+.ax-article .mk-post-sources h2 { counter-increment: none; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #4B5563; margin: 0 0 12px; }
+.ax-article .mk-post-sources h2::before { content: none; }
+.ax-article .mk-post-sources ol { margin: 0; padding-left: 22px; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; color: #46505E; }
+.ax-article .mk-post-sources li { margin: 0 0 6px; }
+.ax-article .mk-post-sources a { color: #2A3442; text-decoration-color: rgba(160, 122, 40, 0.6); }
+.ax-article .mk-post { padding-top: 0; padding-bottom: 88px; }
+
+/* Closing band */
+.ax-article-close { background: var(--ink); color: var(--cream); padding: 88px 0; text-align: center; }
+.ax-article-close .ax-k { color: var(--gold-soft); }
+.ax-article-close h2 { margin: 12px 0 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.25rem, 4.6vw, 3.5rem); line-height: 1.05; color: var(--cream); }
+.ax-article-close p:not(.ax-k) { margin: 16px auto 28px; max-width: 52ch; color: rgba(247, 243, 234, 0.7); }
+.mockup-scope.ax-article a.mk-article-back { color: var(--gold-soft); }
+.mockup-scope.ax-article a.mk-article-back:hover { color: var(--cream); }
+.ax-article .mk-article-toc-label { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.12em; }
+/* Below the fixed-aside breakpoint the contents strip joins the masthead. */
+@media (max-width: 1239px) {
+  .ax-article .mk-article-toc { max-width: 760px; margin: 0 auto; padding: 20px 24px 0; background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax); }
+  .ax-article .mk-article-toc-label { color: var(--gold-soft); }
+  .ax-article .mk-article-toc-details { background: transparent; border-color: rgba(255, 255, 255, 0.16); }
+  .ax-article .mk-article-toc-summary { color: var(--cream); font-family: var(--font-mono); font-weight: 400; font-size: 0.8125rem; }
+  .ax-article .mk-article-toc-summary::after { color: var(--gold-soft); }
+  .ax-article .mk-article-toc-details .mk-article-toc-link { color: rgba(247, 243, 234, 0.75); }
+  .ax-article .mk-article-toc-details .mk-article-toc-link:hover { background: rgba(255, 255, 255, 0.06); color: var(--cream); }
+}
+.pb-doc-table { margin: 12px 0 8px; overflow-x: auto; border: 1px solid rgba(7, 26, 47, 0.1); border-radius: 8px; }
+.pb-doc-table:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pb-doc-caption { margin: 0; padding: 10px 14px; font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; border-bottom: 1px solid rgba(7, 26, 47, 0.08); }
+.pb-doc-table table { width: 100%; border-collapse: collapse; font-size: 0.875rem; line-height: 1.5; }
+.pb-doc-table th { text-align: left; padding: 10px 14px; background: #F3EFE6; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.pb-doc-table td { padding: 10px 14px; border-top: 1px solid rgba(7, 26, 47, 0.07); color: #2A3442; vertical-align: top; min-width: 140px; }
+.pb-doc-section > div { min-width: 0; }
