@@ -224,7 +224,7 @@ export default function ForInstitutionsPage() {
         title="Three ways to build."
         lede="Start with the free diagnostic. Use the result to decide whether the next move is individual enrollment, volume seats, or an assisted rollout."
       >
-        <div className="ax-table-wrap">
+        <div className="ax-table-wrap" tabIndex={0} role="region" aria-label="Programs comparison, scrollable">
           <table className="ax-table">
             <thead>
               <tr>

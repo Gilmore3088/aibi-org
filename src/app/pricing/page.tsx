@@ -179,7 +179,7 @@ export default function PricingPage() {
         </section>
 
         <AxSection id="compare" kicker="Compare" title="Choose by the work you need done.">
-          <div className="ax-table-wrap">
+          <div className="ax-table-wrap" tabIndex={0} role="region" aria-label="Plan comparison, scrollable">
             <table className="ax-table">
               <thead>
                 <tr>

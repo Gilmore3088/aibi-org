@@ -449,3 +449,7 @@ body:has(.ax-page) { background: var(--ink); }
 .rx-resources-page .rx-filterbar { background: var(--cream) !important; border-bottom: 1px solid var(--ink-a10); }
 .rx-resources-page .rx-chip,
 .rx-resources-page .rx-pill { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.02em; }
+
+/* Keyboard-scrollable regions show a visible focus ring. */
+.ax-table-wrap:focus-visible,
+.ax-sheet-scroll:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

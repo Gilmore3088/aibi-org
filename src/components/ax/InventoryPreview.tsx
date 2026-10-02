@@ -47,7 +47,8 @@ export function InventoryPreview() {
         <strong>AI-Use-Case-Inventory.xlsx</strong>
         <span>Governance Starter Kit · 17 columns</span>
       </figcaption>
-      <div className="ax-sheet-scroll">
+      {/* Focusable so keyboard users can scroll the wide sheet (WCAG 2.1.1). */}
+      <div className="ax-sheet-scroll" tabIndex={0} role="region" aria-label="AI Use-Case Inventory columns, scrollable">
         <table>
           <thead>
             <tr className="ax-sheet-letters" aria-hidden="true">
