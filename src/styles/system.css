@@ -1301,3 +1301,49 @@ body:has(.ax-page) { background: var(--ink); }
 }
 .ax-hero .ax-window :is(h2, h3, strong, p, li, dd, dt) { color: inherit; }
 .ax-hero .ax-window .ax-gold { color: var(--gold-deep); }
+
+/* Pricing decision guide: one voice per column — serif question, the plan
+   as a named link with its price, plain-language outcome. */
+.ax-guide th, .ax-guide td { padding: 22px 28px; vertical-align: middle; }
+.ax-guide thead th { padding-top: 18px; padding-bottom: 14px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; color: #6B5A2E !important; }
+.ax-guide-need { font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.25; color: var(--ink); text-align: left; }
+.ax-guide-option { display: inline-flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink); white-space: nowrap; }
+.ax-guide-option span { font-weight: 600; font-size: 1rem; border-bottom: 1px solid rgba(160, 122, 40, 0.5); padding-bottom: 1px; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.ax-guide-option em { font-style: normal; font-size: 0.875rem; color: var(--gold-deep); font-weight: 500; }
+.ax-guide-option::after { content: '→'; font-size: 0.9375rem; color: var(--gold-deep); transition: transform var(--t-fast) var(--ease); }
+.ax-guide-option:hover span { color: var(--gold-deep); border-color: var(--gold-deep); }
+.ax-guide-option:hover::after { transform: translateX(3px); }
+.ax-guide-outcome { font-size: 1rem; line-height: 1.5; color: #46505E !important; }
+.ax-guide tbody tr { transition: background var(--t-fast) var(--ease); }
+.ax-guide tbody tr:hover { background: rgba(200, 162, 74, 0.06); }
+
+/* Purchase rules: checklist left, a quiet help panel right */
+.ax-light .ax-rules { gap: 0; padding: 0; overflow: hidden; }
+@media (min-width: 900px) { .ax-light .ax-rules { grid-template-columns: 1.5fr 1fr; } }
+.ax-light .ax-rules > .ax-checklist { margin: 0; padding: clamp(24px, 3vw, 36px); gap: 14px; font-size: 1rem; }
+.ax-help { display: grid; gap: 10px; align-content: start; padding: clamp(24px, 3vw, 36px); background: #FBF8F1; border-top: 1px solid rgba(7, 26, 47, 0.08); }
+@media (min-width: 900px) { .ax-help { border-top: 0; border-left: 1px solid rgba(7, 26, 47, 0.08); } }
+.ax-help .ax-k { margin: 0; color: #6B5A2E; }
+.ax-help-title { margin: 0; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.2; color: var(--ink); }
+.ax-help-body { margin: 0 0 8px; font-size: 0.9375rem; line-height: 1.55; color: #46505E; }
+.ax-help-btn {
+  display: flex; align-items: center; justify-content: center; min-height: 46px; border-radius: 10px;
+  background: var(--ink); color: var(--cream) !important; font-weight: 600; font-size: 0.9375rem; text-decoration: none;
+  transition: background var(--t-fast) var(--ease);
+}
+.ax-help-btn:hover { background: #12304F; }
+.ax-help-link { justify-self: center; margin-top: 4px; font-size: 0.875rem; font-weight: 500; color: var(--gold-deep) !important; text-decoration: none; }
+.ax-help-link:hover { text-decoration: underline; }
+.ax-table.ax-guide th.ax-guide-need { font-family: var(--font-serif) !important; font-size: 1.375rem !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--ink) !important; font-weight: 400 !important; }
+@media (max-width: 720px) {
+  .ax-table.ax-guide, .ax-guide tbody, .ax-guide tr, .ax-guide th, .ax-guide td { display: block; width: 100%; }
+  .ax-guide thead { display: none; }
+  .ax-guide tbody tr { padding: 18px 20px; border-bottom: 1px solid rgba(7, 26, 47, 0.08); }
+  .ax-guide tbody tr:last-child { border-bottom: 0; }
+  .ax-guide th, .ax-guide td { padding: 0; border: 0 !important; }
+  .ax-table.ax-guide th.ax-guide-need { font-size: 1.25rem !important; margin-bottom: 10px; }
+  .ax-guide-option { white-space: normal; flex-wrap: wrap; }
+  .ax-guide-outcome { margin-top: 6px; font-size: 0.9375rem; }
+  .ax-table.ax-guide { min-width: 0 !important; }
+}
+@media (max-width: 720px) { .ax-table.ax-guide th.ax-guide-need, .ax-table.ax-guide td { padding: 0 !important; } }

@@ -69,21 +69,29 @@ const COMPARISON_ROWS = [
   {
     need: 'Where should I start?',
     option: 'Snapshot',
+    href: '/assessment/take',
+    price: 'Free',
     outcome: 'Fast score and recommended path',
   },
   {
     need: 'What is our readiness profile?',
     option: 'In-Depth Assessment',
+    href: '/assessment/in-depth',
+    price: '$99',
     outcome: 'Written diagnostic and 90-day action register',
   },
   {
     need: 'How do I build practical AI skill?',
     option: 'Foundation',
+    href: '/courses/foundation/program/purchase',
+    price: '$295',
     outcome: 'Course, templates, work products, certificate',
   },
   {
     need: 'How do we roll this out with a team?',
     option: 'Institution Rollout',
+    href: '/for-institutions',
+    price: 'From $199/seat',
     outcome: 'Scoped cohort plan, reporting, support',
   },
 ] as const;
@@ -198,7 +206,7 @@ export default function PricingPage() {
 
         <AxSection id="compare" kicker="Compare" title="Choose by the work you need done.">
           <div className="ax-table-wrap" tabIndex={0} role="region" aria-label="Plan comparison, scrollable">
-            <table className="ax-table">
+            <table className="ax-table ax-guide">
               <thead>
                 <tr>
                   <th scope="col">Need</th>
@@ -209,11 +217,16 @@ export default function PricingPage() {
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row.need}>
-                    <th scope="row" className="ax-cell-title" style={{ fontSize: '1.125rem' }}>
+                    <th scope="row" className="ax-guide-need">
                       {row.need}
                     </th>
-                    <td className="ax-cell-mono">{row.option}</td>
-                    <td>{row.outcome}</td>
+                    <td>
+                      <Link href={row.href} className="ax-guide-option">
+                        <span>{row.option}</span>
+                        <em>{row.price}</em>
+                      </Link>
+                    </td>
+                    <td className="ax-guide-outcome">{row.outcome}</td>
                   </tr>
                 ))}
               </tbody>
@@ -228,14 +241,17 @@ export default function PricingPage() {
                 <li key={rule}>{rule}</li>
               ))}
             </ul>
-            <div className="ax-actions" style={{ marginTop: 0 }}>
-              <Button variant="ghost-dark" size="lg" href="/support/purchase-help">
+            <aside className="ax-help" aria-label="Purchase help">
+              <p className="ax-k">Questions before you buy?</p>
+              <p className="ax-help-title">Talk to a person, not a form.</p>
+              <p className="ax-help-body">Access issues are handled first; refund requests are reviewed within one business day.</p>
+              <Link href="/support/purchase-help" className="ax-help-btn">
                 Purchase help
-              </Button>
-              <Link href="/for-institutions" className="ax-link-mono">
+              </Link>
+              <Link href="/for-institutions" className="ax-help-link">
                 Institution / partner inquiry →
               </Link>
-            </div>
+            </aside>
           </div>
         </AxSection>
 
