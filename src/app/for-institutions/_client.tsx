@@ -9,8 +9,8 @@ import { TeamLeadForm } from '@/components/inquiry/TeamLeadForm';
 
 // For Institutions — AI-native rebuild. The page shows what an institution
 // actually ends up holding (the inventory workbook, the SOP builder) rather
-// than an illustrative dashboard, and lays the engagement options out as a
-// table and a list instead of a grid of tinted cards.
+// than an illustrative dashboard. Rollout details sit behind a disclosure so
+// the page scans in seconds.
 
 const PRIMARY_ENTRY_PATH = '/assessment/take';
 const TEAM_INQUIRY_ANCHOR = '#team-inquiry';
@@ -27,30 +27,6 @@ const PIPELINE = [
   { n: '03', name: 'Document', output: 'AI-Use-Case-Inventory.xlsx', p: 'Every AI workflow gets a row: data class, risk tier, named reviewer, evidence.' },
   { n: '04', name: 'Govern', output: 'AI-Workflow-SOP-Builder.docx', p: 'Repeatable workflows get an SOP before they become team practice.' },
   { n: '05', name: 'Operate', output: 're-review triggers', p: 'Admin handoff, support path, and reporting cadence agreed before launch.' },
-] as const;
-
-const PROGRAMS = [
-  {
-    name: 'Readiness Assessment',
-    what: 'Twelve questions, three minutes. Score, top gap, and a starter artifact.',
-    price: 'Free',
-    href: PRIMARY_ENTRY_PATH,
-    action: 'start',
-  },
-  {
-    name: 'AiBI-Foundation course',
-    what: 'Eighteen self-paced modules, scored on reviewed work. Eighteen artifacts per practitioner.',
-    price: '$295 individual · $199/seat at 10+',
-    href: '/courses',
-    action: 'curriculum',
-  },
-  {
-    name: 'Organizational Rollout',
-    what: '10+ seat assisted cohort planning, a readiness baseline, and a post-engagement diagnostic.',
-    price: 'Scoped first',
-    href: TEAM_INQUIRY_ANCHOR,
-    action: 'request rollout',
-  },
 ] as const;
 
 interface RolloutOption {
@@ -158,7 +134,7 @@ export default function ForInstitutionsPage() {
             Find the gaps. <span className="ax-gold">Train the team.</span>
           </>
         }
-        lede="Start with a readiness baseline, then decide whether your team needs Foundation seats, an L&D-led cohort pilot, a PMO project plan, a partner rollout, or a scoped briefing."
+        lede="Start with a free readiness baseline. Then pick the rollout that fits your team."
         actions={
           <>
             <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
@@ -176,7 +152,7 @@ export default function ForInstitutionsPage() {
         id="files"
         kicker="What you end up holding"
         title="Files your examiner can read."
-        lede="Every AI workflow gets a row in the inventory and an SOP before it becomes team practice. These are the real files from the Governance Starter Kit."
+        lede="Real files from the Governance Starter Kit: one inventory row and one SOP per AI workflow."
       >
         <div className="ax-files">
           <InventoryPreview />
@@ -202,74 +178,29 @@ export default function ForInstitutionsPage() {
         id="pipeline"
         kicker="How institutions work with us"
         title="Assess. Train. Document. Govern. Operate."
-        lede="Five steps, in order. We don't sell a policy shortcut. We help the team produce reviewable work before you scale it."
       >
         <ol className="ax-pipeline">
           {PIPELINE.map((s, i) => (
             <li key={s.n} className={i === 0 ? 'is-first' : undefined}>
               <span className="ax-pipeline-node" aria-hidden="true" />
               <span className="ax-k">{s.n}</span>
-              <h3>{s.name}</h3>
-              <p>{s.p}</p>
+              <h3 title={s.p}>{s.name}</h3>
               <span className="ax-pipeline-out">→ {s.output}</span>
             </li>
           ))}
         </ol>
       </AxSection>
 
-      {/* Three ways to build */}
-      <AxSection
-        id="engagement-paths"
-        kicker="Engagement"
-        title="Three ways to build."
-        lede="Start with the free diagnostic. Use the result to decide whether the next move is individual enrollment, volume seats, or an assisted rollout."
-      >
-        <div className="ax-table-wrap" tabIndex={0} role="region" aria-label="Programs comparison, scrollable">
-          <table className="ax-table">
-            <thead>
-              <tr>
-                <th scope="col">Program</th>
-                <th scope="col">What you get</th>
-                <th scope="col">Price</th>
-                <th scope="col">
-                  <span className="sr-only">Action</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {PROGRAMS.map((p) => (
-                <tr key={p.name}>
-                  <td className="ax-cell-title">{p.name}</td>
-                  <td>{p.what}</td>
-                  <td className="ax-cell-mono">{p.price}</td>
-                  <td style={{ textAlign: 'right' }}>
-                    <Link href={p.href} className="ax-link-mono">
-                      {p.action} →
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </AxSection>
-
       {/* Six rollout options */}
-      <AxSection
-        id="engagement"
-        kicker="How to engage"
-        title="Enrollment & assisted rollout."
-        lede="Individual enrollment is self-serve. Volume seats, dashboards, and Team Assessment rollouts are scoped with us first so reporting, support, and privacy thresholds are agreed before purchase."
-      >
-        <div className="ax-options">
+      <AxSection id="engagement" kicker="How to engage" title="Pick a rollout.">
+        <div className="ax-rollouts">
           {ROLLOUT_OPTIONS.map((o) => (
-            <article key={o.title} className="ax-option">
-              <div className="ax-option-head">
-                <span className="ax-k ax-gold">{o.lab}</span>
-                <h3>{o.title}</h3>
-                <span className="ax-option-scale">{o.scale}</span>
-              </div>
-              <div className="ax-option-body">
+            <article key={o.title} className={`ax-rollout${o.gold ? ' is-featured' : ''}`}>
+              <span className="ax-k ax-gold">{o.lab}</span>
+              <h3>{o.title}</h3>
+              <span className="ax-option-scale">{o.scale}</span>
+              <details className="ax-rollout-more">
+                <summary>What&rsquo;s included</summary>
                 {o.p.map((para) => (
                   <p key={para}>{para}</p>
                 ))}
@@ -278,17 +209,15 @@ export default function ForInstitutionsPage() {
                     Forward the <Link href="/security/it-approval">IT review packet</Link> before seats are assigned.
                   </p>
                 )}
-                <ul>
+                <ul className="ax-checklist">
                   {o.items.map((it) => (
                     <li key={it}>{it}</li>
                   ))}
                 </ul>
-              </div>
-              <div className="ax-option-cta">
-                <Button variant={o.gold ? 'gold' : 'ghost-dark'} size="md" href={o.href}>
-                  {o.cta} <ArrowGlyph />
-                </Button>
-              </div>
+              </details>
+              <Link href={o.href} className="ax-tier-cta">
+                {o.cta} <span aria-hidden="true">→</span>
+              </Link>
             </article>
           ))}
         </div>
@@ -300,10 +229,7 @@ export default function ForInstitutionsPage() {
           <div className="ax-briefing">
             <div>
               <h2 className="ax-display">Start with an Executive Briefing.</h2>
-              <p className="ax-muted">
-                Bring your leadership team. We walk through the assessment, the team report, and what a
-                90-day rollout would require at an institution your size.
-              </p>
+              <p className="ax-muted">Thirty minutes with your leadership team. Free.</p>
               <Button variant="gold" size="lg" href={BRIEFING_URL}>
                 Book executive briefing <ArrowGlyph />
               </Button>
@@ -322,7 +248,7 @@ export default function ForInstitutionsPage() {
         <TeamLeadForm
           id="team-inquiry"
           title="Send the team request before checkout."
-          description="Use this when you want an Executive Briefing, Team Assessment rollout, Foundation seats for multiple staff, an L&D cohort pilot, a PMO project plan, or a partner rollout across member or client institutions. The request goes to hello@aibankinginstitute.com and the support/admin queue."
+          description="Briefing, team assessment, seats, an L&D cohort pilot, a PMO project plan, or a partner rollout across member or client institutions."
           defaultType="cohort-pilot-request"
         />
       </AxSection>
@@ -334,10 +260,6 @@ export default function ForInstitutionsPage() {
           <h2 className="ax-display">
             Your baseline costs <span className="ax-gold">nothing</span>.
           </h2>
-          <p className="ax-muted">
-            Run your team through the free readiness check first — then bring the department breakdown to
-            your Executive Briefing.
-          </p>
           <div className="ax-actions">
             <Button variant="gold" size="lg" href={PRIMARY_ENTRY_PATH}>
               Take the free assessment <ArrowGlyph />

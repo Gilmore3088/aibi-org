@@ -53,8 +53,9 @@ export function PromptChecker() {
           Customer data stays <span className="hm-red">out</span>.
         </h2>
         <p className="hm-redline-lede">
-          Paste a prompt you were about to send. This checks it in your browser — nothing you type
-          leaves this page.
+          Type or paste a prompt you would send to an AI tool. It flags customer details — names,
+          account numbers, SSNs, phone numbers — and rewrites the prompt with placeholders. It runs in
+          your browser; nothing you type leaves this page.
         </p>
 
         <div className="hm-redline-grid">
@@ -84,11 +85,11 @@ export function PromptChecker() {
             />
             <div className="hm-check-findings" aria-live="polite">
               {empty ? null : findings.length === 0 ? (
-                <p className="hm-check-clean">No customer data patterns found.</p>
+                <p className="hm-check-clean">✓ No customer details found.</p>
               ) : (
                 <>
                   <p className="hm-k">
-                    {findings.length} {findings.length === 1 ? 'item' : 'items'} to remove
+                    Found {findings.length} customer {findings.length === 1 ? 'detail' : 'details'}
                   </p>
                   <ul>
                     {findings.map((f) => (
@@ -104,15 +105,29 @@ export function PromptChecker() {
           </div>
 
           <div className="hm-redline-after">
-            <p className="hm-k hm-gold-deep">Safer version</p>
-            <p className="hm-mono hm-check-output">
-              {empty ? <span className="hm-check-dim">Your safer prompt appears here.</span> : <Bracketed text={safer} />}
-            </p>
-            <div className="hm-check-foot">
+            <p className="hm-k hm-gold">{findings.length > 0 ? 'Safer version' : 'Result'}</p>
+            {empty ? (
+              <p className="hm-mono hm-check-output">
+                <span className="hm-check-dim">Your safer prompt appears here.</span>
+              </p>
+            ) : findings.length === 0 ? (
+              <div className="hm-check-output hm-check-ok">
+                <p className="hm-check-ok-title">Nothing to replace.</p>
+                <p>
+                  No names, account numbers or IDs found. The prompt can go to your approved tool as
+                  written — the facts in the answer still need checking.
+                </p>
+              </div>
+            ) : (
+              <p className="hm-mono hm-check-output">
+                <Bracketed text={safer} />
+              </p>
+            )}
+            <div className="hm-check-foot" hidden={!empty && findings.length === 0}>
               <button type="button" className="hm-check-copy" onClick={copy} disabled={empty}>
                 {copied ? 'Copied' : 'Copy safer version'}
               </button>
-              <span>Then name the source and the reviewer before you send it.</span>
+              <span>Placeholders in gold; red means delete it — the task doesn&rsquo;t need it.</span>
             </div>
           </div>
         </div>

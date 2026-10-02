@@ -76,7 +76,7 @@ describe('HomePage', () => {
 
     // A clean prompt is acknowledged, not scolded.
     fireEvent.change(input, { target: { value: 'Draft a reply to [customer name] using our fee policy.' } });
-    expect(screen.getByText(/No customer data patterns found/i)).toBeTruthy();
+    expect(screen.getByText(/No customer details found/i)).toBeTruthy();
 
     // Clearing empties both sides and disables copy.
     fireEvent.click(screen.getByRole('button', { name: 'clear' }));

@@ -40,6 +40,17 @@ describe('detect', () => {
     expect(detect('Write a memo for Retail Operations').filter((f) => f.kind === 'name')).toEqual([]);
   });
 
+  it('catches lowercase and possessive first names', () => {
+    expect(kinds('i would like to know about johns overdraft events')).toEqual([['name', 'johns']]);
+    expect(kinds("summarize Maria's loan history")).toEqual([['name', "Maria's"]]);
+    expect(kinds('pull James account activity')).toEqual([['name', 'James']]);
+    expect(kinds('draft a letter to linda about her card')).toEqual([['name', 'linda']]);
+    expect(kinds('email to Priya Patel today')).toEqual([['name', 'Priya Patel']]);
+    // Ordinary words before customer nouns are not names.
+    expect(detect('review the customers account history and our members loan files')).toEqual([]);
+    expect(detect('Write a memo for the team about this account type')).toEqual([]);
+  });
+
   it('returns nothing for a clean, placeholder-based prompt', () => {
     expect(
       detect('Write a short reply to [customer name] about [number] overdraft fees. Source: our fee policy.'),
@@ -51,5 +62,11 @@ describe('sanitize', () => {
   it('templates what the task needs and marks the rest for removal', () => {
     const out = sanitize('reply to John Smith on account 0042871, dob 04/12/1981');
     expect(out).toBe('reply to [customer name] on account [account number], dob [remove — not needed]');
+  });
+
+  it('keeps the possessive when replacing a name', () => {
+    expect(sanitize('i would like to know about johns overdraft events')).toBe(
+      'i would like to know about [customer name]’s overdraft events',
+    );
   });
 });

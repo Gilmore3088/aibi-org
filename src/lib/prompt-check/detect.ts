@@ -24,6 +24,8 @@ export interface Finding {
   readonly start: number;
   readonly end: number;
   readonly text: string;
+  /** A possessive name ("John's", "johns"): the placeholder keeps the "'s". */
+  readonly possessive?: boolean;
 }
 
 export const KIND_LABEL: Record<FindingKind, string> = {
@@ -58,6 +60,8 @@ interface Rule {
   /** Capture group holding the sensitive value (default: whole match). */
   readonly group?: number;
   readonly accept?: (value: string) => boolean;
+  /** Custom extraction; return null to skip the match. */
+  readonly extract?: (m: RegExpExecArray) => Omit<Finding, 'kind'> | null;
 }
 
 const digitsOf = (s: string) => s.replace(/\D/g, '');
@@ -87,6 +91,43 @@ const NOT_NAMES = new Set([
   'Retail', 'Commercial', 'Deposit', 'Loan', 'Risk', 'Finance', 'Audit', 'Executive', 'Senior',
   'Community', 'Human', 'Resources', 'Treasury', 'Federal', 'Reserve', 'Guidance', 'Policy',
 ]);
+
+// Common first names, matched in any case ("about john", "johns overdraft").
+// Names that are also everyday words (Will, Mark, Bill, Grace, June...) are
+// left out so ordinary prompts are not flagged.
+const FIRST_NAMES = new Set(
+  (
+    'james john robert michael david william richard joseph thomas charles christopher daniel matthew ' +
+    'anthony donald steven paul andrew joshua kenneth kevin brian george timothy ronald edward jason ' +
+    'jeffrey ryan jacob gary nicholas eric jonathan stephen larry justin scott brandon benjamin samuel ' +
+    'gregory alexander patrick jack dennis jerry tyler aaron jose adam nathan henry douglas zachary peter ' +
+    'kyle ethan walter noah jeremy christian keith roger terry austin sean gerald carl harold dylan ' +
+    'arthur lawrence jordan jesse bryan billy bruce gabriel joe logan alan juan albert willie elijah ' +
+    'randy wayne vincent roy ralph bobby russell bradley philip eugene carlos luis ' +
+    'mary patricia jennifer linda elizabeth barbara susan jessica sarah karen lisa nancy betty sandra ' +
+    'margaret ashley kimberly emily donna michelle carol amanda melissa deborah stephanie rebecca sharon ' +
+    'laura cynthia dorothy amy kathleen angela shirley brenda emma anna pamela nicole samantha katherine ' +
+    'christine helen debra rachel carolyn janet maria catherine heather diane olivia julie joyce victoria ' +
+    'ruth virginia lauren kelly christina joan evelyn judith andrea hannah megan cheryl jacqueline martha ' +
+    'madison teresa gloria sara janice ann kathryn abigail sophia frances jean alice judy isabella julia ' +
+    'denise amber doris marilyn danielle beverly theresa diana natalie brittany charlotte marie kayla ' +
+    'alexis lori jane priya mohammed muhammad ahmed wei li jin raj anil sanjay omar fatima aisha'
+  ).split(' '),
+);
+
+// Nouns that make "<name>s <noun>" a reference to a specific customer.
+const CUSTOMER_NOUNS =
+  'overdrafts?|accounts?|loans?|balances?|cards?|mortgages?|transactions?|deposits?|statements?|' +
+  'payments?|fees|history|files?|applications?|credit|checking|savings|wires?|disputes?|complaints?|' +
+  'address|ssn|phone|email|dob|info|information|records?|activity|chargebacks?|nsf';
+
+const POSSESSIVE_NAME = new RegExp(
+  `\\b([A-Za-z][a-z]+)(?:'s|\u2019s|s)\\s+(?=(?:${CUSTOMER_NOUNS})\\b)`,
+  'gi',
+);
+
+const CUE_FIRST_NAME =
+  /\b(?:about|for|to|from|customer|member|client|borrower|named|with|call|email|text|tell)\s+([A-Za-z]+)(?:\s+([A-Za-z][a-z]+))?\b/gi;
 
 // Order matters: earlier rules win when matches overlap.
 const RULES: readonly Rule[] = [
@@ -127,6 +168,36 @@ const RULES: readonly Rule[] = [
       'g',
     ),
   },
+  {
+    kind: 'name',
+    re: POSSESSIVE_NAME,
+    extract: (m) => {
+      const base = m[1];
+      const apostrophe = /['\u2019]s\s/.test(m[0]);
+      // "James account": the trailing s belongs to the name, not a possessive.
+      if (!apostrophe && FIRST_NAMES.has(`${base}s`.toLowerCase())) {
+        const text = `${base}s`;
+        return { start: m.index, end: m.index + text.length, text };
+      }
+      const known = FIRST_NAMES.has(base.toLowerCase());
+      const capitalised = /^[A-Z]/.test(base) && !NOT_NAMES.has(base);
+      if (!known && !(apostrophe && capitalised)) return null;
+      const text = m[0].trimEnd();
+      return { start: m.index, end: m.index + text.length, text, possessive: true };
+    },
+  },
+  {
+    kind: 'name',
+    re: CUE_FIRST_NAME,
+    extract: (m) => {
+      const first = m[1];
+      if (!FIRST_NAMES.has(first.toLowerCase())) return null;
+      const surname = m[2] && /^[A-Z]/.test(m[2]) && !NOT_NAMES.has(m[2]) ? m[2] : '';
+      const text = surname ? `${first} ${surname}` : first;
+      const start = m.index + m[0].indexOf(first, m[0].search(/\s/));
+      return { start, end: start + text.length, text };
+    },
+  },
 ];
 
 function overlaps(a: Finding, b: { start: number; end: number }) {
@@ -140,6 +211,14 @@ export function detect(text: string): Finding[] {
     rule.re.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = rule.re.exec(text))) {
+      if (rule.extract) {
+        const hit = rule.extract(m);
+        if (hit) {
+          const finding: Finding = { kind: rule.kind, ...hit };
+          if (!found.some((f) => overlaps(f, finding))) found.push(finding);
+        }
+        continue;
+      }
       let value = m[0];
       let start = m.index;
       if (rule.kind === 'name') {
@@ -170,7 +249,7 @@ export function sanitize(text: string, findings: readonly Finding[] = detect(tex
   let out = '';
   let cursor = 0;
   for (const f of findings) {
-    out += text.slice(cursor, f.start) + KIND_PLACEHOLDER[f.kind];
+    out += text.slice(cursor, f.start) + KIND_PLACEHOLDER[f.kind] + (f.possessive ? '\u2019s' : '');
     cursor = f.end;
   }
   return out + text.slice(cursor);

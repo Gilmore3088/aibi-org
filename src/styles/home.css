@@ -219,11 +219,11 @@ body:has(.hm) { background: var(--ink); }
 .hm-redline-before,
 .hm-redline-after { border-radius: 20px; padding: clamp(24px, 3vw, 36px); }
 .hm-redline-before { border: 1px solid var(--on-dark-20); }
-.hm-redline-after { background: var(--cream); color: #0A0A0A; }
+.hm-redline-after { background: #10161F; color: var(--cream); border: 1px solid var(--edge-gold, rgba(200,162,74,0.32)); }
 .hm-redline .hm-k { margin-bottom: 18px; }
 .hm-mono { margin: 0; font-family: var(--font-mono); font-size: clamp(0.9375rem, 1.5vw, 1.1875rem); line-height: 1.9; }
 .hm-strike { text-decoration: line-through; text-decoration-color: #E5533D; text-decoration-thickness: 3px; }
-.hm-redline-after mark { background: #0A0A0A; color: var(--cream); padding: 2px 8px; }
+.hm-redline-after mark { background: rgba(200, 162, 74, 0.16); color: var(--gold); padding: 2px 6px; border-radius: 4px; }
 .hm-redline-note { margin: 20px 0 0; font-size: 0.75rem; color: var(--on-dark-50); }
 
 /* ── Real downloads ───────────────────────────────────────── */
@@ -305,10 +305,14 @@ body:has(.hm) { background: var(--ink); }
 .hm-check-clean { margin: 0; font-family: var(--font-mono); font-size: 0.8125rem; color: #9EE6C7; }
 .hm-check-output { min-height: 150px; overflow-wrap: anywhere; }
 .hm-check-output mark.is-remove { background: #7A1F10; color: #FDECE8; }
-.hm-check-dim { color: var(--slate-500); }
-.hm-check-foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 0.8125rem; color: var(--slate-600); }
+.hm-check-dim { color: var(--on-dark-50); }
+.hm-check-foot[hidden] { display: none; }
+.hm-check-ok { font-size: 0.9375rem; line-height: 1.6; color: var(--on-dark-70); }
+.hm-check-ok p { margin: 0 0 8px; }
+.hm-check-ok-title { font-family: var(--font-serif); font-size: 1.5rem; color: #9EE6C7; }
+.hm-check-foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 0.8125rem; color: var(--on-dark-50); }
 .hm-check-copy {
-  min-height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid #0A0A0A;
-  background: #0A0A0A; color: var(--cream); font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer;
+  min-height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--gold);
+  background: var(--gold); color: var(--ink); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; cursor: pointer;
 }
 .hm-check-copy:disabled { opacity: 0.4; cursor: not-allowed; }

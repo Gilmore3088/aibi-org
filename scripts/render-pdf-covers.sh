@@ -31,6 +31,12 @@ for name in "${COVERS[@]}"; do
   echo "wrote public/downloads/covers/$name.jpg"
 done
 
+# Page 2 of the sample readiness report (score, tier, top gap — labelled
+# illustrative data) for the Snapshot plan on /pricing.
+pdftoppm -f 2 -l 2 -png -r 110 -singlefile "$ROOT/public/downloads/sample-readiness-report.pdf" "$TMP/srr-p2" 2>/dev/null
+convert "$TMP/srr-p2.png" -resize 640x -strip -quality 84 "$OUT/sample-readiness-report-p2.jpg"
+echo "wrote public/downloads/covers/sample-readiness-report-p2.jpg"
+
 # Inner pages of the In-Depth playbook shown on /assessment/in-depth.
 # Pages 2, 5 and 9 only: the operating principle, path picker, and pilot path.
 for page in 2 5 9; do

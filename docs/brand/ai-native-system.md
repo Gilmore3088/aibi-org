@@ -23,9 +23,15 @@ JetBrains Mono for labels.
 5. **One moving thing per page, at most.** Motion is for showing AI working
    (the homepage session). Everything respects `prefers-reduced-motion`.
    Tabs and toggles are fine; auto-advancing carousels are not.
-6. **Two surfaces.** Story and sales pages are dark (ink + dot grid). Library
-   and reading pages (`/resources`, briefing articles) stay light paper,
-   with the same type, labels and panels.
+6. **Dark by default.** Story, sales and index pages — including
+   `/resources` and `/briefings` — are dark (ink + dot grid), with a thin
+   gold edge and a soft lift on panels. Long-form reading (a briefing
+   article) stays light paper with the same type and labels.
+7. **Show the file.** Library cards lead with page 1 of the real PDF
+   (`scripts/render-resource-covers.sh`, which skips any page that cites
+   SR 11-7). Briefing cards quote their key figure verbatim from the dek
+   (`src/app/briefings/covers.test.ts` enforces it). Pricing plans each lead
+   with what the buyer receives.
 
 ## Where it lives
 
@@ -39,7 +45,7 @@ JetBrains Mono for labels.
 ## Pages rebuilt on the system
 
 `/`, `/briefings`, `/for-institutions`, `/courses`, `/pricing`, `/about`,
-`/assessment/in-depth`; `/resources` in light library mode.
+`/assessment/in-depth`, `/resources`.
 
 ## Guardrails
 

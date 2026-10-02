@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
 import { AxHero, AxSection } from '@/components/ax';
-import { foundationDurationLabel } from '@content/courses/foundation-program';
+import { INVENTORY_ROWS } from '@/components/ax/InventoryPreview';
+import { FOUNDATION_MICRO_MODULES, foundationDurationLabel } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
@@ -63,13 +65,6 @@ const TIERS = [
   },
 ] as const;
 
-const PATH_STEPS = [
-  ['Snapshot', 'Free start'],
-  ['Report', 'Written plan'],
-  ['Foundation', 'Individual capability'],
-  ['Rollout', 'Team implementation'],
-] as const;
-
 const COMPARISON_ROWS = [
   {
     need: 'Where should I start?',
@@ -120,6 +115,37 @@ const EMPHASIZED_CARD_TERMS = [
   },
 ] as const;
 
+// What each plan actually hands you, shown rather than described: a page of
+// the sample report, a page of the real playbook, the opening modules, and
+// the inventory the rollout fills in.
+const TIER_ART = [
+  <figure key="snapshot" className="ax-tier-page">
+    <Image src="/downloads/covers/sample-readiness-report-p2.jpg" alt="Sample readiness report: score, tier and top gap (illustrative data)" width={640} height={828} sizes="320px" />
+  </figure>,
+  <figure key="report" className="ax-tier-page">
+    <Image src="/downloads/covers/in-depth-playbook-p5.jpg" alt="In-Depth playbook page: choose your 90-day path" width={700} height={906} sizes="320px" />
+  </figure>,
+  <div key="foundation" className="ax-tier-log" aria-label="First Foundation modules">
+    {FOUNDATION_MICRO_MODULES.slice(0, 4).map((m) => (
+      <p key={m.id}>
+        <span>{String(m.number).padStart(2, '0')}</span>
+        {m.title}
+      </p>
+    ))}
+    <p className="ax-tier-more">+ {FOUNDATION_MICRO_MODULES.length - 4} more modules</p>
+  </div>,
+  <div key="rollout" className="ax-tier-sheet" aria-label="AI use-case inventory rows">
+    <p className="ax-tier-sheet-bar">AI-Use-Case-Inventory.xlsx</p>
+    {INVENTORY_ROWS.map((row) => (
+      <p key={row[2]}>
+        <span>{row[2]}</span>
+        <em>{row[4]}</em>
+      </p>
+    ))}
+    <p className="ax-tier-more">one row per workflow, per team</p>
+  </div>,
+];
+
 export default function PricingPage() {
   return (
     <div className="mockup-scope ax-page">
@@ -143,22 +169,14 @@ export default function PricingPage() {
 
         <section className="ax-section" aria-label="Pricing options">
           <div className="mk-container">
-            <ol className="ax-path" aria-label="Pricing path">
-              {PATH_STEPS.map(([name, outcome], index) => (
-                <li key={name}>
-                  <span className="ax-k ax-gold">{String(index + 1).padStart(2, '0')}</span>
-                  <strong>{name}</strong>
-                  <em>{outcome}</em>
-                </li>
-              ))}
-            </ol>
-            <div className="ax-plans">
-              {TIERS.map((tier) => (
-                <article key={tier.name} className={`ax-plan${tier.name === 'AiBI Foundation' ? ' is-featured' : ''}`}>
+            <div className="ax-tiers">
+              {TIERS.map((tier, index) => (
+                <article key={tier.name} className={`ax-tier${tier.name === 'AiBI Foundation' ? ' is-featured' : ''}`}>
+                  <div className="ax-tier-art">{TIER_ART[index]}</div>
                   <p className="ax-k ax-gold">{tier.badge}</p>
                   <h2>{tier.name}</h2>
                   <p className="ax-plan-price">
-                    <strong>{tier.price}</strong>
+                    <strong className={tier.price.length > 6 ? 'is-long' : undefined}>{tier.price}</strong>
                     <span>{tier.cadence}</span>
                   </p>
                   <p className="ax-k">Best for</p>
@@ -169,8 +187,8 @@ export default function PricingPage() {
                       <li key={bullet}>{bullet}</li>
                     ))}
                   </ul>
-                  <Link href={tier.href} className="ax-link-mono ax-plan-link">
-                    {tier.action} →
+                  <Link href={tier.href} className="ax-tier-cta">
+                    {tier.action} <span aria-hidden="true">→</span>
                   </Link>
                 </article>
               ))}
