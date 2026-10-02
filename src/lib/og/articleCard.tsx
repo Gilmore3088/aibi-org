@@ -6,14 +6,14 @@ import { CREAM, GOLD, INK } from '@/lib/brand/colors';
 // Shared 1200×630 link-preview card for content pages (briefings, role
 // playbooks): navy ground, mono kicker, the headline in the site's display
 // serif, and the [Ai] mark. Fonts are static instances of the self-hosted
-// web fonts (assets/og-fonts), read from disk so rendering needs no network.
+// web fonts (assets/brand-fonts), read from disk so rendering needs no network.
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
 const GOLD_SOFT = '#E6D39B';
 
 async function font(name: string) {
-  return readFile(join(process.cwd(), 'assets/og-fonts', name));
+  return readFile(join(process.cwd(), 'assets/brand-fonts', name));
 }
 
 export interface ArticleCardInput {
