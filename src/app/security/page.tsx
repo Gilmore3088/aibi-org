@@ -23,9 +23,9 @@ const GUIDE_CHAPTERS = [
       'When private inference is required, when a public model is acceptable, and the decision tree every staff member should run before pasting anything into a tool.',
   },
   {
-    title: 'Mapping to SR 26-2',
+    title: 'Model risk discipline for generative AI',
     body:
-      'How model risk management guidance applies to generative AI, with specific language you can drop into your AI governance framework.',
+      'How SR 26-2, which superseded SR 11-7, maps to the AI tools staff use, with action language you can drop into your AI governance framework.',
   },
   {
     title: 'Vendor evaluation scoring',
@@ -38,7 +38,7 @@ const GUIDE_CHAPTERS = [
       'A structured method for identifying the AI tools your staff are already using without your knowledge, and bringing them inside a governance perimeter without killing adoption.',
   },
   {
-    title: 'Review packet readiness',
+    title: 'Review readiness',
     body:
       'What to keep in the packet before an audit, risk review, or exam conversation. Based on the AIEOG AI Lexicon vocabulary (US Treasury, FBIIC, FSSCC, February 2026).',
   },

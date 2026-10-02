@@ -4,8 +4,8 @@
 # src/app/resources/covers.generated.json (cards without a cover fall back to
 # an icon).
 #
-# Skips any PDF whose first page mentions SR 11-7, so a cover never shows the
-# superseded guidance (see CLAUDE.md sourcing rules). Re-run whenever a PDF is
+# Skips any PDF whose first page mentions SR 11-7 without the superseded
+# framing, so a cover never shows it as current (see CLAUDE.md sourcing rules). Re-run whenever a PDF is
 # regenerated. Requires poppler (pdftoppm, pdftotext) and ImageMagick.
 #
 #   bash scripts/render-resource-covers.sh
@@ -28,8 +28,9 @@ rendered=()
 while read -r slug file; do
   pdf="$ROOT/public/downloads/$file"
   [ -f "$pdf" ] || { echo "missing $file" >&2; continue; }
-  if pdftotext -f 1 -l 1 "$pdf" - 2>/dev/null | grep -q "11-7"; then
-    echo "skip $slug (page 1 cites SR 11-7)"
+  page1="$(pdftotext -f 1 -l 1 "$pdf" - 2>/dev/null | tr '\n' ' ')"
+  if grep -q "11-7" <<< "$page1" && ! grep -qi "supersed" <<< "$page1"; then
+    echo "skip $slug (page 1 cites SR 11-7 as current)"
     rm -f -- "$OUT/$slug.jpg"
     continue
   fi

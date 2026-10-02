@@ -443,7 +443,7 @@
       "funnelSegment": "governance",
       "visibleSurfaces": ["security"],
       "download": { "filePath": "aibi-safe-ai-use-guide.pdf", "fileType": "pdf", "tierRequired": "free" },
-      "variants": { "pdf": "aibi-safe-ai-use-guide.pdf", "word": null, "zip": null },
+      "variants": { "pdf": "aibi-safe-ai-use-guide.pdf", "word": "/api/resources/aibi-safe-ai-use-guide/word", "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/guides/safe-ai-use",
       "sourceCitations": ["SR 26-2", "Interagency Third-Party Risk Guidance", "ECOA / Reg B", "AIEOG AI Lexicon"],
