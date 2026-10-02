@@ -35,12 +35,13 @@ describe('HomePage', () => {
     const rep = getPracticeRepById('safe-prompt-conversion')!;
     render(<HomePage />);
 
-    const session = document.querySelector('.hm-session') as HTMLElement;
+    // The live layer — the session also holds an aria-hidden sizing copy.
+    const session = document.querySelector('.hm-session-layer:not(.hm-session-ghost)') as HTMLElement;
     // The model answer is the course's own, verbatim.
     expect(session.textContent).toContain(rep.modelAnswer);
     // The prompt carries the synthetic risky text the rep asks to sanitize.
     expect(session.textContent).toContain('John Smith');
-    expect(session.textContent).toMatch(/Synthetic data/i);
+    expect(document.querySelector('.hm-session')!.textContent).toMatch(/Synthetic data/i);
     expect(within(session).getByText('Banker reviews before use')).toBeTruthy();
   });
 

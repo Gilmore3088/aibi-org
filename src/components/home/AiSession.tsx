@@ -131,36 +131,58 @@ export function AiSession({ label, prompt, answer, checks = [], footnote }: AiSe
         <span className="hm-session-tag">{label}</span>
       </div>
 
-      <div className="hm-session-body" aria-live="off">
-        {sent && <p className="hm-msg hm-msg-user">{prompt}</p>}
-        {phase === 'thinking' && (
-          <p className="hm-thinking" aria-label="Generating">
-            <span />
-            <span />
-            <span />
-          </p>
-        )}
-        {(phase === 'streaming' || phase === 'done') && (
+      {/* The body is a single grid cell holding two layers: an invisible copy
+          of the finished exchange (which fixes the window's height from the
+          first frame) and the live layer on top. Only text inside the window
+          moves; the hero around it never reflows. */}
+      <div className="hm-session-body">
+        <div className="hm-session-layer hm-session-ghost" aria-hidden="true">
+          <p className="hm-msg hm-msg-user">{prompt}</p>
           <div className="hm-msg hm-msg-ai">
-            <span className="hm-ai-badge" aria-hidden="true">
-              AI
-            </span>
-            <p>{words.slice(0, shownWords).join(' ')}</p>
+            <span className="hm-ai-badge">AI</span>
+            <p>{answer}</p>
           </div>
-        )}
-        {phase === 'done' && checks.length > 0 && (
-          <ul className="hm-session-checks" aria-label="Why this is safe">
-            {checks.map((c) => (
-              <li key={c}>{c}</li>
-            ))}
-          </ul>
-        )}
+          {checks.length > 0 && (
+            <ul className="hm-session-checks">
+              {checks.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="hm-session-layer" aria-live="off">
+          {sent && <p className="hm-msg hm-msg-user">{prompt}</p>}
+          {phase === 'thinking' && (
+            <p className="hm-thinking" aria-label="Generating">
+              <span />
+              <span />
+              <span />
+            </p>
+          )}
+          {(phase === 'streaming' || phase === 'done') && (
+            <div className="hm-msg hm-msg-ai">
+              <span className="hm-ai-badge" aria-hidden="true">
+                AI
+              </span>
+              <p>{words.slice(0, shownWords).join(' ')}</p>
+            </div>
+          )}
+          {phase === 'done' && checks.length > 0 && (
+            <ul className="hm-session-checks" aria-label="Why this is safe">
+              {checks.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       <div className="hm-composer">
-        <span className={composing && chars > 0 ? 'hm-composer-text' : 'hm-composer-placeholder'}>
-          {composing && chars > 0 ? prompt.slice(0, chars) : 'Message your approved AI tool…'}
-          {phase === 'typing' && <span className="hm-caret" aria-hidden="true" />}
+        <span className="hm-composer-field">
+          <span className={composing && chars > 0 ? 'hm-composer-text' : 'hm-composer-placeholder'}>
+            {composing && chars > 0 ? prompt.slice(0, chars) : 'Message your approved AI tool…'}
+            {phase === 'typing' && <span className="hm-caret" aria-hidden="true" />}
+          </span>
         </span>
         {phase === 'done' ? (
           <button type="button" className="hm-replay" onClick={play}>

@@ -73,11 +73,17 @@ body:has(.hm) { background: var(--ink); }
 .hm-terminal-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--on-dark-20); }
 .hm-session-tag { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--gold); }
 .hm-session-body {
-  min-height: 340px;
+  display: grid;
   padding: 22px;
-  display: flex; flex-direction: column; gap: 16px;
   font-size: 0.9375rem; line-height: 1.6;
 }
+/* Ghost + live layers share one cell: the ghost sets the final height. */
+.hm-session-layer {
+  grid-area: 1 / 1;
+  display: flex; flex-direction: column; gap: 16px;
+  min-width: 0;
+}
+.hm-session-ghost { visibility: hidden; }
 .hm-msg { margin: 0; }
 .hm-msg-user {
   align-self: flex-end;
@@ -120,7 +126,14 @@ body:has(.hm) { background: var(--ink); }
   display: flex; align-items: flex-end; gap: 12px;
   font-size: 0.9375rem; line-height: 1.55;
 }
-.hm-composer > span:first-child { flex: 1; min-width: 0; white-space: pre-wrap; }
+/* Fixed two-line input: while typing, the newest line stays in view and
+   older lines scroll off the top, the way a real chat box behaves. */
+.hm-composer-field {
+  flex: 1; min-width: 0; white-space: pre-wrap;
+  height: calc(1.55em * 2); overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+
 .hm-composer-placeholder { color: var(--on-dark-50); }
 .hm-caret {
   display: inline-block; width: 0.5em; height: 1.1em; margin-left: 1px;

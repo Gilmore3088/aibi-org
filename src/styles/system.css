@@ -453,3 +453,35 @@ body:has(.ax-page) { background: var(--ink); }
 /* Keyboard-scrollable regions show a visible focus ring. */
 .ax-table-wrap:focus-visible,
 .ax-sheet-scroll:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ============================================================
+   Panel edges — a thin gold edge and a soft lift instead of a
+   faint white hairline, so navy panels read against the navy
+   page. Internal dividers stay quiet; only the outer edge gets
+   gold. One definition, used by every window-style surface.
+   ============================================================ */
+:root {
+  --edge-gold: rgba(200, 162, 74, 0.32);
+  --edge-gold-hover: rgba(200, 162, 74, 0.6);
+  --lift:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 22px 48px -28px rgba(0, 0, 0, 0.75);
+}
+.hm-session,
+.ax-window,
+.ax-table-wrap,
+.ax-plans,
+.ax-cli-form,
+.hm-redline-before,
+.hm-offer {
+  border-color: var(--edge-gold);
+  box-shadow: var(--lift);
+}
+.hm-offer { transition: border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease); }
+.hm-offer:hover { border-color: var(--edge-gold-hover); transform: translateY(-2px); }
+.hm-composer { border-color: var(--edge-gold); }
+/* Navy panels sitting on the cream section get the same lift. */
+.hm-panel-dark,
+.hm-terminal { box-shadow: 0 1px 2px rgba(7, 26, 47, 0.18), 0 24px 48px -28px rgba(7, 26, 47, 0.55); }
+@media (prefers-reduced-motion: reduce) { .hm-offer:hover { transform: none; } }
