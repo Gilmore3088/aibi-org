@@ -135,6 +135,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
       </div>
 
       <AxSection
+        light
         id="reps"
         kicker="Practice reps"
         title="Practice in a real AI tool. On synthetic data."
@@ -176,6 +177,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
       </section>
 
       <AxSection
+        light
         id="pillars"
         kicker="The path"
         title="Four pillars. Eighteen modules."
@@ -201,6 +203,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
       </AxSection>
 
       <AxSection
+        light
         id="how"
         kicker="How the course works"
         title="Short lessons become saved work products."
@@ -266,7 +269,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </div>
       </AxSection>
 
-      <AxSection id="enroll">
+      <AxSection light id="enroll">
         <AxWindow title="foundation-enrollment" meta="one-time · no subscription">
           <div className="ax-enroll">
             <div>

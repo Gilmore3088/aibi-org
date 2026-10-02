@@ -39,12 +39,18 @@ export interface AxSectionProps {
   readonly title?: ReactNode;
   readonly lede?: ReactNode;
   readonly children: ReactNode;
+  /** A warm cream band instead of navy — alternate so cards never sit navy on navy. */
+  readonly light?: boolean;
 }
 
-export function AxSection({ id, kicker, title, lede, children }: AxSectionProps) {
+export function AxSection({ id, kicker, title, lede, children, light }: AxSectionProps) {
   const headingId = id ? `${id}-title` : undefined;
   return (
-    <section id={id} className="ax-section" aria-labelledby={title ? headingId : undefined}>
+    <section
+      id={id}
+      className={`ax-section${light ? ' ax-light' : ''}`}
+      aria-labelledby={title ? headingId : undefined}
+    >
       <div className="mk-container">
         {(kicker || title || lede) && (
           <div className="ax-section-head">

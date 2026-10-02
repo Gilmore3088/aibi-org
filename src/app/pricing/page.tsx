@@ -167,7 +167,7 @@ export default function PricingPage() {
           }
         />
 
-        <section className="ax-section" aria-label="Pricing options">
+        <section className="ax-section ax-light" aria-label="Pricing options">
           <div className="mk-container">
             <div className="ax-tiers">
               {TIERS.map((tier, index) => (
@@ -221,7 +221,7 @@ export default function PricingPage() {
           </div>
         </AxSection>
 
-        <AxSection id="purchase-rules" kicker="Support and refunds" title="Simple purchase rules">
+        <AxSection light id="purchase-rules" kicker="Support and refunds" title="Simple purchase rules">
           <div className="ax-rules">
             <ul className="ax-checklist">
               {PURCHASE_RULES.map((rule) => (

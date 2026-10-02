@@ -110,7 +110,7 @@ export default async function BriefingsPage() {
         </section>
       )}
 
-      <AxSection>
+      <AxSection light>
         <div aria-labelledby="archive-title" role="region">
           <BriefingsArchive
             entries={rest.map((b) => ({

@@ -23,10 +23,12 @@ JetBrains Mono for labels.
 5. **One moving thing per page, at most.** Motion is for showing AI working
    (the homepage session). Everything respects `prefers-reduced-motion`.
    Tabs and toggles are fine; auto-advancing carousels are not.
-6. **Dark by default.** Story, sales and index pages — including
-   `/resources` and `/briefings` — are dark (ink + dot grid), with a thin
-   gold edge and a soft lift on panels. Long-form reading (a briefing
-   article) stays light paper with the same type and labels.
+6. **Alternate navy and cream; never navy on navy.** Heroes and statements
+   are navy (ink + dot grid); content sections alternate with warm cream
+   bands (`<AxSection light>` / `.ax-light`). Cards are quiet paper — white
+   with a hairline and a soft shadow on cream, warm cream on navy. Documents
+   (sheets, briefs, lessons, tables) read as paper; only software (the AI
+   session, code windows, cover wells) stays dark. Gold is the one accent.
 7. **Show the file.** Library cards lead with page 1 of the real PDF
    (`scripts/render-resource-covers.sh`, which skips any page that cites
    SR 11-7). Briefing cards quote their key figure verbatim from the dek

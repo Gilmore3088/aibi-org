@@ -149,6 +149,7 @@ export default function ForInstitutionsPage() {
 
       {/* What an institution ends up holding */}
       <AxSection
+        light
         id="files"
         kicker="What you end up holding"
         title="Files your examiner can read."
@@ -192,7 +193,7 @@ export default function ForInstitutionsPage() {
       </AxSection>
 
       {/* Six rollout options */}
-      <AxSection id="engagement" kicker="How to engage" title="Pick a rollout.">
+      <AxSection light id="engagement" kicker="How to engage" title="Pick a rollout.">
         <div className="ax-rollouts">
           {ROLLOUT_OPTIONS.map((o) => (
             <article key={o.title} className={`ax-rollout${o.gold ? ' is-featured' : ''}`}>
@@ -244,7 +245,7 @@ export default function ForInstitutionsPage() {
         </AxWindow>
       </AxSection>
 
-      <AxSection id="team-inquiry-section">
+      <AxSection light id="team-inquiry-section">
         <TeamLeadForm
           id="team-inquiry"
           title="Send the team request before checkout."

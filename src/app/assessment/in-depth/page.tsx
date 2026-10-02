@@ -156,6 +156,7 @@ export default async function InDepthAssessmentPage(props: InDepthAssessmentPage
         )}
 
         <AxSection
+          light
           id="compare"
           kicker="In-depth assessment"
           title={

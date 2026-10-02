@@ -1119,3 +1119,185 @@ body:has(.ax-page) { background: var(--ink); }
 .rv-take .ax-prompt { background: var(--ink); border-color: var(--ink); }
 .rv-take .ax-prompt .ax-btn-line { color: var(--cream); border-color: var(--on-dark-20); }
 .rv-band.is-light { --slate-500: #475569; }
+
+/* ============================================================
+   Light bands (.ax-light) — warm cream sections between the navy
+   ones, so content never sits navy on navy. Cards become quiet
+   paper: white, a hairline edge, a soft shadow; gold is reserved
+   for the one accent. The on-dark tokens are flipped to ink here so
+   every component's secondary text and hairlines follow, then
+   restored inside anything that stays dark (windows, cover wells).
+   ============================================================ */
+.ax-page .ax-section.ax-light,
+.ax-light {
+  --on-dark-08: rgba(7, 26, 47, 0.07);
+  --on-dark-10: rgba(7, 26, 47, 0.1);
+  --on-dark-20: rgba(7, 26, 47, 0.18);
+  --on-dark-50: #4B5563;
+  --on-dark-65: #46505E;
+  --on-dark-70: #3B4554;
+  --on-dark-80: #2A3442;
+  --edge-gold: rgba(7, 26, 47, 0.09);
+  --edge-gold-hover: rgba(160, 122, 40, 0.55);
+  --lift: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32);
+  --paper: #FFFFFF;
+  background: var(--cream);
+  color: var(--ink);
+}
+.ax-section.ax-light + .ax-section,
+.ax-section + .ax-section.ax-light { border-top: 0; }
+.ax-light .ax-display,
+.ax-light h2, .ax-light h3 { color: var(--ink); }
+.ax-light .ax-k { color: #6B5A2E; }
+.ax-light .ax-gold { color: var(--gold-deep); }
+.ax-light .ax-section-head p, .ax-light .ax-muted, .ax-light .ax-lede { color: var(--on-dark-65); }
+.ax-light a:not([class*="btn"]):not(.ax-tier-cta) { color: inherit; }
+.ax-light .ax-link-mono { color: var(--gold-deep); }
+.ax-light .ax-checklist li { color: var(--on-dark-80); }
+.ax-light .ax-checklist li::before { color: var(--gold-deep); }
+
+/* Restore the dark world inside windows and cover wells */
+.ax-light :is(.ax-window, .hm-session, .ax-tier-art, .ax-card-cover, .hm-terminal, .ax-sheet-bar) {
+  --on-dark-08: rgba(255, 255, 255, 0.08);
+  --on-dark-10: rgba(255, 255, 255, 0.1);
+  --on-dark-20: rgba(255, 255, 255, 0.2);
+  --on-dark-50: rgba(255, 255, 255, 0.5);
+  --on-dark-65: rgba(255, 255, 255, 0.65);
+  --on-dark-70: rgba(255, 255, 255, 0.7);
+  --on-dark-80: rgba(255, 255, 255, 0.8);
+  --edge-gold: rgba(200, 162, 74, 0.32);
+  color: var(--cream);
+}
+.ax-light .ax-window { box-shadow: 0 2px 4px rgba(7, 26, 47, 0.12), 0 30px 60px -30px rgba(7, 26, 47, 0.6); border-color: transparent; }
+.ax-light .ax-window :is(h2, h3, .ax-display) { color: var(--cream); }
+
+/* Paper cards */
+.ax-light :is(.ax-tier, .ax-rollout, .ax-pillar, .ax-card, .ax-rules, .ax-table-wrap, .ax-plans) {
+  background: var(--paper); color: var(--ink); border: 1px solid var(--edge-gold); box-shadow: var(--lift);
+}
+.ax-light :is(.ax-tier, .ax-rollout, .ax-card):hover { border-color: var(--edge-gold-hover); }
+.ax-light .ax-tier.is-featured,
+.ax-light .ax-rollout.is-featured { border-color: var(--gold); box-shadow: var(--lift), 0 0 0 1px var(--gold); }
+.ax-light .ax-plan-price strong { color: var(--ink); }
+.ax-light .ax-tier.is-featured .ax-plan-price strong { color: var(--gold-deep); }
+.ax-light .ax-plan-price span { color: var(--on-dark-50); }
+.ax-light .ax-plan-best { color: var(--on-dark-70); }
+.ax-light .ax-tier-art { border-bottom-color: rgba(200, 162, 74, 0.35); }
+.ax-light .ax-tier-cta { color: var(--ink); border-color: rgba(7, 26, 47, 0.2); }
+.ax-light .ax-tier-cta:hover { border-color: var(--gold-deep); }
+.ax-light .ax-tier.is-featured .ax-tier-cta,
+.ax-light .ax-rollout.is-featured .ax-tier-cta { color: var(--ink); background: var(--gold); border-color: var(--gold); }
+.ax-light .ax-option-scale { color: var(--on-dark-50); }
+.ax-light .ax-rollout-more summary { color: var(--gold-deep); }
+.ax-light .ax-rollout-more a { color: var(--gold-deep); }
+.ax-light .ax-pillar-k, .ax-light .ax-pillar-here { color: var(--gold-deep); }
+.ax-light .ax-pillar.is-current { border-color: var(--gold); }
+.ax-light .ax-pillar-mods li.is-current, .ax-light .ax-pillar-mods li.is-current span { color: var(--gold-deep); }
+.ax-light .ax-card { color: var(--ink); }
+.ax-light .ax-card-cover { border-bottom: 0; }
+.ax-light .ax-card:hover .ax-card-title { color: var(--gold-deep); }
+.ax-light .ax-card-meta .ax-gold { color: var(--gold-deep); }
+
+/* Pipeline, toggles, tables, buttons on cream */
+.ax-light .ax-pipeline-node { background: var(--cream); border-color: var(--gold-deep); }
+.ax-light .ax-pipeline li.is-first .ax-pipeline-node { background: var(--gold); border-color: var(--gold); }
+.ax-light .ax-pipeline-out { color: var(--gold-deep); }
+.ax-light .ax-toggles button { color: var(--on-dark-70); border-color: rgba(7, 26, 47, 0.18); background: transparent; }
+.ax-light .ax-toggles button[aria-pressed='true'],
+.ax-light .ax-toggles button[aria-selected='true'] { color: var(--ink); background: #fff; border-color: var(--gold); }
+.ax-light .ax-table th, .ax-light .ax-table td { color: var(--ink); border-color: rgba(7, 26, 47, 0.08); }
+.ax-light .ax-table thead th { color: var(--on-dark-50); }
+.ax-light .mk-btn-ghost-dark { color: var(--ink); border-color: rgba(7, 26, 47, 0.25); background: transparent; }
+.ax-light .mk-btn-ghost-dark:hover { border-color: var(--gold-deep); }
+.ax-light .ax-btn-line { color: var(--ink); border-color: rgba(7, 26, 47, 0.2); }
+.ax-light .ax-defs dt { color: var(--ink); }
+.ax-light .ax-defs dd { color: var(--on-dark-65); }
+
+/* Windows on cream: solid navy, not a translucent wash */
+.ax-light .ax-window { background: #0D1F35; }
+.ax-light .ax-window .mk-btn-ghost-dark { color: var(--cream); border-color: rgba(255, 255, 255, 0.25); }
+.ax-light .ax-rules { padding: clamp(22px, 3vw, 32px); border-radius: 14px; }
+
+/* Paper on navy: content panels that sit on a navy band become cream
+   paper with ink type, so nothing reads navy on navy. */
+.ax-section:not(.ax-light) :is(.ax-table-wrap, #briefing .ax-window, .ax-lesson .ax-window),
+.ax-feature {
+  background: #F7F3EA; color: var(--ink); border: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  --on-dark-08: rgba(7, 26, 47, 0.07);
+  --on-dark-10: rgba(7, 26, 47, 0.1);
+  --on-dark-20: rgba(7, 26, 47, 0.18);
+  --on-dark-50: #4B5563;
+  --on-dark-65: #46505E;
+  --on-dark-70: #3B4554;
+  --on-dark-80: #2A3442;
+}
+.ax-section:not(.ax-light) :is(#briefing .ax-window, .ax-lesson .ax-window) .ax-window-bar { border-color: rgba(7, 26, 47, 0.1); color: #4B5563; }
+.ax-section:not(.ax-light) :is(.ax-table-wrap, #briefing .ax-window, .ax-lesson .ax-window, .ax-feature) :is(h2, h3, .ax-display, .ax-lesson-title, th, td) { color: var(--ink); }
+.ax-section:not(.ax-light) :is(.ax-table-wrap, #briefing .ax-window, .ax-lesson .ax-window, .ax-feature) .ax-gold { color: var(--gold-deep); }
+.ax-section:not(.ax-light) :is(#briefing .ax-window, .ax-lesson .ax-window) .ax-checklist li::before { color: var(--gold-deep); }
+.ax-section:not(.ax-light) .ax-table th, .ax-section:not(.ax-light) .ax-table td { border-color: rgba(7, 26, 47, 0.08); }
+.ax-section:not(.ax-light) .ax-table-wrap .ax-cell-mono { color: #6B5A2E; }
+.ax-section:not(.ax-light) .ax-lesson .ax-window [class*="ok"], .ax-lesson .ax-window .ax-lesson-saved { color: #1E6B42; }
+
+/* Briefings feature: paper on navy, sources on a navy well */
+.ax-feature .ax-lead-title { color: var(--ink); }
+.ax-feature .ax-lead-title:hover { color: var(--gold-deep); }
+.ax-feature .ax-lead-dek { color: var(--on-dark-65); }
+.ax-feature .ax-card-meta { color: #4B5563; }
+.ax-feature .ax-card-meta .ax-gold { color: var(--gold-deep); }
+.ax-feature .ax-prompt { background: var(--ink); border-color: var(--ink); }
+.ax-feature .ax-prompt .ax-btn-line { color: var(--cream); border-color: rgba(255, 255, 255, 0.25); }
+.ax-feature .ax-feature-docs { border-left-color: transparent; }
+.ax-feature .ax-feature-docs .ax-k { color: rgba(255, 255, 255, 0.55); }
+.ax-section:not(.ax-light) .ax-lesson .ax-window .ax-saved { color: #1E6B42; }
+
+/* /resources: alternate cream and navy sections; every card is paper
+   (white on cream, warm cream on navy) with its real cover on a navy well. */
+.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) { background: var(--cream) !important; }
+.rx-resources-page :is(#role-playbooks, #desk-cards, #briefings-link) { background: var(--ink) !important; }
+.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) :is(h2, .mk-section-head h2) { color: var(--ink) !important; }
+.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) .mk-section-head p { color: #46505E !important; }
+.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) .mk-k,
+.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) [class*="kicker"] { color: #6B5A2E !important; }
+.mockup-scope.rx-resources-page .rx-pb-card {
+  background: #fff; color: var(--ink);
+  border: 1px solid rgba(7, 26, 47, 0.09);
+  box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32);
+}
+.mockup-scope.rx-resources-page :is(#role-playbooks, #desk-cards, #briefings-link) .rx-pb-card {
+  background: #F7F3EA; border-color: transparent;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -24px rgba(0, 0, 0, 0.75);
+}
+.mockup-scope.rx-resources-page .rx-pb-card:hover { border-color: rgba(160, 122, 40, 0.55); }
+.mockup-scope.rx-resources-page .rx-kit-title { color: var(--ink); }
+.mockup-scope.rx-resources-page .rx-kit-desc { color: #46505E; }
+.mockup-scope.rx-resources-page .rx-pill { color: var(--gold-deep); border-color: rgba(160, 122, 40, 0.45); }
+.mockup-scope.rx-resources-page .rx-chip,
+.mockup-scope.rx-resources-page .rx-pb-includes li { color: #3B4554; border-color: rgba(7, 26, 47, 0.1); }
+.mockup-scope.rx-resources-page .rx-template-format { color: var(--gold-deep); }
+.mockup-scope.rx-resources-page .rx-pb-actions .mk-btn-ink { color: var(--ink); border-color: rgba(7, 26, 47, 0.25); }
+.mockup-scope.rx-resources-page .rx-pb-actions .mk-btn-ink:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.mockup-scope.rx-resources-page .rx-pb-card .mk-btn-ghost-light { color: #3B4554; border-color: rgba(7, 26, 47, 0.18); }
+.mockup-scope.rx-resources-page .rx-pb-card .mk-btn-ghost-light:hover { color: var(--ink); border-color: var(--gold-deep); }
+.mockup-scope.rx-resources-page .rx-cover { margin: -1.5rem -1.5rem 1.25rem; border-bottom: 0; }
+.mockup-scope.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) .rx-section-foot .mk-btn-ink,
+.mockup-scope.rx-resources-page :is(#starter-kits, #templates, #preview-paid, #security-governance) .mk-container > .mk-btn-ink { color: var(--ink); border-color: rgba(7, 26, 47, 0.25); }
+.mockup-scope.rx-resources-page .rx-hero-start { background: #F7F3EA; color: var(--ink); border: 0; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 30px 60px -30px rgba(0, 0, 0, 0.8); }
+.mockup-scope.rx-resources-page .rx-hero-start :is(h2, h3, strong, .rx-hero-start-card strong) { color: var(--ink); }
+.mockup-scope.rx-resources-page .rx-hero-start p,
+.mockup-scope.rx-resources-page .rx-hero-start-card span,
+.mockup-scope.rx-resources-page .rx-hero-start-card p { color: #46505E; }
+.mockup-scope.rx-resources-page .rx-hero-start .mk-k { color: #6B5A2E; }
+.mockup-scope.rx-resources-page .rx-hero-start-card { background: #fff; border: 1px solid rgba(7, 26, 47, 0.08); color: var(--ink); }
+.mockup-scope.rx-resources-page .rx-hero-start-card:hover { border-color: var(--gold); background: #fff; }
+.mockup-scope.rx-resources-page .rx-hero-start-icon, .mockup-scope.rx-resources-page .rx-hero-start-card-icon { color: var(--gold-deep); }
+/* Documents in a hero read as paper on navy */
+.ax-hero .ax-window {
+  background: #F7F3EA; color: var(--ink); border: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  --on-dark-08: rgba(7, 26, 47, 0.07); --on-dark-10: rgba(7, 26, 47, 0.1); --on-dark-20: rgba(7, 26, 47, 0.18);
+  --on-dark-50: #4B5563; --on-dark-65: #46505E; --on-dark-70: #3B4554; --on-dark-80: #2A3442;
+}
+.ax-hero .ax-window :is(h2, h3, strong, p, li, dd, dt) { color: inherit; }
+.ax-hero .ax-window .ax-gold { color: var(--gold-deep); }

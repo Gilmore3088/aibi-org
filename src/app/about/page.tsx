@@ -97,6 +97,7 @@ export default function AboutPage() {
 
       <main>
         <AxSection
+          light
           id="building"
           kicker="What we are building"
           title="Turn bankers into builders, safely."
@@ -132,7 +133,7 @@ export default function AboutPage() {
           </dl>
         </AxSection>
 
-        <AxSection id="grounded" kicker="How the work stays grounded" title="Designed for review, not just completion.">
+        <AxSection light id="grounded" kicker="How the work stays grounded" title="Designed for review, not just completion.">
           <dl className="ax-defs">
             {OPERATING_STANDARDS.map((standard) => (
               <div key={standard.title}>
@@ -167,7 +168,7 @@ export default function AboutPage() {
           </p>
         </AxSection>
 
-        <AxSection id="boundaries" kicker="Trust boundaries" title="What we will not overclaim.">
+        <AxSection light id="boundaries" kicker="Trust boundaries" title="What we will not overclaim.">
           <ul className="ax-checklist ax-checklist-no">
             {TRUST_BOUNDARIES.map((boundary) => (
               <li key={boundary}>{boundary}</li>
