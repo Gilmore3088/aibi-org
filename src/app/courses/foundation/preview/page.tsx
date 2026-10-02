@@ -10,6 +10,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button, SiteHeader } from '@/components/mockup';
+import { PillarMap } from '@/components/courses/PillarMap';
 import {
   V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER,
   foundationCourseConfig,
@@ -23,7 +24,6 @@ import {
 } from '@content/courses/foundation-program/lab-first';
 import { LearnSection } from '../program/_components/LearnSection';
 import { KnowledgeCheck } from '../program/_components/KnowledgeCheck';
-import { INTER_STACK } from '@/lib/ui/fonts';
 
 const PREVIEW_MODULE_NUMBER = 1;
 
@@ -34,30 +34,20 @@ export const metadata: Metadata = {
     'Walk through Module 1 of the AiBI Foundation course free — the real Understand, Try, Build, and Save phases paid learners see, before you enroll.',
 };
 
-const PHASE_EYEBROW: React.CSSProperties = {
-  margin: '0 0 10px',
-  fontSize: '0.75rem',
-  fontWeight: 700,
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  color: 'var(--gold-deep)',
-};
+const PHASES = [
+  { id: 'understand', n: '01', name: 'Understand', line: 'The concept, as the course teaches it.' },
+  { id: 'try', n: '02', name: 'Try', line: 'The practice task, and a check you can take now.' },
+  { id: 'build', n: '03', name: 'Build', line: 'Weak vs. better — the quality bar.' },
+  { id: 'save', n: '04', name: 'Save', line: 'What you keep from this module.' },
+] as const;
 
-function PhaseHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+function PhaseAside({ id }: { readonly id: (typeof PHASES)[number]['id'] }) {
+  const p = PHASES.find((x) => x.id === id)!;
   return (
-    <header style={{ margin: '40px 0 16px' }}>
-      <p style={PHASE_EYEBROW}>{eyebrow}</p>
-      <h2
-        style={{
-          margin: 0,
-          fontSize: 'clamp(1.5rem, 2.4vw, 2rem)',
-          lineHeight: 1.12,
-          letterSpacing: '-0.01em',
-          fontWeight: 800,
-        }}
-      >
-        {title}
-      </h2>
+    <header className="pv-aside">
+      <span className="pv-num">{p.n}</span>
+      <h2>{p.name}</h2>
+      <p>{p.line}</p>
     </header>
   );
 }
@@ -72,7 +62,7 @@ export default function FoundationPreviewPage() {
 
   return (
     <div
-      className="mockup-scope"
+      className="mockup-scope ax-page pv-page"
       style={
         {
           // LearnSection's 12px eyebrow labels assume the course shell's
@@ -88,245 +78,126 @@ export default function FoundationPreviewPage() {
         activePath="/courses"
         cta={{ label: 'Enroll · $295', href: '/courses/foundation/program/purchase' }}
       />
-      <main style={{ background: 'var(--cream)', fontFamily: INTER_STACK, color: 'var(--ink)' }}>
-        <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px 20px 120px' }}>
-          <section
-            aria-label="Preview scope"
-            style={{
-              border: '1px solid var(--gold-a40, rgba(197,160,40,0.4))',
-              background: 'var(--cream-2)',
-              borderRadius: 18,
-              padding: '18px 22px',
-              marginBottom: 28,
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-deep)',
-              }}
-            >
-              Free preview · Module 1 of {totalModules} — the full module walkthrough
-            </p>
-            <p
-              style={{
-                margin: '8px 0 0',
-                fontSize: '0.875rem',
-                lineHeight: 1.55,
-                color: 'var(--slate-600)',
-              }}
-            >
-              This is the real module — the same Understand, Try, Build, and Save
-              phases paid learners work through, not a summary. What stays paid:
-              the live AI labs, saving your work to the Foundation Packet, and the
-              credential ({foundationDurationLabel()}).
-            </p>
+
+      <section className="ax-hero pv-hero" aria-label="Preview scope">
+        <div className="mk-container">
+          <p className="ax-cmd">courses/foundation --preview module-01</p>
+          <p className="ax-k ax-gold">Free preview · Module 1 of {totalModules} — the full module walkthrough</p>
+          <h1 className="ax-display">{mod?.title ?? 'What AI Can and Cannot Do'}</h1>
+          {expandedModule?.goal && <p className="ax-lede">{expandedModule.goal}</p>}
+          <p className="pv-paid">
+            What stays paid: the live AI labs, saving your work to the Foundation Packet, and the
+            credential ({foundationDurationLabel()}).
+          </p>
+          <div className="pv-map">
+            <PillarMap current={PREVIEW_MODULE_NUMBER} compact />
+          </div>
+          <nav className="pv-steps" aria-label="Module phases">
+            {PHASES.map((p) => (
+              <a key={p.id} href={`#pv-${p.id}`}>
+                <span>{p.n}</span>
+                {p.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </section>
+
+      <main className="pv-main">
+        <div className="mk-container pv-container">
+          <section id="pv-understand" className="pv-phase" aria-label="Understand phase">
+            <PhaseAside id="understand" />
+            <div className="pv-body">
+              <LearnSection
+                sections={expandedModule?.sections ?? []}
+                keyTakeaways={expandedModule?.takeaways}
+                moduleNumber={PREVIEW_MODULE_NUMBER}
+                variant="preview"
+              />
+            </div>
           </section>
 
-          <header style={{ marginBottom: 24 }}>
-            <p
-              style={{
-                margin: '0 0 10px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-deep)',
-              }}
-            >
-              Module 01 · {expandedModule?.goal ?? 'Understand'}
-            </p>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: 'clamp(1.875rem, 4vw, 2.75rem)',
-                lineHeight: 1.08,
-                letterSpacing: '-0.02em',
-                fontWeight: 800,
-              }}
-            >
-              {mod?.title ?? 'What AI Can and Cannot Do'}
-            </h1>
-          </header>
-
-          <PhaseHeading eyebrow="Phase 1 · Understand" title="The concept, exactly as the course teaches it." />
-          <LearnSection
-            sections={expandedModule?.sections ?? []}
-            keyTakeaways={expandedModule?.takeaways}
-            moduleNumber={PREVIEW_MODULE_NUMBER}
-            variant="preview"
-          />
-
           {labBrief && (
-            <section aria-label="Try phase preview" data-testid="preview-try">
-              <PhaseHeading eyebrow="Phase 2 · Try" title="The practice task, and a real check you can take now." />
-              <div
-                style={{
-                  border: '1px solid var(--ink-a10)',
-                  borderRadius: 18,
-                  background: '#fff',
-                  padding: '20px 22px',
-                  marginBottom: 14,
-                }}
-              >
-                <p style={{ ...PHASE_EYEBROW, marginBottom: 8 }}>The task</p>
-                <p style={{ margin: 0, fontSize: '1.0625rem', lineHeight: 1.5, fontWeight: 700 }}>
-                  {labBrief.labTask}
-                </p>
-                <p style={{ ...PHASE_EYEBROW, margin: '16px 0 8px' }}>The model you practice</p>
-                <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.5, color: 'var(--slate-600)' }}>
-                  {labBrief.visualModel.join(' → ')}
-                </p>
+            <section id="pv-try" className="pv-phase" aria-label="Try phase preview" data-testid="preview-try">
+              <PhaseAside id="try" />
+              <div className="pv-body">
+                <div className="pv-task">
+                  <p className="pv-k">The task</p>
+                  <p className="pv-task-text">{labBrief.labTask}</p>
+                  <ol className="pv-flow" aria-label="The model you practice">
+                    {labBrief.visualModel.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+                {labBrief.decisionDrill && (
+                  <KnowledgeCheck
+                    prompt={labBrief.decisionDrill.prompt}
+                    options={labBrief.decisionDrill.options}
+                    kicker="Try it now — same drill as the course"
+                  />
+                )}
               </div>
-              {labBrief.decisionDrill && (
-                <KnowledgeCheck
-                  prompt={labBrief.decisionDrill.prompt}
-                  options={labBrief.decisionDrill.options}
-                  kicker="Try it now — same drill as the course"
-                />
-              )}
             </section>
           )}
 
           {workedExample && (
-            <section aria-label="Build phase preview" data-testid="preview-build">
-              <PhaseHeading eyebrow="Phase 3 · Build" title="Weak vs. better — the quality bar you build against." />
-              <div
-                style={{
-                  display: 'grid',
-                  gap: 12,
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                }}
-              >
-                <div style={{ border: '1px solid var(--ink-a10)', borderRadius: 18, background: '#fff', padding: '18px 20px' }}>
-                  <p style={{ ...PHASE_EYEBROW, color: 'var(--slate-500)' }}>{workedExample.weakLabel}</p>
-                  <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
-                    {workedExample.weak}
+            <section id="pv-build" className="pv-phase" aria-label="Build phase preview" data-testid="preview-build">
+              <PhaseAside id="build" />
+              <div className="pv-body">
+                <figure className="hm-sheet pv-sheet">
+                  <p className="hm-edit-label">{workedExample.weakLabel}</p>
+                  <p className="hm-edit-weak">
+                    <s>{workedExample.weak}</s>
                   </p>
-                </div>
-                <div style={{ border: '1px solid var(--gold-a40, rgba(197,160,40,0.4))', borderRadius: 18, background: 'var(--cream-2)', padding: '18px 20px' }}>
-                  <p style={{ ...PHASE_EYEBROW }}>{workedExample.strongLabel}</p>
-                  <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, fontWeight: 650 }}>
-                    {workedExample.strong}
-                  </p>
-                </div>
+                  <p className="hm-edit-label">{workedExample.strongLabel}</p>
+                  <p className="hm-edit-strong">{workedExample.strong}</p>
+                  <p className="hm-edit-why">{workedExample.why}</p>
+                </figure>
               </div>
-              <p style={{ margin: '12px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
-                <strong style={{ color: 'var(--ink)' }}>Why the better version works:</strong>{' '}
-                {workedExample.why}
-              </p>
             </section>
           )}
 
           {artifact && (
-            <section aria-label="Save phase preview" data-testid="preview-save">
-              <PhaseHeading eyebrow="Phase 4 · Save" title="What you keep from this module." />
-              <div
-                style={{
-                  border: '1px solid var(--ink-a10)',
-                  borderRadius: 18,
-                  background: '#fff',
-                  padding: '20px 22px',
-                }}
-              >
-                <p style={{ margin: 0, fontSize: '1.0625rem', fontWeight: 800 }}>{artifact.saved}</p>
-                <p style={{ margin: '8px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
-                  {artifact.building}
-                </p>
-                <p style={{ margin: '8px 0 0', fontSize: '0.9375rem', lineHeight: 1.55, color: 'var(--slate-600)' }}>
-                  <strong style={{ color: 'var(--ink)' }}>Where it earns its keep:</strong>{' '}
-                  {artifact.usedFor} In the paid course this saves into your 18-piece
-                  Foundation Packet with review evidence attached.
-                </p>
+            <section id="pv-save" className="pv-phase" aria-label="Save phase preview" data-testid="preview-save">
+              <PhaseAside id="save" />
+              <div className="pv-body">
+                <figure className="hm-sheet pv-sheet pv-card">
+                  <span className="pv-stamp">Saved · Foundation Packet 1/{totalModules}</span>
+                  <p className="pv-card-title">{artifact.saved}</p>
+                  <p>{artifact.building}</p>
+                  <p className="pv-card-use">
+                    <strong>Use it:</strong> {artifact.usedFor}
+                  </p>
+                </figure>
               </div>
             </section>
           )}
-
-          <section
-            aria-label="Enroll in the full course"
-            style={{
-              marginTop: 36,
-              border: '1px solid var(--ink-a10)',
-              borderRadius: 18,
-              background: 'var(--ink)',
-              color: 'var(--cream)',
-              padding: '28px 26px',
-              display: 'grid',
-              gap: 14,
-            }}
-          >
-            <h2
-              style={{
-                margin: 0,
-                fontSize: 'clamp(1.375rem, 2.6vw, 1.875rem)',
-                lineHeight: 1.12,
-                letterSpacing: '-0.01em',
-                fontWeight: 800,
-                color: '#fff',
-              }}
-            >
-              The other {totalModules - 1} modules add the labs, saved artifacts,
-              and the credential.
-            </h2>
-            <p style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.55, color: 'rgba(247,243,234,0.8)' }}>
-              Every module ends with a reviewed work product saved to your Foundation
-              Packet. {foundationDurationLabel()}.
-            </p>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
-                Enroll in Foundation · $295
-              </Button>
-              <Button variant="ghost-light" size="lg" href="/courses">
-                Back to course overview
-              </Button>
-            </div>
-          </section>
         </div>
       </main>
 
-      <div
-        data-testid="preview-sticky-enroll"
-        style={{
-          position: 'sticky',
-          bottom: 0,
-          zIndex: 30,
-          background: 'rgba(7, 26, 47, 0.97)',
-          borderTop: '1px solid var(--gold-a40, rgba(197,160,40,0.4))',
-          padding: '12px 20px',
-          display: 'flex',
-          gap: 16,
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          fontFamily: INTER_STACK,
-        }}
-      >
-        <span style={{ color: 'rgba(247,243,234,0.85)', fontSize: '0.875rem', fontWeight: 600 }}>
-          Reading the free Module 1 preview
-        </span>
-        <Link
-          href="/courses/foundation/program/purchase"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: 42,
-            padding: '0 18px',
-            borderRadius: 999,
-            background: 'var(--gold)',
-            color: 'var(--ink)',
-            fontSize: '0.8125rem',
-            fontWeight: 800,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-          }}
-        >
-          Enroll · $295
-        </Link>
+      <section className="ax-section ax-close" aria-label="Enroll in the full course">
+        <div className="mk-container">
+          <h2 className="ax-display">
+            {totalModules - 1} more modules. <span className="ax-gold">One packet.</span>
+          </h2>
+          <p className="ax-muted">
+            Labs, saved artifacts and the credential. {foundationDurationLabel()}.
+          </p>
+          <div className="ax-actions" style={{ justifyContent: 'center' }}>
+            <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
+              Enroll in Foundation · $295
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/courses">
+              Back to course overview
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <div data-testid="preview-sticky-enroll" className="pv-sticky">
+        <span>Reading the free Module 1 preview</span>
+        <Link href="/courses/foundation/program/purchase">Enroll · $295</Link>
       </div>
     </div>
   );

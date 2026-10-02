@@ -2,6 +2,7 @@
 
 import { SiteHeader, Button, ArrowGlyph } from '@/components/mockup';
 import { AxHero, AxSection, AxWindow } from '@/components/ax';
+import { PillarMap } from '@/components/courses/PillarMap';
 import { PracticeReps } from './PracticeReps';
 
 // /courses — AiBI Foundation overview, AI-native rebuild. The page shows the
@@ -173,6 +174,15 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
           </figure>
         </div>
       </section>
+
+      <AxSection
+        id="pillars"
+        kicker="The path"
+        title="Four pillars. Eighteen modules."
+        lede="Awareness, Understanding, Creation, Application — in that order, each building on the last."
+      >
+        <PillarMap />
+      </AxSection>
 
       <AxSection
         id="build"

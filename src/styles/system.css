@@ -679,3 +679,81 @@ body:has(.ax-page) { background: var(--ink); }
 .ax-card:hover .ax-card-title { color: var(--gold-soft); }
 .ax-card-dek { font-size: 0.9375rem; line-height: 1.55; color: var(--on-dark-65); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .ax-card:hover { transform: none; } }
+
+/* ── Foundation pillars: Awareness → Understanding → Creation → Application ── */
+.ax-pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+@media (min-width: 760px) { .ax-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .ax-pillars { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.ax-pillar {
+  position: relative; display: flex; flex-direction: column; gap: 8px; padding: 22px 20px 20px;
+  border: 1px solid var(--edge-gold); border-radius: 14px; background: rgba(7, 26, 47, 0.9);
+  box-shadow: var(--lift); overflow: hidden; color: var(--cream);
+}
+.ax-pillar-bar { position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(to right, var(--gold), rgba(200, 162, 74, 0.2)); }
+.ax-pillar:nth-child(1) .ax-pillar-bar { opacity: 0.4; }
+.ax-pillar:nth-child(2) .ax-pillar-bar { opacity: 0.6; }
+.ax-pillar:nth-child(3) .ax-pillar-bar { opacity: 0.8; }
+.ax-pillar.is-current { border-color: var(--gold); }
+.ax-pillar-k { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+.ax-pillar h3 { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.625rem; line-height: 1.1; }
+.ax-pillar-line { margin: 0; font-size: 0.875rem; line-height: 1.5; color: var(--on-dark-65); }
+.ax-pillar-mods { list-style: none; margin: 10px 0 0; padding: 12px 0 0; border-top: 1px solid var(--on-dark-10); display: grid; gap: 6px; }
+.ax-pillar-mods li { display: flex; gap: 10px; font-size: 0.8125rem; line-height: 1.4; color: var(--on-dark-80, rgba(247, 243, 234, 0.8)); }
+.ax-pillar-mods span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--on-dark-50); }
+.ax-pillar-mods li.is-current { color: var(--gold-soft); }
+.ax-pillar-mods li.is-current span { color: var(--gold); }
+.ax-pillar-here { margin: 4px 0 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold); }
+.ax-pillars.is-compact .ax-pillar { padding: 18px 16px 16px; }
+.ax-pillars.is-compact .ax-pillar h3 { font-size: 1.25rem; }
+
+/* ── /courses/foundation/preview: a module you can scan ── */
+.pv-hero { padding-bottom: 48px; color: var(--cream); }
+.pv-hero .ax-display { margin: 12px 0 0; font-size: clamp(2.5rem, 5.6vw, 4.5rem); line-height: 1; }
+.pv-hero .ax-lede { margin: 20px 0 0; max-width: 56ch; font-size: 1.125rem; line-height: 1.55; color: var(--on-dark-70); }
+.pv-paid { margin: 14px 0 0; max-width: 64ch; font-size: 0.8125rem; line-height: 1.55; color: var(--on-dark-50); }
+.pv-map { margin-top: 40px; }
+.pv-steps { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; }
+.pv-steps a {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid var(--on-dark-20); color: var(--cream); text-decoration: none; font-size: 0.875rem;
+}
+.pv-steps a:hover { border-color: var(--gold); }
+.pv-steps span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold); }
+.pv-main { background: var(--cream); color: var(--ink); padding: 24px 0 96px; }
+.pv-container { max-width: 1120px; }
+.pv-phase { display: grid; gap: 20px; padding: 56px 0; border-bottom: 1px solid rgba(7, 26, 47, 0.1); scroll-margin-top: 88px; }
+.pv-phase:last-child { border-bottom: 0; }
+@media (min-width: 960px) { .pv-phase { grid-template-columns: 220px minmax(0, 1fr); gap: 48px; } }
+.pv-aside { align-self: start; }
+@media (min-width: 960px) { .pv-aside { position: sticky; top: 96px; } }
+.pv-num { display: block; font-family: var(--font-serif); font-size: 4rem; line-height: 1; color: var(--gold); }
+.pv-aside h2 { margin: 6px 0 6px; font-family: var(--font-serif); font-weight: 400; font-size: 2rem; line-height: 1.05; }
+.pv-aside p { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--slate-600); }
+.pv-body { min-width: 0; display: grid; gap: 16px; }
+.pv-k { margin: 0 0 8px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-deep); }
+.pv-task { padding: 22px; border-radius: 12px; background: #fff; border: 1px solid rgba(7, 26, 47, 0.1); }
+.pv-task-text { margin: 0; font-family: var(--font-serif); font-size: 1.375rem; line-height: 1.3; }
+.pv-flow { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 26px; align-items: center; }
+.pv-flow li { position: relative; padding: 6px 12px; border-radius: 999px; background: var(--ink); color: var(--cream); font-family: var(--font-mono); font-size: 0.8125rem; }
+.pv-flow li + li::before { content: '→'; position: absolute; left: -19px; top: 50%; transform: translateY(-50%); color: var(--gold-deep); }
+.pv-sheet { transform: none !important; max-width: 680px; font-size: 0.9375rem; }
+.pv-card { position: relative; padding-top: 44px; }
+.pv-stamp {
+  position: absolute; top: 14px; right: 16px; padding: 4px 10px; border-radius: 4px;
+  border: 1px solid #2F8F5B; color: #1E6B42; font-family: var(--font-mono); font-size: 0.6875rem;
+  letter-spacing: 0.06em; text-transform: uppercase; transform: rotate(2deg);
+}
+.pv-card-title { margin: 0; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.2; }
+.pv-card p { margin: 0; color: var(--slate-600); }
+.pv-card p.pv-card-title { color: var(--ink); }
+.pv-card-use { padding-top: 10px; border-top: 1px dashed rgba(7, 26, 47, 0.15); }
+.pv-card-use strong { color: var(--ink); }
+.pv-sticky {
+  position: sticky; bottom: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center;
+  padding: 12px 20px; background: rgba(7, 26, 47, 0.97); border-top: 1px solid var(--edge-gold);
+}
+.pv-sticky span { color: var(--on-dark-70); font-size: 0.875rem; }
+.pv-sticky a {
+  display: inline-flex; align-items: center; min-height: 42px; padding: 0 18px; border-radius: 999px;
+  background: var(--gold); color: var(--ink); font-size: 0.8125rem; font-weight: 700; text-decoration: none;
+}
