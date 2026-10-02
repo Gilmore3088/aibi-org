@@ -1,16 +1,15 @@
-'use client';
-
-import { useState } from 'react';
 import { questions } from '@content/assessments/v3/questions';
-import { getPracticeRepById } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program';
 
-// Assess · Train · Build — each tab shows the real thing, not an illustration:
-// a live assessment question, a Foundation practice rep (starter prompt +
-// model answer from the course), and a skill file from the toolbox. Static;
-// the visitor switches tabs, nothing auto-advances.
+// Assess · Train · Build — a three-step journey laid out left to right, each
+// step showing the real thing as a document rather than a window (the hero
+// already has the window): a live assessment question as an answer sheet, a
+// Foundation module's weak/strong example as a marked-up edit, and a skill
+// file as a page. Static; nothing moves.
 
 const ASSESS_QUESTION = questions.find((q) => q.id === 'atp-01') ?? questions[0];
-const TRAIN_REP = getPracticeRepById('rewrite-for-clarity');
+const TRAIN_MODULE =
+  FOUNDATION_MICRO_MODULES.find((m) => m.id === 'm2-low-risk-message-rewrite') ?? FOUNDATION_MICRO_MODULES[0];
 
 /**
  * Verbatim excerpt of public/artifacts/skill-templates/exception-report.md.
@@ -32,88 +31,71 @@ export const SKILL_EXCERPT: ReadonlyArray<{ kind: 'cmd' | 'out' | 'h1' | 'h2' | 
 
 const STEPS = [
   { id: 'assess', num: '01', tag: 'Free', title: 'Assess', line: 'Twelve questions. Score, top gap, next step.' },
-  { id: 'train', num: '02', tag: 'Course', title: 'Train', line: 'Practice reps in a real AI tool, on synthetic data.' },
+  { id: 'train', num: '02', tag: 'Course', title: 'Train', line: 'Practice on synthetic data until the habit sticks.' },
   { id: 'build', num: '03', tag: 'Toolbox', title: 'Build', line: 'Skill files your team runs and reviews.' },
 ] as const;
 
-type StepId = (typeof STEPS)[number]['id'];
+const SKILL_PAGE = SKILL_EXCERPT.filter((l) => l.kind !== 'cmd' && !(l.kind === 'out' && l.text.endsWith('.md')));
 
 export function HowItWorks() {
-  const [active, setActive] = useState<StepId>('assess');
-
   return (
-    <div className="hm-steps">
-      <div className="hm-steps-tabs" role="tablist" aria-label="How it works">
-        {STEPS.map((s) => (
-          <button
-            key={s.id}
-            id={`hm-step-${s.id}`}
-            type="button"
-            role="tab"
-            aria-selected={active === s.id}
-            aria-controls="hm-step-panel"
-            className={active === s.id ? 'is-active' : undefined}
-            onClick={() => setActive(s.id)}
-          >
-            <span className="hm-k">
-              {s.num} · {s.tag}
+    <ol className="hm-journey">
+      {STEPS.map((s) => (
+        <li key={s.id} id={`hm-step-${s.id}`} className="hm-journey-step">
+          <div className="hm-journey-head">
+            <span className="hm-journey-node" aria-hidden="true">
+              {s.num}
             </span>
-            <span className="hm-steps-title">{s.title}</span>
-            <span className="hm-steps-line">{s.line}</span>
-          </button>
-        ))}
-      </div>
-
-      <div id="hm-step-panel" role="tabpanel" aria-labelledby={`hm-step-${active}`} className="hm-steps-panel">
-        {active === 'assess' && (
-          <div className="hm-panel-dark">
-            <p className="hm-k hm-gold">Sample question · one of twelve</p>
-            <p className="hm-panel-q">{ASSESS_QUESTION.prompt}</p>
-            <ul className="hm-options">
-              {ASSESS_QUESTION.options.map((o) => (
-                <li key={o.label} className={o.points === 3 ? 'is-picked' : undefined}>
-                  {o.label}
-                </li>
-              ))}
-            </ul>
+            <span className="hm-k">{s.tag}</span>
+            <h3 className="hm-steps-title">{s.title}</h3>
+            <p className="hm-steps-line">{s.line}</p>
           </div>
-        )}
 
-        {active === 'train' && TRAIN_REP && (
-          <div className="hm-panel-dark">
-            <p className="hm-k hm-gold">
-              Practice rep · Module {TRAIN_REP.moduleNumber} · {TRAIN_REP.title}
-            </p>
-            <p className="hm-msg hm-msg-user">{TRAIN_REP.starterPrompt}</p>
-            <div className="hm-msg hm-msg-ai">
-              <span className="hm-ai-badge" aria-hidden="true">
-                AI
-              </span>
-              <p>{TRAIN_REP.modelAnswer}</p>
-            </div>
-            <p className="hm-panel-note">Starter prompt and model answer from the Foundation course.</p>
-          </div>
-        )}
+          {s.id === 'assess' && (
+            <figure className="hm-sheet" aria-label="Sample assessment question">
+              <figcaption className="hm-sheet-k">Question 1 of 12</figcaption>
+              <p className="hm-sheet-q">{ASSESS_QUESTION.prompt}</p>
+              <ul className="hm-sheet-options">
+                {ASSESS_QUESTION.options.map((o, i) => (
+                  <li key={o.label} className={o.points === 3 ? 'is-picked' : undefined}>
+                    <span aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+                    {o.label}
+                  </li>
+                ))}
+              </ul>
+            </figure>
+          )}
 
-        {active === 'build' && (
-          <div className="hm-terminal" aria-label="Terminal showing the exception report skill file">
-            <div className="hm-terminal-bar" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <em>~/team-toolbox</em>
-            </div>
-            <pre>
-              {SKILL_EXCERPT.map((l) => (
-                <span key={l.text} className={`hm-t-${l.kind}`}>
-                  {l.text}
-                  {'\n'}
-                </span>
-              ))}
-            </pre>
-          </div>
-        )}
-      </div>
-    </div>
+          {s.id === 'train' && (
+            <figure className="hm-sheet" aria-label={`Module ${TRAIN_MODULE.number} example`}>
+              <figcaption className="hm-sheet-k">
+                Module {TRAIN_MODULE.number} · {TRAIN_MODULE.title}
+              </figcaption>
+              <p className="hm-edit-label">Before</p>
+              <p className="hm-edit-weak">
+                <s>{TRAIN_MODULE.weakExample}</s>
+              </p>
+              <p className="hm-edit-label">After</p>
+              <p className="hm-edit-strong">{TRAIN_MODULE.strongExample}</p>
+              <p className="hm-edit-why">{TRAIN_MODULE.exampleWhy}</p>
+            </figure>
+          )}
+
+          {s.id === 'build' && (
+            <figure className="hm-sheet hm-sheet-md" aria-label="Exception report skill file">
+              <figcaption className="hm-sheet-k">skills/exception-report.md</figcaption>
+              <pre>
+                {SKILL_PAGE.map((l) => (
+                  <span key={l.text} className={`hm-t-${l.kind}`}>
+                    {l.text}
+                    {'\n'}
+                  </span>
+                ))}
+              </pre>
+            </figure>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 }

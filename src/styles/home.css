@@ -118,19 +118,29 @@ body:has(.hm) { background: var(--ink); }
   background: rgba(4, 120, 87, 0.22); color: #9EE6C7;
 }
 .hm-session-checks li:last-child { background: var(--gold-a20); color: var(--gold-soft); }
+/* The slot reserves the collapsed (two-line) composer height in the layout.
+   The composer itself sits at the slot's bottom and grows upward over the
+   conversation area — empty while the prompt is being typed — so the full
+   prompt is visible and the window never changes size. */
+.hm-composer-slot {
+  position: relative; margin: 0 14px 12px;
+  font-size: 0.9375rem; line-height: 1.55;
+  height: calc(1.55em * 2 + 26px);
+}
 .hm-composer {
-  margin: 0 14px 12px;
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  background: #0D1F35;
   border: 1px solid var(--on-dark-10);
   border-radius: 14px;
   padding: 12px 14px;
   display: flex; align-items: flex-end; gap: 12px;
   font-size: 0.9375rem; line-height: 1.55;
 }
-/* Fixed two-line input: while typing, the newest line stays in view and
-   older lines scroll off the top, the way a real chat box behaves. */
+/* Grows with the prompt (two lines minimum); past the cap the newest line
+   stays in view, the way a real chat box behaves. */
 .hm-composer-field {
   flex: 1; min-width: 0; white-space: pre-wrap;
-  height: calc(1.55em * 2); overflow: hidden;
+  min-height: calc(1.55em * 2); max-height: calc(1.55em * 12); overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
 }
 
@@ -316,3 +326,48 @@ body:has(.hm) { background: var(--ink); }
   background: var(--gold); color: var(--ink); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; cursor: pointer;
 }
 .hm-check-copy:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Assess · Train · Build: a left-to-right journey of real documents ── */
+.hm-journey { list-style: none; margin: 0; padding: 0; display: grid; gap: 48px; position: relative; }
+@media (min-width: 1024px) {
+  .hm-journey { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .hm-journey::before {
+    content: ''; position: absolute; top: 19px; left: 20px; right: 20px; height: 1px;
+    background: linear-gradient(to right, var(--gold), rgba(200, 162, 74, 0.25));
+  }
+}
+.hm-journey-step { display: flex; flex-direction: column; gap: 24px; min-width: 0; position: relative; }
+.hm-journey-head { display: grid; gap: 8px; }
+.hm-journey-node {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 12px;
+  background: var(--cream); border: 1px solid var(--gold); color: var(--gold-deep);
+  font-family: var(--font-mono); font-size: 0.8125rem; position: relative; z-index: 1;
+}
+.hm-journey-step:first-child .hm-journey-node { background: var(--gold); color: var(--ink); }
+.hm-journey-head .hm-k { color: var(--gold-deep); }
+.hm-sheet {
+  margin: 0; flex: 1; padding: 22px 22px 24px; border-radius: 6px; background: #fff; color: var(--ink);
+  border: 1px solid rgba(7, 26, 47, 0.08);
+  box-shadow: 0 1px 2px rgba(7, 26, 47, 0.08), 0 24px 40px -24px rgba(7, 26, 47, 0.35);
+  display: flex; flex-direction: column; gap: 12px; font-size: 0.875rem; line-height: 1.5;
+}
+.hm-journey-step:nth-child(1) .hm-sheet { transform: rotate(-0.6deg); }
+.hm-journey-step:nth-child(3) .hm-sheet { transform: rotate(0.6deg); }
+.hm-sheet-k { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-500); padding-bottom: 10px; border-bottom: 1px solid rgba(7, 26, 47, 0.1); }
+.hm-sheet-q { margin: 0; font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.25; }
+.hm-sheet-options { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.hm-sheet-options li { display: flex; gap: 10px; align-items: baseline; padding: 9px 12px; border: 1px solid rgba(7, 26, 47, 0.12); border-radius: 8px; }
+.hm-sheet-options li span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--slate-500); }
+.hm-sheet-options li.is-picked { border-color: var(--gold); background: rgba(200, 162, 74, 0.1); }
+.hm-sheet-options li.is-picked span { color: var(--gold-deep); font-weight: 600; }
+.hm-edit-label { margin: 4px 0 -6px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-500); }
+.hm-edit-weak { margin: 0; padding: 10px 12px; border-radius: 8px; background: #FDF1EE; color: #7A1F10; }
+.hm-edit-weak s { text-decoration-color: rgba(122, 31, 16, 0.6); }
+.hm-edit-strong { margin: 0; padding: 10px 12px; border-radius: 8px; background: #EEF7F1; color: #11402A; border-left: 3px solid #2F8F5B; }
+.hm-edit-why { margin: auto 0 0; padding-top: 10px; font-size: 0.8125rem; color: var(--slate-600); border-top: 1px dashed rgba(7, 26, 47, 0.15); }
+.hm-sheet-md pre { margin: 0; white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; color: #2A3646; }
+.hm-sheet-md .hm-t-h1 { color: var(--ink); font-weight: 700; }
+.hm-sheet-md .hm-t-h2 { color: var(--gold-deep); font-weight: 600; }
+.hm-sheet-md .hm-t-out { color: #2A3646; }
+.hm-sheet-md .hm-t-flag { color: #A3341C; background: #FDF1EE; }
+.hm-light .hm-display { margin-bottom: 56px; }

@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from './_client';
 import { getPracticeRepById } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program';
 
 // matchMedia reports reduced motion, so the hero AI session renders its
 // finished exchange synchronously and the assertions are deterministic.
@@ -45,18 +46,16 @@ describe('HomePage', () => {
     expect(within(session).getByText('Banker reviews before use')).toBeTruthy();
   });
 
-  it('switches Assess / Train / Build panels to real artifacts', () => {
+  it('lays out Assess / Train / Build as real artifacts', () => {
     render(<HomePage />);
-    const panel = () => document.getElementById('hm-step-panel')!;
+    const step = (id: string) => document.getElementById(`hm-step-${id}`)!.textContent;
+    const m2 = FOUNDATION_MICRO_MODULES.find((m) => m.id === 'm2-low-risk-message-rewrite')!;
 
-    expect(panel().textContent).toContain('Do you know which AI tools you are allowed to use for work?');
-
-    fireEvent.click(screen.getByRole('tab', { name: /Train/i }));
-    expect(panel().textContent).toContain(getPracticeRepById('rewrite-for-clarity')!.modelAnswer);
-
-    fireEvent.click(screen.getByRole('tab', { name: /Build/i }));
-    expect(panel().textContent).toContain('# Exception Report Skill - v1.0');
-    expect(panel().textContent).toContain('[BSA REVIEW — DO NOT RESOLVE WITHOUT COMPLIANCE]');
+    expect(step('assess')).toContain('Do you know which AI tools you are allowed to use for work?');
+    expect(step('train')).toContain(m2.weakExample);
+    expect(step('train')).toContain(m2.strongExample);
+    expect(step('build')).toContain('# Exception Report Skill - v1.0');
+    expect(step('build')).toContain('[BSA REVIEW — DO NOT RESOLVE WITHOUT COMPLIANCE]');
   });
 
   it('checks a prompt in the browser and proposes a placeholder version', () => {

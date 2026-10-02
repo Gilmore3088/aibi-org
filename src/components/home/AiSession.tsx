@@ -25,8 +25,8 @@ export interface AiSessionProps {
 
 type Phase = 'idle' | 'typing' | 'thinking' | 'streaming' | 'done';
 
-const TYPE_STEP = 3; // characters per tick
-const TICK_MS = 28;
+const TYPE_STEP = 2; // characters per tick (~45 characters a second)
+const TICK_MS = 45;
 const THINK_MS = 700;
 const WORD_MS = 70;
 
@@ -177,25 +177,27 @@ export function AiSession({ label, prompt, answer, checks = [], footnote }: AiSe
         </div>
       </div>
 
-      <div className="hm-composer">
-        <span className="hm-composer-field">
-          <span className={composing && chars > 0 ? 'hm-composer-text' : 'hm-composer-placeholder'}>
-            {composing && chars > 0 ? prompt.slice(0, chars) : 'Message your approved AI tool…'}
-            {phase === 'typing' && <span className="hm-caret" aria-hidden="true" />}
+      <div className="hm-composer-slot">
+        <div className="hm-composer">
+          <span className="hm-composer-field">
+            <span className={composing && chars > 0 ? 'hm-composer-text' : 'hm-composer-placeholder'}>
+              {composing && chars > 0 ? prompt.slice(0, chars) : 'Message your approved AI tool…'}
+              {phase === 'typing' && <span className="hm-caret" aria-hidden="true" />}
+            </span>
           </span>
-        </span>
-        {phase === 'done' ? (
-          <button type="button" className="hm-replay" onClick={play}>
-            Replay
-          </button>
-        ) : (
-          <span className={`hm-send${composing && chars > 0 ? ' is-ready' : ''}`} aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="19" x2="12" y2="5" />
-              <polyline points="5 12 12 5 19 12" />
-            </svg>
-          </span>
-        )}
+          {phase === 'done' ? (
+            <button type="button" className="hm-replay" onClick={play}>
+              Replay
+            </button>
+          ) : (
+            <span className={`hm-send${composing && chars > 0 ? ' is-ready' : ''}`} aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </span>
+          )}
+        </div>
       </div>
       <p className="hm-session-foot">{footnote}</p>
     </div>
