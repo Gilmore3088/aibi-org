@@ -1009,3 +1009,113 @@ body:has(.ax-page) { background: var(--ink); }
   .rv, .rv-hero, .rv-panel, .rv-take, .rv-phase { background: #fff !important; color: #071A2F !important; box-shadow: none !important; }
   .rv-display, .rv-h2, .rv-dial-num strong, .rv-readout dd, .rv-bar-label { color: #071A2F !important; }
 }
+
+/* ── Results: alternate navy and cream bands; cards are paper, never
+   navy on navy. ── */
+.rv { background: var(--ink); }
+.rv-band.is-dark { background: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 22px 22px, var(--ink); color: var(--cream); }
+.rv-band.is-light { background: var(--cream); color: var(--ink); }
+.rv-band .rv-inner { padding-top: 72px; padding-bottom: 72px; }
+.rv-band-first .rv-inner { padding-top: 48px; }
+.rv-strip, .rv-details { margin-top: -32px; }
+
+/* Paper cards on the navy bands */
+.rv-band.is-dark .rv-readout,
+.rv-band.is-dark .rv-take,
+.rv-band.is-dark .rv-dims,
+.rv-band.is-dark .rv-roi-figure {
+  background: #F7F3EA; color: var(--ink); border: 0; border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -24px rgba(0, 0, 0, 0.7);
+}
+.rv-band.is-dark .rv-readout > div { border-color: rgba(7, 26, 47, 0.1); }
+.rv-band.is-dark .rv-readout dt { color: var(--gold-deep); }
+.rv-band.is-dark .rv-readout dd { color: var(--ink); font-weight: 500; }
+.rv-band.is-dark .rv-hero { background: transparent; box-shadow: none; border-color: var(--edge-gold); }
+.rv-band.is-dark .rv-take .rv-muted,
+.rv-band.is-dark .rv-dims .rv-muted { color: var(--slate-600); }
+.rv-band.is-dark .rv-take h3 { color: var(--ink); }
+.rv-band.is-dark .rv-take-n { color: var(--gold-deep); }
+.rv-band.is-dark .rv-take .rv-checks { color: var(--slate-700); }
+.rv-band.is-dark .rv-take .rv-checks li::before { color: var(--gold-deep); }
+.rv-band.is-dark .rv-take .rv-btn-ghost { color: var(--ink) !important; border-color: rgba(7, 26, 47, 0.25); }
+.rv-band.is-dark .rv-take .rv-btn-ghost:hover { border-color: var(--gold-deep); }
+.rv-band.is-dark .rv-dims { padding: 24px; }
+.rv-band.is-dark .rv-dims .rv-k { color: var(--gold-deep); }
+.rv-band.is-dark .rv-dims ol { border-color: rgba(7, 26, 47, 0.12); }
+.rv-band.is-dark .rv-dims li { color: var(--ink); border-color: rgba(7, 26, 47, 0.08); }
+.rv-band.is-dark .rv-dims li span { color: var(--gold-deep); }
+.rv-band.is-dark .rv-roi-figure .rv-k { color: var(--gold-deep); }
+.rv-band.is-dark .rv-roi-figure strong { color: var(--ink); }
+.rv-band.is-dark .rv-roi-figure p:last-child { color: var(--slate-600); }
+.rv-band.is-dark .rv-panel.rv-upsell { background: transparent; box-shadow: none; }
+
+/* Cream bands: white cards, ink type */
+.rv-band.is-light .rv-k { color: var(--slate-500); }
+.rv-band.is-light .rv-gold { color: var(--gold-deep); }
+.rv-band.is-light .rv-h2 { color: var(--ink); }
+.rv-band.is-light .rv-body { color: var(--slate-600); }
+.rv-band.is-light .rv-muted { color: var(--slate-500); }
+.rv-band.is-light .rv-panel,
+.rv-band.is-light .rv-phase,
+.rv-band.is-light .rv-details,
+.rv-band.is-light .rv-mini {
+  background: #fff; color: var(--ink); border: 1px solid rgba(7, 26, 47, 0.08);
+  box-shadow: 0 1px 2px rgba(7, 26, 47, 0.06), 0 18px 36px -24px rgba(7, 26, 47, 0.35);
+}
+.rv-band.is-light .rv-mini { box-shadow: none; background: var(--cream); }
+.rv-band.is-light .rv-mini ul { color: var(--slate-700); }
+.rv-band.is-light .rv-legend { color: var(--slate-500); }
+.rv-band.is-light .rv-bars { border-color: rgba(7, 26, 47, 0.12); }
+.rv-band.is-light .rv-bars li { border-color: rgba(7, 26, 47, 0.08); }
+.rv-band.is-light .rv-bar-label { color: var(--ink); }
+.rv-band.is-light .rv-bar-track span { background: rgba(7, 26, 47, 0.08); }
+.rv-band.is-light .rv-bar-val, .rv-band.is-light .rv-bar-band { color: var(--slate-500); }
+.rv-band.is-light .rv-legend .is-high, .rv-band.is-light .rv-bars .is-high .rv-bar-track .is-on { background: var(--ink); }
+.rv-band.is-light .rv-legend .is-mid, .rv-band.is-light .rv-bars .is-mid .rv-bar-track .is-on { background: var(--gold); }
+.rv-band.is-light .rv-legend .is-low, .rv-band.is-light .rv-bars .is-low .rv-bar-track .is-on { background: #C2412D; }
+.rv-band.is-light .rv-bars li.is-top .rv-bar-label,
+.rv-band.is-light .rv-bars li.is-top .rv-bar-band { color: #A3341C; font-weight: 600; }
+.rv-band.is-light .rv-details summary { color: var(--gold-deep); }
+.rv-band.is-light .rv-details dt { color: var(--ink); }
+.rv-band.is-light .rv-details dd { color: var(--slate-600); }
+.rv-band.is-light .rv-details dl > div { border-color: rgba(7, 26, 47, 0.08); }
+.rv-band.is-light .rv-pill { border-color: rgba(7, 26, 47, 0.2); color: var(--slate-600); }
+.rv-band.is-light .rv-pill.is-low { border-color: rgba(194, 65, 45, 0.4); color: #A3341C; }
+.rv-band.is-light .rv-pill.is-high { border-color: var(--gold); color: var(--gold-deep); }
+.rv-band.is-light .rv-days::before { background: linear-gradient(to right, var(--gold), rgba(200, 162, 74, 0.25)); }
+.rv-band.is-light .rv-days li::before { background: var(--cream); }
+.rv-band.is-light .rv-days li:first-child::before { background: var(--gold); }
+.rv-band.is-light .rv-day-n { color: var(--gold-deep); }
+.rv-band.is-light .rv-days p { color: var(--slate-700); }
+.rv-band.is-light .rv-phase.is-open { border: 2px solid var(--gold); }
+.rv-band.is-light .rv-phase-head h3 { color: var(--ink); }
+.rv-band.is-light .rv-phase-preview { background: var(--cream); }
+.rv-band.is-light .rv-phase-preview p:last-child { color: var(--ink); }
+.rv-band.is-light .rv-locked li { color: var(--slate-500); }
+.rv-band.is-light .rv-lock { border-color: rgba(7, 26, 47, 0.2); }
+.rv-band.is-light .rv-phase-note, .rv-band.is-light .rv-phase-foot { border-color: rgba(7, 26, 47, 0.08); color: var(--slate-500); }
+.rv-band.is-light .rv-phase-note strong, .rv-band.is-light .rv-phase-foot p { color: var(--ink); }
+.rv-band.is-light .rv-checks { color: var(--slate-700); }
+.rv-band.is-light .rv-checks li::before { color: var(--gold-deep); }
+.rv-band.is-light .rv-btn-ghost { color: var(--ink) !important; border-color: rgba(7, 26, 47, 0.25); }
+.rv-band.is-light .rv-playbooks { border-color: rgba(7, 26, 47, 0.12); }
+.rv-band.is-light .rv-playbook { color: var(--ink); border-color: rgba(7, 26, 47, 0.08); }
+.rv-band.is-light .rv-playbook-body { color: var(--slate-500); }
+.rv-band.is-light .rv-playbook-title { color: var(--ink); }
+.rv-band.is-light .rv-playbook.is-match .rv-playbook-title,
+.rv-band.is-light .rv-playbook:hover .rv-playbook-title { color: var(--gold-deep); }
+.rv-band.is-light .rv-panel .rv-h2, .rv-band.is-light .rv-gap .rv-h2 { color: var(--ink); }
+
+/* Assessment: answers as paper cards on navy */
+.as-focus .mk-take-q-option { background: #F7F3EA; border: 2px solid transparent; color: var(--ink); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+.as-focus .mk-take-q-option-label { color: var(--ink); }
+.as-focus .mk-take-q-option:hover { background: #fff; border-color: var(--gold); }
+.as-focus .mk-take-q-option.is-selected { background: #fff; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200, 162, 74, 0.25); }
+.as-focus .as-q-letter { border-color: rgba(7, 26, 47, 0.3); color: var(--slate-600); }
+.as-focus .mk-take-q-option:hover .as-q-letter { border-color: var(--gold-deep); color: var(--gold-deep); }
+.as-focus .mk-take-q-option.is-selected .as-q-letter { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.as-focus .mk-take-q-option-mark { color: var(--slate-500); }
+.as-focus .mk-take-q-option:hover .mk-take-q-option-mark, .as-focus .mk-take-q-option.is-selected .mk-take-q-option-mark { color: var(--gold-deep); }
+.rv-take .ax-prompt { background: var(--ink); border-color: var(--ink); }
+.rv-take .ax-prompt .ax-btn-line { color: var(--cream); border-color: var(--on-dark-20); }
+.rv-band.is-light { --slate-500: #475569; }

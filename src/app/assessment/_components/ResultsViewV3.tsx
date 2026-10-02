@@ -175,6 +175,7 @@ export function ResultsViewV3({
         />
       </div>
 
+      <div className="rv-band is-dark rv-band-first">
       <div className="rv-inner">
         {showPersonalEmailNote && (
           <aside aria-label="Personal email notice" className="rv-note">
@@ -253,6 +254,10 @@ export function ResultsViewV3({
           </section>
         )}
 
+      </div>
+      </div>
+      <div className="rv-band is-light">
+      <div className="rv-inner">
         {/* FREE SNAPSHOT TOPICS — one bar per answer, weakest first. Not the
             paid 8-dimension diagnostic. */}
         <section className="rv-section rv-split">
@@ -337,6 +342,10 @@ export function ResultsViewV3({
           </section>
         )}
 
+      </div>
+      </div>
+      <div className="rv-band is-dark">
+      <div className="rv-inner">
         {/* THREE TAKEAWAYS — prompt / helper tool / artifact. */}
         {focusGap && (
           <section className="rv-section">
@@ -383,6 +392,10 @@ export function ResultsViewV3({
           </section>
         )}
 
+      </div>
+      </div>
+      <div className="rv-band is-light">
+      <div className="rv-inner">
         {/* 7-DAY PLAN — a timeline, one step per day. */}
         <section className="rv-section">
           <p className="rv-k rv-gold">Your 7-day starter plan</p>
@@ -455,6 +468,10 @@ export function ResultsViewV3({
           </div>
         </section>
 
+      </div>
+      </div>
+      <div className="rv-band is-dark">
+      <div className="rv-inner">
         {/* LOCKED PAID DIAGNOSTIC PREVIEW — the 8 paid dimensions, named. */}
         <section className="rv-panel rv-upsell">
           <div>
@@ -498,6 +515,10 @@ export function ResultsViewV3({
           </div>
         </section>
 
+      </div>
+      </div>
+      <div className="rv-band is-light">
+      <div className="rv-inner">
         {/* ROLE PLAYBOOKS — a short list, best match first. */}
         <section className="rv-section rv-split">
           <div>
@@ -528,6 +549,7 @@ export function ResultsViewV3({
               })}
           </div>
         </section>
+      </div>
       </div>
     </div>
   );
