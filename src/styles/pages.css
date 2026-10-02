@@ -1,0 +1,102 @@
+/* ============================================================
+   Page-level pieces built on the ax- system (system.css):
+   playbooks, assessment landing, articles, trust pages.
+   ============================================================ */
+
+/* ---- Playbooks: folder listing in the hero window ---- */
+.pb-tree { list-style: none; margin: 0; padding: 8px 0; }
+.pb-tree a { display: flex; justify-content: space-between; gap: 16px; padding: 9px clamp(18px, 3vw, 28px); font-family: var(--font-mono); font-size: 0.8125rem; color: inherit; text-decoration: none; border-bottom: 1px solid rgba(7, 26, 47, 0.06); }
+.pb-tree li:last-child a { border-bottom: 0; }
+.pb-tree-name { color: var(--ink); }
+.pb-tree-meta { color: #6B7280; white-space: nowrap; }
+.pb-tree a:hover .pb-tree-name { color: var(--gold-deep); }
+@media (max-width: 420px) { .pb-tree-meta { display: none; } }
+
+/* ---- Playbooks: role directory on cream ---- */
+.pb-roles { display: grid; gap: 18px; }
+@media (min-width: 720px) { .pb-roles { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .pb-roles { grid-template-columns: repeat(3, 1fr); } }
+.pb-role { display: grid; align-content: start; gap: 10px; padding: 24px 24px 22px; border-radius: 14px; background: #fff; color: var(--ink); text-decoration: none; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32); transition: transform var(--t-med) var(--ease), border-color var(--t-med); }
+.pb-role:hover { transform: translateY(-2px); border-color: rgba(160, 122, 40, 0.55); }
+.pb-role:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.pb-role-title { font-family: var(--font-serif); font-size: 1.625rem; line-height: 1.1; }
+.pb-role-desc { font-size: 0.9375rem; line-height: 1.55; color: #46505E; }
+.pb-role-outs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.pb-role-outs span { font-family: var(--font-mono); font-size: 0.6875rem; color: #46505E; padding: 3px 8px; border-radius: 6px; background: #F3EFE6; }
+.pb-role-open { margin-top: 6px; font-size: 0.875rem; font-weight: 600; color: var(--gold-deep); }
+.pb-role-open span { display: inline-block; transition: transform var(--t-med) var(--ease); }
+.pb-role:hover .pb-role-open span { transform: translateX(4px); }
+
+/* ---- Role playbook: workflow in the hero window ---- */
+.pb-steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; }
+.pb-steps li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); }
+.pb-step-n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); padding-top: 3px; }
+.pb-step-body { display: grid; gap: 3px; }
+.pb-step-body strong { font-family: var(--font-serif); font-weight: 400; font-size: 1.25rem; line-height: 1.2; }
+.pb-step-out { font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; }
+
+/* ---- Role playbook: use cases as a paper register ---- */
+.pb-uses { list-style: none; margin: 0; padding: 0; background: #fff; border-radius: 14px; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32); }
+.pb-uses li { display: grid; grid-template-columns: 36px 1fr; gap: 6px 14px; padding: 22px clamp(18px, 3vw, 32px); border-bottom: 1px solid rgba(7, 26, 47, 0.07); }
+.pb-uses li:last-child { border-bottom: 0; }
+.pb-use-n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); padding-top: 6px; }
+.pb-use-main h3 { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.2; color: var(--ink); }
+.pb-use-main p { margin: 6px 0 0; font-size: 0.9375rem; line-height: 1.55; color: #46505E; max-width: 60ch; }
+.pb-use-out { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+@media (min-width: 860px) {
+  .pb-uses li { grid-template-columns: 36px 1fr 280px; align-items: center; }
+  .pb-use-out { grid-column: 3; flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+.pb-use-artifact { font-family: var(--font-mono); font-size: 0.75rem; color: #2A3442; padding: 4px 10px; border-radius: 6px; background: #F3EFE6; }
+.pb-risk { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; }
+.pb-risk.is-high { color: #A3341C; }
+.pb-risk.is-low { color: #3F6B4A; }
+
+/* ---- Role playbook: checklist as paper on navy ---- */
+.pb-check { display: grid; gap: 32px; align-items: start; }
+@media (min-width: 960px) { .pb-check { grid-template-columns: 0.8fr 1.2fr; gap: 56px; } }
+.pb-check .ax-section-head { margin-bottom: 0; }
+.pb-check-paper .ax-k { font-family: var(--font-mono); text-transform: none; letter-spacing: 0; }
+.pb-checks { list-style: none; margin: 0; padding: 0; display: grid; }
+.pb-checks li { position: relative; padding: 12px 0 12px 30px; border-top: 1px solid rgba(26, 26, 26, 0.08); font-size: 1rem; line-height: 1.5; color: #1A1A1A; }
+.pb-checks li::before { content: ''; position: absolute; left: 0; top: 15px; width: 16px; height: 16px; border: 1.5px solid var(--gold-deep); border-radius: 4px; }
+
+/* ---- Role playbook: template files ---- */
+.pb-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+@media (min-width: 720px) { .pb-files { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .pb-files { grid-template-columns: repeat(3, 1fr); } }
+.pb-file { position: relative; display: grid; gap: 8px; height: 100%; padding: 22px 22px 20px; border-radius: 4px 14px 4px 4px; background: #fff; color: var(--ink); text-decoration: none; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 14px 30px -22px rgba(7, 26, 47, 0.3); transition: transform var(--t-med) var(--ease), border-color var(--t-med); }
+.pb-file::after { content: ''; position: absolute; top: 0; right: 0; width: 22px; height: 22px; background: linear-gradient(225deg, var(--cream) 50%, #EAE3D3 50%); border-radius: 0 14px 0 0; }
+.pb-file:hover { transform: translateY(-2px); border-color: rgba(160, 122, 40, 0.55); }
+.pb-file-type { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: #6B5A2E; }
+.pb-file-name { font-family: var(--font-serif); font-size: 1.375rem; line-height: 1.2; }
+.pb-file-open { margin-top: auto; padding-top: 6px; font-size: 0.875rem; font-weight: 600; color: var(--gold-deep); }
+
+/* ---- Playbook template: contents + document ---- */
+.pb-toc { list-style: none; margin: 10px 0 0; padding: 0; }
+.pb-toc a { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 9px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); color: inherit; text-decoration: none; font-size: 0.9375rem; line-height: 1.4; }
+.pb-toc a:hover { color: var(--gold-deep); }
+.pb-toc-for { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgba(7, 26, 47, 0.08); font-size: 0.8125rem; line-height: 1.5; color: #4B5563; }
+.pb-toc-for strong { color: var(--ink); }
+.pb-crumb { margin: 0 auto 18px; max-width: 860px; font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; }
+.pb-crumb a { color: var(--gold-deep) !important; text-decoration: none; }
+.pb-doc { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 6px; border: 1px solid rgba(7, 26, 47, 0.08); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 30px 60px -36px rgba(7, 26, 47, 0.4); padding: clamp(22px, 5vw, 64px); }
+.pb-doc-section { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); scroll-margin-top: 96px; }
+.pb-doc-section:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 560px) { .pb-doc-section { grid-template-columns: 1fr; gap: 4px; } }
+.pb-doc-n { margin: 0; padding-top: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); }
+.pb-doc-section h2 { margin: 0 0 12px; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 1.875rem); line-height: 1.15; color: var(--ink); }
+.pb-doc-intro { margin: 0 0 14px; font-size: 1rem; line-height: 1.65; color: #46505E; }
+.pb-doc-principle { margin: 4px 0 16px; padding: 14px 18px; border-left: 3px solid var(--gold); background: #FBF8F1; font-size: 1rem; line-height: 1.55; color: var(--ink); }
+.pb-doc-section .pb-checks li { color: var(--ink); }
+.pb-doc-fields { margin: 8px 0 0; display: grid; }
+.pb-doc-fields div { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid rgba(7, 26, 47, 0.07); }
+@media (min-width: 720px) { .pb-doc-fields div { grid-template-columns: 220px 1fr; gap: 20px; } }
+.pb-doc-fields dt { font-weight: 600; font-size: 0.9375rem; color: var(--ink); }
+.pb-doc-fields dd { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #46505E; }
+.pb-doc-steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; font-size: 1rem; line-height: 1.6; color: var(--ink); }
+.pb-doc-section .ax-prompt { margin-top: 18px; }
+.pb-doc-sources { margin-top: 8px; padding-top: 24px; border-top: 1px solid rgba(7, 26, 47, 0.12); }
+.pb-doc-sources ul { margin: 8px 0 0; padding-left: 18px; font-size: 0.875rem; line-height: 1.6; color: #46505E; }
+.pb-doc .ax-prompt { background: #0D1F35; border-color: rgba(200, 162, 74, 0.35); --on-dark-20: rgba(255, 255, 255, 0.2); }
+.pb-doc .ax-prompt .ax-k { color: var(--gold-soft); }

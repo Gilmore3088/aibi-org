@@ -20,7 +20,7 @@ import { DIMENSION_LABELS } from '@content/assessments/v3/types';
 import type { Dimension } from '@content/assessments/v3/types';
 import type { FreeRole } from '@content/assessments/v3/roles';
 import { DIMENSION_LABELS as V4_DIMENSION_LABELS } from '@content/assessments/v4/types';
-import { PLAYBOOK_INDEX, PLAYBOOKS, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
+import { PLAYBOOK_INDEX, PLAYBOOKS, PLAYBOOK_FOCUS, FREE_ROLE_TO_PLAYBOOK, type RoleSlug } from '@/app/playbooks/data';
 import { SiteHeader } from '@/components/mockup';
 import { CopyPrompt } from '@/components/ax';
 import { PdfDownloadButton } from './PdfDownloadButton';
@@ -99,21 +99,6 @@ function missionInstitutionName(institutionName: string | null | undefined): str
   return trimmed;
 }
 
-// Role playbooks are sourced from the single index in app/playbooks/data.ts
-// (no more hard-coded card list here). Every free role now resolves to a
-// dedicated playbook via FREE_ROLE_TO_PLAYBOOK; 'retail' is the fallback when
-// no role was captured. The presentation-only eyebrow tag lives here.
-const PLAYBOOK_TAG: Record<RoleSlug, string> = {
-  compliance: 'Risk lens',
-  retail: 'Frontline',
-  marketing: 'Brand safety',
-  lending: 'Credit',
-  'bsa-aml': 'Surveillance',
-  infosec: 'Tool safety',
-  executive: 'Direction',
-  operations: 'Workflow',
-  'training-hr': 'Enablement',
-};
 
 function bestMatchPlaybook(role: FreeRole | null | undefined): RoleSlug {
   return role ? FREE_ROLE_TO_PLAYBOOK[role] : 'retail';
@@ -532,7 +517,7 @@ export function ResultsViewV3({
                   <li key={p.slug}>
                     <a href={`/playbooks/${p.slug}`}>
                       <span className="rv-pb-index-title">{p.title}</span>
-                      <span className="rv-pb-index-tag">{PLAYBOOK_TAG[p.slug]}</span>
+                      <span className="rv-pb-index-tag">{PLAYBOOK_FOCUS[p.slug]}</span>
                       <span className="rv-pb-index-arrow" aria-hidden="true">→</span>
                     </a>
                   </li>
