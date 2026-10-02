@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PurchaseAccessLinkForm, PurchaseHelpForm } from './PurchaseHelpForm';
 import { SiteHeader } from '@/components/mockup';
+import { AxHero } from '@/components/ax';
 import './purchase-help.css';
 
 export const metadata: Metadata = {
@@ -22,19 +23,23 @@ export default async function PurchaseHelpPage({ searchParams }: PurchaseHelpPag
   const prefillEmail = supportEmailParam(sp.email);
 
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page">
       <SiteHeader activePath={undefined} cta={{ label: 'Start free assessment', href: '/assessment/take' }} />
-      <main className="purchase-help">
-        <section className="purchase-help__shell">
+      <AxHero
+        cmd="support --purchase"
+        title="Help with access, receipts, refunds, or team seats."
+        lede={
+          <>
+            Send the purchase email you used and any checkout reference you have. Access issues are triaged first;
+            refund requests are reviewed within 1 business day from hello@aibankinginstitute.com.
+          </>
+        }
+      />
+      <main className="ax-section ax-light purchase-help">
+        <section className="purchase-help__shell" aria-label="Purchase support">
           <div className="purchase-help__intro">
-            <p>Purchase support</p>
-            <h1>Help with access, receipts, refunds, or team seats.</h1>
-            <span>
-              Send the purchase email you used and any checkout reference you have. Access issues are
-              triaged first; refund requests are reviewed within 1 business day from
-              hello@aibankinginstitute.com.
-            </span>
             <div className="purchase-help__policy" aria-label="Refund and response expectations">
+              <p className="ax-k">refund-self-check.md</p>
               <h2>Refund self-check</h2>
               <p>
                 Refunds are reviewed by a human before any Stripe action. Use this checklist before

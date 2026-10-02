@@ -195,3 +195,39 @@
 .pb-doc-table th { text-align: left; padding: 10px 14px; background: #F3EFE6; color: var(--ink); font-weight: 600; white-space: nowrap; }
 .pb-doc-table td { padding: 10px 14px; border-top: 1px solid rgba(7, 26, 47, 0.07); color: #2A3442; vertical-align: top; min-width: 140px; }
 .pb-doc-section > div { min-width: 0; }
+
+/* ---- MockupShell content pages (security, FAQ, legal, references) ---- */
+.ax-page .ax-section.ax-light.is-paper { background: #FFFDF8; }
+.ax-shell-block .ax-section-head { max-width: 820px; }
+.ax-shell-lede { margin: 0; font-size: 1.0625rem; line-height: 1.65; color: var(--on-dark-65); max-width: 68ch; }
+.ax-shell-lede a { color: var(--gold-deep) !important; font-weight: 600; }
+.ax-shell-block .ax-display { font-size: clamp(2rem, 4vw, 3rem); }
+
+/* Dark islands inside cream bands (inline navy panels, document asides):
+   restore the on-dark tokens that .ax-light flips to ink. */
+.ax-light :is([style*="background: var(--ink)"], [style*="background:var(--ink)"], .mk-document-aside) {
+  --on-dark-08: rgba(255, 255, 255, 0.08);
+  --on-dark-10: rgba(255, 255, 255, 0.1);
+  --on-dark-20: rgba(255, 255, 255, 0.2);
+  --on-dark-50: rgba(255, 255, 255, 0.5);
+  --on-dark-65: rgba(255, 255, 255, 0.65);
+  --on-dark-70: rgba(255, 255, 255, 0.7);
+  --on-dark-80: rgba(255, 255, 255, 0.8);
+  color: var(--cream);
+}
+.ax-light .mk-document-aside :is(p, li) { color: rgba(247, 243, 234, 0.8); }
+.ax-light .mk-document-aside .mk-proof-eyebrow { color: var(--gold-soft); }
+.sec-posture li { font-size: 0.9375rem; color: #2A3442 !important; }
+.sec-posture li::before { color: var(--gold-deep) !important; }
+.sec-posture-links { margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.875rem; font-weight: 600; }
+.sec-posture-links a { color: var(--gold-deep) !important; text-decoration: none; }
+
+/* ---- Certifications: example certificate in the hero ---- */
+.cert-sample { text-align: center; padding: 12px 4px 4px; border: 1px solid rgba(160, 122, 40, 0.45); outline: 1px solid rgba(160, 122, 40, 0.2); outline-offset: 5px; border-radius: 4px; }
+.cert-sample-title { margin: 6px 0 0; font-family: var(--font-serif); font-size: clamp(2rem, 3.6vw, 2.75rem); line-height: 1.05; color: var(--ink); }
+.cert-sample-to { margin: 10px 0 0; font-size: 0.875rem; color: #4B5563; }
+.cert-sample-to span { font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; color: var(--ink); }
+.cert-sample-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 12px 0; padding-top: 14px; border-top: 1px solid rgba(7, 26, 47, 0.1); }
+.cert-sample-meta dt { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6B7280; }
+.cert-sample-meta dd { margin: 4px 0 0; font-size: 0.8125rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.cert-sample-verify { margin: 14px 0 10px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); }
