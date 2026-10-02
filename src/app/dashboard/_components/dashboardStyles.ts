@@ -262,4 +262,7 @@ export const dashboardStyles = `
   .mockup-dash .sec.dark .sec-head h2 strong{ color:var(--gold-deep) }
   .mockup-dash .sec.dark .sec-head{ border-color:var(--rule-strong) }
   .mockup-dash .sec.dark .sec-head .more{ color:var(--gold-deep) }
+  /* Buttons and tabs read like the rest of the site: sentence case, no tracking. */
+  .mockup-dash .btn{ font-size:15px; font-weight:600; letter-spacing:0; text-transform:none }
+  .mockup-dash .tab{ font-family:var(--font-mono); font-weight:400; letter-spacing:0.08em }
 `;

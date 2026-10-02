@@ -287,13 +287,13 @@ export function ResourcesExperience() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <p className="mk-k rx-hero-kicker">AI Banking Resources</p>
+            <p className="ax-cmd">resources --free --editable</p>
             <h1>Find the right AI artifact for the job in front of you.</h1>
             <p className="mk-lede">
               Preview practical bank AI resources first. Download the editable versions when
               you are ready to put them to work.
             </p>
-            <div className="mk-ctas">
+            <div className="ax-actions">
               <Button variant="gold" size="lg" href="#resources-main">
                 Browse resources <ArrowRight size={16} />
               </Button>

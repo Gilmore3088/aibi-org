@@ -5187,10 +5187,10 @@ section.mk-std { padding: 56px 0; }
   justify-content: center;
   background: var(--gold);
   color: var(--ink);
-  font-weight: 700;
-  font-size: 0.8125rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
   padding: 14px 16px;
   border-radius: 12px;
