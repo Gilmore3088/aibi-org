@@ -265,3 +265,16 @@ h1:is([style*="font-weight:700"], [style*="font-weight:800"], [style*="font-weig
 
 /* ---- Paid In-Depth report: headings on the display face ---- */
 .mk-pr-shell :is(h1, h2, h3) { font-family: var(--font-serif) !important; font-weight: 400 !important; letter-spacing: -0.01em !important; }
+
+/* ---- Practice rep: navy masthead (crumb + header), cream workspace ---- */
+.pr-scope { background: var(--cream); }
+.pr-scope main > div > nav,
+.pr-scope main > div > header { background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax); }
+.pr-scope main > div > nav { padding-top: 28px; margin-bottom: 0; }
+.pr-scope main > div > header { margin-top: 0; padding-top: 18px; padding-bottom: 48px; border-bottom: 0; }
+.pr-scope main > div > nav + header { margin-top: -1px !important; }
+.pr-scope main > div > header h1 { color: var(--cream); font-weight: 400; }
+.pr-scope main > div > header p { color: rgba(247, 243, 234, 0.72); }
+.pr-scope main > div > :is(nav, header) :is(a, span, p).font-serif-sc { color: var(--gold-soft); }
+.pr-scope .font-serif-sc { font-family: var(--font-mono); letter-spacing: 0.1em; }
+.pr-scope main > div > section .font-serif-sc { color: var(--gold-deep); }
