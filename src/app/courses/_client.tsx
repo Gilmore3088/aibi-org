@@ -32,19 +32,14 @@ const DEFAULT_FACTS: CoursesOverviewFacts = {
   ],
 };
 
-// Verbatim planted error from public/sandbox-data/foundation-program/module-3/
-// ai-output-with-errors.md. Quoted only to be struck: SR 11-7 was superseded by SR 26-2 (April 2026).
-const PLANTED_CLAIM =
-  "Section 7.3 of SR 11-7 specifically mandates that institutions using AI-based decision models must conduct quarterly bias audits and submit findings to their primary federal regulator within 30 calendar days.";
-
 export default function CoursesIndexPage({
   facts = DEFAULT_FACTS,
 }: {
   readonly facts?: CoursesOverviewFacts;
 }) {
   const pricingBullets = [
-    `All ${facts.moduleCount} modules, self-paced`,
-    `${facts.artifactCount}-piece Foundation Packet`,
+    facts.durationLabel ?? "Self-paced",
+    "Every artifact saved to your Foundation Packet",
     "Certificate on final submission",
   ];
 
@@ -113,12 +108,6 @@ export default function CoursesIndexPage({
           </AxWindow>
         }
       />
-      <div className="mk-container">
-        <p className="ax-proofline">
-          {facts.moduleCount} modules · {facts.durationLabel ?? "self-paced"} ·{" "}
-          {facts.artifactCount}-piece Foundation Packet
-        </p>
-      </div>
 
       <AxSection
         light
@@ -129,46 +118,7 @@ export default function CoursesIndexPage({
         <PracticeReps />
       </AxSection>
 
-      {/* The planted-error practice file from Module 3 */}
-      <section
-        className="ax-section ax-fabrication"
-        aria-labelledby="fabrication-title"
-      >
-        <div className="mk-container ax-fabrication-inner">
-          <div>
-            <p className="ax-k ax-red">Module 3 · practice file</p>
-            <h2 id="fabrication-title" className="ax-display">
-              Every AI answer <span className="ax-red">gets checked.</span>
-            </h2>
-            <p className="ax-muted">
-              Learners find the planted errors before anything leaves the
-              building.
-            </p>
-          </div>
-          <figure className="ax-paper">
-            <figcaption className="ax-k">ai-output-with-errors.md</figcaption>
-            <p className="ax-paper-title">
-              Community Bank AI Compliance Summary
-            </p>
-            <p className="ax-paper-meta">
-              <strong>Prepared by:</strong> AI Research Assistant
-            </p>
-            <p className="ax-paper-h">Model Risk Management Requirements</p>
-            <p>
-              Federal regulators have established clear expectations for AI
-              model governance. <s className="hm-strike">{PLANTED_CLAIM}</s>
-            </p>
-            <p className="ax-paper-flag">
-              <strong>Fabricated citation.</strong> SR 11-7 has no Section 7.3
-              and no such mandate — and SR 11-7 itself was superseded by SR 26-2
-              in April 2026.
-            </p>
-          </figure>
-        </div>
-      </section>
-
       <AxSection
-        light
         id="pillars"
         kicker="The path"
         title="Four pillars, in order."

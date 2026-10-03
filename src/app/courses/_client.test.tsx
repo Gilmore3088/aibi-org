@@ -7,7 +7,7 @@ describe('CoursesIndexPage', () => {
     render(<CoursesIndexPage />);
 
     expect(screen.getByText(/not a license, regulator approval/i)).toBeTruthy();
-    expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(4);
+    expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(3);
   });
 
   it('leads with Foundation outcomes and keeps the enrollment CTA focused', () => {
@@ -15,9 +15,6 @@ describe('CoursesIndexPage', () => {
 
     expect(
       screen.getByRole('heading', { name: /ai training for community bank staff/i }),
-    ).toBeTruthy();
-    expect(
-      screen.getByText(/18 modules · self-paced · 18-piece Foundation Packet/i),
     ).toBeTruthy();
     expect(screen.queryByText(/182 minutes/i)).toBeNull();
     expect(screen.queryByText(/Branch operations reviewer/i)).toBeNull();
@@ -30,7 +27,7 @@ describe('CoursesIndexPage', () => {
     expect(screen.queryByRole('link', { name: /Get In-Depth report/i })).toBeNull();
   });
 
-  it('surfaces total seat time in the hero proofline when facts provide it', () => {
+  it('surfaces total seat time in the enrollment list when facts provide it', () => {
     render(
       <CoursesIndexPage
         facts={{
@@ -44,7 +41,7 @@ describe('CoursesIndexPage', () => {
     );
 
     expect(
-      screen.getByText(/18 modules · ~3 hours self-paced · 18-piece Foundation Packet/i),
+      screen.getByText(/~3 hours self-paced/i),
     ).toBeTruthy();
   });
 });
