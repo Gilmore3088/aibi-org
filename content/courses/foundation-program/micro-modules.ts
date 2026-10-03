@@ -362,7 +362,7 @@ export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
     tryTask: 'Adapt the same prompt for retail, lending, operations, or compliance.',
     buildTask: 'Adapt a general prompt into a role prompt card for your own recurring task.',
     saveArtifact: 'Role Prompt Card',
-    visualModel: ['Role', 'Task', 'Source', 'Reviewer'],
+    visualModel: ['Context (role)', 'Objective', 'Resources', 'Expectations (reviewer)'],
     reviewChecklist: ['Role is specific', 'Source is allowed', 'Reviewer named'],
     qualitySignals: ['Fits one job', 'Not generic', 'Escalation visible'],
     weakExample: 'Act like a banker and help me.',

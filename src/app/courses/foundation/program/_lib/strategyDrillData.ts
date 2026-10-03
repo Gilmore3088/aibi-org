@@ -24,7 +24,7 @@ export const STRATEGIES: readonly Strategy[] = [
 // One-line definition of each strategy, shown on the shelf so the taxonomy is
 // explained before the learner is asked to match tasks to it.
 export const STRATEGY_DEFINITIONS: Readonly<Record<Strategy, string>> = {
-  Structured: 'Create new output from scratch — name the role, task, and format.',
+  Structured: 'Create new output from scratch — set the context, the objective, and the expected format.',
   Transformation: 'Reshape text you already have into a tighter or clearer form.',
   Analysis: 'Review existing material through a defined lens to find gaps or risks.',
   Thinking: 'Get structure and trade-offs to reason through a decision before acting.',
@@ -47,7 +47,7 @@ export const STRATEGY_ROUNDS: readonly DrillRound[] = [
   {
     task: 'Draft a first response to a member who complained about a fee.',
     answer: 'Structured',
-    why: 'New output from nothing — name the role, the task, and the format.',
+    why: 'New output from nothing — set the context, the objective, and the expected format.',
   },
   {
     task: 'Find the missing items in a loan file against an underwriting checklist.',

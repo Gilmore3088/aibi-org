@@ -38,7 +38,7 @@ export const MODULE_3_PROMPTING_ACTIVITIES: readonly Activity[] = [
         minLength: 30,
         required: true,
         placeholder:
-          'A concise prompt that names the role, states the task, grounds the answer in the approved source, and sets the format.',
+          'A concise CORE prompt: the context, the objective, the approved source as its resource, and the expected format.',
       },
     ],
   },

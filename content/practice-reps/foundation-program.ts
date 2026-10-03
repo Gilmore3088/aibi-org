@@ -74,7 +74,7 @@ export const FOUNDATION_PRACTICE_REPS: readonly PracticeRep[] = [
     scenario:
       'You want one reusable prompt for a weekly task in your role.',
     task:
-      'Build a role-based prompt with role, task, format, and constraints.',
+      'Build a role-based CORE prompt: context, objective, resources, and expectations.',
     constraints: [
       'Use placeholders for any institution-specific details.',
       'Specify the audience and output format.',

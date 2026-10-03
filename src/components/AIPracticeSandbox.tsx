@@ -8,6 +8,12 @@ import { PLAYGROUND_MODELS } from '@/lib/toolbox/playground-models';
 import type { ProviderName } from '@/lib/ai-harness/types';
 import type { FoundationLabBrief } from '@content/courses/foundation-program/lab-first';
 import { getFoundationLabBrief } from '@content/courses/foundation-program/lab-first';
+import { CORE_COACH_RULE, OLDER_LABEL_NOTE, OLDER_LABELS } from '@content/frameworks/core';
+
+// Lab sample files and coach prompts live in content/sandbox-data/, which is
+// time-fixed (CLAUDE.md) and in places still uses older prompt labels. The
+// coach is told to label in CORE, and learners see a one-line mapping when the
+// loaded material uses the older labels.
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -323,6 +329,7 @@ export function AIPracticeSandbox({
       (model) => model.provider === selectedModel.provider && model.id === selectedModel.model,
     ) ?? DEFAULT_MODEL;
   const dataReady = Boolean(dataContent && !dataContent.startsWith('Error loading'));
+  const usesOlderLabels = OLDER_LABELS.test(`${sandboxConfig.systemPrompt}\n${dataContent ?? ''}`);
   const promptPrepared = input.trim().length > 0 || messages.some((message) => message.role === 'user');
   const assistantOutputReady = messages.some(
     (message) => message.role === 'assistant' && message.content.trim().length > 0,
@@ -595,8 +602,8 @@ export function AIPracticeSandbox({
           moduleId,
           product,
           systemPrompt: dataContent
-            ? `${sandboxConfig.systemPrompt}\n\n---\n\nIMPORTANT RESPONSE GUIDELINES: Keep responses focused and complete. Aim for 300-600 words. Use concise tables (5-8 rows max). Do not produce exhaustive analyses — give the learner actionable insight they can use immediately. If the question spans multiple items, summarize in a comparison table rather than analyzing each one in depth. Always finish your response — never cut off mid-thought.\n\n---\n\nLEARNER PREDICTION BEFORE RUNNING AI: ${savedPrediction}\n\nWhen useful, make it easy for the learner to compare the output against that prediction during review. Do not invent facts to satisfy the prediction.\n\n---\n\nThe following sample data has been pre-loaded for this exercise. The learner can reference it directly without pasting it. Treat it as already provided.\n\n### ${selectedData.label}\n\n${dataContent}`
-            : `${sandboxConfig.systemPrompt}\n\n---\n\nLEARNER PREDICTION BEFORE RUNNING AI: ${savedPrediction}\n\nWhen useful, make it easy for the learner to compare the output against that prediction during review. Do not invent facts to satisfy the prediction.`,
+            ? `${sandboxConfig.systemPrompt}\n\n---\n\n${CORE_COACH_RULE}\n\n---\n\nIMPORTANT RESPONSE GUIDELINES: Keep responses focused and complete. Aim for 300-600 words. Use concise tables (5-8 rows max). Do not produce exhaustive analyses — give the learner actionable insight they can use immediately. If the question spans multiple items, summarize in a comparison table rather than analyzing each one in depth. Always finish your response — never cut off mid-thought.\n\n---\n\nLEARNER PREDICTION BEFORE RUNNING AI: ${savedPrediction}\n\nWhen useful, make it easy for the learner to compare the output against that prediction during review. Do not invent facts to satisfy the prediction.\n\n---\n\nThe following sample data has been pre-loaded for this exercise. The learner can reference it directly without pasting it. Treat it as already provided.\n\n### ${selectedData.label}\n\n${dataContent}`
+            : `${sandboxConfig.systemPrompt}\n\n---\n\n${CORE_COACH_RULE}\n\n---\n\nLEARNER PREDICTION BEFORE RUNNING AI: ${savedPrediction}\n\nWhen useful, make it easy for the learner to compare the output against that prediction during review. Do not invent facts to satisfy the prediction.`,
         }),
       });
 
@@ -949,6 +956,11 @@ export function AIPracticeSandbox({
             <p className="mt-0.5 font-sans text-xs text-[color:var(--slate-600)]">
               {selectedData.description}
             </p>
+            {usesOlderLabels ? (
+              <p className="mt-1.5 font-sans text-xs text-[color:var(--ink)]" data-testid="older-label-note">
+                {OLDER_LABEL_NOTE}
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {sandboxConfig.sampleData.length > 1 && (

@@ -67,6 +67,12 @@ export const FIVE_MOVES_TO_CORE: Readonly<Record<string, readonly CorePartKey[] 
   Escalate: 'after-the-answer',
 };
 
+/** Sent to the lab coach with every request (see AIPracticeSandbox). */
+export const CORE_COACH_RULE = `FRAMEWORK: This course teaches the CORE prompt framework (${CORE_PART_LIST}). When you show or label a prompt structure, use those four parts. If the sample data or these instructions use older labels (RTFC, Role, Task, Format, Constraints, Output format), map them: Role -> Context, Task -> Objective, the source material -> Resources, Format and Constraints -> Expectations.`;
+
+/** True when material uses the older RTFC or Role/Task labels. */
+export const OLDER_LABELS = /\bRTFC\b|^\s*-\s*(Role|Task|Output format):/im;
+
 /**
  * One-line bridge for readers who met RTFC or the Banker Prompt Formula
  * elsewhere. Used where time-fixed material (the lab sample files) still

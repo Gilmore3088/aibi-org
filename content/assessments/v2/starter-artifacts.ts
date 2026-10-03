@@ -141,8 +141,8 @@ that window — a document you did not paste, a fact from last quarter
 ask: did I give it the right context?
 
 **Prompt.** The instruction you give the tool. A vague prompt produces
-a vague answer. A precise prompt — role, task, constraints, audience —
-produces something useful. Prompt quality is your job, not the tool's.
+a vague answer. A precise prompt covers the four CORE parts — context,
+objective, resources, expectations — and produces something useful. Prompt quality is your job, not the tool's.
 
 **Human in the loop.** A banker reviews and accepts every AI output
 before it leaves the institution. No AI output goes to a customer, a

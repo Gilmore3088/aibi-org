@@ -28,17 +28,8 @@ const RULES: readonly [string, RegExp][] = [
 // Files still being migrated. Each plan step removes its entries; the list
 // must be empty when the work is done (step 7).
 const PENDING = new Set<string>([
-  'content/assessments/v2/starter-artifacts.ts',
-  'content/courses/foundation-program/micro-modules.ts',
-  'content/courses/foundation-program/module-3-activities.ts',
-  'content/courses/foundation-program/prompt-library.ts',
-  'content/courses/foundation-program/skill-pedagogy-reference.md',
-  'content/curriculum/skills.ts',
-  'content/practice-reps/foundation-program.ts',
   'public/downloads/source/banker-prompt-formula-card.html',
   'public/downloads/source/safe-ai-use-checklist.html',
-  'src/app/courses/foundation/program/_lib/strategyDrillData.ts',
-  'src/app/courses/foundation/program/quick-wins/_components/WinsForm.tsx',
   'src/app/prompt-cards/PromptCardsExperience.tsx',
   'src/app/resources/the-skill-not-the-prompt/page.tsx',
   'src/components/home/HomeSections.tsx',
