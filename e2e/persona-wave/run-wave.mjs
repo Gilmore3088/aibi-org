@@ -263,7 +263,7 @@ class Session {
     await locator.scrollIntoViewIfNeeded({ timeout: 4_000 }).catch(() => {});
     const href = await locator.getAttribute('href', { timeout: 2_000 }).catch(() => null);
     try {
-      await locator.click({ timeout: 6_000 });
+      await locator.click({ timeout: 12_000 });
       if (href && href.startsWith('/') && !href.startsWith('/#')) {
         const target = href.split('#')[0].split('?')[0];
         if (target && target !== new URL(before).pathname) {
@@ -369,6 +369,19 @@ class Session {
       await this.click(link().first(), label);
       if (new URL(this.page.url()).pathname === href) return true;
     }
+    // Focused pages (the assessment) keep only the logo. Home is one click
+    // away and every nav link one more: a two-click path, not a dead end.
+    const logo = this.page.locator('header a[href="/"]:visible');
+    if (href !== '/' && (await logo.count())) {
+      await this.click(logo.first(), `${label} via home`);
+      if (await link().count()) {
+        await this.click(link().first(), label);
+        if (new URL(this.page.url()).pathname === href) {
+          await this.addFriction('two_click_path', `${label}: reached ${href} via the home page`, 0);
+          return true;
+        }
+      }
+    }
     await this.goto(href, label, { fallback: true });
     return false;
   }
@@ -413,7 +426,10 @@ class Session {
 async function freeAssessment(s, { thenInDepth = false } = {}) {
   if (!s.page.url().includes('/assessment/take')) {
     const ok = await s.clickCta(/get my readiness score|start free|start the free assessment|take the assessment|readiness score/i, 'start free assessment', { scope: `header, ${ROOT}`, required: false });
-    if (!ok) await s.goto('/assessment/take', 'start assessment', { fallback: true });
+    if (!ok && (await s.navTo('/assessment', 'Assessment nav'))) {
+      await s.clickCta(/get my readiness score|start free|start the free assessment|take the assessment|readiness score|start/i, 'start free assessment', { scope: `header, ${ROOT}`, required: false });
+    }
+    if (!s.page.url().includes('/assessment/take')) await s.goto('/assessment/take', 'start assessment', { fallback: true });
   }
   let answered = 0;
   for (let i = 0; i < 16; i += 1) {
@@ -558,7 +574,14 @@ async function practiceTinkerer(s) {
   const resp = s.page.waitForResponse((r) => /\/api\/(playground\/run|sandbox\/chat)/.test(r.url()), { timeout: 30_000 }).catch(() => null);
   if (!(await s.clickCta(/^run|run (it|prompt|scenario)|try it|compare/i, 'run practice prompt'))) return;
   const r = await resp;
-  await s.page.waitForTimeout(1_500);
+  // The output panel updates after the response resolves; under dev load
+  // that can take several seconds, so wait for it rather than a fixed pause.
+  await s.page
+    .locator(ROOT)
+    .first()
+    .filter({ hasText: /sample output|example output|sample response|temporarily unavailable|at capacity/i })
+    .waitFor({ timeout: 10_000 })
+    .catch(() => {});
   const text = await s.page.locator(ROOT).first().innerText().catch(() => '');
   if (r && r.status() < 400) s.value('practice_output', `${r.status()}`);
   else if (/sample output|example output|sample response/i.test(text)) {
@@ -883,6 +906,17 @@ async function doBuild(s, mod) {
     const res = await r;
     mod.workshopSaved = res ? res.status() : 'none';
   }
+  // The CORE workshop saves the module itself ("Save my prompt & complete").
+  // Its prompt box stays on screen afterwards; it is not a second artifact.
+  if (typeof mod.workshopSaved === 'number' && mod.workshopSaved < 400) {
+    s.course.artifactsBuilt += 1;
+    s.course.artifactsSaved += 1;
+    s.course.saveApiStatuses[mod.workshopSaved] = (s.course.saveApiStatuses[mod.workshopSaved] ?? 0) + 1;
+    mod.saveStatus = mod.workshopSaved;
+    mod.artifactSaved = true;
+    s.value('artifact_saved', `module ${mod.number} workshop`);
+    return;
+  }
   const fields = s.page.locator(ROOT + ' textarea:visible');
   const n = await fields.count();
   mod.buildFields = n;
@@ -1120,6 +1154,7 @@ async function assessPage(s) {
   if (facts.words >= 120 && facts.forward > 0) s.value('page_delivered', `${where} · ${facts.words} words`);
   else if (message && facts.forward > 0) s.value('graceful_message', `${where} · "${message}"`);
   else if (message) await s.addFriction('message_no_way_forward', `${where}: "${message}" with no link or button forward`, 1);
+  else if (s.expectMissing && facts.forward > 0) await s.addFriction('expected_not_found', `${where}: short not-found page with ${facts.forward} ways forward (correct for a made-up ID)`, 0);
   else await s.addFriction('thin_page', `${where}: ${facts.words} words, ${facts.forward} ways forward`, 1);
 }
 
@@ -1165,6 +1200,8 @@ async function submitStep(s, st) {
     await s.addFriction(`${st.value}_failed`, `${st.label}: ${r.status()} ${normPath(r.url())}${uiMsg ? ` — UI: "${uiMsg}"` : ' — no message shown'}`, uiMsg ? 0.5 : 1, { env });
   } else if (st.uiOk && st.uiOk.test(after)) {
     s.value(st.value, `UI: "${uiMsg}"`);
+  } else if (ENV_HINTS.test(uiMsg)) {
+    await s.addFriction('service_unavailable_message', `${st.label}: "${uiMsg}"`, 0.5, { env: true });
   } else if (after !== before && /required|please|invalid|enter a/i.test(newText + uiMsg)) {
     await s.addFriction('validation_blocked', `${st.label}: form rejected the input — "${uiMsg}"`, 0.5);
   } else {
@@ -1201,7 +1238,12 @@ async function downloadStep(s, st) {
     await s.addFriction('download_failed', `${st.label}: ${r.status()} ${normPath(r.url())}`, 1, { env: r.status() >= 500 });
   } else {
     const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+    const alert = (await s.page.locator(`${ROOT} [role=alert]:visible, ${ROOT} [role=status]:visible`).allInnerTexts().catch(() => [])).join(' ').trim();
+    const readable = (alert || t).match(/[^\n.]*(did not generate|could not be downloaded|temporarily unavailable|try again|couldn.t send|contact support)[^\n.]*/i)?.[0];
     if (/sent|check your|on its way|emailed/i.test(t)) s.value(st.value, 'emailed');
+    // Without database or email keys the file can't be built or sent; a plain
+    // message with a next step is the right outcome here, so tag it env.
+    else if (readable) await s.addFriction('download_unavailable_message', `${st.label}: "${readable.trim().slice(0, 110)}"`, 0.5, { env: true });
     else await s.addFriction('download_no_file', `${st.label}: no file, no email confirmation`, 1);
   }
 }

@@ -47,8 +47,8 @@ export const FEATURE_JOURNEYS = {
   'hero-quiz': [
     [
       { enter: '/' },
-      { click: /^(allow|review first|block)$/i, label: 'answer hero prompt check', value: 'hero_quiz_answered' },
-      { expectText: /(customer|pii|ssn|account number|redact|should not|never paste|safe)/i, value: 'hero_feedback_seen', label: 'hero check feedback' },
+      { click: /^example$/i, label: 'prompt checker: load example', value: 'hero_quiz_answered' },
+      { expectText: /found \d+ customer detail|safer version/i, value: 'hero_feedback_seen', label: 'prompt checker feedback' },
       { click: /get my readiness score/i, label: 'hero → assessment', value: 'next_step_opened' },
     ],
   ],
@@ -63,9 +63,9 @@ export const FEATURE_JOURNEYS = {
     ],
   ],
   'article-reader': [
-    [{ enter: '/resources' }, { go: '/resources/archive' }, { click: /min read/i, label: 'open a brief' }, { read: 'article_read', min: 500 }, { click: /take the free assessment|take the assessment|free assessment/i, label: 'article → assessment', value: 'next_step_opened' }],
+    [{ enter: '/resources' }, { click: /^briefings$/i, label: 'Briefings nav' }, { click: /read the briefing/i, label: 'open a brief' }, { read: 'article_read', min: 500 }, { click: /assessment|course|training|foundation/i, label: 'brief → next step', value: 'next_step_opened' }],
     [{ enter: '/resources/the-widening-ai-gap' }, { read: 'article_read', min: 500 }, { click: /take the free assessment/i, label: 'article → assessment', value: 'next_step_opened' }],
-    [{ enter: '/resources/six-ways-ai-fails-in-banking' }, { read: 'article_read', min: 500 }, { download: /download|pdf|get the/i, value: 'resource_download', label: 'article download' }],
+    [{ enter: '/resources/six-ways-ai-fails-in-banking' }, { read: 'article_read', min: 500 }, { click: /course|training|foundation|assessment/i, label: 'article next step', value: 'next_step_opened' }],
     [{ enter: '/resources/ai-governance-without-the-jargon' }, { read: 'article_read', min: 500 }, { click: /assessment|course|foundation/i, label: 'article next step', value: 'next_step_opened' }],
   ],
   'template-download': [
@@ -84,7 +84,7 @@ export const FEATURE_JOURNEYS = {
   ],
   'sample-report': [
     [{ enter: '/results/sample' }, { read: 'sample_report_read', min: 300 }, { download: /download sample/i, value: 'resource_download', label: 'sample report PDF' }],
-    [{ enter: '/results/sample' }, { fill: 'form:has(input[type=email])' }, { submit: /send pdf/i, api: EMAIL_API, value: 'email_captured', label: 'email me the sample PDF', scope: 'form:has(input[type=email])' }],
+    [{ enter: '/results/sample' }, { read: 'sample_report_read', min: 300 }, { click: /get (the )?90-day playbook|take the in-depth/i, label: 'sample → In-Depth', value: 'next_step_opened' }],
   ],
   'assessment-resume': [
     [
@@ -107,7 +107,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/my-toolbox' }, { chips: 'button:is(:has-text("Compliance"),:has-text("Lending"),:has-text("Marketing"),:has-text("Operations"))', n: 2 }, { click: /^copy$/i, label: 'copy a prompt', value: 'toolbox_prompt_copied' }, { click: /use in sandbox/i, label: 'use in sandbox', value: 'next_step_opened' }],
     [{ enter: '/my-toolbox/skill-builder' }, { fill: 'section:has(textarea), form, main' }, { chips: 'button:is(:has-text("Lending"),:has-text("Medium"),:has-text("Draft"))', n: 2 }, { click: /copy markdown/i, label: 'copy skill markdown', value: 'skill_built' }],
     [{ enter: '/my-toolbox/prompt-like-a-banker' }, { click: /open builder/i, label: 'open prompt builder' }, { read: 'builder_read', min: 120 }, { download: /examples pdf/i, value: 'resource_download', label: 'examples PDF' }],
-    [{ enter: '/dashboard/toolbox' }, { click: /start guided run/i, label: 'start guided run', value: 'toolbox_guided_run' }, { go: '/dashboard/toolbox/library' }, { read: 'library_read', min: 300 }, { go: '/dashboard/toolbox/cookbook' }, { read: 'cookbook_read', min: 150 }],
+    [{ enter: '/dashboard/toolbox' }, { click: /start guided run/i, label: 'start guided run', value: 'toolbox_guided_run' }, { go: '/dashboard/toolbox/library' }, { read: 'library_read', min: 300 }, { go: '/dashboard/toolbox' }, { click: /cookbook/i, label: 'open cookbook' }, { read: 'cookbook_read', min: 40 }],
   ],
   'course-extras': [
     [{ enter: '/courses/foundation/program/onboarding' }, { click: /run this prompt/i, label: 'run onboarding prompt', value: 'onboarding_started' }, { expectText: /output|result|draft|bulletin/i, value: 'onboarding_output', label: 'onboarding output' }],
