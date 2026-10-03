@@ -3,22 +3,18 @@ import { describe, expect, it } from 'vitest';
 import FoundationPreviewPage from './page';
 
 describe('FoundationPreviewPage', () => {
-  it('renders real Module 1 Understand content with an honest preview boundary', () => {
+  it('shows Module 1 once: the idea, the drill, and what it saves', () => {
     render(<FoundationPreviewPage />);
 
-    expect(
-      screen.getByText(/free preview · module 1 of 18 — the full module walkthrough/i),
-    ).toBeTruthy();
-    // The walkthrough covers all four phases read-only.
-    expect(screen.getByTestId('preview-try')).toBeTruthy();
-    expect(screen.getByTestId('preview-build')).toBeTruthy();
-    expect(screen.getByTestId('preview-save')).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1, name: /what ai can and cannot do/i })).toBeTruthy();
+    // Real course content, each piece shown once.
+    expect(screen.getAllByText(/cannot know your bank policy/i)).toHaveLength(1);
     expect(screen.getByText(/try it now — same drill as the course/i)).toBeTruthy();
-    // Real course content renders through LearnSection, not marketing copy.
-    expect(screen.getByTestId('foundation-guided-understand')).toBeTruthy();
-    expect(screen.getByTestId('foundation-reference-drawer')).toBeTruthy();
-    // Paid surfaces are named as paid, and their in-course anchors are absent.
-    expect(screen.getByText(/what stays paid/i)).toBeTruthy();
+    expect(screen.getAllByText(/banker verifies the source and owns the action/i)).toHaveLength(1);
+    expect(screen.getByTestId('preview-try')).toBeTruthy();
+    expect(screen.getByTestId('preview-save')).toBeTruthy();
+    expect(screen.getByText(/module 1 saves your ai limits card/i)).toBeTruthy();
+    // No in-course anchors on the public preview.
     expect(document.querySelector('a[href="#st-sandbox"]')).toBeNull();
     expect(document.querySelector('a[href="#st-submit"]')).toBeNull();
   });

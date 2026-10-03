@@ -1401,3 +1401,8 @@ body:has(.ax-page) { background: var(--ink); }
 /* /results/sample banner — the one thing that differs from a real result */
 .rv-sample-bar { position: relative; z-index: 31; margin: 0; padding: 10px 20px; text-align: center; background: var(--gold); color: var(--ink); font-size: 0.875rem; line-height: 1.5; }
 .rv-sample-bar a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Module 1 preview: one idea, one drill, one close. */
+.pv-idea-text { margin: 12px 0 0; max-width: 24ch; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1.08; letter-spacing: -0.01em; }
+.pv-idea .pv-flow { margin-top: 36px; }
+.pv-try .foundation-knowledge-check { max-width: 760px; margin: 0 auto !important; }
