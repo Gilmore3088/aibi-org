@@ -1532,3 +1532,5 @@ body:has(.ax-page) { background: var(--ink); }
 .ew-read li.is-no .ew-mark { color: #a33a2c; }
 .ew-read strong { font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.2; }
 .ew-read li > span:last-child { font-size: 0.9375rem; line-height: 1.5; color: var(--slate-600); }
+.ax-light .ax-rules > .ax-para { margin: 0; padding: clamp(24px, 3vw, 36px); font-size: 1.0625rem; line-height: 1.6; color: var(--ink); }
+.ax-light .ax-rules > .ax-window { border-radius: 0; height: 100%; }
