@@ -1227,11 +1227,15 @@ async function submitStep(s, st) {
 }
 
 async function downloadStep(s, st) {
-  const dl = s.page.waitForEvent('download', { timeout: 15_000 }).catch(() => null);
-  const fileResp = s.page.waitForResponse((r) => /\/download|\.pdf($|\?)|\.zip($|\?)|\.docx?($|\?)/.test(r.url()), { timeout: 15_000 }).catch(() => null);
+  const dl = s.page.waitForEvent('download', { timeout: 25_000 }).catch(() => null);
+  const fileResp = s.page.waitForResponse((r) => /\/download|\.pdf($|\?)|\.zip($|\?)|\.docx?($|\?)/.test(r.url()), { timeout: 25_000 }).catch(() => null);
   const popup = s.context.waitForEvent('page', { timeout: 6_000 }).catch(() => null);
+  // Pages can hold several gates; fill the one this click opened.
+  await s.page.locator('input[type=email]').evaluateAll((els) => els.forEach((e) => e.setAttribute('data-wave-seen', '1'))).catch(() => {});
   if (!(await s.clickCta(st.download, st.label, { required: true, severity: 1 }))) return;
-  const email = s.page.locator(`${ROOT} input[type=email]:visible`);
+  const fresh = s.page.locator(`${ROOT} input[type=email]:visible:not([data-wave-seen])`);
+  await fresh.first().waitFor({ timeout: 4_000 }).catch(() => {});
+  const email = (await fresh.count()) ? fresh : s.page.locator(`${ROOT} input[type=email]:visible`);
   if (await email.count()) {
     await email.first().fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
     await email.first().press('Enter').catch(() => {});
@@ -1272,6 +1276,8 @@ async function answerStep(s, st) {
     const next = st.next ? s.page.locator(`${ROOT} button:visible:enabled`).filter({ hasText: st.next }) : null;
     let opts = s.page.locator(`${ROOT} ${st.answer}:visible`).filter({ hasNotText: st.next ?? /^$/ });
     if (st.optionText) opts = opts.filter({ hasText: st.optionText });
+    // The next question renders after the previous Next; wait for it.
+    if (i > 0) await opts.first().waitFor({ timeout: 6_000 }).catch(() => {});
     const n = await opts.count();
     const choices = [];
     for (let j = 0; j < Math.min(n, 30); j += 1) {
@@ -1282,6 +1288,8 @@ async function answerStep(s, st) {
     if (!(await s.click(opts.nth(choices[s.rng.int(0, choices.length - 1)]), `answer ${i + 1}`))) break;
     answered += 1;
     if (st.stopEarly && answered >= (st.max ?? 3)) break;
+    // Next enables once the answer registers; under load that can lag.
+    if (next) await next.first().waitFor({ timeout: 6_000 }).catch(() => {});
     if (next && (await next.count())) await s.click(next.first(), 'next');
     // Stop once a result is on screen; otherwise we'd click "Retake".
     const now = await s.page.locator(ROOT).first().innerText().catch(() => '');

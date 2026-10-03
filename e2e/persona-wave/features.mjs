@@ -63,7 +63,7 @@ export const FEATURE_JOURNEYS = {
     ],
   ],
   'article-reader': [
-    [{ enter: '/resources' }, { go: '/briefings' }, { click: /read the briefing/i, label: 'open a brief' }, { read: 'article_read', min: 500 }, { click: /assessment|course|training|foundation/i, label: 'brief → next step', value: 'next_step_opened' }],
+    [{ enter: '/resources' }, { go: '/briefings' }, { click: /read the briefing/i, label: 'open a brief' }, { read: 'article_read', min: 300 }, { click: /assessment|course|training|foundation/i, label: 'brief → next step', value: 'next_step_opened' }],
     [{ enter: '/resources/the-widening-ai-gap' }, { read: 'article_read', min: 500 }, { click: /take the free assessment/i, label: 'article → assessment', value: 'next_step_opened' }],
     [{ enter: '/resources/six-ways-ai-fails-in-banking' }, { read: 'article_read', min: 500 }, { click: /course|training|foundation|assessment/i, label: 'article next step', value: 'next_step_opened' }],
     [{ enter: '/resources/ai-governance-without-the-jargon' }, { read: 'article_read', min: 500 }, { click: /assessment|course|foundation/i, label: 'article next step', value: 'next_step_opened' }],
