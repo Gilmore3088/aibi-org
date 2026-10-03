@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
 import { AxHero } from '@/components/ax';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
@@ -192,6 +193,17 @@ export default function EfficiencyRatioWorkbookPage() {
           >
             Book an Executive Briefing
           </BriefingButton>
+          <p className="mt-5 text-sm text-[color:var(--cream)]/75">
+            Not ready to talk yet?{' '}
+            <Link href="/for-institutions" className="underline underline-offset-4 hover:text-[color:var(--cream)]">
+              See team training options
+            </Link>{' '}
+            or{' '}
+            <Link href="/assessment/take" className="underline underline-offset-4 hover:text-[color:var(--cream)]">
+              take the free readiness assessment
+            </Link>
+            .
+          </p>
         </div>
       </section>
     </main>

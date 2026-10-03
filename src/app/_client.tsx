@@ -6,6 +6,7 @@ import { HowItWorks } from '@/components/home/HowItWorks';
 import { ResourceCovers, OfferPair } from '@/components/home/HomeSections';
 import { PromptChecker } from '@/components/home/PromptChecker';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
+import { HomeHelpWidget } from '@/components/sections/HomeHelpWidget';
 import { getPracticeRepById } from '@content/practice-reps/foundation-program';
 
 // Homepage — "Vault" rebuild. One idea per section, real artifacts instead of
@@ -65,6 +66,10 @@ export default function HomePage() {
 
       <PromptChecker />
       <ResourceCovers />
+
+      {/* "Tell us what you're working on" — a free resource by email, for
+          visitors who don't know which download they need. */}
+      <HomeHelpWidget />
 
       <section id="roi-calculator" className="hm-roi" aria-labelledby="hm-roi-title">
         <div className="mk-container">

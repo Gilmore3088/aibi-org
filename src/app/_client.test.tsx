@@ -101,4 +101,13 @@ describe('HomePage', () => {
       expect(a.querySelector('img')).toBeTruthy();
     }
   });
+  it('offers the "what are you working on" help widget after the free tools', () => {
+    render(<HomePage />);
+    const kit = document.getElementById('hm-kit-title') as HTMLElement;
+    expect(kit.textContent).toMatch(/Tools your team can use today/);
+    const form = document.querySelector('.mk-help-form') as HTMLElement;
+    expect(form).toBeTruthy();
+    // Placed below the free-tools section, never above the hero.
+    expect(kit.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });
