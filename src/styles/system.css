@@ -1476,3 +1476,43 @@ body:has(.ax-page) { background: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .gl-doc pre { animation: none; } }
 @media (max-width: 560px) { .gl-doc pre { min-height: 0; } }
 @media (min-width: 960px) { .gl-doc { position: sticky; top: 96px; } .gl-list button { padding: 11px 16px; } }
+
+/* Data handling: flow diagram, never-paste list, provider cards, retention. */
+.dh-flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.dh-flow li { position: relative; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 0 0 18px; }
+.dh-flow li:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 4px; width: 1px; background: rgba(201, 162, 75, 0.45); }
+.dh-flow-k { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); color: var(--gold); font: 500 0.75rem var(--font-mono); }
+.dh-flow li > span:last-child { display: grid; gap: 2px; padding-top: 5px; }
+.dh-flow strong { font-size: 1rem; }
+.dh-flow li > span:last-child > span { font-size: 0.875rem; line-height: 1.45; opacity: 0.72; }
+.dh-flow-log { margin: 4px 0 0; padding-top: 14px; border-top: 1px dashed rgba(201, 162, 75, 0.4); font: 0.75rem/1.5 var(--font-mono); opacity: 0.8; }
+.dh-never { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 760px) { .dh-never { grid-template-columns: 1fr 1fr; gap: 18px 40px; } }
+.dh-never li { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; }
+.dh-x { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(180, 64, 48, 0.1); color: #a33a2c; font-weight: 700; }
+.dh-never li > span:last-child { display: grid; gap: 2px; }
+.dh-never strong { font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.2; }
+.dh-never li > span:last-child > span { font-size: 0.9375rem; color: var(--slate-600); }
+.dh-providers { display: grid; gap: 16px; }
+@media (min-width: 900px) { .dh-providers { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dh-provider { display: grid; gap: 8px; align-content: start; padding: 22px; border-radius: 14px; border: 1px solid rgba(243, 238, 227, 0.14); background: rgba(243, 238, 227, 0.04); color: var(--cream); text-decoration: none; transition: border-color 160ms ease; }
+.dh-provider:hover { border-color: var(--gold); }
+.dh-provider strong { font-family: var(--font-serif); font-weight: 400; font-size: 1.75rem; line-height: 1.1; }
+.dh-provider > span:nth-child(3) { font-size: 0.875rem; line-height: 1.5; color: rgba(243, 238, 227, 0.72); }
+.dh-provider-link { font-size: 0.875rem; font-weight: 600; color: var(--gold); }
+.dh-posture { display: grid; gap: 28px; align-items: start; }
+@media (min-width: 960px) { .dh-posture { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; } }
+.dh-table { overflow-x: auto; border-radius: 14px; background: #fff; border: 1px solid rgba(7, 26, 47, 0.1); }
+.dh-table table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.45; }
+.dh-table caption { text-align: left; padding: 16px 20px 4px; font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink); }
+.dh-table th, .dh-table td { text-align: left; vertical-align: top; padding: 12px 20px; border-top: 1px solid rgba(7, 26, 47, 0.08); }
+.dh-table thead th { border-top: 0; font: 500 0.6875rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate-600); }
+.dh-table tbody th { font-weight: 600; color: var(--ink); width: 45%; }
+.dh-table td { color: var(--slate-600); }
+.dh-details { display: grid; gap: 10px; }
+.dh-details details { border-radius: 12px; background: #fff; border: 1px solid rgba(7, 26, 47, 0.1); }
+.dh-details summary { cursor: pointer; padding: 16px 18px; font-weight: 600; font-size: 1rem; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.dh-details summary::-webkit-details-marker { display: none; }
+.dh-details summary::after { content: '+'; color: var(--gold-deep); font-weight: 400; font-size: 1.25rem; line-height: 1; }
+.dh-details details[open] summary::after { content: '–'; }
+.dh-details p { margin: 0; padding: 0 18px 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--slate-600); }
