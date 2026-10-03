@@ -8,8 +8,8 @@ describe('AboutPage', () => {
 
     expect(screen.getByRole('heading', { name: /Practical AI training for banks/i })).toBeTruthy();
     expect(screen.getByText(/banking conference where AI was everywhere/i)).toBeTruthy();
-    expect(screen.getByText(/turn bankers into builders, safely/i)).toBeTruthy();
-    expect(screen.getByText(/Sources are named\. Endorsement is not implied/i)).toBeTruthy();
+    expect(screen.getByText(/^What we do\./i)).toBeTruthy();
+    expect(screen.getByText(/Sources we cite/i)).toBeTruthy();
     expect(screen.getByRole('link', { name: /See every source we cite/i }).getAttribute('href')).toBe(
       '/references',
     );

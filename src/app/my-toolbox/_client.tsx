@@ -134,7 +134,7 @@ export default function ToolboxPage() {
             <EyebrowChip icon={<StackIcon className="mk-ic" />}>
               Toolbox preview · 18 sample assets
             </EyebrowChip>
-            <h1>A working kit, not a PDF graveyard.</h1>
+            <h1>Prompts, checklists and templates by role.</h1>
             <p className="mk-lede">
               A preview of what your AiBI-Foundation Toolbox holds — substantive prompts,
               workflow SOPs, risk checklists, role playbooks, and saved skills. Built to use,

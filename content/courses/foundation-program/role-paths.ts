@@ -409,8 +409,8 @@ const retailPath: RolePath = {
     {
       moduleNumber: 2,
       moduleId: 'm2-low-risk-message-rewrite',
-      title: 'Rewrite a Low-Risk Message',
-      focusSection: 'Your first Copilot email draft — the fastest path from zero to visible productivity gain for frontline staff',
+      title: 'Build a Message Rewriter',
+      focusSection: 'A saved rewrite prompt for staff messages — the fastest visible win for frontline staff',
     },
     {
       moduleNumber: 10,
@@ -467,8 +467,8 @@ const executivePath: RolePath = {
     {
       moduleNumber: 1,
       moduleId: 'm1-ai-capabilities-limits',
-      title: 'What AI Can and Cannot Do',
-      focusSection: 'The five governance frameworks — understanding what your board needs to know about AI regulatory exposure at your institution',
+      title: 'Set Your AI House Rules',
+      focusSection: 'House rules that keep customer data out and decisions with people — the baseline to ask every team to set',
     },
     {
       moduleNumber: 11,

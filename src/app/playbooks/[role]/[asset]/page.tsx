@@ -135,7 +135,7 @@ export default async function PlaybookAssetPage(props: PageProps) {
         <div className="mk-container">
           <p className="ax-k">{role} Playbook</p>
           <h2 className="ax-display">
-            The file is the start. <span className="ax-gold">Practice is where it sticks.</span>
+            Practice this <span className="ax-gold">in the course.</span>
           </h2>
           <p className="ax-muted">
             The AiBI-Foundation course walks through the same prompts, with reviewed work you can take to your team.

@@ -30,11 +30,11 @@ describe('ModuleNavigation', () => {
     );
 
     const next = screen.getByRole('link', {
-      name: 'Continue to Module 02 · Rewrite a Low-Risk Message',
+      name: 'Continue to Module 02 · Build a Message Rewriter',
     });
     expect(next.getAttribute('href')).toBe('/courses/foundation/program/2');
     expect(next.textContent).toContain('Replay, then continue');
-    expect(next.textContent).toContain('Recall AI Limits Card');
+    expect(next.textContent).toContain('Recall AI House Rules');
   });
 
   it('routes the final module to the Foundation Packet', () => {

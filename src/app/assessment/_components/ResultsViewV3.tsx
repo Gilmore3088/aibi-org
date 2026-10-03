@@ -332,7 +332,7 @@ export function ResultsViewV3({
         {focusGap && (
           <section className="rv-section">
             <p className="rv-k rv-gold">Three things you can use this week</p>
-            <h2 className="rv-h2">Not theory. Actual next actions.</h2>
+            <h2 className="rv-h2">Your next steps.</h2>
             <div className="rv-takeaways">
               {starterPrompt && (
                 <article className="rv-take rv-take-prompt">
@@ -357,7 +357,7 @@ export function ResultsViewV3({
               {artifact && (
                 <article className="rv-take">
                   <TakeawayNum n={3} />
-                  <h3>Working artifact</h3>
+                  <h3>A document to keep</h3>
                   <p className="rv-muted">{artifact.subtitle}</p>
                   {profileId ? (
                     <div className="rv-take-foot">
@@ -403,7 +403,7 @@ export function ResultsViewV3({
               <div className="rv-phase-head">
                 <div>
                   <p className="rv-k rv-gold">Days 1–30</p>
-                  <h3>Map, educate, select</h3>
+                  <h3>Pick the first use cases</h3>
                 </div>
                 <span className="rv-pill is-high">Included</span>
               </div>
@@ -505,7 +505,7 @@ export function ResultsViewV3({
         <section className="rv-section">
           <div className="rv-section-head">
             <p className="rv-k rv-gold">Role playbooks</p>
-            <h2 className="rv-h2">Your seat, written down.</h2>
+            <h2 className="rv-h2">The playbook for your role.</h2>
             <p className="rv-body">Free to read, no email gate.</p>
           </div>
           <div className="rv-pb">
@@ -569,7 +569,7 @@ function RoiContextPanel({
     <section className="rv-panel rv-roi">
       <div>
         <p className="rv-k rv-gold">Your ROI scenario</p>
-        <h2 className="rv-h2">Keep the value model attached to the readiness work.</h2>
+        <h2 className="rv-h2">Estimate the hours AI could save your team.</h2>
         <p className="rv-body">
           You modeled {formatRoiNumber(roiContext.fte)} employees at{' '}
           {formatRoiCurrency(roiContext.costPerFTE)} loaded cost and{' '}
@@ -635,7 +635,7 @@ function QuickActionStrip({
     >
       <div>
         <p className="rv-k rv-gold">Start here</p>
-        <h2 className="rv-strip-title">Turn the snapshot into one visible next move.</h2>
+        <h2 className="rv-strip-title">What to do next.</h2>
       </div>
       <div className="rv-actions">
         <ResultActionLink href={matchedPlaybookPath} variant="ink">

@@ -55,7 +55,7 @@ export default function PlaybooksIndexPage() {
       />
 
       <main>
-        <AxSection light id="roles" kicker="Pick your seat" title="Nine roles. One structure.">
+        <AxSection light id="roles" kicker="Pick your seat" title="Choose your role.">
           <div className="pb-roles">
             {PLAYBOOK_INDEX.map((p) => {
               const pb = PLAYBOOKS[p.slug];
@@ -78,7 +78,7 @@ export default function PlaybooksIndexPage() {
           </div>
         </AxSection>
 
-        <AxSection id="inside" kicker="Inside each playbook" title="Four views. One review standard.">
+        <AxSection id="inside" kicker="Inside each playbook" title="What each playbook includes.">
           <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 4 }} aria-label="What each playbook contains">
             {INSIDE.map((item, index) => (
               <li key={item.title} className={index === 0 ? 'is-first' : undefined}>

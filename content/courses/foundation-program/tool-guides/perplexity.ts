@@ -56,11 +56,11 @@ export const perplexityGuide: ToolGuide = {
   bankingUseCases: [
     {
       number: 1,
-      title: 'Current CFPB guidance on overdraft fees',
+      title: 'Status check: CFPB overdraft rules',
       prompt:
-        'What is the current CFPB guidance on overdraft fee practices for depository institutions? Include the most recent rulemaking activity, any final rules, and the compliance timeline. Cite all sources.',
+        'What is the current status of CFPB rules on overdraft fees for depository institutions? For each rule, say whether it is in effect, withdrawn, or overturned, with the date and the primary source. Cite congress.gov or the Federal Register where possible.',
       expectedOutput:
-        'A cited summary of current CFPB overdraft fee guidance with numbered citations to cfpb.gov, federal register entries, and regulatory news sources. Every factual claim will have a linked source you can verify before using in compliance documentation.',
+        'A cited status summary. It should report that Congress overturned the CFPB\'s 2024 overdraft rule for very large financial institutions in 2025 under the Congressional Review Act (S.J.Res. 18, Public Law 119-10), so the rule never took effect. Check every status against congress.gov or the Federal Register before using it in compliance documentation. Research tools often describe a rule from its original announcement and miss that it was later withdrawn or overturned.',
     },
     {
       number: 2,

@@ -1401,3 +1401,35 @@ body:has(.ax-page) { background: var(--ink); }
 /* /results/sample banner — the one thing that differs from a real result */
 .rv-sample-bar { position: relative; z-index: 31; margin: 0; padding: 10px 20px; text-align: center; background: var(--gold); color: var(--ink); font-size: 0.875rem; line-height: 1.5; }
 .rv-sample-bar a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Module 1 preview: one idea, one drill, one close. */
+.pv-idea-text { margin: 12px 0 0; max-width: 24ch; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1.08; letter-spacing: -0.01em; }
+.pv-idea .pv-flow { margin-top: 36px; }
+.pv-try .foundation-knowledge-check { max-width: 760px; margin: 0 auto !important; }
+
+/* Build guide: one working tool per module (course page + free preview). */
+.bd { display: grid; gap: 22px; max-width: 760px; color: var(--ink); }
+.bd-k { display: block; margin: 0 0 6px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-deep); }
+.bd-have-text { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; text-wrap: balance; }
+.bd-before, .bd-tool, .bd-limits { margin: 0; font-size: 0.9375rem; line-height: 1.6; }
+.bd-tool { color: var(--slate-600); }
+.bd-tool strong, .bd-before strong, .bd-limits strong { color: var(--ink); }
+.bd-dated { font-family: var(--font-mono); font-size: 0.75rem; }
+.bd-prompt { margin: 0; border: 1px solid rgba(7, 26, 47, 0.12); border-left: 3px solid var(--gold); border-radius: 10px; background: #fff; overflow: hidden; }
+.bd-prompt figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid rgba(7, 26, 47, 0.08); background: var(--cream-2, #f1ece1); }
+.bd-prompt figcaption .bd-k { margin: 0; }
+.bd-prompt pre { margin: 0; padding: 16px 18px; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.65; color: var(--ink); }
+.bd-copy { flex: none; min-height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--cream); font-family: var(--font-sans, inherit); font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+.bd-copy:hover { background: transparent; color: var(--ink); }
+.bd-copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.bd-steps { margin: 0; padding: 0; list-style: none; counter-reset: bd; display: grid; gap: 12px; }
+.bd-steps li { counter-increment: bd; position: relative; padding-left: 40px; font-size: 0.9375rem; line-height: 1.55; }
+.bd-steps li::before { content: counter(bd); position: absolute; left: 0; top: -2px; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1; color: var(--gold-deep); }
+.bd-tests ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.bd-tests li { display: grid; gap: 6px; padding: 12px 14px; border-radius: 10px; background: #fff; border: 1px solid rgba(7, 26, 47, 0.1); }
+.bd-test-prompt { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.bd-test-prompt p { margin: 0; min-width: 0; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.55; }
+.bd-test-expect { margin: 0; font-size: 0.875rem; color: var(--slate-600); }
+.bd-test-expect span { color: var(--ink); font-weight: 600; }
+.bd-limits { padding: 12px 14px; border-radius: 10px; background: rgba(201, 162, 75, 0.12); }
+.bd-done { margin: 0; padding-top: 16px; border-top: 1px solid rgba(7, 26, 47, 0.12); font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.35; }

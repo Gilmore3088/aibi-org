@@ -3,22 +3,17 @@ import { describe, expect, it } from 'vitest';
 import FoundationPreviewPage from './page';
 
 describe('FoundationPreviewPage', () => {
-  it('renders real Module 1 Understand content with an honest preview boundary', () => {
+  it('gives visitors the real Module 1 build, free', () => {
     render(<FoundationPreviewPage />);
 
-    expect(
-      screen.getByText(/free preview · module 1 of 18 — the full module walkthrough/i),
-    ).toBeTruthy();
-    // The walkthrough covers all four phases read-only.
-    expect(screen.getByTestId('preview-try')).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1, name: /set your ai house rules/i })).toBeTruthy();
     expect(screen.getByTestId('preview-build')).toBeTruthy();
-    expect(screen.getByTestId('preview-save')).toBeTruthy();
-    expect(screen.getByText(/try it now — same drill as the course/i)).toBeTruthy();
-    // Real course content renders through LearnSection, not marketing copy.
-    expect(screen.getByTestId('foundation-guided-understand')).toBeTruthy();
-    expect(screen.getByTestId('foundation-reference-drawer')).toBeTruthy();
-    // Paid surfaces are named as paid, and their in-course anchors are absent.
-    expect(screen.getByText(/what stays paid/i)).toBeTruthy();
+    expect(screen.getByTestId('build-guide')).toBeTruthy();
+    // The copyable house rules and the three test prompts render from course data.
+    expect(screen.getByText(/follow these rules in every conversation with me/i)).toBeTruthy();
+    expect(screen.getAllByText(/you should get:/i)).toHaveLength(3);
+    expect(screen.getByText(/you just built your ai house rules/i)).toBeTruthy();
+    // No in-course anchors on the public preview.
     expect(document.querySelector('a[href="#st-sandbox"]')).toBeNull();
     expect(document.querySelector('a[href="#st-submit"]')).toBeNull();
   });
