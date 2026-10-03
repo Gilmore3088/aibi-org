@@ -14,7 +14,7 @@ describe('FoundationPreviewPage', () => {
     expect(screen.getByText(/flags customer data/i)).toBeTruthy();
     expect(screen.getByText(/follow these rules in every conversation with me/i)).toBeTruthy();
     fireEvent.click(screen.getByRole('tab', { name: /save/i }));
-    expect(screen.getByText(/custom instructions/i)).toBeTruthy();
+    expect(screen.getAllByText(/custom instructions/i).length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole('tab', { name: /test/i }));
     fireEvent.click(screen.getByRole('button', { name: 'Customer data' }));
     expect(screen.getByText(/replace them with \[customer\] and \[account\]/i)).toBeTruthy();
