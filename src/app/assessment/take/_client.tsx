@@ -100,7 +100,12 @@ export default function AssessmentPage() {
 
   useEffect(() => {
     if (state.isComplete && state.phase === 'score') {
-      requestAnimationFrame(() => scoreHeadingRef.current?.focus());
+      // preventScroll: focusing would otherwise scroll the score card up
+      // under the sticky site header. Start the gate at the top instead.
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        scoreHeadingRef.current?.focus({ preventScroll: true });
+      });
     }
   }, [state.isComplete, state.phase, state.totalScore, state.tier]);
 
@@ -170,7 +175,7 @@ export default function AssessmentPage() {
   const showAssessmentShellHeader = !inQuestionsPhase && !inResultsPhase;
 
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope as-focus">
       {inQuestionsPhase ? (
         <AssessmentFlowHeader
           progress={state.progress}
@@ -196,22 +201,16 @@ export default function AssessmentPage() {
           return (
             <>
               <section className="mk-take-q-panel" aria-label="Question">
-                <div className="mk-take-q-prompt">
+                <div className="mk-take-q-prompt" key={`prompt-${state.currentQuestion}`}>
                   {/* Human label, not the raw dimension slug ("STRATEGIC-VALUE"). */}
-                  <p className="mk-k">{DIMENSION_LABELS[q.dimension]}</p>
+                  <p className="mk-k">
+                    <span className="as-q-num">{String(state.currentQuestion + 1).padStart(2, '0')}</span>
+                    {DIMENSION_LABELS[q.dimension]}
+                  </p>
                   <h2 ref={questionHeadingRef} tabIndex={-1}>{q.prompt}</h2>
-                  {state.currentQuestion > 0 && (
-                    <button
-                      type="button"
-                      className="mk-take-q-back"
-                      onClick={state.goBack}
-                    >
-                      ← Back
-                    </button>
-                  )}
                 </div>
-                <div className="mk-take-q-options">
-                  {q.options.map((opt) => {
+                <div className="mk-take-q-options" key={`options-${state.currentQuestion}`}>
+                  {q.options.map((opt, optIndex) => {
                     const isSelected = selected === opt.points;
                     return (
                       <button
@@ -220,6 +219,9 @@ export default function AssessmentPage() {
                         onClick={() => state.answer(opt.points)}
                         className={`mk-take-q-option${isSelected ? ' is-selected' : ''}`}
                       >
+                        <span className="as-q-letter" aria-hidden="true">
+                          {String.fromCharCode(65 + optIndex)}
+                        </span>
                         <span className="mk-take-q-option-label">{opt.label}</span>
                         <span className="mk-take-q-option-mark" aria-hidden="true">
                           {isSelected ? '✓' : '→'}
@@ -227,6 +229,15 @@ export default function AssessmentPage() {
                       </button>
                     );
                   })}
+                </div>
+                <div className="as-q-foot">
+                  {state.currentQuestion > 0 ? (
+                    <button type="button" className="mk-take-q-back" onClick={state.goBack}>
+                      ← Back
+                    </button>
+                  ) : (
+                    <span className="as-q-hint">Pick the answer closest to what you do today.</span>
+                  )}
                 </div>
                 <ResumeLinkForm
                   email={resumeEmail}
@@ -416,7 +427,7 @@ function AssessmentFlowHeader({
     <header className="mk-take-flow-header" role="banner">
       <div className="mk-take-flow-header-row">
         <Link href="/" className="mk-take-flow-brand" aria-label="The AI Banking Institute home">
-          <Wordmark variant="full" tone="dark" size={22} />
+          <Wordmark variant="full" tone="light" size={22} />
           <span className="mk-take-flow-brand-sub">AI Readiness Assessment</span>
         </Link>
         <div className="mk-take-flow-meta">
@@ -433,8 +444,38 @@ function AssessmentFlowHeader({
           </Link>
         </div>
       </div>
-      <ProgressBar progress={progress} />
+      <SegmentedProgress answered={clampedAnsweredCount} current={questionNumber} total={totalQuestions} progress={progress} />
     </header>
+  );
+}
+
+// One segment per question: answered segments gold, the current one soft
+// gold, the rest faint. Keeps the progressbar role and value of the old bar.
+function SegmentedProgress({
+  answered,
+  current,
+  total,
+  progress,
+}: {
+  answered: number;
+  current: number;
+  total: number;
+  progress: number;
+}) {
+  const pct = Math.round(Math.min(Math.max(progress, 0), 1) * 100);
+  return (
+    <div
+      className="as-segments"
+      role="progressbar"
+      aria-label="Assessment progress"
+      aria-valuenow={pct}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      {Array.from({ length: total }, (_, i) => (
+        <span key={i} className={i < answered ? 'is-done' : i === current - 1 ? 'is-current' : undefined} />
+      ))}
+    </div>
   );
 }
 
@@ -443,7 +484,7 @@ function AssessmentFlowHeader({
 // when real content swaps in.
 function AssessmentSkeleton() {
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope as-focus">
       <main className="mk-take" aria-hidden="true">
         <div className="mk-take-progress-skeleton" />
         <div className="mk-take-inner">

@@ -84,6 +84,7 @@ export default async function BriefingPage({ params }: Params) {
         backHref="/briefings"
         backLabel="← Briefings"
         activePath="/briefings"
+        closing
       >
         <article className="mk-container mk-post">
           <header className="mk-post-head">

@@ -6,7 +6,7 @@
 // sourced from the canonical registry in src/app/resources/templates/data.ts,
 // so the PDF and the on-site/Word versions can never drift.
 //
-// Typography: Cormorant (headings), DM Sans (body), DM Mono (meta) — brand v1.
+// Typography: Newsreader (headings), Inter (body), JetBrains Mono (labels, meta) — the site's faces.
 // Run:  npx tsx scripts/generate-template-pdfs.ts  (or: npm run generate:templates)
 
 import { writeFileSync, mkdirSync } from 'node:fs';
@@ -27,7 +27,7 @@ import { TEMPLATES, type Template, type TemplateSection } from '../src/app/resou
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const OUT_DIR = join(ROOT, 'public', 'downloads');
-const FONTS_DIR = join(ROOT, 'assets', 'pdf-fonts');
+const BRAND_FONTS_DIR = join(ROOT, 'assets', 'brand-fonts');
 
 // Templates that ship as their own branded template-<slug>.pdf. The sixth
 // registry entry (ai-use-case-inventory) ships as artifact-ai-use-case-inventory
@@ -43,22 +43,18 @@ const TEMPLATE_PDF_SLUGS = [
 mkdirSync(OUT_DIR, { recursive: true });
 Font.registerHyphenationCallback((word) => [word]);
 
+// Brand fonts: static instances of the site's self-hosted faces
+// (assets/brand-fonts) — Newsreader for display, Inter for body,
+// JetBrains Mono for labels and numbers.
+Font.register({ family: 'Newsreader', fonts: [{ src: join(BRAND_FONTS_DIR, 'Newsreader-Display.ttf'), fontWeight: 400 }] });
 Font.register({
-  family: 'Cormorant',
+  family: 'Inter',
   fonts: [
-    { src: join(FONTS_DIR, 'Cormorant-Variable.ttf'), fontWeight: 400 },
-    { src: join(FONTS_DIR, 'Cormorant-Variable.ttf'), fontWeight: 700 },
+    { src: join(BRAND_FONTS_DIR, 'Inter-Regular.ttf'), fontWeight: 400 },
+    { src: join(BRAND_FONTS_DIR, 'Inter-Bold.ttf'), fontWeight: 700 },
   ],
 });
-Font.register({ family: 'CormorantSC', fonts: [{ src: join(FONTS_DIR, 'CormorantSC-Bold.ttf'), fontWeight: 700 }] });
-Font.register({
-  family: 'DMSans',
-  fonts: [
-    { src: join(FONTS_DIR, 'DMSans-Variable.ttf'), fontWeight: 400 },
-    { src: join(FONTS_DIR, 'DMSans-Variable.ttf'), fontWeight: 700 },
-  ],
-});
-Font.register({ family: 'DMMono', fonts: [{ src: join(FONTS_DIR, 'DMMono-Regular.ttf'), fontWeight: 400 }] });
+Font.register({ family: 'JetBrainsMono', fonts: [{ src: join(BRAND_FONTS_DIR, 'JetBrainsMono-Regular.ttf'), fontWeight: 400 }] });
 
 // Brand v1 palette
 const INK = '#071A2F';
@@ -76,68 +72,68 @@ const VERSION_DATE = 'June 2026';
 const el = React.createElement;
 
 const s = StyleSheet.create({
-  coverPage: { backgroundColor: INK, color: WHITE, fontFamily: 'DMSans', fontSize: 9 },
+  coverPage: { backgroundColor: INK, color: WHITE, fontFamily: 'Inter', fontSize: 9 },
   coverBand: {
     backgroundColor: INK_2, paddingVertical: 12, paddingHorizontal: 44,
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
-  coverBandLabel: { fontFamily: 'CormorantSC', fontSize: 7.5, color: WHITE, opacity: 0.7, letterSpacing: 1.6 },
-  coverBandVersion: { fontFamily: 'DMMono', fontSize: 7, color: WHITE, opacity: 0.55 },
+  coverBandLabel: { fontFamily: 'JetBrainsMono', textTransform: 'uppercase', fontSize: 7.5, color: WHITE, opacity: 0.7, letterSpacing: 1.6 },
+  coverBandVersion: { fontFamily: 'JetBrainsMono', fontSize: 7, color: WHITE, opacity: 0.55 },
   coverBody: { flex: 1, paddingHorizontal: 44, paddingTop: 54, paddingBottom: 44, justifyContent: 'space-between' },
-  coverKicker: { fontFamily: 'CormorantSC', fontSize: 8, color: TERRA_PALE, letterSpacing: 1.8, marginBottom: 18 },
-  coverTitle: { fontFamily: 'Cormorant', fontSize: 40, color: WHITE, lineHeight: 1.05, letterSpacing: -0.5, marginBottom: 14 },
-  coverDek: { fontFamily: 'DMSans', fontSize: 12, color: WHITE, opacity: 0.82, lineHeight: 1.55, maxWidth: 410, marginBottom: 26 },
+  coverKicker: { fontFamily: 'JetBrainsMono', textTransform: 'uppercase', fontSize: 8, color: TERRA_PALE, letterSpacing: 1.8, marginBottom: 18 },
+  coverTitle: { fontFamily: 'Newsreader', fontSize: 40, color: WHITE, lineHeight: 1.05, letterSpacing: -0.5, marginBottom: 14 },
+  coverDek: { fontFamily: 'Inter', fontSize: 12, color: WHITE, opacity: 0.82, lineHeight: 1.55, maxWidth: 410, marginBottom: 26 },
   metaRow: { flexDirection: 'row', marginBottom: 30, gap: 28 },
   metaItem: {},
-  metaLabel: { fontFamily: 'CormorantSC', fontSize: 7, color: TERRA_PALE, letterSpacing: 1.2, marginBottom: 3 },
-  metaValue: { fontFamily: 'DMSans', fontSize: 9.5, color: WHITE, opacity: 0.92 },
-  tocHeader: { fontFamily: 'CormorantSC', fontSize: 7.5, color: WHITE, opacity: 0.5, letterSpacing: 1.4, marginBottom: 11 },
+  metaLabel: { fontFamily: 'JetBrainsMono', textTransform: 'uppercase', fontSize: 7, color: TERRA_PALE, letterSpacing: 1.2, marginBottom: 3 },
+  metaValue: { fontFamily: 'Inter', fontSize: 9.5, color: WHITE, opacity: 0.92 },
+  tocHeader: { fontFamily: 'JetBrainsMono', textTransform: 'uppercase', fontSize: 7.5, color: WHITE, opacity: 0.5, letterSpacing: 1.4, marginBottom: 11 },
   tocRow: { flexDirection: 'row', alignItems: 'baseline', marginBottom: 6 },
-  tocNum: { fontFamily: 'DMMono', fontSize: 7.5, color: TERRA_PALE, width: 20 },
-  tocText: { fontFamily: 'DMSans', fontSize: 9, color: WHITE, opacity: 0.85, flex: 1 },
+  tocNum: { fontFamily: 'JetBrainsMono', fontSize: 7.5, color: TERRA_PALE, width: 20 },
+  tocText: { fontFamily: 'Inter', fontSize: 9, color: WHITE, opacity: 0.85, flex: 1 },
   coverFootRule: { borderTopWidth: 1, borderTopColor: WHITE, opacity: 0.15 },
   coverFoot: { paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' },
-  coverFootText: { fontFamily: 'DMMono', fontSize: 7, color: WHITE, opacity: 0.5 },
+  coverFootText: { fontFamily: 'JetBrainsMono', fontSize: 7, color: WHITE, opacity: 0.5 },
 
-  page: { backgroundColor: PARCH, color: INK, fontFamily: 'DMSans', fontSize: 9, paddingBottom: 46 },
+  page: { backgroundColor: PARCH, color: INK, fontFamily: 'Inter', fontSize: 9, paddingBottom: 46 },
   watermark: {
     backgroundColor: '#EEF2F6', paddingVertical: 5, paddingHorizontal: 40,
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
-  watermarkText: { fontFamily: 'CormorantSC', fontSize: 6.5, color: INK_2, opacity: 0.6, letterSpacing: 1.1 },
+  watermarkText: { fontFamily: 'JetBrainsMono', textTransform: 'uppercase', fontSize: 6.5, color: INK_2, opacity: 0.6, letterSpacing: 1.1 },
   body: { paddingHorizontal: 40, paddingTop: 20 },
 
   sectionWrap: { marginBottom: 16 },
-  sectionNum: { fontFamily: 'DMMono', fontSize: 7.5, color: TERRA, letterSpacing: 1, marginBottom: 3 },
-  sectionHeading: { fontFamily: 'Cormorant', fontSize: 17, color: INK, marginBottom: 5, lineHeight: 1.1 },
-  intro: { fontFamily: 'DMSans', fontSize: 9, color: INK_MID, lineHeight: 1.55, marginBottom: 6 },
+  sectionNum: { fontFamily: 'JetBrainsMono', fontSize: 7.5, color: TERRA, letterSpacing: 1, marginBottom: 3 },
+  sectionHeading: { fontFamily: 'Newsreader', fontSize: 17, color: INK, marginBottom: 5, lineHeight: 1.1 },
+  intro: { fontFamily: 'Inter', fontSize: 9, color: INK_MID, lineHeight: 1.55, marginBottom: 6 },
   bulletRow: { flexDirection: 'row', marginBottom: 4, paddingRight: 6 },
-  bulletDot: { fontFamily: 'DMSans', fontSize: 9, color: TERRA, width: 12, marginTop: 0.5 },
-  stepNum: { fontFamily: 'DMMono', fontSize: 8, color: TERRA, width: 16, marginTop: 1 },
-  itemText: { fontFamily: 'DMSans', fontSize: 9, color: INK, lineHeight: 1.5, flex: 1 },
+  bulletDot: { fontFamily: 'Inter', fontSize: 9, color: TERRA, width: 12, marginTop: 0.5 },
+  stepNum: { fontFamily: 'JetBrainsMono', fontSize: 8, color: TERRA, width: 16, marginTop: 1 },
+  itemText: { fontFamily: 'Inter', fontSize: 9, color: INK, lineHeight: 1.5, flex: 1 },
   divider: { borderBottomWidth: 0.5, borderBottomColor: BORDER, marginVertical: 14 },
   tableWrap: { borderWidth: 0.5, borderColor: BORDER, marginTop: 6, marginBottom: 7 },
-  tableCaption: { fontFamily: 'DMSans', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 4 },
+  tableCaption: { fontFamily: 'Inter', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 4 },
   tableRow: { flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: BORDER },
   tableRowLast: { flexDirection: 'row' },
   tableHeaderCell: { flex: 1, backgroundColor: '#EEF2F6', padding: '5 6' },
   tableCell: { flex: 1, padding: '5 6' },
-  tableHeaderText: { fontFamily: 'DMSans', fontSize: 7.2, fontWeight: 700, color: INK_2, lineHeight: 1.35 },
-  tableCellText: { fontFamily: 'DMSans', fontSize: 7.2, color: INK, lineHeight: 1.35 },
+  tableHeaderText: { fontFamily: 'Inter', fontSize: 7.2, fontWeight: 700, color: INK_2, lineHeight: 1.35 },
+  tableCellText: { fontFamily: 'Inter', fontSize: 7.2, color: INK, lineHeight: 1.35 },
 
   sourceBox: { borderLeftWidth: 3, borderLeftColor: INK_2, backgroundColor: '#EEF2F6', padding: '9 12', marginTop: 6 },
-  sourceLabel: { fontFamily: 'DMSans', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 3 },
-  sourceItem: { fontFamily: 'DMSans', fontSize: 8, color: INK, lineHeight: 1.5 },
+  sourceLabel: { fontFamily: 'Inter', fontSize: 7.5, fontWeight: 700, color: INK_2, marginBottom: 3 },
+  sourceItem: { fontFamily: 'Inter', fontSize: 8, color: INK, lineHeight: 1.5 },
   warnBox: { borderLeftWidth: 3, borderLeftColor: TERRA, backgroundColor: 'rgba(200,162,74,0.08)', padding: '9 12', marginTop: 10 },
-  warnLabel: { fontFamily: 'DMSans', fontSize: 7.5, fontWeight: 700, color: '#8A6D1F', marginBottom: 3 },
-  warnText: { fontFamily: 'DMSans', fontSize: 8, color: INK, lineHeight: 1.5 },
+  warnLabel: { fontFamily: 'Inter', fontSize: 7.5, fontWeight: 700, color: '#8A6D1F', marginBottom: 3 },
+  warnText: { fontFamily: 'Inter', fontSize: 8, color: INK, lineHeight: 1.5 },
 
   footer: {
     position: 'absolute', bottom: 16, left: 40, right: 40,
     flexDirection: 'row', justifyContent: 'space-between',
     borderTopWidth: 0.75, borderTopColor: BORDER, paddingTop: 5,
   },
-  footerText: { fontFamily: 'DMMono', fontSize: 6.5, color: INK, opacity: 0.45 },
+  footerText: { fontFamily: 'JetBrainsMono', fontSize: 6.5, color: INK, opacity: 0.45 },
 });
 
 function SectionBlock(section: TemplateSection, index: number) {

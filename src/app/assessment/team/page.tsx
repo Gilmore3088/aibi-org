@@ -30,7 +30,7 @@ export default function TeamAssessmentPage(): JSX.Element {
             </p>
             <div className="team-proof" aria-label="Team report preview">
               <div className="team-proof-head">
-                <span>Team report preview</span>
+                <span>Team report preview · illustrative data</span>
                 <strong>Median readiness</strong>
               </div>
               {([

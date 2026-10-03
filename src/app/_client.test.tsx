@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from './_client';
+import { getPracticeRepById } from '@content/practice-reps/foundation-program';
+import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program';
 
-// matchMedia is stubbed to report reduced-motion, so revealing the comparison
-// and switching to the safer tab resolve synchronously (no strike-sweep
-// timers) — the DOM assertions below are deterministic.
+// matchMedia reports reduced motion, so the hero AI session renders its
+// finished exchange synchronously and the assertions are deterministic.
 describe('HomePage', () => {
   beforeEach(() => {
     vi.stubGlobal(
@@ -17,98 +18,87 @@ describe('HomePage', () => {
     );
   });
 
-  const panel = () => document.getElementById('mk-demo-panel')!;
-  const click = (name: RegExp) => fireEvent.click(screen.getByRole('button', { name }));
-  const reveal = () => fireEvent.click(screen.getByRole('button', { name: /Skip to comparison/i }));
-  const openSafer = () => fireEvent.click(screen.getByRole('tab', { name: /Safer template/i }));
-
-  it('leads with the safety question, one CTA, and the assessment demo', () => {
+  it('leads with the safety question and exactly one hero CTA', () => {
     render(<HomePage />);
 
     expect(
-      screen.getByRole('heading', { name: /Is your team ready to use AI safely/i }),
+      screen.getByRole('heading', { level: 1, name: /Is your team ready to use AI safely/i }),
     ).toBeTruthy();
     expect(screen.getByText(/Find out in three minutes/i)).toBeTruthy();
-    expect(screen.getByText(/Built for community banks/i)).toBeTruthy();
+    expect(screen.getByText(/For community banks/i)).toBeTruthy();
 
-    // The proof line + exactly one CTA live in the hero copy column. Scoped to
-    // the hero because the post-hero result preview reuses the same proof line
-    // and CTA label lower on the page.
-    const heroCopy = document.querySelector('.mk-hero-copy') as HTMLElement;
-    expect(within(heroCopy).getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
-    expect(within(heroCopy).getAllByRole('link', { name: /Get my readiness score/i })).toHaveLength(1);
-    expect(within(heroCopy).queryByRole('link', { name: /Start learning/i })).toBeNull();
+    const hero = document.querySelector('.hm-hero-copy') as HTMLElement;
+    expect(within(hero).getByText(/Free .* 12 questions .* Practical next step/i)).toBeTruthy();
+    expect(within(hero).getAllByRole('link', { name: /Get my readiness score/i })).toHaveLength(1);
   });
 
-  it('opens on the optional decision check with the synthetic prompt', () => {
+  it('shows a real Foundation practice rep in the hero AI session', () => {
+    const rep = getPracticeRepById('safe-prompt-conversion')!;
     render(<HomePage />);
 
-    expect(screen.getByText(/Would you allow this prompt in a public AI tool/i)).toBeTruthy();
-    expect(screen.getByText(/Synthetic customer data/i)).toBeTruthy();
-    // The (fictional) prompt is shown so the visitor can form a judgement.
-    expect(screen.getByText(/John Smith/)).toBeTruthy();
-    // Three choices plus an optional skip; the comparison is not revealed yet.
-    expect(screen.getByRole('button', { name: /^Allow$/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Review first/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^Block$/i })).toBeTruthy();
-    expect(document.getElementById('mk-demo-panel')).toBeNull();
+    // The live layer — the session also holds an aria-hidden sizing copy.
+    const session = document.querySelector('.hm-session-layer:not(.hm-session-ghost)') as HTMLElement;
+    // The model answer is the course's own, verbatim.
+    expect(session.textContent).toContain(rep.modelAnswer);
+    // The prompt carries the synthetic risky text the rep asks to sanitize.
+    expect(session.textContent).toContain('John Smith');
+    expect(document.querySelector('.hm-session')!.textContent).toMatch(/Synthetic data/i);
+    expect(within(session).getByText('Banker reviews before use')).toBeTruthy();
   });
 
-  it('recommends Block and affirms a correct answer, with risk annotations', () => {
+  it('lays out Assess / Train / Build as real artifacts', () => {
     render(<HomePage />);
-    click(/^Block$/i);
+    const step = (id: string) => document.getElementById(`hm-step-${id}`)!.textContent;
+    const m2 = FOUNDATION_MICRO_MODULES.find((m) => m.id === 'm2-low-risk-message-rewrite')!;
 
-    // Calm, specific feedback — not a game-show verdict.
-    expect(screen.getByText(/^Correct\./i)).toBeTruthy();
-    expect(screen.queryByText(/wrong/i)).toBeNull();
-    // The exposed data is annotated on the revealed unsafe prompt.
-    expect(screen.getByText(/Customer identity exposed/i)).toBeTruthy();
-    expect(screen.getByText(/Public tool boundary crossed/i)).toBeTruthy();
+    expect(step('assess')).toContain('Do you know which AI tools you are allowed to use for work?');
+    expect(step('train')).toContain(m2.weakExample);
+    expect(step('train')).toContain(m2.strongExample);
+    expect(step('build')).toContain('# Exception Report Skill - v1.0');
+    expect(step('build')).toContain('[BSA REVIEW — DO NOT RESOLVE WITHOUT COMPLIANCE]');
   });
 
-  it('acknowledges an unsafe answer without scolding', () => {
+  it('shows the ROI calculator with a live currency result', () => {
     render(<HomePage />);
-    click(/^Allow$/i);
-
-    expect(
-      screen.getByText(/Review after pasting does not remove the exposure/i),
-    ).toBeTruthy();
-    expect(screen.queryByText(/wrong/i)).toBeNull();
+    const roi = document.getElementById('roi-calculator')!;
+    expect(within(roi).getByLabelText('Full-time employees')).toBeTruthy();
+    expect(roi.querySelector('.mk-roi-result-value')!.textContent).toMatch(/^\$[\d,]+$/);
+    fireEvent.change(within(roi).getByLabelText('Full-time employees'), { target: { value: '100' } });
+    expect(roi.textContent).toContain('$715,144');
   });
 
-  it('reveals real data on the unsafe tab and a reusable template on the safer tab', () => {
+  it('checks a prompt in the browser and proposes a placeholder version', () => {
     render(<HomePage />);
-    reveal();
+    const input = screen.getByLabelText('Your prompt') as HTMLTextAreaElement;
+    const before = document.querySelector('.hm-redline-before') as HTMLElement;
+    const after = document.querySelector('.hm-redline-after') as HTMLElement;
 
-    // Unsafe tab is the default after reveal — real (fictional) data on show.
-    expect(panel().textContent).toContain('John Smith');
-    expect(panel().textContent).toContain('$83.17');
+    // Opens on the example: every identifier is flagged…
+    const struck = Array.from(before.querySelectorAll('s')).map((s) => s.textContent);
+    expect(struck).toEqual(expect.arrayContaining(['John Smith', '0042871', '04/12/1981', '(555) 123-4567']));
+    // …and the safer version keeps slots, drops the rest.
+    expect(after.textContent).toContain('[customer name]');
+    expect(after.textContent).toContain('[account number]');
+    expect(after.textContent).not.toContain('John Smith');
+    expect(after.textContent).not.toContain('04/12/1981');
 
-    openSafer();
-    // Needed values become bracketed template slots…
-    expect(panel().textContent).toContain('[customer name]');
-    expect(panel().textContent).toContain('[account number]');
-    expect(panel().textContent).toContain('[amount]');
-    // …the real customer data is gone…
-    expect(panel().textContent).not.toContain('John Smith');
-    expect(panel().textContent).not.toContain('$83.17');
-    // …the complaint context survives…
-    expect(panel().textContent).toContain('overdraft');
-    // …and the three guardrails are shown, not just described.
-    expect(screen.getByText(/Sensitive details removed/i)).toBeTruthy();
-    expect(screen.getByText(/Approved source required/i)).toBeTruthy();
-    expect(screen.getByText(/Human review retained/i)).toBeTruthy();
+    // A clean prompt is acknowledged, not scolded.
+    fireEvent.change(input, { target: { value: 'Draft a reply to [customer name] using our fee policy.' } });
+    expect(screen.getByText(/No customer details found/i)).toBeTruthy();
+
+    // Clearing empties both sides and disables copy.
+    fireEvent.click(screen.getByRole('button', { name: 'clear' }));
+    expect(input.value).toBe('');
+    expect((screen.getByRole('button', { name: /Copy safer version/i }) as HTMLButtonElement).disabled).toBe(true);
   });
 
-  it('drops PII the task never needed (DOB, SSN, phone) from the template', () => {
+  it('links each resource cover to a page that exists (no /resources/<slug> dead ends)', () => {
     render(<HomePage />);
-    reveal();
-    openSafer();
-
-    const p = panel();
-    expect(p.textContent).not.toContain('04/12/1981');
-    expect(p.textContent).not.toContain('(555) 123-4567');
-    expect(p.textContent).not.toMatch(/ssn/i);
-    expect(p.textContent).not.toMatch(/\bdob\b/i);
+    const covers = Array.from(document.querySelectorAll('.hm-kit-stack a')) as HTMLAnchorElement[];
+    expect(covers).toHaveLength(4);
+    for (const a of covers) {
+      expect(a.getAttribute('href')).toMatch(/^\/(resources#starter-kits|playbooks\/[a-z-]+)$/);
+      expect(a.querySelector('img')).toBeTruthy();
+    }
   });
 });

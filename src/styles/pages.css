@@ -1,0 +1,280 @@
+/* ============================================================
+   Page-level pieces built on the ax- system (system.css):
+   playbooks, assessment landing, articles, trust pages.
+   ============================================================ */
+
+/* ---- Playbooks: folder listing in the hero window ---- */
+.pb-tree { list-style: none; margin: 0; padding: 8px 0; }
+.pb-tree a { display: flex; justify-content: space-between; gap: 16px; padding: 9px clamp(18px, 3vw, 28px); font-family: var(--font-mono); font-size: 0.8125rem; color: inherit; text-decoration: none; border-bottom: 1px solid rgba(7, 26, 47, 0.06); }
+.pb-tree li:last-child a { border-bottom: 0; }
+.pb-tree-name { color: var(--ink); }
+.pb-tree-meta { color: #6B7280; white-space: nowrap; }
+.pb-tree a:hover .pb-tree-name { color: var(--gold-deep); }
+@media (max-width: 420px) { .pb-tree-meta { display: none; } }
+
+/* ---- Playbooks: role directory on cream ---- */
+.pb-roles { display: grid; gap: 18px; }
+@media (min-width: 720px) { .pb-roles { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .pb-roles { grid-template-columns: repeat(3, 1fr); } }
+.pb-role { display: grid; align-content: start; gap: 10px; padding: 24px 24px 22px; border-radius: 14px; background: #fff; color: var(--ink); text-decoration: none; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32); transition: transform var(--t-med) var(--ease), border-color var(--t-med); }
+.pb-role:hover { transform: translateY(-2px); border-color: rgba(160, 122, 40, 0.55); }
+.pb-role:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.pb-role-title { font-family: var(--font-serif); font-size: 1.625rem; line-height: 1.1; }
+.pb-role-desc { font-size: 0.9375rem; line-height: 1.55; color: #46505E; }
+.pb-role-outs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.pb-role-outs span { font-family: var(--font-mono); font-size: 0.6875rem; color: #46505E; padding: 3px 8px; border-radius: 6px; background: #F3EFE6; }
+.pb-role-open { margin-top: 6px; font-size: 0.875rem; font-weight: 600; color: var(--gold-deep); }
+.pb-role-open span { display: inline-block; transition: transform var(--t-med) var(--ease); }
+.pb-role:hover .pb-role-open span { transform: translateX(4px); }
+
+/* ---- Role playbook: workflow in the hero window ---- */
+.pb-steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; }
+.pb-steps li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); }
+.pb-step-n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); padding-top: 3px; }
+.pb-step-body { display: grid; gap: 3px; }
+.pb-step-body strong { font-family: var(--font-serif); font-weight: 400; font-size: 1.25rem; line-height: 1.2; }
+.pb-step-out { font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; }
+
+/* ---- Role playbook: use cases as a paper register ---- */
+.pb-uses { list-style: none; margin: 0; padding: 0; background: #fff; border-radius: 14px; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32); }
+.pb-uses li { display: grid; grid-template-columns: 36px 1fr; gap: 6px 14px; padding: 22px clamp(18px, 3vw, 32px); border-bottom: 1px solid rgba(7, 26, 47, 0.07); }
+.pb-uses li:last-child { border-bottom: 0; }
+.pb-use-n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); padding-top: 6px; }
+.pb-use-main h3 { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.2; color: var(--ink); }
+.pb-use-main p { margin: 6px 0 0; font-size: 0.9375rem; line-height: 1.55; color: #46505E; max-width: 60ch; }
+.pb-use-out { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+@media (min-width: 860px) {
+  .pb-uses li { grid-template-columns: 36px 1fr 280px; align-items: center; }
+  .pb-use-out { grid-column: 3; flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+.pb-use-artifact { font-family: var(--font-mono); font-size: 0.75rem; color: #2A3442; padding: 4px 10px; border-radius: 6px; background: #F3EFE6; }
+.pb-risk { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563; }
+.pb-risk.is-high { color: #A3341C; }
+.pb-risk.is-low { color: #3F6B4A; }
+
+/* ---- Role playbook: checklist as paper on navy ---- */
+.pb-check { display: grid; gap: 32px; align-items: start; }
+@media (min-width: 960px) { .pb-check { grid-template-columns: 0.8fr 1.2fr; gap: 56px; } }
+.pb-check .ax-section-head { margin-bottom: 0; }
+.pb-check-paper .ax-k { font-family: var(--font-mono); text-transform: none; letter-spacing: 0; }
+.pb-checks { list-style: none; margin: 0; padding: 0; display: grid; }
+.pb-checks li { position: relative; padding: 12px 0 12px 30px; border-top: 1px solid rgba(26, 26, 26, 0.08); font-size: 1rem; line-height: 1.5; color: #1A1A1A; }
+.pb-checks li::before { content: ''; position: absolute; left: 0; top: 15px; width: 16px; height: 16px; border: 1.5px solid var(--gold-deep); border-radius: 4px; }
+
+/* ---- Role playbook: template files ---- */
+.pb-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+@media (min-width: 720px) { .pb-files { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .pb-files { grid-template-columns: repeat(3, 1fr); } }
+.pb-file { position: relative; display: grid; gap: 8px; height: 100%; padding: 22px 22px 20px; border-radius: 4px 14px 4px 4px; background: #fff; color: var(--ink); text-decoration: none; border: 1px solid rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 14px 30px -22px rgba(7, 26, 47, 0.3); transition: transform var(--t-med) var(--ease), border-color var(--t-med); }
+.pb-file::after { content: ''; position: absolute; top: 0; right: 0; width: 22px; height: 22px; background: linear-gradient(225deg, var(--cream) 50%, #EAE3D3 50%); border-radius: 0 14px 0 0; }
+.pb-file:hover { transform: translateY(-2px); border-color: rgba(160, 122, 40, 0.55); }
+.pb-file-type { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: #6B5A2E; }
+.pb-file-name { font-family: var(--font-serif); font-size: 1.375rem; line-height: 1.2; }
+.pb-file-open { margin-top: auto; padding-top: 6px; font-size: 0.875rem; font-weight: 600; color: var(--gold-deep); }
+
+/* ---- Playbook template: contents + document ---- */
+.pb-toc { list-style: none; margin: 10px 0 0; padding: 0; }
+.pb-toc a { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 9px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); color: inherit; text-decoration: none; font-size: 0.9375rem; line-height: 1.4; }
+.pb-toc a:hover { color: var(--gold-deep); }
+.pb-toc-for { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgba(7, 26, 47, 0.08); font-size: 0.8125rem; line-height: 1.5; color: #4B5563; }
+.pb-toc-for strong { color: var(--ink); }
+.pb-crumb { margin: 0 auto 18px; max-width: 860px; font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; }
+.pb-crumb a { color: var(--gold-deep) !important; text-decoration: none; }
+.pb-doc { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 6px; border: 1px solid rgba(7, 26, 47, 0.08); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 30px 60px -36px rgba(7, 26, 47, 0.4); padding: clamp(22px, 5vw, 64px); }
+.pb-doc-section { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); scroll-margin-top: 96px; }
+.pb-doc-section:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 560px) { .pb-doc-section { grid-template-columns: 1fr; gap: 4px; } }
+.pb-doc-n { margin: 0; padding-top: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); }
+.pb-doc-section h2 { margin: 0 0 12px; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 1.875rem); line-height: 1.15; color: var(--ink); }
+.pb-doc-intro { margin: 0 0 14px; font-size: 1rem; line-height: 1.65; color: #46505E; }
+.pb-doc-principle { margin: 4px 0 16px; padding: 14px 18px; border-left: 3px solid var(--gold); background: #FBF8F1; font-size: 1rem; line-height: 1.55; color: var(--ink); }
+.pb-doc-section .pb-checks li { color: var(--ink); }
+.pb-doc-fields { margin: 8px 0 0; display: grid; }
+.pb-doc-fields div { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid rgba(7, 26, 47, 0.07); }
+@media (min-width: 720px) { .pb-doc-fields div { grid-template-columns: 220px 1fr; gap: 20px; } }
+.pb-doc-fields dt { font-weight: 600; font-size: 0.9375rem; color: var(--ink); }
+.pb-doc-fields dd { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: #46505E; }
+.pb-doc-steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; font-size: 1rem; line-height: 1.6; color: var(--ink); }
+.pb-doc-section .ax-prompt { margin-top: 18px; }
+.pb-doc-sources { margin-top: 8px; padding-top: 24px; border-top: 1px solid rgba(7, 26, 47, 0.12); }
+.pb-doc-sources ul { margin: 8px 0 0; padding-left: 18px; font-size: 0.875rem; line-height: 1.6; color: #46505E; }
+.pb-doc .ax-prompt { background: #0D1F35; border-color: rgba(200, 162, 74, 0.35); --on-dark-20: rgba(255, 255, 255, 0.2); }
+.pb-doc .ax-prompt .ax-k { color: var(--gold-soft); }
+
+/* ---- Assessment landing ---- */
+.as-land-q { margin: 0 0 16px; font-family: var(--font-serif); font-size: clamp(1.375rem, 2.2vw, 1.625rem); line-height: 1.2; color: var(--ink); }
+.as-land-opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.as-land-opts li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid rgba(7, 26, 47, 0.1); border-radius: 10px; background: #fff; font-size: 0.875rem; line-height: 1.45; color: #2A3442; }
+.as-land-opts li:nth-child(3) { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.as-land-letter { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(7, 26, 47, 0.18); font-family: var(--font-mono); font-size: 0.6875rem; color: #4B5563; }
+.as-land-opts li:nth-child(3) .as-land-letter { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.as-land-note { margin: 16px 0 0; font-size: 0.8125rem; line-height: 1.5; color: #4B5563; }
+.as-land-paths { max-width: 900px; }
+@media (min-width: 1180px) { .as-land-paths { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.as-land-paths .ax-tier-art { height: 240px; }
+.as-land-name { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.625rem; line-height: 1.1; }
+.as-land-actions { margin-top: 40px; }
+
+/* ============================================================
+   Articles (ArticleShell): briefings and the legacy essays.
+   A navy masthead runs from the nav through the headline, then
+   the body sits on cream in a 68ch column with numbered sections.
+   Selectors are scoped under .ax-article so they outrank the
+   Tailwind utilities on the legacy pages without !important.
+   ============================================================ */
+.ax-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 60; pointer-events: none; }
+.ax-progress span { display: block; height: 100%; background: var(--gold); transform-origin: 0 50%; }
+.ax-article { background: var(--cream); counter-reset: axsec; }
+
+/* Masthead: the crumb row and the article header share one navy band. */
+.ax-article .mk-article-head,
+.ax-article article > header {
+  background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax);
+}
+.ax-article .mk-article-head { max-width: 760px; margin: 0 auto; padding: 28px 24px 0; }
+.ax-article .mk-article-back { color: var(--gold-soft); font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; }
+.ax-article .mk-article-back:hover { color: var(--cream); }
+.ax-article .mk-article-chip { background: transparent; border-color: rgba(255, 255, 255, 0.16); color: rgba(247, 243, 234, 0.8); font-family: var(--font-mono); font-weight: 400; font-size: 0.6875rem; letter-spacing: 0; }
+.ax-article .mk-article-chip-muted { color: rgba(247, 243, 234, 0.6); }
+.ax-article main { padding-top: 0; }
+.ax-article article > header { margin: 0 0 56px; padding: 40px 0 64px; }
+.ax-article article > header > p:first-child,
+.ax-article article > header .mk-k { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-soft); margin: 0 0 18px; }
+.ax-article article > header h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.5rem, 5.4vw, 4rem); line-height: 1.02; letter-spacing: -0.01em; color: var(--cream); margin: 0 0 22px; }
+.ax-article article > header h1 + p,
+.ax-article article > header .mk-post-dek { font-style: normal; font-size: 1.1875rem; line-height: 1.6; color: rgba(247, 243, 234, 0.72); margin: 0; max-width: 60ch; }
+.ax-article article > header :is(a) { color: var(--gold-soft); }
+
+/* Body column */
+.ax-article article { max-width: 760px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
+.ax-article main > article { padding-left: 0; padding-right: 0; }
+.ax-article article :is(section, .mk-prose) { font-size: 1.125rem; line-height: 1.75; color: #2A3442; }
+.ax-article article :is(section, .mk-prose) p { max-width: 68ch; }
+.ax-article article h2:not(header h2) {
+  counter-increment: axsec; font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.12; color: var(--ink); margin: 2.2em 0 0.6em; padding-top: 0;
+}
+.ax-article article h2:not(header h2)::before {
+  content: counter(axsec, decimal-leading-zero); display: block; margin-bottom: 10px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--gold-deep);
+}
+.ax-article article h3 { font-family: var(--font-serif); font-weight: 400; font-size: 1.375rem; line-height: 1.25; color: var(--ink); }
+.ax-article article strong { color: var(--ink); font-weight: 600; }
+.ax-article article blockquote { border-left: 3px solid var(--gold); padding: 6px 0 6px 22px; margin: 1.75em 0; font-family: var(--font-serif); font-style: normal; font-size: 1.375rem; line-height: 1.45; color: var(--ink); }
+.ax-article article section a:not([class*="bg-"]), .ax-article .mk-prose a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* Sources */
+.ax-article .mk-post-sources { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(7, 26, 47, 0.14); }
+.ax-article .mk-post-sources h2 { counter-increment: none; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #4B5563; margin: 0 0 12px; }
+.ax-article .mk-post-sources h2::before { content: none; }
+.ax-article .mk-post-sources ol { margin: 0; padding-left: 22px; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.6; color: #46505E; }
+.ax-article .mk-post-sources li { margin: 0 0 6px; }
+.ax-article .mk-post-sources a { color: #2A3442; text-decoration-color: rgba(160, 122, 40, 0.6); }
+.ax-article .mk-post { padding-top: 0; padding-bottom: 88px; }
+
+/* Closing band */
+.ax-article-close { background: var(--ink); color: var(--cream); padding: 88px 0; text-align: center; }
+.ax-article-close .ax-k { color: var(--gold-soft); }
+.ax-article-close h2 { margin: 12px 0 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.25rem, 4.6vw, 3.5rem); line-height: 1.05; color: var(--cream); }
+.ax-article-close p:not(.ax-k) { margin: 16px auto 28px; max-width: 52ch; color: rgba(247, 243, 234, 0.7); }
+.mockup-scope.ax-article a.mk-article-back { color: var(--gold-soft); }
+.mockup-scope.ax-article a.mk-article-back:hover { color: var(--cream); }
+.ax-article .mk-article-toc-label { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.12em; }
+/* Below the fixed-aside breakpoint the contents strip joins the masthead. */
+@media (max-width: 1239px) {
+  .ax-article .mk-article-toc { max-width: 760px; margin: 0 auto; padding: 20px 24px 0; background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax); }
+  .ax-article .mk-article-toc-label { color: var(--gold-soft); }
+  .ax-article .mk-article-toc-details { background: transparent; border-color: rgba(255, 255, 255, 0.16); }
+  .ax-article .mk-article-toc-summary { color: var(--cream); font-family: var(--font-mono); font-weight: 400; font-size: 0.8125rem; }
+  .ax-article .mk-article-toc-summary::after { color: var(--gold-soft); }
+  .ax-article .mk-article-toc-details .mk-article-toc-link { color: rgba(247, 243, 234, 0.75); }
+  .ax-article .mk-article-toc-details .mk-article-toc-link:hover { background: rgba(255, 255, 255, 0.06); color: var(--cream); }
+}
+.pb-doc-table { margin: 12px 0 8px; overflow-x: auto; border: 1px solid rgba(7, 26, 47, 0.1); border-radius: 8px; }
+.pb-doc-table:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pb-doc-caption { margin: 0; padding: 10px 14px; font-family: var(--font-mono); font-size: 0.75rem; color: #4B5563; border-bottom: 1px solid rgba(7, 26, 47, 0.08); }
+.pb-doc-table table { width: 100%; border-collapse: collapse; font-size: 0.875rem; line-height: 1.5; }
+.pb-doc-table th { text-align: left; padding: 10px 14px; background: #F3EFE6; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.pb-doc-table td { padding: 10px 14px; border-top: 1px solid rgba(7, 26, 47, 0.07); color: #2A3442; vertical-align: top; min-width: 140px; }
+.pb-doc-section > div { min-width: 0; }
+
+/* ---- MockupShell content pages (security, FAQ, legal, references) ---- */
+.ax-page .ax-section.ax-light.is-paper { background: #FFFDF8; }
+.ax-shell-block .ax-section-head { max-width: 820px; }
+.ax-shell-lede { margin: 0; font-size: 1.0625rem; line-height: 1.65; color: var(--on-dark-65); max-width: 68ch; }
+.ax-shell-lede a { color: var(--gold-deep) !important; font-weight: 600; }
+.ax-shell-block .ax-display { font-size: clamp(2rem, 4vw, 3rem); }
+
+/* Dark islands inside cream bands (inline navy panels, document asides):
+   restore the on-dark tokens that .ax-light flips to ink. */
+.ax-light :is([style*="background: var(--ink)"], [style*="background:var(--ink)"], .mk-document-aside) {
+  --on-dark-08: rgba(255, 255, 255, 0.08);
+  --on-dark-10: rgba(255, 255, 255, 0.1);
+  --on-dark-20: rgba(255, 255, 255, 0.2);
+  --on-dark-50: rgba(255, 255, 255, 0.5);
+  --on-dark-65: rgba(255, 255, 255, 0.65);
+  --on-dark-70: rgba(255, 255, 255, 0.7);
+  --on-dark-80: rgba(255, 255, 255, 0.8);
+  color: var(--cream);
+}
+.ax-light .mk-document-aside :is(p, li) { color: rgba(247, 243, 234, 0.8); }
+.ax-light .mk-document-aside .mk-proof-eyebrow { color: var(--gold-soft); }
+.sec-posture li { font-size: 0.9375rem; color: #2A3442 !important; }
+.sec-posture li::before { color: var(--gold-deep) !important; }
+.sec-posture-links { margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.875rem; font-weight: 600; }
+.sec-posture-links a { color: var(--gold-deep) !important; text-decoration: none; }
+
+/* ---- Certifications: example certificate in the hero ---- */
+.cert-sample { text-align: center; padding: 12px 4px 4px; border: 1px solid rgba(160, 122, 40, 0.45); outline: 1px solid rgba(160, 122, 40, 0.2); outline-offset: 5px; border-radius: 4px; }
+.cert-sample-title { margin: 6px 0 0; font-family: var(--font-serif); font-size: clamp(2rem, 3.6vw, 2.75rem); line-height: 1.05; color: var(--ink); }
+.cert-sample-to { margin: 10px 0 0; font-size: 0.875rem; color: #4B5563; }
+.cert-sample-to span { font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; color: var(--ink); }
+.cert-sample-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 12px 0; padding-top: 14px; border-top: 1px solid rgba(7, 26, 47, 0.1); }
+.cert-sample-meta dt { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6B7280; }
+.cert-sample-meta dd { margin: 4px 0 0; font-size: 0.8125rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.cert-sample-verify { margin: 14px 0 10px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-deep); }
+
+/* ---- Prompt cards: navy hero, sample cards as paper ---- */
+.pc-scope main { background: var(--cream); }
+.pc-hero { background: var(--ink); color: var(--cream); }
+.pc-hero h1 { color: var(--cream); font-weight: 400; letter-spacing: -0.01em; }
+.pc-hero h1 + p { color: rgba(247, 243, 234, 0.7); }
+.pc-hero button.grid { background: #F7F3EA; border-color: transparent; box-shadow: 0 18px 36px -24px rgba(0, 0, 0, 0.6); }
+.pc-hero button.grid:hover { border-color: var(--gold); }
+.pc-hero button.grid .text-\[color\:var\(--gold\)\] { color: var(--gold-deep); }
+.pc-scope .pc-ghost { color: var(--cream); border-color: rgba(255, 255, 255, 0.3); }
+.pc-scope .pc-ghost:hover { border-color: var(--gold); color: var(--gold-soft); }
+
+/* ---- Auth: navy band over a cream page ---- */
+.auth-band { height: 72px; display: flex; align-items: center; padding: 0 24px; background: var(--ink); border-bottom: 1px solid rgba(200, 162, 74, 0.25); }
+.auth-band-mark { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* Legacy utility pages set heavy sans headlines inline. Bring every
+   such h1 onto the site's display face at regular weight. */
+h1:is([style*="font-weight:700"], [style*="font-weight:800"], [style*="font-weight:600"], [style*="font-weight: 700"], [style*="font-weight: 800"], [style*="font-weight: 600"]) {
+  font-family: var(--font-serif) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ---- Team assessment: navy hero band, cards as paper on it ---- */
+.mockup-scope .team-page .team-hero { position: relative; padding: 24px 0 64px; background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(-46px -100vmax 0); }
+.mockup-scope .team-page .team-hero > div > .team-kicker { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.12em; color: var(--gold-soft); }
+.mockup-scope .team-page .team-hero h1 { color: var(--cream); font-weight: 400; }
+.mockup-scope .team-page .team-hero .team-lede { color: rgba(247, 243, 234, 0.72); }
+.mockup-scope .team-page .team-hero .team-proof { border-color: transparent; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
+.mockup-scope .team-page .team-kicker { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.12em; }
+
+/* ---- Paid In-Depth report: headings on the display face ---- */
+.mk-pr-shell :is(h1, h2, h3) { font-family: var(--font-serif) !important; font-weight: 400 !important; letter-spacing: -0.01em !important; }
+
+/* ---- Practice rep: navy masthead (crumb + header), cream workspace ---- */
+.pr-scope { background: var(--cream); }
+.pr-scope main > div > nav,
+.pr-scope main > div > header { background: var(--ink); box-shadow: 0 0 0 100vmax var(--ink); clip-path: inset(0 -100vmax); }
+.pr-scope main > div > nav { padding-top: 28px; margin-bottom: 0; }
+.pr-scope main > div > header { margin-top: 0; padding-top: 18px; padding-bottom: 48px; border-bottom: 0; }
+.pr-scope main > div > nav + header { margin-top: -1px !important; }
+.pr-scope main > div > header h1 { color: var(--cream); font-weight: 400; }
+.pr-scope main > div > header p { color: rgba(247, 243, 234, 0.72); }
+.pr-scope main > div > :is(nav, header) :is(a, span, p).font-serif-sc { color: var(--gold-soft); }
+.pr-scope .font-serif-sc { font-family: var(--font-mono); letter-spacing: 0.1em; }
+.pr-scope main > div > section .font-serif-sc { color: var(--gold-deep); }

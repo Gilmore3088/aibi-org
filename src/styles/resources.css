@@ -1513,10 +1513,11 @@ button.rx-featured-item {
   }
 }
 .prompt-simple-scope .prompt-simple-hero-copy h1 {
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 750;
-  letter-spacing: 0;
-  line-height: .95;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 6.4vw, 5.25rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: .98;
   margin: 18px 0 0;
   max-width: 10ch;
 }

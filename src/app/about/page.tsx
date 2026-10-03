@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowGlyph, Button, CtaBand, SiteHeader } from '@/components/mockup';
+import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { AxHero, AxSection, AxWindow } from '@/components/ax';
 import { BRAND, PRINCIPLES } from '@content/copy';
 import { REGULATIONS } from '@content/regulations';
 
@@ -57,188 +58,161 @@ const TRUST_BOUNDARIES = [
 
 export default function AboutPage() {
   return (
-    <div className="mockup-scope aibi-about">
+    <div className="mockup-scope ax-page">
       <SiteHeader activePath="/about" />
 
-      <header className="aibi-about-hero">
-        <div className="mk-container aibi-about-hero-inner">
-          <div className="aibi-about-hero-copy">
-            <p className="aibi-about-kicker">About the Institute</p>
-            <h1>Practical AI training for banks that need more than a demo.</h1>
-            <p>
-              {BRAND.name} helps community banks and credit unions turn AI
-              interest into safe, reviewable work: clear use cases, clean data
-              boundaries, checked sources, and human ownership.
+      <AxHero
+        cmd="about --institute aibi --audience community-banks,credit-unions"
+        title="Practical AI training for banks that need more than a demo."
+        lede={
+          <>
+            {BRAND.name} helps community banks and credit unions turn AI interest into safe, reviewable
+            work: clear use cases, clean data boundaries, checked sources, and human ownership.
+          </>
+        }
+        actions={
+          <>
+            <Button href="/assessment/take" variant="gold" size="lg">
+              Start the assessment <ArrowGlyph />
+            </Button>
+            <Button href="/security" variant="ghost-dark" size="lg">
+              View security standards
+            </Button>
+          </>
+        }
+        aside={
+          <AxWindow title="why-this-exists.md" meta="origin">
+            <h2 className="ax-window-h">AI showed up before many smaller institutions had a plan.</h2>
+            <p className="ax-muted ax-para">
+              The idea started at a banking conference where AI was everywhere, but many community bank and
+              credit union teams still did not have a practical strategy for use cases, controls, or ownership.
             </p>
-            <div className="aibi-about-actions">
-              <Button href="/assessment/take" variant="gold" size="lg">
-                Start the assessment <ArrowGlyph />
-              </Button>
-              <Button href="/security" variant="ghost-dark" size="lg">
-                View security standards
-              </Button>
-            </div>
-          </div>
-
-          <div className="aibi-about-origin" aria-label="Why this exists">
-            <p className="aibi-about-kicker">Why this exists</p>
-            <h2>AI showed up before many smaller institutions had a plan.</h2>
-            <p>
-              The idea started at a banking conference where AI was everywhere,
-              but many community bank and credit union teams still did not have
-              a practical strategy for use cases, controls, or ownership.
+            <p className="ax-muted ax-para">
+              AiBI exists to make that next step approachable: help the people who know the workflow turn one
+              useful idea into something their institution can review, run, and improve.
             </p>
-            <p>
-              AiBI exists to make that next step approachable: help the people
-              who know the workflow turn one useful idea into something their
-              institution can review, run, and improve.
-            </p>
-          </div>
-        </div>
-      </header>
+          </AxWindow>
+        }
+      />
 
       <main>
-        <section className="aibi-about-section">
-          <div className="mk-container aibi-about-split">
-            <div>
-              <p className="aibi-about-kicker">What we are building</p>
-              <h2>Turn bankers into builders, safely.</h2>
-              <p>
-                The goal is not to make every banker a software engineer. The
-                goal is to give ideas people a safe, practical way to define a
-                problem, shape a solution, and hand off work that can survive
-                review.
-              </p>
-            </div>
-            <div className="aibi-about-path" aria-label="Readiness path">
-              {READINESS_PATH.map((step, index) => (
-                <div key={step.title} className="aibi-about-path-step">
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AxSection
+          light
+          id="building"
+          kicker="What we are building"
+          title="Turn bankers into builders, safely."
+          lede="The goal is not to make every banker a software engineer. The goal is to give ideas people a safe, practical way to define a problem, shape a solution, and hand off work that can survive review."
+        >
+          <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 3 }} aria-label="Readiness path">
+            {READINESS_PATH.map((step, index) => (
+              <li key={step.title} className={index === 0 ? 'is-first' : undefined}>
+                <span className="ax-pipeline-node" aria-hidden="true" />
+                <span className="ax-k">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </AxSection>
 
-        <section className="aibi-about-section aibi-about-section-white">
-          <div className="mk-container">
-            <div className="aibi-about-section-head">
-              <p className="aibi-about-kicker">Operating principles</p>
-              <h2>Clear standards, short enough to remember.</h2>
-              <p>
-                These principles keep the curriculum focused on useful bank work,
-                not generic AI talking points.
-              </p>
-            </div>
-            <div className="aibi-about-principles">
-              {PRINCIPLES.map((principle) => (
-                <article key={principle.number} className="aibi-about-principle">
-                  <span>{principle.number}</span>
-                  <h3>{principle.title}</h3>
-                  <p>{principle.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AxSection
+          id="principles"
+          kicker="Operating principles"
+          title="Clear standards, short enough to remember."
+          lede="These principles keep the curriculum focused on useful bank work, not generic AI talking points."
+        >
+          <dl className="ax-defs">
+            {PRINCIPLES.map((principle) => (
+              <div key={principle.number}>
+                <dt>
+                  <span className="ax-k ax-gold">{principle.number}</span> {principle.title}
+                </dt>
+                <dd>{principle.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </AxSection>
 
-        <section className="aibi-about-section">
-          <div className="mk-container aibi-about-standards">
-            <div className="aibi-about-section-head">
-              <p className="aibi-about-kicker">How the work stays grounded</p>
-              <h2>Designed for review, not just completion.</h2>
-            </div>
-            <div className="aibi-about-standard-grid">
-              {OPERATING_STANDARDS.map((standard) => (
-                <article key={standard.title} className="aibi-about-standard">
-                  <h3>{standard.title}</h3>
-                  <p>{standard.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AxSection light id="grounded" kicker="How the work stays grounded" title="Designed for review, not just completion.">
+          <dl className="ax-defs">
+            {OPERATING_STANDARDS.map((standard) => (
+              <div key={standard.title}>
+                <dt>{standard.title}</dt>
+                <dd>{standard.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </AxSection>
 
-        <section className="aibi-about-section aibi-about-section-white">
-          <div className="mk-container aibi-about-reference-row">
-            <div>
-              <p className="aibi-about-kicker">Public reference map</p>
-              <h2>Sources are named. Endorsement is not implied.</h2>
-              <p>
-                The curriculum uses public references as source material for
-                disciplined AI work in banking. Those references do not approve
-                the Institute, the curriculum, or the credential.
-              </p>
-              <Link className="aibi-about-text-link" href="/references">
-                See every source we cite
-              </Link>
-            </div>
-            <div className="aibi-about-reference-list">
-              {REGULATIONS.map((reference) => (
-                <Link key={reference.slug} href={`/references#${reference.slug}`}>
-                  <strong>{reference.short}</strong>
-                  <span>{reference.issuer}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AxSection
+          id="references"
+          kicker="Public reference map"
+          title="Sources are named. Endorsement is not implied."
+          lede="The curriculum uses public references as source material for disciplined AI work in banking. Those references do not approve the Institute, the curriculum, or the credential."
+        >
+          <ol className="ax-sources ax-sources-grid">
+            {REGULATIONS.map((reference, i) => (
+              <li key={reference.slug}>
+                <span className="ax-gold">[{i + 1}]</span>
+                <span>
+                  <Link href={`/references#${reference.slug}`}>{reference.short}</Link>
+                  <small>{reference.issuer}</small>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p style={{ marginTop: 28 }}>
+            <Link className="ax-link-mono" href="/references">
+              See every source we cite
+            </Link>
+          </p>
+        </AxSection>
 
-        <section className="aibi-about-section aibi-about-guardrails">
-          <div className="mk-container">
-            <div className="aibi-about-section-head">
-              <p className="aibi-about-kicker">Trust boundaries</p>
-              <h2>What we will not overclaim.</h2>
-            </div>
-            <div className="aibi-about-boundaries">
-              {TRUST_BOUNDARIES.map((boundary) => (
-                <p key={boundary}>{boundary}</p>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AxSection light id="boundaries" kicker="Trust boundaries" title="What we will not overclaim.">
+          <ul className="ax-checklist ax-checklist-no">
+            {TRUST_BOUNDARIES.map((boundary) => (
+              <li key={boundary}>{boundary}</li>
+            ))}
+          </ul>
+        </AxSection>
 
-        <section className="aibi-about-section aibi-about-section-white">
-          <div className="mk-container aibi-about-contact">
-            <div>
-              <p className="aibi-about-kicker">Press and research</p>
-              <h2>Need a source, quote, or background?</h2>
-              <p>
-                Journalists, analysts, podcasters, and researchers can send
-                questions to {BRAND.emails.contact}. Include your deadline,
-                outlet, topic, and whether you need source background or
-                artifact context.
+        <AxSection id="press" kicker="Press and research" title="Need a source, quote, or background?">
+          <div className="ax-rules">
+            <p className="ax-muted ax-para">
+              Journalists, analysts, podcasters, and researchers can send questions to {BRAND.emails.contact}.
+              Include your deadline, outlet, topic, and whether you need source background or artifact context.
+            </p>
+            <AxWindow title="attribution-boundary" meta="policy">
+              <p className="ax-para" style={{ marginTop: 0 }}>
+                The Institute will not imply regulator, customer, advisor, learner, or institution endorsement
+                without explicit public-attribution approval.
               </p>
-            </div>
-            <div className="aibi-about-contact-panel">
-              <h3>Attribution boundary</h3>
-              <p>
-                The Institute will not imply regulator, customer, advisor,
-                learner, or institution endorsement without explicit
-                public-attribution approval.
-              </p>
-              <Button href={PRESS_MAILTO} variant="ink">
+              <Button href={PRESS_MAILTO} variant="ghost-dark">
                 Email press inquiry
               </Button>
-            </div>
+            </AxWindow>
           </div>
-        </section>
+        </AxSection>
       </main>
 
-      <CtaBand
-        heading={<>Start with a readiness score. Then inspect the work.</>}
-        body={
-          <>The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.</>
-        }
-        actions={[
-          { label: 'Take the free assessment', href: '/assessment/take', variant: 'gold' },
-          { label: 'View the course', href: '/courses', variant: 'ghost-dark' },
-        ]}
-      />
+      <section className="ax-section ax-close">
+        <div className="mk-container">
+          <h2 className="ax-display">
+            Start with a readiness score. <span className="ax-gold">Then inspect the work.</span>
+          </h2>
+          <p className="ax-muted">
+            The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.
+          </p>
+          <div className="ax-actions">
+            <Button variant="gold" size="lg" href="/assessment/take">
+              Take the free assessment <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/courses">
+              View the course
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

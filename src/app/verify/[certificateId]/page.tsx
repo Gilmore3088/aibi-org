@@ -7,6 +7,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/mockup';
 
 import { checkRateLimit, getRequestIpFromHeaders } from '@/lib/api/rate-limit';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
@@ -85,9 +86,11 @@ const META_LABEL: React.CSSProperties = {
 
 function Surface({ children }: { children: React.ReactNode }) {
   return (
+    <div className="mockup-scope">
+    <SiteHeader activePath="/verify" />
     <main
       style={{
-        minHeight: '100vh',
+        minHeight: '70vh',
         background: 'var(--cream)',
         display: 'flex',
         alignItems: 'center',
@@ -98,6 +101,7 @@ function Surface({ children }: { children: React.ReactNode }) {
     >
       {children}
     </main>
+    </div>
   );
 }
 

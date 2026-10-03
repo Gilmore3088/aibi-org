@@ -28,21 +28,17 @@ interface Props {
  * <LMSTopBar/> with breadcrumbs specific to that route.
  */
 export function CourseShell({ modules, completed, current, learner, children }: Props) {
-  // Soft-slate course palette. The whole course was warm "cream"; the brief is
-  // a cool, modern soft slate. Rather than hand-edit every component, we
-  // override the --cream / --cream-2 custom properties for the course subtree
-  // ONLY (marketing/site keep the cream brand). Every descendant that uses
-  // var(--cream)/var(--cream-2) — the sidebar, top bar, cards, fills — recolors
-  // in one place. Tune these two values to adjust the whole course tone.
+  // Course palette: the brand's warm cream canvas with white paper surfaces,
+  // so the course reads as the same product as the marketing site (it was a
+  // cool slate; see the 2026-10 rebrand). Every descendant that uses
+  // var(--cream)/var(--cream-2) recolors from here.
   const slatePalette = {
-    '--cream': '#F1F5F9', // slate-100 — the single soft-slate canvas tone
-    '--cream-2': '#FFFFFF', // white surfaces (sidebar, cards, fills) — one gray,
-    // not two. The earlier slate-100 + slate-200 pairing read as clashing
-    // "double grays"; white surfaces on a soft-slate canvas is cleaner.
+    '--cream': '#F7F3EA',
+    '--cream-2': '#FFFFFF',
   } as React.CSSProperties;
   return (
     <div
-      className="lms-shell"
+      className="lms-shell lms-system"
       style={{
         ...slatePalette,
         display: 'grid',

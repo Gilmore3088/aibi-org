@@ -79,5 +79,5 @@ produce useful drafts on the structure.
 - GLBA Privacy Rule (Title V, Subtitle A) — confidentiality of nonpublic
   personal information
 - AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC, February 2026
-- SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC, April 2026 (supersedes SR 11-7)
+- SR 26-2 Revised Guidance on Model Risk Management, Federal Reserve / OCC / FDIC, April 2026 (supersedes SR 11-7)
 - Interagency Guidance on Third-Party Risk Management, Federal Reserve / OCC / FDIC

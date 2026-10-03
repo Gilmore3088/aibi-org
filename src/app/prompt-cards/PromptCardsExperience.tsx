@@ -98,14 +98,14 @@ export function PromptCardsExperience() {
   }
 
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page pc-scope">
       <SiteHeader activePath="/resources" cta={{ label: 'Take assessment', href: '/assessment/take' }} />
       <main className="bg-[color:var(--cream)]">
-        <section className="border-b border-[color:var(--ink)]/10 bg-[color:#FFFFFF]">
+        <section className="pc-hero">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-20">
           <div>
-            <p className="font-serif-sc text-[0.6875rem] uppercase tracking-[0.22em] text-[color:var(--gold)]">
-              AiBI Prompt Cards
+            <p className="ax-cmd">
+              prompt-cards --workflows 20
             </p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.98] text-[color:var(--ink)] md:text-7xl">
               Use AI in Banking With Structure, Clarity, and Control
@@ -117,7 +117,7 @@ export function PromptCardsExperience() {
               {unlocked ? (
                 <a
                   href={downloadHref}
-                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]"
                 >
                   Download PDF
                 </a>
@@ -125,14 +125,14 @@ export function PromptCardsExperience() {
                 <button
                   type="button"
                   onClick={unlock}
-                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] transition-colors hover:bg-[color:var(--gold-2)]"
+                  className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:bg-[color:var(--gold-2)]"
                 >
                   Get the AiBI Prompt Cards
                 </button>
               )}
               <Link
                 href="/courses/foundation/program"
-                className="border border-[color:var(--ink)]/25 px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] transition-colors hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
+                className="pc-ghost border px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest transition-colors"
               >
                 Explore AiBI-Foundation
               </Link>
@@ -196,7 +196,7 @@ export function PromptCardsExperience() {
               <button
                 type="button"
                 onClick={unlock}
-                className="mt-5 w-full bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
+                className="mt-5 w-full bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]"
               >
                 Unlock full library
               </button>
@@ -211,7 +211,7 @@ export function PromptCardsExperience() {
                   onClick={() => setCategory(item)}
                   className={`border px-3 py-2 text-xs transition-colors ${
                     category === item
-                      ? 'border-[color:var(--gold)] bg-[color:var(--gold)] text-[color:var(--cream)]'
+                      ? 'border-[color:var(--gold)] bg-[color:var(--gold)] text-[color:var(--ink)]'
                       : 'border-[color:var(--ink)]/15 text-[color:var(--ink)]'
                   }`}
                 >
@@ -278,7 +278,7 @@ export function PromptCardsExperience() {
           </div>
           <Link
             href="/courses/foundation/program"
-            className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]"
+            className="bg-[color:var(--gold)] px-6 py-3 text-center font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]"
           >
             View AiBI-Foundation
           </Link>
@@ -313,11 +313,11 @@ function CardDetail(props: {
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[color:var(--slate-600)]">{props.card.description}</p>
         </div>
         {locked ? (
-          <button type="button" onClick={props.onUnlock} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
+          <button type="button" onClick={props.onUnlock} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">
             Unlock
           </button>
         ) : (
-          <button type="button" onClick={props.onCopy} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)]">
+          <button type="button" onClick={props.onCopy} className="bg-[color:var(--gold)] px-4 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)]">
             {props.copied ? 'Copied' : 'Copy prompt'}
           </button>
         )}
@@ -477,7 +477,7 @@ function LeadModal({
           </div>
         </div>
         {error && <p className="mt-4 text-sm text-[color:#9b2226]">{error}</p>}
-        <button disabled={submitting} type="submit" className="mt-6 w-full bg-[color:var(--gold)] px-5 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--cream)] disabled:opacity-50">
+        <button disabled={submitting} type="submit" className="mt-6 w-full bg-[color:var(--gold)] px-5 py-3 font-mono text-[0.625rem] uppercase tracking-widest text-[color:var(--ink)] disabled:opacity-50">
           {submitting ? 'Preparing PDF...' : 'Unlock and download cards'}
         </button>
       </form>
