@@ -1,6 +1,6 @@
 # One prompt framework across the site: plan
 
-Status: steps 1–6 done, 2026-10-03; step 7 (final audit) in progress.
+Status: all seven steps done, 2026-10-03. Waiting on James: exam question review, merge, and the post-merge upload below.
 
 **Decisions (James, 2026-10-03):** CORE is the one framework. The Banker Prompt Formula card is retitled (same URL). James reviews the 8 rewritten exam questions before merge. Per CLAUDE.md, course and downloadable changes ship as a PR that James merges.
 
@@ -93,6 +93,20 @@ Each step ends with its own check before the next starts.
 - Guard test clean, full test suite, type check, lint, production build.
 - Three persona waves, plus a targeted run that walks module 3 → module 9 lab → exam → Transformation Report → free Banker card and confirms the same four words every time.
 - Update the persona report and this plan's status.
+
+**Result (2026-10-03):**
+- Guard test clean with an empty pending list. 863/863 unit tests, type check, lint (0 errors), claims check and production build all pass.
+- Walk-through on a local server: modules 3, 4, 8, 9, 10 and 13, both galleries, the exam, the prompt library, prompt cards, *The skill, not the prompt*, Prompting Foundation, home and resources. No older framework appears in visible text on any of them. Modules 3 and 4, the prompt cards, both resource pages and module 10 show all four CORE parts. My Toolbox shows its sign-in gate without Supabase, so its sample prompt was checked in source.
+- All 87 PDFs (including those inside the kit ZIPs) scanned: no RTFC, RCFC, Banker Prompt Formula, role/task part list, "Module 7: Build" or SR 11-7 cited as current.
+- Persona waves:
+
+| Wave | Reached value | Before this work | Rage-quits | Dead ends |
+|---|---|---|---|---|
+| Core (40 course learners) | 83/100 | 80/100 | 0 | 2, both during a dev-server memory restart |
+| Features (run twice) | 85/100, 85/100 | 86/100 | 0 | 9, then 5, on different personas each run. Traced ones were slow first compiles plus 503s from missing Supabase keys. None on a page or download this work changed |
+| Coverage | 99/100 | 100/100 | 0 | 1: `/dashboard` still on its loading skeleton at the check. It loads fully in under 5 seconds when re-checked |
+
+All 40 learners reached their planned module depth; 332 of 333 artifacts saved (the one miss was during the server restart).
 
 ## After merge (James)
 
