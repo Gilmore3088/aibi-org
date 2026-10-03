@@ -100,8 +100,8 @@ const FONT_BODY = 'DMSans';
 const FONT_BOLD = 'Cormorant';
 const FONT_MONO = 'DMMono';
 
-const VERSION = 'v1.0';
-const VERSION_DATE = 'April 2026';
+const VERSION = 'v1.1';
+const VERSION_DATE = 'October 2026';
 const FOOTER_DATE = `${VERSION} \u2014 ${VERSION_DATE}`;
 
 // ---------------------------------------------------------------------------
@@ -401,12 +401,12 @@ function TableRow({ columns, row, even }) {
 
 const frameworkRows = [
   {
-    framework: 'SR 11-7',
-    regBody: 'Federal Reserve\n/ OCC',
+    framework: 'SR 26-2',
+    regBody: 'Federal Reserve\n/ OCC / FDIC',
     aiApplication:
-      'Any AI used in credit underwriting, fraud detection, or risk scoring qualifies as a "model" requiring validation, documentation, ongoing monitoring, and governance.',
+      'Revised model-risk guidance (April 2026); supersedes SR 11-7. Risk-based: validation, monitoring, and governance scale with model purpose and exposure. Non-binding, most relevant above $30B in assets, and generative AI is outside its formal scope.',
     staffImpact:
-      'Be able to explain what the AI tool does, its known limitations, and how its outputs are validated. Explainability is a regulatory requirement, not optional.',
+      'If an AI tool scores, ranks, or flags for credit, fraud, or BSA/AML, treat it as a model: document its purpose, limits, monitoring, and human review. Be able to explain what it does.',
   },
   {
     framework: 'Interagency\nTPRM',
@@ -478,7 +478,7 @@ const lexiconTerms = [
   {
     term: 'Explainability',
     definition:
-      'The capacity of an AI system to provide human-understandable reasons for its outputs. SR 11-7 requires conceptual soundness and transparency for model outputs used in decisions with regulatory implications. A model that cannot explain itself does not meet examination standards.',
+      'The capacity of an AI system to provide human-understandable reasons for its outputs. For model use, SR 26-2 (which superseded SR 11-7) still expects conceptual soundness, validation, and monitoring. For customer-impacting decisions, ECOA / Reg B requires clear, traceable reasons.',
   },
 ];
 
@@ -571,7 +571,7 @@ function RegulatoryCheatsheet() {
         React.createElement(NoteBox, {
           accentColor: COBALT,
           label: 'Examination Context',
-          body: 'Per GAO-25-107197 (May 2025), no comprehensive AI-specific banking statute exists. SR 11-7, Interagency TPRM guidance, ECOA/Reg B, and BSA/AML are the current examination frameworks regulators apply to AI systems. The AIEOG AI Lexicon (February 2026) establishes the shared vocabulary regulators will use.',
+          body: 'Per GAO-25-107197 (May 2025), no comprehensive AI-specific banking statute exists. Existing frameworks do the work: SR 26-2 for model risk (it superseded SR 11-7 in April 2026), Interagency TPRM guidance, ECOA/Reg B, and BSA/AML. The AIEOG AI Lexicon (February 2026) establishes the shared vocabulary regulators will use.',
         })
       ),
 

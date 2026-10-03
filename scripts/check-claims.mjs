@@ -32,7 +32,12 @@ for (const c of registry.claims) {
 }
 
 // ---------- surface collection ----------
-const SURFACE_DIRS = ['src/app', 'src/lib', 'content', 'docs/mailerlite-emails', 'docs/nurture-build/emails'];
+// public/downloads/source and public/artifacts are the hand-authored sources
+// for the downloadable PDFs; the PDFs themselves are regenerated from them.
+const SURFACE_DIRS = [
+  'src/app', 'src/lib', 'content', 'docs/mailerlite-emails', 'docs/nurture-build/emails',
+  'public/downloads/source', 'public/artifacts',
+];
 const EXT = /\.(tsx?|mdx?|json|html)$/;
 // Deliberate exceptions - each with a reason.
 const ALLOWLIST = [

@@ -183,6 +183,18 @@
       ]
     },
     {
+      "id": "csbs-ai-framework-2026",
+      "claim": "The CSBS Artificial Intelligence Supervisory Framework (released September 16, 2026) is a discretionary resource for state examiners reviewing AI use at state-chartered banks and state-licensed nonbank financial institutions. It creates no new legal requirements; each state decides how to use it. Its Core Examiner Guide includes initial scoping questions, a document request list, and procedures covering governance/oversight, the AI inventory and use cases, and generative AI. Built on the NIST AI RMF, the FS AI RMF, and Treasury's AI Lexicon.",
+      "source": "Conference of State Bank Supervisors",
+      "url": "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+      "asOf": "2026-09-16",
+      "verified": "2026-10-02",
+      "reviewBy": "2027-04-02",
+      "match": [
+        "CSBS"
+      ]
+    },
+    {
       "id": "ecoa-reg-b",
       "claim": "ECOA / Regulation B govern fair lending, including adverse action requirements as applied to AI-assisted credit decisions.",
       "source": "CFPB Regulation B",
