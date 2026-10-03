@@ -25,8 +25,8 @@ const DEFAULT_FACTS: CoursesOverviewFacts = {
   artifactCount: 18,
   individualPriceLabel: "$295",
   samplePacketSlots: [
-    { moduleNumber: 1, label: "AI Limits Card" },
-    { moduleNumber: 4, label: "First Prompt Card" },
+    { moduleNumber: 1, label: "AI House Rules" },
+    { moduleNumber: 3, label: "Meeting Actions Assistant" },
     { moduleNumber: 13, label: "Skill Template" },
     { moduleNumber: 18, label: "Foundation Packet Summary" },
   ],

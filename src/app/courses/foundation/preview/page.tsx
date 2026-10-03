@@ -1,8 +1,8 @@
 // Public Module 1 preview — /courses/foundation/preview
 //
-// Try-before-buy, kept short: Module 1's real core idea, its real decision
-// drill, and the artifact it saves — each shown once, all pulled from the
-// course content so the preview cannot drift from what learners get.
+// Try-before-buy: Module 1's real build, free. The visitor leaves with a
+// working tool (house rules in their own AI tool), rendered from the same
+// course data paid learners see, so the preview cannot drift from it.
 // Deliberately a separate route from /courses/foundation/program/[module];
 // the enrollment gate there is untouched.
 
@@ -16,8 +16,8 @@ import {
   getArtifactFirst,
   getModuleByNumber,
 } from '@content/courses/foundation-program';
-import { getFoundationLabBrief } from '@content/courses/foundation-program/lab-first';
-import { KnowledgeCheck } from '../program/_components/KnowledgeCheck';
+import { MICRO_MODULES_BY_NUMBER } from '@content/courses/foundation-program/micro-modules';
+import { BuildGuide } from '@/components/courses/BuildGuide';
 
 const PREVIEW_MODULE_NUMBER = 1;
 
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
   alternates: { canonical: '/courses/foundation/preview' },
   title: 'Free Preview — Module 1 | AiBI Foundation',
   description:
-    'Try Module 1 of the AiBI Foundation course free: the core idea, the decision drill, and the card it saves.',
+    'Build Module 1 of the AiBI Foundation course free: house rules that make your AI tool flag customer data and mark every answer as a draft.',
 };
 
 export default function FoundationPreviewPage() {
   const expandedModule = V4_FOUNDATION_PROGRAM_MODULE_BY_NUMBER.get(PREVIEW_MODULE_NUMBER);
   const mod = getModuleByNumber(PREVIEW_MODULE_NUMBER);
   const totalModules = foundationCourseConfig.modules.length;
-  const brief = getFoundationLabBrief(PREVIEW_MODULE_NUMBER);
+  const build = MICRO_MODULES_BY_NUMBER.get(PREVIEW_MODULE_NUMBER)?.build;
   const artifact = getArtifactFirst(PREVIEW_MODULE_NUMBER);
 
   return (
@@ -40,7 +40,7 @@ export default function FoundationPreviewPage() {
       className="mockup-scope ax-page pv-page"
       style={
         {
-          // KnowledgeCheck's small labels need the darker gold/slate on cream (WCAG AA).
+          // The build guide's small labels need the darker gold/slate on cream (WCAG AA).
           '--gold-deep': '#7a5f1e',
           '--slate-500': '#475569',
         } as React.CSSProperties
@@ -56,48 +56,30 @@ export default function FoundationPreviewPage() {
         title={mod?.title ?? 'What AI Can and Cannot Do'}
         lede={expandedModule?.goal}
         actions={
-          <Button variant="gold" size="lg" href="#pv-idea">
-            Start the preview <ArrowGlyph />
+          <Button variant="gold" size="lg" href="#pv-build">
+            Build it now, free <ArrowGlyph />
           </Button>
         }
       />
 
       <main>
-        {brief && (
-          <section id="pv-idea" className="ax-section ax-light pv-idea" aria-label="The idea">
+        {build && (
+          <section id="pv-build" className="ax-section ax-light pv-build" aria-label="Module 1 build" data-testid="preview-build">
             <div className="mk-container">
-              <p className="ax-k">The idea</p>
-              <p className="pv-idea-text">{brief.concept}</p>
-              <ol className="pv-flow" aria-label="The model you practice">
-                {brief.visualModel.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-            </div>
-          </section>
-        )}
-
-        {brief?.decisionDrill && (
-          <section id="pv-try" className="ax-section pv-try" aria-label="Try it" data-testid="preview-try">
-            <div className="mk-container">
-              <KnowledgeCheck
-                prompt="Which is the safer way to use AI here?"
-                options={brief.decisionDrill.options}
-                kicker="Try it now — same drill as the course"
-              />
+              <BuildGuide build={build} />
             </div>
           </section>
         )}
 
         <section
-          className="ax-section ax-light ax-close"
+          className="ax-section ax-light is-paper ax-close"
           aria-label="Enroll in the full course"
           data-testid="preview-save"
         >
           <div className="mk-container">
             {artifact && (
               <p className="ax-k">
-                Module 1 saves your {artifact.saved}
+                You just built your {artifact.saved}
               </p>
             )}
             <h2 className="ax-display">
