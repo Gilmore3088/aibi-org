@@ -1,7 +1,7 @@
 {
   "title": "Persona Waves · Sep 30",
   "runDate": "2026-09-30",
-  "scope": "Three local 100-persona runs on a dev build with the course enrollment bypass: core journeys, the features wave 1 skipped, and every remaining public page (90 of 90). Re-run in full on 2026-10-03 after main's home-page rebuild and rebrand. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
+  "scope": "Three local 100-persona runs on a dev build with the course enrollment bypass: core journeys, the features wave 1 skipped, and every remaining public page (90 of 90). Re-run in full on 2026-10-03 after main's home-page rebuild and rebrand, and again after the CORE framework work. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
   "findings": [
     {
       "id": "next-module",
@@ -276,15 +276,31 @@
     },
     {
       "id": "exam-rtfc",
-      "title": "Exam tests RTFC; the course teaches CORE",
-      "status": "open",
+      "title": "Six prompt frameworks; the course teaches one (CORE)",
+      "status": "fixed",
       "severity": "medium",
-      "area": "Certification",
-      "summary": "The exam has a topic “Prompting & the RTFC Framework” (8 questions), but the course modules teach the CORE framework (Context, Objective, Resources, Expectations).",
+      "area": "Course, exam, downloads",
+      "summary": "The course teaches CORE (Context, Objective, Resources, Expectations). The exam tested RTFC, the Transformation Report described a five-part RTFC, and the free cards, guides, galleries, prompt cards and a paid PDF each taught their own structure.",
       "evidence": [
-        "content/exams/foundation-program/questions.ts vs the course modules"
+        "Exam topic “Prompting & the RTFC Framework” (8 questions) vs modules 3–4 on CORE",
+        "Inventory found RTFC (4- and 5-part), the Banker Prompt Formula, a “5-line” method, “RCFC + R”, [ROLE]/[TASK] samples and labeled Role/Task fields",
+        "After: guard test clean, 17 pages walked with no older framework visible, 89 PDFs and the kit ZIPs scanned clean"
       ],
-      "fix": "Owner decision: align the exam to CORE, or confirm RTFC is deliberate."
+      "fix": "Owner chose CORE (2026-10-03). Single definition in content/frameworks/core.ts and a guard test that fails the build on any other framework name or part list. Exam questions rewritten in CORE (awaiting James’s review), Banker card retitled “The CORE Prompt Card for Bankers” (same URL), every page, sample and download moved to CORE and rebuilt with the repo’s scripts. Lab sample files left untouched per CLAUDE.md; the lab maps older labels instead. Plan: docs/prompt-framework-consistency-plan.md."
+    },
+    {
+      "id": "stale-pdfs",
+      "title": "Served PDFs drifted from their sources",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Downloads",
+      "summary": "Several served PDFs had no generator in the repo, so source fixes never reached them. Some still cited SR 11-7 as current guidance, which CLAUDE.md forbids.",
+      "evidence": [
+        "Four starter artifacts and two large-print PDFs cited SR 11-7 as current; their sources had been corrected",
+        "The paid Skill Template Library and the prompt cards PDF had no generator at all",
+        "After: all 89 PDFs scanned, no SR 11-7 cited as current"
+      ],
+      "fix": "Main fixed the starter artifacts and three cards in #606 and #609 with a new starter generator. This branch added generators for the Skill Template Library and the prompt cards, rebuilt the large-print set and the kits, and gave every PDF generator a local-fonts option so they render the brand fonts offline."
     }
   ],
   "notTested": [
@@ -343,7 +359,7 @@
     {
       "item": "Dependabot",
       "state": "done",
-      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. #589: the 25 non-Stripe updates are applied in this branch and checked (tsc, lint, 830 tests, build, claims, secrets, prod-server smoke). Stripe is held at 22.4.0 by owner decision (dependabot.yml ignore). TypeScript 7 (#574) is open as a major upgrade."
+      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. Main then merged #589 in full, including Stripe 22.6.2; this branch follows main. dependabot.yml keeps Stripe out of the routine group, so future Stripe upgrades get a checkout and webhook test by hand. TypeScript 7 (#574) is open as a major upgrade."
     },
     {
       "item": "Major upgrades",
@@ -357,7 +373,7 @@
     }
   ],
   "plan": {
-    "done": "Re-run in full on 2026-10-03 after main's rebuild. Final run: core 80/100 (2 rage-quits), features 86/100 (0), coverage 100/100 (0). Every remaining flagged persona was checked by hand and re-run alone: all reached value except one inquiry that needs the database. Every remaining no-value persona needs a key this build lacks (Stripe, database, AI) or is an explorer with no goal.",
+    "done": "Final run on 2026-10-03 after the CORE work (before merging main's #605–#612; the merged tree passes every check): core 83/100 (0 rage-quits), features 85/100 twice (0), coverage 99/100 (0). Every dead end was traced: dev-server restarts, slow first compiles and missing keys. None touched a page or download changed by this work. Every remaining no-value persona needs a key this build lacks (Stripe, database, AI) or is an explorer with no goal.",
     "definition": [
       "0 rage-quits across all three waves",
       "Every goal-directed persona reaches value (explorers excluded)",
@@ -424,26 +440,26 @@
       {
         "p": "P1",
         "id": "E1",
-        "title": "Exam: RTFC vs CORE",
-        "detail": "The exam tests a framework name the course does not teach. Owner decision.",
-        "status": "blocked"
+        "title": "One prompt framework (CORE)",
+        "detail": "Done in seven audited steps. Exam questions await James’s review before merge.",
+        "status": "done"
       }
     ],
     "verification": [
       [
         "Wave 1 (core): reached value",
         "82 / 100",
-        "80 / 100 (re-run of flagged: 8/9)"
+        "83 / 100"
       ],
       [
         "Wave 1 (core): dead ends",
         "21",
-        "4 (all re-ran clean)"
+        "2 (both during a dev-server restart)"
       ],
       [
         "Wave 2 (features): reached value",
         "71 / 100",
-        "86 / 100"
+        "85 / 100 (twice)"
       ],
       [
         "Wave 2 (features): rage-quits",
@@ -453,22 +469,32 @@
       [
         "Wave 2 (features): dead ends",
         "57",
-        "2 (re-ran clean)"
+        "9, then 5 (slow first compiles, missing keys)"
       ],
       [
         "Wave 3 (coverage): reached value",
         "100 / 100",
-        "100 / 100"
+        "99 / 100"
       ],
       [
         "Wave 3 (coverage): dead ends",
         "18",
-        "1 (re-ran clean)"
+        "1 (dashboard still loading; loads in under 5s)"
       ],
       [
         "Public pages covered",
         "57 / 90",
         "90 / 90"
+      ],
+      [
+        "Prompt frameworks taught",
+        "6",
+        "1 (CORE)"
+      ],
+      [
+        "PDFs citing SR 11-7 as current",
+        "6",
+        "0"
       ]
     ]
   }
