@@ -23,7 +23,7 @@ export async function PATCH(request: Request, props: RouteParams): Promise<NextR
       { status: 403 },
     );
   }
-  if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Toolbox storage is not configured.' }, { status: 503 });
+  if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Saving to your Toolbox is temporarily unavailable. Keep this page open and try again in a few minutes.' }, { status: 503 });
   if (!validId(params.skillId)) return NextResponse.json({ error: 'Invalid skill id.' }, { status: 400 });
 
   let body: { skill?: unknown };
@@ -93,7 +93,7 @@ export async function DELETE(_request: Request, props: RouteParams): Promise<Nex
       { status: 403 },
     );
   }
-  if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Toolbox storage is not configured.' }, { status: 503 });
+  if (!isSupabaseConfigured()) return NextResponse.json({ error: 'Saving to your Toolbox is temporarily unavailable. Keep this page open and try again in a few minutes.' }, { status: 503 });
   if (!validId(params.skillId)) return NextResponse.json({ error: 'Invalid skill id.' }, { status: 400 });
 
   const client = createServiceRoleClient();

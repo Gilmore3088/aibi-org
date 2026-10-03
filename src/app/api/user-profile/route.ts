@@ -22,7 +22,7 @@ import { EMAIL_RE } from '@/lib/email/validate';
 
 export async function GET(request: Request) {
   if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Supabase not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
   }
 
   const { searchParams } = new URL(request.url);

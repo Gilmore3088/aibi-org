@@ -131,7 +131,7 @@ function pdfResponse(buffer: Buffer): Response {
 // ---------------------------------------------------------------------------
 async function handleGET(request: Request): Promise<Response> {
   if (!isSupabaseConfigured()) {
-    return new Response(JSON.stringify({ error: 'Service not configured.' }), {
+    return new Response(JSON.stringify({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -214,7 +214,7 @@ interface PostBody {
 
 export async function POST(request: Request): Promise<Response> {
   if (!isSupabaseConfigured()) {
-    return new Response(JSON.stringify({ error: 'Service not configured.' }), {
+    return new Response(JSON.stringify({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });

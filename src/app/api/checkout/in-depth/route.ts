@@ -93,7 +93,7 @@ export async function POST(request: Request) {
   if (!STRIPE_INDEPTH_PRICE_ID) {
     console.error('[checkout/in-depth] STRIPE_INDEPTH_PRICE_ID is not set.');
     return NextResponse.json(
-      { error: 'Payment system not configured.' },
+      { error: 'Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.' },
       { status: 503 },
     );
   }

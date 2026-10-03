@@ -72,7 +72,7 @@ async function handleGET(request: Request) {
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json(
-      { error: 'Supabase not configured; artifact generation requires saved response.' },
+      { error: 'This artifact can’t be generated right now. Please try again in a few minutes.' },
       { status: 503 },
     );
   }

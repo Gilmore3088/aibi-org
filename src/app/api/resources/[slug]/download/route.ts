@@ -102,7 +102,7 @@ async function handleGET(request: Request, context: RouteContext): Promise<Respo
     if (staticResource?.tier_required === 'free') {
       return staticDownloadResponse(staticResource);
     }
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
   }
   let service: ReturnType<typeof createServiceRoleClient>;
   try {
