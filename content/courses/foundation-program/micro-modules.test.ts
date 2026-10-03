@@ -58,7 +58,8 @@ describe('Foundation micro-module ladder', () => {
     // reviewBy date fails CI until someone re-checks it against the tools.
     const today = new Date().toISOString().slice(0, 10);
     const builds = FOUNDATION_MICRO_MODULES.filter((module) => module.build);
-    expect(builds.length).toBeGreaterThanOrEqual(3);
+    // Every module ends with a working tool.
+    expect(builds.length).toBe(FOUNDATION_MICRO_MODULES.length);
     for (const mod of builds) {
       const build = mod.build!;
       expect(build.verifiedOn, `module ${mod.number} verifiedOn`).toMatch(/^\d{4}-\d{2}-\d{2}$/);

@@ -4,9 +4,9 @@ import { ModuleHeaderCard } from './ModuleHeaderCard';
 
 const baseProps = {
   moduleNumber: 3,
-  titleMain: 'Write a Prompt That Gets to the Core',
+  titleMain: 'Build a Meeting Actions Assistant',
   titleTail: null,
-  keyOutput: 'CORE Prompt Card',
+  keyOutput: 'Meeting Actions Assistant',
   goalLine: 'Turn a vague request into a clear, reusable CORE prompt.',
   estimatedMinutes: 10,
   pillarId: 'understanding' as const,
@@ -33,21 +33,21 @@ describe('ModuleHeaderCard', () => {
     expect(
       screen.getByText((_, element) =>
         element?.classList.contains('foundation-module-hero__module-label') === true &&
-        element.textContent === 'Module 03 · Write a Prompt That Gets to the Core',
+        element.textContent === 'Module 03 · Build a Meeting Actions Assistant',
       ),
     ).toBeTruthy();
     expect(screen.getByText('In progress')).toBeTruthy();
     expect(screen.getByText('You will build')).toBeTruthy();
-    expect(screen.getByRole('heading', { name: 'CORE Prompt Card' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Meeting Actions Assistant' })).toBeTruthy();
     expect(screen.getByText('Turn a vague request into a clear, reusable CORE prompt.')).toBeTruthy();
 
     const facts = screen.getByLabelText('Module facts');
     expect(facts.textContent).toContain('Time');
     expect(facts.textContent).toContain('10 min');
     expect(facts.textContent).toContain('Build');
-    expect(facts.textContent).toContain('CORE Prompt Builder');
+    expect(facts.textContent).toContain('Meeting Actions Assistant');
     expect(facts.textContent).toContain('Save');
-    expect(facts.textContent).toContain('CORE prompt card');
+    expect(facts.textContent).toContain('meeting actions assistant');
 
     expect(screen.queryByRole('list', { name: 'Module path' })).toBeNull();
     expect(screen.getByRole('link', { name: 'Start' }).getAttribute('href')).toBe('#st-takeaway');

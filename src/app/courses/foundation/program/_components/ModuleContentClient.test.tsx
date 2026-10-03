@@ -56,7 +56,7 @@ describe('ModuleContentClient', () => {
     expect(await screen.findByText('Save the learning before you leave.')).toBeTruthy();
     expect(
       screen
-        .getByRole('link', { name: 'Continue to Module 11 · Choose the Right AI Use Case' })
+        .getByRole('link', { name: 'Continue to Module 11 · Build a Use-Case Screener' })
         .getAttribute('href'),
     ).toBe('/courses/foundation/program/11');
   });
