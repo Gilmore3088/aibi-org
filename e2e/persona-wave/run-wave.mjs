@@ -1240,15 +1240,27 @@ async function downloadStep(s, st) {
   await s.page.locator('input[type=email]').evaluateAll((els) => els.forEach((e) => e.setAttribute('data-wave-seen', '1'))).catch(() => {});
   if (!(await s.clickCta(st.download, st.label, { required: true, severity: 1 }))) return;
   const fresh = s.page.locator(`${ROOT} input[type=email]:visible:not([data-wave-seen])`);
-  await fresh.first().waitFor({ timeout: 4_000 }).catch(() => {});
+  await fresh.first().waitFor({ timeout: 8_000 }).catch(() => {});
   const email = (await fresh.count()) ? fresh : s.page.locator(`${ROOT} input[type=email]:visible`);
+  let gated = null;
   if (await email.count()) {
+    // After the email step the file can take a while on first compile; wait
+    // from the submit, not from the original click.
+    gated = Promise.all([
+      s.page.waitForEvent('download', { timeout: 40_000 }).catch(() => null),
+      s.page.waitForResponse((r) => /\/download|\.pdf($|\?)|\.zip($|\?)|\.docx?($|\?)/.test(r.url()), { timeout: 40_000 }).catch(() => null),
+    ]);
     await email.first().fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
     await email.first().press('Enter').catch(() => {});
     s.clicks += 1;
     s.log('INFO', 'download behind email gate');
   }
-  const [d, r, pop] = await Promise.all([dl, fileResp, popup]);
+  let [d, r, pop] = await Promise.all([dl, fileResp, popup]);
+  if (gated && !d && !(r && r.status() < 400)) {
+    const [d2, r2] = await gated;
+    d = d ?? d2;
+    r = r2 ?? r;
+  }
   // A failed download that navigates the tab leaves the visitor on raw JSON.
   if (normPath(s.page.url()).startsWith('/api/')) {
     const raw = (await s.page.locator('body').innerText().catch(() => '')).slice(0, 120);
