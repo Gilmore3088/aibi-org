@@ -397,7 +397,7 @@ Mon Lee out. Tue-Wed Ortiz in training. Float teller covers Mon. Wed coverage no
     estimatedMinutes: 10,
     keyOutput: 'Role Context Block',
     mission: 'Give AI enough context to help without exposing what it should not see.',
-    plainLanguageConcept: 'Context improves output quality. Constraints keep the answer inside the boundary of the work.',
+    plainLanguageConcept: 'This is the Context part of a CORE prompt, saved once so you stop retyping it. Your no-go list becomes a standing Expectation that keeps every answer inside the boundary of the work.',
     bankingGuardrail: 'Role context is fine; customer facts, confidential strategy, and examiner material are not.',
     guidanceSource: 'Interagency TPRM Guidance, NIST AI RMF',
     tryTask: 'Choose which context details belong in a safe reusable prompt and which must be removed.',
