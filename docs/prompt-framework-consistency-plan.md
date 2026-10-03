@@ -1,6 +1,8 @@
 # One prompt framework across the site: plan
 
-Status: proposed, 2026-10-03. Nothing below has been changed yet.
+Status: approved direction, 2026-10-03. Nothing below has been changed yet.
+
+**Decisions (James, 2026-10-03):** CORE is the one framework. The Banker Prompt Formula card is retitled (same URL). James reviews the 8 rewritten exam questions before merge. Per CLAUDE.md, course and downloadable changes ship as a PR that James merges.
 
 ## The problem
 
@@ -48,7 +50,7 @@ Each step ends with its own check before the next starts.
 - **Check:** exam tests pass, the length guard passes, a persona takes the exam end to end, and a subject-matter reviewer signs off on the 8 questions.
 
 ### 3. Course materials outside modules 3–4 (half a day)
-- Lab sample files for modules 6, 8 and 9 (`content/sandbox-data/...` and the copies in `public/sandbox-data/...`): "RTFC prompt" becomes "CORE prompt", with the part labels updated.
+- **Lab sample files for modules 6, 8 and 9 are not edited.** CLAUDE.md forbids changes to `content/sandbox-data/`: they are time-fixed teaching samples, and module 3's contains planted false citations. Their copies in `public/sandbox-data/` are left alone too. Instead, each of those three module pages gets a one-line note above the lab: "The sample file labels this an RTFC prompt, an older name. Read Role as Context, Task as Objective, and Format and Constraints as Expectations." The guard test lists these files as known exceptions. If James later wants the samples relabeled, that is a separate, explicit change to the time-fixed set.
 - Prompt library: tags `RTFC` become `CORE`; the lending-skill tutorial walks through C, O, R, E.
 - Quick-wins placeholder: "RTFC Framework" becomes "CORE prompt card".
 - `skill-pedagogy-reference.md` (internal): note that skill anatomy extends CORE.
@@ -76,11 +78,12 @@ Each step ends with its own check before the next starts.
 - Three persona waves, plus a targeted run that walks module 3 → module 9 lab → exam → Transformation Report → free Banker card and confirms the same four words every time.
 - Update the persona report and this plan's status.
 
-## Decisions needed before starting
+## Decisions
 
-1. **Canonical framework**: CORE (recommended), or another.
-2. **Banker Prompt Formula card title**: keep the "Banker Prompt Formula" name with CORE inside (less churn for anyone who has it), or retitle to "CORE Prompt Card" (clearer). Recommended: retitle; the URL stays the same.
-3. **Exam reviewer**: who signs off the 8 rewritten questions.
+1. **Canonical framework**: CORE. *(decided)*
+2. **Banker Prompt Formula card**: retitled, for example "The CORE Prompt Card for Bankers"; URL and slug unchanged. *(decided)*
+3. **Exam reviewer**: James reviews the 8 questions before merge. *(decided)*
+4. **Lab sample files (modules 6, 8, 9)**: left as-is per CLAUDE.md, with an on-page note mapping RTFC to CORE. Open only if James wants an exception.
 
 ## What won't change
 
