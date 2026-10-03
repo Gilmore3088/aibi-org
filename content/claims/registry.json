@@ -233,6 +233,105 @@
         "Public Law 119-10",
         "S.J.Res. 18"
       ]
+    },
+    {
+      "id": "sr-26-2-relevance-30b",
+      "claim": "The Federal Reserve's SR 26-2 transmittal states the letter is expected to be most relevant to banking organizations with over $30 billion in total assets regulated by the Federal Reserve; it notes model risk management practices appropriately vary with risk profile and model usage.",
+      "source": "Federal Reserve SR letter 26-2",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "$30 billion"
+      ]
+    },
+    {
+      "id": "tprm-2023-lifecycle",
+      "claim": "The 2023 interagency third-party guidance (Fed, FDIC, OCC) organizes risk management around a five-stage life cycle: planning; due diligence and third-party selection; contract negotiation; ongoing monitoring; termination. Oversight is to be commensurate with the organization's size, complexity, and risk profile and the nature of the relationship.",
+      "source": "Federal Register, 88 FR 37920",
+      "url": "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
+      "asOf": "2023-06-09",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "five-stage life cycle",
+        "five stages"
+      ]
+    },
+    {
+      "id": "reg-b-specific-reasons",
+      "claim": "Regulation B, 12 CFR 1002.9(b)(2): the statement of reasons for adverse action must be specific and indicate the principal reason(s); statements that the action was based on internal standards or policies, or on failure to achieve a qualifying score, are insufficient.",
+      "source": "CFPB Regulation B, 12 CFR 1002.9",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1002/9/",
+      "asOf": "2026-10-03",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "1002.9"
+      ]
+    },
+    {
+      "id": "gao-ncua-tsp-authority",
+      "claim": "GAO-25-107197 (May 19, 2025) reports that NCUA lacks the authority to examine technology service providers despite credit unions' increasing reliance on them for AI-driven services, and reiterates a 2015 recommendation that Congress grant that authority.",
+      "source": "US Government Accountability Office, GAO-25-107197",
+      "url": "https://www.gao.gov/products/gao-25-107197",
+      "asOf": "2025-05-19",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "authority to examine technology service providers"
+      ]
+    },
+    {
+      "id": "csbs-risk-tiering-worksheet",
+      "claim": "The CSBS AI Supervisory Framework includes an AI Use Case Risk Tiering Worksheet, described as an optional industry tool to support a risk-based assessment of individual AI use cases, alongside the Core Examiner Guide and an Examiner Work Program.",
+      "source": "Conference of State Bank Supervisors",
+      "url": "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+      "asOf": "2026-09-16",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "Risk Tiering Worksheet"
+      ]
+    },
+    {
+      "id": "tprm-2026-proposal",
+      "claim": "On September 15, 2026 the OCC, Federal Reserve, FDIC, and NCUA proposed third-party risk management guidance (FR Doc. 2026-18859) that would rescind and replace existing guidance; comments due November 16, 2026. Components: risk identification and assessment; risk oversight (due diligence and selection, contract negotiation, ongoing monitoring, termination); residual risk acceptance; governance.",
+      "source": "Federal Register, FR Doc. 2026-18859",
+      "url": "https://www.federalregister.gov/documents/2026/09/15/2026-18859/proposed-third-party-risk-management-guidance",
+      "asOf": "2026-09-15",
+      "verified": "2026-10-03",
+      "reviewBy": "2026-11-30",
+      "match": [
+        "2026-18859",
+        "September 2026 proposal",
+        "2026 proposal"
+      ]
+    },
+    {
+      "id": "sr-26-2-small-bank-exclusion",
+      "claim": "SR 26-2 attachment: models at banking organizations with total assets of $30 billion or less are typically subject to internal practices appropriate for their size, and generally excluding them from the guidance is consistent with a tailored supervisory approach; it may still be relevant to smaller organizations with significant model risk exposure.",
+      "source": "Federal Reserve, SR 26-2 attachment (Supervisory Guidance on Model Risk Management)",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602a1.pdf",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "tailored supervisory approach"
+      ]
+    },
+    {
+      "id": "sr-26-2-genai-scope-rfi",
+      "claim": "The 2026 model risk guidance states generative AI and agentic AI models are novel and rapidly evolving and are not within its scope; the OCC, Federal Reserve, and FDIC plan a request for information on model risk management including banks' use of generative and agentic AI.",
+      "source": "OCC News Release 2026-29 (April 17, 2026)",
+      "url": "https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-29.html",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-01-03",
+      "match": [
+        "novel and rapidly evolving"
+      ]
     }
   ]
 }

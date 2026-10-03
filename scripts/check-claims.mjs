@@ -9,7 +9,8 @@
 //      line carries the required historical framing.
 //   3. Statistic tokens (NN% / NN.N%) in the *email text* (tags stripped, so
 //      CSS percentages don't count) must be covered by a registry entry.
-//   4. The same statistic rule applies to briefings MDX (content/briefings) -
+//   4. The same statistic rule applies to briefings and guides MDX
+//      (content/briefings, content/guides) -
 //      the auto-publish surface. Code fences and JSX tags are stripped first.
 //
 // Run: node scripts/check-claims.mjs   (CI: .github/workflows/claims.yml)
@@ -119,12 +120,16 @@ for (const dir of EMAIL_DIRS) {
   }
 }
 
-// ---------- 3b. Statistics in briefings (the auto-publish surface) ----------
+// ---------- 3b. Statistics in briefings + guides (MDX editorial surfaces) ----------
 {
   let briefingFiles = [];
   try {
     briefingFiles = [...walk(join(ROOT, 'content/briefings'))].filter((f) => f.endsWith('.mdx'));
   } catch { /* no briefings yet */ }
+  // Guides (content/guides) are held to the same statistic rule.
+  try {
+    briefingFiles.push(...[...walk(join(ROOT, 'content/guides'))].filter((f) => f.endsWith('.mdx')));
+  } catch { /* no guides yet */ }
   for (const file of briefingFiles) {
     const rel = relative(ROOT, file);
     // Strip fenced/inline code and JSX/HTML tags so markup never counts as a

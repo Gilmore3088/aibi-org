@@ -15,6 +15,7 @@ const NAV_GROUPS: { label: string; links: { href: string; label: string }[] }[] 
   {
     label: 'Resources',
     links: [
+      { href: '/guides', label: 'Guides' },
       { href: '/resources', label: 'Downloads & templates' },
       { href: '/prompt-cards', label: 'Prompt cards' },
       { href: '/resources/templates/ai-use-policy-starter', label: 'Templates' },
