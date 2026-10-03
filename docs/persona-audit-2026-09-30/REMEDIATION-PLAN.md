@@ -12,6 +12,37 @@ Source: three 100-persona waves (2026-09-30).
 
 The 7 internal routes are excluded. Check with `node e2e/persona-wave/route-coverage.mjs <run dirs>`.
 
+## Fresh re-run after main's rebuild (2026-10-03)
+
+The earlier wave 1 and 2 numbers predated most fixes, and main has since rebuilt the home page and rebranded the site. All 300 personas were re-run on the merged code, every failure was triaged by hand, the real problems were fixed, and everything was run again.
+
+| | First re-run | Final run | Flagged personas re-run alone |
+|---|---|---|---|
+| Wave 1 (core): reached value | 82 / 100 | 80 / 100 | 8 / 9 (the 9th needs the database) |
+| Wave 1: rage-quits | 0 | 2 (dev-server slowness, mobile menu) | 0 |
+| Wave 1: dead ends | 21 | 4 | 0 |
+| Wave 2 (features): reached value | 71 / 100 | 86 / 100 | 3 / 3 |
+| Wave 2: rage-quits | 5 | 0 | 0 |
+| Wave 2: dead ends | 57 | 2 | 0 |
+| Wave 3 (coverage): reached value | 100 / 100 | 100 / 100 | 2 / 2 |
+| Wave 3: dead ends | 18 | 1 | 0 |
+
+Real problems found and fixed in this round:
+
+| # | Problem | Fix |
+|---|---|---|
+| F15 | The rebuild removed the home "Can we help you today?" widget; 10 visitors had nothing, 4 rage-quit | Restored below the free-tools section (owner decision) |
+| F16 | Developer error text ("Service not configured.", "Payment system not configured.") shown to visitors on 28 pages during outages | Visitor-safe messages on every visitor-facing route |
+| F17 | Exam result told low scorers the course costs $97 (it is $295) | Corrected, with a guard test |
+| F18 | Free downloads walled off with "Request failed (502)" when email failed | Plain message plus a direct download link |
+| F19 | Efficiency workbook's only next steps were email links | Adds team-options and free-assessment links |
+| F20 | Practice-rep Submit disabled with no reason | Hint under the button |
+| F21 | "Take the paperwork" home header | "Tools your team can use today." |
+
+Everything else flagged was checked by hand and turned out to be the test harness: stale journeys for rebuilt pages, the icon-only mobile menu, timing under dev-server load, and the module 3 workshop. The harness was fixed for each. Every persona still without value needs a key this build lacks (Stripe checkout, database-backed forms, AI lab) and gets a readable message, or is an explorer with no goal.
+
+**Open, owner decision:** the certification exam tests "Prompting & the RTFC Framework" (8 questions), but the course teaches the CORE framework. Align the exam to CORE, or confirm RTFC is deliberate.
+
 ## Definition of done
 
 A combined run of both waves against a **configured Vercel preview** (Stripe test keys, Supabase, AI provider keys, seeded learner) shows:

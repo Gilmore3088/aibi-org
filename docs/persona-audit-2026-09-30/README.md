@@ -4,15 +4,18 @@
 
 **Open the interactive report: [`index.html`](index.html).** The plan and each item's status are in [`REMEDIATION-PLAN.md`](REMEDIATION-PLAN.md).
 
-| | Wave 1 · core | Wave 2 · features | Wave 3 · remaining pages |
+| Final run, 2026-10-03 | Wave 1 · core | Wave 2 · features | Wave 3 · remaining pages |
 |---|---|---|---|
-| Reached value | 82 / 100 | 85 / 100 | 100 / 100 |
-| Rage-quits | 4 → **0** on re-run | 0 | 5 → **0** after fixes |
+| Reached value | 80 / 100 | 86 / 100 | 100 / 100 |
+| Rage-quits | 2 → **0** when re-run alone | 0 | 0 |
+| Dead ends | 4 → **0** when re-run alone | 2 → **0** | 1 → **0** |
 
 - Every public page is covered (90 of 90). Admin and design-system pages are excluded.
-- Every rage-quit traced to a product dead end, and each one is fixed.
+- Every rage-quit caused by a product dead end has been fixed. The final run's two came from dev-server slowness and the test's handling of the new mobile menu; both personas reach value when re-run.
 - Failed downloads now show a readable page with next steps on all 14 file routes.
-- The exam can no longer be passed by picking "b" or the longest answer.
+- The exam can no longer be passed by picking "b" or the longest answer, and its result screen now quotes the right course price.
+- Re-run in full after main's home rebuild and rebrand; the real problems found are fixed (see the plan's 2026-10-03 section).
+- Open owner decision: the exam tests the RTFC framework, but the course teaches CORE.
 - Still open: A1, the run against a configured preview with Stripe, Supabase and AI keys. This sandbox can't reach the preview or the live site. Runbook: [`e2e/persona-wave/README.md`](../../e2e/persona-wave/README.md#running-against-a-configured-preview-the-real-test).
 - Also open: 46 verified-merged branches need someone with push access to run [`delete-finished-branches.sh`](delete-finished-branches.sh). Dependabot #589's updates are applied in this branch, with Stripe held back. See section E of the plan.
 
