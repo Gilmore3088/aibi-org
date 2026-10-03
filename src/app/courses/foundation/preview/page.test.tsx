@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import FoundationPreviewPage from './page';
 
@@ -9,9 +9,15 @@ describe('FoundationPreviewPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: /set your ai house rules/i })).toBeTruthy();
     expect(screen.getByTestId('preview-build')).toBeTruthy();
     expect(screen.getByTestId('build-guide')).toBeTruthy();
-    // The copyable house rules and the three test prompts render from course data.
+    // Three short steps; the full rules sit behind "Read the full text".
+    expect(screen.getAllByRole('tab').map((t) => t.textContent)).toEqual(['1Copy', '2Save', '3Test']);
+    expect(screen.getByText(/flags customer data/i)).toBeTruthy();
     expect(screen.getByText(/follow these rules in every conversation with me/i)).toBeTruthy();
-    expect(screen.getAllByText(/you should get:/i)).toHaveLength(3);
+    fireEvent.click(screen.getByRole('tab', { name: /save/i }));
+    expect(screen.getByText(/custom instructions/i)).toBeTruthy();
+    fireEvent.click(screen.getByRole('tab', { name: /test/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Customer data' }));
+    expect(screen.getByText(/replace them with \[customer\] and \[account\]/i)).toBeTruthy();
     expect(screen.getByText(/you just built your ai house rules/i)).toBeTruthy();
     // No in-course anchors on the public preview.
     expect(document.querySelector('a[href="#st-sandbox"]')).toBeNull();
