@@ -369,7 +369,8 @@ class Session {
     if (new URL(this.page.url()).pathname === href) return true;
     const link = () => this.page.locator(`:is(header, nav, ${ROOT}, footer) a[href="${href}"]:visible`);
     if (!(await link().count())) {
-      const menu = this.page.locator('header :is(button, [role=button]):visible').filter({ hasText: /menu/i });
+      // The rebranded header's menu button is icon-only ("Open menu" label).
+      const menu = this.page.locator('header :is(button, [role=button]):visible:is([aria-label*="menu" i], :has-text("menu"))');
       if (await menu.count()) await this.click(menu.first(), 'open menu');
     }
     if (await link().count()) {
