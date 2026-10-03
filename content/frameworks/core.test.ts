@@ -34,7 +34,6 @@ const PENDING = new Set<string>([
   'src/app/resources/the-skill-not-the-prompt/page.tsx',
   'src/components/home/HomeSections.tsx',
   'src/content/prompt-cards/cards.ts',
-  'src/lib/pdf/transformation-report.ts',
   'src/lib/resources/freeResources.manifest.json',
 ]);
 
