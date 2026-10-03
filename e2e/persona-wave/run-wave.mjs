@@ -262,6 +262,13 @@ class Session {
     const start = Date.now();
     await locator.scrollIntoViewIfNeeded({ timeout: 4_000 }).catch(() => {});
     const href = await locator.getAttribute('href', { timeout: 2_000 }).catch(() => null);
+    const dialog = this.page.locator('[role=dialog]:visible, [aria-modal=true]:visible');
+    if (await dialog.count()) {
+      const close = dialog.first().locator('button:visible').filter({ hasText: /close|skip|got it|dismiss|not now|maybe later|start using|×|✕/i });
+      if (await close.count()) await close.first().click({ timeout: 4_000 }).catch(() => {});
+      else await this.page.keyboard.press('Escape').catch(() => {});
+      this.log('INFO', 'dismissed a first-visit dialog');
+    }
     try {
       await locator.click({ timeout: 12_000 });
       if (href && href.startsWith('/') && !href.startsWith('/#')) {
@@ -549,16 +556,23 @@ async function resourceHunter(s) {
       if (words > 300) s.value('resource_download', `read on page (${words} words)`);
       else await s.addFriction('no_download_path', 'resource page has no download CTA and little content', 1);
     } else {
+      // Gated downloads open a work-email form after the click.
       const email = s.page.locator(ROOT + ' input[type=email]:visible');
+      await email.first().waitFor({ timeout: 4_000 }).catch(() => {});
       if (await email.count()) {
         await email.first().fill(`wave+${s.p.id.toLowerCase()}@aibankinginstitute.test`);
         await email.first().press('Enter').catch(() => {});
         s.clicks += 1;
+        s.log('INFO', 'download behind email gate');
       }
       const [d, r] = await Promise.all([dl, pdfResp]);
+      const t = await s.page.locator(ROOT).first().innerText().catch(() => '');
+      const readable = t.match(/[^\n.]*(temporarily unavailable|try again|couldn.t send|contact support)[^\n.]*/i)?.[0];
       if (d) s.value('resource_download', d.suggestedFilename());
       else if (r && r.status() < 400) s.value('resource_download', normPath(r.url()));
       else if (r) await s.addFriction('download_failed', `${r.status()} ${normPath(r.url())}`, 1, { env: r.status() === 503 });
+      else if (/sent|check your|on its way|emailed/i.test(t)) s.value('resource_download', 'emailed');
+      else if (readable) await s.addFriction('download_unavailable_message', `"${readable.trim().slice(0, 110)}"`, 0.5, { env: true });
       else if (!s.hasValue('resource_download')) await s.addFriction('download_no_file', 'clicked download, no file or confirmation', 0.5);
     }
     await s.maybeWander();
@@ -989,6 +1003,9 @@ async function goToModule(s, n) {
   if (normPath(s.page.url()) === target) return;
   // Prefer an in-page "next module" link, the way a real learner moves on.
   const next = s.page.locator(`${ROOT} a[href="${target}"]:visible, a[href="${target}"]:visible`);
+  // The "Replay, then continue" link renders once the save finishes; give it
+  // a moment under dev-server load before deciding there is no way forward.
+  await next.first().waitFor({ timeout: 8_000 }).catch(() => {});
   if (await next.count()) {
     await s.click(next.first(), `go to module ${n}`);
     if (normPath(s.page.url()) === target) return;
@@ -1253,7 +1270,8 @@ async function answerStep(s, st) {
   const skip = /menu|course overview|back|previous|^←|sign ?out|enroll|\$|^\d{2}/i;
   for (let i = 0; i < (st.max ?? 12); i += 1) {
     const next = st.next ? s.page.locator(`${ROOT} button:visible:enabled`).filter({ hasText: st.next }) : null;
-    const opts = s.page.locator(`${ROOT} ${st.answer}:visible`).filter({ hasNotText: st.next ?? /^$/ });
+    let opts = s.page.locator(`${ROOT} ${st.answer}:visible`).filter({ hasNotText: st.next ?? /^$/ });
+    if (st.optionText) opts = opts.filter({ hasText: st.optionText });
     const n = await opts.count();
     const choices = [];
     for (let j = 0; j < Math.min(n, 30); j += 1) {

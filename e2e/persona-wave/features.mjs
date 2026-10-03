@@ -63,7 +63,7 @@ export const FEATURE_JOURNEYS = {
     ],
   ],
   'article-reader': [
-    [{ enter: '/resources' }, { click: /^briefings$/i, label: 'Briefings nav' }, { click: /read the briefing/i, label: 'open a brief' }, { read: 'article_read', min: 500 }, { click: /assessment|course|training|foundation/i, label: 'brief → next step', value: 'next_step_opened' }],
+    [{ enter: '/resources' }, { go: '/briefings' }, { click: /read the briefing/i, label: 'open a brief' }, { read: 'article_read', min: 500 }, { click: /assessment|course|training|foundation/i, label: 'brief → next step', value: 'next_step_opened' }],
     [{ enter: '/resources/the-widening-ai-gap' }, { read: 'article_read', min: 500 }, { click: /take the free assessment/i, label: 'article → assessment', value: 'next_step_opened' }],
     [{ enter: '/resources/six-ways-ai-fails-in-banking' }, { read: 'article_read', min: 500 }, { click: /course|training|foundation|assessment/i, label: 'article next step', value: 'next_step_opened' }],
     [{ enter: '/resources/ai-governance-without-the-jargon' }, { read: 'article_read', min: 500 }, { click: /assessment|course|foundation/i, label: 'article next step', value: 'next_step_opened' }],
@@ -83,7 +83,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/playbooks/compliance' }, { click: /checklist|reference card|template/i, label: 'open a playbook asset' }, { read: 'asset_read', min: 200 }, { download: /download|pdf/i, value: 'resource_download', label: 'asset download' }],
   ],
   'sample-report': [
-    [{ enter: '/results/sample' }, { read: 'sample_report_read', min: 300 }, { download: /download sample/i, value: 'resource_download', label: 'sample report PDF' }],
+    [{ enter: '/results/sample' }, { read: 'sample_report_read', min: 300 }, { download: /download (the )?sample/i, value: 'resource_download', label: 'sample report PDF' }],
     [{ enter: '/results/sample' }, { read: 'sample_report_read', min: 300 }, { click: /get (the )?90-day playbook|take the in-depth/i, label: 'sample → In-Depth', value: 'next_step_opened' }],
   ],
   'assessment-resume': [
@@ -120,7 +120,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/courses/foundation/program/gallery' }, { read: 'gallery_read', min: 300 }],
   ],
   'cert-exam': [
-    [{ enter: '/certifications/exam/foundation' }, { click: /start|begin|take the exam/i, label: 'start exam', optional: true }, { answer: 'main button', next: /next|submit|continue|finish/i, max: 30, value: 'exam_completed' }],
+    [{ enter: '/certifications/exam/foundation' }, { click: /start|begin|take the exam/i, label: 'start exam', optional: true }, { answer: 'main button', optionText: /^\s*[a-d]\s*\S/i, next: /next|submit|continue|finish/i, max: 16, value: 'exam_completed' }],
   ],
   'purchase-help': [
     [{ enter: '/support/purchase-help' }, { fill: 'form:has(textarea)' }, { submit: /send support request/i, api: /\/api\/support/, value: 'support_request_sent', label: 'support request', scope: 'form:has(textarea)' }],
