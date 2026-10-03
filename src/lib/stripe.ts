@@ -18,7 +18,7 @@ if (!STRIPE_SECRET_KEY) {
 assertProductionStripeKey(STRIPE_SECRET_KEY);
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2026-07-29.dahlia',
+  apiVersion: '2026-08-26.dahlia',
   appInfo: {
     name: 'The AI Banking Institute',
     url: 'https://aibankinginstitute.com',
