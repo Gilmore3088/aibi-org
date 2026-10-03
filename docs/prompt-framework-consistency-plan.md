@@ -86,7 +86,7 @@ Each step ends with its own check before the next starts.
 **Found during step 6:**
 - The guard missed prompt templates written as section tags (`[ROLE] … [TASK]`), as labeled fields (`{ label: 'Role' }`), as bulleted parts ("- Role (…)") and inline ("Role: [YOUR ROLE]. Task: [TASK]"). It now checks all four shapes. They turned up in the module 3 and 11 gallery samples, My Toolbox's sample prompt and skill page, the AI Task Framer prompt card, a practice rep, and the In-Depth "prompting skill" action and starter kit. All are now CORE.
 - *The skill, not the prompt* still showed a five-row Role/Context/Task/Format/Constraints table. It now shows the four CORE parts, and its course description matches what Module 13 does.
-- Three paid or free PDFs had no generator in the repo: the Skill Template Library, the starter artifacts (both deleted in a June cleanup) and the prompt cards (never committed). All three generators are restored or written under `scripts/` (`npm run generate:skill-library`, `generate:starter-artifacts`, `generate:prompt-cards`), and each was checked against the committed PDF before any change. The Skill Template Library is now in CORE and points to Module 13, which does what the old "Module 7" text described.
+- Two PDFs had no generator in the repo: the Skill Template Library (deleted in a June cleanup) and the prompt cards (never committed). Both generators are now under `scripts/` (`npm run generate:skill-library`, `npm run generate:prompt-cards`), and each was checked against the committed PDF before any change. The starter artifacts use main's `scripts/generate-starter-artifact-pdfs.mjs` (#609), which now also takes `PW_LOCAL_FONTS`. The Skill Template Library is now in CORE and points to Module 13, which does what the old "Module 7" text described.
 - Rebuilding from current sources also replaced four starter artifacts and two large-print PDFs that still cited SR 11-7 as current. Their sources were corrected earlier, but the PDFs were never rebuilt.
 
 ### 7. Final audit
@@ -107,6 +107,16 @@ Each step ends with its own check before the next starts.
 | Coverage | 99/100 | 100/100 | 0 | 1: `/dashboard` still on its loading skeleton at the check. It loads fully in under 5 seconds when re-checked |
 
 All 40 learners reached their planned module depth; 332 of 333 artifacts saved (the one miss was during the server restart).
+
+**Merged with main (#605–#612), 2026-10-03.** Main's course rebuild (#612), shorter pages (#608, #610) and PDF fixes (#606, #609) are in. Where main's copy won a conflict, CORE was re-applied:
+- Module 10's visual model is CORE again (main's new "Role Assistant" build text kept).
+- The two gallery prompt samples main reintroduced as `[ROLE] … [TASK]` are CORE, in main's wording.
+- `ai-literacy-level.pdf` was re-rendered with main's generator so it carries the CORE line; the other seven starter artifacts are main's files unchanged (a re-render matched main's text exactly).
+- All seven large-print PDFs and the four affected kits were rebuilt from the merged sources.
+- The home free-tools heading is main's ("Free checklists, reference cards and playbooks.").
+- The workbook page keeps main's layout plus one "Not ready to talk yet?" line, so it doesn't end on a mailto link alone.
+
+After the merge: guard clean, 864/864 tests, type check, lint (0 errors), claims check and production build pass; 89 PDFs scanned clean. The persona waves above ran before the merge.
 
 ## After merge (James)
 
