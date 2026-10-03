@@ -308,7 +308,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
       >
         {[
           'Gen AI Fundamentals',
-          'Prompting and the RTFC Framework',
+          'Prompting with CORE',
           'Safe Use in Regulated Institutions',
           'Use Case Identification',
           'Measurement and Accountability',

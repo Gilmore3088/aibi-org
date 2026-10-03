@@ -25,7 +25,7 @@ export type Topic =
 
 export const TOPIC_LABELS: Record<Topic, string> = {
   'gen-ai-fundamentals': 'Gen AI Fundamentals',
-  'prompting': 'Prompting & the RTFC Framework',
+  'prompting': 'Prompting with CORE',
   'safe-use': 'Safe Use in Regulated Institutions',
   'use-case-identification': 'Use Case Identification',
   'measurement': 'Measurement & Accountability',
@@ -138,11 +138,12 @@ export const examQuestions: readonly ExamQuestion[] = [
     explanation: 'AI accelerates reconciliation by handling pattern matching and exception flagging. Final verification and approval remain human responsibilities, especially when general ledger accuracy is at stake.',
   },
 
-  // ── Prompting & RTFC Framework (8 questions) ──
+  // ── Prompting with CORE (8 questions) ──
+  // IDs keep the old rtfc- prefix so stored exam attempts still line up.
   {
     id: 'rtfc-01',
     topic: 'prompting',
-    stem: 'A loan officer needs to draft an adverse action notice for a denied small business loan. Using the RTFC framework, which prompt would produce the most compliant first draft?',
+    stem: 'A loan officer needs to draft an adverse action notice for a denied small business loan. Using CORE, which prompt would produce the most compliant first draft?',
     options: [
       { label: '"You are a helpful assistant. Write a letter to John Smith at 42 Oak Street explaining that his SBA loan for Smith Hardware was denied because his DSCR was 1.05 and his credit score is 612. Keep it friendly, short, and reassuring so he applies again next year."', key: 'a' },
       { label: '"You are a community bank compliance specialist. Draft an adverse action notice for a denied SBA loan application. Format as a formal letter. Include the specific reasons for denial as bullet points. Do not reference any applicant PII — use placeholder brackets. Ensure language aligns with ECOA and Regulation B requirements."', key: 'b' },
@@ -150,12 +151,12 @@ export const examQuestions: readonly ExamQuestion[] = [
       { label: '"Draft an ECOA and Regulation B compliant adverse action notice for a denied small business loan. Make sure it is fully compliant and legally sufficient so it can be sent without review. Use your own knowledge of the regulations to decide which reasons to include and how to format the letter."', key: 'd' },
     ],
     correctKey: 'b',
-    explanation: 'This prompt uses all four RTFC elements — Role (compliance specialist), Task (draft adverse action notice), Format (formal letter with bullet reasons), Constraints (no PII, ECOA/Reg B alignment).',
+    explanation: 'This prompt covers all four CORE parts — Context (a community bank compliance specialist), Objective (draft an adverse action notice for a denied SBA application), Resources (placeholder brackets instead of applicant data), Expectations (formal letter, reasons as bullets, ECOA and Regulation B alignment).',
   },
   {
     id: 'rtfc-02',
     topic: 'prompting',
-    stem: 'Your teller supervisor needs to create a training guide for new hires on how to handle cash discrepancies at the window. Which "Role" assignment produces the most useful output?',
+    stem: 'Your teller supervisor needs to create a training guide for new hires on how to handle cash discrepancies at the window. Which Context line produces the most useful output?',
     options: [
       { label: '"You are an AI assistant with access to every banking procedure, and you should answer as accurately and thoroughly as you possibly can"', key: 'a' },
       { label: '"You are a community bank branch operations trainer with 15 years of experience training tellers at institutions under $500M in assets"', key: 'b' },
@@ -163,7 +164,7 @@ export const examQuestions: readonly ExamQuestion[] = [
       { label: '"You are a friendly new-hire buddy who explains banking in simple, casual language that anyone can follow on their very first day"', key: 'd' },
     ],
     correctKey: 'b',
-    explanation: 'Specific roles produce specific output. Naming the industry, asset size, audience, and experience level causes the AI to calibrate tone, vocabulary, and detail level for the exact use case.',
+    explanation: 'Specific context produces specific output. Naming the role, industry, asset size, audience, and experience level causes the AI to calibrate tone, vocabulary, and detail level for the exact use case.',
   },
   {
     id: 'rtfc-03',
@@ -171,7 +172,7 @@ export const examQuestions: readonly ExamQuestion[] = [
     stem: 'Your CFO asks AI to summarize the bank\'s 120-page strategic plan for a board presentation. The AI produces a summary that misses three critical initiatives. The most likely cause is:',
     options: [
       { label: 'The CFO should have told the AI to be more thorough — adding "do not miss anything important" to the prompt fixes most gaps in long summaries without splitting the document', key: 'a' },
-      { label: 'The document was too long for a single prompt — it should have been broken into sections with separate RTFC prompts per section, then synthesized', key: 'b' },
+      { label: 'The document was too long for a single prompt — it should have been broken into sections with a separate CORE prompt per section, then synthesized', key: 'b' },
       { label: 'Strategic plans contain confidential content, so the AI automatically skipped the three initiatives that mentioned financial projections', key: 'c' },
       { label: 'The AI weights the first and last pages most heavily, so the fix is to move the three critical initiatives to the start of the document', key: 'd' },
     ],
@@ -181,7 +182,7 @@ export const examQuestions: readonly ExamQuestion[] = [
   {
     id: 'rtfc-04',
     topic: 'prompting',
-    stem: 'A member services representative wants AI to help draft a response to a complaint about unexpected overdraft fees. The best "Constraints" to add to the RTFC prompt are:',
+    stem: 'A member services representative wants AI to help draft a response to a complaint about unexpected overdraft fees. The best Expectations to add to the CORE prompt are:',
     options: [
       { label: '"Apologize for the fees, confirm that the three overdraft charges on the member\'s account ending 4417 will be refunded today, and thank them for twelve years as a loyal member. Keep the tone warm and personal."', key: 'a' },
       { label: '"Do not reference the member\'s specific account number, balance, or transaction history. Keep under 150 words. Acknowledge the member\'s frustration without admitting fault or waiving the fee. Direct the member to speak with a branch manager for account-specific resolution."', key: 'b' },
@@ -189,7 +190,7 @@ export const examQuestions: readonly ExamQuestion[] = [
       { label: '"Make it sound empathetic and professional. Use the member\'s name and recent transactions to personalize the response so it does not read like a form letter, and keep it under 300 words."', key: 'd' },
     ],
     correctKey: 'b',
-    explanation: 'Effective constraints are specific: no PII, word limit, tone guidance, liability guardrails, and a clear escalation path. Vague constraints ("make it sound nice") produce vague output.',
+    explanation: 'Effective expectations are specific: no PII, word limit, tone guidance, liability guardrails, and a clear escalation path. Vague expectations ("make it sound nice") produce vague output.',
   },
   {
     id: 'rtfc-05',
@@ -197,7 +198,7 @@ export const examQuestions: readonly ExamQuestion[] = [
     stem: 'Your commercial lender asks AI to analyze a borrower\'s three years of tax returns and produce a summary. The AI-generated summary looks thorough but lists the wrong revenue figures. What went wrong?',
     options: [
       { label: 'The AI cannot read scanned tax returns, so it estimated revenue from industry averages — switching to typed PDFs would fix the figures', key: 'a' },
-      { label: 'The lender\'s prompt lacked a Format element; once a table layout is specified, the AI\'s extracted figures can be used without checking the returns', key: 'b' },
+      { label: 'The lender\'s prompt set no Expectations; once a table layout is specified, the AI\'s extracted figures can be used without checking the returns', key: 'b' },
       { label: 'The AI likely extracted data incorrectly from the documents — AI-generated financial figures must always be verified against the original source documents before use', key: 'c' },
       { label: 'The borrower\'s returns likely contained the errors — AI extraction from clean financial documents is accurate enough that verification is only needed when files are scanned or handwritten', key: 'd' },
     ],
@@ -207,11 +208,11 @@ export const examQuestions: readonly ExamQuestion[] = [
   {
     id: 'rtfc-06',
     topic: 'prompting',
-    stem: 'A compliance officer drafts a vendor management policy update using AI. The first draft is generic and reads like it could apply to any industry. The best fix using RTFC is to strengthen the:',
+    stem: 'A compliance officer drafts a vendor management policy update using AI. The first draft is generic and reads like it could apply to any industry. The best fix using CORE is to strengthen the:',
     options: [
-      { label: 'Format — convert the policy from paragraphs to a numbered checklist, since generic language usually comes from the AI defaulting to narrative prose', key: 'a' },
-      { label: 'Role and Constraints — specify "community bank with $400M in assets, FDIC-supervised, subject to Interagency TPRM Guidance" so the AI generates institution-specific language', key: 'b' },
-      { label: 'Task — ask the AI to "make it specific and detailed," which pushes the model to add institution-level language without needing any more context', key: 'c' },
+      { label: 'Expectations — convert the policy from paragraphs to a numbered checklist, since generic language usually comes from the AI defaulting to narrative prose', key: 'a' },
+      { label: 'Context — specify "community bank with $400M in assets, FDIC-supervised, subject to Interagency TPRM Guidance" so the AI generates institution-specific language', key: 'b' },
+      { label: 'Objective — ask the AI to "make it specific and detailed," which pushes the model to add institution-level language without needing any more context', key: 'c' },
       { label: 'Nothing in the prompt — generic vendor policies are preferable because examiners look for standard language, and the bank can add specifics later at its annual policy review cycle', key: 'd' },
     ],
     correctKey: 'b',
@@ -223,7 +224,7 @@ export const examQuestions: readonly ExamQuestion[] = [
     stem: 'A branch manager asks AI to create a script for calling delinquent borrowers. The AI produces a script that could violate FDCPA guidelines. The correct response is to:',
     options: [
       { label: 'Use the script, since collection scripts drafted by AI tools are generally checked for FDCPA language during the model\'s training', key: 'a' },
-      { label: 'Add FDCPA compliance as a Constraint in the prompt, regenerate, and then have compliance review the output before any staff member uses it', key: 'b' },
+      { label: 'Add FDCPA compliance to the prompt\'s Expectations, regenerate, and then have compliance review the output before any staff member uses it', key: 'b' },
       { label: 'Stop using AI for member-facing communications entirely, since any collection script creates too much regulatory exposure to justify the time saved', key: 'c' },
       { label: 'Ask the AI to review its own script for FDCPA violations and use the corrected version, since a second pass by the model reliably catches its own mistakes', key: 'd' },
     ],
@@ -233,15 +234,15 @@ export const examQuestions: readonly ExamQuestion[] = [
   {
     id: 'rtfc-08',
     topic: 'prompting',
-    stem: 'Your BSA officer needs AI to draft narratives for 15 currency transaction reports from yesterday. The most efficient RTFC approach is:',
+    stem: 'Your BSA officer needs AI to draft narratives for 15 currency transaction reports from yesterday. The most efficient CORE approach is:',
     options: [
       { label: 'Paste all 15 transactions into one prompt and request every narrative at once, then spot-check two or three of the outputs before filing the full batch', key: 'a' },
-      { label: 'Create one well-crafted RTFC template for CTR narratives, then apply it to each transaction individually — verifying each output against the source transaction before filing', key: 'b' },
+      { label: 'Create one well-crafted CORE template for CTR narratives, then apply it to each transaction individually — verifying each output against the source transaction before filing', key: 'b' },
       { label: 'Have the AI draft and submit the CTRs directly to FinCEN through BSA E-Filing, with the BSA officer reviewing the confirmation receipts afterward', key: 'c' },
       { label: 'Write a new, fully custom prompt for each of the 15 transactions so every narrative is tailored, and skip source verification because each prompt is unique to its own transaction', key: 'd' },
     ],
     correctKey: 'b',
-    explanation: 'A reusable RTFC template for CTR narratives saves time across many transactions while maintaining accuracy through individual verification. Batch processing 15 at once risks cross-contamination of transaction details.',
+    explanation: 'A reusable CORE template for CTR narratives saves time across many transactions while maintaining accuracy through individual verification. Batch processing 15 at once risks cross-contamination of transaction details.',
   },
 
   // ── Safe Use in Regulated Institutions (8 questions) ──
@@ -252,7 +253,7 @@ export const examQuestions: readonly ExamQuestion[] = [
     options: [
       { label: 'ChatGPT may draft the hold letter with the wrong tone or without the Regulation CC timelines, so a supervisor should proofread it before it is sent to the member', key: 'a' },
       { label: 'Member PII has been shared with a third-party AI service that may retain and use the data for model training — a potential GLBA and privacy violation', key: 'b' },
-      { label: 'The teller used the right tool but the wrong prompt format — adding a Role and Constraints would have made sharing the account details acceptable', key: 'c' },
+      { label: 'The teller used the right tool but the wrong prompt format — adding Context and Expectations would have made sharing the account details acceptable', key: 'c' },
       { label: 'No real concern, because consumer AI tools delete conversation data right away and account numbers alone are not protected information under GLBA', key: 'd' },
     ],
     correctKey: 'b',
