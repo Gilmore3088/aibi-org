@@ -3,202 +3,164 @@
 // /assessment — landing page.
 //
 // Sells one thing: take the free 3-minute snapshot. The $99 in-depth
-// diagnostic lives below the fold as the upgrade path, not as a competing
-// hero. See the 2026-05-28 product feedback: stop explaining how the
-// scoring works, show what the user gets.
+// diagnostic sits beside it as the upgrade path, not as a competing hero.
+// Show what the user gets rather than how the scoring works.
 //
 // Free assessment vocabulary: 12 questions.
 // In-depth assessment vocabulary: 8 scored readiness dimensions.
 
-import {
-  SiteHeader,
-  Section,
-  SectionHead,
-  Button,
-  StickyMobileCta,
-} from '@/components/mockup';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowGlyph, Button, SiteHeader, StickyMobileCta } from '@/components/mockup';
+import { AxHero, AxSection, AxWindow } from '@/components/ax';
+import { questions } from '@content/assessments/v3/questions';
 
-// ---------- Icons ----------
+// A real question from the free assessment, shown as the reader will see it.
+const PREVIEW_QUESTION = questions.find((q) => q.id === 'dsr-01') ?? questions[0];
 
-type IconProps = { className?: string; size?: number };
-const sw = (p: IconProps) => ({
-  className: p.className,
-  width: p.size,
-  height: p.size,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-  'aria-hidden': true,
-});
+const PATHS = [
+  {
+    key: 'free',
+    badge: 'Free snapshot',
+    name: 'Your first 30 days',
+    price: '$0',
+    cadence: '12 questions · about 3 minutes',
+    bullets: ['Score out of 48 and your tier', 'Your top readiness gap', 'A starter prompt and 30-day plan'],
+    action: 'Take it free',
+    href: '/assessment/take',
+    art: {
+      src: '/downloads/covers/sample-readiness-report-p2.jpg',
+      alt: 'Sample readiness report: score, tier and top gap (illustrative data)',
+      width: 640,
+      height: 828,
+    },
+    featured: true,
+  },
+  {
+    key: 'in-depth',
+    badge: 'In-Depth report',
+    name: 'The full 90-day plan',
+    price: '$99',
+    cadence: '48 questions · one-time',
+    bullets: ['Eight scored readiness dimensions', 'Root causes for each gap', 'A 90-day action register'],
+    action: 'See the In-Depth report',
+    href: '/assessment/in-depth',
+    art: {
+      src: '/downloads/covers/in-depth-playbook-p5.jpg',
+      alt: 'In-Depth playbook page: choose your 90-day path',
+      width: 700,
+      height: 906,
+    },
+    featured: false,
+  },
+] as const;
 
-const ArrowR = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
-const CheckIcon = (p: IconProps) => (
-  <svg {...sw(p)}>
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
-
-// 8 in-depth dimensions — distinct from signals; lives below the fold.
-const IN_DEPTH_DIMENSIONS = [
-  { title: 'Governance', desc: 'Policy, ownership, review, and evidence.', pct: 64 },
-  { title: 'Tool fluency', desc: 'Ability to select and use AI tools safely.', pct: 58 },
-  { title: 'Risk awareness', desc: 'Customer, compliance, and data risk.', pct: 72 },
-  { title: 'Workflow fit', desc: 'Ability to map AI into real work.', pct: 48 },
-  { title: 'Data judgment', desc: 'Safe inputs, redaction, and data boundaries.', pct: 66 },
-  { title: 'Documentation', desc: 'Tool, input, output, reviewer, retention.', pct: 54 },
-  { title: 'Role readiness', desc: 'Function-specific use cases and artifacts.', pct: 60 },
-  { title: 'Leadership', desc: 'Sponsor clarity, training path, rollout posture.', pct: 70 },
-];
-
-// Sample free outcome — illustrative numbers so the buyer sees the shape.
-// Illustrative numbers so the buyer sees the shape. Kept consistent with the
-// home page's result preview, and internally correct: 36/48 lands in the 33–40
-// "Building Momentum" band (the previous 32 was actually the Early Stage band).
-const SAMPLE = {
-  score: 36,
-  max: 48,
-  tier: 'Building Momentum',
-  topGap: 'Documentation',
-  artifact: 'AI Recordkeeping Template',
-};
-
-// ---------- Page ----------
+const STEPS = [
+  { title: 'Answer', body: 'Twelve plain questions about how you use AI at work today.' },
+  { title: 'See where you stand', body: 'A score, your tier, and the one gap to close first.' },
+  { title: 'Start on Monday', body: 'Copy a starter prompt and follow a 30-day plan for your role.' },
+] as const;
 
 export default function AssessmentLandingPage() {
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page">
       <SiteHeader activePath="/assessment" />
 
-      {/* ── HERO ────────────────────────────────────────────────── */}
-      <section className="mk-hero">
-        <div className="mk-deco">
-          <div className="mk-deco-ring" />
-          <div className="mk-deco-blur" />
-        </div>
-        <div className="mk-container mk-hero-inner mk-assessment-hero-inner">
-          <div>
-            <p className="mk-kicker-gold-soft">Assessment</p>
-            <h1>Find your AI starting point.</h1>
-            <p className="mk-lede">
-              12 questions in three minutes give you a score, top gap, and a
-              starter artifact. The paid assessment adds deeper diagnostic
-              detail across eight scored readiness dimensions.
+      <AxHero
+        cmd="assessment --free --questions 12"
+        title="Find your AI starting point."
+        lede="Three minutes. A score, your top gap, and a prompt you can use on Monday."
+        actions={
+          <>
+            <Button variant="gold" size="lg" href="/assessment/take">
+              Start free assessment <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/results/sample">
+              See a sample report
+            </Button>
+          </>
+        }
+        aside={
+          <AxWindow title="readiness-assessment" meta="Sample question">
+            <p className="as-land-q">{PREVIEW_QUESTION.prompt}</p>
+            <ol className="as-land-opts">
+              {PREVIEW_QUESTION.options.map((option, index) => (
+                <li key={option.label}>
+                  <span className="as-land-letter" aria-hidden="true">
+                    {String.fromCharCode(65 + index)}
+                  </span>
+                  {option.label}
+                </li>
+              ))}
+            </ol>
+            <p className="as-land-note">
+              Written for every seat: frontline tellers, branch teams, lending, operations, compliance, and marketing.
             </p>
-            <p className="mk-hero-role-note">
-              Role examples include frontline tellers, branch teams, lending,
-              operations, compliance, and marketing.
-            </p>
-            <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/assessment/take">
-                Start free assessment <ArrowR className="mk-ic" />
-              </Button>
-              <Button variant="ghost-light" size="lg" href="/assessment/in-depth">
-                See paid assessment
-              </Button>
+          </AxWindow>
+        }
+      />
+
+      <main>
+        <section className="ax-section ax-light" id="sample" aria-labelledby="paths-title">
+          <div className="mk-container">
+            <div className="ax-section-head">
+              <p className="ax-k">Two outputs</p>
+              <h2 id="paths-title" className="ax-display">
+                Start free. Upgrade when you need the plan.
+              </h2>
+            </div>
+            <div className="ax-tiers as-land-paths">
+              {PATHS.map((path) => (
+                <article key={path.key} className={`ax-tier${path.featured ? ' is-featured' : ''}`}>
+                  <div className="ax-tier-art">
+                    <figure className="ax-tier-page">
+                      <Image src={path.art.src} alt={path.art.alt} width={path.art.width} height={path.art.height} sizes="360px" />
+                    </figure>
+                  </div>
+                  <p className="ax-k ax-gold">{path.badge}</p>
+                  <h3 className="as-land-name">{path.name}</h3>
+                  <p className="ax-plan-price">
+                    <strong>{path.price}</strong>
+                    <span>{path.cadence}</span>
+                  </p>
+                  <ul className="ax-checklist">
+                    {path.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                  <Link href={path.href} className="ax-tier-cta">
+                    {path.action} <span aria-hidden="true">→</span>
+                  </Link>
+                </article>
+              ))}
             </div>
           </div>
-          <HeroReportPreview />
-        </div>
-      </section>
+        </section>
 
-      {/* ── OUTPUT CHOICE ───────────────────────────────────────── */}
-      <Section variant="std" surface="white" id="sample">
-        <SectionHead
-          kicker="Two outputs"
-          heading={<>Start free. Upgrade for the 90-day report.</>}
-          lede={
-            <>
-              The free path gives the first month. The paid path gives the
-              full diagnostic.
-            </>
-          }
-        />
-        <AssessmentPathPreview />
-      </Section>
+        <AxSection id="how" kicker="How it works" title="Three minutes, then a plan.">
+          <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 3 }} aria-label="How the free assessment works">
+            {STEPS.map((step, index) => (
+              <li key={step.title} className={index === 0 ? 'is-first' : undefined}>
+                <span className="ax-pipeline-node" aria-hidden="true" />
+                <span className="ax-k">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="ax-actions as-land-actions">
+            <Button variant="gold" size="lg" href="/assessment/take">
+              Take the free assessment <ArrowGlyph />
+            </Button>
+          </div>
+        </AxSection>
+      </main>
 
       <StickyMobileCta
         label="Start the free assessment"
         href="/assessment/take"
         source="sticky-mobile-cta-assessment"
       />
-    </div>
-  );
-}
-
-// ---------- Sub-components ----------
-
-function HeroReportPreview() {
-  return (
-    <aside className="mk-assessment-report" aria-label="Assessment result preview">
-      <div className="mk-assessment-report-top">
-        <span>Sample result</span>
-        <strong>{SAMPLE.score}/{SAMPLE.max}</strong>
-      </div>
-      <div className="mk-assessment-score-row">
-        <div>
-          <p>Top gap</p>
-          <strong>{SAMPLE.topGap}</strong>
-        </div>
-        <div>
-          <p>Tier</p>
-          <strong>{SAMPLE.tier}</strong>
-        </div>
-      </div>
-      <div className="mk-assessment-artifact">
-        <span>Your starter artifact</span>
-        <strong>{SAMPLE.artifact}</strong>
-      </div>
-    </aside>
-  );
-}
-
-function AssessmentPathPreview() {
-  return (
-    <div className="mk-assessment-path">
-      <article className="mk-assessment-path-card">
-        <div className="mk-path-eyebrow">Free snapshot</div>
-        <h3>Get your first 30-day AI action brief.</h3>
-        <p>
-          Twelve readiness signals produce a score, maturity tier, top gap,
-          and one starter artifact in about three minutes.
-        </p>
-        <ul>
-          <li><CheckIcon className="mk-ic" /> Score out of 48</li>
-          <li><CheckIcon className="mk-ic" /> Top readiness gap</li>
-          <li><CheckIcon className="mk-ic" /> Your starter artifact</li>
-        </ul>
-        <Button variant="ink" size="lg" href="/assessment/take">
-          Start free
-        </Button>
-      </article>
-
-      <article className="mk-assessment-path-card is-paid">
-        <div className="mk-path-eyebrow">$99 In-Depth</div>
-        <h3>Get the full 90-day plan.</h3>
-        <p>
-          Forty-eight questions convert the snapshot into a personal report,
-          eight scored dimensions, per-dimension root causes, and a 90-day action register.
-        </p>
-        <div className="mk-paid-meter" aria-label="In-Depth report preview">
-          {IN_DEPTH_DIMENSIONS.slice(0, 4).map((dimension) => (
-            <div key={dimension.title}>
-              <span>{dimension.title}</span>
-              <i><b style={{ width: `${dimension.pct}%` }} /></i>
-            </div>
-          ))}
-        </div>
-        <Button variant="gold" size="lg" href="/assessment/in-depth">
-          Get In-Depth report
-        </Button>
-      </article>
     </div>
   );
 }

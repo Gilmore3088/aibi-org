@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import { SiteHeader } from '@/components/mockup';
+import { AxHero } from '@/components/ax';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { BriefingButton } from '@/components/analytics/BriefingButton';
 
@@ -11,32 +12,14 @@ export const metadata: Metadata = {
 
 export default function EfficiencyRatioWorkbookPage() {
   return (
-    <main>
-      {/* Hero */}
-      <section className="px-6 pt-14 pb-10 md:pt-20 md:pb-14">
-        <div className="max-w-4xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--ink)]/60 mb-4">
-            <Link
-              href="/for-institutions"
-              className="hover:text-[color:var(--gold)] transition-colors"
-            >
-              For institutions
-            </Link>
-            <span className="mx-2" aria-hidden="true">·</span>
-            <span>Sample · Free</span>
-          </p>
-          <h1 className="font-serif text-4xl md:text-5xl text-[color:var(--ink)] leading-tight mb-6">
-            The efficiency ratio workbook.
-          </h1>
-          <p className="text-lg text-[color:var(--ink)]/75 max-w-2xl leading-relaxed">
-            Model your institution’s automation ceiling with your own FTE
-            count, loaded cost, and a candid range of how many hours per week
-            the average employee spends on work AI can plausibly absorb. Same
-            math we walk through in every Executive Briefing. No email
-            required.
-          </p>
-        </div>
-      </section>
+    <div className="mockup-scope ax-page">
+      <SiteHeader activePath="/for-institutions" />
+      <AxHero
+        cmd="for-institutions/samples/efficiency-ratio-workbook --free"
+        title="The efficiency ratio workbook."
+        lede="Model your institution’s automation ceiling with your own FTE count, loaded cost, and a candid range of how many hours per week the average employee spends on work AI can plausibly absorb. Same math we walk through in every Executive Briefing. No email required."
+      />
+    <main className="ax-light">
 
       {/* The four numbers */}
       <section
@@ -212,5 +195,6 @@ export default function EfficiencyRatioWorkbookPage() {
         </div>
       </section>
     </main>
+    </div>
   );
 }

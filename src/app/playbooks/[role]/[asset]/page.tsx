@@ -11,13 +11,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import {
-  SiteHeader,
-  Section,
-  EyebrowChip,
-  CtaBand,
-  DocumentPreview,
-} from '@/components/mockup';
+import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { AxHero, AxWindow, CopyPrompt } from '@/components/ax';
 import {
   PLAYBOOK_ASSETS,
   getPlaybookAsset,
@@ -61,411 +56,138 @@ function playbookLabel(slug: string): string {
   ) ?? slug;
 }
 
-function sectionPreviewLines(section: AssetSection): string[] {
-  if (section.items && section.items.length > 0) return section.items.slice(0, 3);
-  if (section.fields && section.fields.length > 0) {
-    return section.fields.slice(0, 3).map((field) => `${field.label}: ${field.help}`);
-  }
-  if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
-  if (section.principle) return [section.principle];
-  if (section.intro) return [section.intro];
-  if (section.prompt) return ['Copy the prompt block, then adapt the role, context, and review owner.'];
-  return ['Open the full section below for detail.'];
-}
 
 export default async function PlaybookAssetPage(props: PageProps) {
   const params = await props.params;
   const a = getPlaybookAsset(params.asset);
   if (!a || a.playbook !== params.role) notFound();
+  const role = playbookLabel(a.playbook);
+  const fileName = `${a.slug}.md`;
 
   return (
-    <div className="mockup-scope">
-      <SiteHeader
-        activePath="/playbooks"
-        cta={{ label: 'Get readiness score', href: '/assessment/take' }}
+    <div className="mockup-scope ax-page">
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
+
+      <AxHero
+        cmd={`playbooks/${a.playbook}/${a.slug}`}
+        title={a.title}
+        lede={a.dek}
+        actions={
+          <>
+            <Button variant="gold" size="lg" href="#document">
+              Read the {a.kind.toLowerCase()} <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href={`/api/playbooks/${a.playbook}/${a.slug}/word`}>
+              Download Word file
+            </Button>
+          </>
+        }
+        aside={
+          <AxWindow title={fileName} meta={`${a.kind} · ${a.readMinutes} min`}>
+            <p className="ax-k ax-gold">Contents</p>
+            <ol className="pb-toc">
+              {a.sections.map((section, idx) => (
+                <li key={section.heading}>
+                  <a href={`#section-${idx + 1}`}>
+                    <span className="pb-step-n">{String(idx + 1).padStart(2, '0')}</span>
+                    {section.heading}
+                  </a>
+                </li>
+              ))}
+            </ol>
+            <p className="pb-toc-for">
+              <strong>For:</strong> {a.audience}
+            </p>
+          </AxWindow>
+        }
       />
 
-      {/* Hero — compact, breadcrumb-led so the parent playbook stays
-          one click away. Mirrors the printed playbook cover hierarchy. */}
-      <section className="mk-hero mk-hero-compact">
-        <div className="mk-container mk-hero-inner">
-          <div>
-            <p
-              style={{
-                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: '0.6875rem',
-                fontWeight: 700,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--slate-500)',
-                marginBottom: 16,
-              }}
-            >
-              <Link
-                href={`/playbooks/${a.playbook}`}
-                style={{ color: 'var(--slate-500)', textDecoration: 'none' }}
-              >
-                {playbookLabel(a.playbook)} Playbook
-              </Link>
-              <span style={{ margin: '0 8px' }} aria-hidden>·</span>
+      <main>
+        <section id="document" className="ax-section ax-light" aria-label={a.title}>
+          <div className="mk-container">
+            <p className="pb-crumb">
+              <Link href="/playbooks">Playbooks</Link>
+              <span aria-hidden="true"> / </span>
+              <Link href={`/playbooks/${a.playbook}`}>{role}</Link>
+              <span aria-hidden="true"> / </span>
               {a.kind}
             </p>
-            <EyebrowChip>{a.kind} · {a.readMinutes} min</EyebrowChip>
-            <h1>{a.title}</h1>
-            <p className="mk-lede">{a.dek}</p>
-            <p
-              style={{
-                color: 'var(--slate-600)',
-                fontSize: '0.875rem',
-                marginTop: 12,
-              }}
-            >
-              <strong style={{ color: 'var(--ink)' }}>For:</strong>{' '}
-              {a.audience}
-            </p>
+            <article className="pb-doc">
+              {a.sections.map((section, idx) => (
+                <AssetSectionBlock key={section.heading} section={section} index={idx + 1} />
+              ))}
+              {a.sourcedFrom.length > 0 && (
+                <aside aria-label="Sources" className="pb-doc-sources">
+                  <p className="ax-k">Sourced from</p>
+                  <ul>
+                    {a.sourcedFrom.map((source) => (
+                      <li key={source}>{source}</li>
+                    ))}
+                  </ul>
+                </aside>
+              )}
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <section className="ax-section ax-close">
+        <div className="mk-container">
+          <p className="ax-k">{role} Playbook</p>
+          <h2 className="ax-display">
+            The file is the start. <span className="ax-gold">Practice is where it sticks.</span>
+          </h2>
+          <p className="ax-muted">
+            The AiBI-Foundation course walks through the same prompts, with reviewed work you can take to your team.
+          </p>
+          <div className="ax-actions">
+            <Button variant="gold" size="lg" href={`/courses/foundation/program/purchase?role=${a.playbook}`}>
+              Start your {role} path <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href={`/playbooks/${a.playbook}`}>
+              Back to the playbook
+            </Button>
           </div>
         </div>
       </section>
-
-      <Section variant="std" surface="white">
-        <DocumentPreview
-          eyebrow={`${a.kind} preview`}
-          title={a.title}
-          dek={a.dek}
-          sections={a.sections.slice(0, 4).map((section) => ({
-            heading: section.heading,
-            lines: sectionPreviewLines(section),
-          }))}
-          aside={
-            <>
-              <p className="mk-proof-eyebrow">Use this when</p>
-              <p>{a.audience} need a structured starting point before adoption.</p>
-              <p className="mk-proof-eyebrow" style={{ marginTop: 18 }}>
-                Next step
-              </p>
-              <p>
-                Review the full artifact below, then return to the role playbook
-                for related tools.
-              </p>
-              <Link
-                href={`/playbooks/${a.playbook}`}
-                className="mk-btn mk-btn-gold"
-                style={{ marginTop: 18, color: 'var(--ink)' }}
-              >
-                Back to playbook
-              </Link>
-            </>
-          }
-        />
-      </Section>
-
-      {/* Sections — each rendered with the PDF .play-head pattern: a navy
-          panel introducing the section, then the content body in a white
-          surface so the page reads as a sequence of "plays". */}
-      <Section variant="std">
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 28,
-            maxWidth: 820,
-            margin: '0 auto',
-          }}
-        >
-          {a.sections.map((section, idx) => (
-            <AssetSectionBlock
-              key={section.heading}
-              section={section}
-              index={idx + 1}
-              total={a.sections.length}
-            />
-          ))}
-
-          {a.sourcedFrom.length > 0 && (
-            <aside
-              aria-label="Sources"
-              style={{
-                borderTop: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
-                paddingTop: 20,
-                marginTop: 12,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                  fontSize: '0.6875rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: 'var(--gold-deep)',
-                  marginBottom: 8,
-                }}
-              >
-                Sourced from
-              </p>
-              <ul
-                style={{
-                  margin: 0,
-                  paddingLeft: 18,
-                  color: 'var(--slate-600)',
-                  fontSize: '0.875rem',
-                  lineHeight: 1.6,
-                }}
-              >
-                {a.sourcedFrom.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ul>
-            </aside>
-          )}
-        </div>
-      </Section>
-
-      <CtaBand
-        kicker={`${playbookLabel(a.playbook)} Playbook`}
-        heading={<>The artifact is the start. The course is where it sticks.</>}
-        body={
-          <>
-            Use this template, then walk through the practice loop in the
-            AiBI-Foundation course — the same prompts, with reviewed work
-            you can take to your team.
-          </>
-        }
-        actions={[
-          {
-            label: `Start your ${playbookLabel(a.playbook)} path`,
-            href: `/courses/foundation/program/purchase?role=${a.playbook}`,
-            variant: 'gold',
-          },
-          {
-            label: 'Back to the playbook',
-            href: `/playbooks/${a.playbook}`,
-            variant: 'ghost-dark',
-          },
-        ]}
-      />
     </div>
   );
 }
 
-function AssetSectionBlock({
-  section,
-  index,
-  total,
-}: {
-  section: AssetSection;
-  index: number;
-  total: number;
-}) {
+function AssetSectionBlock({ section, index }: { section: AssetSection; index: number }) {
   return (
-    <article
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
-        borderRadius: 16,
-        overflow: 'hidden',
-        boxShadow: 'var(--shadow-soft, 0 1px 2px rgba(0,0,0,.06))',
-      }}
-    >
-      {/* PDF .play-head — navy header with gold-soft eyebrow numbering. */}
-      <header
-        style={{
-          background: 'var(--ink)',
-          color: '#FFFFFF',
-          padding: '16px 24px',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            fontSize: '0.6875rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: 'var(--gold-soft)',
-            marginBottom: 4,
-          }}
-        >
-          Section {index} of {total}
-        </div>
-        <h2
-          style={{
-            margin: 0,
-            fontSize: '1.375rem',
-            lineHeight: 1.25,
-            color: '#FFFFFF',
-            fontWeight: 600,
-          }}
-        >
-          {section.heading}
-        </h2>
-      </header>
-
-      <div style={{ padding: '24px 28px' }}>
-        {section.intro && (
-          <p
-            style={{
-              margin: '0 0 16px',
-              color: 'var(--slate-600)',
-              fontSize: '0.875rem',
-              lineHeight: 1.6,
-            }}
-          >
-            {section.intro}
-          </p>
-        )}
-
-        {section.principle && (
-          <div
-            style={{
-              background: 'var(--cream-2)',
-              borderLeft: '3px solid var(--gold)',
-              borderRadius: 12,
-              padding: '14px 18px',
-              margin: '4px 0 16px',
-              color: 'var(--ink)',
-              fontSize: '0.9375rem',
-              fontWeight: 600,
-              lineHeight: 1.55,
-            }}
-          >
-            {section.principle}
-          </div>
-        )}
-
+    <section id={`section-${index}`} className="pb-doc-section" aria-labelledby={`section-${index}-h`}>
+      <p className="pb-doc-n">{String(index).padStart(2, '0')}</p>
+      <div>
+        <h2 id={`section-${index}-h`}>{section.heading}</h2>
+        {section.intro && <p className="pb-doc-intro">{section.intro}</p>}
+        {section.principle && <p className="pb-doc-principle">{section.principle}</p>}
         {section.items && (
-          <ul
-            className="aibi-asset-checklist"
-            style={{
-              margin: 0,
-              padding: 0,
-              listStyle: 'none',
-            }}
-          >
+          <ul className="pb-checks">
             {section.items.map((item) => (
-              <li
-                key={item}
-                style={{
-                  position: 'relative',
-                  paddingLeft: 26,
-                  margin: '8px 0',
-                  color: 'var(--ink)',
-                  fontSize: '0.9375rem',
-                  lineHeight: 1.55,
-                }}
-              >
-                <span
-                  aria-hidden
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    color: 'var(--gold-deep)',
-                    fontWeight: 700,
-                  }}
-                >
-                  ☐
-                </span>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         )}
-
         {section.fields && (
-          <div
-            style={{
-              display: 'grid',
-              gap: 10,
-              marginTop: section.items ? 18 : 0,
-            }}
-          >
+          <dl className="pb-doc-fields">
             {section.fields.map((field) => (
-              <div
-                key={field.label}
-                style={{
-                  border: '1px solid var(--ink-a10, rgba(7,26,47,0.10))',
-                  borderRadius: 10,
-                  padding: '12px 14px',
-                  background: '#FFFFFF',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '0.8125rem',
-                    fontWeight: 700,
-                    color: 'var(--ink)',
-                    marginBottom: 4,
-                  }}
-                >
-                  {field.label}
-                </div>
-                <div
-                  style={{
-                    color: 'var(--slate-600)',
-                    fontSize: '0.875rem',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {field.help}
-                </div>
+              <div key={field.label}>
+                <dt>{field.label}</dt>
+                <dd>{field.help}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         )}
-
         {section.steps && (
-          <ol
-            style={{
-              margin: 0,
-              paddingLeft: 22,
-              color: 'var(--ink)',
-              fontSize: '0.9375rem',
-              lineHeight: 1.6,
-            }}
-          >
+          <ol className="pb-doc-steps">
             {section.steps.map((step) => (
-              <li key={step} style={{ margin: '6px 0' }}>
-                {step}
-              </li>
+              <li key={step}>{step}</li>
             ))}
           </ol>
         )}
-
-        {section.prompt && (
-          <pre
-            style={{
-              marginTop: 16,
-              background: 'var(--ink)',
-              color: '#E9EEF6',
-              borderRadius: 10,
-              padding: '14px 16px',
-              fontFamily:
-                'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-              fontSize: '0.7813rem',
-              lineHeight: 1.5,
-              whiteSpace: 'pre-wrap',
-              overflowX: 'auto',
-            }}
-          >
-            <span
-              style={{
-                display: 'block',
-                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-                fontSize: '0.625rem',
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-soft)',
-                marginBottom: 8,
-              }}
-            >
-              Prompt
-            </span>
-            {section.prompt}
-          </pre>
-        )}
+        {section.prompt && <CopyPrompt label="Prompt" prompt={section.prompt} />}
       </div>
-    </article>
+    </section>
   );
 }

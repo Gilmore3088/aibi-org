@@ -80,6 +80,34 @@ test.describe('marketing smoke', () => {
     await expect(page).toHaveURL(/\/for-institutions/);
   });
 
+  test('briefings feed renders with at least one card', async ({ page }) => {
+    await page.goto('/briefings');
+    await expect(page.locator('.ax-card, .ax-lead-title').first()).toBeVisible();
+  });
+
+  test('a briefing article renders body and sources', async ({ page }) => {
+    await page.goto('/briefings/fs-ai-rmf-what-examiners-read');
+    const bodyText = await page.locator('body').innerText();
+    expect(bodyText).toMatch(/FS AI RMF/);
+    // Case-insensitive: the sources heading renders uppercase via CSS
+    // text-transform, and innerText returns rendered text.
+    expect(bodyText).toMatch(/Sources/i);
+  });
+
+  test('legacy /resources/archive redirects to /briefings', async ({ page }) => {
+    const res = await page.goto('/resources/archive');
+    expect(res?.url()).toMatch(/\/briefings$/);
+  });
+
+  test('briefings RSS feed is valid-shaped XML', async ({ request }) => {
+    const res = await request.get('/briefings/feed.xml');
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('application/rss+xml');
+    const body = await res.text();
+    expect(body).toContain('<rss version="2.0"');
+    expect(body).toContain('<item>');
+  });
+
   test('legacy /services redirects to /for-institutions', async ({ page }) => {
     const res = await page.goto('/services');
     expect(res?.url()).toMatch(/\/for-institutions/);

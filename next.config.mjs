@@ -60,6 +60,18 @@ const nextConfig = {
     '/api/courses/artifacts/skill-templates/[name]': [
       './public/artifacts/skill-templates/**',
     ],
+    // The briefings registry discovers posts with fs.readdir at request time
+    // (the app renders force-dynamic), so the MDX directory must ship inside
+    // each function bundle that lists or loads briefings — including the
+    // sitemap, which appends briefing URLs from the same registry.
+    '/briefings': ['./content/briefings/**'],
+    '/briefings/[slug]': ['./content/briefings/**'],
+    // Link-preview cards read static font instances from disk.
+    '/briefings/[slug]/opengraph-image': ['./content/briefings/**', './assets/brand-fonts/**'],
+    '/playbooks/[role]/opengraph-image': ['./assets/brand-fonts/**'],
+    '/opengraph-image': ['./assets/brand-fonts/**'],
+    '/briefings/feed.xml': ['./content/briefings/**'],
+    '/sitemap.xml': ['./content/briefings/**'],
     // Free resource downloads (playbooks, desk cards, templates, starter-kit
     // ZIPs) are served straight from the repo-committed files under
     // public/downloads — the source of truth that ships with every deploy.
@@ -143,6 +155,8 @@ const nextConfig = {
       // and indexed article URLs resolve to the canonical /resources location.
       { source: '/research', destination: '/resources', permanent: true },
       { source: '/research/:path*', destination: '/resources/:path*', permanent: true },
+      // 2026-10-01: the orphaned essay archive became the Briefings feed.
+      { source: '/resources/archive', destination: '/briefings', permanent: true },
       { source: '/toolbox', destination: '/dashboard/toolbox', permanent: true },
       { source: '/toolbox/:path*', destination: '/dashboard/toolbox/:path*', permanent: true },
       // 2026-06-25: the public /playground sandbox was consolidated into the

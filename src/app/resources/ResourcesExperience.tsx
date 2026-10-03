@@ -9,7 +9,9 @@
 // Now: a clean hero, one inline filter (role chips + search), and a short list
 // of grouped resource grids that each stack to a single column on mobile.
 
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import coverSlugs from './covers.generated.json';
 import {
   Button,
   CtaBand,
@@ -42,6 +44,41 @@ import {
   starterKits,
   templates,
 } from './data';
+
+// ─── Covers ─────────────────────────────────────────────────────────────
+// Page 1 of the real PDF (scripts/render-resource-covers.sh). Cards whose
+// file has no rendered cover keep their icon.
+
+const COVER_SLUGS: ReadonlySet<string> = new Set(coverSlugs);
+
+function coversFor(candidates: readonly (string | null | undefined)[], max = 1): string[] {
+  const found: string[] = [];
+  for (const c of candidates) {
+    if (c && COVER_SLUGS.has(c) && !found.includes(c)) found.push(c);
+    if (found.length === max) break;
+  }
+  return found;
+}
+
+function Cover({ slugs, title }: { readonly slugs: readonly string[]; readonly title: string }) {
+  if (slugs.length === 0) return null;
+  return (
+    <div className={`rx-cover${slugs.length > 1 ? ' is-stack' : ''}`} aria-hidden="true">
+      {slugs.map((slug, i) => (
+        <Image
+          key={slug}
+          src={`/downloads/covers/library/${slug}.jpg`}
+          alt=""
+          width={480}
+          height={621}
+          sizes="240px"
+          style={{ ['--i' as string]: i }}
+          title={i === 0 ? title : undefined}
+        />
+      ))}
+    </div>
+  );
+}
 
 // ─── Filter taxonomy ─────────────────────────────────────────────────────
 const ROLE_OPTIONS = [
@@ -239,7 +276,7 @@ export function ResourcesExperience() {
   const nothingMatches = visibleResourceCount === 0;
 
   return (
-    <div className="mockup-scope rx-resources-page" style={{ background: 'var(--cream)', color: 'var(--ink)' }}>
+    <div className="mockup-scope ax-page rx-resources-page">
       <ResourceSkipLinks />
       <SiteHeader activePath="/resources" />
 
@@ -250,13 +287,13 @@ export function ResourcesExperience() {
         </div>
         <div className="mk-container mk-hero-inner">
           <div>
-            <p className="mk-k rx-hero-kicker">AI Banking Resources</p>
+            <p className="ax-cmd">resources --free --editable</p>
             <h1>Find the right AI artifact for the job in front of you.</h1>
             <p className="mk-lede">
               Preview practical bank AI resources first. Download the editable versions when
               you are ready to put them to work.
             </p>
-            <div className="mk-ctas">
+            <div className="ax-actions">
               <Button variant="gold" size="lg" href="#resources-main">
                 Browse resources <ArrowRight size={16} />
               </Button>
@@ -367,6 +404,19 @@ export function ResourcesExperience() {
             </div>
           </Section>
         )}
+
+        {/* Briefings cross-link — the editorial feed lives at /briefings;
+            this library stays downloads-and-tools only. */}
+        <Section variant="std" surface="cream" id="briefings-link">
+          <SectionHead
+            kicker="Research &amp; analysis"
+            heading="Looking for the articles?"
+            lede="Daily pulse briefings and weekly deep dives on AI in banking now live in one dated feed."
+          />
+          <Button variant="ink" href="/briefings">
+            Browse the Briefings
+          </Button>
+        </Section>
 
         {/* Governance review paths — for IT / risk / compliance who need the
             boundary before downloading. Kept compact, at the end. */}
@@ -510,6 +560,7 @@ function StarterKitCard({ kit }: { kit: StarterKit }) {
   const Icon = kit.icon;
   return (
     <article className="rx-pb-card">
+      <Cover slugs={coversFor(kit.items.map((item) => slugFromApiDownloadHref(item.href)), 3)} title={kit.title} />
       <div className="rx-kit-card-head">
         <Icon size={28} className="rx-kit-icon" />
         <span className="rx-pill">Kit</span>
@@ -562,6 +613,7 @@ function RolePlaybookCard({ playbook }: { playbook: RolePlaybook }) {
   const Icon = playbook.icon;
   return (
     <article className="rx-pb-card">
+      <Cover slugs={coversFor([slugFromApiDownloadHref(playbook.pdf), `${playbook.slug}-playbook`])} title={playbook.title} />
       <div className="rx-kit-card-head">
         <Icon size={28} className="rx-kit-icon" />
         <span className="rx-pill rx-pill-outline">Playbook</span>
@@ -611,6 +663,7 @@ function TemplateCard({ template }: { template: TemplateData }) {
   const Icon = template.icon;
   return (
     <article className="rx-pb-card">
+      <Cover slugs={coversFor([`template-${template.slug}`])} title={template.title} />
       <Icon size={28} className="rx-kit-icon" />
       <p className="rx-template-format">{template.format}</p>
       <h3 className="rx-kit-title">{template.title}</h3>
@@ -648,6 +701,7 @@ function DeskCard({ card }: { card: DeskCardData }) {
   const Icon = card.icon;
   return (
     <article className="rx-pb-card">
+      <Cover slugs={coversFor([slugFromApiDownloadHref(card.href), card.slug])} title={card.title} />
       <Icon size={28} className="rx-kit-icon" />
       <p className="rx-template-format">{card.type}</p>
       <h3 className="rx-kit-title">{card.title}</h3>
@@ -701,6 +755,7 @@ function PaidPreviewCard({ preview }: { preview: PaidPreviewData }) {
   const Icon = preview.icon;
   return (
     <article className="rx-pb-card">
+      <Cover slugs={coversFor([slugFromApiDownloadHref(preview.href), preview.slug])} title={preview.title} />
       <Icon size={28} className="rx-kit-icon" />
       <h3 className="rx-kit-title">{preview.title}</h3>
       <p className="rx-kit-desc">{preview.desc}</p>

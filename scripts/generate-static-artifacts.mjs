@@ -7,6 +7,11 @@
  * Typography: Cormorant (headings), DM Sans (body), DM Mono (numbers)
  * Brand system: Terracotta #b5512e, Parchment #f5f0e6, Ink #1e1a14
  *
+ * SUPERSEDED: these two files are now copies of the canonical PDFs in
+ * public/downloads/ (rendered from public/downloads/source/*.html by
+ * generate-source-html-pdfs.mjs). This script's content predates SR 26-2 and
+ * the current brand; do not re-run it without updating both.
+ *
  * Run: node scripts/generate-static-artifacts.mjs
  *
  * Fonts: Full .ttf files in assets/pdf-fonts/ registered via Font.register().

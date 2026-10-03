@@ -1,9 +1,12 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import mdx from '@mdx-js/rollup';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  // mdx() lets tests import .mdx briefings (the briefings registry
+  // dynamically imports them); enforce: false so react() still handles JSX.
+  plugins: [mdx(), react()],
   test: {
     environment: 'jsdom',
     globals: true,

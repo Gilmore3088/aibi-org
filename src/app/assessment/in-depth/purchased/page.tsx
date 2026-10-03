@@ -8,6 +8,8 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/mockup';
+import { AxHero } from '@/components/ax';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
@@ -97,50 +99,15 @@ export default async function InDepthPurchasedPage({
     : `/auth/login?next=/dashboard/toolbox${emailQs}`;
 
   return (
-    <main
-      className="px-6 py-14 md:py-20"
-      style={{
-        fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-        background: 'var(--cream)',
-        minHeight: '100vh',
-      }}
-    >
-      <div className="mx-auto max-w-3xl">
-        <p
-          className="uppercase mb-3"
-          style={{
-            fontSize: '0.6875rem',
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            color: 'var(--gold-deep)',
-          }}
-        >
-          Purchase confirmed
-        </p>
-        <h1
-          className="mb-5"
-          style={{
-            fontSize: 'clamp(2.25rem, 4.5vw, 3.25rem)',
-            fontWeight: 700,
-            lineHeight: 1.08,
-            letterSpacing: '-0.02em',
-            color: 'var(--ink)',
-          }}
-        >
-          Your In-Depth Assessment is ready.
-        </h1>
-        <p
-          className="mb-8 max-w-2xl"
-          style={{
-            fontSize: '1.0625rem',
-            lineHeight: 1.6,
-            color: 'var(--slate-600)',
-          }}
-        >
-          Thanks for your purchase. A receipt is on its way from Stripe, and
-          a welcome email with the assessment link will follow within minutes.
-        </p>
-
+    <div className="mockup-scope ax-page">
+      <SiteHeader activePath="/assessment" />
+      <AxHero
+        cmd="checkout --complete --product in-depth"
+        title="Your In-Depth Assessment is ready."
+        lede="Thanks for your purchase. A receipt is on its way from Stripe, and a welcome email with the assessment link will follow within minutes."
+      />
+    <main className="ax-section ax-light purchased-body">
+      <div className="mx-auto max-w-3xl px-6">
         <section
           className="mb-10"
           style={{
@@ -423,5 +390,6 @@ export default async function InDepthPurchasedPage({
         </section>
       </div>
     </main>
+    </div>
   );
 }
