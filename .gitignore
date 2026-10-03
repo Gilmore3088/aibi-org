@@ -159,3 +159,6 @@ docs/reviews/lighthouse-*/
 
 # persona-wave run output (screenshots, full timelines)
 /e2e/persona-wave/out/
+
+# Kit/PDF build scratch
+.tmp/
