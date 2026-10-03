@@ -195,6 +195,32 @@
         "Reg B",
         "Regulation B"
       ]
+    },
+    {
+      "id": "cfpb-guidance-withdrawal-2025-bnpl",
+      "claim": "On May 12, 2025 the CFPB withdrew 67 guidance documents, including the May 2024 BNPL interpretive rule (89 FR 47068). The notice says the withdrawal is not necessarily final.",
+      "source": "CFPB, Interpretive Rules, Policy Statements, and Advisory Opinions; Withdrawal (Federal Register document 2025-08286)",
+      "url": "https://www.federalregister.gov/documents/2025/05/12/2025-08286/interpretive-rules-policy-statements-and-advisory-opinions-withdrawal",
+      "asOf": "2025-05-12",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "2025-08286",
+        "89 FR 47068"
+      ]
+    },
+    {
+      "id": "cfpb-overdraft-rule-cra-2025",
+      "claim": "Congress overturned the CFPB's 2024 overdraft rule for very large financial institutions in 2025 under the Congressional Review Act (S.J.Res. 18, Public Law 119-10); the rule never took effect.",
+      "source": "Congress.gov, S.J.Res.18 (119th Congress) and CRS Insight IN12513",
+      "url": "https://www.congress.gov/bill/119th-congress/senate-joint-resolution/18",
+      "asOf": "2025-05-09",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "Public Law 119-10",
+        "S.J.Res. 18"
+      ]
     }
   ]
 }
