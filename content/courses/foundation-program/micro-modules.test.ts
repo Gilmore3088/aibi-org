@@ -66,6 +66,13 @@ describe('Foundation micro-module ladder', () => {
       expect(build.reviewBy > today, `module ${mod.number} build review is overdue (${build.reviewBy})`).toBe(true);
       expect(build.prompt.length, `module ${mod.number} prompt`).toBeGreaterThan(80);
       expect(build.doneWhen, `module ${mod.number} doneWhen`).toMatch(/\S/);
+      // Shown as three short steps: keep every learner-facing line short.
+      expect(build.highlights.length, `module ${mod.number} highlights`).toBeLessThanOrEqual(4);
+      expect(build.tests.length, `module ${mod.number} tests`).toBeGreaterThanOrEqual(1);
+      expect(build.toolPaths.map((p) => p.tool)).toEqual(['ChatGPT', 'Claude', 'Gemini', 'Copilot']);
+      for (const line of [build.youWillHave, build.beforeYouStart, build.check, build.doneWhen]) {
+        expect(line.split(/\s+/).length, `module ${mod.number}: "${line}"`).toBeLessThanOrEqual(22);
+      }
     }
   });
 

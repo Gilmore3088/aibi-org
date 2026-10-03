@@ -54,7 +54,7 @@ export default function FoundationPreviewPage() {
       <AxHero
         cmd={`courses/foundation --preview module-01 of ${totalModules}`}
         title={mod?.title ?? 'What AI Can and Cannot Do'}
-        lede={expandedModule?.goal}
+        lede={build?.youWillHave ?? expandedModule?.goal}
         actions={
           <Button variant="gold" size="lg" href="#pv-build">
             Build it now, free <ArrowGlyph />

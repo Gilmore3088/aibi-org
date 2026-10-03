@@ -7,18 +7,25 @@ export interface FoundationReferenceSection {
 }
 
 /**
- * A build: the working tool a module leaves the learner holding. The job and
- * the prompt are durable; anything that names a tool's menus or features goes
- * in `toolNote` and is re-checked by `reviewBy` (enforced in tests).
+ * A build: the working tool a module leaves the learner holding. Shown as
+ * three short steps (copy, save, test), so every field is short. The job and
+ * the prompt are durable; `toolPaths` name real menus and are re-checked by
+ * `reviewBy` (enforced in tests).
  */
-export interface FoundationBuildStep {
-  readonly title: string;
-  readonly body: string;
+export type BuildTool = 'ChatGPT' | 'Claude' | 'Gemini' | 'Copilot';
+
+export interface FoundationBuildToolPath {
+  readonly tool: BuildTool;
+  readonly where: string;
 }
 
 export interface FoundationBuildTest {
+  /** Short button label. */
+  readonly label: string;
+  /** What the learner sends. */
   readonly prompt: string;
-  readonly expect: string;
+  /** What a working build replies, shown as an example. */
+  readonly reply: string;
 }
 
 export interface FoundationBuild {
@@ -28,14 +35,15 @@ export interface FoundationBuild {
   readonly promptLabel: string;
   /** The exact text the learner copies. */
   readonly prompt: string;
-  readonly steps: readonly FoundationBuildStep[];
-  /** Optional test prompts that prove the build works. */
-  readonly tests?: readonly FoundationBuildTest[];
+  /** Three or four short phrases: what the prompt makes the tool do. */
+  readonly highlights: readonly string[];
+  readonly toolPaths: readonly FoundationBuildToolPath[];
+  readonly tests: readonly FoundationBuildTest[];
+  /** One line: what to check in the real result. */
+  readonly check: string;
   readonly doneWhen: string;
-  /** What the build does not do. Shown plainly, never as fine print. */
+  /** What the build does not do, in one line. */
   readonly limits?: string;
-  /** Where each tool keeps the build. Tool-specific, so it is dated. */
-  readonly toolNote: string;
   readonly verifiedOn: string;
   readonly reviewBy: string;
 }
@@ -67,8 +75,12 @@ export interface FoundationMicroModule {
   readonly build?: FoundationBuild;
 }
 
-const SAVE_IT_NOTE =
-  'ChatGPT and Claude keep reusable instructions in a Project. Gemini keeps them in a Gem. In Microsoft 365 Copilot, save it as a prompt or keep it in a note you can paste from. If your tool has none of these, a note on your desktop works.';
+const SAVE_AS_PROJECT: readonly FoundationBuildToolPath[] = [
+  { tool: 'ChatGPT', where: 'Create a project and paste it into the project instructions.' },
+  { tool: 'Claude', where: 'Create a project and paste it into the project instructions.' },
+  { tool: 'Gemini', where: 'Create a Gem and paste it into its instructions.' },
+  { tool: 'Copilot', where: 'Keep it in a note and paste it when you need it.' },
+];
 const BUILD_VERIFIED_ON = '2026-10-03';
 const BUILD_REVIEW_BY = '2027-01-03';
 
@@ -155,8 +167,8 @@ export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
       'Run one of your own low-risk tasks through your guarded tool and read the draft line at the end.',
     ),
     build: {
-      youWillHave: 'Your AI tool, set to warn you about customer data, mark every answer as a draft, and leave decisions to you.',
-      beforeYouStart: 'Open the AI tool your institution approves. If you are not sure which one that is, ask your manager first.',
+      youWillHave: 'Your AI tool, set to flag customer data, mark every answer as a draft, and leave decisions to you.',
+      beforeYouStart: 'Open the AI tool your institution approves.',
       promptLabel: 'House rules',
       prompt: `Follow these rules in every conversation with me.
 
@@ -164,19 +176,33 @@ export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
 2. Treat what you write as a draft for me to check. End each answer with: "Draft. Check facts before use."
 3. If I ask you to decide something about a customer, a loan, a complaint, or a compliance matter, do not decide. Tell me what a person would need to know to decide it.
 4. If you are not sure something is true, say so. Do not guess.`,
-      steps: [
-        { title: 'Copy the house rules', body: 'Use the copy button. You will paste them once and they apply from then on.' },
-        { title: 'Save them where your tool keeps standing instructions', body: 'Look in settings for custom instructions, personal preferences, or personalization. If your tool has none, keep the rules in a note and paste them at the start of each new chat.' },
-        { title: 'Test them', body: 'Start a new chat and run the three test prompts below, one at a time. The names and numbers in them are made up.' },
+      highlights: ['Flags customer data', 'Marks every answer a draft', 'Leaves decisions to you', 'Says when it is unsure'],
+      toolPaths: [
+        { tool: 'ChatGPT', where: 'Settings → Personalization → Custom instructions' },
+        { tool: 'Claude', where: 'Settings → Profile → personal preferences' },
+        { tool: 'Gemini', where: 'Settings → Saved info' },
+        { tool: 'Copilot', where: 'Paste the rules at the start of each chat.' },
       ],
       tests: [
-        { prompt: 'Rewrite for the branch team: the lobby closes at 3 p.m. Friday for carpet cleaning.', expect: 'An answer that ends with "Draft. Check facts before use."' },
-        { prompt: 'Draft a reply to Maria Delgado about the overdraft fee on account 4417-2290.', expect: 'No reply. The tool lists the name and the account number and asks you to remove them.' },
-        { prompt: 'Should we approve this loan? The applicant\'s debt-to-income ratio is 48 percent.', expect: 'No yes or no. A list of what a lender would need to decide.' },
+        {
+          label: 'A safe request',
+          prompt: 'Rewrite for the branch team: the lobby closes at 3 p.m. Friday for carpet cleaning.',
+          reply: 'Heads up: the lobby closes at 3 p.m. this Friday for carpet cleaning. Please plan appointments around it.\n\nDraft. Check facts before use.',
+        },
+        {
+          label: 'Customer data',
+          prompt: 'Draft a reply to Maria Delgado about the overdraft fee on account 4417-2290.',
+          reply: 'I can\'t answer yet. Your message includes a customer name (Maria Delgado) and an account number (4417-2290). Replace them with [CUSTOMER] and [ACCOUNT], then send it again.',
+        },
+        {
+          label: 'A decision',
+          prompt: 'Should we approve this loan? The applicant\'s debt-to-income ratio is 48 percent.',
+          reply: 'I won\'t make that decision. A lender would need the full application, your credit policy, verified income, and the applicant\'s credit history.\n\nDraft. Check facts before use.',
+        },
       ],
-      doneWhen: 'All three tests behave as described. If the second one gets a reply, the rules are not saved. Check the setting and test again.',
-      limits: 'House rules catch a mistake after you press send. They do not stop information reaching the tool. Your institution\'s data rules still come first.',
-      toolNote: 'ChatGPT: Settings, Personalization, Custom instructions. Claude: Settings, then the personal preferences box. Gemini: Saved info or a Gem. Microsoft 365 Copilot: check settings for custom instructions, or paste the rules at the start of each chat.',
+      check: 'Send all three in a new chat. Your tool should answer each one the way the example does.',
+      doneWhen: 'Your tool stops on the customer-data test.',
+      limits: 'It catches a mistake after you press send. Your institution\'s data rules still come first.',
       verifiedOn: BUILD_VERIFIED_ON,
       reviewBy: BUILD_REVIEW_BY,
     },
@@ -212,8 +238,8 @@ export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
       'Take one messy note, replace sensitive details with placeholders, and rewrite it under 120 words.',
     ),
     build: {
-      youWillHave: 'A saved prompt that turns any messy internal note into a short, clear message with the action first.',
-      beforeYouStart: 'Find an internal email or note you need to send today. Nothing about customers or members.',
+      youWillHave: 'A saved prompt that turns any messy internal note into a short message with the action first.',
+      beforeYouStart: 'Find an internal note you need to send today. Nothing about customers.',
       promptLabel: 'Message rewriter',
       prompt: `Rewrite the note below as a short internal message for [audience, e.g. branch staff].
 
@@ -221,14 +247,17 @@ Put the action in the first sentence. Say who does it and by when, if the note s
 
 Note:
 [paste the note]`,
-      steps: [
-        { title: 'Copy the rewriter', body: 'Replace [audience] with who will read it. Keep the rest as it is.' },
-        { title: 'Save it under a name you will find', body: 'Call it "Message rewriter" so it is one click away next time.' },
-        { title: 'Run it on your note', body: 'Paste your note where it says [paste the note] and run it.' },
-        { title: 'Check it against your original', body: 'Every fact should match. Nothing should be new. Fill in any [OWNER?] or [DATE?] yourself.' },
+      highlights: ['Action first', 'Keeps your facts', 'Flags a missing owner or date', 'Under 120 words'],
+      toolPaths: SAVE_AS_PROJECT,
+      tests: [
+        {
+          label: 'A messy note',
+          prompt: 'hey all so starting monday vault counts need two people, the old count form is gone so use the new one in the shared drive, questions to Dana',
+          reply: 'Starting Monday, do every vault count with two people and use the new count form in the shared drive. The old form is retired. Questions go to Dana.\n\nOwner: [OWNER?]',
+        },
       ],
-      doneWhen: 'You have sent one real message written with your rewriter.',
-      toolNote: SAVE_IT_NOTE,
+      check: 'Every fact matches your note and nothing is new. Fill in any [OWNER?] or [DATE?] yourself.',
+      doneWhen: 'You send one real message written with it.',
       verifiedOn: BUILD_VERIFIED_ON,
       reviewBy: BUILD_REVIEW_BY,
     },
@@ -265,8 +294,8 @@ Note:
       'Rewrite one vague request into a CORE prompt that names the context, the objective, the only source to use, and the expected format.',
     ),
     build: {
-      youWillHave: 'An assistant that turns your meeting notes into a list of who does what by when, with the line each item came from.',
-      beforeYouStart: 'Open the notes from your last internal meeting. Staff names are fine. Replace any customer or member name with [CUSTOMER].',
+      youWillHave: 'An assistant that turns meeting notes into who does what by when, with the line each item came from.',
+      beforeYouStart: 'Open the notes from your last internal meeting. Swap any customer name for [CUSTOMER].',
       promptLabel: 'Meeting actions assistant',
       prompt: `You turn internal meeting notes into an action list for a community bank team.
 
@@ -277,14 +306,17 @@ Expectations: a table with the columns Action, Owner, Due, and Source line (the 
 
 Notes:
 [paste the notes]`,
-      steps: [
-        { title: 'Read the four labels', body: 'Context says what the notes are. Objective says what you want. Resources says what to use and nothing else. Expectations says what the answer looks like. That is the CORE structure, and you will use it in every build after this one.' },
-        { title: 'Copy the assistant and save it', body: 'Replace [team name], then save it under the name "Meeting actions".' },
-        { title: 'Run it on your notes', body: 'Paste your notes where it says [paste the notes] and run it.' },
-        { title: 'Check the source lines', body: 'Every row needs a source line you can find in your notes. If a row has none, the AI made it up. Delete the row.' },
+      highlights: ['Context', 'Objective', 'Resources', 'Expectations'],
+      toolPaths: SAVE_AS_PROJECT,
+      tests: [
+        {
+          label: 'Sample notes',
+          prompt: 'Ops huddle. Priya to swap the ATM signs by the 10th. New hire laptops still not ordered. Marcus will send the holiday schedule Friday.',
+          reply: 'Action | Owner | Due | Source line\nSwap ATM signs | Priya | the 10th | "Priya to swap the ATM signs by the 10th"\nSend holiday schedule | Marcus | Friday | "Marcus will send the holiday schedule Friday"\n\nNeeds an owner: order new-hire laptops.',
+        },
       ],
-      doneWhen: 'You have sent the action list from a real meeting to the people on it.',
-      toolNote: SAVE_IT_NOTE,
+      check: 'Every row has a source line you can find in your notes. Delete any row that does not.',
+      doneWhen: 'You send the action list from a real meeting to the people on it.',
       verifiedOn: BUILD_VERIFIED_ON,
       reviewBy: BUILD_REVIEW_BY,
     },

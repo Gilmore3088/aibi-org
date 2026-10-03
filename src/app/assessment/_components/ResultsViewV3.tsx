@@ -246,16 +246,10 @@ export function ResultsViewV3({
           <div>
             <p className="rv-k rv-gold">12-question snapshot summary</p>
             <h2 className="rv-h2">Your 12 answers, grouped by topic.</h2>
-            <p className="rv-body">
-              The free snapshot uses twelve plain-language questions to estimate
-              where to start. The In-Depth Assessment is a separate
-              eight-dimension diagnostic for a fuller action plan.
-            </p>
             {signals.filter((s) => bandForSignal(s) === bandForSignal(signals[0])).length >= 8 && (
               <p data-testid="uniform-band-note" className="rv-body rv-muted">
-                Most of your topics landed at the same stage — that&rsquo;s normal
-                for a first pass, not a data problem. The one to act on is the top
-                gap above; the rest will move together as the basics go in.
+                Most topics landed at the same stage. That&rsquo;s normal on a first pass:
+                act on the top gap and the rest move with it.
               </p>
             )}
             <p className="rv-legend" aria-hidden="true">
@@ -396,7 +390,7 @@ export function ResultsViewV3({
         <section className="rv-section">
           <p className="rv-k rv-gold">30 / 60 / 90 plan</p>
           <h2 className="rv-h2">
-            Start with the first 30 days. Unlock the deployment plan when you need the detail.
+            Your first 30 days.
           </h2>
           <div className="rv-cols-3 rv-phases">
             <div className="rv-phase is-open">
@@ -460,12 +454,7 @@ export function ResultsViewV3({
             <p className="rv-k rv-gold">A separate diagnostic</p>
             <h2 className="rv-h2">The 8-dimension In-Depth Diagnostic.</h2>
             <p className="rv-body">
-              The free snapshot you just took is twelve plain-language signals.
-              The In-Depth is a separate diagnostic — forty-eight questions
-              across eight readiness dimensions, per-dimension root causes, a
-              role-specific 30/60/90 playbook, sample prompts, an evidence
-              checklist your reviewer can read, and a reviewer-ready report
-              you can forward.
+              Forty-eight questions, eight scored dimensions, and a 90-day plan for your role.
             </p>
             <div className="rv-actions">
               <a href="/assessment/in-depth" className="rv-btn rv-btn-gold">
@@ -490,10 +479,6 @@ export function ResultsViewV3({
                 </li>
               ))}
             </ol>
-            <p className="rv-muted">
-              Plus role-specific roadmap, sample prompts, evidence checklist,
-              and a reviewer-ready PDF.
-            </p>
           </div>
         </section>
 

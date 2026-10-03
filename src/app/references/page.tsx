@@ -17,6 +17,7 @@ const REVIEW_DATE = 'June 25, 2026';
 
 const listStyle: CSSProperties = {
   display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
   gap: 12,
   margin: 0,
   padding: 0,
@@ -35,9 +36,10 @@ const cardStyle: CSSProperties = {
 const shortStyle: CSSProperties = {
   display: 'block',
   color: 'var(--ink)',
-  fontSize: '0.9375rem',
-  fontWeight: 800,
-  lineHeight: 1.3,
+  fontFamily: 'var(--font-serif)',
+  fontSize: '1.25rem',
+  fontWeight: 400,
+  lineHeight: 1.2,
 };
 
 const longStyle: CSSProperties = {
