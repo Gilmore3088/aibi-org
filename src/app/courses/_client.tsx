@@ -27,7 +27,7 @@ const DEFAULT_FACTS: CoursesOverviewFacts = {
   samplePacketSlots: [
     { moduleNumber: 1, label: "AI House Rules" },
     { moduleNumber: 3, label: "Meeting Actions Assistant" },
-    { moduleNumber: 13, label: "Skill Template" },
+    { moduleNumber: 13, label: "Procedure Simplifier Skill" },
     { moduleNumber: 18, label: "Foundation Packet Summary" },
   ],
 };
