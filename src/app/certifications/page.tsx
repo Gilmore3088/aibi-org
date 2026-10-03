@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
+import { AxWindow } from '@/components/ax';
 import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
 export const metadata: Metadata = {
@@ -24,11 +25,51 @@ export default function CertificationsPage() {
         { label: 'Enroll in Foundation', href: '/courses/foundation', variant: 'gold' },
         { label: 'See the curriculum', href: '/courses', variant: 'ghost-dark' },
       ]}
+      heroAside={
+        <AxWindow title="certificate.pdf" meta="example">
+          <div className="cert-sample">
+            <p className="ax-k ax-gold">The AI Banking Institute</p>
+            <p className="cert-sample-title">AiBI-Foundation</p>
+            <p className="cert-sample-to">Awarded to <span>Your name</span></p>
+            <dl className="cert-sample-meta">
+              <div>
+                <dt>Seat time</dt>
+                <dd>~{hoursLabel} hours</dd>
+              </div>
+              <div>
+                <dt>Modules</dt>
+                <dd>{trainingRecord.moduleCount}</dd>
+              </div>
+              <div>
+                <dt>Certificate ID</dt>
+                <dd>AIBIP-2026-ABC234</dd>
+              </div>
+            </dl>
+            <p className="cert-sample-verify">Verify at /verify/AIBIP-2026-ABC234</p>
+          </div>
+        </AxWindow>
+      }
       sections={[
         {
           kicker: 'How it works',
           heading: <>Earned by doing the work.</>,
           lede: <>Submit your Workbench Pack at the end of the course. Once all modules are complete and the packet is submitted, the certificate issues with a verification link.</>,
+          body: (
+            <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 3 }} aria-label="How the credential is earned">
+              {[
+                { title: 'Complete', body: `All ${trainingRecord.moduleCount} self-paced modules.` },
+                { title: 'Submit', body: 'The final packet: prompt, raw output, edited output, safety annotation.' },
+                { title: 'Verify', body: 'The certificate issues with a public verification URL.' },
+              ].map((step, index) => (
+                <li key={step.title} className={index === 0 ? 'is-first' : undefined}>
+                  <span className="ax-pipeline-node" aria-hidden="true" />
+                  <span className="ax-k">{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          ),
         },
         {
           kicker: 'What you get',

@@ -1,12 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import PlaybookPage from './page';
 
 describe('/playbooks/[role]', () => {
   it('shows only live assets and removes coming-soon traps', async () => {
     render(await PlaybookPage({ params: Promise.resolve({ role: 'compliance' }) }));
-
-    fireEvent.click(screen.getByRole('tab', { name: 'Assets' }));
 
     expect(screen.queryByText(/Coming soon/i)).toBeNull();
     expect(screen.queryByText(/Model Output Risk Labels/i)).toBeNull();
@@ -21,10 +19,8 @@ describe('/playbooks/[role]', () => {
     ).toBeTruthy();
   });
 
-  it('links the BSA/AML SAR narrative scaffold from the assets tab', async () => {
+  it('links the BSA/AML SAR narrative scaffold from the templates section', async () => {
     render(await PlaybookPage({ params: Promise.resolve({ role: 'bsa-aml' }) }));
-
-    fireEvent.click(screen.getByRole('tab', { name: 'Assets' }));
 
     expect(
       screen

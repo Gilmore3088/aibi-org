@@ -16,26 +16,24 @@ export const metadata: Metadata = {
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="mockup-scope" style={{ minHeight: '100vh', background: 'var(--cream)' }}>
+      {/* Navy band with the light wordmark, cream page below: the site's
+          alternation carried onto the chromeless auth surfaces. */}
+      <div className="auth-band">
+        <Link href="/" aria-label="The AI Banking Institute home" className="auth-band-mark">
+          <Wordmark variant="full" tone="light" size={22} />
+        </Link>
+      </div>
       <main
         style={{
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 72px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           padding: '48px 24px',
           gap: 28,
         }}
       >
-        {/* Brand v1 (2026-05-28) — bracketed [Ai] mark. */}
-        <Link
-          href="/"
-          aria-label="The AI Banking Institute home"
-          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
-        >
-          <Wordmark variant="full" tone="dark" size={22} />
-        </Link>
-
         {children}
       </main>
     </div>

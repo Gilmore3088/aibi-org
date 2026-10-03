@@ -343,6 +343,7 @@ export function CourseLaunchMap({ currentModule, completedModules }: CourseLaunc
           </div>
 
           <div
+            role="group"
             aria-label="Upcoming packet artifacts"
             style={{
               display: 'grid',

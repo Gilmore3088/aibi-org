@@ -16,6 +16,8 @@ import Link from 'next/link';
 import { SiteHeader } from './SiteHeader';
 import { ArticleTOC } from './ArticleTOC';
 import { StickyMobileCta } from './StickyMobileCta';
+import { ReadingProgress } from './ReadingProgress';
+import { Button, ArrowGlyph } from './Button';
 
 export interface ArticleShellProps {
   readonly children: ReactNode;
@@ -32,6 +34,8 @@ export interface ArticleShellProps {
   readonly backLabel?: string;
   /** Which nav item reads as active in the SiteHeader. */
   readonly activePath?: string;
+  /** Render the closing "next step" band. Off for articles that carry their own CTA. */
+  readonly closing?: boolean;
 }
 
 export function ArticleShell({
@@ -43,10 +47,12 @@ export function ArticleShell({
   backHref = '/resources',
   backLabel = '← Research',
   activePath = '/resources',
+  closing = false,
 }: ArticleShellProps) {
   const hasChips = readMinutes != null || lastUpdated != null || byline != null;
   return (
-    <div className="mockup-scope" style={{ background: 'var(--cream)' }}>
+    <div className="mockup-scope ax-article">
+      <ReadingProgress />
       <SiteHeader activePath={activePath} />
       <div className="mk-article-head">
         <Link href={backHref} className="mk-article-back">
@@ -70,6 +76,18 @@ export function ArticleShell({
       </div>
       {showTOC && <ArticleTOC />}
       {children}
+      {closing && (
+        <section className="ax-article-close">
+          <div className="mk-container">
+            <p className="ax-k">Next step</p>
+            <h2>Where does your institution stand?</h2>
+            <p>Twelve questions, three minutes. A score, your top gap, and a prompt you can use on Monday.</p>
+            <Button variant="gold" size="lg" href="/assessment/take">
+              Take the free assessment <ArrowGlyph />
+            </Button>
+          </div>
+        </section>
+      )}
       <StickyMobileCta
         label="Take the free assessment"
         href="/assessment/take"
