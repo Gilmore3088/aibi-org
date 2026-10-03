@@ -70,21 +70,21 @@ Treat as marketing material. Do not pass to AML team without:
     artifactType: 'Prompt template',
     body: (
       <pre className="gallery-pre">
-{`[ROLE] You are an experienced credit analyst at a community bank.
-[INPUT] Loan application denial code: {DENIAL_CODE}
-        Borrower file summary (sanitized): {SUMMARY}
-        Institution adverse-action standard: {INTERNAL_STANDARD}
-[TASK]
-  1. Write a 120-word adverse-action notice in plain English.
-  2. Cite the FCRA-required disclosures inline.
-  3. Use neutral, non-blaming language.
-[CONSTRAINTS]
+{`[CONTEXT] You are an experienced credit analyst at a community bank.
+  The notice goes to a declined applicant.
+[OBJECTIVE] Write a 120-word adverse-action notice in plain English,
+  citing the FCRA-required disclosures inline.
+[RESOURCES] Use only:
+  Loan application denial code: {DENIAL_CODE}
+  Borrower file summary (sanitized): {SUMMARY}
+  Institution adverse-action standard: {INTERNAL_STANDARD}
+[EXPECTATIONS]
+  - Neutral, non-blaming language.
   - Never invent denial reasons not in the input.
   - Never reference race, age, marital status, source of income, or
     other protected characteristics.
   - Include the reviewer's name + date on the second line.
-[REVIEW]
-  Compliance officer signs off before mailing.`}
+  - Compliance officer signs off before mailing.`}
       </pre>
     ),
   },
@@ -210,17 +210,19 @@ What to paste: Sanitized credit summary (no borrower name, no full SSN)
 What NOT to paste: Full borrower file, credit reports, examiner letters
 
 Prompt:
-  [ROLE] You are a senior commercial lender at a community bank
+  [CONTEXT] You are a senior commercial lender at a community bank
   preparing a memo for the loan committee.
-  [INPUT] Sanitized credit summary: {SUMMARY}
+  [OBJECTIVE] Draft a 250-word committee memo.
+  [RESOURCES] Use only:
+          Sanitized credit summary: {SUMMARY}
           Loan amount range: {RANGE}
           Industry: {INDUSTRY}
-  [TASK] Draft a 250-word committee memo with:
+  [EXPECTATIONS] Include:
     - One-sentence recommendation
     - Three strongest points supporting it
     - Two risks the committee should weigh
     - Specific policy exceptions requested (if any)
-  [REVIEW] My credit officer reviews before committee.
+  My credit officer reviews before committee.
 
 Example output (sanitized):
   Recommended: approve $500K-$750K LOC for a regional plumbing

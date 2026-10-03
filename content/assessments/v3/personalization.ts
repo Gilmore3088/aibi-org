@@ -485,12 +485,12 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     ],
   },
   'prompting-skill': {
-    title: 'Adopt the five-part prompt frame for one week',
+    title: 'Write every prompt in CORE for one week',
     riskLevel: 'Low',
     timeSaved: 'Turns generic AI answers into useful ones the first time',
     owner: 'You',
     explanation:
-      "Every prompt for real work should include five things: the role AI is playing, the format you want back, the source material, an explicit \"check your work\" instruction, and what you will edit. Apply it to one task at a time. After a week you will have five prompts that work.",
+      "Every prompt for real work should cover the four CORE parts: context (the role AI is playing and who it is for), objective (the exact task), resources (the only material it may use), and expectations (the format you want back and the limits). Then add an explicit \"check your work\" instruction and decide what you will edit. Apply it to one task at a time. After a week you will have five prompts that work.",
     whyRightNow: [
       'Directly addresses your gap in Prompting Skill',
       'Saves the time currently spent rewriting bad answers',
@@ -718,10 +718,11 @@ Tone: matter-of-fact, no scare quotes. Length: fits on a single printed page.`,
     label: 'Five-pattern prompting starter kit',
     prompt: `Help me draft five reusable prompt templates for my work at a community bank as a [YOUR ROLE].
 
-Each template should follow this five-part shape:
-- Role (what role AI is playing — analyst, drafter, reviewer, summarizer)
-- Format (what shape I want the answer in)
-- Source material (what I will paste in)
+Each template should follow the CORE structure, then add a check and an edit:
+- Context (what role AI is playing — analyst, drafter, reviewer, summarizer — and who the answer is for)
+- Objective (the exact task)
+- Resources (the only material it may use; what I will paste in)
+- Expectations (what shape I want the answer in, and the limits)
 - Self-check instruction (what AI should verify in its own answer)
 - What I will edit (where my judgment overrides AI)
 

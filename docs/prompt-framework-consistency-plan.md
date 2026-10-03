@@ -1,6 +1,6 @@
 # One prompt framework across the site: plan
 
-Status: approved direction, 2026-10-03. Nothing below has been changed yet.
+Status: steps 1–6 done, 2026-10-03; step 7 (final audit) in progress.
 
 **Decisions (James, 2026-10-03):** CORE is the one framework. The Banker Prompt Formula card is retitled (same URL). James reviews the 8 rewritten exam questions before merge. Per CLAUDE.md, course and downloadable changes ship as a PR that James merges.
 
@@ -83,6 +83,12 @@ Each step ends with its own check before the next starts.
 - Search the briefings, prompt cards, home prompt checker and playbooks for any remaining part lists.
 - **Check:** guard test passes for the whole repo.
 
+**Found during step 6:**
+- The guard missed prompt templates written as section tags (`[ROLE] … [TASK]`), as labeled fields (`{ label: 'Role' }`), as bulleted parts ("- Role (…)") and inline ("Role: [YOUR ROLE]. Task: [TASK]"). It now checks all four shapes. They turned up in the module 3 and 11 gallery samples, My Toolbox's sample prompt and skill page, the AI Task Framer prompt card, a practice rep, and the In-Depth "prompting skill" action and starter kit. All are now CORE.
+- *The skill, not the prompt* still showed a five-row Role/Context/Task/Format/Constraints table. It now shows the four CORE parts, and its course description matches what Module 13 does.
+- Three paid or free PDFs had no generator in the repo: the Skill Template Library, the starter artifacts (both deleted in a June cleanup) and the prompt cards (never committed). All three generators are restored or written under `scripts/` (`npm run generate:skill-library`, `generate:starter-artifacts`, `generate:prompt-cards`), and each was checked against the committed PDF before any change. The Skill Template Library is now in CORE and points to Module 13, which does what the old "Module 7" text described.
+- Rebuilding from current sources also replaced four starter artifacts and two large-print PDFs that still cited SR 11-7 as current. Their sources were corrected earlier, but the PDFs were never rebuilt.
+
 ### 7. Final audit
 - Guard test clean, full test suite, type check, lint, production build.
 - Three persona waves, plus a targeted run that walks module 3 → module 9 lab → exam → Transformation Report → free Banker card and confirms the same four words every time.
@@ -96,7 +102,9 @@ Production serves downloads from Supabase storage, so the regenerated files reac
 node scripts/seed-resources-bucket.mjs
 ```
 
-It uploads every PDF and ZIP in `public/downloads` and overwrites the stored copies; it is safe to re-run. The changed files are `banker-prompt-formula-card.pdf` (now "The CORE Prompt Card for Bankers"), `prompting-foundation-guide.pdf`, `safe-ai-use-checklist.pdf`, and the `prompting-foundation-kit`, `frontline-enablement-kit` and `governance-starter-kit` ZIPs.
+It uploads every PDF and ZIP at the top level of `public/downloads` and overwrites the stored copies; it is safe to re-run. The changed files it carries are `banker-prompt-formula-card.pdf` (now "The CORE Prompt Card for Bankers"), `prompting-foundation-guide.pdf`, `safe-ai-use-checklist.pdf`, `prompt-strategy-cheat-sheet.pdf`, `operations-playbook.pdf`, `aibi-prompt-cards.pdf`, `aibi-skill-template-library.pdf`, and the `prompting-foundation-kit`, `frontline-enablement-kit`, `governance-starter-kit` and `banker-builder-brief-kit` ZIPs.
+
+These are read straight from the deployed files and go live on deploy with no upload: the large-print PDFs (`public/downloads/large-print/`), the post-assessment starter artifacts (`public/downloads/starter-artifacts/`), the prompt cards download and the Skill Template Library.
 
 PDFs and kits were rebuilt with the repo's scripts. On a machine without network access use `PW_LOCAL_FONTS=1` (and `PW_EXECUTABLE_PATH` if the installed Chromium differs from the Playwright pin), so the brand fonts come from `src/app/fonts` instead of Google Fonts.
 

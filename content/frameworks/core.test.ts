@@ -18,9 +18,10 @@ const SKIP = [
   /^content\/frameworks\/core\.ts$/,
 ];
 const OLD = 'role|task|format|constraints?|source';
-const SEP = '(?:,\\s*(?:and\\s+)?|\\s*[·/]\\s*)';
+const SEP = '(?:,\\s*(?:and\\s+)?|\\.\\s+|\\s*[·/]\\s*)';
 const RULES: readonly [string, RegExp][] = [
   ['RTFC', /\bRTFC\b/],
+  ['RCFC', /\bRCFC\b/],
   ['Banker Prompt Formula', /Banker Prompt Formula/i],
   // A list that runs role -> task -> another framework term is a competing
   // part list. "Role/task:" as a field label on its own is not.
@@ -29,14 +30,13 @@ const RULES: readonly [string, RegExp][] = [
   // format, source" or "Role / Task / Format".
   ['older part list', new RegExp(`\\b(${OLD})\\b${SEP}\\b(${OLD}|context|audience|review)\\b${SEP}\\b(${OLD}|context|audience|review|inputs|self-check)\\b`, 'i')],
   ['5-line prompt method', /5-line (banker )?prompt/i],
+  // Inline fill-in templates: "Role: [YOUR ROLE]. Task: [TASK]."
+  ['Role:/Task: template', /\bRole:[^\n]{0,40}\bTask:/],
 ];
 
 // Files still being migrated. Each plan step removes its entries; the list
 // must be empty when the work is done (step 7).
 const PENDING = new Set<string>([
-  'src/app/prompt-cards/PromptCardsExperience.tsx',
-  'src/app/resources/the-skill-not-the-prompt/page.tsx',
-  'src/content/prompt-cards/cards.ts',
 ]);
 
 function files(dir: string): string[] {
@@ -45,6 +45,32 @@ function files(dir: string): string[] {
     if (statSync(full).isDirectory()) return files(full);
     return /\.(tsx?|mdx?|json|html|mjs)$/.test(name) ? [full] : [];
   });
+}
+
+// Part names used as headings ("Role:", "Task —", <strong>Format</strong>).
+// Three different ones within 20 lines is a template or table teaching an
+// older structure, even when no single line lists them.
+// Case-sensitive on purpose: prose headings are capitalized, code keys
+// (role: 'all', task: '...') are not.
+const HEADING = /^\s*(?:[-*]\s+)?(?:['"`]|<[^>]+>)*\s*(Role|Task|Format|Output format|Constraints?|Source material)\s*(?:<\/[^>]+>)*\s*(?::|—|–|-\s|\()/;
+// The same headings written as prompt section tags ("[ROLE] You are…",
+// "[TASK]") or as labeled form fields ({ label: 'Role', … }).
+const TAG = /(?:^\s*|`)\[(ROLE|TASK|FORMAT|OUTPUT FORMAT|CONSTRAINTS?)\]/;
+const LABEL = /\blabel:\s*['"](Role|Task|Format|Output format|Constraints?)['"]/;
+function headingBlocks(lines: string[]): string[] {
+  const hits: string[] = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    const terms = new Set<string>();
+    for (let j = i; j < Math.min(lines.length, i + 20); j += 1) {
+      const m = lines[j].match(HEADING) ?? lines[j].match(TAG) ?? lines[j].match(LABEL);
+      if (m) terms.add(m[1].toLowerCase().replace('output format', 'format').replace('source material', 'source').replace(/s$/, ''));
+    }
+    if (terms.size >= 3) {
+      hits.push(`older part headings (line ${i + 1})`);
+      i += 19;
+    }
+  }
+  return hits;
 }
 
 function violations(): Map<string, string[]> {
@@ -60,9 +86,12 @@ function violations(): Map<string, string[]> {
       const rel = relative(ROOT, full).split('\\').join('/');
       if (SKIP.some((re) => re.test(rel))) continue;
       const lines = readFileSync(full, 'utf8').split('\n');
-      const hits = lines.flatMap((line, i) =>
-        RULES.filter(([, re]) => re.test(line)).map(([name]) => `${name} (line ${i + 1})`),
-      );
+      const hits = [
+        ...lines.flatMap((line, i) =>
+          RULES.filter(([, re]) => re.test(line)).map(([name]) => `${name} (line ${i + 1})`),
+        ),
+        ...headingBlocks(lines),
+      ];
       if (hits.length) found.set(rel, hits);
     }
   }

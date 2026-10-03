@@ -13,7 +13,7 @@ export function launchOptions() {
   return process.env.PW_EXECUTABLE_PATH ? { executablePath: process.env.PW_EXECUTABLE_PATH } : {};
 }
 
-export async function useLocalBrandFonts(ctx, root = process.cwd()) {
+export async function serveLocalBrandFonts(ctx, root = process.cwd()) {
   if (process.env.PW_LOCAL_FONTS !== '1') return;
   const font = async (file) => (await readFile(resolve(root, 'src/app/fonts', file))).toString('base64');
   const css = `@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:block;src:url(data:font/woff2;base64,${await font('inter-latin-wght-normal.woff2')}) format('woff2');}

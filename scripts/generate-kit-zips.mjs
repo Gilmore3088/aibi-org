@@ -17,7 +17,7 @@
 //   node scripts/generate-kit-zips.mjs --only <slug> # build one kit
 //   node scripts/generate-kit-zips.mjs --upload      # also upload to Supabase
 
-import { launchOptions, useLocalBrandFonts } from './lib/brand-fonts.mjs';
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 import { chromium } from '@playwright/test';
 import { mkdir, readFile, writeFile, stat, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -517,7 +517,7 @@ async function buildKit(browser, kitSlug, kit) {
   const tmpHtml = resolve(kitWork, '_start-here.html');
   await writeFile(tmpHtml, html);
   const ctx = await browser.newContext();
-  await useLocalBrandFonts(ctx, ROOT);
+  await serveLocalBrandFonts(ctx, ROOT);
   const page = await ctx.newPage();
   await page.goto('file://' + tmpHtml, { waitUntil: 'networkidle' });
   await page.emulateMedia({ media: 'print' });

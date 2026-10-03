@@ -18,7 +18,7 @@
 
 import { chromium } from '@playwright/test';
 import { readdir, mkdir, writeFile, stat } from 'node:fs/promises';
-import { launchOptions, useLocalBrandFonts } from './lib/brand-fonts.mjs';
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -43,7 +43,7 @@ async function main() {
   // See scripts/lib/brand-fonts.mjs for PW_EXECUTABLE_PATH and PW_LOCAL_FONTS.
   const browser = await chromium.launch(launchOptions());
   const ctx = await browser.newContext();
-  await useLocalBrandFonts(ctx, ROOT);
+  await serveLocalBrandFonts(ctx, ROOT);
   const page = await ctx.newPage();
 
   for (const slug of slugs) {
