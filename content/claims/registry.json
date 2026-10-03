@@ -233,6 +233,67 @@
         "Public Law 119-10",
         "S.J.Res. 18"
       ]
+    },
+    {
+      "id": "sr-26-2-relevance-30b",
+      "claim": "The Federal Reserve's SR 26-2 transmittal states the letter is expected to be most relevant to banking organizations with over $30 billion in total assets regulated by the Federal Reserve; it notes model risk management practices appropriately vary with risk profile and model usage.",
+      "source": "Federal Reserve SR letter 26-2",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "$30 billion"
+      ]
+    },
+    {
+      "id": "tprm-2023-lifecycle",
+      "claim": "The 2023 interagency third-party guidance (Fed, FDIC, OCC) organizes risk management around a five-stage life cycle: planning; due diligence and third-party selection; contract negotiation; ongoing monitoring; termination. Oversight is to be commensurate with the organization's size, complexity, and risk profile and the nature of the relationship.",
+      "source": "Federal Register, 88 FR 37920",
+      "url": "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
+      "asOf": "2023-06-09",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "five-stage life cycle",
+        "five stages"
+      ]
+    },
+    {
+      "id": "reg-b-specific-reasons",
+      "claim": "Regulation B, 12 CFR 1002.9(b)(2): the statement of reasons for adverse action must be specific and indicate the principal reason(s); statements that the action was based on internal standards or policies, or on failure to achieve a qualifying score, are insufficient.",
+      "source": "CFPB Regulation B, 12 CFR 1002.9",
+      "url": "https://www.consumerfinance.gov/rules-policy/regulations/1002/9/",
+      "asOf": "2026-10-03",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "1002.9"
+      ]
+    },
+    {
+      "id": "gao-ncua-tsp-authority",
+      "claim": "GAO-25-107197 (May 19, 2025) reports that NCUA lacks the authority to examine technology service providers despite credit unions' increasing reliance on them for AI-driven services, and reiterates a 2015 recommendation that Congress grant that authority.",
+      "source": "US Government Accountability Office, GAO-25-107197",
+      "url": "https://www.gao.gov/products/gao-25-107197",
+      "asOf": "2025-05-19",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "authority to examine technology service providers"
+      ]
+    },
+    {
+      "id": "csbs-risk-tiering-worksheet",
+      "claim": "The CSBS AI Supervisory Framework includes an AI Use Case Risk Tiering Worksheet, described as an optional industry tool to support a risk-based assessment of individual AI use cases, alongside the Core Examiner Guide and an Examiner Work Program.",
+      "source": "Conference of State Bank Supervisors",
+      "url": "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+      "asOf": "2026-09-16",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "Risk Tiering Worksheet"
+      ]
     }
   ]
 }

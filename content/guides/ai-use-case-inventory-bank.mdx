@@ -1,0 +1,127 @@
+export const meta = {
+  slug: "ai-use-case-inventory-bank",
+  title: "How to build an AI use case inventory at a bank or credit union",
+  seoTitle: "AI Use Case Inventory for Banks: Fields, Owners, Upkeep",
+  description:
+    "The fields an AI use case inventory needs, where to find the AI you didn't know you had, and how to keep the list current without a dedicated team.",
+  query: "ai use case inventory bank",
+  dimension: "model-risk-validation",
+  audience: "Risk, compliance, and IT leads",
+  updated: "2026-10-03",
+  readMinutes: 7,
+  faqs: [
+    {
+      q: "What is an AI use case inventory?",
+      a: "It is a list of every place the institution uses AI, whether built in-house, bought from a vendor, or embedded in software you already license. Each entry records what the AI does, who owns it, what data it touches, and how risky the use is. The financial sector's shared AI Lexicon, released by Treasury and industry groups in 2026, uses the term AI use case inventory.",
+    },
+    {
+      q: "Is an AI inventory required?",
+      a: "No federal rule requires one for community banks. But it is the first thing that makes every other AI control possible, and the CSBS AI Supervisory Framework that state examiners may use lists the AI inventory and use cases as a core review area.",
+    },
+    {
+      q: "Do vendor AI features count?",
+      a: "Yes. For most community institutions the majority of AI arrives inside vendor products: fraud scoring, document capture, chat features, core and digital banking add-ons. Those belong in the inventory with the vendor named as the provider.",
+    },
+    {
+      q: "How often should the inventory be updated?",
+      a: "Tie it to events rather than a calendar: every new tool approval, every vendor contract renewal, and every new AI feature a vendor turns on. A quarterly check by the owner catches what slipped through.",
+    },
+  ],
+  related: [
+    "sr-26-2-community-banks-generative-ai",
+    "ai-vendor-due-diligence-questions",
+    "prepare-for-ai-exam-questions",
+  ],
+  sources: [
+    {
+      label: "Treasury / FSSCC — AIEOG AI Lexicon (February 2026)",
+      url: "https://fsscc.org/wp-content/uploads/2026/02/AIEOG-AI-Lexicon-February-2026.pdf",
+    },
+    {
+      label: "CSBS — Artificial Intelligence Supervisory Framework (September 16, 2026)",
+      url: "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+    },
+  ],
+};
+
+You cannot govern what you have not listed. An AI use case inventory is
+the plain, unglamorous spreadsheet that every other AI control depends on:
+the policy points to it, vendor reviews feed it, the board report
+summarizes it, and an examiner asks for it.
+
+The term now has a shared definition. The AIEOG AI Lexicon, released in
+February 2026 by Treasury and the financial sector, includes "AI use case
+inventory" among its defined terms. And the CSBS AI Supervisory Framework
+for state examiners names the AI inventory and use cases as one of its
+core review areas.
+
+## The fields that matter
+
+Resist the urge to build a forty-column tracker. These ten fields answer
+nearly every question a committee or examiner will ask:
+
+<table>
+  <thead>
+    <tr><th>Field</th><th>What to record</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Use case</td><td>One sentence: what the AI does, in business terms</td></tr>
+    <tr><td>Business owner</td><td>A named person, not a department</td></tr>
+    <tr><td>Source</td><td>Built, bought (vendor name), or embedded in existing software</td></tr>
+    <tr><td>Tool or model</td><td>Product name and version if known</td></tr>
+    <tr><td>Data touched</td><td>Public, internal, or restricted customer/member data</td></tr>
+    <tr><td>Decision impact</td><td>Informs a person, drafts for review, or acts on its own</td></tr>
+    <tr><td>Customer-facing</td><td>Yes or no</td></tr>
+    <tr><td>Risk tier</td><td>Low, moderate, or high (see below)</td></tr>
+    <tr><td>Human review</td><td>Who checks the output, and when</td></tr>
+    <tr><td>Status and dates</td><td>Proposed, approved, in use, retired; last reviewed</td></tr>
+  </tbody>
+</table>
+Our [use case inventory card](/resources/templates/ai-use-case-inventory)
+has these fields ready to fill in.
+
+## Find the AI you didn't know you had
+
+The first pass always finds more than expected. Look in four places:
+
+1. **Your vendor list.** Ask each technology vendor in writing whether
+   their product uses AI or machine learning, and what it does. Fraud,
+   BSA/AML monitoring, document capture, and digital banking are the
+   usual suspects.
+2. **Release notes.** Vendors are switching on AI features in routine
+   updates. Someone should read them.
+3. **Department heads.** Ask each one what tools their team uses to write,
+   summarize, or analyze — including free ones. Make it clear this is a
+   census, not a disciplinary sweep, or you will not get honest answers.
+4. **Expense reports and network logs.** Subscriptions to AI tools on
+   corporate cards, and traffic to AI sites, show what people actually use.
+
+## Tier the risk simply
+
+Three tiers are enough for a community institution:
+
+- **High** — touches credit decisions, customer or member eligibility,
+  BSA/AML outcomes, or acts without a person reviewing first.
+- **Moderate** — uses restricted data or produces customer-facing content,
+  with a person reviewing before release.
+- **Low** — internal drafting and summarizing with no restricted data.
+
+The tier sets the review: high-tier uses get documented testing, a second
+reviewer, and periodic re-review; low-tier uses get recorded and spot
+checked. CSBS publishes an optional AI Use Case Risk Tiering Worksheet
+with the framework if you want a more detailed structure.
+
+## Keep it alive
+
+An inventory goes stale the month after it is built unless updating it is
+part of something that already happens. Attach it to three existing
+moments: new tool approval under your AI policy, vendor onboarding and
+renewal in your third-party program, and the annual policy review. Give
+one person ownership and a quarterly reminder.
+
+## What to do this month
+
+Start the list with what you already know, even if it is five rows. Send
+the vendor letter. Name the owner. A short, honest inventory is worth more
+than a complete one that never gets finished — and it is the first
+document to have ready if your examiner asks.

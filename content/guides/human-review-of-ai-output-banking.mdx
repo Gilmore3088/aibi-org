@@ -1,0 +1,113 @@
+export const meta = {
+  slug: "human-review-of-ai-output-banking",
+  title: "Human review of AI output: who checks what, and when",
+  seoTitle: "Human-in-the-Loop AI Review at Banks: A Practical Model",
+  description:
+    "A simple model for deciding how much human review each AI use needs at a community bank or credit union, and how to make the review real rather than a rubber stamp.",
+  query: "human in the loop ai review bank",
+  dimension: "bounded-autonomy-human-review",
+  audience: "Department heads, compliance, and operations",
+  updated: "2026-10-03",
+  readMinutes: 6,
+  faqs: [
+    {
+      q: "What does human in the loop mean for a bank?",
+      a: "It means a named person reviews AI output and is accountable for it before it takes effect, whether that is a letter sent to a member, a summary placed in a loan file, or an alert dispositioned. The person can change or reject the output.",
+    },
+    {
+      q: "Does every AI output need human review?",
+      a: "Not to the same depth. Internal drafts with no customer data can be spot-checked. Anything customer-facing, anything placed in an official record, and anything affecting eligibility or credit needs review by a qualified person every time.",
+    },
+    {
+      q: "How do we keep review from becoming a rubber stamp?",
+      a: "Give reviewers a short checklist of what to verify, keep volumes realistic, sample reviewed items periodically for quality, and track how often reviewers change the AI output. A change rate near zero over many items is a signal to look closer.",
+    },
+    {
+      q: "Can AI act without human review at all?",
+      a: "Some narrow, well-tested, low-impact automation may run without item-by-item review, with monitoring instead. That decision should be deliberate, documented in your AI use case inventory, and never applied to credit decisions or customer-facing communications without strong justification.",
+    },
+  ],
+  related: [
+    "ai-adverse-action-notices-regulation-b",
+    "can-bank-employees-use-chatgpt",
+    "first-ai-pilot-community-bank",
+  ],
+  sources: [
+    {
+      label: "CFPB — Regulation B, 12 CFR 1002.9 (Notifications)",
+      url: "https://www.consumerfinance.gov/rules-policy/regulations/1002/9/",
+    },
+    {
+      label: "CSBS — Artificial Intelligence Supervisory Framework (September 16, 2026)",
+      url: "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+    },
+  ],
+};
+
+"A human reviews all AI output" is the most common sentence in bank AI
+policies, and one of the least examined. Review that is not defined
+becomes review that does not happen — or happens as a glance and a
+click. The fix is to decide, for each use, who reviews, what they check,
+and how you know the review is real.
+
+## Match the review to the stakes
+
+Four levels cover almost every use at a community institution:
+
+<table>
+  <thead>
+    <tr><th>Level</th><th>Applies to</th><th>Review</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Self-check</td><td>Internal drafts, summaries, and notes with no customer or member data</td><td>The person who used the tool reads and edits before using it</td></tr>
+    <tr><td>Qualified review</td><td>Customer- or member-facing communications, marketing copy, procedures</td><td>A second person with subject-matter authority approves before release</td></tr>
+    <tr><td>Documented review</td><td>Anything placed in an official record: loan files, BSA/AML case notes, complaint responses</td><td>Reviewer verifies against source documents and the review is recorded</td></tr>
+    <tr><td>Decision authority</td><td>Credit, eligibility, account actions</td><td>AI may inform; a qualified person makes and owns the decision</td></tr>
+  </tbody>
+</table>
+
+Record the level for each entry in your
+[AI use case inventory](/guides/ai-use-case-inventory-bank). It turns a
+vague policy promise into something an auditor can test.
+
+## What reviewers should check
+
+Give every reviewer a short, specific checklist. For most bank uses:
+
+- **Facts.** Every number, date, name, rate, and citation matches the
+  source. AI tools can state invented facts fluently.
+- **Completeness.** Nothing material was dropped from a summary.
+- **Data.** No restricted information appears where it should not.
+- **Tone and accuracy for the audience.** Nothing misleading, overpromising,
+  or out of line with disclosures.
+- **Compliance.** Required language is present; nothing creates a UDAAP or
+  fair lending concern.
+
+## Keep it from becoming a rubber stamp
+
+Review fails quietly when volume outruns attention. Watch three signals:
+
+1. **Change rate.** Track how often reviewers edit or reject AI output. A
+   rate that drops to nothing over hundreds of items deserves a look.
+2. **Sampling.** Have a second person periodically re-review a small
+   sample of approved items. Findings tell you whether the checklist and
+   the training work.
+3. **Volume.** If one reviewer is approving more than they could
+   reasonably read, the process is broken regardless of what the policy
+   says.
+
+## Credit decisions need the strongest line
+
+Where AI touches lending, accountability has to sit with a person and the
+reasons have to be real. Regulation B requires specific principal reasons
+for adverse action, and reasons based only on failing to achieve a
+qualifying score are insufficient.
+[More on AI and adverse action notices](/guides/ai-adverse-action-notices-regulation-b).
+
+## When less review is acceptable
+
+Some narrow automation — routing, classification of internal documents,
+formatting — can run without item-by-item review if it is tested,
+monitored, and low impact. Make that a deliberate decision, write down the
+monitoring, and revisit it when the tool or the use changes. "We stopped
+checking because it was always right" is not a control.
