@@ -53,6 +53,22 @@ describe('Foundation micro-module ladder', () => {
     expect(module16?.transferMove).toContain('show a manager');
   });
 
+  it('keeps every build dated and inside its review window', () => {
+    // Build steps name real tools, and tools change. A build past its
+    // reviewBy date fails CI until someone re-checks it against the tools.
+    const today = new Date().toISOString().slice(0, 10);
+    const builds = FOUNDATION_MICRO_MODULES.filter((module) => module.build);
+    expect(builds.length).toBeGreaterThanOrEqual(3);
+    for (const mod of builds) {
+      const build = mod.build!;
+      expect(build.verifiedOn, `module ${mod.number} verifiedOn`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(build.reviewBy, `module ${mod.number} reviewBy`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(build.reviewBy > today, `module ${mod.number} build review is overdue (${build.reviewBy})`).toBe(true);
+      expect(build.prompt.length, `module ${mod.number} prompt`).toBeGreaterThan(80);
+      expect(build.doneWhen, `module ${mod.number} doneWhen`).toMatch(/\S/);
+    }
+  });
+
   it('keeps the simulated role audit tied to the 18-module source', () => {
     const script = readFileSync(
       resolve(process.cwd(), 'scripts/foundation-course-simulated-role-audit.mjs'),

@@ -1,15 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import {
-  SiteHeader,
-  Button,
-  EyebrowChip,
-  CtaBand,
-} from '@/components/mockup';
+import Link from 'next/link';
+import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { AxHero, AxSection, AxWindow } from '@/components/ax';
 import { PLAYBOOKS, type RoleSlug } from '../data';
 import { PlaybookDownloadButton } from '../_components/PlaybookDownloadButton';
 import { getAssetsForPlaybook, type PlaybookSlug } from '@content/playbook-assets/data';
-import { PlaybookTabs } from './PlaybookTabs';
 
 export function generateStaticParams() {
   return (Object.keys(PLAYBOOKS) as RoleSlug[]).map((role) => ({ role }));
@@ -39,150 +35,139 @@ function toSlug(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
-type IconProps = { className?: string; size?: number };
-const sw = (p: IconProps) => ({
-  className: p.className,
-  width: p.size,
-  height: p.size,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-  'aria-hidden': true,
-});
-
-const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
-const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
-const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
-const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
-const TargetIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>);
+const RISK_LABEL = { high: 'High review', med: 'Review', low: 'Low risk' } as const;
 
 export default async function PlaybookPage({ params }: { params: Promise<{ role: string }> }) {
   const { role } = await params;
   const data = PLAYBOOKS[role as RoleSlug];
   if (!data) notFound();
+  const roleTitle = data.eyebrow.replace(/ Playbook$/, '');
   const builtAssets = getAssetsForPlaybook(role as PlaybookSlug);
-  const tabAssets = data.assets.flatMap((asset) => {
+  const templates = data.assets.flatMap((asset) => {
     const built = builtAssets.find(
       (a) =>
         a.title.toLowerCase() === asset.name.toLowerCase() ||
         a.slug === toSlug(asset.name),
     );
-    const linkable = asset.status === 'Ready' && Boolean(built);
-    if (!linkable || !built) {
-      return [];
-    }
-
-    return {
-      name: asset.name,
-      type: asset.type,
-      linkable: true,
-      href: `/playbooks/${role}/${built.slug}`,
-      statusLabel: 'Open template',
-    };
+    if (asset.status !== 'Ready' || !built) return [];
+    return [{ name: asset.name, type: asset.type, href: `/playbooks/${role}/${built.slug}` }];
   });
 
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page">
       {/* Nav CTA matches the rest of the site (top-of-funnel readiness),
           so the playbook doesn't ship three identical enroll CTAs (hero +
           footer + nav). Issue #327 (part C). */}
       <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
-      {/* HERO */}
-      <section className="mk-hero">
-        <div className="mk-deco">
-          <div className="mk-deco-ring" />
-          <div className="mk-deco-blur" />
-        </div>
-        <div className="mk-container mk-hero-inner">
-          <div>
-            <EyebrowChip icon={<ShieldIcon className="mk-ic" />}>{data.eyebrow}</EyebrowChip>
-            <h1>{data.title}</h1>
-            <p className="mk-lede">{data.lede}</p>
-            <div className="mk-ctas">
-              {/* #327D — restored role-specific label with a real
-                  destination context: the purchase page now reads the
-                  ?role= query and surfaces role-tailored framing. The
-                  label is honest because the param leads somewhere that
-                  acknowledges the role, not a generic page. */}
-              <Button
-                variant="gold"
-                size="lg"
-                href={`/courses/foundation/program/purchase?role=${role}`}
-              >
-                Start your {data.eyebrow.replace(/ Playbook$/, '')} path <ArrowR className="mk-ic" />
-              </Button>
-              <PlaybookDownloadButton
-                role={role}
-                roleTitle={data.eyebrow.replace(/ Playbook$/, '')}
-              />
+      <AxHero
+        cmd={`playbooks/${role} --open`}
+        title={data.title}
+        lede={data.lede}
+        actions={
+          <>
+            {/* #327D — the purchase page reads ?role= and surfaces
+                role-tailored framing, so the role-specific label is honest. */}
+            <Button variant="gold" size="lg" href={`/courses/foundation/program/purchase?role=${role}`}>
+              Start your {roleTitle} path <ArrowGlyph />
+            </Button>
+            <PlaybookDownloadButton role={role} roleTitle={roleTitle} />
+          </>
+        }
+        aside={
+          <AxWindow title={`${role}/workflow.md`} meta={`${data.ops.length} steps`}>
+            <p className="ax-k ax-gold">{data.opHeading}</p>
+            <ol className="pb-steps">
+              {data.ops.map((step) => (
+                <li key={step.step}>
+                  <span className="pb-step-n">{step.step}</span>
+                  <span className="pb-step-body">
+                    <strong>{step.title}</strong>
+                    <span className="pb-step-out">→ {step.artifact}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </AxWindow>
+        }
+      />
+
+      <main>
+        <AxSection light id="use-cases" kicker="Use cases" title={data.usesHeading}>
+          <ol className="pb-uses">
+            {data.uses.map((useCase, idx) => (
+              <li key={useCase.title}>
+                <span className="pb-use-n">{String(idx + 1).padStart(2, '0')}</span>
+                <span className="pb-use-main">
+                  <h3>{useCase.title}</h3>
+                  <p>{useCase.desc}</p>
+                </span>
+                <span className="pb-use-out">
+                  <span className="pb-use-artifact">{useCase.artifact}</span>
+                  <span className={`pb-risk is-${useCase.risk}`}>{RISK_LABEL[useCase.risk]}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </AxSection>
+
+        <AxSection id="checklist">
+          <div className="pb-check">
+            <div className="ax-section-head">
+              <p className="ax-k">Review checklist</p>
+              <h2 className="ax-display">Review checklist.</h2>
+              <p>A named reviewer checks each line. If one fails, the draft goes back.</p>
+            </div>
+            <div className="ax-paper pb-check-paper">
+              <p className="ax-k">{role}/review-checklist.md</p>
+              <ul className="pb-checks">
+                {data.checklist.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
             </div>
           </div>
+        </AxSection>
 
-          <div className="mk-pb-snap">
-            <div className="mk-head">
-              <div className="mk-k">Playbook Snapshot</div>
-              <div className="mk-t">{data.snapTitle}</div>
-            </div>
-            <div className="mk-quick">
-              {data.snapQuick.map((q, i) => (
-                <div key={q.label} className="mk-q">
-                  {i === 0 && <LockIcon size={24} />}
-                  {i === 1 && <FileIcon size={24} />}
-                  {i === 2 && <TargetIcon size={24} />}
-                  <div className="mk-l">{q.label}</div>
-                  <div className="mk-v">{q.value}</div>
-                </div>
+        {templates.length > 0 && (
+          <AxSection
+            light
+            id="templates"
+            kicker="Templates"
+            title="Open a file. Adapt it today."
+            lede="Ready-to-use templates from this playbook. Each one opens in full, free."
+          >
+            <ul className="pb-files">
+              {templates.map((t) => (
+                <li key={t.href}>
+                  <Link href={t.href} className="pb-file">
+                    <span className="pb-file-type">{t.type}</span>
+                    <span className="pb-file-name">{t.name}</span>
+                    <span className="pb-file-open">Open template <span aria-hidden="true">→</span></span>
+                  </Link>
+                </li>
               ))}
-            </div>
-            <div className="mk-ms">
-              {data.snapMaturity.map((m) => (
-                <div key={m.name} className="mk-ms-row">
-                  <div className="mk-top">
-                    <div className="mk-l">{m.name}</div>
-                    <div className="mk-v">{m.pct}/100</div>
-                  </div>
-                  <div className="mk-bar">
-                    <div className="mk-fill" style={{ width: `${m.pct}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="mk-pb-snap-note">
-              Illustrative preview; your assessment personalizes the scores.
-            </p>
-            <div className="mk-path">
-              <div className="mk-l">Recommended path</div>
-              <div className="mk-v">{data.snapPath}</div>
-            </div>
+            </ul>
+          </AxSection>
+        )}
+      </main>
+
+      <section className="ax-section ax-close">
+        <div className="mk-container">
+          <p className="ax-k">{data.eyebrow}</p>
+          <h2 className="ax-display">{data.cta.heading}</h2>
+          <p className="ax-muted">{data.cta.body}</p>
+          <div className="ax-actions">
+            <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
+              Start the course <ArrowGlyph />
+            </Button>
+            {/* /my-toolbox is auth-gated (#318); send readers to the public hub. */}
+            <Button variant="ghost-dark" size="lg" href="/resources">
+              Browse downloads
+            </Button>
           </div>
         </div>
       </section>
-
-      <PlaybookTabs
-        usesHeading={data.usesHeading}
-        useCases={data.uses}
-        opKicker={`${data.eyebrow.split(' ')[0]} operating model`}
-        opHeading={data.opHeading}
-        steps={data.ops}
-        checklist={data.checklist}
-        assets={tabAssets}
-      />
-
-      <CtaBand
-        kicker={`${data.eyebrow}`}
-        heading={<>{data.cta.heading}</>}
-        body={<>{data.cta.body}</>}
-        actions={[
-          { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          // /my-toolbox is now auth-gated (#318). Unauth playbook readers
-          // would hit a login wall. Send them to the public artifacts hub.
-          { label: 'Browse downloads', href: '/resources', variant: 'ghost-dark' },
-        ]}
-      />
     </div>
   );
 }

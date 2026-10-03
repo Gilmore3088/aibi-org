@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/mockup';
 import { useRouter } from 'next/navigation';
 import type { PracticeRep } from '@/types/lms';
 import { migrateStorageKey } from '@/lib/storage/migrate';
@@ -73,7 +74,9 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
   }
 
   return (
-    <main className="px-6 py-10 md:py-14">
+    <div className="mockup-scope pr-scope">
+    <SiteHeader activePath="/practice" />
+    <main className="px-6 pb-10 md:pb-14">
       <div className="max-w-4xl mx-auto space-y-8">
         <nav aria-label="Breadcrumb">
           <Link
@@ -210,6 +213,7 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
         )}
       </div>
     </main>
+    </div>
   );
 }
 

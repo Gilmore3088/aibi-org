@@ -37,6 +37,8 @@ function buildMicroActivitySpec(
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+  // A build module saves the working prompt or rules themselves.
+  const isBuild = Boolean(module.build);
 
   return {
     moduleNumber: module.number,
@@ -45,7 +47,7 @@ function buildMicroActivitySpec(
     fields: [
       {
         id: 'artifact_draft',
-        label: 'What did you build?',
+        label: isBuild ? 'Paste what you saved' : 'What did you build?',
         type: 'textarea',
         placeholder: module.saveArtifact,
         minLength: 24,
@@ -53,7 +55,7 @@ function buildMicroActivitySpec(
       },
       {
         id: 'review_note',
-        label: 'What did you check before saving it?',
+        label: isBuild ? 'What did you check when you ran it?' : 'What did you check before saving it?',
         type: 'textarea',
         placeholder: module.reviewChecklist.join('; '),
         minLength: 24,
@@ -61,7 +63,7 @@ function buildMicroActivitySpec(
       },
       {
         id: 'first_use',
-        label: 'Where will you reuse this at work?',
+        label: isBuild ? 'What real work did you use it on?' : 'Where will you reuse this at work?',
         type: 'textarea',
         placeholder: module.transferMove,
         minLength: 24,
@@ -74,7 +76,7 @@ function buildMicroActivitySpec(
 **Banker:** {{name}}
 **Date:** {{date}}
 
-## What I built
+## ${isBuild ? 'What I saved' : 'What I built'}
 
 {{artifact_draft}}
 
@@ -82,7 +84,7 @@ function buildMicroActivitySpec(
 
 {{review_note}}
 
-## First reuse
+## ${isBuild ? 'Where I used it' : 'First reuse'}
 
 {{first_use}}
 

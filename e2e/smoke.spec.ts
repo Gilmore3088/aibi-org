@@ -82,7 +82,7 @@ test.describe('marketing smoke', () => {
 
   test('briefings feed renders with at least one card', async ({ page }) => {
     await page.goto('/briefings');
-    await expect(page.locator('.mk-brief-card').first()).toBeVisible();
+    await expect(page.locator('.ax-card, .ax-lead-title').first()).toBeVisible();
   });
 
   test('a briefing article renders body and sources', async ({ page }) => {

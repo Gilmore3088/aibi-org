@@ -5,32 +5,16 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import {
-  SiteHeader,
-  Section,
-  Button,
-  EyebrowChip,
-  CtaBand,
-  DocumentPreview,
-} from '@/components/mockup';
-import { TEMPLATES, getTemplate, type Template } from '../data';
+import Link from 'next/link';
+import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { AxHero, AxWindow } from '@/components/ax';
+import { TEMPLATES, getTemplate } from '../data';
 import { TemplateActions } from './TemplateActions';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-function templatePreviewLines(section: Template['sections'][number]): string[] {
-  if (section.tables && section.tables.length > 0) {
-    return section.tables[0].rows
-      .slice(0, 3)
-      .map((row) => `${row[0]}: ${row[1] ?? ''}`);
-  }
-  if (section.items && section.items.length > 0) return section.items.slice(0, 3);
-  if (section.steps && section.steps.length > 0) return section.steps.slice(0, 3);
-  if (section.intro) return [section.intro];
-  return ['Open the full section below for detail.'];
-}
 
 export function generateStaticParams() {
   // 'ai-workflow-sop' has a dedicated static page at
@@ -70,159 +54,133 @@ export default async function TemplatePage(props: PageProps) {
   if (!t) notFound();
 
   return (
-    <div className="mockup-scope">
-      <SiteHeader
-        activePath="/resources"
-        cta={{ label: 'Get readiness score', href: '/assessment/take' }}
+    <div className="mockup-scope ax-page">
+      <SiteHeader activePath="/resources" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
+
+      <AxHero
+        cmd={`resources/templates/${t.slug}`}
+        title={t.title}
+        lede={t.dek}
+        actions={<TemplateActions title={t.title} slug={t.slug} />}
+        aside={
+          <AxWindow title={`${t.slug}.docx`} meta={`Template · ${t.readMinutes} min`}>
+            <p className="ax-k ax-gold">Contents</p>
+            <ol className="pb-toc">
+              {t.sections.map((section, idx) => (
+                <li key={section.heading}>
+                  <a href={`#section-${idx + 1}`}>
+                    <span className="pb-step-n">{String(idx + 1).padStart(2, '0')}</span>
+                    {section.heading}
+                  </a>
+                </li>
+              ))}
+            </ol>
+            <p className="pb-toc-for">
+              <strong>For:</strong> {t.audience}
+            </p>
+          </AxWindow>
+        }
       />
 
-      <section className="mk-hero mk-template-hero">
-        <div className="mk-deco">
-          <div className="mk-deco-ring" />
-          <div className="mk-deco-blur" />
-        </div>
-        <div className="mk-container mk-hero-inner">
-          <div>
-            <EyebrowChip>AI Banking Resources · Template</EyebrowChip>
-            <h1>{t.title}</h1>
-            <p className="mk-lede">{t.dek}</p>
-            <div className="mk-tpl-meta">
-              <span>For: {t.audience}</span>
-              <span>{t.readMinutes} min</span>
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <TemplateActions title={t.title} slug={t.slug} />
-            </div>
-          </div>
-          <TemplateHeroPreview template={t} />
-        </div>
-      </section>
-
-      <Section variant="std" surface="white">
-        <DocumentPreview
-          eyebrow="Template preview"
-          title={t.title}
-          dek={t.dek}
-          sections={t.sections.slice(0, 4).map((section) => ({
-            heading: section.heading,
-            lines: templatePreviewLines(section),
-          }))}
-          aside={
-            <>
-              <p className="mk-proof-eyebrow">For</p>
-              <p>{t.audience}</p>
-              <p className="mk-proof-eyebrow" style={{ marginTop: 18 }}>
-                Actions
-              </p>
-              <div style={{ display: 'grid', gap: 10, marginTop: 12 }}>
-                <TemplateActions title={t.title} slug={t.slug} />
-              </div>
-            </>
-          }
-        />
-      </Section>
-
-      <Section variant="std" surface="white">
-        <article className="mk-tpl-doc">
-          {t.sections.map((s) => (
-            <section key={s.heading} className="mk-tpl-section">
-              <h2>{s.heading}</h2>
-              {s.intro && <p>{s.intro}</p>}
-              {s.tables?.map((table) => (
-                <div key={table.caption ?? table.headers.join('-')} className="mk-tpl-table-wrap">
-                  {table.caption && <p className="mk-tpl-table-caption">{table.caption}</p>}
-                  <table className="mk-tpl-table">
-                    <thead>
-                      <tr>
-                        {table.headers.map((header) => (
-                          <th key={header}>{header}</th>
+      <main>
+        <section id="document" className="ax-section ax-light" aria-label={t.title}>
+          <div className="mk-container">
+            <p className="pb-crumb">
+              <Link href="/resources">Resources</Link>
+              <span aria-hidden="true"> / </span>
+              <Link href="/resources#templates">Templates</Link>
+            </p>
+            <article className="pb-doc">
+              {t.sections.map((s, idx) => (
+                <section
+                  key={s.heading}
+                  id={`section-${idx + 1}`}
+                  className="pb-doc-section"
+                  aria-labelledby={`section-${idx + 1}-h`}
+                >
+                  <p className="pb-doc-n">{String(idx + 1).padStart(2, '0')}</p>
+                  <div>
+                    <h2 id={`section-${idx + 1}-h`}>{s.heading}</h2>
+                    {s.intro && <p className="pb-doc-intro">{s.intro}</p>}
+                    {s.tables?.map((table) => (
+                      <div
+                        key={table.caption ?? table.headers.join('-')}
+                        className="pb-doc-table"
+                        tabIndex={0}
+                        role="region"
+                        aria-label={table.caption ?? `${s.heading} table`}
+                      >
+                        {table.caption && <p className="pb-doc-caption">{table.caption}</p>}
+                        <table>
+                          <thead>
+                            <tr>
+                              {table.headers.map((header) => (
+                                <th key={header} scope="col">{header}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {table.rows.map((row) => (
+                              <tr key={row.join('|')}>
+                                {row.map((cell, cellIndex) => (
+                                  <td key={`${cellIndex}-${cell}`}>{cell}</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                    {s.items && (
+                      <ul className="pb-checks">
+                        {s.items.map((item) => (
+                          <li key={item}>{item}</li>
                         ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {table.rows.map((row) => (
-                        <tr key={row.join('|')}>
-                          {row.map((cell, cellIndex) => (
-                            <td key={`${cellIndex}-${cell}`}>{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </ul>
+                    )}
+                    {s.steps && (
+                      <ol className="pb-doc-steps">
+                        {s.steps.map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                    )}
+                  </div>
+                </section>
               ))}
-              {s.items && (
+              <aside aria-label="Sources" className="pb-doc-sources">
+                <p className="ax-k">Sourced from</p>
                 <ul>
-                  {s.items.map((item) => (
-                    <li key={item}>{item}</li>
+                  {t.sourcedFrom.map((src) => (
+                    <li key={src}>{src}</li>
                   ))}
                 </ul>
-              )}
-              {s.steps && (
-                <ol>
-                  {s.steps.map((step) => (
-                    <li key={step}>{step}</li>
-                  ))}
-                </ol>
-              )}
-            </section>
-          ))}
+              </aside>
+            </article>
+          </div>
+        </section>
+      </main>
 
-          <aside className="mk-tpl-sources">
-            <div className="mk-k">Sourced from</div>
-            <ul>
-              {t.sourcedFrom.map((src) => (
-                <li key={src}>{src}</li>
-              ))}
-            </ul>
-          </aside>
-
-          <div className="mk-tpl-actions" style={{ flexWrap: 'wrap', gap: 12 }}>
-            <TemplateActions title={t.title} slug={t.slug} />
-            <Button variant="ink" href="/resources#templates">
-              ← All templates
+      <section className="ax-section ax-close">
+        <div className="mk-container">
+          <p className="ax-k">Adapt before adopting</p>
+          <h2 className="ax-display">
+            A starter, <span className="ax-gold">not final policy.</span>
+          </h2>
+          <p className="ax-muted">
+            Every template names a section your institution should change. Take it to your committee, your auditor,
+            and your examiner before adoption.
+          </p>
+          <div className="ax-actions">
+            <Button variant="gold" size="lg" href="/resources">
+              Browse more resources <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/assessment/take">
+              Take the free assessment
             </Button>
           </div>
-        </article>
-      </Section>
-
-      <CtaBand
-        kicker="Adapt before adopting"
-        heading={<>These are starters — not final policy.</>}
-        body={
-          <>
-            Every template names a section your institution should change. Bring it to your
-            committee, your auditor, and your examiner before adoption.
-          </>
-        }
-        actions={[
-          { label: 'Browse more resources', href: '/resources', variant: 'gold' },
-          { label: 'Take the readiness assessment', href: '/assessment', variant: 'ghost-dark' },
-        ]}
-      />
+        </div>
+      </section>
     </div>
-  );
-}
-
-function TemplateHeroPreview({ template }: { readonly template: Template }) {
-  return (
-    <aside className="mk-template-hero-doc" aria-label={`${template.title} preview`}>
-      <div className="mk-template-hero-doc-head">
-        <p className="mk-proof-eyebrow">Word-ready starter</p>
-        <h2>{template.title}</h2>
-        <p>{template.audience}</p>
-      </div>
-      <div className="mk-template-hero-doc-body">
-        {template.sections.slice(0, 4).map((section, idx) => (
-          <div key={section.heading} className="mk-template-hero-doc-row">
-            <span>{String(idx + 1).padStart(2, '0')}</span>
-            <div>
-              <h3>{section.heading}</h3>
-              <p>{templatePreviewLines(section)[0]}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </aside>
   );
 }

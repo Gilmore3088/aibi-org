@@ -134,7 +134,7 @@ export default function ToolboxPage() {
             <EyebrowChip icon={<StackIcon className="mk-ic" />}>
               Toolbox preview · 18 sample assets
             </EyebrowChip>
-            <h1>A working kit, not a PDF graveyard.</h1>
+            <h1>Prompts, checklists and templates by role.</h1>
             <p className="mk-lede">
               A preview of what your AiBI-Foundation Toolbox holds — substantive prompts,
               workflow SOPs, risk checklists, role playbooks, and saved skills. Built to use,
@@ -183,10 +183,10 @@ export default function ToolboxPage() {
           lede={<>Every asset is a working artifact — not a PDF, not a slide deck. Tagged by role, ready to copy.</>}
         />
 
-        <div className="mk-role-filter" role="tablist">
+        <div className="mk-role-filter" role="group" aria-label="Filter by role">
           <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--slate-500)', marginRight: 6 }}>Filter by role:</span>
           {ROLES.map((r) => (
-            <button key={r} type="button" onClick={() => setRole(r)} className={`mk-rf${role === r ? ' is-active' : ''}`}>
+            <button key={r} type="button" aria-pressed={role === r} onClick={() => setRole(r)} className={`mk-rf${role === r ? ' is-active' : ''}`}>
               {r === 'Retail' ? 'Branch / Retail' : r}
             </button>
           ))}

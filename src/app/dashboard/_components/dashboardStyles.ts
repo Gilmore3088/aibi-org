@@ -7,8 +7,6 @@ export const dashboardStyles = `
   .mockup-dash{
     --paper:var(--cream);
     --paper-2:var(--cream-2);
-    --ink:var(--ink);
-    --ink-2:var(--ink-2);
     --slate:var(--slate-500);
     --muted:var(--slate-500);
     --soft:var(--slate-400);
@@ -244,4 +242,27 @@ export const dashboardStyles = `
     .mockup-dash .rep-card .body, .mockup-dash .rep-card .demo{ padding:28px 24px }
     .mockup-dash .found-card .body, .mockup-dash .found-card .feat{ padding:32px 24px }
   }
+
+  /* Site system: serif display at regular weight, mono labels, and a
+     navy welcome band with the progress card as paper on it. */
+  .mockup-dash :is(.welcome h1, .sec-head h2, .vc h3, .rep-card h3, .indepth-card h3, .found-card h3, .safe-card .label h3, .welcome .progress h4){ font-family:var(--font-serif); font-weight:400; letter-spacing:-0.01em }
+  .mockup-dash :is(h1, h2, h3, h4) strong{ font-weight:inherit }
+  .mockup-dash .eyebrow, .mockup-dash .welcome .progress .lab{ font-family:var(--font-mono); font-weight:400; letter-spacing:0.12em }
+  .mockup-dash .welcome{ background:var(--ink); color:var(--cream); border-bottom:0 }
+  .mockup-dash .welcome .greet{ color:var(--gold-soft) }
+  .mockup-dash .welcome h1{ color:var(--cream) }
+  .mockup-dash .welcome h1 strong{ color:var(--gold) }
+  .mockup-dash .welcome .lede{ color:rgba(247,243,234,0.72) }
+  .mockup-dash .welcome .btn-ghost{ color:var(--cream); border-color:rgba(255,255,255,0.3) }
+  .mockup-dash .welcome .btn-ghost:hover{ background:rgba(255,255,255,0.08); color:var(--cream) }
+  .mockup-dash .welcome .progress{ box-shadow:0 2px 4px rgba(0,0,0,0.12), 0 30px 60px -30px rgba(0,0,0,0.6); border-color:transparent }
+  /* The Foundation card is navy itself, so its band stays cream (never navy on navy). */
+  .mockup-dash .sec.dark{ background:var(--cream-2); color:var(--ink); border-color:var(--rule) }
+  .mockup-dash .sec.dark .sec-head h2{ color:var(--ink) }
+  .mockup-dash .sec.dark .sec-head h2 strong{ color:var(--gold-deep) }
+  .mockup-dash .sec.dark .sec-head{ border-color:var(--rule-strong) }
+  .mockup-dash .sec.dark .sec-head .more{ color:var(--gold-deep) }
+  /* Buttons and tabs read like the rest of the site: sentence case, no tracking. */
+  .mockup-dash .btn{ font-size:15px; font-weight:600; letter-spacing:0; text-transform:none }
+  .mockup-dash .tab{ font-family:var(--font-mono); font-weight:400; letter-spacing:0.08em }
 `;

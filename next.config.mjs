@@ -66,6 +66,10 @@ const nextConfig = {
     // sitemap, which appends briefing URLs from the same registry.
     '/briefings': ['./content/briefings/**'],
     '/briefings/[slug]': ['./content/briefings/**'],
+    // Link-preview cards read static font instances from disk.
+    '/briefings/[slug]/opengraph-image': ['./content/briefings/**', './assets/brand-fonts/**'],
+    '/playbooks/[role]/opengraph-image': ['./assets/brand-fonts/**'],
+    '/opengraph-image': ['./assets/brand-fonts/**'],
     '/briefings/feed.xml': ['./content/briefings/**'],
     '/sitemap.xml': ['./content/briefings/**'],
     // Free resource downloads (playbooks, desk cards, templates, starter-kit

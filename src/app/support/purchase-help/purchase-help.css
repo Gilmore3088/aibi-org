@@ -195,3 +195,13 @@
     padding: 44px 16px;
   }
 }
+
+/* On the site system: cream band under a navy hero. */
+.purchase-help.ax-section { min-height: 0; background: var(--cream); padding: 0; }
+.purchase-help .purchase-help__shell { padding-top: 64px; padding-bottom: 88px; }
+.purchase-help__policy { border-radius: 14px; border-color: rgba(7, 26, 47, 0.09); box-shadow: 0 1px 2px rgba(7, 26, 47, 0.05), 0 18px 40px -26px rgba(7, 26, 47, 0.32); padding: 24px; }
+.purchase-help__policy .ax-k { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0; text-transform: none; color: #6B5A2E; font-weight: 400; }
+.purchase-help__policy h2 { font-family: var(--font-serif); font-weight: 400; font-size: 1.625rem; }
+.purchase-help__form { border-radius: 14px; }
+.purchase-help__form button { border-radius: 10px; }
+.purchase-help__policy p:not(.ax-k) { margin: 0; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 0.9375rem; line-height: 1.55; color: #46505E; }

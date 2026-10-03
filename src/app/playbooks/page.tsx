@@ -1,14 +1,7 @@
 import type { Metadata } from 'next';
-import {
-  SiteHeader,
-  Section,
-  SectionHead,
-  Button,
-  CtaBand,
-} from '@/components/mockup';
-import { PLAYBOOK_INDEX, PLAYBOOKS } from './data';
-
-const PLAYBOOK_COUNT = PLAYBOOK_INDEX.length;
+import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
+import { AxHero, AxSection, AxWindow } from '@/components/ax';
+import { PLAYBOOK_FOCUS, PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 
 export const metadata: Metadata = {
   title: 'Role Playbooks — The AI Banking Institute',
@@ -16,149 +9,105 @@ export const metadata: Metadata = {
     'Nine role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, IT/InfoSec, executive, operations, and training/HR. Reviewed prompts and reusable templates.',
 };
 
-type IconProps = { className?: string; size?: number };
-const sw = (p: IconProps) => ({
-  className: p.className,
-  width: p.size,
-  height: p.size,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-  'aria-hidden': true,
-});
-
-const ShieldIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>);
-const UsersIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>);
-const SendIcon = (p: IconProps) => (<svg {...sw(p)}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>);
-const FileIcon = (p: IconProps) => (<svg {...sw(p)}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
-const SearchIcon = (p: IconProps) => (<svg {...sw(p)}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>);
-const LockIcon = (p: IconProps) => (<svg {...sw(p)}><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>);
-const ArrowR = (p: IconProps) => (<svg {...sw(p)}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>);
-
-const ICONS: Record<string, typeof ShieldIcon> = {
-  compliance: ShieldIcon,
-  retail: UsersIcon,
-  marketing: SendIcon,
-  lending: FileIcon,
-  'bsa-aml': SearchIcon,
-  infosec: LockIcon,
-};
+const INSIDE = [
+  { title: 'Use cases', body: 'Where the role can use AI, the risk of each, and the document it leaves.' },
+  { title: 'Workflow', body: 'Four steps from idea to approved, reviewable work.' },
+  { title: 'Checklist', body: 'What a reviewer checks before AI output is used.' },
+  { title: 'Templates', body: 'Ready-to-use files you can open and adapt today.' },
+] as const;
 
 export default function PlaybooksIndexPage() {
   return (
-    <div className="mockup-scope">
-      <SiteHeader activePath="/playbooks" cta={{ label: 'Start Course', href: '/courses/foundation/program/purchase' }} />
+    <div className="mockup-scope ax-page">
+      <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
-      <section className="mk-hero">
-        <div className="mk-deco">
-          <div className="mk-deco-ring" />
-          <div className="mk-deco-blur" />
-        </div>
-        <div className="mk-container mk-hero-inner">
-          <div>
-            <h1>Nine role playbooks. Each one ends with usable artifacts.</h1>
-            <p className="mk-lede">
-              Pick the playbook for your role. Each one opens into use cases,
-              workflow, checklist, and ready-to-use assets.
-            </p>
-            <div className="mk-ctas">
-              <Button variant="gold" size="lg" href="/playbooks/compliance">
-                Open Compliance <ArrowR className="mk-ic" />
-              </Button>
-              <Button variant="ghost-dark" size="lg" href="/my-toolbox">
-                Browse Toolbox
-              </Button>
-            </div>
+      <AxHero
+        cmd={`playbooks --roles ${PLAYBOOK_INDEX.length}`}
+        title="A playbook for every seat at the bank."
+        lede="Each one maps the work AI can help with, the review it needs, and the documents your team keeps."
+        actions={
+          <>
+            <Button variant="gold" size="lg" href="#roles">
+              Find your role <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/assessment/take">
+              Take the free assessment
+            </Button>
+          </>
+        }
+        aside={
+          <AxWindow title="playbooks/" meta={`${PLAYBOOK_INDEX.length} folders`} flush>
+            <ul className="pb-tree">
+              {PLAYBOOK_INDEX.map((p) => {
+                const pb = PLAYBOOKS[p.slug];
+                return (
+                  <li key={p.slug}>
+                    <a href={`/playbooks/${p.slug}`}>
+                      <span className="pb-tree-name">{p.slug}/</span>
+                      <span className="pb-tree-meta">{pb.uses[0]?.artifact}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </AxWindow>
+        }
+      />
+
+      <main>
+        <AxSection light id="roles" kicker="Pick your seat" title="Choose your role.">
+          <div className="pb-roles">
+            {PLAYBOOK_INDEX.map((p) => {
+              const pb = PLAYBOOKS[p.slug];
+              return (
+                <a key={p.slug} className="pb-role" href={`/playbooks/${p.slug}`}>
+                  <span className="ax-k ax-gold">{PLAYBOOK_FOCUS[p.slug]}</span>
+                  <span className="pb-role-title">{p.title}</span>
+                  <span className="pb-role-desc">{p.desc}</span>
+                  <span className="pb-role-outs" aria-label="Documents it produces">
+                    {pb.uses.slice(0, 3).map((u) => (
+                      <span key={u.artifact}>{u.artifact}</span>
+                    ))}
+                  </span>
+                  <span className="pb-role-open">
+                    Open playbook <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              );
+            })}
           </div>
-          <PlaybooksHeroPacket />
+        </AxSection>
+
+        <AxSection id="inside" kicker="Inside each playbook" title="What each playbook includes.">
+          <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 4 }} aria-label="What each playbook contains">
+            {INSIDE.map((item, index) => (
+              <li key={item.title} className={index === 0 ? 'is-first' : undefined}>
+                <span className="ax-pipeline-node" aria-hidden="true" />
+                <span className="ax-k">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </li>
+            ))}
+          </ol>
+        </AxSection>
+      </main>
+
+      <section className="ax-section ax-close ax-light">
+        <div className="mk-container">
+          <h2 className="ax-display">
+            Not sure where to start? <span className="ax-gold">Score your readiness.</span>
+          </h2>
+          <p className="ax-muted">Twelve questions. Your results point to the playbook for your role.</p>
+          <div className="ax-actions">
+            <Button variant="gold" size="lg" href="/assessment/take">
+              Take the free assessment <ArrowGlyph />
+            </Button>
+            <Button variant="ghost-dark" size="lg" href="/courses">
+              See the course
+            </Button>
+          </div>
         </div>
       </section>
-
-      <Section variant="std">
-        <SectionHead kicker="Pick your playbook" heading={<>Pick the playbook for your role.</>} />
-        <div className="mk-playbooks" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
-          {PLAYBOOK_INDEX.map(({ slug, title, desc }) => {
-            const Icon = ICONS[slug] ?? ShieldIcon;
-            const pb = PLAYBOOKS[slug];
-            const useCount = pb?.uses.length ?? 0;
-            const stepCount = pb?.ops.length ?? 0;
-            return (
-              <a key={slug} className="mk-pb" href={`/playbooks/${slug}`}>
-                <span className="mk-pic">
-                  <Icon size={24} />
-                </span>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-                <div className="mk-count">
-                  {useCount} use cases · {stepCount}-step workflow →
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      </Section>
-
-      <CtaBand
-        kicker="Role Playbooks"
-        heading={<>Nine roles. One operating model.</>}
-        body={<>Each playbook uses the same artifact structure so the institution gets a coherent rollout instead of disconnected AI experiments.</>}
-        actions={[
-          { label: 'Start the Course', href: '/courses/foundation/program/purchase', variant: 'gold' },
-          { label: 'Contact us', href: '/for-institutions', variant: 'ghost-dark' },
-        ]}
-      />
     </div>
-  );
-}
-
-function PlaybooksHeroPacket() {
-  const readyAssets = Object.values(PLAYBOOKS)
-    .flatMap((playbook) => playbook.assets)
-    .filter((asset) => asset.status === 'Ready').length;
-
-  return (
-    <aside className="mk-pb-snap mk-playbooks-hero-packet" aria-label="Playbook packet preview">
-      <div className="mk-head">
-        <div className="mk-k">Playbook packet</div>
-        <div className="mk-t">Open a role. Leave with working assets.</div>
-      </div>
-      <div className="mk-quick">
-        <div className="mk-q">
-          <UsersIcon size={24} />
-          <div className="mk-l">Roles</div>
-          <div className="mk-v">{PLAYBOOK_COUNT} mapped paths</div>
-        </div>
-        <div className="mk-q">
-          <FileIcon size={24} />
-          <div className="mk-l">Views</div>
-          <div className="mk-v">Use cases · workflow · checklist · assets</div>
-        </div>
-        <div className="mk-q">
-          <ShieldIcon size={24} />
-          <div className="mk-l">Assets</div>
-          <div className="mk-v">{readyAssets}+ ready items</div>
-        </div>
-      </div>
-      <div className="mk-ms">
-        {['Select role', 'Review workflow', 'Open assets'].map((step, idx) => (
-          <div key={step} className="mk-ms-row">
-            <div className="mk-top">
-              <div className="mk-l">{step}</div>
-              <div className="mk-v">0{idx + 1}</div>
-            </div>
-            <div className="mk-bar">
-              <div className="mk-fill" style={{ width: `${68 + idx * 14}%` }} />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mk-path">
-        <div className="mk-l">Packet flow</div>
-        <div className="mk-v">Role map → controlled workflow → reusable artifact</div>
-      </div>
-    </aside>
   );
 }

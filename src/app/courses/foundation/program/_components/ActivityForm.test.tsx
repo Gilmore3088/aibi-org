@@ -9,19 +9,19 @@ const activity = module1.activities[0];
 if (!activity) throw new Error('Expected Foundation module 1 activity');
 
 function fillRequiredActivityFields() {
-  fireEvent.change(screen.getByLabelText(/What did you build/i), {
+  fireEvent.change(screen.getByLabelText(/Paste what you saved/i), {
     target: {
       value:
         'AI can draft internal messages and summarize approved sources, but a banker owns facts, decisions, and final use.',
     },
   });
-  fireEvent.change(screen.getByLabelText(/What did you check before saving it/i), {
+  fireEvent.change(screen.getByLabelText(/What did you check when you ran it/i), {
     target: {
       value:
         'No customer data is included, the human owner is named, and the decision boundary is visible.',
     },
   });
-  fireEvent.change(screen.getByLabelText(/Where will you reuse this at work/i), {
+  fireEvent.change(screen.getByLabelText(/What real work did you use it on/i), {
     target: {
       value:
         'Use this card before opening an AI tool for unfamiliar internal drafting or review work.',
@@ -118,10 +118,10 @@ describe('ActivityForm', () => {
     expect(toolboxBody.payload.courseSlug).toBe('aibi-p');
     expect(toolboxBody.payload.moduleNumber).toBe(1);
     expect(toolboxBody.payload.activityId).toBe(activity.id);
-    expect(toolboxBody.payload.artifactName).toBe('AI Limits Card');
+    expect(toolboxBody.payload.artifactName).toBe('AI House Rules');
     expect(toolboxBody.payload.fields[0]).toEqual({
       id: 'artifact_draft',
-      label: 'What did you build?',
+      label: 'Paste what you saved',
       value:
         'AI can draft internal messages and summarize approved sources, but a banker owns facts, decisions, and final use.',
     });

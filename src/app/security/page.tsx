@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { DocumentPreview, MockupShell } from '@/components/mockup';
+import { AxWindow } from '@/components/ax';
 import { GuideRequestForm } from './_components/GuideRequestForm';
 
 export const metadata: Metadata = {
@@ -22,9 +23,9 @@ const GUIDE_CHAPTERS = [
       'When private inference is required, when a public model is acceptable, and the decision tree every staff member should run before pasting anything into a tool.',
   },
   {
-    title: 'Mapping to SR 26-2',
+    title: 'Model risk discipline for generative AI',
     body:
-      'How model risk management guidance applies to generative AI, with specific language you can drop into your AI governance framework.',
+      'How SR 26-2, which superseded SR 11-7, maps to the AI tools staff use, with action language you can drop into your AI governance framework.',
   },
   {
     title: 'Vendor evaluation scoring',
@@ -37,7 +38,7 @@ const GUIDE_CHAPTERS = [
       'A structured method for identifying the AI tools your staff are already using without your knowledge, and bringing them inside a governance perimeter without killing adoption.',
   },
   {
-    title: 'Review packet readiness',
+    title: 'Review readiness',
     body:
       'What to keep in the packet before an audit, risk review, or exam conversation. Based on the AIEOG AI Lexicon vocabulary (US Treasury, FBIIC, FSSCC, February 2026).',
   },
@@ -70,73 +71,19 @@ export default function SecurityPage() {
         </>
       }
       heroAside={
-        <aside
-          data-testid="security-posture-card"
-          aria-label="Security posture at a glance"
-          style={{
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.18)',
-            borderRadius: 24,
-            padding: 28,
-            color: '#fff',
-            display: 'grid',
-            gap: 14,
-          }}
-        >
-          <p
-            style={{
-              fontSize: '0.6875rem',
-              fontWeight: 700,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--gold-soft)',
-              margin: 0,
-            }}
-          >
-            Posture at a glance
-          </p>
-          <ul
-            style={{
-              margin: 0,
-              paddingLeft: 18,
-              display: 'grid',
-              gap: 10,
-              fontSize: '0.875rem',
-              lineHeight: 1.6,
-              color: 'rgba(255,255,255,0.82)',
-            }}
-          >
-            <li>
-              Practice runs on synthetic or sanitized banking examples — no
-              customer records needed.
-            </li>
-            <li>
-              Learner AI calls use paid API paths; usage logs store metadata,
-              never raw prompt text.
-            </li>
-            <li>
-              Written to hold up in SR 26-2, Interagency TPRM, and ECOA / Reg B
-              conversations.
-            </li>
-          </ul>
-          <p
-            style={{
-              margin: 0,
-              fontSize: '0.8125rem',
-              fontWeight: 700,
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '6px 18px',
-            }}
-          >
-            <Link href="/security/data-handling" style={{ color: 'var(--gold-soft)' }}>
-              LLM data-handling summary →
-            </Link>
-            <Link href="/security/it-approval" style={{ color: 'var(--gold-soft)' }}>
-              IT review packet →
-            </Link>
-          </p>
-        </aside>
+        <div data-testid="security-posture-card" role="complementary" aria-label="Security posture at a glance">
+          <AxWindow title="posture.md" meta="at a glance">
+            <ul className="ax-checklist sec-posture">
+              <li>Practice runs on synthetic or sanitized banking examples — no customer records needed.</li>
+              <li>Learner AI calls use paid API paths; usage logs store metadata, never raw prompt text.</li>
+              <li>Written to hold up in SR 26-2, Interagency TPRM, and ECOA / Reg B conversations.</li>
+            </ul>
+            <p className="sec-posture-links">
+              <Link href="/security/data-handling">LLM data-handling summary →</Link>
+              <Link href="/security/it-approval">IT review packet →</Link>
+            </p>
+          </AxWindow>
+        </div>
       }
       sections={[
         {
@@ -145,7 +92,7 @@ export default function SecurityPage() {
           body: (
             <DocumentPreview
               eyebrow="Safe AI Use Guide"
-              title="Six one-page decisions, not a governance textbook."
+              title="Six security decisions, one page each."
               dek="Each chapter gives a boundary, a banking example, and the artifact that proves the work."
               sections={GUIDE_CHAPTERS.map((chapter) => ({
                 heading: chapter.title,

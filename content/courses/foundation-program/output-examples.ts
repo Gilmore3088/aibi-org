@@ -581,13 +581,13 @@ filing, you must:
   {
     id: 'compliance-regulatory-impact-brief',
     role: 'compliance',
-    title: 'Regulatory Change Impact Brief — CFPB BNPL Guidance',
+    title: 'Regulatory Change Impact Brief — CFPB Guidance Withdrawal (BNPL)',
     platform: 'perplexity',
-    skillUsed: 'Regulatory Research (Perplexity — new CFPB guidance)',
+    skillUsed: 'Regulatory Research (Perplexity — CFPB guidance status check)',
     outputText: `REGULATORY CHANGE IMPACT BRIEF
-Topic: CFPB Interpretive Rule — Buy Now, Pay Later as Credit Cards
-Issued: [VERIFY — confirm publication date from Federal Register]
-Effective Date: [VERIFY — confirm from rule text]
+Topic: CFPB withdrawal of the 2024 Buy Now, Pay Later interpretive rule
+Source: CFPB, "Interpretive Rules, Policy Statements, and Advisory Opinions; Withdrawal,"
+Federal Register document 2025-08286, applicable May 12, 2025
 Prepared: April 2026 | Prepared by: Compliance Department
 Distribution: CLO, CCO, Retail Banking Director, Legal
 
@@ -595,33 +595,24 @@ Distribution: CLO, CCO, Retail Banking Director, Legal
 
 ## Situation
 
-The CFPB issued an interpretive rule characterizing certain Buy Now, Pay Later (BNPL)
-products as credit cards under the Truth in Lending Act (TILA) and Regulation Z. For
-community banks that offer BNPL products, partner with BNPL fintechs, or have customers
-using BNPL at point of sale, this guidance has operational and compliance implications
-that require evaluation before the effective date.
+In May 2024 the CFPB issued an interpretive rule treating certain Buy Now, Pay Later
+(BNPL) digital user accounts as credit cards under Regulation Z (89 FR 47068). On
+May 12, 2025, the CFPB withdrew that rule along with 66 other guidance documents.
+The withdrawal notice says it is "not necessarily final."
 
-[VERIFY: Confirm current CFPB enforcement posture under current administration — agency
-guidance may be subject to revision or non-enforcement. Consult legal counsel before
-relying on this brief for compliance program changes.]
+What this means for us: the CFPB no longer holds the 2024 BNPL interpretation out as
+its position. TILA and Regulation Z themselves are unchanged, and state law may still
+apply to BNPL arrangements. [VERIFY: state requirements in our footprint with counsel.]
 
 ---
 
-## Key Provisions (As Reported)
+## What Changed
 
-1. **BNPL as Open-End Credit**: The rule interprets "digital user accounts" that can be
-   used to access BNPL credit as credit cards under Regulation Z. This triggers Reg Z
-   open-end credit disclosures for covered products.
-
-2. **Required Protections**: Covered BNPL providers must provide:
-   - Periodic billing statements
-   - 21-day payment due date before late fees
-   - Billing dispute rights under Reg Z
-   - Ability to decline payment on returned merchandise
-
-3. **Institution Applicability**: The rule primarily targets BNPL lenders. Community banks
-   with referral arrangements or co-branded programs with BNPL providers should review
-   whether any product triggers the rule.
+1. **Withdrawn**: the 2024 interpretation that BNPL digital user accounts are credit
+   cards, and the Reg Z obligations the interpretation described for them.
+2. **Not changed**: the statute and Regulation Z text; existing open-end and closed-end
+   credit requirements for products that meet them on their own terms.
+3. **Open question**: whether the CFPB revisits BNPL. The notice leaves that door open.
 
 ---
 
@@ -629,35 +620,35 @@ relying on this brief for compliance program changes.]
 
 | Area | Current Exposure | Action Required | Owner |
 |------|-----------------|----------------|-------|
-| Proprietary BNPL product | [VERIFY — does institution offer one?] | TBD | CLO |
-| BNPL partner referral program | [VERIFY — active partnerships?] | Contract review | CLO + Legal |
+| Proprietary BNPL product | [VERIFY — does institution offer one?] | Confirm Reg Z treatment on its own terms | CLO |
+| BNPL partner referral program | [VERIFY — active partnerships?] | Confirm contract does not rely on the withdrawn rule | CLO + Legal |
+| Policies or training citing the 2024 rule | [VERIFY — search policy library] | Update references | Compliance |
 | Customer BNPL usage (credit reporting) | Indirect — none | Monitor | Compliance |
-| Staff training (TILA/Reg Z obligations) | Low — no direct product | Awareness only | Training |
 
 ---
 
 ## Recommended Next Steps
 
-1. **Confirm product inventory** (by April 18): Confirm whether the institution offers any
-   product that meets the rule's definition of a covered digital user account. Assign to CLO.
+1. **Search our policies and training** (by April 18): Find any document that cites the
+   2024 BNPL interpretive rule as current and mark it for update. Assign to Compliance.
 
 2. **Review fintech partner agreements** (by April 25): If any BNPL referral or co-branding
-   arrangement exists, legal should confirm whether the contract allocates Reg Z compliance
-   responsibility appropriately.
+   arrangement exists, legal should confirm its compliance terms do not depend on the
+   withdrawn interpretation.
 
-3. **Monitor CFPB guidance status** (ongoing): Given current regulatory environment, confirm
-   whether the rule is effective, under review, or subject to litigation stay before making
-   compliance program investments. [VERIFY with legal counsel.]
+3. **Watch for further CFPB action** (ongoing): Track any new BNPL guidance or rulemaking.
 
-4. **No immediate customer communication needed** based on preliminary review.
+4. **No customer communication needed** based on preliminary review.
 
 ---
 
 ## Sources
 
-- CFPB Interpretive Rule on BNPL (Federal Register — [VERIFY exact citation])
-- American Bankers Association BNPL Compliance Bulletin (2024, public)
-- Ballard Spahr CFPB Monitor (accessed April 2026)
+- CFPB, Interpretive Rules, Policy Statements, and Advisory Opinions; Withdrawal
+  (Federal Register, May 12, 2025, document 2025-08286)
+- CFPB, Truth in Lending (Regulation Z); Use of Digital User Accounts To Access Buy Now,
+  Pay Later Loans, 89 FR 47068 (May 31, 2024) — withdrawn
+- CFPB BNPL compliance resources page (consumerfinance.gov)
 
 [This brief is for internal compliance planning purposes only. It is not legal advice.
 Confirm all regulatory citations and applicability with legal counsel before implementing
@@ -668,8 +659,8 @@ any compliance program changes.]`,
         detail: 'The output does not treat every regulatory change as urgent for every institution. Rows with low or indirect exposure are still listed, but marked clearly. The CLO can scan the table and immediately identify where action is needed.',
       },
       {
-        heading: 'VERIFY flags reflect genuine uncertainty about the regulatory environment',
-        detail: 'The note about the current administration\'s CFPB enforcement posture is not hedging — it is a real compliance consideration. The AI surfaced the uncertainty rather than presenting the guidance as settled.',
+        heading: 'It checks whether the guidance is still in force',
+        detail: 'The brief starts from the rule\'s current status, not its original text. A guidance document that has been withdrawn is a common trap for AI research: the original rule is still widely written about, so a model can present it as current.',
       },
       {
         heading: 'Recommended next steps have named owners and deadlines',
@@ -680,7 +671,7 @@ any compliance program changes.]`,
       'The situation statement tells the reader who is affected and why it matters before diving into provisions',
       'Sources are named (not just "CFPB guidance") — a compliance officer can verify each citation',
       'The disclaimer at the end is honest about the document\'s limits: planning tool, not legal advice',
-      'The rule\'s key provisions are explained in plain language, not regulatory jargon lifted verbatim',
+      'It separates what was withdrawn from what still applies, so no one over-corrects',
     ],
   },
 

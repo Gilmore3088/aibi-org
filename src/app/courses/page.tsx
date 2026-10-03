@@ -8,7 +8,7 @@ import {
 
 const MODULE_COUNT = foundationCourseConfig.modules.length;
 const ARTIFACT_COUNT = Object.keys(ARTIFACT_FIRST_BY_MODULE).length;
-const SAMPLE_PACKET_MODULES = [1, 4, 13, 18] as const;
+const SAMPLE_PACKET_MODULES = [1, 3, 13, 18] as const;
 
 const courseOverviewFacts = {
   moduleCount: MODULE_COUNT,

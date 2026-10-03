@@ -197,7 +197,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // render them here and hand them to the client wrapper as slots; the wrapper
   // only chooses which slot to mount.
   return (
-    <html lang="en">
+    // Font variables go on <html>, not <body>: the design tokens
+    // (--font-serif, --font-sans, --font-mono in tokens-mockup.css) are
+    // declared on :root and reference these variables, so they must exist
+    // at that level or every token that uses them computes to empty.
+    <html
+      lang="en"
+      className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} ${instrumentSerif.variable}`}
+    >
       <head>
         {/* Organization + WebSite JSON-LD. Rendered on every page so
             crawlers always see the org graph node. Course/Article-level
@@ -212,9 +219,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
 
-      <body
-        className={`${cormorantSC.variable} ${newsreaderHero.variable} ${newsreaderHeavy.variable} ${GeistSans.variable} ${jetbrainsMono.variable} ${inter.variable} ${instrumentSerif.variable} flex flex-col min-h-screen`}
-      >
+      <body className="flex flex-col min-h-screen">
         <LayoutChrome
           skipLink={
             <a href="#main-content" className="skip-link">

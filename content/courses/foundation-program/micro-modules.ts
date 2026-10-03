@@ -6,6 +6,40 @@ export interface FoundationReferenceSection {
   readonly tryThis: string;
 }
 
+/**
+ * A build: the working tool a module leaves the learner holding. The job and
+ * the prompt are durable; anything that names a tool's menus or features goes
+ * in `toolNote` and is re-checked by `reviewBy` (enforced in tests).
+ */
+export interface FoundationBuildStep {
+  readonly title: string;
+  readonly body: string;
+}
+
+export interface FoundationBuildTest {
+  readonly prompt: string;
+  readonly expect: string;
+}
+
+export interface FoundationBuild {
+  /** One sentence: what works at the end of the module. */
+  readonly youWillHave: string;
+  readonly beforeYouStart: string;
+  readonly promptLabel: string;
+  /** The exact text the learner copies. */
+  readonly prompt: string;
+  readonly steps: readonly FoundationBuildStep[];
+  /** Optional test prompts that prove the build works. */
+  readonly tests?: readonly FoundationBuildTest[];
+  readonly doneWhen: string;
+  /** What the build does not do. Shown plainly, never as fine print. */
+  readonly limits?: string;
+  /** Where each tool keeps the build. Tool-specific, so it is dated. */
+  readonly toolNote: string;
+  readonly verifiedOn: string;
+  readonly reviewBy: string;
+}
+
 export interface FoundationMicroModule {
   readonly number: number;
   readonly id: string;
@@ -29,7 +63,14 @@ export interface FoundationMicroModule {
   readonly transferMove: string;
   readonly proofToSave: string;
   readonly reference: readonly FoundationReferenceSection[];
+  /** Present when the module is a build: one working tool per module. */
+  readonly build?: FoundationBuild;
 }
+
+const SAVE_IT_NOTE =
+  'ChatGPT and Claude keep reusable instructions in a Project. Gemini keeps them in a Gem. In Microsoft 365 Copilot, save it as a prompt or keep it in a note you can paste from. If your tool has none of these, a note on your desktop works.';
+const BUILD_VERIFIED_ON = '2026-10-03';
+const BUILD_REVIEW_BY = '2027-01-03';
 
 const commonReference = (
   title: string,
@@ -45,6 +86,8 @@ const commonReference = (
 ];
 
 function buildActivity(module: FoundationMicroModule): Activity {
+  // A build saves the working thing itself, not a description of it.
+  const isBuild = Boolean(module.build);
   return {
     id: `${module.number}.1`,
     title: `Save: ${module.saveArtifact}`,
@@ -54,7 +97,7 @@ function buildActivity(module: FoundationMicroModule): Activity {
     fields: [
       {
         id: 'artifact_draft',
-        label: 'What did you build?',
+        label: isBuild ? 'Paste what you saved' : 'What did you build?',
         type: 'textarea',
         placeholder: module.saveArtifact,
         minLength: 24,
@@ -62,7 +105,7 @@ function buildActivity(module: FoundationMicroModule): Activity {
       },
       {
         id: 'review_note',
-        label: 'What did you check before saving it?',
+        label: isBuild ? 'What did you check when you ran it?' : 'What did you check before saving it?',
         type: 'textarea',
         placeholder: module.reviewChecklist.join('; '),
         minLength: 24,
@@ -70,7 +113,7 @@ function buildActivity(module: FoundationMicroModule): Activity {
       },
       {
         id: 'first_use',
-        label: 'Where will you reuse this at work?',
+        label: isBuild ? 'What real work did you use it on?' : 'Where will you reuse this at work?',
         type: 'textarea',
         placeholder: module.transferMove,
         minLength: 24,
@@ -83,93 +126,168 @@ function buildActivity(module: FoundationMicroModule): Activity {
 export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
   {
     number: 1,
+    // Slug kept for saved progress. The module is now a build: the learner's
+    // AI tool, set up with house rules before any real work goes in.
     id: 'm1-ai-capabilities-limits',
-    title: 'What AI Can and Cannot Do',
+    title: 'Set Your AI House Rules',
     pillar: 'awareness',
     estimatedMinutes: 10,
-    keyOutput: 'AI Limits Card',
-    mission: 'Separate useful AI help from work that still needs banker judgment.',
-    plainLanguageConcept: 'AI can draft, summarize, classify, and structure work. It cannot know your bank policy, verify truth by itself, or own a regulated decision.',
-    bankingGuardrail: 'Use AI as drafting support. Do not treat output as a fact source, policy authority, or decision-maker.',
+    keyOutput: 'AI House Rules',
+    mission: 'Set up your AI tool so it warns you about customer data and marks every answer as a draft.',
+    plainLanguageConcept: 'AI can draft, summarize, classify, and structure work. It cannot know your bank policy, verify truth by itself, or own a regulated decision. House rules make your tool say so every time.',
+    bankingGuardrail: 'House rules are a reminder, not a control. Your institution\'s approved-tool list and data rules decide what you may paste.',
     guidanceSource: 'NIST AI RMF, SR 26-2, Treasury AI financial services report',
-    tryTask: 'Sort six common banking tasks into draft support, source-check required, or do not use AI.',
-    buildTask: 'Build a one-page limits card that names what AI may help with and what stays human-owned.',
-    saveArtifact: 'AI Limits Card',
+    tryTask: 'Run three test prompts and check that your tool flags the one with customer data.',
+    buildTask: 'Save standing instructions that flag customer data, mark answers as drafts, and refuse decisions.',
+    saveArtifact: 'AI House Rules',
     visualModel: ['Draft', 'Check', 'Decide', 'Own'],
-    reviewChecklist: ['No customer data', 'Human owner named', 'Decision boundary visible'],
-    qualitySignals: ['Plain language', 'Useful to a new AI user', 'Names what AI must not do'],
-    weakExample: 'AI can answer policy questions and decide what to do.',
-    strongExample: 'AI can draft a policy summary, but a banker verifies the source and owns the action.',
-    exampleWhy: 'The strong version separates drafting from authority and keeps accountability with the banker.',
-    transferMove: 'Use this card before opening an AI tool for unfamiliar work.',
-    proofToSave: 'Your draft/support/decision boundary with one real workplace example.',
+    reviewChecklist: ['No customer data', 'Marks answers as drafts', 'Refuses customer decisions'],
+    qualitySignals: ['Saved in your own tool', 'Passes all three tests', 'Short enough to read'],
+    weakExample: 'Be careful with customer data.',
+    strongExample: 'If my message contains a customer name, account number, or SSN, stop and tell me what to remove before you answer.',
+    exampleWhy: 'The strong rule says what to look for and what to do, so it works without you remembering to check.',
+    transferMove: 'Use your house rules in every AI conversation at work, starting with the rest of this course.',
+    proofToSave: 'Your saved house rules and the test prompt they caught.',
     reference: commonReference(
-      'AI as support, not authority',
+      'AI drafts; you decide',
       'Regulators focus on accountable use, validation, documentation, and human oversight when AI affects banking outcomes',
-      'The safest foundation-level habit is to ask what the tool is doing: drafting words, organizing inputs, checking a source, or influencing a decision. The closer the task gets to a customer, control, report, or regulated decision, the more review and approval it needs.',
-      'Pick one task from your week and write what AI may do and what the human must still decide.',
+      'AI is useful for drafting words and organizing information. The closer a task gets to a customer, a control, a report, or a regulated decision, the more a person has to check and own it. House rules keep that line visible in every conversation.',
+      'Run one of your own low-risk tasks through your guarded tool and read the draft line at the end.',
     ),
+    build: {
+      youWillHave: 'Your AI tool, set to warn you about customer data, mark every answer as a draft, and leave decisions to you.',
+      beforeYouStart: 'Open the AI tool your institution approves. If you are not sure which one that is, ask your manager first.',
+      promptLabel: 'House rules',
+      prompt: `Follow these rules in every conversation with me.
+
+1. Before you answer, check my message for customer or member information: names, account or card numbers, Social Security numbers, dates of birth, addresses, phone numbers, or loan details. If you find any, do not answer. List what you found and ask me to replace it with a placeholder such as [CUSTOMER] or [ACCOUNT].
+2. Treat what you write as a draft for me to check. End each answer with: "Draft. Check facts before use."
+3. If I ask you to decide something about a customer, a loan, a complaint, or a compliance matter, do not decide. Tell me what a person would need to know to decide it.
+4. If you are not sure something is true, say so. Do not guess.`,
+      steps: [
+        { title: 'Copy the house rules', body: 'Use the copy button. You will paste them once and they apply from then on.' },
+        { title: 'Save them where your tool keeps standing instructions', body: 'Look in settings for custom instructions, personal preferences, or personalization. If your tool has none, keep the rules in a note and paste them at the start of each new chat.' },
+        { title: 'Test them', body: 'Start a new chat and run the three test prompts below, one at a time. The names and numbers in them are made up.' },
+      ],
+      tests: [
+        { prompt: 'Rewrite for the branch team: the lobby closes at 3 p.m. Friday for carpet cleaning.', expect: 'An answer that ends with "Draft. Check facts before use."' },
+        { prompt: 'Draft a reply to Maria Delgado about the overdraft fee on account 4417-2290.', expect: 'No reply. The tool lists the name and the account number and asks you to remove them.' },
+        { prompt: 'Should we approve this loan? The applicant\'s debt-to-income ratio is 48 percent.', expect: 'No yes or no. A list of what a lender would need to decide.' },
+      ],
+      doneWhen: 'All three tests behave as described. If the second one gets a reply, the rules are not saved. Check the setting and test again.',
+      limits: 'House rules catch a mistake after you press send. They do not stop information reaching the tool. Your institution\'s data rules still come first.',
+      toolNote: 'ChatGPT: Settings, Personalization, Custom instructions. Claude: Settings, then the personal preferences box. Gemini: Saved info or a Gem. Microsoft 365 Copilot: check settings for custom instructions, or paste the rules at the start of each chat.',
+      verifiedOn: BUILD_VERIFIED_ON,
+      reviewBy: BUILD_REVIEW_BY,
+    },
   },
   {
     number: 2,
+    // Slug kept for saved progress. The module is now a build: a saved
+    // rewrite prompt the learner uses on a real internal message the same day.
     id: 'm2-low-risk-message-rewrite',
-    title: 'Rewrite a Low-Risk Message',
+    title: 'Build a Message Rewriter',
     pillar: 'awareness',
     estimatedMinutes: 10,
-    keyOutput: 'Rewritten Message',
-    mission: 'Use AI for one safe, visible workday win.',
-    plainLanguageConcept: 'A good first AI use case is a non-sensitive internal message. The AI improves clarity; you keep the facts and final judgment.',
+    keyOutput: 'Message Rewriter',
+    mission: 'Build a saved prompt that turns a messy internal note into a clear message, and send one today.',
+    plainLanguageConcept: 'A non-sensitive internal message is the safest first job for AI. The AI fixes the structure; you keep the facts and the final say.',
     bankingGuardrail: 'Strip names, account data, loan details, and confidential bank information before using AI.',
     guidanceSource: 'Interagency TPRM Guidance, NIST GenAI profile',
     tryTask: 'Rewrite a messy internal note so the action, owner, and deadline are clear.',
-    buildTask: 'Create a reusable rewrite prompt with a redaction rule and review note.',
-    saveArtifact: 'Rewritten Message + Rewrite Prompt',
+    buildTask: 'Save a reusable rewrite prompt, then use it on one real internal note.',
+    saveArtifact: 'Message Rewriter',
     visualModel: ['Redact', 'Rewrite', 'Review', 'Send'],
     reviewChecklist: ['Identifiers removed', 'Facts unchanged', 'Action first'],
     qualitySignals: ['Shorter than original', 'Clear owner', 'No invented details'],
     weakExample: 'Make this sound better: Mary Jones called about account 4412.',
     strongExample: 'Rewrite this redacted internal note. Do not add facts. Make the action, owner, and deadline clear.',
     exampleWhy: 'The strong prompt keeps the useful structure while removing sensitive identifiers.',
-    transferMove: 'Use the rewrite prompt on one non-sensitive internal message this week.',
-    proofToSave: 'Before/after message, redaction note, and final human edit.',
+    transferMove: 'Use the rewriter on one internal message before you leave today.',
+    proofToSave: 'Your saved rewrite prompt and one message you sent with it.',
     reference: commonReference(
       'The safest first win',
       'AI input handling and vendor/tool approval matter even when the task feels routine',
       'Internal message rewriting is useful because it is concrete and easy to review. It becomes risky only when the learner pastes information the tool is not approved to receive.',
       'Take one messy note, replace sensitive details with placeholders, and rewrite it under 120 words.',
     ),
+    build: {
+      youWillHave: 'A saved prompt that turns any messy internal note into a short, clear message with the action first.',
+      beforeYouStart: 'Find an internal email or note you need to send today. Nothing about customers or members.',
+      promptLabel: 'Message rewriter',
+      prompt: `Rewrite the note below as a short internal message for [audience, e.g. branch staff].
+
+Put the action in the first sentence. Say who does it and by when, if the note says. Keep every fact as written and add none. If the owner or the deadline is missing, write [OWNER?] or [DATE?] instead of guessing. Keep it under 120 words, in plain language.
+
+Note:
+[paste the note]`,
+      steps: [
+        { title: 'Copy the rewriter', body: 'Replace [audience] with who will read it. Keep the rest as it is.' },
+        { title: 'Save it under a name you will find', body: 'Call it "Message rewriter" so it is one click away next time.' },
+        { title: 'Run it on your note', body: 'Paste your note where it says [paste the note] and run it.' },
+        { title: 'Check it against your original', body: 'Every fact should match. Nothing should be new. Fill in any [OWNER?] or [DATE?] yourself.' },
+      ],
+      doneWhen: 'You have sent one real message written with your rewriter.',
+      toolNote: SAVE_IT_NOTE,
+      verifiedOn: BUILD_VERIFIED_ON,
+      reviewBy: BUILD_REVIEW_BY,
+    },
   },
   {
     number: 3,
     // id retains its original slug for backward compatibility; the module's
     // user-facing identity is the CORE prompt (Context, Objective, Resources,
-    // Expectations), matching the Build-phase CORE prompt wizard.
+    // Expectations), taught by building a meeting actions assistant.
     id: 'm3-spot-weak-ai-output',
-    title: 'Write a Prompt That Gets to the Core',
+    title: 'Build a Meeting Actions Assistant',
     pillar: 'awareness',
-    estimatedMinutes: 10,
-    keyOutput: 'CORE Prompt Card',
-    mission: 'Learn to write a prompt that gets useful, reviewable work back the first time.',
+    estimatedMinutes: 12,
+    keyOutput: 'Meeting Actions Assistant',
+    mission: 'Use the CORE structure to build an assistant that turns meeting notes into who does what by when.',
     plainLanguageConcept: 'A strong prompt names four things — Context, Objective, Resources, and Expectations. Vague prompts get vague answers.',
-    bankingGuardrail: 'Tell the AI to use only the source you provide, and keep customer data out of the prompt.',
+    bankingGuardrail: 'Tell the AI to use only the notes you provide, and keep customer details out of them.',
     guidanceSource: 'NIST AI RMF, NIST GenAI profile',
     tryTask: 'Rewrite a vague request into a CORE prompt: Context, Objective, Resources, Expectations.',
-    buildTask: 'Build a reusable CORE prompt card with placeholders and a what-not-to-paste rule.',
-    saveArtifact: 'CORE Prompt Card',
+    buildTask: 'Save the meeting actions prompt and run it on notes from a real meeting.',
+    saveArtifact: 'Meeting Actions Assistant',
     visualModel: ['Context', 'Objective', 'Resources', 'Expectations'],
-    reviewChecklist: ['Context named', 'Objective is specific', 'Only the provided source is used', 'Expectations and format set'],
-    qualitySignals: ['Uses only the provided source', 'Placeholders for variable inputs', 'No customer data in the prompt'],
-    weakExample: 'Write something about the new fee.',
-    strongExample: 'Using only the fee schedule below, draft a 3-sentence member email that explains the new fee and the waiver options in plain language.',
-    exampleWhy: 'The strong prompt sets context, the objective, the only source to use, and the output shape — so the answer is usable without rework.',
-    transferMove: 'Save one recurring request as a CORE prompt card you can reuse next week.',
-    proofToSave: 'A reusable CORE prompt card with placeholders and a what-not-to-paste rule.',
+    reviewChecklist: ['Every row has a source line', 'Nothing added that is not in the notes', 'Missing owners flagged'],
+    qualitySignals: ['Uses only the notes', 'Owner and date on every action', 'Checkable in a minute'],
+    weakExample: 'Summarize these meeting notes.',
+    strongExample: 'Using only the notes below, list every action with its owner, due date, and the line it came from.',
+    exampleWhy: 'The strong prompt names the source, the output, and a way to check it, so the answer is usable without rework.',
+    transferMove: 'Run the assistant on your next meeting\'s notes and send the list the same day.',
+    proofToSave: 'Your saved assistant prompt and one action list you sent.',
     reference: commonReference(
       'A clear prompt is a control',
       'A prompt that names context, objective, the approved source, and the output shape is easier to review and safer to reuse',
-      'Most foundation learners do not need model theory first. They need a repeatable structure — Context, Objective, Resources, Expectations — that turns a vague ask into reviewable, reusable work.',
+      'Most learners do not need model theory first. They need a repeatable structure — Context, Objective, Resources, Expectations — that turns a vague ask into reviewable, reusable work.',
       'Rewrite one vague request into a CORE prompt that names the context, the objective, the only source to use, and the expected format.',
     ),
+    build: {
+      youWillHave: 'An assistant that turns your meeting notes into a list of who does what by when, with the line each item came from.',
+      beforeYouStart: 'Open the notes from your last internal meeting. Staff names are fine. Replace any customer or member name with [CUSTOMER].',
+      promptLabel: 'Meeting actions assistant',
+      prompt: `You turn internal meeting notes into an action list for a community bank team.
+
+Context: notes from an internal [team name] meeting. There are no customer details in them.
+Objective: list every action item with an owner and a due date.
+Resources: use only the notes below. Do not add actions that are not in the notes.
+Expectations: a table with the columns Action, Owner, Due, and Source line (the words in the notes it came from). Below the table, list any action with no owner or no date under "Needs an owner."
+
+Notes:
+[paste the notes]`,
+      steps: [
+        { title: 'Read the four labels', body: 'Context says what the notes are. Objective says what you want. Resources says what to use and nothing else. Expectations says what the answer looks like. That is the CORE structure, and you will use it in every build after this one.' },
+        { title: 'Copy the assistant and save it', body: 'Replace [team name], then save it under the name "Meeting actions".' },
+        { title: 'Run it on your notes', body: 'Paste your notes where it says [paste the notes] and run it.' },
+        { title: 'Check the source lines', body: 'Every row needs a source line you can find in your notes. If a row has none, the AI made it up. Delete the row.' },
+      ],
+      doneWhen: 'You have sent the action list from a real meeting to the people on it.',
+      toolNote: SAVE_IT_NOTE,
+      verifiedOn: BUILD_VERIFIED_ON,
+      reviewBy: BUILD_REVIEW_BY,
+    },
   },
   {
     number: 4,
@@ -182,7 +300,7 @@ export const FOUNDATION_MICRO_MODULES: readonly FoundationMicroModule[] = [
     // SAME framework to a task the learner actually owns. Same four parts (CORE),
     // distinct purpose — no competing Context/Task/Format/Rules schema.
     mission: 'Apply the CORE structure to build your own first reusable prompt for a task you actually do.',
-    plainLanguageConcept: 'Module 3 taught the four CORE parts on sample scenarios. Now use the same four — Context, Objective, Resources, Expectations — on one real, recurring task from your own role.',
+    plainLanguageConcept: 'Module 3 used the four CORE parts to build a meeting assistant. Now use the same four — Context, Objective, Resources, Expectations — on one real, recurring task from your own role.',
     bankingGuardrail: 'Use placeholders for sensitive inputs and add a review rule directly inside the prompt.',
     guidanceSource: 'NIST GenAI profile, Treasury AI financial services report',
     tryTask: 'Compare a weak one-line prompt with a CORE-structured prompt for your own task.',

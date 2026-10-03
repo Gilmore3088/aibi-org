@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Safe AI Use Guide - The AI Banking Institute</title>
+<link rel="stylesheet" href="_brand.css">
+<style>
+  .page p { font-size: 10pt; line-height: 1.5; }
+  .page h2 { margin-bottom: 4pt; }
+  .page .dek { color: var(--slate-600); margin: 0 0 12pt; }
+  .contents { list-style: none; margin: 18pt 0 0; padding: 0; }
+  .contents li { display: flex; gap: 14pt; padding: 6pt 0; border-top: 1px solid rgba(255, 255, 255, 0.18); font-size: 12pt; }
+  .contents span { color: var(--gold); font-family: ui-monospace, Menlo, monospace; font-size: 10pt; padding-top: 2pt; }
+  table td, table th { font-size: 8.4pt; line-height: 1.35; padding: 5pt 8pt; }
+  .page .callout { padding-top: 7pt; padding-bottom: 7pt; margin: 8pt 0; }
+  .page .callout p { font-size: 9.2pt; margin: 2pt 0 0; }
+  .q { border: 1px solid var(--slate-200); border-left: 3pt solid var(--gold); border-radius: 6pt; padding: 6pt 10pt; margin: 0 0 5pt; break-inside: avoid; page-break-inside: avoid; }
+  .q p { margin: 2pt 0; font-size: 9.4pt; }
+  .q .q-n { font-family: ui-monospace, Menlo, monospace; color: var(--gold-deep); font-size: 8.5pt; }
+  .q strong { color: var(--ink); }
+  .score { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6pt; margin: 4pt 0 0; }
+  .score div { font-size: 7.8pt; line-height: 1.35; color: var(--slate-600); border-top: 1px solid var(--slate-200); padding-top: 4pt; }
+  .score b { display: block; color: var(--ink); font-family: ui-monospace, Menlo, monospace; }
+  .bands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6pt; margin: 6pt 0 8pt; }
+  .bands div { border: 1px solid var(--slate-200); border-radius: 6pt; padding: 6pt 8pt; font-size: 8.6pt; }
+  .bands b { display: block; font-size: 12pt; color: var(--ink); }
+  .phase { display: grid; grid-template-columns: 70pt 1fr 52pt; gap: 8pt; padding: 7pt 0; border-top: 1px solid var(--slate-200); break-inside: avoid; page-break-inside: avoid; }
+  .phase .n { font-family: ui-monospace, Menlo, monospace; font-size: 8.5pt; color: var(--gold-deep); }
+  .phase .w { font-size: 8.5pt; color: var(--slate-500); text-align: right; }
+  .phase p { margin: 0 0 3pt; font-size: 9.2pt; }
+  .phase .out { color: var(--ink); font-size: 8.6pt; }
+  .defs dt { font-weight: 600; font-size: 9.6pt; margin-top: 7pt; }
+  .defs dd { margin: 1pt 0 0; font-size: 9pt; color: var(--slate-600); line-height: 1.45; }
+  .defs .src { font-family: ui-monospace, Menlo, monospace; font-size: 7.6pt; color: var(--gold-deep); }
+  .checklist { margin: 4pt 0 10pt 14pt; }
+  .checklist li { font-size: 9.2pt; margin: 2pt 0; }
+  .basis { font-size: 8.2pt !important; color: var(--slate-500); border-top: 1px solid var(--slate-200); padding-top: 6pt; margin-top: 10pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="seal">
+    <div class="seal-mark"><span class="bk">[</span><span class="ai">A</span><span class="si">i</span><span class="bk">]</span></div>
+    <div class="seal-text">
+      <div class="seal-name">The AI Banking Institute</div>
+      <div class="seal-tag">Turning Bankers into Builders</div>
+    </div>
+  </div>
+  <div>
+    <div class="kicker">Free governance guide · v1.1 · revised October 2026</div>
+    <h1>Safe AI Use Guide</h1>
+    <p class="lede">Six chapters for community banks and credit unions. Written against SR 26-2 (the April 2026 model risk guidance that superseded SR 11-7), the Interagency TPRM Guidance, ECOA / Reg B, and the AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC, February 2026).</p>
+    <ol class="contents">
+      <li><span>01</span>The never-paste list</li>
+      <li><span>02</span>Private cloud vs. public model</li>
+      <li><span>03</span>Model risk discipline for generative AI</li>
+      <li><span>04</span>Vendor evaluation scoring</li>
+      <li><span>05</span>Shadow AI discovery</li>
+      <li><span>06</span>Review readiness</li>
+    </ol>
+  </div>
+  <div class="footer-row">
+    <div>Not legal advice. For governance guidance only. Consult your counsel for institution-specific applicability.</div>
+    <div>AIBankingInstitute.com</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-kicker">01 / 06 · Boundary</div>
+  <h2>The never-paste list.</h2>
+  <p class="dek">Six categories of data that must never go into a public large language model, and the reason behind each.</p>
+
+  <div class="callout">
+    <div class="label">Standing rule</div>
+    <p>A public LLM is a third party. Anything typed into its prompt leaves your security perimeter. For a category not listed here, apply the same test: would you email this to an unknown vendor? If not, do not paste it.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Data category</th><th>Common examples</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Member / customer PII</strong></td><td>Names, SSNs, account numbers, dates of birth, addresses, phone numbers, email addresses</td><td>GLBA (Title V) safeguards and privacy requirements limit disclosure of nonpublic personal information. Pasting it into a public LLM is an uncontrolled third-party disclosure.</td></tr>
+      <tr><td><strong>Loan application data</strong></td><td>Income, employment history, credit scores, debt schedules, collateral values</td><td>ECOA / Reg B, FCRA, and fair lending obligations attach to this data. A tool that informs credit decisions is a model; manage it with the model risk discipline in SR 26-2.</td></tr>
+      <tr><td><strong>Non-public supervisory information</strong></td><td>CAMELS ratings, MRAs / MRIAs, examination reports, supervisory letters</td><td>Confidential supervisory information belongs to the agency, and agency rules restrict its disclosure (e.g., FRB 12 C.F.R. Part 261; OCC 12 C.F.R. Part 4; FDIC 12 C.F.R. Part 309; NCUA 12 C.F.R. Part 792).</td></tr>
+      <tr><td><strong>BSA / AML records</strong></td><td>SAR narratives, CTR details, OFAC screening results, beneficial ownership records</td><td>SAR confidentiality (31 U.S.C. § 5318(g)) prohibits disclosing a SAR or information that would reveal one. Penalties apply.</td></tr>
+      <tr><td><strong>Internal audit &amp; legal</strong></td><td>Draft audit findings, attorney-client communications, litigation-hold materials</td><td>Disclosure to a third party can waive privilege. Public LLM terms generally do not preserve attorney-client or work-product protection.</td></tr>
+      <tr><td><strong>Vendor contracts &amp; pricing</strong></td><td>Core processor agreements, fintech contracts, negotiated rate schedules</td><td>Most contracts carry confidentiality clauses. Disclosure to a public LLM may breach them.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Practical staff test</div>
+    <p>Before pasting, ask: does this contain a real person's information, a real account's data, or anything I received under an expectation of confidentiality? If yes to any, stop. Use only synthetic or fully anonymized data for AI-assisted drafting.</p>
+  </div>
+  <p class="basis">Basis: Gramm-Leach-Bliley Act, Title V; ECOA / Regulation B (12 C.F.R. Part 1002); BSA SAR confidentiality (31 U.S.C. § 5318(g)); agency confidential supervisory information rules as listed above.</p>
+</section>
+
+<section class="page">
+  <div class="section-kicker">02 / 06 · Boundary</div>
+  <h2>Private cloud vs. public model.</h2>
+  <p class="dek">Five questions every staff member runs before entering data into any AI tool. Stop at the first answer that sets the tier.</p>
+  <p>Not every use needs private infrastructure. These questions set the minimum deployment tier from data sensitivity, regulatory exposure, and how the output will be used.</p>
+
+  <div class="q"><p class="q-n">Q1</p><p><strong>Does the task require any data from the never-paste list (Chapter 1)?</strong></p><p>YES → Private inference only: approved private cloud or on-premises deployment. Public models prohibited. NO → Q2.</p></div>
+  <div class="q"><p class="q-n">Q2</p><p><strong>Will the output make or support a credit, compliance, or hiring decision?</strong></p><p>YES → Private inference required. Treat the output as model output: validate it, document it, and have it independently reviewed. SR 26-2 leaves generative AI outside its formal scope, so record the controls you apply. NO → Q3.</p></div>
+  <div class="q"><p class="q-n">Q3</p><p><strong>Do the vendor's terms permit training on submitted data?</strong></p><p>YES → Public model not permitted for internal work. Evaluate an enterprise tier with a training opt-out, or private deployment. NO, opt-out confirmed in writing → Q4.</p></div>
+  <div class="q"><p class="q-n">Q4</p><p><strong>Is the data classified Internal Only?</strong></p><p>YES → Enterprise-licensed tier required (e.g., Microsoft 365 Copilot or Google Workspace Gemini with data-loss controls). Consumer and free tiers prohibited. NO, the data is public or synthetic → Q5.</p></div>
+  <div class="q"><p class="q-n">Q5</p><p><strong>Is the tool on the institution's approved AI inventory?</strong></p><p>YES, approved tool and public data only → Public model permitted. Record the use in the AI use case inventory. NO → Do not use. Submit it for vendor evaluation (Chapter 4) first.</p></div>
+
+  <p class="basis">Basis: SR 26-2, Revised Guidance on Model Risk Management (FRB / OCC / FDIC, April 2026; supersedes SR 11-7). AIEOG AI Lexicon (US Treasury / FBIIC / FSSCC, February 2026): "AI use case inventory".</p>
+</section>
+
+<section class="page">
+  <div class="section-kicker">03 / 06 · Model risk</div>
+  <h2>Model risk discipline for generative AI.</h2>
+  <p class="dek">SR 26-2 replaced SR 11-7 in April 2026. Here is how its disciplines map to the AI tools your staff actually use.</p>
+
+  <div class="callout">
+    <div class="label">Where the guidance stands</div>
+    <p>SR 26-2 is non-binding, and generative and agentic AI sit outside its formal scope while the agencies gather input. That is a gap, not a pass. Per GAO-25-107197 (May 2025), there is no comprehensive AI-specific banking regulation; oversight runs through existing frameworks: model risk guidance, the Interagency TPRM Guidance for vendors, and ECOA / Reg B for credit. The AIEOG AI Lexicon supplies the shared vocabulary.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Model risk discipline</th><th>Generative AI equivalent</th><th>Action for your framework</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Development, implementation, and use</strong></td><td>Selecting and deploying an AI system</td><td>Document the intended use, data inputs, and business process before deployment. Assign an owner.</td></tr>
+      <tr><td><strong>Validation</strong></td><td>Output accuracy and hallucination testing</td><td>Set a challenge process. For high-stakes outputs (credit, compliance), a person reviews AI-generated content before it is used.</td></tr>
+      <tr><td><strong>Ongoing monitoring</strong></td><td>Output quality drift</td><td>Track output quality over time. Re-evaluate when the vendor updates the underlying model.</td></tr>
+      <tr><td><strong>Model inventory</strong></td><td>AI use case inventory</td><td>Keep a living register of every AI tool in use: data inputs, business purpose, risk tier, owner. The AIEOG AI Lexicon calls this the "AI use case inventory".</td></tr>
+      <tr><td><strong>Third-party model risk</strong></td><td>Vendor and API-based AI services</td><td>Apply the Interagency TPRM Guidance to every AI vendor: security attestation (e.g., SOC 2 Type II), data retention terms, right to audit.</td></tr>
+      <tr><td><strong>Sensitivity and stress testing</strong></td><td>Adversarial prompt and red-team testing</td><td>Before production use in lending or compliance, test for prompt injection, jailbreaks, and data leakage.</td></tr>
+      <tr><td><strong>Independent review</strong></td><td>AI governance committee</td><td>A cross-functional committee (IT, Compliance, Risk, Operations, Audit) on a quarterly cadence, reporting to the board.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="basis">Sources: SR 26-2, Revised Guidance on Model Risk Management (FRB / OCC / FDIC, April 17, 2026; supersedes SR 11-7, 2011). GAO-25-107197, US Government Accountability Office (May 2025). AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC (February 2026).</p>
+</section>
+
+<section class="page">
+  <div class="section-kicker">04 / 06 · Vendors</div>
+  <h2>Vendor evaluation scoring.</h2>
+  <p class="dek">Five questions, scored 0–3 each, for a maximum of 15. Passing score: 9. Below 9, do not deploy without a remediation plan and board notification.</p>
+
+  <div class="bands">
+    <div><b>15</b>Approved</div>
+    <div><b>12–14</b>Approved with conditions</div>
+    <div><b>9–11</b>Conditional: remediation required</div>
+    <div><b>&lt; 9</b>Do not deploy</div>
+  </div>
+
+  <div class="q"><p class="q-n">Q1 · Data handling and retention</p><p><strong>Does the vendor contractually commit to no training on your data, with a documented retention period inside your TPRM policy?</strong></p>
+    <div class="score"><div><b>3</b>Written opt-out; data deleted within 30 days</div><div><b>2</b>Opt-out available; retention unclear</div><div><b>1</b>No opt-out; data retained for model improvement</div><div><b>0</b>Terms silent on training or retention</div></div></div>
+  <div class="q"><p class="q-n">Q2 · Security certifications</p><p><strong>SOC 2 Type II, ISO 27001, or FedRAMP, current within 12 months?</strong></p>
+    <div class="score"><div><b>3</b>SOC 2 Type II current; penetration test available</div><div><b>2</b>SOC 2 Type I or ISO 27001 only</div><div><b>1</b>Certification in progress</div><div><b>0</b>No third-party certification</div></div></div>
+  <div class="q"><p class="q-n">Q3 · Right to audit and subprocessors</p><p><strong>Is there a right-to-audit clause, with material subprocessors disclosed and held to equivalent controls?</strong></p>
+    <div class="score"><div><b>3</b>Audit right confirmed; subprocessors listed and auditable</div><div><b>2</b>Questionnaire only; subprocessors disclosed</div><div><b>1</b>No audit right; partial disclosure</div><div><b>0</b>Contract silent; not disclosed</div></div></div>
+  <div class="q"><p class="q-n">Q4 · Concentration risk</p><p><strong>What share of your AI-dependent workflows would this vendor carry?</strong></p>
+    <div class="score"><div><b>3</b>Under 25%; redundancy plan exists</div><div><b>2</b>25–50%; backup vendor identified</div><div><b>1</b>Over 50%; no fallback plan</div><div><b>0</b>Single point of failure</div></div></div>
+  <div class="q"><p class="q-n">Q5 · Explainability and human review</p><p><strong>For outputs used in decisions, does the system explain its reasoning, and is human review required before action?</strong></p>
+    <div class="score"><div><b>3</b>Explanations available; review required by design</div><div><b>2</b>Explanations on request; review optional</div><div><b>1</b>Limited explainability; review not enforced</div><div><b>0</b>Black-box output; no review step</div></div></div>
+
+  <p class="basis">Basis: Interagency Guidance on Third-Party Relationships: Risk Management (OCC / FRB / FDIC, June 2023). AIEOG AI Lexicon terms: human-in-the-loop, explainability, third-party AI risk (February 2026).</p>
+</section>
+
+<section class="page">
+  <div class="section-kicker">05 / 06 · Discovery</div>
+  <h2>Shadow AI discovery.</h2>
+  <p class="dek">A five-phase method to find the AI tools staff already use and bring them inside governance without killing adoption.</p>
+
+  <div class="callout">
+    <div class="label">Why this matters now</div>
+    <p>Gartner Peer Community data cited by Jack Henry (2025) found 55% of financial institutions had no AI governance framework and 57% reported team-level skill gaps. The usual cause: staff adopted tools before governance existed. A punitive search drives shadow AI further underground. This method surfaces tools through trust, not surveillance.</p>
+  </div>
+
+  <div class="phase"><div class="n">Phase 1</div><div><p><strong>Anonymous discovery survey.</strong> Ask all staff: "What AI tools do you use in your work, including personal tools?" Guarantee that management will not review individual responses. Without that safety, people underreport.</p><p class="out">Output: raw inventory of tools in use, by department.</p></div><div class="w">Week 1</div></div>
+  <div class="phase"><div class="n">Phase 2</div><div><p><strong>DNS / proxy log review.</strong> Pull 30 days of outbound DNS or proxy logs. Search for known AI domains (openai.com, claude.ai, gemini.google.com, perplexity.ai, and newer tools). Compare against the approved list.</p><p class="out">Output: tools in use but not on the approved inventory.</p></div><div class="w">Weeks 1–2</div></div>
+  <div class="phase"><div class="n">Phase 3</div><div><p><strong>Department interviews.</strong> Twenty minutes with each department head: "Walk me through a week of work. Where do you use AI?" Start with productivity, not compliance.</p><p class="out">Output: use-case map per department; high-risk workflows identified.</p></div><div class="w">Weeks 2–3</div></div>
+  <div class="phase"><div class="n">Phase 4</div><div><p><strong>Risk classification.</strong> Run each tool through the Chapter 2 questions. Tools whose data requires private inference but that run on public models are first-priority remediation.</p><p class="out">Output: risk-tiered shadow AI register.</p></div><div class="w">Week 3</div></div>
+  <div class="phase"><div class="n">Phase 5</div><div><p><strong>Governance integration.</strong> Score each tool with Chapter 4. At 9 or above and within approved data tiers, add it to the AI use case inventory. Below 9, tell users, offer an approved alternative, and document the decision.</p><p class="out">Output: updated inventory; closure notice to affected staff.</p></div><div class="w">Week 4</div></div>
+
+  <p class="basis">Data: "Getting Started in AI," Jack Henry &amp; Associates (2025), citing Gartner Peer Community research. Figures as published in 2025.</p>
+</section>
+
+<section class="page">
+  <div class="section-kicker">06 / 06 · Review readiness</div>
+  <h2>Review readiness.</h2>
+  <p class="dek">What to have ready for an audit, risk review, or exam conversation, in the vocabulary of the AIEOG AI Lexicon.</p>
+
+  <div class="callout">
+    <div class="label">The shared vocabulary</div>
+    <p>The AIEOG AI Lexicon (US Treasury, FBIIC, FSSCC, February 2026) gives the financial sector a shared AI vocabulary. It is non-binding. Using its terms in your inventory, policy, and reports makes the program easier for any reviewer to follow.</p>
+  </div>
+
+  <p class="section-kicker" style="margin-top:10pt">Working definitions, aligned to the AIEOG AI Lexicon</p>
+  <dl class="defs">
+    <dt>AI use case inventory</dt><dd>A living register of the AI systems the institution uses or plans to use, with business purpose, data inputs, risk tier, validation status, and owner for each.</dd>
+    <dt>AI governance</dt><dd>The policies, procedures, and controls used to manage AI from deployment to retirement, including oversight, accountability, and audit trail.</dd>
+    <dt>Hallucination</dt><dd>AI output that is incorrect or fabricated but presented with apparent confidence. Any high-stakes output used in decisions needs a plan for catching it.</dd>
+    <dt>Human-in-the-loop (HITL)</dt><dd>A design in which a person reviews and approves AI output before it is acted on. For regulated decisions (credit, compliance), treat it as the baseline.</dd>
+    <dt>Explainability</dt><dd>How well the reasoning behind an output can be stated in plain language. Under ECOA / Reg B, an adverse action notice needs specific reasons; "the model said so" is not one.</dd>
+    <dt>Third-party AI risk</dt><dd>Risk from AI systems built, run, or hosted by a vendor. Manage it under the Interagency TPRM Guidance: due diligence, contract protections, monitoring, concentration analysis.</dd>
+    <dt>Model risk <span class="src">SR 26-2 / AIEOG cross-reference</span></dt><dd>The potential for harm from decisions based on incorrect or misused model output. For generative AI it includes hallucinated output, prompt injection, and behavior changes after the vendor updates the model.</dd>
+    <dt>AI bias</dt><dd>Systematic unfairness in AI output from training data, design, or deployment context. Fair lending review asks whether AI-assisted underwriting produces disparate impact under ECOA / Reg B.</dd>
+  </dl>
+</section>
+
+<section class="page">
+  <div class="section-kicker">06 / 06 · Continued</div>
+  <h2>The review-ready packet.</h2>
+  <p>Keep a current version and a dated history of each item, so the program shows it has been operating, not assembled for the review.</p>
+  <ul class="checklist">
+    <li>AI use case inventory: current, dated, owner assigned</li>
+    <li>AI governance policy: board-approved, reviewed annually</li>
+    <li>Vendor evaluation record for each AI tool (Chapter 4 scorecard or equivalent)</li>
+    <li>Model risk mapping for AI tools (Chapter 3 framework or equivalent)</li>
+    <li>Shadow AI discovery log: at least one cycle completed</li>
+    <li>Human-review documentation for any AI-assisted lending or compliance workflow</li>
+    <li>Hallucination incident log, even if empty; the log shows the control exists</li>
+    <li>Board presentation on AI governance within the past 12 months</li>
+    <li>Staff training records: AI acceptable-use training by role</li>
+    <li>Adverse action notice review: AI-generated reasoning is never cited verbatim</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">Board reporting</div>
+    <p>We recommend a quarterly AI governance summary to the full board: (1) active AI tools by department and risk tier; (2) vendor evaluation changes; (3) shadow AI found and remediated; (4) staff training completion; (5) any incidents involving AI output. Five slides, twenty minutes.</p>
+  </div>
+
+  <p class="basis">Sources: AIEOG AI Lexicon, US Treasury / FBIIC / FSSCC (February 2026). GAO-25-107197, US Government Accountability Office (May 2025): no comprehensive AI-specific banking regulation; model risk guidance (SR 26-2), the Interagency TPRM Guidance, and ECOA / Reg B apply. Cornerstone Advisors, AI Playbook for Banks and Credit Unions (2025). This guide is governance guidance, not legal advice. Consult your counsel and primary federal regulator for institution-specific requirements. The AI Banking Institute · AIBankingInstitute.com · v1.1, revised October 2026.</p>
+</section>
+
+</body>
+</html>

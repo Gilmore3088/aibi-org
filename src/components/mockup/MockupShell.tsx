@@ -7,27 +7,10 @@
  */
 
 import type { ReactNode } from 'react';
-import { SiteHeader, Section, SectionHead, EyebrowChip, CtaBand } from './index';
+import { SiteHeader } from './index';
 import { Button, ArrowGlyph } from './Button';
 import type { CtaAction } from './CtaBand';
 
-const ChipBookIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    width={16}
-    height={16}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-  </svg>
-);
 
 export interface MockupShellBlock {
   /** Section kicker. */
@@ -63,6 +46,15 @@ export interface MockupShellProps {
   ctaBand?: { kicker?: string; heading: ReactNode; body?: ReactNode; actions: CtaAction[] };
 }
 
+/** "Security & Governance" → "security-governance": the hero's command line. */
+function toCmd(eyebrow: string): string {
+  return eyebrow
+    .toLowerCase()
+    .replace(/&/g, ' ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 export function MockupShell({
   activePath,
   cta,
@@ -75,33 +67,23 @@ export function MockupShell({
   ctaBand,
 }: MockupShellProps) {
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page">
       <SiteHeader activePath={activePath} cta={cta} />
 
-      <section className="mk-hero">
-        <div className="mk-deco">
-          <div className="mk-deco-ring" />
-          <div className="mk-deco-blur" />
-        </div>
-        <div className="mk-container mk-hero-inner">
+      <section className="ax-hero">
+        <div className={`mk-container${heroAside ? ' ax-hero-split' : ''}`}>
           <div>
-            <EyebrowChip icon={<ChipBookIcon />}>{eyebrow}</EyebrowChip>
-            <h1>{title}</h1>
+            <p className="ax-cmd">{toCmd(eyebrow)}</p>
+            <h1 className="ax-display">{title}</h1>
             {/* div, not p — lede is a ReactNode slot that may contain
                 block-level children (<ul>, <ol>, <details>). A <p> wrapper
                 caused a hydration error on /about ("<ul> cannot be a
-                descendant of <p>"), which surfaced as the red "1 error"
-                toast in the audit. */}
-            <div className="mk-lede">{lede}</div>
+                descendant of <p>"). */}
+            <div className="ax-lede">{lede}</div>
             {heroActions && heroActions.length > 0 && (
-              <div className="mk-ctas">
+              <div className="ax-actions">
                 {heroActions.map((a) => (
-                  <Button
-                    key={a.href + a.label}
-                    variant={a.variant ?? 'gold'}
-                    size="lg"
-                    href={a.href}
-                  >
+                  <Button key={a.href + a.label} variant={a.variant ?? 'gold'} size="lg" href={a.href}>
                     {a.label}
                     {a.variant !== 'ghost-dark' && <ArrowGlyph />}
                   </Button>
@@ -113,20 +95,37 @@ export function MockupShell({
         </div>
       </section>
 
-      {sections.map((s, i) => (
-        <Section key={i} variant="std" surface={s.surface ?? 'cream'}>
-          <SectionHead kicker={s.kicker} heading={s.heading} lede={s.lede} />
-          {s.body}
-        </Section>
-      ))}
+      <main>
+        {sections.map((s, i) => (
+          <section key={i} className={`ax-section ax-light ax-shell-block${s.surface === 'white' ? ' is-paper' : ''}`}>
+            <div className="mk-container">
+              <div className="ax-section-head">
+                {s.kicker && <p className="ax-k">{s.kicker}</p>}
+                <h2 className="ax-display">{s.heading}</h2>
+                {s.lede && <div className="ax-shell-lede">{s.lede}</div>}
+              </div>
+              {s.body}
+            </div>
+          </section>
+        ))}
+      </main>
 
       {ctaBand && (
-        <CtaBand
-          kicker={ctaBand.kicker}
-          heading={ctaBand.heading}
-          body={ctaBand.body}
-          actions={ctaBand.actions}
-        />
+        <section className="ax-section ax-close">
+          <div className="mk-container">
+            {ctaBand.kicker && <p className="ax-k">{ctaBand.kicker}</p>}
+            <h2 className="ax-display">{ctaBand.heading}</h2>
+            {ctaBand.body && <p className="ax-muted">{ctaBand.body}</p>}
+            <div className="ax-actions">
+              {ctaBand.actions.map((a, i) => (
+                <Button key={a.href + a.label} variant={a.variant ?? (i === 0 ? 'gold' : 'ghost-dark')} size="lg" href={a.href}>
+                  {a.label}
+                  {(a.variant ?? (i === 0 ? 'gold' : 'ghost-dark')) === 'gold' && <ArrowGlyph />}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
     </div>
   );

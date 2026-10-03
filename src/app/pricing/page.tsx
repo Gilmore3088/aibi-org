@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowGlyph, Button, SiteHeader } from '@/components/mockup';
-import { foundationDurationLabel } from '@content/courses/foundation-program';
+import { AxHero, AxSection } from '@/components/ax';
+import { INVENTORY_ROWS } from '@/components/ax/InventoryPreview';
+import { FOUNDATION_MICRO_MODULES, foundationDurationLabel } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
@@ -62,32 +65,33 @@ const TIERS = [
   },
 ] as const;
 
-const PATH_STEPS = [
-  ['Snapshot', 'Free start'],
-  ['Report', 'Written plan'],
-  ['Foundation', 'Individual capability'],
-  ['Rollout', 'Team implementation'],
-] as const;
-
 const COMPARISON_ROWS = [
   {
     need: 'Where should I start?',
     option: 'Snapshot',
+    href: '/assessment/take',
+    price: 'Free',
     outcome: 'Fast score and recommended path',
   },
   {
     need: 'What is our readiness profile?',
     option: 'In-Depth Assessment',
+    href: '/assessment/in-depth',
+    price: '$99',
     outcome: 'Written diagnostic and 90-day action register',
   },
   {
     need: 'How do I build practical AI skill?',
     option: 'Foundation',
+    href: '/courses/foundation/program/purchase',
+    price: '$295',
     outcome: 'Course, templates, work products, certificate',
   },
   {
     need: 'How do we roll this out with a team?',
     option: 'Institution Rollout',
+    href: '/for-institutions',
+    price: 'From $199/seat',
     outcome: 'Scoped cohort plan, reporting, support',
   },
 ] as const;
@@ -119,75 +123,90 @@ const EMPHASIZED_CARD_TERMS = [
   },
 ] as const;
 
+// What each plan actually hands you, shown rather than described: a page of
+// the sample report, a page of the real playbook, the opening modules, and
+// the inventory the rollout fills in.
+const TIER_ART = [
+  <figure key="snapshot" className="ax-tier-page">
+    <Image src="/downloads/covers/sample-readiness-report-p2.jpg" alt="Sample readiness report: score, tier and top gap (illustrative data)" width={640} height={828} sizes="320px" />
+  </figure>,
+  <figure key="report" className="ax-tier-page">
+    <Image src="/downloads/covers/in-depth-playbook-p5.jpg" alt="In-Depth playbook page: choose your 90-day path" width={700} height={906} sizes="320px" />
+  </figure>,
+  <div key="foundation" className="ax-tier-log" aria-label="First Foundation modules">
+    {FOUNDATION_MICRO_MODULES.slice(0, 4).map((m) => (
+      <p key={m.id}>
+        <span>{String(m.number).padStart(2, '0')}</span>
+        {m.title}
+      </p>
+    ))}
+    <p className="ax-tier-more">+ {FOUNDATION_MICRO_MODULES.length - 4} more modules</p>
+  </div>,
+  <div key="rollout" className="ax-tier-sheet" aria-label="AI use-case inventory rows">
+    <p className="ax-tier-sheet-bar">AI-Use-Case-Inventory.xlsx</p>
+    {INVENTORY_ROWS.map((row) => (
+      <p key={row[2]}>
+        <span>{row[2]}</span>
+        <em>{row[4]}</em>
+      </p>
+    ))}
+    <p className="ax-tier-more">one row per workflow, per team</p>
+  </div>,
+];
+
 export default function PricingPage() {
   return (
-    <div className="mockup-scope">
+    <div className="mockup-scope ax-page">
       <SiteHeader activePath="/pricing" cta={{ label: 'Start free', href: '/assessment/take' }} />
-      <main className="mk-pricing-page">
-        <section className="mk-pricing-hero">
-          <div className="mk-pricing-hero-copy">
-            <p className="mk-k">Pricing</p>
-            <h1>Choose your AI banking path.</h1>
-            <p>
-              Start with a free readiness snapshot. Upgrade when you need a
-              written plan, reusable work products, or a team rollout.
-            </p>
-            <div className="mk-pricing-hero-actions">
+      <main>
+        <AxHero
+          cmd="pricing --paths snapshot,report,foundation,rollout"
+          title="Choose your AI banking path."
+          lede="Start with a free readiness snapshot. Upgrade when you need a written plan, reusable work products, or a team rollout."
+          actions={
+            <>
               <Button variant="gold" size="lg" href="/assessment/take">
                 Start free <ArrowGlyph />
               </Button>
               <Button variant="ghost-dark" size="lg" href="#compare">
                 Compare plans
               </Button>
+            </>
+          }
+        />
+
+        <section className="ax-section ax-light" aria-label="Pricing options">
+          <div className="mk-container">
+            <div className="ax-tiers">
+              {TIERS.map((tier, index) => (
+                <article key={tier.name} className={`ax-tier${tier.name === 'AiBI Foundation' ? ' is-featured' : ''}`}>
+                  <div className="ax-tier-art">{TIER_ART[index]}</div>
+                  <p className="ax-k ax-gold">{tier.badge}</p>
+                  <h2>{tier.name}</h2>
+                  <p className="ax-plan-price">
+                    <strong className={tier.price.length > 6 ? 'is-long' : undefined}>{tier.price}</strong>
+                    <span>{tier.cadence}</span>
+                  </p>
+                  <p className="ax-k">Best for</p>
+                  <p className="ax-plan-best">{tier.bestFor}</p>
+                  <p className="ax-k">You get</p>
+                  <ul className="ax-checklist">
+                    {tier.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                  <Link href={tier.href} className="ax-tier-cta">
+                    {tier.action} <span aria-hidden="true">→</span>
+                  </Link>
+                </article>
+              ))}
             </div>
           </div>
-
-          <div className="mk-pricing-path" aria-label="Pricing path">
-            {PATH_STEPS.map(([name, outcome], index) => (
-              <div key={name} className="mk-pricing-path-step">
-                <span>{index + 1}</span>
-                <strong>{name}</strong>
-                <em>{outcome}</em>
-              </div>
-            ))}
-          </div>
         </section>
 
-        <section className="mk-pricing-tier-grid" aria-label="Pricing options">
-          {TIERS.map((tier) => (
-            <article key={tier.name} className="mk-pricing-tier">
-              <p className="mk-pricing-tier-badge">{tier.badge}</p>
-              <h2>{tier.name}</h2>
-              <div className="mk-pricing-tier-price">
-                <strong>{tier.price}</strong>
-                <span>{tier.cadence}</span>
-              </div>
-              <div className="mk-pricing-tier-copy">
-                <span className="mk-pricing-tier-label">Best for</span>
-                <p>{tier.bestFor}</p>
-              </div>
-              <div className="mk-pricing-tier-copy">
-                <span className="mk-pricing-tier-label">You get</span>
-              </div>
-              <ul>
-                {tier.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-              <Link href={tier.href} className="mk-pricing-tier-link">
-                {tier.action} <ArrowGlyph size={14} />
-              </Link>
-            </article>
-          ))}
-        </section>
-
-        <section id="compare" className="mk-pricing-compare" aria-labelledby="compare-heading">
-          <div className="mk-pricing-section-head">
-            <p className="mk-k">Compare</p>
-            <h2 id="compare-heading">Choose by the work you need done.</h2>
-          </div>
-          <div className="mk-pricing-table-wrap">
-            <table className="mk-pricing-table">
+        <AxSection id="compare" kicker="Compare" title="Choose by the work you need done.">
+          <div className="ax-table-wrap" tabIndex={0} role="region" aria-label="Plan comparison, scrollable">
+            <table className="ax-table ax-guide">
               <thead>
                 <tr>
                   <th scope="col">Need</th>
@@ -198,49 +217,59 @@ export default function PricingPage() {
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row.need}>
-                    <th scope="row">{row.need}</th>
-                    <td data-label="Best option">{row.option}</td>
-                    <td data-label="What you get">{row.outcome}</td>
+                    <th scope="row" className="ax-guide-need">
+                      {row.need}
+                    </th>
+                    <td>
+                      <Link href={row.href} className="ax-guide-option">
+                        <span>{row.option}</span>
+                        <em>{row.price}</em>
+                      </Link>
+                    </td>
+                    <td className="ax-guide-outcome">{row.outcome}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </section>
+        </AxSection>
 
-        <section className="mk-pricing-support" aria-labelledby="pricing-support-heading">
-          <div>
-            <p className="mk-k">Support and refunds</p>
-            <h2 id="pricing-support-heading">Simple purchase rules</h2>
-            <ul className="mk-pricing-purchase-rules">
+        <AxSection light id="purchase-rules" kicker="Support and refunds" title="Simple purchase rules">
+          <div className="ax-rules">
+            <ul className="ax-checklist">
               {PURCHASE_RULES.map((rule) => (
                 <li key={rule}>{rule}</li>
               ))}
             </ul>
-          </div>
-          <div className="mk-pricing-support-actions">
-            <Button variant="ink" size="lg" href="/support/purchase-help">
-              Purchase help
-            </Button>
-            <Button variant="ghost-light" size="lg" href="/for-institutions">
-              Institution / partner inquiry
-            </Button>
-          </div>
-        </section>
-
-        <section className="mk-pricing-final" aria-labelledby="pricing-final-heading">
-          <p className="mk-k">Next step</p>
-          <h2 id="pricing-final-heading">Start free, then choose the path that matches the work.</h2>
-          <p>
-            A quick read costs nothing. A written report, Foundation course, or
-            team rollout comes later.
-          </p>
-          <div className="mk-pricing-final-links" aria-label="Pricing story">
-            {EMPHASIZED_CARD_TERMS.map((term) => (
-              <Link key={term.label} href={term.href}>
-                {term.label} <ArrowGlyph size={14} />
+            <aside className="ax-help" aria-label="Purchase help">
+              <p className="ax-k">Questions before you buy?</p>
+              <p className="ax-help-title">Talk to a person, not a form.</p>
+              <p className="ax-help-body">Access issues are handled first; refund requests are reviewed within one business day.</p>
+              <Link href="/support/purchase-help" className="ax-help-btn">
+                Purchase help
               </Link>
-            ))}
+              <Link href="/for-institutions" className="ax-help-link">
+                Institution / partner inquiry →
+              </Link>
+            </aside>
+          </div>
+        </AxSection>
+
+        <section className="ax-section ax-close" aria-labelledby="pricing-final-heading">
+          <div className="mk-container">
+            <h2 id="pricing-final-heading" className="ax-display">
+              Start free, then choose the path that <span className="ax-gold">matches the work</span>.
+            </h2>
+            <p className="ax-muted">
+              A quick read costs nothing. A written report, Foundation course, or team rollout comes later.
+            </p>
+            <div className="ax-actions" aria-label="Pricing story">
+              {EMPHASIZED_CARD_TERMS.map((term) => (
+                <Link key={term.label} href={term.href} className="ax-link-mono">
+                  {term.label} →
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       </main>

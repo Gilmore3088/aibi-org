@@ -84,6 +84,20 @@ export const PLAYBOOK_INDEX: { slug: RoleSlug; title: string; desc: string }[] =
   { slug: 'training-hr', title: 'Training / HR', desc: 'Role-specific enablement, safe-use curriculum, capability tracking.' },
 ];
 
+// One- or two-word focus label per role, shown as the eyebrow on role lists
+// (playbooks index, results page).
+export const PLAYBOOK_FOCUS: Record<RoleSlug, string> = {
+  compliance: 'Risk lens',
+  retail: 'Frontline',
+  marketing: 'Brand safety',
+  lending: 'Credit',
+  'bsa-aml': 'Surveillance',
+  infosec: 'Tool safety',
+  executive: 'Direction',
+  operations: 'Workflow',
+  'training-hr': 'Enablement',
+};
+
 export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
   compliance: {
     slug: 'compliance',

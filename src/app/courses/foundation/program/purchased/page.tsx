@@ -14,6 +14,7 @@
 // real saved-prompt preview card. Sign-in CTA is step 1 of the ladder,
 // not a separate section. Receipt + access info is a quiet strip.
 
+import { SiteHeader } from '@/components/mockup';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -118,13 +119,13 @@ export default async function AiBIPurchasedPage({
   }
 
   return (
+    <div className="mockup-scope">
+    <SiteHeader activePath="/courses" />
     <main
       style={{
-        // Chromeless page (no CourseShell), so apply the same soft-slate
-        // override here — otherwise var(--cream)/var(--cream-2) on this success
-        // surface would still render warm cream while the course it leads into
-        // is slate.
-        ['--cream' as string]: '#F1F5F9',
+        // Chromeless page (no CourseShell), so apply the same palette the
+        // course uses: warm cream with white cards.
+        ['--cream' as string]: '#F7F3EA',
         ['--cream-2' as string]: '#FFFFFF',
         background: 'var(--cream)',
         minHeight: '70vh',
@@ -429,6 +430,7 @@ export default async function AiBIPurchasedPage({
         }}
       />
     </main>
+    </div>
   );
 }
 

@@ -32,8 +32,8 @@ describe('CompletionCTA', () => {
 
     expect(screen.getByText('Module debrief')).toBeTruthy();
     expect(screen.getByText('Save the learning before you leave.')).toBeTruthy();
-    expect(screen.getByText('Packet item: AI Limits Card')).toBeTruthy();
-    expect(screen.getByText('Use this card before opening an AI tool for unfamiliar work.')).toBeTruthy();
+    expect(screen.getByText('Packet item: AI House Rules')).toBeTruthy();
+    expect(screen.getByText('Use your house rules in every AI conversation at work, starting with the rest of this course.')).toBeTruthy();
     expect(screen.getByText(/reopen this artifact and restate the rule from memory/i)).toBeTruthy();
 
     const nextModuleLink = screen.getByRole('link', { name: /Module 02/i });
