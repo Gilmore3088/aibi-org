@@ -19,6 +19,15 @@ The course teaches one way to structure a prompt. The rest of the site teaches f
 
 RTFC isn't even consistent with itself (4 parts in the exam, 5 in the report).
 
+The guard test (step 1) found more part lists that the first inventory missed. These are added to steps 3 and 6:
+- Course: module 10's visual model ("Role, Task, Source, Reviewer"), module 3's own activity text, the strategy drill's "name the role, task, and format", and the practice rep "role, task, format, and constraints".
+- Prompt cards page and its card data ("role, task, constraints, and output format").
+- In-Depth starter artifacts ("role, task, constraints, audience").
+- `content/curriculum/skills.ts` (not imported anywhere, but aligned anyway).
+- The home page's free-tools section, which shows the "Banker Prompt Formula" title (moves with the card in step 5).
+
+The 5-move discipline on the CORE card is not a competing framework: moves 1–3 (State, Ground, Constrain) build a CORE prompt, and moves 4–5 (Check, Escalate) handle the answer. That mapping is recorded in `content/frameworks/core.ts`.
+
 ## Recommendation: CORE everywhere
 
 CORE is what the paid product teaches and tests. It has the interactive wizard, the scorecard, a downloadable card, a test-out check, and two modules built on it. Every other framework's parts already fit inside it, so nothing of value is lost:
