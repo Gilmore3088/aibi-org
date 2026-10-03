@@ -87,7 +87,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
 
       <AxHero
         cmd={`course foundation --modules ${facts.moduleCount} --data synthetic`}
-        title="Build reusable AI work products for banking."
+        title="AI training for community bank staff."
         lede={
           <>
             AiBI Foundation is an {facts.moduleCount}-module course where bankers practice safe prompting,
@@ -150,7 +150,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
           <div>
             <p className="ax-k ax-red">Module 3 · practice file</p>
             <h2 id="fabrication-title" className="ax-display">
-              AI sounds sure. <span className="ax-red">You check.</span>
+              Every AI answer <span className="ax-red">gets checked.</span>
             </h2>
             <p className="ax-muted">
               This AI-written summary contains planted errors. Learners find them before anything leaves the
@@ -206,7 +206,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         light
         id="how"
         kicker="How the course works"
-        title="Short lessons become saved work products."
+        title="How the course works."
         lede="Understand the concept, try it in the lab, build the artifact, then save it to your packet."
       >
         <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 4 }}>
@@ -221,7 +221,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
         </ol>
       </AxSection>
 
-      <AxSection id="lesson-preview" kicker="Course preview" title="One lesson. One saved artifact.">
+      <AxSection id="lesson-preview" kicker="Course preview" title="Preview a lesson.">
         <div className="ax-lesson">
           <AxWindow title="Module 04 · Build a reusable prompt" meta="lesson">
             <h3 className="ax-lesson-title">Turn a loose request into a reusable prompt card.</h3>
@@ -251,7 +251,7 @@ export default function CoursesIndexPage({ facts = DEFAULT_FACTS }: { readonly f
             </div>
             <div>
               <p className="ax-k">What gets saved</p>
-              <h3>The packet is the useful part.</h3>
+              <h3>What you keep after the course.</h3>
               <dl className="ax-defs ax-defs-tight">
                 {COURSE_EVIDENCE.map((e) => (
                   <div key={e.title}>

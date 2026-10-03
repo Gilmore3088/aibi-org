@@ -92,7 +92,7 @@ export default function SecurityPage() {
           body: (
             <DocumentPreview
               eyebrow="Safe AI Use Guide"
-              title="Six one-page decisions, not a governance textbook."
+              title="Six security decisions, one page each."
               dek="Each chapter gives a boundary, a banking example, and the artifact that proves the work."
               sections={GUIDE_CHAPTERS.map((chapter) => ({
                 heading: chapter.title,

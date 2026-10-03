@@ -17,7 +17,7 @@ export function Paywall() {
       <SiteHeader activePath="/my-toolbox" />
       <AxHero
         cmd="toolbox --preview"
-        title="Reusable banking AI assets live here."
+        title="Your saved prompts and templates."
         lede="Full Toolbox access is included with the paid In-Depth Assessment and the AiBI-Foundation course, so buyers can build, run, save, and export reusable work."
         actions={
           <>
@@ -49,7 +49,7 @@ export function Paywall() {
         }
       />
       <main>
-        <AxSection light kicker="What's inside" title="Three tools, one saved record.">
+        <AxSection light kicker="What's inside" title="What's in the Toolbox.">
           <dl className="ax-defs">
             {PARTS.map((part) => (
               <div key={part.label}>

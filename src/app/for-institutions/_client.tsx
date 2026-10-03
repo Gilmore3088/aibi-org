@@ -152,7 +152,7 @@ export default function ForInstitutionsPage() {
         light
         id="files"
         kicker="What you end up holding"
-        title="Files your examiner can read."
+        title="What your team receives."
         lede="Real files from the Governance Starter Kit: one inventory row and one SOP per AI workflow."
       >
         <div className="ax-files">
@@ -178,7 +178,7 @@ export default function ForInstitutionsPage() {
       <AxSection
         id="pipeline"
         kicker="How institutions work with us"
-        title="Assess. Train. Document. Govern. Operate."
+        title="How we work with institutions."
       >
         <ol className="ax-pipeline">
           {PIPELINE.map((s, i) => (

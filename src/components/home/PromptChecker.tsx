@@ -3,7 +3,7 @@
 import { useId, useMemo, useState } from 'react';
 import { detect, sanitize, KIND_LABEL } from '@/lib/prompt-check/detect';
 
-// "Customer data stays out." — a live prompt checker. Visitors paste a
+// "Check a prompt for customer data" — a live prompt checker. Visitors paste a
 // prompt; pattern matching in the browser flags customer data and proposes
 // a placeholder version. Nothing typed leaves the page: no fetch, no
 // storage, no analytics event carries the text.
@@ -50,7 +50,7 @@ export function PromptChecker() {
     <section className="hm-redline" aria-labelledby="hm-redline-title">
       <div className="mk-container">
         <h2 id="hm-redline-title" className="hm-display">
-          Customer data stays <span className="hm-red">out</span>.
+          Check a prompt for <span className="hm-red">customer data</span> before you paste it.
         </h2>
         <p className="hm-redline-lede">
           Type or paste a prompt you would send to an AI tool. It flags customer details — names,

@@ -109,7 +109,7 @@ export default function EfficiencyRatioWorkbookPage() {
             id="calculator-heading"
             className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] leading-tight mb-8"
           >
-            Move the sliders. The number is yours.
+            Enter your numbers.
           </h2>
           <ROICalculatorBody
             ctaLabel="Discuss your number"

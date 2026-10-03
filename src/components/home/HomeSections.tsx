@@ -24,7 +24,7 @@ export function ResourceCovers() {
       <div className="mk-container hm-kit-inner">
         <div className="hm-kit-copy">
           <h2 id="hm-kit-title" className="hm-display">
-            Take the paperwork.
+            Free checklists, reference cards and playbooks.
           </h2>
           <p>Real checklists, cards and playbooks. Free.</p>
           <Link href="/resources" className="hm-link">

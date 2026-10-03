@@ -100,7 +100,7 @@ export default function AboutPage() {
           light
           id="building"
           kicker="What we are building"
-          title="Turn bankers into builders, safely."
+          title="What we do."
           lede="The goal is not to make every banker a software engineer. The goal is to give ideas people a safe, practical way to define a problem, shape a solution, and hand off work that can survive review."
         >
           <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 3 }} aria-label="Readiness path">
@@ -118,7 +118,7 @@ export default function AboutPage() {
         <AxSection
           id="principles"
           kicker="Operating principles"
-          title="Clear standards, short enough to remember."
+          title="How we work."
           lede="These principles keep the curriculum focused on useful bank work, not generic AI talking points."
         >
           <dl className="ax-defs">
@@ -133,7 +133,7 @@ export default function AboutPage() {
           </dl>
         </AxSection>
 
-        <AxSection light id="grounded" kicker="How the work stays grounded" title="Designed for review, not just completion.">
+        <AxSection light id="grounded" kicker="How the work stays grounded" title="Every exercise ends in reviewable work.">
           <dl className="ax-defs">
             {OPERATING_STANDARDS.map((standard) => (
               <div key={standard.title}>
@@ -147,7 +147,7 @@ export default function AboutPage() {
         <AxSection
           id="references"
           kicker="Public reference map"
-          title="Sources are named. Endorsement is not implied."
+          title="Sources we cite."
           lede="The curriculum uses public references as source material for disciplined AI work in banking. Those references do not approve the Institute, the curriculum, or the credential."
         >
           <ol className="ax-sources ax-sources-grid">
@@ -168,7 +168,7 @@ export default function AboutPage() {
           </p>
         </AxSection>
 
-        <AxSection light id="boundaries" kicker="Trust boundaries" title="What we will not overclaim.">
+        <AxSection light id="boundaries" kicker="Trust boundaries" title="What we don't claim.">
           <ul className="ax-checklist ax-checklist-no">
             {TRUST_BOUNDARIES.map((boundary) => (
               <li key={boundary}>{boundary}</li>
