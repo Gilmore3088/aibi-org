@@ -1199,7 +1199,7 @@ async function submitStep(s, st) {
   if (await btn.first().isDisabled().catch(() => false)) {
     // A disabled button that says why (e.g. a required file upload the
     // harness cannot provide) is expected; a silent one is friction.
-    const why = (await s.page.locator(ROOT).first().innerText().catch(() => '')).match(/[^\n]*(complete all required|required field|upload|answer all)[^\n]*/i)?.[0];
+    const why = (await s.page.locator(ROOT).first().innerText().catch(() => '')).match(/[^\n]*(complete all required|required field|upload|answer all|at least|characters? to submit|to submit)[^\n]*/i)?.[0];
     if (why) await s.addFriction('submit_needs_more', `${st.label}: disabled with explanation "${why.slice(0, 80)}"`, 0);
     else await s.addFriction('submit_disabled', `${st.label}: button stayed disabled with no explanation`, 1);
     return;
