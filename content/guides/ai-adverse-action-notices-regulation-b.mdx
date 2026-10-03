@@ -12,7 +12,7 @@ export const meta = {
   faqs: [
     {
       q: "Does Regulation B allow AI in credit decisions?",
-      a: "Regulation B does not prohibit any particular technology. It requires that applicants who receive adverse action get a statement of specific principal reasons. If an AI tool or model contributes to the decision, the lender must still be able to produce accurate, specific reasons.",
+      a: "Regulation B does not prohibit any particular technology. It requires that applicants who receive adverse action be given, or be told how to obtain, a statement of specific reasons that indicates the principal reasons for the action. If an AI tool or model contributes to the decision, the lender must still be able to produce accurate, specific reasons.",
     },
     {
       q: "Can we say the applicant did not meet our scoring threshold?",
@@ -66,7 +66,7 @@ enough. The notice has to name what drove the result.
 
 ## Where AI creates the problem
 
-Community lenders rarely build credit models themselves. The exposure
+Many community lenders do not build credit models themselves. The exposure
 usually comes from three places:
 
 - **Vendor decisioning tools** that produce an approve, refer, or decline
@@ -82,16 +82,18 @@ The first two are diligence questions. The third is a policy question.
 ## What to check now
 
 1. **Inventory every AI touchpoint in lending.** Application intake,
-   document capture, decisioning, pricing, and notice generation. Each
-   goes into your [AI use case inventory](/guides/ai-use-case-inventory-bank)
-   as high risk.
+   document capture, decisioning, pricing, and notice generation. Each goes into your [AI use case inventory](/guides/ai-use-case-inventory-bank);
+   anything that influences the decision, pricing, or the notice is high
+   risk.
 2. **Ask each vendor for a reason-code walkthrough.** Pick a real declined
    application and have the vendor show how its tool produces the
    principal reasons that end up on your notice. If it cannot, that is
    your answer.
 3. **Test the notices.** Have compliance pull a sample of recent
    AI-assisted declines and confirm the stated reasons match the factors
-   that actually drove each decision.
+   that actually drove each decision. The official commentary to
+   Regulation B says the reasons must relate to and accurately describe the
+   factors actually considered or scored.
 4. **Draw the line on informal use.** Your AI policy should say plainly
    that general-purpose AI tools may not make or recommend credit
    decisions, and that restricted applicant data never goes into an

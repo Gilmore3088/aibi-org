@@ -12,7 +12,7 @@ export const meta = {
   faqs: [
     {
       q: "Do we need a separate due diligence process for AI vendors?",
-      a: "No. Add AI-specific questions to the third-party risk process you already run. The 2023 interagency guidance on third-party relationships is risk-based and covers AI vendors the same way it covers any other service provider; what changes is the questions you ask.",
+      a: "No. Add AI-specific questions to the third-party risk process you already run. The 2023 interagency guidance on third-party relationships is risk-based and covers AI vendors the same way it covers any other service provider; what changes is the questions you ask. Federal agencies proposed replacement guidance in September 2026, and it is also risk-based.",
     },
     {
       q: "What should an AI vendor contract include?",
@@ -20,7 +20,7 @@ export const meta = {
     },
     {
       q: "Does this apply to credit unions?",
-      a: "The 2023 interagency guidance was issued by the Federal Reserve, FDIC, and OCC, so credit unions should follow NCUA's own third-party expectations. The questions in this guide apply either way. GAO has also reported that NCUA lacks authority to examine technology service providers, which puts more of the diligence burden on the credit union itself.",
+      a: "The 2023 interagency guidance was issued by the Federal Reserve, FDIC, and OCC, so credit unions currently follow NCUA's own third-party expectations. NCUA joined the September 2026 proposal to replace that guidance, so this may change if the proposal is finalized. The questions in this guide apply either way. GAO has also reported that NCUA lacks authority to examine technology service providers, which puts more of the diligence burden on the credit union itself.",
     },
     {
       q: "What if an existing vendor turns on an AI feature?",
@@ -32,7 +32,11 @@ export const meta = {
     "can-bank-employees-use-chatgpt",
     "prepare-for-ai-exam-questions",
   ],
-  sources: [
+    sources: [
+    {
+      label: "Proposed Third-Party Risk Management Guidance, FR Doc. 2026-18859 (September 15, 2026; comments due November 16, 2026)",
+      url: "https://www.federalregister.gov/documents/2026/09/15/2026-18859/proposed-third-party-risk-management-guidance",
+    },
     {
       label: "Interagency Guidance on Third-Party Relationships: Risk Management, 88 FR 37920 (June 9, 2023)",
       url: "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
@@ -48,18 +52,24 @@ export const meta = {
   ],
 };
 
-For most community banks and credit unions, AI does not arrive as a
-project. It arrives in a vendor's release notes, inside a renewal, or
+At many community banks and credit unions, AI does not arrive as a project. It arrives in a vendor's release notes, inside a renewal, or
 attached to a demo that looks very good. Which makes vendor due diligence
 the place where most of your AI risk is actually decided.
 
 You do not need a new process. The Interagency TPRM Guidance from the
-Federal Reserve, FDIC, and OCC organizes third-party risk management
-around a five-stage life cycle — planning, due diligence and selection,
-contract negotiation, ongoing monitoring, and termination — and expects
-oversight to be commensurate with your size, complexity, and the risk of
-the relationship. AI vendors fit that structure. What they need is better
-questions.
+Federal Reserve, FDIC, and OCC (June 2023) organizes third-party risk
+management around a five-stage life cycle — planning, due diligence and
+third-party selection, contract negotiation, ongoing monitoring, and
+termination — and expects oversight to be commensurate with your size,
+complexity, and the risk of the relationship.
+
+In September 2026 those agencies and NCUA proposed guidance that would
+rescind and replace it, with comments due November 16, 2026. The proposal
+keeps due diligence, contract negotiation, ongoing monitoring, and
+termination, and puts more weight on tailoring oversight to each
+relationship's risk and on deciding when residual risk is acceptable. The
+questions below work under either version. AI vendors fit that structure.
+What they need is better questions.
 
 ## Planning: decide what you are buying
 
@@ -108,8 +118,10 @@ Send these in writing and keep the answers.
 
 ## Contract negotiation: the terms that matter most
 
-The 2023 guidance acknowledges that community banks may have limited
-negotiating power with large vendors. Spend that power where it counts:
+The 2023 guidance recognizes that a banking organization may have limited
+negotiating power, and the September 2026 proposal goes further, discussing
+when residual risk can be accepted if terms cannot be negotiated. Spend the
+leverage you have where it counts:
 
 1. **No training on your data** without your written consent.
 2. **Advance notice of material changes** to AI functionality or the
@@ -122,7 +134,7 @@ negotiating power with large vendors. Spend that power where it counts:
 ## Ongoing monitoring
 
 Assign a business owner who reads release notes and tracks complaints and
-errors tied to the AI. Review high-risk AI vendors at least annually, and
+errors tied to the AI. A reasonable default is to review high-risk AI vendors at least annually, and
 whenever the vendor changes the model or adds a feature. Each change gets
 a line in the inventory.
 
@@ -134,9 +146,8 @@ the process without the AI if you had to.
 
 ## A note for credit unions
 
-The interagency guidance applies to banks; credit unions should follow
-NCUA's third-party expectations. The questions above work under either.
+The 2023 interagency guidance applies to banks; credit unions follow
+NCUA's third-party expectations, though NCUA joined the 2026 proposal. The questions above work under either.
 One difference raises the stakes: GAO reported in 2025 that NCUA lacks
-the authority to examine technology service providers. For a credit
-union, your own diligence file may be the only independent look anyone
-takes at the vendor.
+the authority to examine technology service providers. Because NCUA cannot examine the vendor directly, your own diligence file
+carries more of the weight.

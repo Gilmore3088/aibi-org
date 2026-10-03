@@ -294,6 +294,44 @@
       "match": [
         "Risk Tiering Worksheet"
       ]
+    },
+    {
+      "id": "tprm-2026-proposal",
+      "claim": "On September 15, 2026 the OCC, Federal Reserve, FDIC, and NCUA proposed third-party risk management guidance (FR Doc. 2026-18859) that would rescind and replace existing guidance; comments due November 16, 2026. Components: risk identification and assessment; risk oversight (due diligence and selection, contract negotiation, ongoing monitoring, termination); residual risk acceptance; governance.",
+      "source": "Federal Register, FR Doc. 2026-18859",
+      "url": "https://www.federalregister.gov/documents/2026/09/15/2026-18859/proposed-third-party-risk-management-guidance",
+      "asOf": "2026-09-15",
+      "verified": "2026-10-03",
+      "reviewBy": "2026-11-30",
+      "match": [
+        "2026-18859",
+        "September 2026 proposal",
+        "2026 proposal"
+      ]
+    },
+    {
+      "id": "sr-26-2-small-bank-exclusion",
+      "claim": "SR 26-2 attachment: models at banking organizations with total assets of $30 billion or less are typically subject to internal practices appropriate for their size, and generally excluding them from the guidance is consistent with a tailored supervisory approach; it may still be relevant to smaller organizations with significant model risk exposure.",
+      "source": "Federal Reserve, SR 26-2 attachment (Supervisory Guidance on Model Risk Management)",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602a1.pdf",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-04-03",
+      "match": [
+        "tailored supervisory approach"
+      ]
+    },
+    {
+      "id": "sr-26-2-genai-scope-rfi",
+      "claim": "The 2026 model risk guidance states generative AI and agentic AI models are novel and rapidly evolving and are not within its scope; the OCC, Federal Reserve, and FDIC plan a request for information on model risk management including banks' use of generative and agentic AI.",
+      "source": "OCC News Release 2026-29 (April 17, 2026)",
+      "url": "https://www.occ.gov/news-issuances/news-releases/2026/nr-occ-2026-29.html",
+      "asOf": "2026-04-17",
+      "verified": "2026-10-03",
+      "reviewBy": "2027-01-03",
+      "match": [
+        "novel and rapidly evolving"
+      ]
     }
   ]
 }
