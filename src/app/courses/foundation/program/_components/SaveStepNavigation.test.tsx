@@ -5,8 +5,9 @@ import {
   SaveStepNavigation,
   moduleCompletedStorageKey,
 } from './SaveStepNavigation';
+import { MICRO_MODULES_BY_NUMBER } from '@content/courses/foundation-program/micro-modules';
 
-const NEXT_LINK = 'Continue to Module 02 · Rewrite a Low-Risk Message';
+const NEXT_LINK = `Continue to Module 02 · ${MICRO_MODULES_BY_NUMBER.get(2)?.title}`;
 
 describe('SaveStepNavigation', () => {
   afterEach(() => {

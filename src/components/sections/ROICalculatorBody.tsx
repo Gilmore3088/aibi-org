@@ -136,7 +136,7 @@ export function ROICalculatorBody({
           Illustrative estimate from your inputs. Math: FTE × weekly hours × loaded
           hourly cost × 50 working weeks.{' '}
           <a href="/for-institutions/samples/efficiency-ratio-workbook">
-            See assumptions and sources
+            See the assumptions
           </a>
           .
         </p>

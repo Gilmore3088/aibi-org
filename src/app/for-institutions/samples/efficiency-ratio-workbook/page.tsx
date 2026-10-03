@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
-import { AxHero } from '@/components/ax';
+import { AxHero, AxSection } from '@/components/ax';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
 import { BriefingButton } from '@/components/analytics/BriefingButton';
 
@@ -11,6 +11,23 @@ export const metadata: Metadata = {
     'Model your community bank or credit union’s automation ceiling with your own FTE, cost, and hours estimates. The same labor-reallocation math we walk through in an Executive Briefing — free, no email required.',
 };
 
+const BRIEFING_HREF =
+  'mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up';
+
+const INPUTS = [
+  { label: 'Full-time employees', where: 'Your latest Call Report or HR system. Branch and back office.' },
+  { label: 'Loaded cost per FTE', where: 'Salary plus benefits, taxes and overhead. The default is a placeholder; use your CFO’s number.' },
+  { label: 'Hours per week, low', where: 'Repeatable, low-judgment work AI could absorb. Start conservative.' },
+  { label: 'Hours per week, high', where: 'Your ceiling: the number you would defend to your board.' },
+] as const;
+
+const READING = [
+  { is: true, title: 'Staff time, in dollars.', body: 'FTE × weekly hours × hourly cost × 50 weeks.' },
+  { is: false, title: 'An efficiency-ratio change.', body: 'The ratio moves only when freed hours are redeployed or cut.' },
+  { is: false, title: 'Guaranteed.', body: 'It assumes you build and adopt the tools within a year.' },
+  { is: true, title: 'Yours.', body: 'Every input is your own number.' },
+] as const;
+
 export default function EfficiencyRatioWorkbookPage() {
   return (
     <div className="mockup-scope ax-page">
@@ -18,195 +35,58 @@ export default function EfficiencyRatioWorkbookPage() {
       <AxHero
         cmd="for-institutions/samples/efficiency-ratio-workbook --free"
         title="The efficiency ratio workbook."
-        lede="Model your institution’s automation ceiling with your own FTE count, loaded cost, and a candid range of how many hours per week the average employee spends on work AI can plausibly absorb. Same math we walk through in every Executive Briefing. No email required."
+        lede="Four numbers in, one estimate of the staff time AI could free. No email required."
       />
-    <main className="ax-light">
 
-      {/* The four numbers */}
-      <section
-        aria-labelledby="four-numbers-heading"
-        className="px-6 py-12 md:py-16 border-t border-[color:var(--ink)]/10 bg-[color:#FFFFFF]"
-      >
-        <div className="max-w-4xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-            The four inputs
-          </p>
-          <h2
-            id="four-numbers-heading"
-            className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] leading-tight mb-6"
-          >
-            Four numbers, one defensible estimate.
-          </h2>
-          <p className="text-base text-[color:var(--ink)]/80 leading-relaxed mb-8 max-w-2xl">
-            The estimate is only as honest as the inputs. Two minutes with
-            your CFO and HR lead is enough to source all four.
-          </p>
+      <main>
+        <AxSection light id="calculator" kicker="Calculator" title="Enter your numbers.">
+          <ROICalculatorBody ctaLabel="Discuss your number" ctaHref={BRIEFING_HREF} briefingSource="services" />
+        </AxSection>
 
-          <dl className="grid md:grid-cols-2 gap-6">
-            <div>
-              <dt className="font-serif text-lg text-[color:var(--ink)] mb-2">
-                Full-time employees
-              </dt>
-              <dd className="text-sm text-[color:var(--ink)]/75 leading-relaxed">
-                Total FTE across the institution. Pull from your most recent
-                quarterly Call Report, or your HR system. Include branch and
-                back-office staff; exclude part-time contractors unless they
-                represent a meaningful share of operational hours.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-serif text-lg text-[color:var(--ink)] mb-2">
-                Loaded cost per FTE
-              </dt>
-              <dd className="text-sm text-[color:var(--ink)]/75 leading-relaxed">
-                Total compensation including benefits, taxes, and overhead —
-                not just base salary. The default of $85,000 is a community-
-                bank-typical loaded figure; replace it with your CFO’s number.
-                The math divides by 2,080 hours/year to derive an hourly
-                rate.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-serif text-lg text-[color:var(--ink)] mb-2">
-                Hours automatable per FTE per week — low
-              </dt>
-              <dd className="text-sm text-[color:var(--ink)]/75 leading-relaxed">
-                Your conservative estimate of how many hours of repeatable,
-                low-discretion work AI could plausibly absorb. For most
-                community institutions, 1–3 hours/week is defensible without
-                further investigation.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-serif text-lg text-[color:var(--ink)] mb-2">
-                Hours automatable per FTE per week — high
-              </dt>
-              <dd className="text-sm text-[color:var(--ink)]/75 leading-relaxed">
-                Your aspirational ceiling. Cornerstone Advisors’ 2025 AI
-                Playbook documents 30–50% reduction in alert volumes for
-                BSA/AML, 40–60% reduction in loan processing time. 4–6
-                hours/week is the upper bound most cohorts converge on.
-              </dd>
-            </div>
+        <AxSection id="inputs" kicker="Where each number comes from" title="Two minutes with your CFO.">
+          <dl className="ew-inputs">
+            {INPUTS.map((input, i) => (
+              <div key={input.label}>
+                <dt>
+                  <span className="ew-n">{String(i + 1).padStart(2, '0')}</span>
+                  {input.label}
+                </dt>
+                <dd>{input.where}</dd>
+              </div>
+            ))}
           </dl>
+        </AxSection>
 
-          <p className="font-mono text-[0.625rem] text-[color:var(--slate-600)] mt-8 leading-relaxed">
-            Sources: FDIC Quarterly Banking Profile · Cornerstone Advisors,
-            <em> AI Playbook for Banks and Credit Unions</em> (2025).
-          </p>
-        </div>
-      </section>
+        <AxSection light id="reading" kicker="How to read it" title="What the number is, and isn’t.">
+          <ul className="ew-read">
+            {READING.map((r) => (
+              <li key={r.title} className={r.is ? 'is-yes' : 'is-no'}>
+                <span className="ew-mark">{r.is ? 'It is' : 'It isn’t'}</span>
+                <strong>{r.title}</strong>
+                <span>{r.body}</span>
+              </li>
+            ))}
+          </ul>
+        </AxSection>
+      </main>
 
-      {/* Calculator */}
-      <section
-        aria-labelledby="calculator-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--ink)]/10"
-      >
-        <div className="max-w-4xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-            Calculator
-          </p>
-          <h2
-            id="calculator-heading"
-            className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] leading-tight mb-8"
-          >
-            Move the sliders. The number is yours.
+      <section className="ax-section ax-light is-paper ax-close">
+        <div className="mk-container">
+          <h2 className="ax-display">
+            Bring your number to an <span className="ax-gold">Executive Briefing.</span>
           </h2>
-          <ROICalculatorBody
-            ctaLabel="Discuss your number"
-            ctaHref="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up"
-            briefingSource="services"
-          />
-        </div>
-      </section>
-
-      {/* How to read the result */}
-      <section
-        aria-labelledby="reading-result-heading"
-        className="px-6 py-14 md:py-20 border-t border-[color:var(--ink)]/10 bg-[color:#FFFFFF]"
-      >
-        <div className="max-w-3xl mx-auto">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--gold)] mb-3">
-            How to read your result
-          </p>
-          <h2
-            id="reading-result-heading"
-            className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] leading-tight mb-6"
-          >
-            What the number is — and what it isn’t.
-          </h2>
-
-          <div className="space-y-5 text-base text-[color:var(--ink)]/80 leading-relaxed">
-            <p>
-              <strong className="text-[color:var(--ink)]">It is</strong>{' '}
-              the annual dollar value of the staff hours AI could plausibly
-              recapture across your full headcount, given your inputs.
-              Multiply your low and high hour estimates by total FTE, your
-              hourly rate, and 50 working weeks; that is the math.
-            </p>
-            <p>
-              <strong className="text-[color:var(--ink)]">It isn’t</strong>{' '}
-              a projected change in your efficiency ratio. The efficiency
-              ratio moves only when those recaptured hours are reinvested or
-              eliminated — not when they are recaptured. The ratio improvement
-              follows from <em>what your team does next</em>, not from the
-              automation itself.
-            </p>
-            <p>
-              <strong className="text-[color:var(--ink)]">It isn’t</strong>{' '}
-              guaranteed. The estimate assumes your institution can identify,
-              build, and adopt the automations within a year. That is what a
-              Foundations cohort and (optionally) a Pilot Advisory engagement
-              are designed to deliver.
-            </p>
-            <p>
-              <strong className="text-[color:var(--ink)]">It is</strong>{' '}
-              defensible. Every input is yours. Every assumption is documented.
-              The math is the same simple labor-rate calculation a CFO would
-              run on the back of a napkin — which is exactly why it works in a
-              board meeting.
-            </p>
+          <p className="ax-muted">Thirty minutes. We pressure-test your inputs and name the three departments most likely to free the hours.</p>
+          <div className="ax-actions" style={{ justifyContent: 'center' }}>
+            <BriefingButton href={BRIEFING_HREF} source="services" className="mk-btn mk-btn-gold mk-btn-lg">
+              Book an Executive Briefing
+            </BriefingButton>
           </div>
-        </div>
-      </section>
-
-      {/* Closing CTA */}
-      <section className="px-6 py-14 md:py-20 border-t border-[color:var(--ink)]/10">
-        <div className="max-w-3xl mx-auto bg-[color:var(--ink)] text-[color:var(--cream)] p-10 md:p-14 text-center">
-          <p className="font-serif-sc text-xs uppercase tracking-[0.2em] text-[color:var(--cream-2)] mb-3">
-            Next step
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl mb-4">
-            Bring your number to an Executive Briefing.
-          </h2>
-          <p className="text-[color:var(--cream)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            Thirty minutes. We’ll pressure-test your inputs, identify the
-            three departments most likely to deliver the recaptured hours,
-            and recommend whether a Foundations cohort, a Specialist cohort,
-            or an institution-wide capability program is the right starting
-            point. No pitch.
-          </p>
-          <BriefingButton
-            href="mailto:hello@aibankinginstitute.com?subject=Executive%20Briefing%20%E2%80%94%20Efficiency%20Ratio%20Workbook%20follow-up"
-            source="services"
-            className="inline-block px-8 py-4 bg-[color:var(--gold)] text-[color:var(--cream)] font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] active:scale-[0.98] transition-all"
-          >
-            Book an Executive Briefing
-          </BriefingButton>
-          <p className="mt-5 text-sm text-[color:var(--cream)]/75">
-            Not ready to talk yet?{' '}
-            <Link href="/for-institutions" className="underline underline-offset-4 hover:text-[color:var(--cream)]">
-              See team training options
-            </Link>{' '}
-            or{' '}
-            <Link href="/assessment/take" className="underline underline-offset-4 hover:text-[color:var(--cream)]">
-              take the free readiness assessment
-            </Link>
-            .
+          <p className="ax-muted" style={{ marginTop: 16 }}>
+            Not ready to talk yet? <Link href="/for-institutions">See team training options</Link> or{' '}
+            <Link href="/assessment/take">take the free readiness assessment</Link>.
           </p>
         </div>
       </section>
-    </main>
     </div>
   );
 }

@@ -89,8 +89,7 @@ export default function HomePage() {
       <section className="hm-close">
         <div className="mk-container">
           <h2 className="hm-display">
-            Three minutes.
-            <span className="hm-gold"> Then you’ll know.</span>
+            Take the free <span className="hm-gold">readiness assessment.</span>
           </h2>
           <Button variant="gold" size="lg" href="/assessment/take">
             Get my readiness score <ArrowGlyph />

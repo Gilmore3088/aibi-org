@@ -3,7 +3,7 @@
 // hand-authored source of truth for PDFs that don't have a generator route
 // (in-depth-playbook, sample-readiness-report, prompt-strategy-cheat-sheet,
 // safe-ai-use-checklist, red-yellow-green-use-card, the 6 role playbooks,
-// platform-feature-reference-card, regulatory-cheatsheet).
+// platform-feature-reference-card, regulatory-cheatsheet, aibi-safe-ai-use-guide).
 //
 // HTML loads _brand.css (brand v1 colors + the bracketed [Ai] seal mark).
 // We render via file:// URL so no dev server is required.

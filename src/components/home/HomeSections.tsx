@@ -24,9 +24,9 @@ export function ResourceCovers() {
       <div className="mk-container hm-kit-inner">
         <div className="hm-kit-copy">
           <h2 id="hm-kit-title" className="hm-display">
-            Tools your team can use today.
+            Free checklists, reference cards and playbooks.
           </h2>
-          <p>Checklists, prompt cards and governance playbooks, free to download.</p>
+          <p>Real checklists, cards and playbooks. Free.</p>
           <Link href="/resources" className="hm-link">
             Browse all resources →
           </Link>

@@ -30,25 +30,6 @@ const READINESS_PATH = [
   },
 ] as const;
 
-const OPERATING_STANDARDS = [
-  {
-    title: 'Public source map',
-    body: 'Curriculum references point to named public guidance. They are not presented as regulator approval.',
-  },
-  {
-    title: 'Synthetic practice data',
-    body: 'Labs and examples do not require customer PII or confidential records.',
-  },
-  {
-    title: 'Reviewable work',
-    body: 'Learners produce use cards, SOPs, briefs, and checklists that can move through a bank review.',
-  },
-  {
-    title: 'Plain attribution',
-    body: 'No advisor, customer, learner, or institution appears as proof without explicit public approval.',
-  },
-] as const;
-
 const TRUST_BOUNDARIES = [
   'No regulator issues, approves, recognizes, or endorses AiBI credentials.',
   'No ROI estimate is presented as guaranteed savings or a projected efficiency-ratio change.',
@@ -66,8 +47,8 @@ export default function AboutPage() {
         title="Practical AI training for banks that need more than a demo."
         lede={
           <>
-            {BRAND.name} helps community banks and credit unions turn AI interest into safe, reviewable
-            work: clear use cases, clean data boundaries, checked sources, and human ownership.
+            {BRAND.name} helps community banks and credit unions turn AI interest into work a reviewer can
+            check.
           </>
         }
         actions={
@@ -100,8 +81,7 @@ export default function AboutPage() {
           light
           id="building"
           kicker="What we are building"
-          title="Turn bankers into builders, safely."
-          lede="The goal is not to make every banker a software engineer. The goal is to give ideas people a safe, practical way to define a problem, shape a solution, and hand off work that can survive review."
+          title="What we do."
         >
           <ol className="ax-pipeline" style={{ ['--ax-steps' as string]: 3 }} aria-label="Readiness path">
             {READINESS_PATH.map((step, index) => (
@@ -118,8 +98,7 @@ export default function AboutPage() {
         <AxSection
           id="principles"
           kicker="Operating principles"
-          title="Clear standards, short enough to remember."
-          lede="These principles keep the curriculum focused on useful bank work, not generic AI talking points."
+          title="How we work."
         >
           <dl className="ax-defs">
             {PRINCIPLES.map((principle) => (
@@ -133,22 +112,12 @@ export default function AboutPage() {
           </dl>
         </AxSection>
 
-        <AxSection light id="grounded" kicker="How the work stays grounded" title="Designed for review, not just completion.">
-          <dl className="ax-defs">
-            {OPERATING_STANDARDS.map((standard) => (
-              <div key={standard.title}>
-                <dt>{standard.title}</dt>
-                <dd>{standard.body}</dd>
-              </div>
-            ))}
-          </dl>
-        </AxSection>
-
         <AxSection
+          light
           id="references"
           kicker="Public reference map"
-          title="Sources are named. Endorsement is not implied."
-          lede="The curriculum uses public references as source material for disciplined AI work in banking. Those references do not approve the Institute, the curriculum, or the credential."
+          title="Sources we cite."
+          lede="Public guidance we teach from. None of it approves the Institute or the credential."
         >
           <ol className="ax-sources ax-sources-grid">
             {REGULATIONS.map((reference, i) => (
@@ -168,7 +137,7 @@ export default function AboutPage() {
           </p>
         </AxSection>
 
-        <AxSection light id="boundaries" kicker="Trust boundaries" title="What we will not overclaim.">
+        <AxSection id="boundaries" kicker="Trust boundaries" title="What we don't claim.">
           <ul className="ax-checklist ax-checklist-no">
             {TRUST_BOUNDARIES.map((boundary) => (
               <li key={boundary}>{boundary}</li>
@@ -176,7 +145,7 @@ export default function AboutPage() {
           </ul>
         </AxSection>
 
-        <AxSection id="press" kicker="Press and research" title="Need a source, quote, or background?">
+        <AxSection light id="press" kicker="Press and research" title="Need a source, quote, or background?">
           <div className="ax-rules">
             <p className="ax-muted ax-para">
               Journalists, analysts, podcasters, and researchers can send questions to {BRAND.emails.contact}.
@@ -195,14 +164,11 @@ export default function AboutPage() {
         </AxSection>
       </main>
 
-      <section className="ax-section ax-close">
+      <section className="ax-section ax-light is-paper ax-close">
         <div className="mk-container">
           <h2 className="ax-display">
             Start with a readiness score. <span className="ax-gold">Then inspect the work.</span>
           </h2>
-          <p className="ax-muted">
-            The fastest way to understand the Institute is to see the artifacts it asks a learner to produce.
-          </p>
           <div className="ax-actions">
             <Button variant="gold" size="lg" href="/assessment/take">
               Take the free assessment <ArrowGlyph />

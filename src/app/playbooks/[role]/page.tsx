@@ -115,7 +115,7 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
           <div className="pb-check">
             <div className="ax-section-head">
               <p className="ax-k">Review checklist</p>
-              <h2 className="ax-display">Before AI output is used.</h2>
+              <h2 className="ax-display">Review checklist.</h2>
               <p>A named reviewer checks each line. If one fails, the draft goes back.</p>
             </div>
             <div className="ax-paper pb-check-paper">

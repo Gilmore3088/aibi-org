@@ -36,36 +36,10 @@ const PRODUCT_SCOPE = [
 ] as const;
 
 const DATA_POSTURE = [
-  {
-    title: 'Practice data',
-    body:
-      'Public previews and lessons use synthetic or sanitized banking examples. Customer records are not required to complete the training.',
-  },
-  {
-    title: 'Prompt boundary',
-    body:
-      'Learners are instructed not to enter customer PII, account numbers, confidential files, credentials, secrets, or non-public exam material.',
-  },
-  {
-    title: 'Provider calls',
-    body:
-      'When a learner runs an AiBI Lab or Toolbox model action, the prompt, system instructions, and relevant conversation context are sent to the selected paid API provider for that response.',
-  },
-  {
-    title: 'Stored records',
-    body:
-      'The app stores account data, assessment responses, course progress, saved artifacts, support cases, and operating metadata needed to run the product.',
-  },
-  {
-    title: 'Automated checks',
-    body:
-      'Server checks block common PII patterns and prompt-injection attempts, but those checks are guardrails and not a substitute for institution policy.',
-  },
-  {
-    title: 'Human review',
-    body:
-      'AI output is treated as draft work until a banker reviews the facts, policy fit, escalation needs, and reuse boundary.',
-  },
+  { title: 'Practice data', body: 'Synthetic or redacted examples. No customer records needed.' },
+  { title: 'Prompt boundary', body: 'No PII, account numbers, credentials, secrets or exam material.' },
+  { title: 'Provider calls', body: 'Lab and Toolbox prompts go to a paid API provider, after server checks for PII and prompt injection.' },
+  { title: 'Human review', body: 'AI output is a draft until a banker checks it.' },
 ] as const;
 
 const TRUST_BOUNDARIES = [
@@ -196,10 +170,8 @@ export default function ITApprovalPage() {
       title={<>Forward this packet before an internal review.</>}
       lede={
         <>
-          A concise review summary for IT, risk, compliance, procurement, and
-          executive sponsors evaluating {BRAND.name}. It covers what the product is,
-          what data it handles, what learners should not enter, and what the
-          Institute does not claim.
+          One page for IT, risk, compliance and procurement: what {BRAND.name} is,
+          what data it touches, and what it does not claim.
         </>
       }
       heroActions={[
@@ -213,21 +185,18 @@ export default function ITApprovalPage() {
           heading: <>What the Institute provides.</>,
           lede: (
             <>
-              Individual products are self-serve. Institution seats, dashboards,
-              and Team Assessment rollouts are scoped before purchase so support,
-              reporting, and privacy expectations are agreed first.
+              Individual products are self-serve. Institution rollouts are scoped before purchase.
             </>
           ),
           body: <PacketGrid items={PRODUCT_SCOPE} />,
         },
         {
           kicker: 'Data posture',
-          heading: <>Synthetic-first training with explicit prompt boundaries.</>,
+          heading: <>Sample data in, drafts out.</>,
           lede: (
             <>
-              The safest operating rule is simple: use sample facts, redacted
-              facts, or institution-approved non-sensitive inputs. Do not use the
-              product as a place to process customer records.
+              Full detail, retention and provider terms are on the{' '}
+              <Link href="/security/data-handling">LLM data handling</Link> page.
             </>
           ),
           body: <PacketGrid items={DATA_POSTURE} />,
@@ -238,9 +207,7 @@ export default function ITApprovalPage() {
           heading: <>What this packet does not ask reviewers to assume.</>,
           lede: (
             <>
-              The Institute uses public references and reviewable work products,
-              but it does not present those references as approvals of the
-              company, curriculum, or credential.
+              Public references are teaching sources, not approvals.
             </>
           ),
           body: <BoundaryList />,
@@ -250,9 +217,7 @@ export default function ITApprovalPage() {
           heading: <>Source pages for internal review.</>,
           lede: (
             <>
-              Use these pages when routing the product to IT, risk, compliance,
-              procurement, or an executive sponsor. The data-handling page is the
-              current source for provider-path summaries.
+              Attach these when you route the review.
             </>
           ),
           body: <ReviewLinks />,
@@ -264,9 +229,7 @@ export default function ITApprovalPage() {
         heading: <>Need an institution-specific answer?</>,
         body: (
           <>
-            Email {BRAND.emails.contact}. For rollouts, the Institute can scope
-            the approved tool path, data boundary, support owner, and seat handoff
-            before purchase.
+            Email {BRAND.emails.contact}. We scope the tool path and data boundary before seats go live.
           </>
         ),
         actions: [

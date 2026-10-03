@@ -26,6 +26,8 @@ import {
 import { MODULE_3_PROMPTING_ACTIVITIES } from '@content/courses/foundation-program/module-3-activities';
 import { ContentTable } from '@/components/lms/ContentTable';
 import { LearnSection } from '../_components/LearnSection';
+import { BuildGuide } from '@/components/courses/BuildGuide';
+import { MICRO_MODULES_BY_NUMBER } from '@content/courses/foundation-program/micro-modules';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
 import { SaveStepNavigation } from '../_components/SaveStepNavigation';
 import { ModuleTabs } from '../_components/ModuleTabs';
@@ -297,6 +299,8 @@ export default async function ModulePage(props: ModulePageParams) {
   const sandboxMin = Math.max(5, Math.round(totalMin * 0.32));
   const submitMin = Math.max(5, totalMin - takeawayMin - sandboxMin);
   const hasSandbox = Boolean(SANDBOX_CONFIGS[moduleNum]);
+  // Build modules lead with the working tool instead of the reference panel.
+  const build = MICRO_MODULES_BY_NUMBER.get(moduleNum)?.build;
 
   // Prior-experience recognition: offer the test-out check on the learner's
   // current, eligible early-ramp module. Strip the correct flags before the
@@ -470,17 +474,21 @@ export default async function ModulePage(props: ModulePageParams) {
                   id="st-takeaway-h"
                   style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
                 >
-                  Understand · {takeawayMin} min
+                  {build ? "The build" : "Understand"} · {takeawayMin} min
                 </h2>
                 {testOutCheck && (
                   <TestOutCard check={testOutCheck} enrollmentId={enrollment.id} />
                 )}
-                <LearnSection
-                  sections={expandedModule?.sections ?? []}
-                  keyTakeaways={expandedModule?.takeaways}
-                  moduleNumber={moduleNum}
-                  learnerRole={learnerRole}
-                />
+                {build ? (
+                  <BuildGuide build={build} />
+                ) : (
+                  <LearnSection
+                    sections={expandedModule?.sections ?? []}
+                    keyTakeaways={expandedModule?.takeaways}
+                    moduleNumber={moduleNum}
+                    learnerRole={learnerRole}
+                  />
+                )}
                 {moduleTables && moduleTables.length > 0 && (
                   <div style={{ marginTop: 24 }}>
                     {moduleTables.map((table) => (

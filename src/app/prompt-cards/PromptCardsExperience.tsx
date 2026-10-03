@@ -108,7 +108,7 @@ export function PromptCardsExperience() {
               prompt-cards --workflows 20
             </p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.98] text-[color:var(--ink)] md:text-7xl">
-              Use AI in Banking With Structure, Clarity, and Control
+              Prompt cards for banking tasks
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-[color:var(--slate-600)] md:text-lg">
               20 structured workflows from the AI Banking Institute to help banking professionals use AI with better inputs, clearer outputs, and stronger review habits.

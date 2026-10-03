@@ -246,16 +246,10 @@ export function ResultsViewV3({
           <div>
             <p className="rv-k rv-gold">12-question snapshot summary</p>
             <h2 className="rv-h2">Your 12 answers, grouped by topic.</h2>
-            <p className="rv-body">
-              The free snapshot uses twelve plain-language questions to estimate
-              where to start. The In-Depth Assessment is a separate
-              eight-dimension diagnostic for a fuller action plan.
-            </p>
             {signals.filter((s) => bandForSignal(s) === bandForSignal(signals[0])).length >= 8 && (
               <p data-testid="uniform-band-note" className="rv-body rv-muted">
-                Most of your topics landed at the same stage — that&rsquo;s normal
-                for a first pass, not a data problem. The one to act on is the top
-                gap above; the rest will move together as the basics go in.
+                Most topics landed at the same stage. That&rsquo;s normal on a first pass:
+                act on the top gap and the rest move with it.
               </p>
             )}
             <p className="rv-legend" aria-hidden="true">
@@ -332,7 +326,7 @@ export function ResultsViewV3({
         {focusGap && (
           <section className="rv-section">
             <p className="rv-k rv-gold">Three things you can use this week</p>
-            <h2 className="rv-h2">Not theory. Actual next actions.</h2>
+            <h2 className="rv-h2">Your next steps.</h2>
             <div className="rv-takeaways">
               {starterPrompt && (
                 <article className="rv-take rv-take-prompt">
@@ -357,7 +351,7 @@ export function ResultsViewV3({
               {artifact && (
                 <article className="rv-take">
                   <TakeawayNum n={3} />
-                  <h3>Working artifact</h3>
+                  <h3>A document to keep</h3>
                   <p className="rv-muted">{artifact.subtitle}</p>
                   {profileId ? (
                     <div className="rv-take-foot">
@@ -396,14 +390,14 @@ export function ResultsViewV3({
         <section className="rv-section">
           <p className="rv-k rv-gold">30 / 60 / 90 plan</p>
           <h2 className="rv-h2">
-            Start with the first 30 days. Unlock the deployment plan when you need the detail.
+            Your first 30 days.
           </h2>
           <div className="rv-cols-3 rv-phases">
             <div className="rv-phase is-open">
               <div className="rv-phase-head">
                 <div>
                   <p className="rv-k rv-gold">Days 1–30</p>
-                  <h3>Map, educate, select</h3>
+                  <h3>Pick the first use cases</h3>
                 </div>
                 <span className="rv-pill is-high">Included</span>
               </div>
@@ -460,12 +454,7 @@ export function ResultsViewV3({
             <p className="rv-k rv-gold">A separate diagnostic</p>
             <h2 className="rv-h2">The 8-dimension In-Depth Diagnostic.</h2>
             <p className="rv-body">
-              The free snapshot you just took is twelve plain-language signals.
-              The In-Depth is a separate diagnostic — forty-eight questions
-              across eight readiness dimensions, per-dimension root causes, a
-              role-specific 30/60/90 playbook, sample prompts, an evidence
-              checklist your reviewer can read, and a reviewer-ready report
-              you can forward.
+              Forty-eight questions, eight scored dimensions, and a 90-day plan for your role.
             </p>
             <div className="rv-actions">
               <a href="/assessment/in-depth" className="rv-btn rv-btn-gold">
@@ -490,10 +479,6 @@ export function ResultsViewV3({
                 </li>
               ))}
             </ol>
-            <p className="rv-muted">
-              Plus role-specific roadmap, sample prompts, evidence checklist,
-              and a reviewer-ready PDF.
-            </p>
           </div>
         </section>
 
@@ -505,7 +490,7 @@ export function ResultsViewV3({
         <section className="rv-section">
           <div className="rv-section-head">
             <p className="rv-k rv-gold">Role playbooks</p>
-            <h2 className="rv-h2">Your seat, written down.</h2>
+            <h2 className="rv-h2">The playbook for your role.</h2>
             <p className="rv-body">Free to read, no email gate.</p>
           </div>
           <div className="rv-pb">
@@ -569,7 +554,7 @@ function RoiContextPanel({
     <section className="rv-panel rv-roi">
       <div>
         <p className="rv-k rv-gold">Your ROI scenario</p>
-        <h2 className="rv-h2">Keep the value model attached to the readiness work.</h2>
+        <h2 className="rv-h2">Estimate the hours AI could save your team.</h2>
         <p className="rv-body">
           You modeled {formatRoiNumber(roiContext.fte)} employees at{' '}
           {formatRoiCurrency(roiContext.costPerFTE)} loaded cost and{' '}
@@ -635,7 +620,7 @@ function QuickActionStrip({
     >
       <div>
         <p className="rv-k rv-gold">Start here</p>
-        <h2 className="rv-strip-title">Turn the snapshot into one visible next move.</h2>
+        <h2 className="rv-strip-title">What to do next.</h2>
       </div>
       <div className="rv-actions">
         <ResultActionLink href={matchedPlaybookPath} variant="ink">

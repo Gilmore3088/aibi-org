@@ -104,7 +104,7 @@ describe('HomePage', () => {
   it('offers the "what are you working on" help widget after the free tools', () => {
     render(<HomePage />);
     const kit = document.getElementById('hm-kit-title') as HTMLElement;
-    expect(kit.textContent).toMatch(/Tools your team can use today/);
+    expect(kit.textContent).toMatch(/Free checklists, reference cards and playbooks/);
     const form = document.querySelector('.mk-help-form') as HTMLElement;
     expect(form).toBeTruthy();
     // Placed below the free-tools section, never above the hero.

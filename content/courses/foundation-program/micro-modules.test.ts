@@ -53,6 +53,30 @@ describe('Foundation micro-module ladder', () => {
     expect(module16?.transferMove).toContain('show a manager');
   });
 
+  it('keeps every build dated and inside its review window', () => {
+    // Build steps name real tools, and tools change. A build past its
+    // reviewBy date fails CI until someone re-checks it against the tools.
+    const today = new Date().toISOString().slice(0, 10);
+    const builds = FOUNDATION_MICRO_MODULES.filter((module) => module.build);
+    // Every module ends with a working tool.
+    expect(builds.length).toBe(FOUNDATION_MICRO_MODULES.length);
+    for (const mod of builds) {
+      const build = mod.build!;
+      expect(build.verifiedOn, `module ${mod.number} verifiedOn`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(build.reviewBy, `module ${mod.number} reviewBy`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(build.reviewBy > today, `module ${mod.number} build review is overdue (${build.reviewBy})`).toBe(true);
+      expect(build.prompt.length, `module ${mod.number} prompt`).toBeGreaterThan(80);
+      expect(build.doneWhen, `module ${mod.number} doneWhen`).toMatch(/\S/);
+      // Shown as three short steps: keep every learner-facing line short.
+      expect(build.highlights.length, `module ${mod.number} highlights`).toBeLessThanOrEqual(4);
+      expect(build.tests.length, `module ${mod.number} tests`).toBeGreaterThanOrEqual(1);
+      expect(build.toolPaths.map((p) => p.tool)).toEqual(['ChatGPT', 'Claude', 'Gemini', 'Copilot']);
+      for (const line of [build.youWillHave, build.beforeYouStart, build.check, build.doneWhen]) {
+        expect(line.split(/\s+/).length, `module ${mod.number}: "${line}"`).toBeLessThanOrEqual(22);
+      }
+    }
+  });
+
   it('keeps the simulated role audit tied to the 18-module source', () => {
     const script = readFileSync(
       resolve(process.cwd(), 'scripts/foundation-course-simulated-role-audit.mjs'),
