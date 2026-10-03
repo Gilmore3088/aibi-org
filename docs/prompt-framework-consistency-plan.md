@@ -88,6 +88,18 @@ Each step ends with its own check before the next starts.
 - Three persona waves, plus a targeted run that walks module 3 → module 9 lab → exam → Transformation Report → free Banker card and confirms the same four words every time.
 - Update the persona report and this plan's status.
 
+## After merge (James)
+
+Production serves downloads from Supabase storage, so the regenerated files reach visitors only after they are uploaded. From a machine with `.env.local` holding the service key:
+
+```
+node scripts/seed-resources-bucket.mjs
+```
+
+It uploads every PDF and ZIP in `public/downloads` and overwrites the stored copies; it is safe to re-run. The changed files are `banker-prompt-formula-card.pdf` (now "The CORE Prompt Card for Bankers"), `prompting-foundation-guide.pdf`, `safe-ai-use-checklist.pdf`, and the `prompting-foundation-kit`, `frontline-enablement-kit` and `governance-starter-kit` ZIPs.
+
+PDFs and kits were rebuilt with the repo's scripts. On a machine without network access use `PW_LOCAL_FONTS=1` (and `PW_EXECUTABLE_PATH` if the installed Chromium differs from the Playwright pin), so the brand fonts come from `src/app/fonts` instead of Google Fonts.
+
 ## Decisions
 
 1. **Canonical framework**: CORE. *(decided)*

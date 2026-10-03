@@ -505,14 +505,14 @@ export function PromptLikeBankerToolboxEntry() {
 
 function MethodCard() {
   return (
-    <div className="prompt-simple-method" aria-label="The 5-line banker prompt">
-      <span>The 5-line banker prompt</span>
+    <div className="prompt-simple-method" aria-label="The CORE prompt in five lines">
+      <span>The CORE prompt in five lines</span>
       <ol>
-        <li>You are helping a [ROLE].</li>
-        <li>Use only [SOURCE].</li>
-        <li>Create [OUTPUT FORMAT].</li>
-        <li>Do not invent facts, make decisions, expose data, or add unsupported claims.</li>
-        <li>Mark uncertain items as [VERIFY]. Label the output as draft for [REVIEWER].</li>
+        <li><strong>Context:</strong> You are helping a [ROLE].</li>
+        <li><strong>Objective:</strong> [Draft, summarize, rewrite, extract, compare, or checklist] [THE TASK].</li>
+        <li><strong>Resources:</strong> Use only [SOURCE].</li>
+        <li><strong>Expectations:</strong> Create [OUTPUT FORMAT]. Do not invent facts, make decisions, expose data, or add unsupported claims.</li>
+        <li><strong>Expectations, review:</strong> Mark uncertain items as [VERIFY]. Label the output as draft for [REVIEWER].</li>
       </ol>
     </div>
   );
@@ -908,7 +908,7 @@ function TeamDownloads() {
       <div className="prompt-download-list">
         <DownloadRow
           title="Prompt card"
-          body="The 5-line prompt method, placeholders, examples, and review checks."
+          body="The CORE prompt in five lines, placeholders, examples, and review checks."
           href="/api/resources/prompting-foundation-guide/download"
           slug="prompting-foundation-guide"
           format="PDF"

@@ -48,7 +48,7 @@ describe('starter kit ZIP contents', () => {
     expect(zipEntries('prompting-foundation-kit.zip')).toEqual([
       '00-Start-Here.pdf',
       '01-Prompt-Like-A-Banker-Prompt-Card.pdf',
-      '02-Banker-Prompt-Formula-Card.pdf',
+      '02-CORE-Prompt-Card-for-Bankers.pdf',
       '03-Safe-Prompt-Placeholder-Card.pdf',
       '04-Banker-Prompt-Types-Cheat-Sheet.pdf',
       '05-Safe-vs-Unsafe-Prompt-Examples.pdf',

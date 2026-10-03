@@ -340,7 +340,7 @@ const DESK_CARD_PRESENTATION: Record<string, { readonly type: string; readonly d
   },
   'prompt-strategy-cheat-sheet': {
     type: 'Prompt card',
-    desc: 'Write prompts with role, context, format, constraints, and review.',
+    desc: 'Write CORE prompts: context, objective, resources, and expectations, with a review step.',
     icon: Sparkles,
   },
   'regulatory-cheatsheet': {

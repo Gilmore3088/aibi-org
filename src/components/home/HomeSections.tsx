@@ -12,7 +12,7 @@ import { FOUNDATION_MICRO_MODULES } from '@content/courses/foundation-program/mi
 // gated download flow on /resources, or the role playbook page) — free
 // resources have no standalone /resources/<slug> page.
 const COVERS = [
-  { slug: 'banker-prompt-formula-card', title: 'The Banker Prompt Formula', href: '/resources#starter-kits' },
+  { slug: 'banker-prompt-formula-card', title: 'The CORE Prompt Card for Bankers', href: '/resources#starter-kits' },
   { slug: 'artifact-data-handling-reference-card', title: 'Data Handling Reference Card', href: '/resources#starter-kits' },
   { slug: 'compliance-playbook', title: 'The Compliance Officer’s AI Governance Playbook', href: '/playbooks/compliance' },
   { slug: 'prompt-output-review-checklist', title: 'Prompt Output Review Checklist', href: '/resources#starter-kits' },

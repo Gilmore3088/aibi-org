@@ -52,7 +52,7 @@ const LEARNING_FLOW = [
 ] as const;
 
 const COURSE_EVIDENCE = [
-  { title: 'Reusable prompt card', desc: 'Task, source, format, constraints, and reviewer are captured together.' },
+  { title: 'Reusable prompt card', desc: 'Context, objective, resources, and expectations (format, limits, reviewer) are captured together.' },
   { title: 'Review note', desc: 'The learner marks what was checked and what still needs [VERIFY].' },
   { title: 'Packet artifact', desc: 'The finished card is saved for manager review and future reuse.' },
 ] as const;
@@ -64,7 +64,7 @@ const PLANTED_CLAIM =
 
 const LESSON_STEPS = [
   { n: '01', title: 'Start rough', desc: '"Rewrite this procedure for frontline branch staff."' },
-  { n: '02', title: 'Add guardrails', desc: 'Audience, source, format, constraints, reviewer, and [VERIFY] rule.' },
+  { n: '02', title: 'Add guardrails', desc: 'Resources and expectations: the approved source, output format, limits, reviewer, and the [VERIFY] rule.' },
   { n: '03', title: 'Save the card', desc: 'A reusable First Prompt Card with data boundary and manager review note.' },
 ] as const;
 

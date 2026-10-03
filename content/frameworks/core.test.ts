@@ -8,7 +8,7 @@ import { CORE_PART_LIST, CORE_PARTS, OLDER_LABEL_NOTE } from './core';
 // name or part list. See docs/prompt-framework-consistency-plan.md.
 
 const ROOT = join(__dirname, '..', '..');
-const SCAN = ['src', 'content', 'public/downloads/source', 'docs/mailerlite-emails'];
+const SCAN = ['src', 'content', 'public/downloads/source', 'docs/mailerlite-emails', 'scripts'];
 const SKIP = [
   /node_modules/,
   /\.test\.tsx?$/,
@@ -17,31 +17,33 @@ const SKIP = [
   /^content\/sandbox-data\//,
   /^content\/frameworks\/core\.ts$/,
 ];
+const OLD = 'role|task|format|constraints?|source';
+const SEP = '(?:,\\s*(?:and\\s+)?|\\s*[·/]\\s*)';
 const RULES: readonly [string, RegExp][] = [
   ['RTFC', /\bRTFC\b/],
   ['Banker Prompt Formula', /Banker Prompt Formula/i],
   // A list that runs role -> task -> another framework term is a competing
   // part list. "Role/task:" as a field label on its own is not.
   ['role/task part list', /\brole\b[^.\n]{0,15}\btask\b[^.\n]{0,40}\b(format|constraints?|context|source|inputs|audience)\b/i],
+  // Three list items in a row from the older vocabularies, e.g. "role,
+  // format, source" or "Role / Task / Format".
+  ['older part list', new RegExp(`\\b(${OLD})\\b${SEP}\\b(${OLD}|context|audience|review)\\b${SEP}\\b(${OLD}|context|audience|review|inputs|self-check)\\b`, 'i')],
+  ['5-line prompt method', /5-line (banker )?prompt/i],
 ];
 
 // Files still being migrated. Each plan step removes its entries; the list
 // must be empty when the work is done (step 7).
 const PENDING = new Set<string>([
-  'public/downloads/source/banker-prompt-formula-card.html',
-  'public/downloads/source/safe-ai-use-checklist.html',
   'src/app/prompt-cards/PromptCardsExperience.tsx',
   'src/app/resources/the-skill-not-the-prompt/page.tsx',
-  'src/components/home/HomeSections.tsx',
   'src/content/prompt-cards/cards.ts',
-  'src/lib/resources/freeResources.manifest.json',
 ]);
 
 function files(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const full = join(dir, name);
     if (statSync(full).isDirectory()) return files(full);
-    return /\.(tsx?|mdx?|json|html)$/.test(name) ? [full] : [];
+    return /\.(tsx?|mdx?|json|html|mjs)$/.test(name) ? [full] : [];
   });
 }
 

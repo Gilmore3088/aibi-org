@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Render page 1 of selected free PDFs to JPG covers for the homepage
-# "Take the paperwork" section (src/components/home/HomeSections.tsx), plus
+# free-tools section ("Tools your team can use today") (src/components/home/HomeSections.tsx), plus
 # three inner pages of the In-Depth playbook for /assessment/in-depth.
 #
 # Re-run whenever one of these PDFs is regenerated so the cover image

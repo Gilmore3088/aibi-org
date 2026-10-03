@@ -282,15 +282,15 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'prompting-skill': {
     oneLine: 'You ask AI vague questions and get vague answers.',
-    nextStep: 'Start by adding role, format, source, and a self-check instruction to your next prompt — and save it if it works.',
+    nextStep: 'Write your next prompt with the four CORE parts (context, objective, resources, expectations) plus a self-check instruction — and save it if it works.',
     explanation:
-      "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is a small kit of patterns — role, format, source, check, edit — that you reuse until they're reflex.",
+      "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is one structure, CORE (context, objective, resources, expectations), plus a check and an edit, reused until it's reflex.",
     impacts: [
       'You give up on tasks that AI could actually help with',
       'Each prompt feels like starting from scratch instead of building on what worked last time',
     ],
     whatGoodLooksLike: [
-      'You reliably get structured, useful answers because your prompts include role, format, source, and a self-check',
+      'You reliably get structured, useful answers because your prompts cover all four CORE parts and ask for a self-check',
       'You save the prompts that work and reuse them as your personal template library',
     ],
   },
@@ -497,7 +497,7 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
       'Compounds — each pattern you learn applies to the next task',
     ],
     inPractice:
-      'A five-line template. Fill in role, format, source, self-check, edit. Reuse for every prompt. Save the ones that work to a personal prompt library.',
+      'A CORE prompt template: context, objective, resources, expectations, then a self-check and an edit. Reuse for every prompt. Save the ones that work to a personal prompt library.',
     worksBestFor: [
       'Compliance review summaries',
       'Loan-narrative drafting',
