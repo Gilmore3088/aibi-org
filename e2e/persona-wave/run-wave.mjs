@@ -492,6 +492,8 @@ async function freeAssessment(s, { thenInDepth = false } = {}) {
   await s.maybeWander();
 
   if (thenInDepth) {
+    // The full results (and their In-Depth links) render after the email step.
+    await s.page.locator('a[href*="/assessment/in-depth"]:visible').first().waitFor({ timeout: 8_000 }).catch(() => {});
     const ok = await s.clickCta(/90-day playbook|in-depth|get in-depth|full diagnostic/i, 'upgrade to In-Depth', { required: false });
     if (!ok) await s.goto('/assessment/in-depth', 'upgrade to In-Depth', { fallback: true });
     await buyCta(s, /buy|purchase|get (the )?in-depth|get my report|\$99|start in-depth|checkout/i, 'buy In-Depth $99', /\/api\/checkout\/in-depth|create-checkout/);
@@ -1017,7 +1019,10 @@ async function goToModule(s, n) {
   }
   // No visible way forward. Count it once per learner (they learn the
   // workaround), then use the course menu drawer like a person would.
-  if (n > 1) {
+  // Only a missing link on the previous module counts; after a wander the
+  // learner may be on another page entirely.
+  const onPrev = normPath(s.page.url()) === `/courses/foundation/program/${n - 1}`;
+  if (n > 1 && onPrev) {
     await s.addFriction('no_next_module_link', `module ${n - 1} has no visible link to module ${n} (${s.p.device})`, s.learnedMenu ? 0 : 0.5);
     s.learnedMenu = true;
   }
@@ -1282,7 +1287,9 @@ async function answerStep(s, st) {
     const choices = [];
     for (let j = 0; j < Math.min(n, 30); j += 1) {
       const t = ((await opts.nth(j).innerText().catch(() => '')) || '').trim();
-      if (t && !skip.test(t) && !(await opts.nth(j).isDisabled().catch(() => true))) choices.push(j);
+      // Named options (st.optionText) are answers by definition; the skip list
+      // is for unscoped buttons and would drop answers like "A  $4,860".
+      if (t && (st.optionText || !skip.test(t)) && !(await opts.nth(j).isDisabled().catch(() => true))) choices.push(j);
     }
     if (!choices.length) break;
     if (!(await s.click(opts.nth(choices[s.rng.int(0, choices.length - 1)]), `answer ${i + 1}`))) break;

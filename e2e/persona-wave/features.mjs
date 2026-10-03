@@ -120,7 +120,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/courses/foundation/program/gallery' }, { read: 'gallery_read', min: 300 }],
   ],
   'cert-exam': [
-    [{ enter: '/certifications/exam/foundation' }, { click: /start|begin|take the exam/i, label: 'start exam', optional: true }, { answer: 'main button', optionText: /^\s*[a-d]\s*\S/i, next: /next|submit|continue|finish/i, max: 16, value: 'exam_completed' }],
+    [{ enter: '/certifications/exam/foundation' }, { click: /start|begin|take the exam/i, label: 'start exam', optional: true }, { answer: 'main button', optionText: /^\s*[a-d]\s*\S/i, next: /^\s*(next|submit exam|submit|finish)\b/i, max: 16, value: 'exam_completed' }],
   ],
   'purchase-help': [
     [{ enter: '/support/purchase-help' }, { fill: 'form:has(textarea)' }, { submit: /send support request/i, api: /\/api\/support/, value: 'support_request_sent', label: 'support request', scope: 'form:has(textarea)' }],
