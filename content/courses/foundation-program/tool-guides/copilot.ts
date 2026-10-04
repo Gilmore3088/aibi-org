@@ -12,59 +12,55 @@ export const copilotGuide: ToolGuide = {
   tagline:
     'AI embedded in the tools your institution already runs — Outlook, Teams, Word, Excel.',
   url: 'https://copilot.microsoft.com',
+  pricingUrl: 'https://www.microsoft.com/en-us/copilot/pricing/enterprise',
+  verifiedOn: '2026-10-04',
+  reviewBy: '2027-01-04',
 
   gettingStarted: {
     steps: [
-      'Navigate to copilot.microsoft.com in any browser and sign in.',
-      'If your institution uses Microsoft 365, sign in with your work email to activate commercial data protections automatically.',
-      'Check whether your institution has provisioned M365 Copilot by opening Outlook, Word, or Teams and looking for the Copilot button.',
-      'If you see Copilot buttons in M365 apps, your institution has the add-on license and you have access to the full integrated experience.',
-      'If not, you still have access to the standalone Copilot at copilot.microsoft.com with your work credentials.',
+      'Sign in to the Microsoft 365 Copilot app (m365.cloud.microsoft) or Copilot in Outlook with your work account.',
+      'Look for the shield or "Protected" label. It means enterprise data protection applies to the chat.',
+      'Open Word, Excel, or Teams and look for the Copilot button inside the document or meeting.',
+      'If Copilot works inside Word, Excel, and Teams, your institution has bought the Microsoft 365 Copilot license for you.',
+      'If you only see Copilot Chat, you have the version included with eligible Microsoft 365 plans. It still works for drafting and summarizing.',
     ],
     firstSessionNote:
-      'Most community banks and credit unions on Microsoft 365 Business or Enterprise plans already have some form of Copilot access. Before purchasing anything, ask your IT administrator whether M365 Copilot is provisioned — the email template in Use Case 5 is designed exactly for this conversation.',
+      'If your institution runs Microsoft 365, you likely already have Copilot Chat at no extra cost. Copilot inside Word, Excel, PowerPoint, and Teams needs the paid license. Ask IT before buying anything; the email in Use Case 5 is written for that conversation.',
   },
 
   pricing: [
     {
-      tierName: 'Free Copilot',
-      cost: 'Free',
+      tierName: 'Consumer Copilot',
+      cost: 'Free with a personal Microsoft account',
       keyLimits: [
-        'Web-grounded conversational AI via Bing',
-        'Image generation (limited)',
-        'Basic drafting and summarization',
-        'Available in Windows 11 Start menu and Edge browser sidebar',
-        'Consumer-grade data handling — no commercial protection',
+        'Web-grounded chat in the Copilot app, Windows, and Edge',
+        'Consumer data handling — no enterprise data protection',
       ],
       bankingVerdict:
-        'Suitable for staff who need occasional research and drafting help and whose institution has not provisioned M365 Copilot. Do not enter customer data, loan details, or member information on the free tier.',
+        'Do not use it for work. Sign in with your work account instead.',
     },
     {
-      tierName: 'M365 Copilot in Apps',
-      cost: 'Included with M365 E3 or E5 (institution pays)',
+      tierName: 'Microsoft 365 Copilot Chat',
+      cost: 'Included with eligible Microsoft 365 plans',
       keyLimits: [
-        'Copilot in Outlook: email drafting, thread summarization, reply suggestions',
-        'Copilot in Teams: meeting transcription and summary, action item extraction',
-        'Copilot in Word: draft from outline, rewrite, summarize documents',
-        'Copilot in Excel: formula generation, data analysis, chart creation from plain English',
-        'Copilot in PowerPoint: generate slides from a Word document or outline',
-        'Copilot in SharePoint: search and summarize internal documents',
+        'Web-grounded chat with enterprise data protection',
+        'Works with files you upload or reference',
+        'Copilot in Outlook (standard access)',
+        'Agents can be built; agent use is metered',
       ],
       bankingVerdict:
-        'The tier most relevant to day-to-day banking operations. If your institution is on M365 E3 or E5, ask IT whether Copilot is activated — it may already be available at no additional cost.',
+        'Where most bank staff should start. It is probably already in your tenant; ask IT whether it is turned on.',
     },
     {
-      tierName: 'Microsoft 365 Copilot Add-On',
-      cost: '$30/user/month (added to existing M365 subscription)',
+      tierName: 'Microsoft 365 Copilot',
+      cost: '$30/user/month, paid yearly (enterprise list price)',
       keyLimits: [
-        'Everything in M365 Copilot in Apps',
-        'Copilot Pages: collaborative AI workspace shared across your team',
-        'Copilot Studio: build custom AI agents without code',
-        'Business Chat (BizChat): cross-app AI that references emails, meetings, documents, and chats simultaneously',
-        'Priority access to the latest model updates',
+        'Copilot in Word, Excel, PowerPoint, OneNote, and Teams',
+        'Grounded in your mail, meetings, chats, and files (Work IQ)',
+        'Researcher and Analyst agents; Copilot Studio agent use included',
       ],
       bankingVerdict:
-        'Justified for institutions where multiple staff handle high-volume document work, compliance documentation, or member correspondence. Copilot Studio is particularly relevant for custom intake forms and approval routing.',
+        'Worth it for staff with heavy meeting, document, and spreadsheet work. Business-plan pricing differs; check the pricing page.',
     },
   ],
 
@@ -141,7 +137,7 @@ export const copilotGuide: ToolGuide = {
       description:
         'Before building any AI workflow on Copilot, you need to know what your institution has licensed. This is the exact email to send your IT department.',
       prompt:
-        'Subject: Question about our Microsoft 365 Copilot licensing\n\nHi [IT contact name],\n\nI am looking into using Microsoft Copilot as part of a professional AI training program I am completing. Before I invest time in learning it, I want to make sure I understand what we have available.\n\nCould you answer three quick questions?\n\n1. Does our M365 subscription include the Copilot add-on ($30/user/month) for any users, and if so, am I included?\n2. If we do not have the add-on, does our E3 or E5 license include any Copilot features in Outlook, Teams, Word, or Excel?\n3. Is there an approved acceptable-use policy for Copilot that I should read before I start using it for work tasks?\n\nI want to make sure I am working within our approved tools and data handling policies.\n\nThank you,\n[Your name]',
+        'Subject: Question about our Microsoft 365 Copilot licensing\n\nHi [IT contact name],\n\nI am looking into using Microsoft Copilot as part of a professional AI training program I am completing. Before I invest time in learning it, I want to make sure I understand what we have available.\n\nCould you answer three quick questions?\n\n1. Do we have Microsoft 365 Copilot Chat turned on, and should I sign in with my work account to use it?\n2. Have we bought Microsoft 365 Copilot licenses (Copilot inside Word, Excel, and Teams) for anyone, and am I included?\n3. Is there an approved acceptable-use policy for Copilot that I should read before I start using it for work tasks?\n\nI want to make sure I am working within our approved tools and data handling policies.\n\nThank you,\n[Your name]',
       expectedOutput:
         'Use this prompt as a literal email template. The three questions are designed to surface the three most common licensing situations without putting IT on the defensive. Most IT departments respond within one business day.',
     },
@@ -150,14 +146,14 @@ export const copilotGuide: ToolGuide = {
   customInstructions: {
     available: true,
     howTo:
-      'copilot.microsoft.com → Settings (gear icon, top right) → Personalization. Add the template below in the personalization field. Note: personalization settings apply to copilot.microsoft.com only. Copilot within M365 apps (Outlook, Teams, Word, Excel) does not currently read these — include role context in your in-app prompts manually until Microsoft rolls out unified personalization.',
+      'In the Microsoft 365 Copilot app, open Settings → Personalization and add the template below, if your admin has turned personalization on. If you do not see it, paste the template at the start of each chat.',
     bankingExample:
       'I work at a community bank / credit union serving [asset size, e.g., $450 million in assets] in [state or region]. My role is [your role, e.g., VP of Compliance / Branch Manager / Loan Officer].\n\nWhen I ask for help drafting communications, always use a professional, plain-language tone appropriate for a federally regulated financial institution. Avoid jargon, hedge language, and casual phrasing.\n\nWhen I ask about regulations, cite specific regulation names (e.g., Reg B, Reg CC, BSA/AML, TPRM) and acknowledge when something requires legal review rather than stating a definitive legal conclusion.\n\nDo not include customer or member personal information in responses unless I explicitly provide it in the prompt. Remind me to use placeholders if I appear to include real NPI.\n\nDefault output format: clear headings, numbered lists for action items, bullet points for reference information, prose paragraphs for member-facing content.',
   },
 
   dataSafety: {
     summary:
-      'Microsoft provides commercial data protection for users signed in with a work or school Microsoft 365 account. This is meaningfully different from the consumer Copilot experience and is the baseline for institutional use.',
+      'Microsoft applies enterprise data protection when you sign in with a work Microsoft 365 account. That is meaningfully different from consumer Copilot and is the baseline for institutional use.',
     details: [
       'Prompts and responses are not used to train Microsoft AI models when you are signed in with a work account.',
       'Data is processed under the Microsoft Product Terms and Data Processing Addendum (GDPR-compliant, compatible with most bank privacy programs).',
@@ -167,21 +163,21 @@ export const copilotGuide: ToolGuide = {
       'Rule of thumb: if you would send it in an internal email to a colleague, it is likely safe in M365 Copilot under commercial protection. Documents classified as Confidential or Restricted (loan files, exam reports, member statements) require compliance review before Copilot use.',
     ],
     bankingVerdict:
-      "Commercial data protection makes Copilot appropriate for internal bank documents, policy drafts, meeting notes, and aggregated operational data. It is NOT automatically approved for individual member NPI (SSNs, account numbers, loan details). For institutions with a signed Microsoft DPA covering M365, Copilot falls under the same governance framework as the rest of your M365 environment.",
+      "Enterprise data protection makes Copilot appropriate for internal bank documents, policy drafts, meeting notes, and aggregated operational data. It is NOT automatically approved for individual member NPI (SSNs, account numbers, loan details). For institutions with a signed Microsoft DPA covering M365, Copilot falls under the same governance framework as the rest of your M365 environment.",
   },
 
   proTips: [
     {
       number: 1,
-      tip: 'Your IT department probably already has this — ask before you pay. A significant number of community banks on M365 E3/E5 have Copilot available and have not communicated it to staff. The email in Use Case 5 is designed to surface this.',
+      tip: 'Your IT department probably already has Copilot Chat — ask before you pay. Many institutions have it turned on without telling staff. The email in Use Case 5 is designed to surface this.',
     },
     {
       number: 2,
-      tip: 'Copilot in Teams is the fastest ROI for most banking staff. A 90-minute loan committee or ALCO meeting produces a usable summary in under 30 seconds.',
+      tip: 'If you have the full license, Copilot in Teams is the fastest payoff for most banking staff. A long loan committee or ALCO meeting becomes a usable summary in moments.',
     },
     {
       number: 3,
-      tip: 'Use natural language column references in Excel — do not guess formulas. "Show me all loans where the current balance is more than 10% above the original approved amount" works better than asking for a VLOOKUP. Especially good for delinquency reports and call report prep.',
+      tip: 'Use natural language column references in Excel — do not guess formulas. "Show me all loans where the current balance is more than $50,000 above the original approved amount" works better than asking for a VLOOKUP. Especially good for delinquency reports and call report prep.',
     },
     {
       number: 4,
@@ -189,7 +185,7 @@ export const copilotGuide: ToolGuide = {
     },
     {
       number: 5,
-      tip: 'Copilot Studio is worth exploring for repetitive intake processes. If your institution has the M365 Copilot add-on, plan agent-shaped workflows for vendor questionnaire intake, member complaint triage routing, or BSA case narrative drafting. Engage IT early because Copilot Studio requires Azure permissions that may need admin approval.',
+      tip: 'Copilot Studio is worth exploring for repetitive intake processes. If your institution has Microsoft 365 Copilot licenses, plan agent-shaped workflows for vendor questionnaire intake, member complaint triage routing, or BSA case narrative drafting. Engage IT early: agent use can be metered and needs admin approval.',
     },
   ],
 };

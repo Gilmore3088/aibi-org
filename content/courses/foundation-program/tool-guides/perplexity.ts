@@ -8,48 +8,44 @@ export const perplexityGuide: ToolGuide = {
   platform: 'perplexity',
   colorVar: 'var(--ink)',
   tagline:
-    'Cited research, every time. The only AI that treats every claim as a footnote.',
+    'Research answers with numbered sources you can open and check.',
   url: 'https://perplexity.ai',
+  pricingUrl: 'https://www.perplexity.ai/pro',
+  verifiedOn: '2026-10-04',
+  reviewBy: '2027-01-04',
 
   gettingStarted: {
     steps: [
       'Navigate to perplexity.ai in any browser.',
       'Click "Sign up" — you can sign up with Google, Apple, or email.',
-      'Free accounts get 5 Pro searches per day. Standard searches are unlimited.',
+      'Free accounts can search without limit; deeper research modes are capped. Paid plans raise the caps.',
       'Type your question or research prompt and press Enter. Every response includes numbered source citations.',
       'Click any citation number to open the source in a new tab and verify the claim.',
     ],
     firstSessionNote:
-      "Perplexity's distinguishing feature is that every response is grounded in live web sources with numbered citations. For banking and compliance work where every claim must trace to a named source, this makes Perplexity the most verifiable AI research tool available. Free searches use standard web search; Pro searches use deeper multi-source synthesis.",
+      "Perplexity's distinguishing feature is that every response is grounded in live web sources with numbered citations. For banking and compliance work where every claim must trace to a named source, that makes its answers quick to check. A citation is still only a pointer: open it.",
   },
 
   pricing: [
     {
       tierName: 'Free',
-      cost: '$0/month',
+      cost: '$0',
       keyLimits: [
-        '5 Pro searches per day',
-        'Unlimited standard searches',
-        'All responses include citations',
-        'Collections (saved research) available',
-        'No file upload on free tier',
+        'Unlimited basic searches, all cited',
+        'Limited deep research and file uploads',
       ],
       bankingVerdict:
-        'The free tier is useful for occasional regulatory research. The 5 Pro searches per day limit means you need to be deliberate about which queries warrant deeper synthesis. Standard searches are sufficient for straightforward citation lookups.',
+        'Enough for occasional regulatory lookups. Public information only.',
     },
     {
-      tierName: 'Pro',
-      cost: '$20/month (or $200/year)',
+      tierName: 'Paid plans',
+      cost: 'Several tiers · see pricing page',
       keyLimits: [
-        'Unlimited Pro searches',
-        'File upload and analysis',
-        'Collections with team sharing',
-        'Perplexity Spaces (team research workspaces)',
-        'Choice of AI model (GPT-4, Claude, etc.)',
-        'Additional privacy controls',
+        'More deep research, more uploads, choice of models',
+        'Projects: saved research workspaces with their own instructions',
       ],
       bankingVerdict:
-        'Pro is worth the cost for compliance officers, lending staff, and any role that runs daily regulatory or market research. Unlimited Pro searches plus file upload plus Spaces for team research collections makes this a professional research tool at a consumer price point.',
+        'Worth it for roles that research daily. Still a research tool for public sources, not a home for internal documents.',
     },
   ],
 
@@ -92,25 +88,24 @@ export const perplexityGuide: ToolGuide = {
       prompt:
         'Compile the most recent guidance from the Federal Reserve, OCC, FDIC, and CFPB on artificial intelligence use by depository institutions, including any supervisory letters, proposed rules, or examination guidance issued in the past 12 months. Cite all sources with publication dates.',
       expectedOutput:
-        'A cited inventory of recent AI-related regulatory guidance from all four primary banking regulators. Save this as a Perplexity Collection to share with your compliance team — and re-run quarterly to catch new guidance as it issues.',
+        'A cited inventory of recent AI-related regulatory guidance from all four primary banking regulators. Save it in a Perplexity Project to share with your compliance team — and re-run quarterly to catch new guidance as it issues.',
     },
   ],
 
   customInstructions: {
     available: true,
     howTo:
-      'Go to Settings (profile icon, bottom left) and click "AI profile." Add instructions in the text field. These apply globally to all your Perplexity searches. On Pro, you can also create Spaces with custom instructions that apply only within that research workspace.',
+      'Add personal instructions in your account settings; they apply to every search. For one topic, create a Project and give it its own instructions.',
     bankingExample:
       'I am a compliance officer at a federally insured community bank. When answering regulatory questions, always cite the primary source (Federal Register, agency website, or official supervisory letter) rather than secondary sources. Flag any regulatory threshold, dollar amount, or deadline for my independent verification at the primary source before I use it in compliance documentation.',
   },
 
   dataSafety: {
     summary:
-      'Perplexity does not store your search queries for model training. Pro subscribers have additional privacy controls. All searches are conducted over HTTPS.',
+      'Perplexity sends your query to its servers and to the model providers it uses. Check its current privacy settings before any work use.',
     details: [
-      "Perplexity's privacy policy states that search queries are not used to train the underlying AI models.",
-      'Pro subscribers can enable "Enhanced Privacy Mode" which prevents query logging.',
-      'Perplexity Spaces content (saved collections and research) is stored in your account and not shared externally.',
+      'Review the data-retention and AI-training settings in your account; defaults differ by plan and change over time.',
+      'Project content (saved research, files, instructions) is stored in your account and shared only with people you invite.',
       "Like all cloud services, Perplexity queries travel over the internet to Perplexity's servers — treat every query as you would a web search.",
     ],
     bankingVerdict:
@@ -124,11 +119,11 @@ export const perplexityGuide: ToolGuide = {
     },
     {
       number: 2,
-      tip: "Use Perplexity for research, NotebookLM for policy querying. Perplexity finds and synthesizes public information with citations. NotebookLM searches your own uploaded documents. The professional workflow is: research current guidance in Perplexity, then cross-reference against your institution's policies in NotebookLM.",
+      tip: "Use Perplexity for research, Gemini Notebook for policy querying. Perplexity finds and synthesizes public information with citations. Gemini Notebook searches your own uploaded documents. The professional workflow is: research current guidance in Perplexity, then cross-reference against your institution's policies in Gemini Notebook.",
     },
     {
       number: 3,
-      tip: 'Create Collections for recurring research. If you monitor overdraft guidance, BSA updates, or CRA rulemaking regularly, create a Perplexity Collection for each topic. Save your best research queries and results so you can build on previous research rather than starting from scratch each time.',
+      tip: 'Create Projects for recurring research. If you monitor overdraft guidance, BSA updates, or CRA rulemaking regularly, create a Perplexity Project for each topic. Save your best research queries and results so you can build on previous research rather than starting from scratch each time.',
     },
     {
       number: 4,

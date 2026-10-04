@@ -1,5 +1,4 @@
-// Google Gemini — Workspace-native AI with a 1-million-token context
-// window. Best fit for institutions running Google Workspace and for
+// Google Gemini — Workspace-native AI with very long document reading. Best fit for institutions running Google Workspace and for
 // large-document regulatory research (FFIEC manuals, multi-year audits).
 
 import type { ToolGuide } from './types';
@@ -10,50 +9,56 @@ export const geminiGuide: ToolGuide = {
   platform: 'gemini',
   colorVar: 'var(--gold)',
   tagline:
-    'Google Workspace-native AI with a 1-million-token context window — built for whole-manual regulatory research.',
+    'AI built into Google Workspace, with room to read a whole exam manual at once.',
   url: 'https://gemini.google.com',
+  pricingUrl: 'https://gemini.google/subscriptions/',
+  verifiedOn: '2026-10-04',
+  reviewBy: '2027-01-04',
 
   gettingStarted: {
     steps: [
       'Navigate to gemini.google.com and sign in with your Google account.',
       'If your institution uses Google Workspace, sign in with your work Google account — this activates Workspace data protections.',
-      'On first visit, Gemini will ask which model to use. Free defaults to Gemini 2.0 Flash; paid plans access Gemini 2.5 Pro.',
+      'Use the model picker at the top of the chat. Paid plans unlock the most capable model and higher limits.',
       'Explore the left sidebar: "Gems" (custom AI personas), "Deep Research" (multi-source research mode), recent conversations.',
       'If you use Workspace (Gmail, Docs, Sheets, Drive), look for the Gemini icon in the right-side panel of those apps.',
     ],
     firstSessionNote:
-      'Google Workspace Business Starter, Standard, and Plus plans include Gemini features in Gmail, Docs, and Sheets at no additional cost as of 2025. The Workspace Business AI add-on ($20/user/month) enables the full Gemini Advanced experience within Workspace apps. If your institution runs Google Workspace, you may already have Gemini features available — ask IT before paying.',
+      'Google Workspace business plans include Gemini in Gmail, Docs, and Sheets; which features depend on your edition. If your institution runs Google Workspace, ask IT what is turned on before paying for anything.',
   },
 
   pricing: [
     {
-      tierName: 'Gemini Free',
-      cost: 'Free',
+      tierName: 'Free',
+      cost: '$0 with a Google account',
       keyLimits: [
-        'Gemini 2.0 Flash model (fast, capable for most tasks)',
-        'Gems (custom AI personas with system instructions)',
-        'Google Search grounding (responses cite live web sources)',
-        'Image, PDF, and document upload',
-        'Limited Deep Research queries per day',
-        'Google Workspace integration in Gmail and Docs (limited)',
+        'Gems, file and image upload, Google Search grounding',
+        'Limited deep research',
+        'Personal account: consumer data handling',
       ],
       bankingVerdict:
-        'Suitable for individual banking staff who need drafting, research, and document analysis. Free does not include the 1-million-token context window or the most powerful Gemini models. Sufficient for most practitioner use cases in this guide.',
+        'Enough to learn on with public, non-sensitive text. Not for institution data.',
     },
     {
-      tierName: 'Gemini Advanced',
-      cost: '$19.99/month (Google One AI Premium plan)',
+      tierName: 'Google AI Plus · Pro · Ultra',
+      cost: '$4.99 · $19.99 · $99.99 per month',
       keyLimits: [
-        "Gemini 2.5 Pro — Google's most capable model as of 2025",
-        '1-million-token context window (upload a 700-page exam manual and query it)',
-        'Unlimited Deep Research queries',
-        'Extended Gems with more complex system instructions',
-        'Google Workspace integration across Gmail, Docs, Sheets, Slides, Drive (with Workspace add-on)',
-        'Priority access to new features',
-        '2TB Google One storage included',
+        'Higher limits and the most capable models as you move up',
+        'More deep research; more Gemini Notebook sources',
+        'Personal plans: your institution has no admin control',
       ],
       bankingVerdict:
-        'Justified for compliance officers, risk managers, and analysts working with large regulatory documents, exam reports, or multi-source research. The 1-million-token context is a genuine advantage when analyzing a full FFIEC manual or multi-year audit file in a single session.',
+        'Fine for learning at home. For work, use your institution\'s Google Workspace account instead.',
+    },
+    {
+      tierName: 'Google Workspace',
+      cost: 'Included in Workspace business editions · ask IT',
+      keyLimits: [
+        'Gemini in Gmail, Docs, Sheets, and Drive',
+        'Workspace data is not used to train models',
+      ],
+      bankingVerdict:
+        'The right home for bank work if your institution already runs Workspace.',
     },
   ],
 
@@ -174,7 +179,7 @@ export const geminiGuide: ToolGuide = {
   proTips: [
     {
       number: 1,
-      tip: "The 1-million-token context window is a genuine research advantage. Gemini Advanced can hold the entire FFIEC BSA/AML Examination Manual (700+ pages), a multi-year audit report, or a portfolio of regulatory guidance documents and query across all of them in a single session. For compliance officers preparing for examinations, this alone justifies the Advanced subscription.",
+      tip: "Long-document reading is a genuine research advantage. Gemini can hold a full examination manual, a multi-year audit report, or a set of guidance documents and answer across all of them in one session. Check the page count it confirms before relying on it.",
     },
     {
       number: 2,
