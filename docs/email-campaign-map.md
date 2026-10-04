@@ -59,7 +59,7 @@ These are the 12 emails in `docs/mailerlite-emails/`.
 | AiBI Assessment - Building Momentum | `MAILERLITE_GROUP_ID_BUILDING_MOMENTUM` | Day 7 | The habits of Ready to Scale | `docs/mailerlite-emails/09-building-momentum-day7.html` |
 | AiBI Assessment - Ready to Scale | `MAILERLITE_GROUP_ID_READY_TO_SCALE` | Day 0 | Your assessment result: Ready to Scale | `docs/mailerlite-emails/10-ready-to-scale-day0.html` |
 | AiBI Assessment - Ready to Scale | `MAILERLITE_GROUP_ID_READY_TO_SCALE` | Day 3 | The institution-wide credential program | `docs/mailerlite-emails/11-ready-to-scale-day3.html` |
-| AiBI Assessment - Ready to Scale | `MAILERLITE_GROUP_ID_READY_TO_SCALE` | Day 7 | A standing invitation: Leadership Advisory | `docs/mailerlite-emails/12-ready-to-scale-day7.html` |
+| AiBI Assessment - Ready to Scale | `MAILERLITE_GROUP_ID_READY_TO_SCALE` | Day 7 | Is your team as ready as your score? | `docs/mailerlite-emails/12-ready-to-scale-day7.html` |
 
 Required MailerLite state before relying on these:
 
