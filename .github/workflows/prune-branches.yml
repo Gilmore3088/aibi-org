@@ -1,0 +1,105 @@
+name: Prune branches
+
+# Manual-only branch cleanup. Dry run by default: the log lists what would
+# happen and nothing changes until dry_run is unticked.
+#
+#   delete  — branches whose work is already on main. Each is deleted only if
+#             it has no commits missing from main, or a PR from it was merged
+#             (squash merges leave the branch "ahead" forever).
+#   archive — branches with unmerged work. Each is tagged
+#             archive/<branch-with-dashes>-<YYYY-MM-DD> before deletion, so
+#             the commits stay reachable.
+#
+# Never touches main, staging, or a branch with an open PR.
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete:
+        description: 'Merged branches to delete (space- or newline-separated)'
+        required: false
+        default: ''
+      archive:
+        description: 'Unmerged branches to tag as archive/* and then delete'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Only report; change nothing'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: prune-branches
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prune
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          DELETE_LIST: ${{ inputs.delete }}
+          ARCHIVE_LIST: ${{ inputs.archive }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -u
+          today=$(date -u +%Y-%m-%d)
+          failures=0
+
+          enc() { printf '%s' "$1" | sed 's#/#%2F#g'; }
+
+          act() {
+            if [ "$DRY_RUN" = "true" ]; then echo "  [dry run] $*"; return 0; fi
+            "$@" >/dev/null || { echo "  FAILED: $*"; failures=$((failures+1)); return 1; }
+          }
+
+          guard() {
+            b=$1
+            case "$b" in
+              main|staging) echo "REFUSED $b: protected name"; return 1 ;;
+            esac
+            sha=$(gh api "repos/$REPO/git/ref/heads/$(enc "$b")" --jq .object.sha 2>/dev/null) || {
+              echo "SKIP $b: branch not found"; return 1; }
+            open=$(gh api "repos/$REPO/pulls?state=open&head=$OWNER:$b" --jq length)
+            if [ "$open" != "0" ]; then echo "REFUSED $b: has an open PR"; return 1; fi
+            return 0
+          }
+
+          for b in $DELETE_LIST; do
+            guard "$b" || { failures=$((failures+1)); continue; }
+            ahead=$(gh api "repos/$REPO/compare/main...$(enc "$b")" --jq .ahead_by)
+            merged=$(gh api "repos/$REPO/pulls?state=closed&head=$OWNER:$b&per_page=100" \
+              --jq '[.[] | select(.merged_at != null)] | length')
+            if [ "$ahead" != "0" ] && [ "$merged" = "0" ]; then
+              echo "REFUSED $b: $ahead commits not on main and no merged PR (use archive instead)"
+              failures=$((failures+1)); continue
+            fi
+            echo "DELETE $b (ahead of main: $ahead, merged PRs: $merged)"
+            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")"
+          done
+
+          for b in $ARCHIVE_LIST; do
+            guard "$b" || { failures=$((failures+1)); continue; }
+            tag="archive/$(printf '%s' "$b" | tr '/' '-')-$today"
+            echo "ARCHIVE $b -> tag $tag at $sha, then delete"
+            existing=$(gh api "repos/$REPO/git/ref/tags/$(enc "$tag")" --jq .object.sha 2>/dev/null || true)
+            if [ -n "$existing" ] && [ "$existing" != "$sha" ]; then
+              echo "  REFUSED: tag $tag already points at $existing, not $sha"
+              failures=$((failures+1)); continue
+            elif [ -n "$existing" ]; then
+              echo "  tag already exists at the branch tip"
+            else
+              act gh api -X POST "repos/$REPO/git/refs" -f ref="refs/tags/$tag" -f sha="$sha" || continue
+            fi
+            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")"
+          done
+
+          echo "Refused, skipped or failed: $failures"
+          [ "$failures" = "0" ]
