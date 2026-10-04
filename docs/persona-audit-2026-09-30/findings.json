@@ -1,7 +1,7 @@
 {
   "title": "Persona Waves · Sep 30",
   "runDate": "2026-09-30",
-  "scope": "Three local 100-persona runs on a dev build with the course enrollment bypass: core journeys, the features wave 1 skipped, and every remaining public page (90 of 90). Re-run in full on 2026-10-03 after main's home-page rebuild and rebrand, and again after the CORE framework work. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
+  "scope": "Three local 100-persona runs on a dev build with the course enrollment bypass: core journeys, the features wave 1 skipped, and every remaining public page (90 of 90). Re-run in full on 2026-10-03 after main's home-page rebuild and rebrand, and again on 2026-10-04 on the merged code after the CORE framework work. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
   "findings": [
     {
       "id": "next-module",
@@ -373,7 +373,7 @@
     }
   ],
   "plan": {
-    "done": "Final run on 2026-10-03 after the CORE work (before merging main's #605–#612; the merged tree passes every check): core 83/100 (0 rage-quits), features 85/100 twice (0), coverage 99/100 (0). Every dead end was traced: dev-server restarts, slow first compiles and missing keys. None touched a page or download changed by this work. Every remaining no-value persona needs a key this build lacks (Stripe, database, AI) or is an explorer with no goal.",
+    "done": "Final run on 2026-10-04 on the merged code (CORE work plus main's #605–#612): core 83/100, features 84/100, coverage 100/100, 0 rage-quits in every wave. Coverage had 0 dead ends. Features' 7 were two harness steps left stale by main's redesign (the workbook link now reads “See the assumptions”; the course preview is now a Module 1 build, not a quiz); with the steps updated, the 9 affected personas re-ran with 0 dead ends. Core's one was a single save timeout (332 of 333 saved). Every remaining no-value persona needs a key this build lacks (Stripe, database, AI) or is an explorer with no goal.",
     "definition": [
       "0 rage-quits across all three waves",
       "Every goal-directed persona reaches value (explorers excluded)",
@@ -454,12 +454,12 @@
       [
         "Wave 1 (core): dead ends",
         "21",
-        "2 (both during a dev-server restart)"
+        "1 (one save timeout; 332/333 saved)"
       ],
       [
         "Wave 2 (features): reached value",
         "71 / 100",
-        "85 / 100 (twice)"
+        "84 / 100"
       ],
       [
         "Wave 2 (features): rage-quits",
@@ -469,17 +469,17 @@
       [
         "Wave 2 (features): dead ends",
         "57",
-        "9, then 5 (slow first compiles, missing keys)"
+        "7 → 0 (stale harness steps; 9 re-ran clean)"
       ],
       [
         "Wave 3 (coverage): reached value",
         "100 / 100",
-        "99 / 100"
+        "100 / 100"
       ],
       [
         "Wave 3 (coverage): dead ends",
         "18",
-        "1 (dashboard still loading; loads in under 5s)"
+        "0"
       ],
       [
         "Public pages covered",

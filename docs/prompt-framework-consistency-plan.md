@@ -116,7 +116,7 @@ All 40 learners reached their planned module depth; 332 of 333 artifacts saved (
 - The home free-tools heading is main's ("Free checklists, reference cards and playbooks.").
 - The workbook page keeps main's layout plus one "Not ready to talk yet?" line, so it doesn't end on a mailto link alone.
 
-After the merge: guard clean, 864/864 tests, type check, lint (0 errors), claims check and production build pass; 89 PDFs scanned clean. The persona waves above ran before the merge.
+After the merge: guard clean, 864/864 tests, type check, lint (0 errors), claims check and production build pass; 89 PDFs scanned clean. Persona waves re-run on the merged code (2026-10-04): core 83/100, features 84/100, coverage 100/100, 0 rage-quits, coverage 0 dead ends. Features' 7 dead ends were harness steps left stale by main's redesigns (workbook link text; preview is now a Module 1 build); updated, the 9 affected personas re-ran with 0. Module 5 (main retitled it “Build Your Role Context”) now names its build as the Context part of CORE.
 
 ## After merge (James)
 

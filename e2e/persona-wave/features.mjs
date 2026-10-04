@@ -56,7 +56,7 @@ export const FEATURE_JOURNEYS = {
     [
       { enter: '/' },
       { sliders: 3, value: 'roi_estimate' },
-      { click: /see assumptions and sources/i, label: 'ROI → workbook' },
+      { click: /see (the )?assumptions( and sources)?/i, label: 'ROI → workbook' },
       { sliders: 4, value: 'workbook_used' },
       { read: 'workbook_read', min: 300 },
       { click: /discuss your number|book an executive briefing/i, label: 'workbook next step', value: 'next_step_opened' },
@@ -127,7 +127,7 @@ export const FEATURE_JOURNEYS = {
     [{ enter: '/support/purchase-help' }, { fill: 'form:not(:has(textarea))' }, { submit: /resend purchase link/i, api: /\/api\/(auth|support)/, value: 'purchase_link_resent', label: 'resend purchase link', scope: 'form:not(:has(textarea))' }],
   ],
   'trust-pages': [
-    [{ enter: '/courses/foundation/preview' }, { read: 'preview_read', min: 300 }, { click: /AI can answer policy|AI can draft a policy|Skip the review/i, label: 'preview check', value: 'preview_check_answered' }],
+    [{ enter: '/courses/foundation/preview' }, { read: 'preview_read', min: 300 }, { click: /^copy the /i, label: 'preview build: copy the prompt', value: 'preview_build_copied' }],
     [{ enter: '/courses/foundation/gallery' }, { chips: 'button:is(:has-text("Prompt template"),:has-text("Email starter"),:has-text("Hallucination"))', n: 1 }, { read: 'gallery_read', min: 300 }],
     [{ enter: '/privacy' }, { read: 'privacy_read', min: 150 }, { go: '/security/data-handling' }, { read: 'data_handling_read', min: 300 }],
     [{ enter: '/ai-use-disclaimer' }, { read: 'disclaimer_read', min: 150 }, { click: /start the course/i, label: 'disclaimer → course', value: 'next_step_opened' }],
