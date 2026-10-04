@@ -55,6 +55,15 @@ jobs:
 
           enc() { printf '%s' "$1" | sed 's#/#%2F#g'; }
 
+          # gh prints the error body to stdout on failure, so callers must
+          # branch on the exit status, never on whether output is empty.
+          q() {
+            local out
+            out=$(gh api "$1" --jq "$2" 2>/dev/null) || return 1
+            [ -n "$out" ] || return 1
+            printf '%s' "$out"
+          }
+
           act() {
             if [ "$DRY_RUN" = "true" ]; then echo "  [dry run] $*"; return 0; fi
             "$@" >/dev/null || { echo "  FAILED: $*"; failures=$((failures+1)); return 1; }
@@ -65,31 +74,34 @@ jobs:
             case "$b" in
               main|staging) echo "REFUSED $b: protected name"; return 1 ;;
             esac
-            sha=$(gh api "repos/$REPO/git/ref/heads/$(enc "$b")" --jq .object.sha 2>/dev/null) || {
+            sha=$(q "repos/$REPO/git/ref/heads/$(enc "$b")" .object.sha) || {
               echo "SKIP $b: branch not found"; return 1; }
-            open=$(gh api "repos/$REPO/pulls?state=open&head=$OWNER:$b" --jq length)
+            open=$(q "repos/$REPO/pulls?state=open&head=$OWNER:$b" length) || {
+              echo "REFUSED $b: could not check for open PRs"; return 1; }
             if [ "$open" != "0" ]; then echo "REFUSED $b: has an open PR"; return 1; fi
             return 0
           }
 
           for b in $DELETE_LIST; do
             guard "$b" || { failures=$((failures+1)); continue; }
-            ahead=$(gh api "repos/$REPO/compare/main...$(enc "$b")" --jq .ahead_by)
-            merged=$(gh api "repos/$REPO/pulls?state=closed&head=$OWNER:$b&per_page=100" \
-              --jq '[.[] | select(.merged_at != null)] | length')
+            ahead=$(q "repos/$REPO/compare/main...$(enc "$b")" .ahead_by) &&
+              merged=$(q "repos/$REPO/pulls?state=closed&head=$OWNER:$b&per_page=100" \
+                '[.[] | select(.merged_at != null)] | length') || {
+              echo "REFUSED $b: could not check merge status"
+              failures=$((failures+1)); continue; }
             if [ "$ahead" != "0" ] && [ "$merged" = "0" ]; then
               echo "REFUSED $b: $ahead commits not on main and no merged PR (use archive instead)"
               failures=$((failures+1)); continue
             fi
             echo "DELETE $b (ahead of main: $ahead, merged PRs: $merged)"
-            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")"
+            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")" || true
           done
 
           for b in $ARCHIVE_LIST; do
             guard "$b" || { failures=$((failures+1)); continue; }
             tag="archive/$(printf '%s' "$b" | tr '/' '-')-$today"
             echo "ARCHIVE $b -> tag $tag at $sha, then delete"
-            existing=$(gh api "repos/$REPO/git/ref/tags/$(enc "$tag")" --jq .object.sha 2>/dev/null || true)
+            existing=$(q "repos/$REPO/git/ref/tags/$(enc "$tag")" .object.sha) || existing=""
             if [ -n "$existing" ] && [ "$existing" != "$sha" ]; then
               echo "  REFUSED: tag $tag already points at $existing, not $sha"
               failures=$((failures+1)); continue
@@ -98,7 +110,7 @@ jobs:
             else
               act gh api -X POST "repos/$REPO/git/refs" -f ref="refs/tags/$tag" -f sha="$sha" || continue
             fi
-            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")"
+            act gh api -X DELETE "repos/$REPO/git/refs/heads/$(enc "$b")" || true
           done
 
           echo "Refused, skipped or failed: $failures"
