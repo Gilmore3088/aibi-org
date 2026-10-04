@@ -36,6 +36,8 @@ export interface ArticleShellProps {
   readonly activePath?: string;
   /** Render the closing "next step" band. Off for articles that carry their own CTA. */
   readonly closing?: boolean;
+  /** Analytics source for the sticky mobile CTA. Defaults to the research-article source. */
+  readonly ctaSource?: string;
 }
 
 export function ArticleShell({
@@ -48,6 +50,7 @@ export function ArticleShell({
   backLabel = '← Research',
   activePath = '/resources',
   closing = false,
+  ctaSource = 'sticky-mobile-cta-research-article',
 }: ArticleShellProps) {
   const hasChips = readMinutes != null || lastUpdated != null || byline != null;
   return (
@@ -91,7 +94,7 @@ export function ArticleShell({
       <StickyMobileCta
         label="Take the free assessment"
         href="/assessment/take"
-        source="sticky-mobile-cta-research-article"
+        source={ctaSource}
       />
     </div>
   );

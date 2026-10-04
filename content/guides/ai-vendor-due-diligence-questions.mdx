@@ -1,0 +1,153 @@
+export const meta = {
+  slug: "ai-vendor-due-diligence-questions",
+  title: "AI vendor due diligence: the questions to ask before you sign",
+  seoTitle: "AI Vendor Due Diligence Questions for Banks and Credit Unions",
+  description:
+    "The questions a community bank or credit union should put to any vendor selling AI, mapped to the third-party risk life cycle you already run.",
+  query: "ai vendor due diligence questions bank",
+  dimension: "vendor-risk-interoperability",
+  audience: "Vendor management, IT, and compliance",
+  updated: "2026-10-03",
+  readMinutes: 8,
+  faqs: [
+    {
+      q: "Do we need a separate due diligence process for AI vendors?",
+      a: "No. Add AI-specific questions to the third-party risk process you already run. The 2023 interagency guidance on third-party relationships is risk-based and covers AI vendors the same way it covers any other service provider; what changes is the questions you ask. Federal agencies proposed replacement guidance in September 2026, and it is also risk-based.",
+    },
+    {
+      q: "What should an AI vendor contract include?",
+      a: "At minimum: whether your data may be used to train the vendor's models, data retention and deletion terms, notice before material changes to the AI or its underlying model, audit and testing rights, incident notification, and where your data is processed. Many community institutions have limited negotiating power, so prioritize the data-use and change-notice terms.",
+    },
+    {
+      q: "Does this apply to credit unions?",
+      a: "The 2023 interagency guidance was issued by the Federal Reserve, FDIC, and OCC, so credit unions currently follow NCUA's own third-party expectations. NCUA joined the September 2026 proposal to replace that guidance, so this may change if the proposal is finalized. The questions in this guide apply either way. GAO has also reported that NCUA lacks authority to examine technology service providers, which puts more of the diligence burden on the credit union itself.",
+    },
+    {
+      q: "What if an existing vendor turns on an AI feature?",
+      a: "Treat it as a change to the relationship. Ask the vendor the same core questions, record the feature in your AI use case inventory, and decide whether it changes the risk rating of the relationship.",
+    },
+  ],
+  related: [
+    "ai-use-case-inventory-bank",
+    "can-bank-employees-use-chatgpt",
+    "prepare-for-ai-exam-questions",
+  ],
+    sources: [
+    {
+      label: "Proposed Third-Party Risk Management Guidance, FR Doc. 2026-18859 (September 15, 2026; comments due November 16, 2026)",
+      url: "https://www.federalregister.gov/documents/2026/09/15/2026-18859/proposed-third-party-risk-management-guidance",
+    },
+    {
+      label: "Interagency Guidance on Third-Party Relationships: Risk Management, 88 FR 37920 (June 9, 2023)",
+      url: "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
+    },
+    {
+      label: "GAO-25-107197 — Artificial Intelligence: Use and Oversight in Financial Services (May 2025)",
+      url: "https://www.gao.gov/products/gao-25-107197",
+    },
+    {
+      label: "CSBS — Artificial Intelligence Supervisory Framework (September 16, 2026)",
+      url: "https://www.csbs.org/csbs-artificial-intelligence-supervisory-framework",
+    },
+  ],
+};
+
+At many community banks and credit unions, AI does not arrive as a project. It arrives in a vendor's release notes, inside a renewal, or
+attached to a demo that looks very good. Which makes vendor due diligence
+the place where most of your AI risk is actually decided.
+
+You do not need a new process. The Interagency TPRM Guidance from the
+Federal Reserve, FDIC, and OCC (June 2023) organizes third-party risk
+management around a five-stage life cycle — planning, due diligence and
+third-party selection, contract negotiation, ongoing monitoring, and
+termination — and expects oversight to be commensurate with your size,
+complexity, and the risk of the relationship.
+
+In September 2026 those agencies and NCUA proposed guidance that would
+rescind and replace it, with comments due November 16, 2026. The proposal
+keeps due diligence, contract negotiation, ongoing monitoring, and
+termination, and puts more weight on tailoring oversight to each
+relationship's risk and on deciding when residual risk is acceptable. The
+questions below work under either version. AI vendors fit that structure.
+What they need is better questions.
+
+## Planning: decide what you are buying
+
+Before the demo, write down in one paragraph what the AI will do, what
+data it will touch, and whether it informs a person or acts on its own.
+That paragraph sets the risk tier and becomes the entry in your
+[AI use case inventory](/guides/ai-use-case-inventory-bank). If no one can
+write it, you are not ready to evaluate a vendor.
+
+## Due diligence: the core questions
+
+Send these in writing and keep the answers.
+
+**What the AI does**
+
+- Which features in the product use AI or machine learning, and what does
+  each one do?
+- Is the AI built by you, or does it rely on a third-party model provider?
+  Which one?
+- Does the AI make or recommend decisions about customers or members?
+
+**Your data**
+
+- What of our data does the AI process, and where is it processed and
+  stored?
+- Is our data, or data derived from it, used to train or improve your
+  models or anyone else's? Can we opt out in the contract?
+- How long are inputs and outputs retained, and how are they deleted?
+- Who at your company, or at your model provider, can see our data?
+
+**Accuracy, testing, and change**
+
+- How do you test the AI's accuracy and reliability, and how often?
+- What known limitations or failure modes should our staff know about?
+- How will you notify us before changing the AI or its underlying model?
+- If the AI is used in credit decisions, how do you support the specific
+  reasons required for adverse action notices and fair lending testing?
+
+**Oversight and incidents**
+
+- Can we see output logs and audit trails for our use?
+- Can a person review or override every AI output before it takes effect?
+- How do you notify us of an incident involving the AI or our data?
+- What independent assessments — SOC reports, penetration tests, model
+  validations — can you share?
+
+## Contract negotiation: the terms that matter most
+
+The 2023 guidance recognizes that a banking organization may have limited
+negotiating power, and the September 2026 proposal goes further, discussing
+when residual risk can be accepted if terms cannot be negotiated. Spend the
+leverage you have where it counts:
+
+1. **No training on your data** without your written consent.
+2. **Advance notice of material changes** to AI functionality or the
+   underlying model.
+3. **Retention and deletion** terms for inputs, outputs, and logs.
+4. **Audit and testing rights**, or at least the right to receive the
+   vendor's own testing results.
+5. **Incident notification** that explicitly covers AI-related failures.
+
+## Ongoing monitoring
+
+Assign a business owner who reads release notes and tracks complaints and
+errors tied to the AI. A reasonable default is to review high-risk AI vendors at least annually, and
+whenever the vendor changes the model or adds a feature. Each change gets
+a line in the inventory.
+
+## Termination
+
+Know before you sign how you get your data back, how the vendor deletes
+it — including from any model provider it used — and how you would run
+the process without the AI if you had to.
+
+## A note for credit unions
+
+The 2023 interagency guidance applies to banks; credit unions follow
+NCUA's third-party expectations, though NCUA joined the 2026 proposal. The questions above work under either.
+One difference raises the stakes: GAO reported in 2025 that NCUA lacks
+the authority to examine technology service providers. Because NCUA cannot examine the vendor directly, your own diligence file
+carries more of the weight.
