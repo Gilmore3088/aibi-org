@@ -21,9 +21,9 @@ export const proficiencyLevels: readonly ProficiencyLevel[] = [
     colorVar: 'var(--ink)',
     headline: 'You are building the foundation.',
     summary:
-      'Your understanding of AI in a banking context is in its early stages. This is normal if you have not yet worked through the AI Foundations curriculum.',
+      'Your understanding of AI in a banking context is in its early stages. This is normal if you have not yet worked through the AiBI-Foundation course.',
     recommendation:
-      'Start with the AI Foundations course ($97). It covers the core concepts assessed here — Gen AI fundamentals, the RTFC prompting framework, safe use, use case identification, and measurement. After completing the course, retake this assessment to see your progress.',
+      'Start with the AiBI-Foundation course ($295). It covers the core concepts assessed here — Gen AI fundamentals, prompting, safe use, use case identification, and measurement. After completing the course, retake this assessment to see your progress.',
   },
   {
     id: 'developing',

@@ -47,7 +47,7 @@ const POOL_BY_ID = new Map(canonicalPool.map((q) => [q.id, q]));
 export async function POST(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
     return NextResponse.json(
-      { error: 'Server not configured.' },
+      { error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' },
       { status: 503 },
     );
   }

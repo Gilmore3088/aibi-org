@@ -164,4 +164,48 @@ describe('FreeResourceDownloadGate', () => {
       ).toBeTruthy();
     });
   });
+  it('offers the free file directly when the email service is down', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({ error: 'This is temporarily unavailable.' }), { status: 502 }),
+    );
+    render(
+      <FreeResourceDownloadGate
+        title="Safe AI Use Checklist"
+        href="/api/resources/safe-ai-use-checklist/download"
+        slug="safe-ai-use-checklist"
+        source="resources-library"
+        onNavigate={navigate}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Get PDF for Safe AI Use Checklist/i }));
+    fireEvent.change(screen.getByLabelText(/Work email/i), { target: { value: 'jordan@examplebank.com' } });
+    fireEvent.submit(screen.getByLabelText(/Work email/i).closest('form')!);
+
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toMatch(/couldn’t send it by email/);
+    expect(alert.textContent).not.toMatch(/Request failed|\d{3}/);
+    const direct = screen.getByRole('link', { name: /download it directly/i });
+    expect(direct.getAttribute('href')).toContain('/api/resources/safe-ai-use-checklist/download');
+  });
+
+  it('keeps a plain message, and no direct link, when the address is rejected', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({ error: 'Please use a valid work email.' }), { status: 400 }),
+    );
+    render(
+      <FreeResourceDownloadGate
+        title="Safe AI Use Checklist"
+        href="/api/resources/safe-ai-use-checklist/download"
+        slug="safe-ai-use-checklist"
+        source="resources-library"
+        onNavigate={navigate}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Get PDF for Safe AI Use Checklist/i }));
+    fireEvent.change(screen.getByLabelText(/Work email/i), { target: { value: 'jordan@examplebank.com' } });
+    fireEvent.submit(screen.getByLabelText(/Work email/i).closest('form')!);
+
+    expect((await screen.findByRole('alert')).textContent).toMatch(/valid work email/);
+    expect(screen.queryByRole('link', { name: /download it directly/i })).toBeNull();
+  });
 });

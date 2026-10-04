@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky tab bar over one reading column; each tab is a self-contained view.
+   Palette follows the AI Banking Institute brand (ink, cream, gold). */
+:root {
+  --bg: #F7F3EA;
+  --surface: #FFFDF8;
+  --surface-2: #EFE7D7;
+  --fg: #071A2F;
+  --muted: #475569;
+  --faint: #7A8699;
+  --line: rgba(7, 26, 47, 0.12);
+  --accent: #7A5F1E;
+  --accent-fill: #C8A24A;
+  --accent-soft: rgba(200, 162, 74, 0.18);
+  --good: #2F6B4F;
+  --good-soft: rgba(47, 107, 79, 0.12);
+  --warn: #9A5B13;
+  --warn-soft: rgba(183, 121, 31, 0.14);
+  --bad: #A3392A;
+  --bad-soft: rgba(163, 57, 42, 0.11);
+  --env: #43607F;
+  --env-soft: rgba(67, 96, 127, 0.12);
+  --shadow: 0 1px 2px rgba(7, 26, 47, 0.06), 0 8px 24px rgba(7, 26, 47, 0.06);
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #06162A; --surface: #0B2745; --surface-2: #10304F; --fg: #F2EDE3; --muted: #B7C1CE; --faint: #8795A8;
+    --line: rgba(242, 237, 227, 0.12); --accent: #E1C271; --accent-fill: #D8B867; --accent-soft: rgba(216, 184, 103, 0.16);
+    --good: #7CC4A0; --good-soft: rgba(124, 196, 160, 0.14); --warn: #E7B266; --warn-soft: rgba(231, 178, 102, 0.14);
+    --bad: #F08F7E; --bad-soft: rgba(240, 143, 126, 0.14); --env: #9DB7D3; --env-soft: rgba(157, 183, 211, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #06162A; --surface: #0B2745; --surface-2: #10304F; --fg: #F2EDE3; --muted: #B7C1CE; --faint: #8795A8;
+  --line: rgba(242, 237, 227, 0.12); --accent: #E1C271; --accent-fill: #D8B867; --accent-soft: rgba(216, 184, 103, 0.16);
+  --good: #7CC4A0; --good-soft: rgba(124, 196, 160, 0.14); --warn: #E7B266; --warn-soft: rgba(231, 178, 102, 0.14);
+  --bad: #F08F7E; --bad-soft: rgba(240, 143, 126, 0.14); --env: #9DB7D3; --env-soft: rgba(157, 183, 211, 0.14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); }
+a { color: var(--accent); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 32px); }
+
+/* Header */
+header.top { padding-block: 32px 20px; }
+.eyebrow { font: 600 11px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 600 clamp(30px, 5vw, 44px)/1.08 var(--display); margin: 10px 0 10px; text-wrap: balance; letter-spacing: -0.01em; }
+.lede { color: var(--muted); max-width: 68ch; margin: 0; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font: 500 12px/1.6 var(--body); white-space: nowrap; }
+.chip.mono { font-family: var(--mono); font-size: 11.5px; }
+
+/* Tabs */
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.tabrow { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 8px; }
+.tabrow::-webkit-scrollbar { display: none; }
+.tab { flex: none; border: 0; background: transparent; padding: 8px 14px; border-radius: 999px; cursor: pointer; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.tab:hover { background: var(--surface-2); color: var(--fg); }
+.tab[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+.tab .count { font: 600 11px var(--mono); margin-left: 6px; opacity: 0.7; }
+
+main { padding-block: 28px 80px; }
+section.view { display: grid; gap: 28px; }
+h2 { font: 600 26px/1.2 var(--display); margin: 0; text-wrap: balance; }
+h3 { font: 600 15px/1.35 var(--body); margin: 0; }
+.sub { color: var(--muted); margin: 6px 0 0; max-width: 70ch; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.pad { padding: 20px; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* KPI tiles */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kpi { padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.kpi .v { font: 600 30px/1.05 var(--display); font-variant-numeric: tabular-nums; }
+.kpi .v small { font: 500 14px var(--body); color: var(--muted); margin-left: 2px; }
+.kpi .l { font-size: 13px; color: var(--muted); }
+.kpi .meter { height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin-top: 6px; }
+.kpi .meter i { display: block; height: 100%; background: var(--accent-fill); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 860px) { .two { grid-template-columns: minmax(0, 1fr); } }
+
+/* Status + severity pills */
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font: 600 11px/1.7 var(--body); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.s-fixed, .s-done, .s-value { color: var(--good); background: var(--good-soft); }
+.s-open, .s-blocked, .s-frustration { color: var(--bad); background: var(--bad-soft); }
+.s-watch, .s-ready, .s-patience { color: var(--warn); background: var(--warn-soft); }
+.s-unconfirmed, .s-closed, .s-kept, .s-env, .s-behavior { color: var(--env); background: var(--env-soft); }
+.s-crash { color: var(--bad); background: var(--bad-soft); }
+.s-high { color: var(--bad); background: var(--bad-soft); }
+.s-medium { color: var(--warn); background: var(--warn-soft); }
+.s-low { color: var(--muted); background: var(--surface-2); }
+
+/* Finding list (overview) */
+.flist { display: grid; }
+.frow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 20px; border-top: 1px solid var(--line); text-decoration: none; color: inherit; cursor: pointer; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: left; width: 100%; }
+.frow:first-child { border-top: 0; }
+.frow:hover { background: var(--surface-2); }
+.frow .area { font-size: 12px; color: var(--faint); }
+
+/* Bars (journeys, overview) */
+.bars { display: grid; gap: 2px; }
+.bar { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 4.5rem; gap: 12px; align-items: center; padding: 7px 8px; border-radius: 8px; background: none; border: 0; text-align: left; cursor: pointer; width: 100%; }
+.bar:hover { background: var(--surface-2); }
+.bar .name { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar .track { height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; }
+.bar .fill { height: 100%; border-radius: 5px; background: var(--accent-fill); }
+.bar .fill.zero { background: transparent; }
+.bar .val { font: 600 12.5px var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .bar { grid-template-columns: minmax(0, 1fr) 4rem; } .bar .track { grid-column: 1 / -1; order: 3; } }
+
+/* Findings cards */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.fbtn { border: 1px solid var(--line); background: var(--surface); padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: 13px; }
+.fbtn[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+details.finding { overflow: hidden; }
+details.finding > summary { list-style: none; cursor: pointer; padding: 18px 20px; display: grid; gap: 8px; }
+details.finding > summary::-webkit-details-marker { display: none; }
+.fhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fhead .area { font-size: 12px; color: var(--faint); margin-left: auto; }
+.ftitle { font: 600 20px/1.25 var(--display); text-wrap: balance; }
+.fsum { color: var(--muted); max-width: 72ch; }
+.chev { font-size: 12px; color: var(--faint); }
+details[open] .chev { transform: rotate(90deg); display: inline-block; }
+.fbody { padding: 0 20px 20px; display: grid; gap: 16px; }
+.fbody ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.fix { padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); }
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.shot { display: grid; gap: 6px; }
+.shot button { padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface-2); cursor: zoom-in; }
+.shot img { display: block; width: 100%; height: 280px; object-fit: cover; object-position: top; }
+.shot .cap { font-size: 12px; color: var(--muted); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; font: 600 11px/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover td { background: var(--surface-2); }
+.mono { font-family: var(--mono); font-size: 12px; }
+.score { display: inline-grid; grid-template-columns: 2.2em 3.5rem; align-items: center; gap: 6px; }
+.score i { display: block; height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.score i b { display: block; height: 100%; }
+
+/* Course funnel */
+.funnel { width: 100%; height: auto; display: block; }
+.funnel text { fill: var(--muted); font: 500 11px var(--mono); }
+.funnel .ax { stroke: var(--line); }
+.funnel .att { fill: var(--surface-2); }
+.funnel .sav { fill: var(--accent-fill); }
+.funnel .hit { fill: transparent; cursor: pointer; }
+.funnel .hit:hover + .hl, .funnel .sel { fill: var(--accent-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+.moddetail { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.moddetail div { display: grid; gap: 2px; }
+.moddetail .k { font-size: 12px; color: var(--muted); }
+.moddetail .v { font: 600 18px var(--display); font-variant-numeric: tabular-nums; }
+.beforeafter { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.ba { padding: 14px; border-radius: 12px; border: 1px solid var(--line); display: grid; gap: 4px; }
+.ba .v { font: 600 26px var(--display); }
+
+/* Persona explorer */
+.ptools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ptools input, .ptools select { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); min-width: 0; font-size: 14px; }
+.ptools input { flex: 1 1 200px; }
+.ptools .countlbl { font-size: 13px; color: var(--muted); margin-left: auto; }
+.who { display: grid; gap: 1px; }
+.who b { font-weight: 600; }
+.who span { font-size: 12px; color: var(--muted); }
+
+/* Drawer */
+.scrim { position: fixed; inset: 0; background: rgba(7, 26, 47, 0.42); z-index: 40; }
+aside.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: var(--surface); z-index: 41; box-shadow: -8px 0 40px rgba(0, 0, 0, 0.18); display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.dhead { padding: 18px 20px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+.dhead .row { display: flex; gap: 10px; align-items: start; }
+.dhead .x { margin-left: auto; border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+.dbody { overflow-y: auto; padding: 18px 20px 40px; display: grid; gap: 20px; align-content: start; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.facts div { background: var(--surface-2); border-radius: 10px; padding: 10px; }
+.facts .k { font-size: 11.5px; color: var(--muted); }
+.facts .v { font: 600 17px var(--display); font-variant-numeric: tabular-nums; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.modstrip { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 3px; }
+.modstrip i { height: 22px; border-radius: 4px; background: var(--surface-2); display: grid; place-items: center; font: 600 9px var(--mono); color: var(--faint); font-style: normal; }
+.modstrip i.saved { background: var(--accent-fill); color: var(--fg); }
+.modstrip i.tried { background: var(--accent-soft); color: var(--accent); }
+ol.tl { list-style: none; margin: 0; padding: 0; display: grid; }
+ol.tl li { display: grid; grid-template-columns: 3.2rem 5.2rem minmax(0, 1fr); gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 13px; align-items: baseline; }
+ol.tl li:first-child { border-top: 0; }
+ol.tl .t { font: 12px var(--mono); color: var(--faint); font-variant-numeric: tabular-nums; }
+ol.tl .a { font: 600 10.5px/1.8 var(--body); letter-spacing: 0.06em; text-transform: uppercase; }
+ol.tl .a.VALUE { color: var(--good); }
+ol.tl .a.FRICTION { color: var(--bad); }
+ol.tl .a.GOTO, ol.tl .a.WANDER { color: var(--env); }
+ol.tl .a.CLICK, ol.tl .a.INFO { color: var(--faint); }
+ol.tl .d { overflow-wrap: anywhere; }
+ol.tl .d .u { display: block; font: 11px var(--mono); color: var(--faint); }
+ol.tl li.gap { grid-template-columns: 1fr; color: var(--faint); font-size: 12px; font-style: italic; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(4, 12, 24, 0.86); display: grid; place-items: center; padding: 24px; cursor: zoom-out; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+
+.note { font-size: 13px; color: var(--muted); padding: 12px 14px; border-radius: 10px; background: var(--env-soft); }
+.hk { display: grid; }
+.hk > div { display: grid; grid-template-columns: minmax(0, 14rem) auto minmax(0, 1fr); gap: 14px; padding: 14px 20px; border-top: 1px solid var(--line); align-items: start; }
+.hk > div:first-child { border-top: 0; }
+@media (max-width: 700px) { .hk > div { grid-template-columns: minmax(0, 1fr) auto; } .hk > div p { grid-column: 1 / -1; } }
+.hk p { margin: 0; color: var(--muted); }
+footer { color: var(--faint); font-size: 12.5px; padding-block: 24px 40px; border-top: 1px solid var(--line); }
+@media (prefers-reduced-motion: no-preference) { .tab, .frow, .bar, .fbtn { transition: background-color 0.15s, color 0.15s; } }
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <div class="eyebrow">AI Banking Institute · Synthetic user research</div>
+  <h1 id="title"></h1>
+  <p class="lede">Synthetic bankers walked the site on randomized, goal-driven paths while a browser recorded every click, error and dead end. Wave 1 covered the core journeys; wave 2 swept the features wave 1 skipped; wave 3 visited every remaining public page. This report shows where they got value, where they got stuck, what the course delivered, and the plan to close every gap.</p>
+  <div class="meta" id="meta"></div>
+</header>
+
+<nav class="tabs" aria-label="Report sections">
+  <div class="wrap tabrow" role="tablist" id="tabs"></div>
+</nav>
+
+<main class="wrap" id="main"></main>
+
+<footer class="wrap">
+  Generated from <span class="mono">e2e/persona-wave</span>. Re-run with <span class="mono">npm run e2e:persona-wave</span>, then <span class="mono">node e2e/persona-wave/html-report.mjs &lt;run-dir&gt; docs/persona-audit-2026-09-30</span>.
+</footer>
+
+<div id="overlay"></div>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0);
+const secs = (ms) => (ms == null ? '—' : ms < 60000 ? `${Math.round(ms / 1000)}s` : `${(ms / 60000).toFixed(1)}m`);
+
+const VALUE_LABELS = {
+  assessment_score: 'Saw assessment score', email_captured: 'Email captured', report_download: 'Downloaded report',
+  next_step_opened: 'Opened next step', resource_download: 'Got a resource', practice_output: 'Got AI output',
+  practice_sample_output: 'Saw sample output', inquiry_submitted: 'Sent inquiry', checkout_reached: 'Reached checkout',
+  roi_estimate: 'Saw ROI estimate', pricing_understood: 'Understood pricing', verify_answer: 'Verified a certificate',
+  course_home: 'Opened course', module_content: 'Read module content', try_completed: 'Finished a Try activity',
+  artifact_saved: 'Saved an artifact', certificate_reached: 'Reached certificate',
+};
+const valueLabel = (id) => VALUE_LABELS[id] || id.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
+const OUTCOME_LABELS = { 'goal-finished': 'Finished goal', behavior: 'Stopped as planned', frustration: 'Rage-quit', patience: 'Ran out of patience', crash: 'Harness error' };
+const outcomeClass = (k) => ({ 'goal-finished': 's-value', behavior: 's-behavior', frustration: 's-frustration', patience: 's-patience', crash: 's-crash' }[k] || 's-low');
+const STATUS_LABELS = { fixed: 'Fixed', closed: 'Closed', open: 'Open', watch: 'Watch', unconfirmed: 'Unconfirmed', done: 'Done', blocked: 'Blocked' };
+const W1 = () => D.personas.filter((p) => p.wave === 1);
+const jl = (j) => D.journeyLabels[j] || j;
+
+document.title = D.findings.title;
+$('#title').textContent = D.findings.title;
+$('#meta').innerHTML = [
+  D.wave2 ? `<span class="chip">${D.wave3 ? 3 : 2} waves</span>` : `<span class="chip mono">seed ${D.meta.seed}</span>`,
+  `<span class="chip">${D.personas.length} personas</span>`,
+  `<span class="chip">${Math.round((D.meta.durationMs + (D.wave2?.meta.durationMs ?? 0) + (D.wave3?.meta.durationMs ?? 0)) / 60000)} min of runs</span>`,
+  `<span class="chip">${esc(D.findings.runDate)}</span>`,
+  `<span class="chip">Local test build</span>`,
+].join('');
+
+// ── Views ───────────────────────────────────────────────────────────────────
+const VIEWS = [
+  { id: 'overview', label: 'Overview', render: renderOverview },
+  { id: 'findings', label: 'Findings', count: () => D.findings.findings.length, render: renderFindings },
+  { id: 'plan', label: 'Plan', render: renderPlan },
+  { id: 'course', label: 'Course', render: renderCourse },
+  { id: 'journeys', label: 'Journeys', count: () => D.journeys.length, render: renderJourneys },
+  { id: 'personas', label: 'Personas', count: () => D.personas.length, render: renderPersonas },
+  { id: 'untested', label: 'Not tested', count: () => D.findings.notTested.length, render: renderUntested },
+  { id: 'repo', label: 'Repo', render: renderRepo },
+];
+let personaFilter = { q: '', journey: '', device: '', result: '', wave: '' };
+
+function buildTabs(active) {
+  $('#tabs').innerHTML = VIEWS.map((v) => `<button class="tab" role="tab" id="tab-${v.id}" aria-selected="${v.id === active}" data-view="${v.id}">${v.label}${v.count ? `<span class="count">${v.count()}</span>` : ''}</button>`).join('');
+}
+function show(id, { scroll = true } = {}) {
+  const view = VIEWS.find((v) => v.id === id) || VIEWS[0];
+  buildTabs(view.id);
+  $('#main').innerHTML = `<section class="view" role="tabpanel" aria-labelledby="tab-${view.id}">${view.render()}</section>`;
+  wire(view.id);
+  try { history.replaceState(null, '', `#${view.id}`); } catch {}
+  $(`#tab-${view.id}`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  if (scroll) window.scrollTo({ top: Math.min(window.scrollY, $('nav.tabs').offsetTop), behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-view]');
+  if (t) { e.preventDefault(); show(t.dataset.view); }
+});
+
+function head(title, sub) {
+  return `<div><h2>${title}</h2>${sub ? `<p class="sub">${sub}</p>` : ''}</div>`;
+}
+function pill(cls, text) { return `<span class="pill ${cls}">${esc(text)}</span>`; }
+
+// Overview
+function renderOverview() {
+  const t = D.totals;
+  const c = D.course;
+  const tiles = [
+    { v: `${t.reachedValue}<small>/ ${t.personas}</small>`, l: 'personas reached something useful', m: pct(t.reachedValue, t.personas) },
+    { v: `${t.medianClicksToValue}<small> clicks</small>`, l: `median to first value (${t.medianSecondsToValue}s)` },
+    { v: `${c.artifactsSaved}<small>/ ${c.artifactsBuilt}</small>`, l: 'course artifacts saved', m: pct(c.artifactsSaved, c.artifactsBuilt) },
+    { v: `${c.tryCompleted}<small>/ ${c.modulesAttempted}</small>`, l: 'Try activities finished', m: pct(c.tryCompleted, c.modulesAttempted) },
+    { v: `${t.personasWithDeadEnd}`, l: 'personas hit a real dead end' },
+    { v: `${t.jsExceptions}`, l: 'uncaught JavaScript errors' },
+  ];
+  const f = D.findings.findings;
+  const jsorted = [...D.journeys].sort((a, b) => b.reachedValue / b.n - a.reachedValue / a.n);
+  return `
+    <div class="kpis">${tiles.map((k) => `<div class="panel kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div>${k.m != null ? `<div class="meter"><i style="width:${k.m}%"></i></div>` : ''}</div>`).join('')}</div>
+    ${D.wave2 ? waveCompare() : ''}
+    <div class="note">${esc(D.findings.scope)}</div>
+    <div class="two">
+      <div class="panel">
+        <div class="pad" style="padding-bottom:8px">${head('What we found', 'Verified by hand after the run. Click one for evidence and screenshots.')}</div>
+        <div class="flist">${f.map((x) => `<button class="frow" data-view="findings" data-finding="${x.id}">${pill('s-' + x.status, STATUS_LABELS[x.status])}<span><b>${esc(x.title)}</b><br><span class="area">${esc(x.area)}</span></span>${pill('s-' + x.severity, x.severity)}</button>`).join('')}</div>
+      </div>
+      <div class="panel pad" style="display:grid;gap:14px;align-content:start">
+        ${head('Who got value', 'Share of each journey that reached a first value moment. Click a row to see those personas.')}
+        <div class="bars">${jsorted.map(barRow).join('')}</div>
+      </div>
+    </div>`;
+}
+function waveCompare() {
+  const cols = [[D.totals, 'Wave 1 · core journeys'], [D.wave2.totals, 'Wave 2 · skipped features']];
+  if (D.wave3) cols.push([D.wave3.totals, 'Wave 3 · remaining pages']);
+  const rows = [
+    ['Reached value', (t) => `${t.reachedValue} / ${t.personas}`],
+    ['Rage-quits', (t) => t.frustratedQuits],
+    ['Personas hitting a dead end', (t) => t.personasWithDeadEnd],
+    ['Median clicks to value', (t) => t.medianClicksToValue],
+    ['Average experience', (t) => t.avgExperience],
+  ];
+  return `<div class="panel tablewrap"><table><thead><tr><th>${cols.length === 3 ? 'Three' : 'Two'} waves</th>${cols.map((c) => `<th class="n">${c[1]}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr><td>${r[0]}</td>${cols.map((c) => `<td class="n num">${r[1](c[0])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function renderPlan() {
+  const pl = D.findings.plan;
+  const fixed = D.findings.findings.filter((f) => f.status === 'fixed');
+  const pri = { P0: 's-high', P1: 's-medium', P2: 's-low', P3: 's-env' };
+  return `
+    ${head('Plan: no rage-quits, value for every visitor', esc(pl.done))}
+    <div class="panel pad" style="display:grid;gap:10px">
+      <h3>Done means</h3>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:4px">${pl.definition.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+      <p class="muted" style="margin:0;font-size:13px">Measured by re-running all waves against a configured preview (step A1).</p>
+    </div>
+    ${pl.verification ? `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>Before and after the fixes</h3></div><table><thead><tr><th>Check</th><th class="n">Before</th><th class="n">After</th></tr></thead><tbody>${pl.verification.map((r) => `<tr><td>${esc(r[0])}</td><td class="n num">${esc(r[1])}</td><td class="n num" style="color:var(--good);font-weight:600">${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <div class="panel">
+      <div class="pad" style="padding-bottom:6px"><h3>Fixed in this branch · ${fixed.length}</h3></div>
+      <div class="flist">${fixed.map((f) => `<button class="frow" data-view="findings" data-finding="${f.id}">${pill('s-fixed', 'Fixed')}<span><b>${esc(f.title)}</b><br><span class="area">${esc(f.area)}</span></span>${pill('s-' + f.severity, f.severity)}</button>`).join('')}</div>
+    </div>
+    <div class="panel">
+      <div class="pad" style="padding-bottom:6px"><h3>${pl.steps.every((st) => st.status) ? 'Plan status, in order' : 'Still to do, in order'}</h3></div>
+      <div class="hk">${pl.steps.map((st) => `<div><b>${esc(st.id)} · ${esc(st.title)}</b><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:start">${pill(pri[st.p] || 's-low', st.p)}${st.status ? pill('s-' + st.status, STATUS_LABELS[st.status]) : ''}</span><p>${esc(st.detail)}</p></div>`).join('')}</div>
+    </div>`;
+}
+function barRow(j) {
+  const p = pct(j.reachedValue, j.n);
+  return `<button class="bar" data-journey="${j.journey}" title="${esc(j.label)}"><span class="name">${esc(shortJourney(j.journey))} <span class="muted">· ${j.n}</span></span><span class="track"><span class="fill ${p ? '' : 'zero'}" style="width:${p}%;display:block"></span></span><span class="val">${p}%</span></button>`;
+}
+function shortJourney(j) {
+  return ({ 'course-sampler': 'Course · samplers', 'course-quitter': 'Course · stall at 3–5', 'course-steady': 'Course · 6–12 modules', 'course-completer': 'Course · completers', 'course-shopper': 'Course shoppers', 'free-assessment': 'Free assessment', 'assessment-to-indepth': 'Free → $99 In-Depth', 'resource-hunter': 'Resource hunters', 'practice-tinkerer': 'Practice sandbox', 'institution-buyer': 'Institution buyers', 'pricing-skeptic': 'Pricing skeptics', 'cert-verifier': 'Certificate check', explorer: 'Random explorers' })[j] || D.journeyLabels[j] || j;
+}
+
+// Findings
+let findingStatus = 'all';
+let issueScope = 'product';
+let issueWave = 1;
+function renderFindings() {
+  const all = D.findings.findings;
+  const counts = all.reduce((a, f) => ((a[f.status] = (a[f.status] || 0) + 1), a), {});
+  const shown = all.filter((f) => findingStatus === 'all' || f.status === findingStatus);
+  const issues = (issueWave === 3 && D.wave3 ? D.wave3.issues : issueWave === 2 && D.wave2 ? D.wave2.issues : D.issues).filter((i) => (issueScope === 'all' ? true : issueScope === 'env' ? i.env : !i.env)).filter((i) => i.kind !== 'slow_page' || issueScope === 'all');
+  return `
+    ${head('Findings', 'Each one was checked against the code or reproduced in a browser. Status says what happens next.')}
+    <div class="filters" role="group" aria-label="Filter by status">
+      ${['all', 'fixed', 'closed', 'open', 'watch', 'unconfirmed'].filter((s) => s === 'all' || counts[s]).map((s) => `<button class="fbtn" data-status="${s}" aria-pressed="${findingStatus === s}">${s === 'all' ? 'All' : STATUS_LABELS[s]} <span class="muted num">${s === 'all' ? all.length : counts[s]}</span></button>`).join('')}
+    </div>
+    <div style="display:grid;gap:12px">${shown.map(findingCard).join('')}</div>
+    <div class="panel">
+      <div class="pad" style="display:grid;gap:12px">
+        ${head('Every signal from the run', 'Raw issues grouped by type, before hand-verification. Environment signals come from missing keys in the test build.')}
+        <div class="filters" role="group" aria-label="Issue scope">
+          ${D.wave2 ? (D.wave3 ? [1, 2, 3] : [1, 2]).map((w) => `<button class="fbtn" data-iwave="${w}" aria-pressed="${issueWave === w}">Wave ${w}</button>`).join('') + '<span style="width:12px"></span>' : ''}
+          ${[['product', 'Product'], ['env', 'Environment'], ['all', 'All incl. slow pages']].map(([k, l]) => `<button class="fbtn" data-scope="${k}" aria-pressed="${issueScope === k}">${l}</button>`).join('')}
+        </div>
+      </div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Signal</th><th>Detail</th><th class="n">Personas</th><th>Weight</th></tr></thead>
+        <tbody>${issues.map((i) => `<tr><td><span class="mono">${esc(i.kind)}</span></td><td style="min-width:18rem">${esc(i.detail)}<div class="mono muted" style="margin-top:2px">${esc(i.paths.join(' · '))}</div></td><td class="n">${i.personas}</td><td>${i.env ? pill('s-env', 'env') : pill(i.severity >= 1 ? 's-high' : i.severity >= 0.5 ? 's-medium' : 's-low', i.severity >= 1 ? 'dead end' : i.severity >= 0.5 ? 'friction' : 'minor')}</td></tr>`).join('')}</tbody>
+      </table></div>
+    </div>`;
+}
+function findingCard(f) {
+  const shot = (key, cap) => f[key] && D.images[f[key]] ? `<div class="shot"><button data-img="${esc(f[key])}" aria-label="Enlarge: ${esc(cap)}"><img src="${D.images[f[key]]}" alt="${esc(cap)}: ${esc(f.title)}" loading="lazy"></button><span class="cap">${esc(cap)}</span></div>` : '';
+  const shots = [shot('before', f.after ? 'Before' : 'Screenshot'), shot('after', 'After the fix')].join('');
+  return `<details class="panel finding" id="f-${f.id}" ${f.status === 'fixed' || f.status === 'open' ? '' : ''}>
+    <summary>
+      <div class="fhead">${pill('s-' + f.status, STATUS_LABELS[f.status])}${pill('s-' + f.severity, f.severity)}<span class="area">${esc(f.area)} <span class="chev">▶</span></span></div>
+      <div class="ftitle">${esc(f.title)}</div>
+      <div class="fsum">${esc(f.summary)}</div>
+    </summary>
+    <div class="fbody">
+      ${f.evidence?.length ? `<div><h3>Evidence</h3><ul>${f.evidence.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>` : ''}
+      ${f.fix ? `<div class="fix"><h3>${f.status === 'fixed' ? 'What changed' : 'Next step'}</h3><div>${esc(f.fix)}</div></div>` : ''}
+      ${shots ? `<div class="shots">${shots}</div>` : ''}
+    </div>
+  </details>`;
+}
+
+// Course
+let selectedModule = 1;
+function renderCourse() {
+  const c = D.course;
+  const ms = c.moduleStats;
+  const max = ms[0]?.attempted || 1;
+  const W = 720, H = 240, L = 34, B = 26, T = 12, R = 8;
+  const bw = (W - L - R) / 18;
+  const y = (v) => T + (H - T - B) * (1 - v / max);
+  const ticks = [0, 10, 20, 30, 40].filter((v) => v <= max);
+  let svg = `<svg class="funnel" viewBox="0 0 ${W} ${H}" role="img" aria-label="Learners attempting and saving each module">`;
+  ticks.forEach((v) => { svg += `<line class="ax" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`; });
+  ms.forEach((m, i) => {
+    const x = L + i * bw;
+    svg += `<rect class="hit" data-mod="${m.number}" x="${x}" y="${T}" width="${bw}" height="${H - T - B}"/>`;
+    svg += `<rect class="hl ${m.number === selectedModule ? 'sel' : ''}" x="${x + 1}" y="${T}" width="${bw - 2}" height="${H - T - B}" rx="4" pointer-events="none" fill="transparent"/>`;
+    svg += `<rect class="att" x="${x + bw * 0.18}" y="${y(m.attempted)}" width="${bw * 0.64}" height="${y(0) - y(m.attempted)}" rx="3" pointer-events="none"/>`;
+    svg += `<rect class="sav" x="${x + bw * 0.18}" y="${y(m.artifactSaved)}" width="${bw * 0.64}" height="${y(0) - y(m.artifactSaved)}" rx="3" pointer-events="none"/>`;
+    svg += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle" pointer-events="none">${m.number}</text>`;
+  });
+  svg += '</svg>';
+  const m = ms.find((x) => x.number === selectedModule) || ms[0];
+  const learners = W1().filter((p) => p.modules);
+  const mobileLearners = learners.filter((p) => p.device === 'mobile');
+  const stuckMobile = mobileLearners.filter((p) => p.friction.some((f) => f.kind === 'no_next_module_link')).length;
+  return `
+    ${head('Course: value actually delivered', `${c.learners} synthetic learners bought the course and worked through ${c.modulesAttempted} modules in total. Each module is Understand → Try → Build → Save.`)}
+    <div class="kpis">
+      <div class="panel kpi"><div class="v">${c.tryCompleted}<small>/ ${c.modulesAttempted}</small></div><div class="l">Try activities completed</div><div class="meter"><i style="width:${pct(c.tryCompleted, c.modulesAttempted)}%"></i></div></div>
+      <div class="panel kpi"><div class="v">${c.artifactsSaved}<small>/ ${c.artifactsBuilt}</small></div><div class="l">artifacts built and saved</div><div class="meter"><i style="width:${pct(c.artifactsSaved, c.artifactsBuilt)}%"></i></div></div>
+      <div class="panel kpi"><div class="v">${c.reachedPlannedDepth}<small>/ ${c.learners}</small></div><div class="l">learners reached their planned depth</div></div>
+      <div class="panel kpi"><div class="v">${D.typedCertificate}<small>/ ${c.completerCount}</small></div><div class="l">completers had to type the certificate address</div></div>
+    </div>
+    <div class="panel pad" style="display:grid;gap:14px">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between">
+        ${head('Learners per module', 'The drop-off is planned: samplers stop at 1–2, quitters at 3–5, steady learners at 6–12. Click a module for detail.')}
+        <div class="legend"><span style="--c:var(--surface-2)">Attempted</span><span style="--c:var(--accent-fill)">Artifact saved</span></div>
+      </div>
+      <div class="tablewrap">${svg}</div>
+      <div class="panel pad" style="box-shadow:none;background:var(--surface-2);border:0">
+        <h3 style="margin-bottom:10px">Module ${m.number}${m.title ? ` · ${esc(m.title.replace(/^Module \d+:\s*/, ''))}` : ''}</h3>
+        <div class="moddetail">
+          <div><span class="k">Attempted</span><span class="v">${m.attempted}</span></div>
+          <div><span class="k">Try finished</span><span class="v">${m.tryDone}</span></div>
+          <div><span class="k">Artifact saved</span><span class="v">${m.artifactSaved}</span></div>
+          <div><span class="k">Build fields</span><span class="v">${m.buildFields}</span></div>
+          <div><span class="k">Median time</span><span class="v">${m.medianSeconds}s</span></div>
+          <div><span class="k">Median clicks</span><span class="v">${m.medianClicks}</span></div>
+          <div><span class="k">Words to read</span><span class="v">${m.words}</span></div>
+        </div>
+        ${m.number === 3 ? '<p class="sub">Module 3 is slower and saves less because its Build step is a scored prompt workshop. See the Findings tab.</p>' : ''}
+      </div>
+    </div>
+    <div class="panel pad" style="display:grid;gap:14px">
+      ${head('The fix: moving to the next module', 'Before, the Save step ended with no link forward. On phones there was no visible way to continue.')}
+      <div class="beforeafter">
+        <div class="ba"><span class="muted">Mobile learners stuck at a module end</span><span class="v num">${stuckMobile} / ${mobileLearners.length}</span><span class="muted" style="font-size:12.5px">in this run, before the fix</span></div>
+        <div class="ba"><span class="muted">Dead ends per stuck learner</span><span class="v num">3–10</span><span class="muted" style="font-size:12.5px">one per module they finished</span></div>
+        <div class="ba" style="background:var(--good-soft);border-color:transparent"><span class="muted">After the fix (5 re-run)</span><span class="v num" style="color:var(--good)">0</span><span class="muted" style="font-size:12.5px">dead ends, no typed URLs</span></div>
+      </div>
+      <button class="fbtn" data-view="findings" style="justify-self:start">See before and after screenshots</button>
+    </div>`;
+}
+
+// Journeys
+function renderJourneys() {
+  return `
+    ${head('Journeys', 'What each group of personas was trying to do and how it went. Click a row to open those personas.')}
+    ${journeyTable('Wave 1 · core journeys', D.journeys, 1)}
+    ${D.wave2 ? journeyTable('Wave 2 · features wave 1 skipped', D.wave2.journeys, 2) : ''}
+    ${D.wave3 ? journeyTable('Wave 3 · every remaining public page', D.wave3.journeys, 3) : ''}
+    <div class="note">Course shoppers and institution buyers in wave 1, and resume-link and support personas in wave 2, show 0% because those flows need Stripe or the database, which the test build did not have. See Not tested.</div>`;
+}
+function journeyTable(title, rows, wave) {
+  return `<div class="panel tablewrap"><div class="pad" style="padding-bottom:4px"><h3>${esc(title)}</h3></div><table>
+      <thead><tr><th>Journey</th><th class="n">n</th><th>Reached value</th><th class="n">Clicks to value</th><th class="n">Secs to value</th><th class="n">Experience</th><th class="n">Rage-quits</th></tr></thead>
+      <tbody>${rows.map((j) => {
+        const p = pct(j.reachedValue, j.n);
+        return `<tr class="click" data-journey="${j.journey}" data-wave="${wave}" tabindex="0"><td><b>${esc(shortJourney(j.journey))}</b><div class="muted" style="font-size:12.5px">${esc(j.label)}</div></td><td class="n">${j.n}</td><td style="min-width:10rem"><span class="score" style="grid-template-columns:2.6em 1fr;width:100%"><span class="num">${p}%</span><i><b style="width:${p}%;background:var(--accent-fill)"></b></i></span></td><td class="n">${j.medianClicksToValue ?? '—'}</td><td class="n">${j.medianSecondsToValue ?? '—'}</td><td class="n">${scoreCell(j.avgExperience)}</td><td class="n">${j.frustratedQuits}</td></tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+}
+function scoreCell(v) {
+  const color = v >= 90 ? 'var(--good)' : v >= 70 ? 'var(--warn)' : 'var(--bad)';
+  return `<span class="score"><span class="num">${v}</span><i><b style="width:${v}%;background:${color}"></b></i></span>`;
+}
+
+// Personas
+function filteredPersonas() {
+  const q = personaFilter.q.trim().toLowerCase();
+  return D.personas.filter((p) => {
+    if (personaFilter.wave && String(p.wave) !== personaFilter.wave) return false;
+    if (personaFilter.journey && p.journey !== personaFilter.journey) return false;
+    if (personaFilter.device && p.device !== personaFilter.device) return false;
+    if (personaFilter.result === 'value' && !p.firstValue) return false;
+    if (personaFilter.result === 'novalue' && p.firstValue) return false;
+    if (personaFilter.result === 'deadend' && !p.deadEnds) return false;
+    if (personaFilter.result === 'quit' && p.outcome.kind !== 'frustration') return false;
+    if (q && !`${p.id} ${p.role} ${p.fi} ${p.temperament} ${p.source}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+function renderPersonas() {
+  const js = [...new Set(D.personas.map((p) => p.journey))];
+  const opt = (v, l, cur) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${esc(l)}</option>`;
+  return `
+    ${head('Personas', 'Every synthetic visitor, where they came from, and what happened. Click anyone to replay their visit.')}
+    <div class="ptools">
+      <label class="sr" for="pq" hidden>Search</label>
+      <input id="pq" type="search" placeholder="Search role, institution, source…" value="${esc(personaFilter.q)}">
+      <select id="pw" aria-label="Wave">${opt('', D.wave3 ? 'All waves' : 'Both waves', personaFilter.wave)}${opt('1', 'Wave 1', personaFilter.wave)}${opt('2', 'Wave 2', personaFilter.wave)}${D.wave3 ? opt('3', 'Wave 3', personaFilter.wave) : ''}</select>
+      <select id="pj" aria-label="Journey">${opt('', 'All journeys', personaFilter.journey)}${js.map((j) => opt(j, shortJourney(j), personaFilter.journey)).join('')}</select>
+      <select id="pd" aria-label="Device">${opt('', 'Any device', personaFilter.device)}${opt('desktop', 'Desktop', personaFilter.device)}${opt('mobile', 'Mobile', personaFilter.device)}</select>
+      <select id="pr" aria-label="Result">${opt('', 'Any result', personaFilter.result)}${opt('value', 'Reached value', personaFilter.result)}${opt('novalue', 'No value', personaFilter.result)}${opt('deadend', 'Hit a dead end', personaFilter.result)}${opt('quit', 'Rage-quit', personaFilter.result)}</select>
+      <span class="countlbl" id="pcount"></span>
+    </div>
+    <div class="panel tablewrap"><table>
+      <thead><tr><th>ID</th><th>Persona</th><th>Journey</th><th>First value</th><th class="n">Clicks</th><th class="n">Experience</th><th>Outcome</th></tr></thead>
+      <tbody id="prows"></tbody>
+    </table></div>`;
+}
+function fillPersonaRows() {
+  const rows = filteredPersonas();
+  $('#pcount').textContent = `${rows.length} of ${D.personas.length}`;
+  $('#prows').innerHTML = rows.map((p) => `<tr class="click" data-persona="${p.id}" tabindex="0">
+    <td class="mono">${p.id}</td>
+    <td class="who"><b>${esc(p.role)}</b><span>${esc(p.fi)} · ${esc(p.temperament)} · ${p.device}</span></td>
+    <td>${esc(shortJourney(p.journey))}${p.depth ? ` <span class="muted num">(${p.depth})</span>` : ''}</td>
+    <td>${p.firstValue ? esc(valueLabel(p.firstValue.id)) : '<span class="muted">none</span>'}</td>
+    <td class="n">${p.firstValue ? p.firstValue.clicks : '—'}</td>
+    <td class="n">${scoreCell(p.experience)}</td>
+    <td>${pill(outcomeClass(p.outcome.kind), OUTCOME_LABELS[p.outcome.kind] || p.outcome.kind)}</td>
+  </tr>`).join('') || `<tr><td colspan="7" class="muted" style="padding:24px">No personas match these filters.</td></tr>`;
+}
+
+function openPersona(id) {
+  const p = D.personas.find((x) => x.id === id);
+  if (!p) return;
+  const mods = p.modules ? `<div><h3 style="margin-bottom:8px">Course progress <span class="muted" style="font-weight:400">· planned ${p.depth} of 18</span></h3><div class="modstrip">${Array.from({ length: 18 }, (_, i) => { const m = p.modules.find((x) => x.n === i + 1); return `<i class="${m ? (m.saved ? 'saved' : 'tried') : ''}" title="Module ${i + 1}${m ? (m.saved ? ': saved' : ': attempted') : ''}">${i + 1}</i>`; }).join('')}</div></div>` : '';
+  const fr = p.friction.filter((f) => f.severity > 0);
+  $('#overlay').innerHTML = `<div class="scrim" data-close></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle">
+    <div class="dhead">
+      <div class="row"><div><div class="eyebrow">${p.id} · ${esc(shortJourney(p.journey))}</div><h2 id="dtitle" style="font-size:22px;margin-top:6px">${esc(p.role)}</h2></div><button class="x" data-close aria-label="Close">Close</button></div>
+      <div class="muted" style="font-size:13px">${esc(p.fi)} · ${esc(p.temperament)} · ${p.device} · arrived from ${esc(p.source)} at <span class="mono">${esc(p.entry)}</span></div>
+      <div>${pill(outcomeClass(p.outcome.kind), OUTCOME_LABELS[p.outcome.kind])} <span class="muted" style="font-size:13px">${esc(p.outcome.reason)}</span></div>
+    </div>
+    <div class="dbody">
+      <div class="facts">
+        <div><div class="k">First value</div><div class="v">${p.firstValue ? `${p.firstValue.clicks} clicks` : '—'}</div><div class="k">${p.firstValue ? secs(p.firstValue.ms) : 'never'}</div></div>
+        <div><div class="k">Experience</div><div class="v">${p.experience}</div><div class="k">out of 100</div></div>
+        <div><div class="k">Visit</div><div class="v">${p.clicks} clicks</div><div class="k">${secs(p.ms)}</div></div>
+      </div>
+      ${p.values.length ? `<div><h3 style="margin-bottom:8px">Value reached</h3><div class="tags">${p.values.map((v) => `<span class="pill s-value">${esc(valueLabel(v))}</span>`).join('')}</div></div>` : ''}
+      ${mods}
+      ${fr.length ? `<div><h3 style="margin-bottom:8px">Friction <span class="muted" style="font-weight:400">· ${fr.length}</span></h3><ul style="margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px">${fr.slice(0, 12).map((f) => `<li>${f.env ? pill('s-env', 'env') + ' ' : ''}${esc(f.detail)}</li>`).join('')}${fr.length > 12 ? `<li class="muted">and ${fr.length - 12} more</li>` : ''}</ul></div>` : ''}
+      <div><h3 style="margin-bottom:6px">Visit replay</h3>
+        <ol class="tl">${p.timeline.map((t) => t.gap ? `<li class="gap">${t.gap} routine clicks hidden</li>` : `<li><span class="t">${t.s}s</span><span class="a ${t.a}">${t.a === 'GOTO' ? 'Page' : t.a.toLowerCase()}</span><span class="d">${esc(t.n)}<span class="u">${esc(t.u)}</span></span></li>`).join('')}</ol>
+      </div>
+    </div>
+  </aside>`;
+  document.body.style.overflow = 'hidden';
+  $('.drawer .x').focus();
+}
+function closeOverlay() { $('#overlay').innerHTML = ''; document.body.style.overflow = ''; }
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeOverlay();
+  if (e.key === 'Enter' && e.target.matches('tr.click')) e.target.click();
+});
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-close]') || e.target.closest('.lightbox')) { closeOverlay(); return; }
+  const img = e.target.closest('[data-img]');
+  if (img) {
+    $('#overlay').innerHTML = `<div class="lightbox" role="dialog" aria-label="Screenshot"><img src="${D.images[img.dataset.img]}" alt=""></div>`;
+    document.body.style.overflow = 'hidden';
+  }
+});
+
+// Not tested
+function renderUntested() {
+  return `
+    ${head('Not tested in this run', 'These flows need real keys (payments, database, AI provider) that the local test build did not have. They are unknown, not broken.')}
+    <div class="panel tablewrap"><table>
+      <thead><tr><th>Flow</th><th>What the test build showed</th><th>How to cover it</th></tr></thead>
+      <tbody>${D.findings.notTested.map((n) => `<tr><td><b>${esc(n.flow)}</b></td><td>${esc(n.saw)}</td><td class="muted">${esc(n.next)}</td></tr>`).join('')}</tbody>
+    </table></div>
+    <div class="note">Running the same 100 personas against a Vercel preview with test keys would cover all six. Page speeds in this run come from a development server and are not production timings.</div>`;
+}
+
+// Repo
+function renderRepo() {
+  return `
+    ${head('Repo housekeeping', 'Cleanup done alongside the wave, and what still needs a person.')}
+    <div class="panel hk">${D.findings.housekeeping.map((h) => `<div><b>${esc(h.item)}</b>${pill('s-' + h.state, h.state)}<p>${esc(h.detail)}</p></div>`).join('')}</div>`;
+}
+
+// Wiring per view
+function wire(id) {
+  document.querySelectorAll('[data-journey]').forEach((el) => el.addEventListener('click', () => {
+    personaFilter = { q: '', journey: el.dataset.journey, device: '', result: '', wave: el.dataset.wave || '' };
+    show('personas');
+  }));
+  if (id === 'findings') {
+    document.querySelectorAll('[data-status]').forEach((b) => b.addEventListener('click', () => { findingStatus = b.dataset.status; show('findings', { scroll: false }); }));
+    document.querySelectorAll('[data-scope]').forEach((b) => b.addEventListener('click', () => { issueScope = b.dataset.scope; show('findings', { scroll: false }); }));
+    document.querySelectorAll('[data-iwave]').forEach((b) => b.addEventListener('click', () => { issueWave = Number(b.dataset.iwave); show('findings', { scroll: false }); }));
+    if (pendingFinding) { const d = $(`#f-${pendingFinding}`); if (d) { d.open = true; d.scrollIntoView({ block: 'start' }); } pendingFinding = null; }
+  }
+  if (id === 'course') {
+    document.querySelectorAll('.funnel .hit').forEach((r) => r.addEventListener('click', () => { selectedModule = Number(r.dataset.mod); show('course', { scroll: false }); }));
+  }
+  if (id === 'personas') {
+    fillPersonaRows();
+    $('#pq').addEventListener('input', (e) => { personaFilter.q = e.target.value; fillPersonaRows(); });
+    [['#pw', 'wave'], ['#pj', 'journey'], ['#pd', 'device'], ['#pr', 'result']].forEach(([sel, key]) => $(sel).addEventListener('change', (e) => { personaFilter[key] = e.target.value; fillPersonaRows(); }));
+    $('#prows').addEventListener('click', (e) => { const tr = e.target.closest('[data-persona]'); if (tr) openPersona(tr.dataset.persona); });
+  }
+}
+let pendingFinding = null;
+document.addEventListener('click', (e) => { const f = e.target.closest('[data-finding]'); if (f) pendingFinding = f.dataset.finding; }, true);
+
+show((location.hash || '').slice(1) || 'overview', { scroll: false });
+</script>
+</body>
+</html>

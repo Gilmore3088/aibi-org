@@ -26,7 +26,7 @@ Where the launch actually stands after this session. The detailed gate is §0–
   blockers are live-money evidence, admin/support login, MailerLite activation,
   physical-device QA, production proof for the 100-persona fixes, and first-user proof.
 - **100-persona audit remediation locally complete.** The larger
-  `docs/persona-audit-2026-06-23/` plan superseded the 50-person pass for deeper
+  `archive/docs/persona-audit-2026-06-23/` plan superseded the 50-person pass for deeper
   post-click fulfillment issues. Its persona outcome rows now count
   **100 ok / 0 warn / 0 fail** locally. This includes certificate issuance,
   buyer recovery, retention, assisted team buying, public demo truthfulness,
@@ -350,10 +350,10 @@ Where the launch actually stands after this session. The detailed gate is §0–
 > Full detail + evidence: §0–§12 below, `docs/reviews/persona-e2e-review-2026-06-22.md`,
 > `docs/reviews/red-team-review-2026-06-22.md`, and
 > `docs/reviews/gtm-20-persona-review-2026-06-23.md`,
-> `Plans/20-persona-prioritized-remediation-plans-2026-06-23.md`,
-> `Plans/20-persona-remediation-comparison-2026-06-23.md`, and
-> `Plans/50-persona-gtm-readiness-review-2026-06-23.md`, plus the larger
-> `docs/persona-audit-2026-06-23/03-action-items.md`.
+> `archive/Plans/20-persona-prioritized-remediation-plans-2026-06-23.md`,
+> `archive/Plans/20-persona-remediation-comparison-2026-06-23.md`, and
+> `archive/Plans/50-persona-gtm-readiness-review-2026-06-23.md`, plus the larger
+> `archive/docs/persona-audit-2026-06-23/03-action-items.md`.
 
 ---
 

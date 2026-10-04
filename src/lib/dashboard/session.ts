@@ -60,7 +60,7 @@ export function dashboardSessionErrorResponse(
   session: Extract<DashboardSessionResult, { ok: false }>,
 ): NextResponse {
   if (session.reason === 'supabase_not_configured') {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: session.status });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: session.status });
   }
 
   if (session.reason === 'untrusted_device') {

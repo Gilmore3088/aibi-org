@@ -1,5 +1,6 @@
 import { generatePdfFromHtml } from './generate';
 import { escapeHtml } from '@/lib/html/escape';
+import { CORE_PART_LIST } from '@content/frameworks/core';
 
 export interface SkillEntry {
   readonly name: string;
@@ -675,7 +676,7 @@ export function buildTransformationReportHtml(props: TransformationReportProps):
       </header>
       <div class="page-body">
         ${skillsList(props.skills)}
-        <p class="note">Skills were built during the course using the five-component RTFC framework (Role, Task, Format, Constraints, Context) and stress-tested against real banking scenarios in Module 8 before deployment.</p>
+        <p class="note">Skills were built during the course on the CORE prompt framework (${CORE_PART_LIST}) and turned into reusable skills in Module 13, with a human review step before any use.</p>
       </div>
       ${pageFooter(3, 5)}
     </section>

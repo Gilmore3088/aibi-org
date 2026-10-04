@@ -79,6 +79,9 @@ export function FreeResourceDownloadGate({
   const [captureContext, setCaptureContext] = useState<FreeResourceCaptureContext | null>(null);
   const [email, setEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  // Set when the email service fails (not when the address is invalid): the
+  // file itself is free and static, so offer it directly instead of a wall.
+  const [serviceFailed, setServiceFailed] = useState(false);
   // True only when this finish followed a fresh email capture (which also sends
   // the resource by email). A same-session re-download does not re-send, so the
   // inbox reassurance must not claim an email that never went out.
@@ -165,7 +168,12 @@ export function FreeResourceDownloadGate({
 
       if (!response.ok) {
         const payload = (await response.json().catch(() => ({}))) as { error?: string };
-        throw new Error(payload.error ?? `Request failed (${response.status})`);
+        if (response.status >= 500) setServiceFailed(true);
+        throw new Error(
+          response.status >= 500
+            ? 'We couldn’t send it by email just now.'
+            : (payload.error ?? 'Please check your email address and try again.'),
+        );
       }
 
       const capturedAt = new Date().toISOString();
@@ -180,7 +188,12 @@ export function FreeResourceDownloadGate({
       setEmailedThisCapture(true);
       await runUnlockedAction(nextContext);
     } catch (error) {
-      setErrorMsg(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+      if (!(error instanceof Error) || error.name === 'TypeError') setServiceFailed(true);
+      setErrorMsg(
+        error instanceof Error && error.name !== 'TypeError'
+          ? error.message
+          : 'We couldn’t send it by email just now.',
+      );
       setPhase('error');
     }
   }
@@ -243,6 +256,15 @@ export function FreeResourceDownloadGate({
           {errorMsg ? (
             <p id={`${inputId}-error`} className="mk-download-gate-error" role="alert">
               {errorMsg}
+              {serviceFailed && href && !onUnlock ? (
+                <>
+                  {' '}
+                  <a href={buildFreeResourceDownloadHref(href, { source })} download>
+                    Download it directly
+                  </a>
+                  .
+                </>
+              ) : null}
             </p>
           ) : null}
         </div>

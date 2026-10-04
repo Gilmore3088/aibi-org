@@ -41,6 +41,8 @@
     "node_modules",
     "docs/brand-refresh-2026-05-09",
     "e2e",
+    "video-studio",
+    "walkthrough",
     "playwright.config.ts",
     "playwright-report",
     "test-results"

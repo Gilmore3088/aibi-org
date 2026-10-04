@@ -21,6 +21,7 @@ import {
   FREE_RESOURCE_CAPTURE_COOKIE,
   normalizeCaptureEmail,
 } from '@/lib/resources/freeResourceCapture';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -86,17 +87,23 @@ async function staticDownloadResponse(
   }
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
-  }
-
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { slug } = await context.params;
   if (!slug || typeof slug !== 'string') {
     return NextResponse.json({ error: 'Resource not found.' }, { status: 404 });
   }
 
   const staticResource = getDownloadResource(slug);
+
+  // Free files ship with every deploy, so a missing or unreachable database
+  // must not block them (the catch below already does this when the service
+  // client fails). Only logging/attribution is lost in that case.
+  if (!isSupabaseConfigured()) {
+    if (staticResource?.tier_required === 'free') {
+      return staticDownloadResponse(staticResource);
+    }
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
+  }
   let service: ReturnType<typeof createServiceRoleClient>;
   try {
     service = createServiceRoleClient();
@@ -229,3 +236,6 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
 
   return NextResponse.redirect(signed.signedUrl, { status: 302 });
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

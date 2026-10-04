@@ -74,20 +74,20 @@ Treat as marketing material. Do not pass to the AML team without:
     title: 'Adverse action notice prompt',
     role: 'Lending operations',
     kind: 'Prompt template',
-    body: `[ROLE] You are an experienced credit analyst at a community bank.
-[INPUT] Denial code: {DENIAL_CODE}
-        Sanitized file summary: {SUMMARY}
-        Our adverse-action standard: {INTERNAL_STANDARD}
-[TASK]
-  1. Draft a plain-English adverse-action notice under 120 words.
-  2. Include the disclosures our standard requires.
-  3. Use neutral, non-blaming language.
-[CONSTRAINTS]
+    body: `[CONTEXT] You are an experienced credit analyst at a community bank.
+  The notice goes to a declined applicant.
+[OBJECTIVE] Draft a plain-English adverse-action notice under 120 words
+  that includes the disclosures our standard requires.
+[RESOURCES] Use only:
+  Denial code: {DENIAL_CODE}
+  Sanitized file summary: {SUMMARY}
+  Our adverse-action standard: {INTERNAL_STANDARD}
+[EXPECTATIONS]
+  - Neutral, non-blaming language.
   - Never invent denial reasons that are not in the input.
   - Never reference race, age, marital status, source of income,
     or any other protected characteristic.
-[REVIEW]
-  Compliance officer signs off before mailing.`,
+  - Compliance officer signs off before mailing.`,
   },
   {
     id: 'work-profile',
@@ -162,17 +162,19 @@ that has not been reviewed, or anything with a customer's identity.`,
 What to paste: sanitized credit summary (no borrower name, no SSN)
 What not to paste: full borrower file, credit reports, examiner letters
 
-[ROLE] You are a senior commercial lender at a community bank
+[CONTEXT] You are a senior commercial lender at a community bank
 preparing a memo for the loan committee.
-[INPUT] Sanitized credit summary: {SUMMARY}
-        Loan amount range: {RANGE}
-        Industry: {INDUSTRY}
-[TASK] Draft a 250-word committee memo with:
+[OBJECTIVE] Draft a 250-word committee memo.
+[RESOURCES] Use only:
+  Sanitized credit summary: {SUMMARY}
+  Loan amount range: {RANGE}
+  Industry: {INDUSTRY}
+[EXPECTATIONS] Include:
   - A one-sentence recommendation
   - The three strongest supporting points
   - Two risks the committee should weigh
   - Any policy exceptions requested
-[REVIEW] My credit officer reviews before committee.`,
+  My credit officer reviews before committee.`,
   },
 ];
 

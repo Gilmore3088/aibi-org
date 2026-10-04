@@ -158,8 +158,8 @@
     },
     {
       "id": "motley-fool-digital-76",
-      "claim": "76% of consumers are likely to switch banks for one that better fits their needs (Motley Fool Money survey via Pollfish, Jan 2024; up from 52% in 2020). Apiture and the site's copy render this as 'would switch FIs for a better digital experience' \u2014 acceptable gloss given the survey's digital-banking-trends context. Verified against the fool.com primary source 2026-09-30.",
-      "source": "The Motley Fool 'Online Banking Trends and Consumer Priorities' (via Apiture)",
+      "claim": "76% of consumers are likely to switch banks if they find one that better meets their priorities (Motley Fool Money survey of 2,000 via Pollfish, Jan. 4, 2024; up from 52% in 2020). Re-verified against the primary source on 2026-09-30: the survey does NOT say 'for a better digital experience' (that was Apiture's paraphrase); site copy corrected to match.",
+      "source": "The Motley Fool, What Customers Want From Banks",
       "url": "https://www.fool.com/money/research/digital-banking-trends/",
       "asOf": "2024-01-04",
       "verified": "2026-09-30",

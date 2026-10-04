@@ -120,7 +120,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: 'AI critique is not configured on this environment.' },
+      { error: 'AI feedback is temporarily unavailable. Please try again in a few minutes.' },
       { status: 503 },
     );
   }

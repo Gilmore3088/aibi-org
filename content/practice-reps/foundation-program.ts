@@ -74,14 +74,14 @@ export const FOUNDATION_PRACTICE_REPS: readonly PracticeRep[] = [
     scenario:
       'You want one reusable prompt for a weekly task in your role.',
     task:
-      'Build a role-based prompt with role, task, format, and constraints.',
+      'Build a role-based CORE prompt: context, objective, resources, and expectations.',
     constraints: [
       'Use placeholders for any institution-specific details.',
       'Specify the audience and output format.',
       'Include a verification or review instruction.',
     ],
     starterPrompt:
-      'Help me turn this recurring banking task into a reusable prompt. Role: [YOUR ROLE]. Task: [TASK]. Audience: [AUDIENCE]. Output format: [FORMAT]. Constraints: [CONSTRAINTS].',
+      'Help me turn this recurring banking task into a reusable prompt. Context: [YOUR ROLE], writing for [AUDIENCE]. Objective: [TASK]. Resources: [SOURCE MATERIAL]. Expectations: [FORMAT] and [LIMITS].',
     modelAnswer:
       'You are a retail banking communication assistant. Draft a concise customer email about [TOPIC] for [AUDIENCE]. Use plain language, avoid promises or legal conclusions, keep under 175 words, and flag any claim that needs banker or compliance review.',
     feedback: [

@@ -6,6 +6,11 @@
 .pnp.js
 .yarn/install-state.gz
 
+# video-studio screen-capture tooling (regenerate via video-studio/scripts/capture-screens.sh)
+/public/lms-prototype/vendor/
+/public/lms-prototype/capture.html
+/public/lms-prototype/lms/cap-mount.jsx
+
 # testing
 /coverage
 
@@ -151,3 +156,9 @@ docs/reviews/lighthouse-*/
 /docs/nurture-*-draft-2026-*.md
 /docs/sr-model-risk-copy-sweep-2026-*.md
 /docs/*-review-2026-*.html
+
+# persona-wave run output (screenshots, full timelines)
+/e2e/persona-wave/out/
+
+# Kit/PDF build scratch
+.tmp/

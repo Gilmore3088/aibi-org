@@ -110,7 +110,7 @@ const DESCRIPTIONS = {
   'artifact-fair-lending-ai-review-checklist': 'Pre-deployment and recurring-review card plus worksheet for AI-assisted credit decisions, pricing, eligibility, triage, and adverse-action support.',
   'red-yellow-green-use-card': 'Classify AI use cases in ten seconds.',
   'safe-ai-use-checklist': 'Strip data, ask clearly, fact-check, escalate.',
-  'prompt-strategy-cheat-sheet': 'Write prompts with role, context, format, constraints, and review.',
+  'prompt-strategy-cheat-sheet': 'Write CORE prompts: context, objective, resources, and expectations, with a review step.',
   'regulatory-cheatsheet': 'SR 26-2, ECOA / Reg B, TPRM, BSA/AML, and AI lexicon basics.',
   'platform-feature-reference-card': 'Quick reference to AiBI platform features and entitlement tiers.',
   'sample-readiness-report': 'Score, maturity tier, top gap, dimension snapshot, and starter artifact.',

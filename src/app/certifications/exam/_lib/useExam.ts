@@ -8,6 +8,19 @@ const QUESTIONS_PER_EXAM = 12;
 
 export type ExamPhase = 'intro' | 'questions' | 'results';
 
+// The question bank's correct answers cluster on one letter (37 of 41 are
+// "b"), so options must be shuffled per draw or "always pick b" passes.
+// Keys stay attached to their options, so scoring against correctKey is
+// unchanged; the runner letters options by displayed position.
+export function shuffleOptions(question: ExamQuestion, random: () => number = Math.random): ExamQuestion {
+  const options = [...question.options];
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  return { ...question, options: options as unknown as ExamQuestion['options'] };
+}
+
 function shuffleAndDraw(pool: readonly ExamQuestion[], count: number): ExamQuestion[] {
   const byTopic = new Map<Topic, ExamQuestion[]>();
   for (const q of pool) {
@@ -49,7 +62,7 @@ function shuffleAndDraw(pool: readonly ExamQuestion[], count: number): ExamQuest
     [drawn[i], drawn[j]] = [drawn[j], drawn[i]];
   }
 
-  return drawn;
+  return drawn.map((q) => shuffleOptions(q));
 }
 
 export interface TopicScore {

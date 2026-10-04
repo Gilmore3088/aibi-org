@@ -21,7 +21,7 @@ export async function POST(
   context: { params: Promise<{ token: string }> },
 ): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Server not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
   }
 
   const { token } = await context.params;

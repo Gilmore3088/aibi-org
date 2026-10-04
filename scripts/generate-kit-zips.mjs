@@ -17,6 +17,7 @@
 //   node scripts/generate-kit-zips.mjs --only <slug> # build one kit
 //   node scripts/generate-kit-zips.mjs --upload      # also upload to Supabase
 
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 import { chromium } from '@playwright/test';
 import { mkdir, readFile, writeFile, stat, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -157,7 +158,7 @@ const KITS = {
       'For bankers, managers, analysts, trainers, marketers, lenders, operations teams, and compliance reviewers who want useful AI support without leaking sensitive data, skipping review, or letting AI make decisions.',
     startHereName: '00-Start-Here.pdf',
     steps: [
-      'Read the Prompt Like a Banker Prompt Card and teach the 5-line banker prompt.',
+      'Read the Prompt Like a Banker Prompt Card and teach the CORE prompt in five lines.',
       'Use the Placeholder Card before anyone pastes source material into an AI tool.',
       'Use the Prompt Types Cheat Sheet to choose the work before writing the prompt.',
       'Review the Safe vs. Unsafe Prompt Examples before teams write customer, credit, BSA/AML, or examiner-facing prompts.',
@@ -171,13 +172,13 @@ const KITS = {
         source: 'prompting-foundation-guide.pdf',
         target: '01-Prompt-Like-A-Banker-Prompt-Card.pdf',
         description:
-          'Three-page prompt card for the 5-line prompt method, data line, placeholders, examples, and review checks.',
+          'Prompt card for the CORE prompt in five lines, the data line, placeholders, examples, and review checks.',
       },
       {
         source: 'banker-prompt-formula-card.pdf',
-        target: '02-Banker-Prompt-Formula-Card.pdf',
+        target: '02-CORE-Prompt-Card-for-Bankers.pdf',
         description:
-          'One-page prompt formula reference: role, task, source, constraints, output, verify, and escalate.',
+          'One-page CORE reference: context, objective, resources, and expectations, with verify and escalate rules.',
       },
       {
         source: 'safe-prompt-placeholder-card.pdf',
@@ -515,7 +516,9 @@ async function buildKit(browser, kitSlug, kit) {
   const html = renderStartHereHtml(kitSlug, kit);
   const tmpHtml = resolve(kitWork, '_start-here.html');
   await writeFile(tmpHtml, html);
-  const page = await browser.newContext().then((c) => c.newPage());
+  const ctx = await browser.newContext();
+  await serveLocalBrandFonts(ctx, ROOT);
+  const page = await ctx.newPage();
   await page.goto('file://' + tmpHtml, { waitUntil: 'networkidle' });
   await page.emulateMedia({ media: 'print' });
   const pdf = await page.pdf({
@@ -570,7 +573,7 @@ async function main() {
   if (only && !KITS[only]) {
     throw new Error(`Unknown kit slug for --only: ${only}`);
   }
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(launchOptions());
   const built = [];
   for (const [slug, def] of Object.entries(KITS).filter(([slug]) => !only || slug === only)) {
     built.push(await buildKit(browser, slug, def));

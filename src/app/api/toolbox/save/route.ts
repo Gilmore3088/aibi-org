@@ -211,7 +211,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } else {
     if (!isSupabaseConfigured()) {
       return NextResponse.json(
-        { error: 'Server-side Toolbox storage is not configured.' },
+        { error: 'Saving to your Toolbox is temporarily unavailable. Keep this page open and try again in a few minutes.' },
         { status: 503 },
       );
     }
@@ -242,7 +242,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json(
-      { error: 'Server-side Toolbox storage is not configured.' },
+      { error: 'Saving to your Toolbox is temporarily unavailable. Keep this page open and try again in a few minutes.' },
       { status: 503 },
     );
   }

@@ -9,6 +9,7 @@ import {
   type ResendResult,
 } from '../_core';
 import { supportShell, type SupportAccessRescuePayload } from './support';
+import { redactEmail } from '@/lib/email/redact';
 
 export function sendAuthSignInLink(
   payload: SupportAccessRescuePayload,
@@ -101,7 +102,7 @@ This link expires in ${payload.expiresInMinutes} minutes. If this wasn't you, ig
 
 — The AI Banking Institute`;
 
-  console.log(`${tag} sending to=${payload.email} key-prefix=${apiKey.slice(0, 8)}…`);
+  console.log(`${tag} sending to=${redactEmail(payload.email)} key-prefix=${apiKey.slice(0, 8)}…`);
 
   try {
     const response = await fetch(RESEND_API_URL, {

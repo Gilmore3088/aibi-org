@@ -162,7 +162,7 @@ export function ExamRunner() {
         </h2>
 
         <div style={{ display: 'grid', gap: 10 }}>
-          {question.options.map((opt) => {
+          {question.options.map((opt, optIndex) => {
             const active = selected === opt.key;
             return (
               <button
@@ -198,7 +198,7 @@ export function ExamRunner() {
                     color: active ? 'var(--gold-deep)' : 'var(--slate-500)',
                   }}
                 >
-                  {opt.key}
+                  {'abcdefgh'[optIndex] ?? opt.key}
                 </span>
                 {opt.label}
               </button>
@@ -308,7 +308,7 @@ function IntroPhase({ onStart }: { readonly onStart: () => void }) {
       >
         {[
           'Gen AI Fundamentals',
-          'Prompting and the RTFC Framework',
+          'Prompting with CORE',
           'Safe Use in Regulated Institutions',
           'Use Case Identification',
           'Measurement and Accountability',

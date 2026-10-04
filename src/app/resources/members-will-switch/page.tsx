@@ -5,7 +5,7 @@ import { ArticleShell } from "@/components/mockup";
 export const metadata: Metadata = {
   title: 'Members Will Switch. The Question Is To Whom.',
   description:
-    '84% of consumers say they would switch financial institutions for AI-driven financial insights. 76% would switch for a better digital experience. The community bank retention story in 2026.',
+    '84% of consumers say they would switch financial institutions for AI-driven financial insights. 76% would switch banks for one that better meets their needs. The community bank retention story in 2026.',
 };
 
 const STAT_CARDS = [
@@ -21,8 +21,8 @@ const STAT_CARDS = [
   },
   {
     figure: '76%',
-    label: 'would switch FIs for a better digital experience',
-    source: 'Motley Fool (via Apiture)',
+    label: 'likely to switch banks for one that better meets their needs',
+    source: 'Motley Fool Money survey (2024)',
   },
   {
     figure: '55%',
@@ -63,8 +63,9 @@ export default function MembersWillSwitchArticle() {
             <em>Would</em>. Eighty-four percent.
           </p>
           <p>
-            The corollary: <strong>76%</strong> would switch for a better
-            digital experience overall (Motley Fool, via Apiture), and
+            The corollary: <strong>76%</strong> say they are likely to switch
+            banks if they find one that better meets their needs, up from 52%
+            in 2020 (Motley Fool Money survey of 2,000 consumers, 2024), and
             <strong> 62%</strong> are actively open to AI-driven fee and
             spending alerts. The story the data tells is that members do not
             need to be sold on AI. They are already looking for it. The only
@@ -199,9 +200,10 @@ export default function MembersWillSwitchArticle() {
         <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
           <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> Apiture, The Digital Loyalty Dividend
-            (2025), citing Personetics 2025 consumer research and Motley Fool
-            survey data. Apiture, Digital Transformation for Community Banks
-            (2025). Figures verified as of April 2026.
+            (2025), citing Personetics 2025 consumer research. Apiture, Digital
+            Transformation for Community Banks (2025). The Motley Fool, What
+            Customers Want From Banks (survey of 2,000 consumers, January 2024;
+            re-verified September 2026). Other figures verified as of April 2026.
           </p>
         </footer>
       </article>

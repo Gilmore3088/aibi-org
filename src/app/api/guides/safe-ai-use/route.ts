@@ -2,11 +2,12 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { logStaticResourceDownload } from '@/lib/resources/downloadLogging';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 const PDF_FILENAME = 'AiBI-Safe-AI-Use-Guide.pdf';
 const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-safe-ai-use-guide.pdf');
 
-export async function GET(request: Request): Promise<Response> {
+async function handleGET(request: Request): Promise<Response> {
   // This lead-generation guide is static content. Serving the committed PDF
   // avoids the production React PDF render path while preserving abuse limits.
   const limited = await rateLimitOrFail({
@@ -41,3 +42,6 @@ export async function GET(request: Request): Promise<Response> {
     });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

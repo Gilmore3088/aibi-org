@@ -54,6 +54,10 @@ function client() {
  * Supabase sends a confirmation email — user must verify before signing in
  * (depending on your project's email confirmation setting).
  */
+// Shown to visitors when auth is unreachable; keep it free of setup jargon.
+export const AUTH_UNAVAILABLE =
+  'Sign-in is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.';
+
 export async function signUp(
   email: string,
   password: string,
@@ -61,7 +65,7 @@ export async function signUp(
   redirectTo?: string,
 ): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured. Set Supabase environment variables.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   const origin =
     typeof window !== 'undefined'
@@ -95,7 +99,7 @@ export async function signUp(
  */
 export async function signIn(email: string, password: string): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured. Set Supabase environment variables.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   const { error } = await client().auth.signInWithPassword({ email, password });
   return { error: error?.message ?? null };
@@ -132,7 +136,7 @@ export async function signOut(): Promise<AuthResult> {
  */
 export async function resetPassword(email: string, next?: string): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured. Set Supabase environment variables.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   const origin =
     typeof window !== 'undefined'
@@ -151,7 +155,7 @@ export async function resetPassword(email: string, next?: string): Promise<AuthR
  */
 export async function updatePassword(newPassword: string): Promise<AuthResult> {
   if (!isSupabaseConfigured()) {
-    return { error: 'Auth is not configured. Set Supabase environment variables.' };
+    return { error: AUTH_UNAVAILABLE };
   }
   const { error } = await client().auth.updateUser({ password: newPassword });
   return { error: error?.message ?? null };

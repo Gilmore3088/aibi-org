@@ -82,7 +82,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!STRIPE_TEAM_ASSESSMENT_PRICE_ID) {
     console.error('[checkout/team-assessment] STRIPE_TEAM_ASSESSMENT_PRICE_ID is not set.');
     return NextResponse.json(
-      { error: 'Payment system not configured.' },
+      { error: 'Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.' },
       { status: 503 },
     );
   }

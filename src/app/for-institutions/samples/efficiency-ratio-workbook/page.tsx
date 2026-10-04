@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { SiteHeader } from '@/components/mockup';
 import { AxHero, AxSection } from '@/components/ax';
 import { ROICalculatorBody } from '@/components/sections/ROICalculatorBody';
@@ -80,6 +81,10 @@ export default function EfficiencyRatioWorkbookPage() {
               Book an Executive Briefing
             </BriefingButton>
           </div>
+          <p className="ax-muted" style={{ marginTop: 16 }}>
+            Not ready to talk yet? <Link href="/for-institutions">See team training options</Link> or{' '}
+            <Link href="/assessment/take">take the free readiness assessment</Link>.
+          </p>
         </div>
       </section>
     </div>

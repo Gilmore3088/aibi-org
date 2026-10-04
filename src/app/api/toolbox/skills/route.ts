@@ -77,7 +77,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
   if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Server-side Toolbox storage is not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'Saving to your Toolbox is temporarily unavailable. Keep this page open and try again in a few minutes.' }, { status: 503 });
   }
 
   let body: { skill?: unknown };

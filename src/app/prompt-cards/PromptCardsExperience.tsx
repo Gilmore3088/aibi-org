@@ -163,7 +163,7 @@ export function PromptCardsExperience() {
         {[
           ['Context', 'Frame the banking situation before asking AI to act.'],
           ['Inputs', 'Name the source material and missing information.'],
-          ['Prompt', 'Use role, task, constraints, and output format.'],
+          ['Prompt', 'Use the four CORE parts: context, objective, resources, expectations.'],
           ['Review', 'Check facts, risk, assumptions, and next steps.'],
         ].map(([title, body]) => (
           <div key={title} className="border-t border-[color:var(--ink)]/15 pt-4">

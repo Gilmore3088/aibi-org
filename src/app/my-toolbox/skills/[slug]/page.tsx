@@ -181,22 +181,19 @@ export default function SavedSkillPage(props: { params: Promise<{ slug: string }
                     margin: 0,
                   }}
                 >
-                  {`[ROLE] Community bank compliance officer producing a frontline guide.
+                  {`[CONTEXT] Community bank compliance officer producing a frontline guide. Audience: {{audience}}
 
-[INPUT] Source procedure: {{procedure_text}}
-Target audience: {{audience}}
-
-[TASK]
+[OBJECTIVE]
 1. Identify the three most common scenarios.
 2. Write a one-sentence instruction in plain English for each.
 3. List explicit escalation triggers.
 
-[FORMAT]
+[RESOURCES] Use only the source procedure: {{procedure_text}}
+
+[EXPECTATIONS]
 - Title: "{{topic}}: Quick Guide"
 - Three numbered scenarios
 - "Escalate if:" section
-
-[REVIEW]
 - Flag legal-meaning loss.
 - Add: Reviewed by [name] on [date]`}
                 </pre>

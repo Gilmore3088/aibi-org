@@ -138,7 +138,7 @@ async function verifyEnrollmentOwnership(
 
 export async function POST(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
   }
 
   const { searchParams } = new URL(request.url);

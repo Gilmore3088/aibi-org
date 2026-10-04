@@ -17,6 +17,7 @@ import type { Dimension } from '@content/assessments/v2/types';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -29,7 +30,7 @@ function isDimension(value: string): value is Dimension {
   return Object.prototype.hasOwnProperty.call(DIMENSION_LABELS, value);
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { dimension } = await context.params;
   if (!isDimension(dimension)) {
     return new Response(JSON.stringify({ error: 'Artifact not found.' }), {
@@ -81,3 +82,6 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

@@ -123,21 +123,23 @@ The fix is a reflex: strip first, paste second.
 
   'prompting-skill': {
     title: 'A "useful answer the first time" prompting starter kit',
-    subtitle: 'Five prompt patterns that turn AI from a search bar into a working colleague.',
+    subtitle: 'The four CORE prompt parts, plus a check, that turn AI from a search bar into a working colleague.',
     filename: 'aibi-prompting-skill.md',
-    body: `# Five prompt patterns that pay rent
+    body: `# The CORE prompt, and a check that pays rent
 
 If you are getting generic answers from AI, the problem is almost always
-the prompt. These five patterns — role, format, source, check, edit —
-move AI from a glorified search bar to something closer to a working
-draftsman.
+the prompt. Four parts — context, objective, resources, expectations —
+plus a check before you use the answer move AI from a glorified search
+bar to something closer to a working draftsman.
 
 ## Three things you can do this week
 
-1. **Use the five-part frame.** Every prompt for real work should include:
-   the role AI is playing, the format you want back, the source material,
-   the explicit "check your work" instruction, and what you will edit
-   after. Try it on one task and see the difference.
+1. **Use CORE.** Every prompt for real work should include the context
+   (who AI is helping, and for whom), the objective (the exact task), the
+   resources (the source material it may use), and your expectations (the
+   format you want back and the limits). Then ask it to check its work,
+   and decide what you will edit after. Try it on one task and see the
+   difference.
 2. **Save what works.** Each time a prompt gets you a useful answer, save
    it. After two weeks you'll have five to ten prompts that consistently
    work for your role — the start of your personal prompt library.

@@ -14,9 +14,11 @@
 // playbooks. Edit the hand-authored source HTML here, then re-run this script.
 //
 // Usage:  node scripts/generate-source-html-pdfs.mjs [--only slug1,slug2]
+//         PW_LOCAL_FONTS=1 to use the repo's self-hosted fonts (no network).
 
 import { chromium } from '@playwright/test';
 import { readdir, mkdir, writeFile, stat } from 'node:fs/promises';
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -38,13 +40,10 @@ async function main() {
   const slugs = onlyArg ? all.filter((s) => onlyArg.includes(s)) : all;
   console.log(`▸ rendering ${slugs.length} HTML source(s) → PDF\n`);
 
-  // PW_EXECUTABLE_PATH lets a caller render against a specific pre-installed
-  // Chromium (e.g. a sandbox where the bundled browser version differs from the
-  // @playwright/test pin). Unset in CI → Playwright uses its managed browser.
-  const browser = await chromium.launch(
-    process.env.PW_EXECUTABLE_PATH ? { executablePath: process.env.PW_EXECUTABLE_PATH } : {},
-  );
+  // See scripts/lib/brand-fonts.mjs for PW_EXECUTABLE_PATH and PW_LOCAL_FONTS.
+  const browser = await chromium.launch(launchOptions());
   const ctx = await browser.newContext();
+  await serveLocalBrandFonts(ctx, ROOT);
   const page = await ctx.newPage();
 
   for (const slug of slugs) {

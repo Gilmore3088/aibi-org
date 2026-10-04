@@ -8,6 +8,7 @@
 // (src/lib/certificates/pdf.ts) renders /verify/[certificateId]/print via
 // Puppeteer/Chromium. There is no @react-pdf path in the certificate chain.
 
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getEnrollment } from '../_lib/getEnrollment';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
@@ -249,6 +250,16 @@ export default async function CertificatePage() {
           </h1>
           <p style={{ color: 'var(--slate-600)', fontSize: '1rem', lineHeight: 1.6, margin: 0 }}>
             The certificate service is not configured. Please contact support.
+          </p>
+          {/* Never strand a completer: the persona wave rage-quit here when
+              this screen had no way forward. */}
+          <p style={{ margin: '20px 0 0', display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/courses/foundation/program/toolkit" style={{ color: 'var(--ink)', fontWeight: 600 }}>
+              Open your Foundation Packet
+            </Link>
+            <Link href="/support/purchase-help" style={{ color: 'var(--ink)', fontWeight: 600 }}>
+              Contact support
+            </Link>
           </p>
         </div>
       </main>

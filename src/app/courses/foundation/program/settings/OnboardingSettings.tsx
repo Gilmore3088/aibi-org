@@ -518,6 +518,14 @@ export function OnboardingSettings({ enrollmentId, currentAnswers }: OnboardingS
               {isSubmitting ? 'Saving…' : 'Save changes'}
             </button>
           </div>
+          {!canSave && !isSubmitting && (
+            <p
+              role="status"
+              style={{ fontFamily: INTER_STACK, fontSize: '0.8125rem', color: 'var(--slate-600)', margin: '10px 0 0', textAlign: 'right' }}
+            >
+              Answer all three questions to save.
+            </p>
+          )}
         </form>
       </section>
 

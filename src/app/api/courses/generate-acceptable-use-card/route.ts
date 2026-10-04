@@ -18,6 +18,7 @@ import { createServerClient as createSupabaseServerClient } from '@supabase/ssr'
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
 import { buildAcceptableUseCardPdfBuffer } from '@/lib/pdf/acceptable-use-card';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 const ACTIVITY_5_2 = '5.2';
 const PDF_FILENAME = 'AiBI-Acceptable-Use-Card.pdf';
@@ -128,9 +129,9 @@ function pdfResponse(buffer: Buffer): Response {
 // ---------------------------------------------------------------------------
 // GET — re-download from saved activity_response
 // ---------------------------------------------------------------------------
-export async function GET(request: Request): Promise<Response> {
+async function handleGET(request: Request): Promise<Response> {
   if (!isSupabaseConfigured()) {
-    return new Response(JSON.stringify({ error: 'Service not configured.' }), {
+    return new Response(JSON.stringify({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -213,7 +214,7 @@ interface PostBody {
 
 export async function POST(request: Request): Promise<Response> {
   if (!isSupabaseConfigured()) {
-    return new Response(JSON.stringify({ error: 'Service not configured.' }), {
+    return new Response(JSON.stringify({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -291,3 +292,5 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 }
+
+export const GET = withReadableDownloadErrors(handleGET);

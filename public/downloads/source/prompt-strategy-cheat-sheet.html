@@ -104,29 +104,28 @@
 </section>
 
 <section class="page">
-  <div class="section-kicker">Section 1 - Five-line prompt pattern</div>
-  <h2>Use RCFC + R before asking AI to help</h2>
-  <div class="principle">Role. Context. Format. Constraints. Review. If one line is missing, the output is harder to trust.</div>
+  <div class="section-kicker">Section 1 - The CORE prompt</div>
+  <h2>Use CORE before asking AI to help</h2>
+  <div class="principle">Context, Objective, Resources, Expectations. The structure the AiBI-Foundation course teaches. If one part is missing, the output is harder to trust.</div>
 
   <table>
     <thead>
-      <tr><th>Line</th><th>Prompt move</th><th>Banking use</th></tr>
+      <tr><th>Part</th><th>Prompt move</th><th>Banking use</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Role</strong></td><td>Tell the AI what perspective to use.</td><td>"You are a branch operations trainer..."</td></tr>
-      <tr><td><strong>Context</strong></td><td>Give the task, audience, and business setting.</td><td>"This is for frontline staff before a Monday huddle."</td></tr>
-      <tr><td><strong>Format</strong></td><td>Name the output shape.</td><td>"Return a 5-bullet checklist under 120 words."</td></tr>
-      <tr><td><strong>Constraints</strong></td><td>Set limits and red lines.</td><td>"Do not invent rates, policy requirements, or deadlines."</td></tr>
-      <tr><td><strong>Review</strong></td><td>State who checks it before use.</td><td>"A manager will verify before sending."</td></tr>
+      <tr><td><strong>Context</strong></td><td>Say what perspective to use, who it is for, and the business setting.</td><td>"You are a branch operations trainer. This is for frontline staff before a Monday huddle."</td></tr>
+      <tr><td><strong>Objective</strong></td><td>Name the exact task, not just the topic.</td><td>"Turn the new cash-handling procedure into a checklist."</td></tr>
+      <tr><td><strong>Resources</strong></td><td>Point to the approved source and forbid guessing. Placeholders only.</td><td>"Use only the procedure text below."</td></tr>
+      <tr><td><strong>Expectations</strong></td><td>Set the output shape, the limits and red lines, and who checks it before use.</td><td>"Return a 5-bullet checklist under 120 words. Do not invent rates, policy requirements, or deadlines. A manager will verify before sending."</td></tr>
     </tbody>
   </table>
 
   <h3>Copy-ready starter prompt</h3>
-  <div class="prompt-box">You are a [BANKING ROLE] helping with [TASK].
-Context: [AUDIENCE], [SITUATION], [GOAL].
-Format: [OUTPUT TYPE], [LENGTH], [ORDER].
-Constraints: Use placeholders only. Do not invent facts, rates, fees, dates, legal conclusions, or policy requirements.
-Review: Mark anything uncertain as [VERIFY]. A qualified human will review before use.</div>
+  <div class="prompt-box">Context: You are a [BANKING ROLE] working for [AUDIENCE] in [SITUATION].
+Objective: [TASK], so that [GOAL].
+Resources: Use only [APPROVED SOURCE]. Use placeholders only.
+Expectations: [OUTPUT TYPE], [LENGTH], [ORDER]. Do not invent facts, rates, fees, dates, legal conclusions, or policy requirements.
+Mark anything uncertain as [VERIFY]. A qualified human will review before use.</div>
 
   <div class="mini-grid">
     <div class="mini-card"><h4>Strip specifics</h4><p>Replace names, accounts, amounts, dates, addresses, and case facts with placeholders.</p></div>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTemplate } from '@/app/resources/templates/data';
 import { escapeHtml } from '@/lib/html/escape';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const runtime = 'nodejs';
 
@@ -62,7 +63,7 @@ function renderSourceBox(sources: readonly string[]): string {
   </section>`;
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(_request: Request, context: RouteContext): Promise<Response> {
   const { slug } = await context.params;
   const template = getTemplate(slug);
 
@@ -231,3 +232,6 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     },
   });
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

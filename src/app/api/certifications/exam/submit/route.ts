@@ -49,7 +49,7 @@ function isIntInRange(value: unknown, min: number, max: number): value is number
 
 export async function POST(request: Request): Promise<NextResponse> {
   if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Service not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'This is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com.' }, { status: 503 });
   }
 
   let body: RequestBody;

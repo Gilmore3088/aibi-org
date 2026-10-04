@@ -101,11 +101,11 @@ export const CITATIONS: readonly Citation[] = [
   {
     slug: "motley-fool-switch-for-digital",
     value: "76%",
-    claim: "would switch financial institutions for a better digital experience",
-    publication: "consumer banking study",
-    publisher: "The Motley Fool (via Apiture)",
+    claim: "are likely to switch banks if they find one that better meets their needs",
+    publication: "What Customers Want From Banks (survey of 2,000 consumers, Jan. 2024)",
+    publisher: "The Motley Fool",
     year: 2024,
-    short: "Motley Fool (via Apiture)",
+    short: "Motley Fool Money survey, 2024",
   },
   {
     slug: "fdic-community-banks-count",

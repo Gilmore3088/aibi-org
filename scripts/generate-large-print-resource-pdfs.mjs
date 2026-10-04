@@ -12,6 +12,7 @@ import { chromium } from '@playwright/test';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 
 const ROOT = process.cwd();
 const SOURCE_DIR = resolve(ROOT, 'public/downloads/source');
@@ -256,8 +257,10 @@ async function main() {
 
   console.log(`Rendering ${slugs.length} large-print resource PDF(s)`);
 
-  const browser = await chromium.launch();
+  // See scripts/lib/brand-fonts.mjs for PW_EXECUTABLE_PATH and PW_LOCAL_FONTS.
+  const browser = await chromium.launch(launchOptions());
   const ctx = await browser.newContext();
+  await serveLocalBrandFonts(ctx, ROOT);
   const page = await ctx.newPage();
 
   for (const slug of slugs) {

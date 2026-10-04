@@ -17,7 +17,7 @@ export const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
   understanding:
     'Platform mastery and safe use guardrails. Covers what you already have access to, how to activate it, platform feature deep dives, and data classification rules every practitioner must follow.',
   creation:
-    'Building skills that make AI output institutional-grade. Covers the anatomy of a repeatable skill, the five-component Skill Builder, and writing your first skill with real banking language.',
+    'Building skills that make AI output institutional-grade. Covers the anatomy of a repeatable skill built on the CORE prompt, and writing your first skill with real banking language.',
   application:
     'Real-world automation and the assessed work product. Covers reusable workflow packaging, evidence notes, final packet review, and the submission that earns your certification.',
 } as const;
