@@ -30,6 +30,11 @@ const OUT = process.env.WAVE_OUT ?? path.join(HERE, 'out', STAMP);
 const SHOTS = path.join(OUT, 'shots');
 const PERSONA_TIMEOUT_MS = Number(process.env.WAVE_PERSONA_TIMEOUT_MS ?? 30 * 60_000);
 const SLOW_MS = Number(process.env.WAVE_SLOW_MS ?? 5_000);
+// Vercel deployment protection: set WAVE_VERCEL_BYPASS to the project's
+// "Protection Bypass for Automation" secret to run against a protected preview.
+const BYPASS_HEADERS = process.env.WAVE_VERCEL_BYPASS
+  ? { 'x-vercel-protection-bypass': process.env.WAVE_VERCEL_BYPASS, 'x-vercel-set-bypass-cookie': 'samesitenone' }
+  : {};
 const MAX_SHOTS_PER_PERSONA = 6;
 
 // Value moments and how much each one is worth to the buyer. Weights drive
@@ -131,7 +136,7 @@ class Session {
 
   async open() {
     const device = this.p.device === 'mobile' ? devices['Pixel 7'] : devices['Desktop Chrome'];
-    this.context = await this.browser.newContext({ ...device, acceptDownloads: true, baseURL: BASE });
+    this.context = await this.browser.newContext({ ...device, acceptDownloads: true, baseURL: BASE, extraHTTPHeaders: BYPASS_HEADERS });
     this.page = await this.context.newPage();
     this.page.setDefaultTimeout(8_000);
 
@@ -1407,7 +1412,7 @@ async function main() {
   }
   if (process.env.WAVE_LIMIT) personas = personas.slice(0, Number(process.env.WAVE_LIMIT));
 
-  const health = await fetch(BASE).catch(() => null);
+  const health = await fetch(BASE, { headers: BYPASS_HEADERS }).catch(() => null);
   if (!health) {
     console.error(`[wave] ${BASE} is not reachable. Start the app first (see README).`);
     process.exit(2);
@@ -1419,7 +1424,7 @@ async function main() {
       '/for-institutions', '/courses', '/courses/foundation/program', '/courses/foundation/program/purchase',
       '/courses/foundation/program/certificate', '/verify', '/verify/AIBIP-2026-0000', '/about', '/security', '/faq', '/playbooks', '/prompt-cards',
       ...Array.from({ length: 18 }, (_, i) => `/courses/foundation/program/${i + 1}`)];
-    for (const w of warm) await fetch(BASE + w).catch(() => null);
+    for (const w of warm) await fetch(BASE + w, { headers: BYPASS_HEADERS }).catch(() => null);
     console.log(`[wave] prewarmed ${warm.length} routes`);
   }
 
