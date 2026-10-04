@@ -210,7 +210,10 @@ class Session {
     this.shots += 1;
     const file = `${this.p.id}-${String(this.shots).padStart(2, '0')}-${tag.replace(/[^a-z0-9]+/gi, '-').slice(0, 40)}.png`;
     try {
-      await this.page.screenshot({ path: path.join(SHOTS, file), fullPage: false });
+      // caret: 'initial' stops Playwright injecting style="caret-color: transparent"
+      // into inputs, which React reports as a hydration mismatch when a
+      // screenshot lands before hydration.
+      await this.page.screenshot({ path: path.join(SHOTS, file), fullPage: false, caret: 'initial' });
       return `shots/${file}`;
     } catch {
       return null;
