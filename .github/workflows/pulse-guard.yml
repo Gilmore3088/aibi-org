@@ -25,7 +25,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
         run: echo "No pulse-auto label — guard not applicable."
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         if: ${{ contains(github.event.pull_request.labels.*.name, 'pulse-auto') }}
         with:
           fetch-depth: 0
