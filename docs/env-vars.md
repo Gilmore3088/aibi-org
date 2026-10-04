@@ -39,6 +39,7 @@ npm run audit:secrets
 |-----|-------|
 | `MAILERLITE_GROUP_ID_ASSESSMENT` | tier-routing group |
 | `MAILERLITE_GROUP_ID_PLAYBOOK` | playbook lead-capture group |
+| `MAILERLITE_GROUP_ID_BRIEFINGS` | "Briefing Subscribers" group (weekly digest opt-in on /briefings). MailerLite id 200416378466862748. Set in Vercel. |
 | `RESEND_FROM` | verified sender, e.g. `hello@aibankinginstitute.com` |
 | `RESEND_FROM_NAME` | display name |
 

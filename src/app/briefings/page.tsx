@@ -12,6 +12,7 @@ import { SiteHeader } from '@/components/mockup';
 import { AxSection, CopyPrompt } from '@/components/ax';
 import { listAllBriefings } from '@content/briefings/_lib/registry';
 import { BriefingsArchive } from './BriefingsArchive';
+import { BriefingSubscribe } from './BriefingSubscribe';
 import { formatDate } from './covers';
 
 export const metadata: Metadata = {
@@ -62,6 +63,9 @@ export default async function BriefingsPage() {
               </Link>
             </p>
           </div>
+        </div>
+        <div className="mk-container">
+          <BriefingSubscribe />
         </div>
       </header>
 
