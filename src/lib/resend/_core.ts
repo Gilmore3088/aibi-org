@@ -43,7 +43,7 @@ export async function sendInline(input: SendInlineInput): Promise<ResendResult> 
   const fromAddress = process.env.RESEND_FROM ?? DEFAULT_FROM;
   const fromName = process.env.RESEND_FROM_NAME ?? DEFAULT_FROM_NAME;
 
-  console.log(`${input.tag} sending to=${redactEmail(input.to)} subject="${input.subject}" key-prefix=${apiKey.slice(0, 8)}…`);
+  console.log(`${input.tag} sending to=${redactEmail(input.to)} subject="${input.subject}"`);
 
   try {
     const response = await fetch(RESEND_API_URL, {
