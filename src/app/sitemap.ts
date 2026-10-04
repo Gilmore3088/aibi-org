@@ -37,17 +37,14 @@ const ROUTES = [
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   },
-  // Foundation course purchase page — public (no auth gate), the Stripe checkout
-  // surface. /courses/foundation/program itself is auth-gated (307 → /auth/login)
-  // and is intentionally excluded so search engines don't index login redirects.
+  // The Foundation purchase page (/courses/foundation/program/purchase) is a
+  // checkout surface and is intentionally NOT listed: sitemaps should list pages
+  // meant to be found through search, and /courses is the marketing page for it.
+  // /courses/foundation/program is auth-gated (307 → /auth/login) and excluded
+  // for the same reason. Both stay crawlable; nothing is noindexed.
   {
     path: '/courses/foundation/gallery',
     priority: 0.72,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    path: '/courses/foundation/program/purchase',
-    priority: 0.85,
     changeFrequency: 'monthly' as const,
   },
   { path: '/security', priority: 0.85, changeFrequency: 'monthly' as const },
