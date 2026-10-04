@@ -25,7 +25,6 @@ import {
 } from '@content/courses/foundation-program';
 import { MODULE_3_PROMPTING_ACTIVITIES } from '@content/courses/foundation-program/module-3-activities';
 import { ContentTable } from '@/components/lms/ContentTable';
-import { LearnSection } from '../_components/LearnSection';
 import { BuildGuide } from '@/components/courses/BuildGuide';
 import { MICRO_MODULES_BY_NUMBER } from '@content/courses/foundation-program/micro-modules';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
@@ -479,16 +478,7 @@ export default async function ModulePage(props: ModulePageParams) {
                 {testOutCheck && (
                   <TestOutCard check={testOutCheck} enrollmentId={enrollment.id} />
                 )}
-                {build ? (
-                  <BuildGuide build={build} />
-                ) : (
-                  <LearnSection
-                    sections={expandedModule?.sections ?? []}
-                    keyTakeaways={expandedModule?.takeaways}
-                    moduleNumber={moduleNum}
-                    learnerRole={learnerRole}
-                  />
-                )}
+                {build && <BuildGuide build={build} />}
                 {moduleTables && moduleTables.length > 0 && (
                   <div style={{ marginTop: 24 }}>
                     {moduleTables.map((table) => (
