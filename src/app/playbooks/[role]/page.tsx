@@ -35,8 +35,6 @@ function toSlug(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
-const RISK_LABEL = { high: 'High review', med: 'Review', low: 'Low risk' } as const;
-
 export default async function PlaybookPage({ params }: { params: Promise<{ role: string }> }) {
   const { role } = await params;
   const data = PLAYBOOKS[role as RoleSlug];
@@ -53,11 +51,10 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
     return [{ name: asset.name, type: asset.type, href: `/playbooks/${role}/${built.slug}` }];
   });
 
+  const first = templates[0];
+
   return (
     <div className="mockup-scope ax-page">
-      {/* Nav CTA matches the rest of the site (top-of-funnel readiness),
-          so the playbook doesn't ship three identical enroll CTAs (hero +
-          footer + nav). Issue #327 (part C). */}
       <SiteHeader activePath="/playbooks" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
 
       <AxHero
@@ -66,57 +63,40 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
         lede={data.lede}
         actions={
           <>
-            {/* #327D — the purchase page reads ?role= and surfaces
-                role-tailored framing, so the role-specific label is honest. */}
-            <Button variant="gold" size="lg" href={`/courses/foundation/program/purchase?role=${role}`}>
-              Start your {roleTitle} path <ArrowGlyph />
-            </Button>
+            {first ? (
+              <Button variant="gold" size="lg" href={first.href}>
+                Open the first template <ArrowGlyph />
+              </Button>
+            ) : null}
             <PlaybookDownloadButton role={role} roleTitle={roleTitle} />
           </>
         }
         aside={
-          <AxWindow title={`${role}/workflow.md`} meta={`${data.ops.length} steps`}>
-            <p className="ax-k ax-gold">{data.opHeading}</p>
-            <ol className="pb-steps">
-              {data.ops.map((step) => (
-                <li key={step.step}>
-                  <span className="pb-step-n">{step.step}</span>
-                  <span className="pb-step-body">
-                    <strong>{step.title}</strong>
-                    <span className="pb-step-out">→ {step.artifact}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </AxWindow>
+          templates.length > 0 ? (
+            <AxWindow title={`${role}/templates`} meta={`${templates.length} free`}>
+              <ul className="pb-open">
+                {templates.map((t) => (
+                  <li key={t.href}>
+                    <Link href={t.href}>
+                      <span className="pb-open-type">{t.type}</span>
+                      <span className="pb-open-name">{t.name}</span>
+                      <span className="pb-open-go">Open template <span aria-hidden="true">→</span></span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </AxWindow>
+          ) : undefined
         }
       />
 
       <main>
-        <AxSection light id="use-cases" kicker="Use cases" title={data.usesHeading}>
-          <ol className="pb-uses">
-            {data.uses.map((useCase, idx) => (
-              <li key={useCase.title}>
-                <span className="pb-use-n">{String(idx + 1).padStart(2, '0')}</span>
-                <span className="pb-use-main">
-                  <h3>{useCase.title}</h3>
-                  <p>{useCase.desc}</p>
-                </span>
-                <span className="pb-use-out">
-                  <span className="pb-use-artifact">{useCase.artifact}</span>
-                  <span className={`pb-risk is-${useCase.risk}`}>{RISK_LABEL[useCase.risk]}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-        </AxSection>
-
-        <AxSection id="checklist">
+        <AxSection light id="checklist">
           <div className="pb-check">
             <div className="ax-section-head">
-              <p className="ax-k">Review checklist</p>
-              <h2 className="ax-display">Review checklist.</h2>
-              <p>A named reviewer checks each line. If one fails, the draft goes back.</p>
+              <p className="ax-k">Before it goes out</p>
+              <h2 className="ax-display">Check every draft.</h2>
+              <p>One fail and it goes back.</p>
             </div>
             <div className="ax-paper pb-check-paper">
               <p className="ax-k">{role}/review-checklist.md</p>
@@ -128,42 +108,19 @@ export default async function PlaybookPage({ params }: { params: Promise<{ role:
             </div>
           </div>
         </AxSection>
-
-        {templates.length > 0 && (
-          <AxSection
-            light
-            id="templates"
-            kicker="Templates"
-            title="Open a file. Adapt it today."
-            lede="Ready-to-use templates from this playbook. Each one opens in full, free."
-          >
-            <ul className="pb-files">
-              {templates.map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="pb-file">
-                    <span className="pb-file-type">{t.type}</span>
-                    <span className="pb-file-name">{t.name}</span>
-                    <span className="pb-file-open">Open template <span aria-hidden="true">→</span></span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </AxSection>
-        )}
       </main>
 
       <section className="ax-section ax-close">
         <div className="mk-container">
-          <p className="ax-k">{data.eyebrow}</p>
-          <h2 className="ax-display">{data.cta.heading}</h2>
-          <p className="ax-muted">{data.cta.body}</p>
+          <h2 className="ax-display">Build your own next.</h2>
+          <p className="ax-muted">The Foundation course: eighteen short builds, each one a working tool.</p>
           <div className="ax-actions">
-            <Button variant="gold" size="lg" href="/courses/foundation/program/purchase">
+            {/* #327D — the purchase page reads ?role= and tailors its framing. */}
+            <Button variant="gold" size="lg" href={`/courses/foundation/program/purchase?role=${role}`}>
               Start the course <ArrowGlyph />
             </Button>
-            {/* /my-toolbox is auth-gated (#318); send readers to the public hub. */}
-            <Button variant="ghost-dark" size="lg" href="/resources">
-              Browse downloads
+            <Button variant="ghost-dark" size="lg" href="/courses/foundation/preview">
+              Try module 1 free
             </Button>
           </div>
         </div>

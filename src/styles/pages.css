@@ -299,3 +299,13 @@ h1:is([style*="font-weight:700"], [style*="font-weight:800"], [style*="font-weig
 .pr-scope main > div > :is(nav, header) :is(a, span, p).font-serif-sc { color: var(--gold-soft); }
 .pr-scope .font-serif-sc { font-family: var(--font-mono); letter-spacing: 0.1em; }
 .pr-scope main > div > section .font-serif-sc { color: var(--gold-deep); }
+
+/* Playbook hero: the templates are the action. */
+.pb-open { list-style: none; margin: 0; padding: 0; }
+.pb-open a { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(7, 26, 47, 0.08); color: var(--ink); text-decoration: none; }
+.pb-open li:first-child a { border-top: 0; }
+.pb-open-type { grid-column: 1; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: #6B5A2E; }
+.pb-open-name { grid-column: 1; font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.2; }
+.pb-open-go { grid-column: 2; grid-row: 1 / span 2; font-size: 0.875rem; font-weight: 600; color: var(--gold-deep); white-space: nowrap; }
+.pb-open a:hover .pb-open-name, .pb-open a:focus-visible .pb-open-name { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 520px) { .pb-open a { grid-template-columns: 1fr; } .pb-open-go { grid-column: 1; grid-row: auto; } }
