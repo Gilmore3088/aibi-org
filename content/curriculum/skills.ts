@@ -77,7 +77,7 @@ export const SKILLS: readonly CurriculumSkill[] = [
   {
     slug: "match-tool-to-task",
     verb: "Match the right tool to the task",
-    note: "ChatGPT, Claude, Copilot, Gemini, NotebookLM, Perplexity each have a fit. Knowing which is which is a skill.",
+    note: "ChatGPT, Claude, Copilot, Gemini, Gemini Notebook (formerly NotebookLM), Perplexity each have a fit. Knowing which is which is a skill.",
     modules: [11],
   },
   {

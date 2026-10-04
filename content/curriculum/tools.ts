@@ -21,7 +21,7 @@ export type ToolCategory =
   | "general-llm"      // ChatGPT, Claude — general-purpose chat models
   | "office-suite"     // Copilot, Gemini — embedded in Microsoft / Google productivity
   | "research"         // Perplexity — search-grounded LLM
-  | "documents";       // NotebookLM — document-grounded LLM
+  | "documents";       // Gemini Notebook (formerly NotebookLM) — document-grounded LLM
 
 export interface CurriculumTool {
   readonly slug: string;
@@ -68,7 +68,7 @@ export const TOOLS: readonly CurriculumTool[] = [
   },
   {
     slug: "notebooklm",
-    name: "NotebookLM",
+    name: "Gemini Notebook",
     vendor: "Google",
     category: "documents",
     note: "Document-grounded notebook for source-bounded Q&A across uploaded policies, bulletins, and memos.",

@@ -40,7 +40,7 @@ export const OUTPUT_PLATFORM_META: Record<
   claude:     { label: 'Claude',        colorVar: 'var(--ink)' },
   copilot:    { label: 'M365 Copilot',  colorVar: 'var(--ink)' },
   gemini:     { label: 'Gemini',        colorVar: 'var(--slate-600)' },
-  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--gold)' },
+  notebooklm: { label: 'Gemini Notebook',   colorVar: 'var(--gold)' },
   perplexity: { label: 'Perplexity',    colorVar: 'var(--gold)' },
 } as const;
 

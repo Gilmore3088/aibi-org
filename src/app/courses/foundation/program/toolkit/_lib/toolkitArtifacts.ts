@@ -17,7 +17,7 @@ export const PLATFORM_LABELS: Record<string, string> = {
   'gemini-access': 'Gemini (Google)',
   'copilot-access': 'Microsoft 365 Copilot',
   'perplexity-access': 'Perplexity',
-  'notebooklm-access': 'NotebookLM (Google)',
+  'notebooklm-access': 'Gemini Notebook (Google)',
   'copilot-free-access': 'Microsoft Copilot (Free)',
 };
 

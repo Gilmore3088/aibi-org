@@ -166,7 +166,7 @@ const compliancePath: RolePath = {
     },
     {
       platform: 'notebooklm',
-      rationale: 'NotebookLM turns your policy library into a searchable knowledge base that answers questions grounded only in your actual documents.',
+      rationale: 'Gemini Notebook (formerly NotebookLM) turns your policy library into a searchable knowledge base that answers questions grounded only in your actual documents.',
     },
     {
       platform: 'claude',
@@ -209,7 +209,7 @@ const compliancePath: RolePath = {
   startHereModule: 5,
   quickWins: [
     'Use Perplexity to research the latest CFPB guidance on a topic on your watch list — note every citation links directly to source',
-    'Upload your policy library to NotebookLM and ask "Do we have a gap in our AI acceptable use policy?"',
+    'Upload your policy library to Gemini Notebook and ask "Do we have a gap in our AI acceptable use policy?"',
     'Draft a SAR narrative introduction using Claude with the FinCEN five-element prompt — review against a recent filing',
   ],
 };
@@ -340,7 +340,7 @@ const itPath: RolePath = {
     },
     {
       platform: 'notebooklm',
-      rationale: 'NotebookLM builds a searchable policy knowledge base from your IT security policies, acceptable use policies, and BCP documents.',
+      rationale: 'Gemini Notebook builds a searchable policy knowledge base from your IT security policies, acceptable use policies, and BCP documents.',
     },
     {
       platform: 'chatgpt',
@@ -383,7 +383,7 @@ const itPath: RolePath = {
   startHereModule: 5,
   quickWins: [
     'Use the IT vendor assessment prompt in Claude to generate a TPRM questionnaire for a vendor you are currently evaluating',
-    'Upload your top 5 IT policies to NotebookLM and ask "Do any of these policies address employee use of AI tools?"',
+    'Upload your top 5 IT policies to Gemini Notebook and ask "Do any of these policies address employee use of AI tools?"',
     'Draft an AI risk briefing for your CEO using Claude — translate your security assessment findings into non-technical board language',
   ],
 };
@@ -460,7 +460,7 @@ const executivePath: RolePath = {
     },
     {
       platform: 'notebooklm',
-      rationale: 'NotebookLM builds a board prep knowledge base from your strategic plan, past board materials, and regulatory filings for rapid briefing preparation.',
+      rationale: 'Gemini Notebook builds a board prep knowledge base from your strategic plan, past board materials, and regulatory filings for rapid briefing preparation.',
     },
   ],
   deepDiveModules: [
@@ -487,7 +487,7 @@ const executivePath: RolePath = {
   automationTargets: [
     'Board AI adoption update — adoption metrics, risk assessment, peer context, and next steps in one page',
     'Market intelligence brief — peer bank AI activity, regulatory developments, and competitive landscape with citations',
-    'Strategic briefing preparation from internal documents using NotebookLM as your board prep assistant',
+    'Strategic briefing preparation from internal documents using Gemini Notebook as your board prep assistant',
   ],
   skillStarters: [
     'Board AI Adoption Update',
@@ -500,7 +500,7 @@ const executivePath: RolePath = {
   quickWins: [
     'Use the board AI update prompt in Claude to draft your next quarterly AI report in under 20 minutes',
     'Run a Perplexity search on community bank AI adoption trends in your peer group — note how every data point links to a source',
-    'Upload your strategic plan to NotebookLM and ask "What are the top three areas where AI could accelerate our 2026 objectives?"',
+    'Upload your strategic plan to Gemini Notebook and ask "What are the top three areas where AI could accelerate our 2026 objectives?"',
   ],
 };
 

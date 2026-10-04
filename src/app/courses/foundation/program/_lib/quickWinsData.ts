@@ -8,7 +8,7 @@ export const QUICK_WIN_TOOLS = [
   { value: 'claude', label: 'Claude' },
   { value: 'copilot', label: 'Copilot' },
   { value: 'gemini', label: 'Gemini' },
-  { value: 'notebooklm', label: 'NotebookLM' },
+  { value: 'notebooklm', label: 'Gemini Notebook' },
   { value: 'perplexity', label: 'Perplexity' },
 ] as const;
 

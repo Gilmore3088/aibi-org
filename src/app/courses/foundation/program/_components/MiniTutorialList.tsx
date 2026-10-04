@@ -23,7 +23,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   claude: 'Claude',
   copilot: 'Microsoft Copilot',
   gemini: 'Gemini',
-  notebooklm: 'NotebookLM',
+  notebooklm: 'Gemini Notebook',
   perplexity: 'Perplexity',
 };
 

@@ -110,7 +110,7 @@ export const PLATFORM_META: Record<
   claude:     { label: 'Claude',        colorVar: 'var(--ink)' },
   copilot:    { label: 'M365 Copilot',  colorVar: 'var(--ink)' },
   gemini:     { label: 'Gemini',        colorVar: 'var(--slate-600)' },
-  notebooklm: { label: 'NotebookLM',   colorVar: 'var(--gold)' },
+  notebooklm: { label: 'Gemini Notebook',   colorVar: 'var(--gold)' },
   perplexity: { label: 'Perplexity',    colorVar: 'var(--gold)' },
 } as const;
 
@@ -425,9 +425,9 @@ Expectations — limits:
     relatedModule: 4,
     timeEstimate: '20 minutes',
     expectedOutput: 'A searchable knowledge base where you can ask natural-language questions across your entire policy library — and get answers grounded only in your actual documents.',
-    promptText: `Steps to build your NotebookLM policy knowledge base:
+    promptText: `Steps to build your Gemini Notebook (formerly NotebookLM) policy knowledge base:
 
-1. Create a new notebook in NotebookLM titled "Institution Policy Library"
+1. Create a new notebook in Gemini Notebook titled "Institution Policy Library"
 
 2. Upload your institution's policy documents (PDF or Google Docs). Start with these five categories:
    - Information Security Policy
