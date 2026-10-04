@@ -26,7 +26,7 @@ import { PrimaryButton, GhostButton } from '@/components/lms';
 import { SavedPromptPreview } from './_local/SavedPromptPreview';
 
 export const metadata: Metadata = {
-  title: 'Welcome to AiBI-Foundation | The AI Banking Institute',
+  title: 'Welcome to AiBI-Foundation',
   description:
     'Your AiBI-Foundation enrollment is confirmed. Sign in to begin Module 1.',
   robots: { index: false, follow: false },

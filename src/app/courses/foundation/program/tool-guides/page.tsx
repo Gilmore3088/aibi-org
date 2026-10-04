@@ -31,7 +31,7 @@ import {
 } from './_local/ToolGuideFilter';
 
 export const metadata: Metadata = {
-  title: 'Platform Deep Dive Guides | AiBI-Foundation | The AI Banking Institute',
+  title: 'Platform Deep Dive Guides | AiBI-Foundation',
   description:
     'In-depth guides for the six AI platforms most relevant to community banking: ChatGPT, Claude, Microsoft Copilot, Google Gemini, NotebookLM, and Perplexity. Getting started, banking use cases, data safety, and pro tips.',
 };

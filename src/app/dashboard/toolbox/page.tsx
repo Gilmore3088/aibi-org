@@ -6,7 +6,7 @@ import { ContextStrip } from './_components/ContextStrip';
 import { Paywall } from './_components/Paywall';
 
 export const metadata: Metadata = {
-  title: 'AI Banking Toolbox | The AI Banking Institute',
+  title: 'AI Banking Toolbox',
   description:
     'Build, test, save, and export banking AI prompts. Included with every paid enrollment.',
 };

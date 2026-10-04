@@ -44,7 +44,7 @@ import { WhereYoureGoing } from './_home/WhereYoureGoing';
 import { FullCurriculumAccordion } from './_home/FullCurriculumAccordion';
 
 export const metadata: Metadata = {
-  title: 'AiBI-Foundation | The AI Banking Institute',
+  title: 'AiBI-Foundation',
   description:
     'AiBI-Foundation teaches every staff member at a community bank or credit union how to use AI tools safely, professionally, and with regulatory confidence.',
 };

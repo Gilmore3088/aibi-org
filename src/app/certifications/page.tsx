@@ -4,7 +4,7 @@ import { AxWindow } from '@/components/ax';
 import { getFoundationTrainingRecord } from '@content/courses/foundation-program/course-config';
 
 export const metadata: Metadata = {
-  title: 'Certifications — The AI Banking Institute',
+  title: 'Certifications',
   description: 'AiBI-Foundation — the credential for bankers building safely with AI. Earned by completing the Foundation course and final packet.',
   alternates: { canonical: '/certifications' },
 };

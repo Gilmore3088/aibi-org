@@ -8,7 +8,9 @@ const ARTICLE_DESCRIPTION =
   'The AIEOG AI Lexicon defines hallucination as an AI output that is factually incorrect, fabricated, or misleading, presented with apparent confidence. Here are the six patterns that surface specifically in banking — and what to do about each one.';
 
 export const metadata: Metadata = {
-  title: ARTICLE_TITLE,
+  alternates: { canonical: '/resources/six-ways-ai-fails-in-banking' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'Six Ways AI Fails in Banking: Hallucination Patterns' },
   description: ARTICLE_DESCRIPTION,
 };
 

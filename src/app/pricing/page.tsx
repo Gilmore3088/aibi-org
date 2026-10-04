@@ -8,7 +8,7 @@ import { FOUNDATION_MICRO_MODULES, foundationDurationLabel } from '@content/cour
 
 export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
-  title: 'Pricing | The AI Banking Institute',
+  title: 'Pricing: AI Readiness Assessment and Training',
   description:
     'Choose between the free AI Readiness Snapshot, In-Depth Assessment, AiBI Foundation, and institution rollout paths.',
 };

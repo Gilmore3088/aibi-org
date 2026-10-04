@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!mod) return {};
   const { meta } = mod;
   return {
-    title: `${meta.title} — The AI Banking Institute`,
+    title: meta.title,
     description: meta.dek,
     alternates: { canonical: `/briefings/${meta.slug}` },
     openGraph: {

@@ -4,7 +4,8 @@ import { AxHero, AxSection, AxWindow } from '@/components/ax';
 import { PLAYBOOK_FOCUS, PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 
 export const metadata: Metadata = {
-  title: 'Role Playbooks — The AI Banking Institute',
+  alternates: { canonical: '/playbooks' },
+  title: 'Role Playbooks',
   description:
     'Nine role playbooks for community banks and credit unions, each with fill-in-the-blank AI skills that work in any AI tool and in Claude for Excel, PowerPoint, Word and Outlook.',
 };

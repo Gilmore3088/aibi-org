@@ -132,7 +132,7 @@ const instrumentSerif = localFont({
 // in display copy / email addresses and is NOT the canonical web origin.
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? `https://www.${BRAND.domains.primary}`;
 const DEFAULT_DESCRIPTION =
-  'The AI Banking Institute helps community banks and credit unions build AI proficiency through assessment, certification, and curriculum aligned with SR 26-2, TPRM, ECOA / Reg B, and the AIEOG AI Lexicon.';
+  'AI readiness assessment, training and playbooks for community banks and credit unions, built around SR 26-2, vendor risk and fair lending.';
 
 // Explicit viewport so every public route gets the mobile-first defaults.
 // Without this, Next.js 14 falls back to its own defaults — same values,
@@ -146,12 +146,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  // Every page becomes self-canonical by default (relative '/' resolves
-  // against metadataBase + the current request path). Pages that need a
-  // different canonical override this in their own metadata export.
-  alternates: {
-    canonical: '/',
-  },
+  // No default canonical. A relative canonical set here resolves against
+  // metadataBase only (not the request path), so a default of '/' made every
+  // page without its own canonical point at the homepage. Each indexable
+  // page sets `alternates.canonical` itself; src/app/seo-canonical.test.ts
+  // fails the build if an indexable page is missing one.
   title: {
     default: `${BRAND.name} — ${BRAND.tagline}`,
     template: `%s — ${BRAND.name}`,
@@ -167,18 +166,18 @@ export const metadata: Metadata = {
     'community bank AI training',
   ],
   authors: [{ name: BRAND.name }],
+  // Deliberately no og:title / og:description / og:url here. Next.js does not
+  // merge a page's openGraph into this object, so values set here were
+  // inherited verbatim by every page (all shares showed the homepage title
+  // and URL). Without them, crawlers fall back to each page's <title> and
+  // meta description. Pages that want a custom share card set their own.
   openGraph: {
     type: 'website',
-    url: SITE_URL,
     siteName: BRAND.name,
-    title: `${BRAND.name} — ${BRAND.tagline}`,
-    description: DEFAULT_DESCRIPTION,
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${BRAND.name} — ${BRAND.tagline}`,
-    description: DEFAULT_DESCRIPTION,
   },
   robots: {
     index: true,

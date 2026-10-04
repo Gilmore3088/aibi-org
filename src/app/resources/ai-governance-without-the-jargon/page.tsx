@@ -8,7 +8,9 @@ const ARTICLE_DESCRIPTION =
   'Five regulatory frameworks govern AI use at community banks and credit unions today. Here is what each one actually means for your daily work — no law degree required.';
 
 export const metadata: Metadata = {
-  title: ARTICLE_TITLE,
+  alternates: { canonical: '/resources/ai-governance-without-the-jargon' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'AI Governance Without the Jargon, for Community Bankers' },
   description: ARTICLE_DESCRIPTION,
 };
 

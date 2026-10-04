@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export const metadata: Metadata = {
-  title: 'In-Depth AI Readiness Diagnostic | The AI Banking Institute',
+  title: 'In-Depth AI Readiness Diagnostic',
   description:
     'Your personalized In-Depth Diagnostic — overall score, eight-dimension scorecard, strongest and weakest dimensions, role-specific action plan, and a sequenced 30/60/90 day roadmap.',
   robots: { index: false, follow: false },

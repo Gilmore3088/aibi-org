@@ -27,7 +27,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { certificateId } = await params;
   return {
-    title: 'Certificate Verification — The AI Banking Institute',
+    title: 'Certificate Verification',
     description:
       'Confirm an AI Banking Institute certificate record. Verification is not regulator or third-party endorsement.',
     robots: { index: false, follow: false },

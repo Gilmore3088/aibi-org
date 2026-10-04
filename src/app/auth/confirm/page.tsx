@@ -21,7 +21,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Confirm — The AI Banking Institute',
+  title: 'Confirm',
   description: 'Confirm the email link to sign in.',
   robots: { index: false, follow: false },
 };

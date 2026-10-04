@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
-  title: "What Your Efficiency Ratio Is Hiding — AI's Role in Closing the Community Bank Gap",
+  alternates: { canonical: '/resources/what-your-efficiency-ratio-is-hiding' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'What Your Efficiency Ratio Is Hiding: AI and the Bank Gap' },
   description:
     'Community bank median efficiency ratio: ~65%. Industry-wide: ~55.7% (FDIC Q4 2024). The ten-point gap is not fate. Here is where AI can move the needle, and how to calculate what it is worth to your institution.',
 };

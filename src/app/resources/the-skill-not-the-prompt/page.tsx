@@ -8,7 +8,9 @@ const ARTICLE_DESCRIPTION =
   'Prompting is a one-time act. A skill is a persistent, repeatable, institution-grade instruction that executes reliably every time you need it. Here is why the distinction matters for community banks — and how to build your first one.';
 
 export const metadata: Metadata = {
-  title: ARTICLE_TITLE,
+  alternates: { canonical: '/resources/the-skill-not-the-prompt' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'The Skill, Not the Prompt: A Frame for Banking AI' },
   description: ARTICLE_DESCRIPTION,
 };
 

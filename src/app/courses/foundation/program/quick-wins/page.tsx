@@ -11,7 +11,7 @@ import { QuickWinsClient } from './QuickWinsClient';
 import { getEnrollment } from '../_lib/getEnrollment';
 
 export const metadata: Metadata = {
-  title: 'Quick Wins | AiBI-Foundation | The AI Banking Institute',
+  title: 'Quick Wins | AiBI-Foundation',
   description:
     'Log automations you built and time saved. Log three wins and the recommendation-letter template is yours.',
 };

@@ -13,7 +13,7 @@ import { isDeviceTrusted, TRUSTED_DEVICE_COOKIE } from '@/lib/auth/trusted-devic
 import { getInDepthEnrollment } from '../_lib/getInDepthEnrollment';
 
 export const metadata: Metadata = {
-  title: 'In-Depth Assessment Access | The AI Banking Institute',
+  title: 'In-Depth Assessment Access',
   description: 'Redirects paid In-Depth Assessment buyers to their assessment dashboard.',
   robots: { index: false, follow: false },
 };

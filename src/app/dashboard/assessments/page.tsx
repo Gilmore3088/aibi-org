@@ -16,7 +16,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { emailVariants } from '@/lib/email/canonicalize';
 
 export const metadata: Metadata = {
-  title: 'Your assessments | The AI Banking Institute',
+  title: 'Your assessments',
   description: 'History of your AI readiness assessments.',
   robots: { index: false, follow: false },
 };

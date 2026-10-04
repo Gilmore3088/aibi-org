@@ -5,6 +5,7 @@ import { AxHero } from '@/components/ax';
 import './purchase-help.css';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/support/purchase-help' },
   title: 'Purchase Help',
   robots: { index: false, follow: false },
 };
