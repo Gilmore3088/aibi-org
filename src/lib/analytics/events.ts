@@ -108,3 +108,16 @@ export function trackCertificateIssued(props: {
 }): void {
   track('certificate_issued', { ...props });
 }
+
+/**
+ * Fired when a reader clicks the assessment CTA at the foot of a /guides
+ * page. `slug` attributes assessment starts to the search-intent guide that
+ * produced them; `placement` separates the closing band from the inline
+ * callout.
+ */
+export function trackGuideCtaClick(props: {
+  readonly slug: string;
+  readonly placement: 'close' | 'inline';
+}): void {
+  track('guide_cta_click', { ...props });
+}

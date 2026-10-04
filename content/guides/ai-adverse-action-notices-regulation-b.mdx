@@ -1,0 +1,120 @@
+export const meta = {
+  slug: "ai-adverse-action-notices-regulation-b",
+  title: "AI in lending and adverse action notices under Regulation B",
+  seoTitle: "AI Credit Decisions and Adverse Action Notices (Reg B)",
+  description:
+    "If AI touches a credit decision, Regulation B still requires specific principal reasons for a denial. What that means for community lenders and their vendors.",
+  query: "ai adverse action notice regulation b",
+  dimension: "compliance-explainability",
+  audience: "Lending, compliance, and credit administration",
+  updated: "2026-10-03",
+  readMinutes: 6,
+  faqs: [
+    {
+      q: "Does Regulation B allow AI in credit decisions?",
+      a: "Regulation B does not prohibit any particular technology. It requires that applicants who receive adverse action be given, or be told how to obtain, a statement of specific reasons that indicates the principal reasons for the action. If an AI tool or model contributes to the decision, the lender must still be able to produce accurate, specific reasons.",
+    },
+    {
+      q: "Can we say the applicant did not meet our scoring threshold?",
+      a: "No. Regulation B, at 12 CFR 1002.9(b)(2), states that reasons based on internal standards or policies, or on failing to achieve a qualifying score on the creditor's scoring system, are insufficient. The notice must give the principal reasons themselves.",
+    },
+    {
+      q: "Is the vendor responsible for adverse action reasons if we use their model?",
+      a: "The obligation to give accurate notices sits with the creditor. If you rely on a vendor's model or AI tool, your due diligence and contract should confirm it can produce the principal reasons for each decision in a form your notices can use.",
+    },
+    {
+      q: "Can AI help draft adverse action letters?",
+      a: "AI can help with plain-language drafting of templates and explanations, reviewed by compliance. It should not invent or infer the reasons. The reasons must come from the actual factors behind the decision.",
+    },
+  ],
+  related: [
+    "human-review-of-ai-output-banking",
+    "ai-vendor-due-diligence-questions",
+    "sr-26-2-community-banks-generative-ai",
+  ],
+  sources: [
+    {
+      label: "CFPB — Regulation B, 12 CFR 1002.9 (Notifications)",
+      url: "https://www.consumerfinance.gov/rules-policy/regulations/1002/9/",
+    },
+    {
+      label: "GAO-25-107197 — Artificial Intelligence: Use and Oversight in Financial Services (May 2025)",
+      url: "https://www.gao.gov/products/gao-25-107197",
+    },
+  ],
+};
+
+ECOA and Regulation B were written long before machine learning reached
+loan origination systems, and they do not need updating to apply to it.
+The rule is technology-neutral: when you take adverse action, the
+applicant is entitled to the specific principal reasons. If your
+institution cannot say why the system said no, it has a compliance
+problem, whatever the system is.
+
+## What the regulation actually requires
+
+Regulation B, at 12 CFR 1002.9(b)(2), requires that the statement of
+reasons be specific and indicate the principal reason or reasons for the
+adverse action. It also closes the obvious shortcut: statements that the
+action was based on the creditor's internal standards or policies, or
+that the applicant failed to achieve a qualifying score on the creditor's
+scoring system, are insufficient.
+
+Read that against an AI-assisted decision. "Our model scored you below
+the cutoff" is precisely the kind of reason the regulation says is not
+enough. The notice has to name what drove the result.
+
+## Where AI creates the problem
+
+Many community lenders do not build credit models themselves. The exposure
+usually comes from three places:
+
+- **Vendor decisioning tools** that produce an approve, refer, or decline
+  without a clear list of contributing factors.
+- **Scoring add-ons** that combine many variables in ways the vendor
+  describes only at a high level.
+- **Informal AI use** — an underwriter asking a general AI tool to
+  summarize a file or suggest a decision, where the tool's influence on
+  the outcome is undocumented.
+
+The first two are diligence questions. The third is a policy question.
+
+## What to check now
+
+1. **Inventory every AI touchpoint in lending.** Application intake,
+   document capture, decisioning, pricing, and notice generation. Each goes into your [AI use case inventory](/guides/ai-use-case-inventory-bank);
+   anything that influences the decision, pricing, or the notice is high
+   risk.
+2. **Ask each vendor for a reason-code walkthrough.** Pick a real declined
+   application and have the vendor show how its tool produces the
+   principal reasons that end up on your notice. If it cannot, that is
+   your answer.
+3. **Test the notices.** Have compliance pull a sample of recent
+   AI-assisted declines and confirm the stated reasons match the factors
+   that actually drove each decision. The official commentary to
+   Regulation B says the reasons must relate to and accurately describe the
+   factors actually considered or scored.
+4. **Draw the line on informal use.** Your AI policy should say plainly
+   that general-purpose AI tools may not make or recommend credit
+   decisions, and that restricted applicant data never goes into an
+   unapproved tool.
+5. **Keep a person accountable.** Every adverse action should trace to a
+   human decision-maker or an approved, documented process — never to an
+   unreviewed AI output.
+
+## Where AI can help safely
+
+There is useful, low-risk work here. AI can help compliance rewrite
+notice templates in plainer language, build training scenarios with
+invented applicants, and summarize long regulatory text for review. The
+[lending playbook](/playbooks/lending) has examples. In every case the
+output is a draft a person checks, and the reasons themselves come from
+the decision record, never from the AI.
+
+## Fair lending is the larger frame
+
+Adverse action is the most visible obligation, not the only one. Any
+model or AI tool that touches credit should be part of your fair lending
+monitoring, with outcomes reviewed across protected classes. Ask vendors
+what fair lending testing they perform and what results they can share,
+and record their answers in your diligence file.
