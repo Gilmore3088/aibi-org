@@ -95,11 +95,11 @@ Open each automation, open each email step, add/replace a **Custom HTML** block,
 | **InfoSec** (191402951610205261) | Day 1 | Your InfoSec AI kit — draw the data line first | `infosec-1.html` |
 | | Day 4 | Approved tools are not enough | `infosec-2.html` |
 | | Day 8 | A kit is not a readiness plan | `infosec-3.html` |
-| | Day 14 | Approved tools are not enough | `infosec-4.html` |
+| | Day 14 | Stop maintaining the allowlist | `infosec-4.html` |
 | **Lending / BSA** (191402956528027530) | Day 1 | Your high-stakes AI review kit — start where the file has to hold up | `lend-1.html` |
 | | Day 4 | The file has to prove the decision stayed human | `lend-2.html` |
 | | Day 8 | A checklist is not a readiness plan | `lend-3.html` |
-| | Day 14 | The file has to prove the decision stayed human | `lend-4.html` |
+| | Day 14 | When the file has to explain itself | `lend-4.html` |
 
 ---
 
