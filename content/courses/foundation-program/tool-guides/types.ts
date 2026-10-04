@@ -75,6 +75,15 @@ export interface ToolGuide {
   readonly colorVar: string;
   readonly tagline: string;
   readonly url: string;
+  /** The vendor's own pricing page. Prices and limits change often, so the
+   *  guide shows only what was checked on `verifiedOn` and links here. */
+  readonly pricingUrl: string;
+  /** ISO date the plans, menus, and data terms were last checked against
+   *  the vendor's own pages. */
+  readonly verifiedOn: string;
+  /** ISO date by which the guide must be re-checked. A test fails once it
+   *  passes, so a stale guide cannot ship. */
+  readonly reviewBy: string;
 
   readonly gettingStarted: {
     readonly steps: readonly string[];

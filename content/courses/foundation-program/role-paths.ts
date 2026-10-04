@@ -422,7 +422,7 @@ const retailPath: RolePath = {
       moduleNumber: 13,
       moduleId: 'm13-simple-reusable-skill',
       title: 'Build a Procedure Simplifier Skill',
-      focusSection: 'Building repeatable skills for your most frequent customer scenarios — the 20% of interactions that take 80% of your drafting time',
+      focusSection: 'Building repeatable skills for your most frequent customer scenarios — the few interactions that take most of your drafting time',
     },
   ],
   keyPromptIds: ['m3-first-copilot', 'ref-retail-product-qa', 'm3-first-chatgpt'],

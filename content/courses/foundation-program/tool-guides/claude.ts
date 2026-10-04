@@ -10,8 +10,11 @@ export const claudeGuide: ToolGuide = {
   platform: 'claude',
   colorVar: 'var(--ink)',
   tagline:
-    'A 200K-token context window plus Projects — built for policy manuals, loan files, and persistent institutional memory.',
+    'Long-document reading plus Projects — built for policy manuals, loan files, and context that carries from chat to chat.',
   url: 'https://claude.ai',
+  pricingUrl: 'https://claude.com/pricing',
+  verifiedOn: '2026-10-04',
+  reviewBy: '2027-01-04',
 
   gettingStarted: {
     steps: [
@@ -22,60 +25,47 @@ export const claudeGuide: ToolGuide = {
       'Familiarize yourself with the Artifacts panel (right side) — it renders formatted documents separately from the conversation.',
     ],
     firstSessionNote:
-      "You land on the free tier (Claude Sonnet, usage-capped). The context window is 200K+ tokens in a single conversation — roughly 150,000 words, enough for an entire policy manual. claude.ai is mobile-responsive; there is no dedicated mobile app as of mid-2025.",
+      "You start on the Free plan, which has usage limits and up to 5 Projects. A single conversation can hold a long policy manual. Claude has iOS and Android apps as well as the web.",
   },
 
   pricing: [
     {
       tierName: 'Free',
-      cost: '$0/month',
+      cost: '$0',
       keyLimits: [
-        'Claude Sonnet (rate-limited)',
-        '~200K token context window',
-        'Artifacts',
-        '5 file uploads per conversation',
-        'No Projects',
-        'Free tier conversations may be used to improve the model',
+        'Usage limits',
+        'Up to 5 Projects',
+        'Personal account: check the training setting in Settings → Privacy',
       ],
       bankingVerdict:
-        'Sufficient for evaluation and individual non-sensitive tasks. The 200K context is the major draw even on free — you can analyze a 100-page policy manual in one session. Upgrade when you hit rate limits or need Projects.',
+        'Enough to learn on with public, non-sensitive text. Not for institution data.',
     },
     {
       tierName: 'Pro',
-      cost: '$20/month',
+      cost: '$20/month monthly · $17 billed annually',
       keyLimits: [
-        'Sonnet + Opus (5x more usage than free)',
-        '~200K token context window',
-        'Projects with Project Knowledge file store',
-        'Up to 20 file uploads per conversation',
-        'Conversations not used for training',
+        'Higher limits and unlimited Projects',
+        'Personal account: your institution has no admin control',
       ],
       bankingVerdict:
-        'The essential tier for compliance, lending, or operations staff doing large-document analysis weekly. Projects with persistent Knowledge files removes the re-upload tax.',
+        'The plan for one person doing weekly long-document work while learning. Still a personal account.',
     },
     {
-      tierName: 'Team',
-      cost: '$25/user/month (5-seat minimum)',
-      keyLimits: [
-        'Everything in Pro, plus admin console',
-        'Shared Projects across the team',
-        'Admin-managed retention',
-        'Conversations not used for training',
-      ],
-      bankingVerdict:
-        'For departments sharing Projects and needing admin oversight. The natural step up when 5+ users move past individual experimentation.',
+      tierName: 'Max',
+      cost: 'From $100/month',
+      keyLimits: ['Everything in Pro with much higher usage limits'],
+      bankingVerdict: 'Only for heavy individual users. Most bankers will not need it.',
     },
     {
-      tierName: 'Enterprise',
-      cost: 'Contact Anthropic sales',
+      tierName: 'Team and Enterprise',
+      cost: 'Per seat · see pricing page',
       keyLimits: [
-        'Dedicated infrastructure',
-        'BAA available',
-        '0-day retention options',
-        'SSO / SAML',
+        'Admin console, shared Projects, SSO',
+        'Commercial terms: conversations are not used for training by default',
+        'Enterprise adds audit logs and retention controls',
       ],
       bankingVerdict:
-        'Required for any Tier 2 (internal) data processing. Larger community banks and credit unions evaluating institutional AI adoption should start the enterprise conversation early — the BAA and retention controls are the gate to using real institution data.',
+        'The plans a bank should consider for real work, because IT controls them. Have your vendor-management process review them first.',
     },
   ],
 
@@ -84,10 +74,10 @@ export const claudeGuide: ToolGuide = {
       number: 1,
       title: 'Upload and analyze a 100-page policy document',
       description:
-        "Claude's 200K+ token context window makes it uniquely suited to ingest an entire policy manual, exam manual, or regulatory guidance document and answer specific questions about it — without chunking or losing cross-document context.",
+        "Claude can read an entire policy manual, exam manual, or regulatory guidance document in one conversation and answer specific questions across it.",
       steps: [
         'Log in to claude.ai and start a new conversation.',
-        'Click the paperclip icon to attach the PDF. Claude accepts PDFs up to approximately 32 MB.',
+        'Click the + button to attach the PDF. Very large files may need splitting; the upload will tell you.',
         'Wait for the upload to process (indicated by the file chip in the message box).',
         'Submit the prompt below. Because the entire document is in context, Claude can cross-reference sections.',
         'Ask follow-up questions in the same conversation — Claude retains the full document context throughout.',
@@ -110,7 +100,7 @@ export const claudeGuide: ToolGuide = {
         'Click "Project Instructions" and paste the context template from the Custom Instructions section below.',
         'Upload standing reference documents to the Project Knowledge section: your current policy manual, product glossary, or rate sheet.',
         'Every new conversation started inside this Project will automatically have access to these instructions and documents.',
-        'Add team members under Project Settings → Share (Team plan required for multi-user Projects).',
+        'To share a Project with colleagues you need a Team or Enterprise workspace.',
       ],
       prompt:
         'Paste the Project Instructions template (see Custom Instructions section) into the Project Instructions field, not into a chat. New conversations in the Project will inherit this context automatically.',
@@ -157,7 +147,7 @@ export const claudeGuide: ToolGuide = {
       verifyBefore:
         'Confirm PII redaction before upload. Verify the checklist version matches the type of loan being reviewed (construction vs. term vs. line of credit). Claude may miss items presented in non-standard formats (handwritten forms, scanned tables) — manual review of those sections is required.',
       dataWarning:
-        'Loan files are GLBA-protected. Redact every borrower identifier before upload. Pro and Team conversations are not used for training, but the data still passes through Anthropic infrastructure — only Enterprise with a signed BAA is appropriate for unredacted loan files.',
+        'Loan files are GLBA-protected. Redact every borrower identifier before upload. Even on a commercial plan the data passes through Anthropic infrastructure. Unredacted loan files belong only in a workspace your institution has approved for them.',
     },
     {
       number: 5,
@@ -183,25 +173,24 @@ export const claudeGuide: ToolGuide = {
   customInstructions: {
     available: true,
     howTo:
-      'Claude does not have a standalone "Custom Instructions" field like ChatGPT. The equivalent — and more powerful — mechanism is Projects with Project Instructions. Click "Projects" → "New Project" → give it a meaningful name. Click the wrench icon to set Project Instructions, then upload standing reference files to Project Knowledge (current policy manual, loan documentation checklist, product rate sheet, standard report templates). Every conversation inside the Project inherits these.',
+      'Two places. For rules that apply everywhere: Settings → Profile → personal preferences. For one job: Projects → New Project → set the Project instructions, then add standing reference files to the Project knowledge (policy manual, documentation checklist, report templates). Every conversation inside the Project inherits them.',
     bankingExample:
       'PROJECT INSTRUCTIONS TEMPLATE:\n\nInstitution: [INSTITUTION NAME] is a [FDIC-insured community bank / NCUA-insured credit union] with approximately $[ASSET SIZE] in assets, headquartered in [CITY, STATE]. Primary federal regulator: [OCC / FDIC / Federal Reserve / NCUA]. Primary markets: [commercial / agricultural / residential / consumer / municipal]. This Project is used by the [DEPARTMENT NAME] team.\n\nStanding instructions:\n- Use precise regulatory terminology for internal work. Use plain language (8th-grade reading level) for member-facing drafts.\n- Cite specific regulation sections (e.g., 12 CFR §226.4, Regulation B §1002.9) when applicable.\n- Flag every response that requires compliance or legal review before use.\n- Do not speculate on regulatory intent. If a regulatory interpretation is uncertain, say so.\n- When analyzing an uploaded document, cite page numbers or section headings for each finding.\n- Present data comparisons in tables. All figures in financial documents use tabular formatting.\n- Do not fabricate citations, statistics, or regulatory thresholds. If you do not know a threshold, state that and recommend the source.\n\nSecurity note: Project Instructions and Knowledge files are visible to all Project members. Do not store customer PII, examination findings, or confidential supervisory information in Project Knowledge.',
   },
 
   dataSafety: {
     summary:
-      "Anthropic does not train on Pro or Team conversations by default. Free tier conversations may be used to improve the model. Enterprise offers BAA + 0-day retention.",
+      "Data handling depends on the plan. On personal plans (Free, Pro, Max) you choose whether chats help train models in Settings → Privacy. Team and Enterprise are commercial plans: conversations are not used for training by default.",
     details: [
-      "Free tier: conversations may be reviewed by Anthropic staff and may be used to improve models. Verify current policy at anthropic.com/privacy.",
-      'Pro: conversations are not used to train models by default. Anthropic may review conversations for safety violations.',
-      'Team: conversations are not used to train models. Admin controls available.',
-      'Enterprise: dedicated infrastructure, BAA available, 0-day retention options.',
-      "Never paste into Claude (any tier below Enterprise with BAA): customer names/SSNs/account numbers, loan files with borrower identity intact, unredacted financial statements, board minutes with material non-public information, examination findings or MRAs, core banking credentials, anything marked 'Confidential Supervisory Information'.",
+      'Personal plans (Free, Pro, Max): check the model-training setting in Settings → Privacy, and recheck it after policy updates. Verify current terms at anthropic.com/legal.',
+      'Team and Enterprise: commercial terms; conversations are not used for training by default. Admin controls available.',
+      'Enterprise: adds SSO, audit logs, and retention controls. Your vendor-management review decides what data it may hold.',
+      "Never paste into Claude unless your institution has approved the plan for that data: customer names/SSNs/account numbers, loan files with borrower identity intact, unredacted financial statements, board minutes with material non-public information, examination findings or MRAs, core banking credentials, anything marked 'Confidential Supervisory Information'.",
       "Redaction checklist before every upload: replace customer names with placeholders, mask SSNs/EINs/account numbers/addresses, remove examiner names and MRA/MRE language, remove institution-specific identifiers if not required, replace confidential supervisory language with '[REDACTED]'.",
-      "Why Claude's large context window changes the risk calculus: the ability to upload a 100-page document is powerful and creates a proportionally larger surface area for inadvertent data exposure. The redaction checklist is mandatory for loan files and exam-related materials.",
+      "Why long-document reading changes the risk calculus: the ability to upload a 100-page document is powerful and creates a proportionally larger surface area for inadvertent data exposure. The redaction checklist is mandatory for loan files and exam-related materials.",
     ],
     bankingVerdict:
-      "Appropriate for Tier 1 (public) tasks on any tier. Tier 2 (internal) tasks require Enterprise with BAA. Claude's 200K context makes it the strongest tool for policy-manual and loan-file analysis — once redaction discipline is in place. AI tool use involving institution data should be governed by a written AI use policy.",
+      "Appropriate for Tier 1 (public) tasks on any plan. Tier 2 (internal) tasks need a Team or Enterprise workspace your institution has approved. Long-document reading makes it strong for policy-manual and loan-file analysis — once redaction discipline is in place. AI tool use involving institution data should be governed by a written AI use policy.",
   },
 
   proTips: [
@@ -215,7 +204,7 @@ export const claudeGuide: ToolGuide = {
     },
     {
       number: 3,
-      tip: "Claude's 200K context means you can paste multiple documents in a single conversation and ask cross-document questions. Example: upload your current and prior-year policy side by side and ask 'What changed between these two versions?'",
+      tip: "You can attach several documents in a single conversation to one conversation and ask cross-document questions. Example: upload your current and prior-year policy side by side and ask 'What changed between these two versions?'",
     },
     {
       number: 4,

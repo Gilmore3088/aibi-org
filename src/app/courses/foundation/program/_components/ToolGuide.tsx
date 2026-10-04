@@ -25,6 +25,15 @@ function SectionLabel({ children }: { readonly children: React.ReactNode }) {
   );
 }
 
+function formatChecked(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
 interface ToolGuideProps {
   readonly guide: ToolGuideData;
 }
@@ -119,6 +128,12 @@ export function ToolGuide({ guide }: ToolGuideProps) {
       {/* Free vs Paid */}
       <AccordionSection title="Free vs. Paid" accentVar={guide.colorVar}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--slate-500)', margin: 0 }}>
+            Plans checked {formatChecked(guide.verifiedOn)}. Prices change; confirm on the{' '}
+            <a href={guide.pricingUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>
+              vendor&apos;s pricing page ↗
+            </a>
+          </p>
           {guide.pricing.map((tier) => (
             <div key={tier.tierName} style={{ border: '1px solid var(--ink-a10)', borderRadius: 'var(--r-md)', padding: 16, background: '#FFFFFF' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
