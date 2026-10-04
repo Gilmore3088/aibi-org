@@ -12,6 +12,9 @@
 //   4. The same statistic rule applies to briefings and guides MDX
 //      (content/briefings, content/guides) -
 //      the auto-publish surface. Code fences and JSX tags are stripped first.
+//   5. Course content (content/courses/foundation-program): any percentage
+//      attributed to a source must be registered; unattributed ones are
+//      allowed only in files marked "claims-check: illustrative".
 //
 // Run: node scripts/check-claims.mjs   (CI: .github/workflows/claims.yml)
 
@@ -144,6 +147,42 @@ for (const dir of EMAIL_DIRS) {
         errors.push(`UNREGISTERED STAT: "${token}" in ${rel} - every statistic in a published briefing must have a registry entry with a source and reviewBy date.`);
       }
     }
+  }
+}
+
+// ---------- 3c. Statistics in course content ----------
+// The Foundation course sells currency, so its figures are held to the same
+// rule with one allowance: course prompts and sample outputs are full of
+// invented example numbers (a 5% variance threshold, a fictional bank's
+// 64.2% efficiency ratio). So:
+//   - a percentage on a line that names a source (FDIC, Gartner, a survey,
+//     ...) is a claim and must match a registry entry exactly;
+//   - any other percentage is allowed only in a file that declares
+//     "claims-check: illustrative" in a comment, saying why.
+{
+  const COURSE_DIR = 'content/courses/foundation-program';
+  const ATTRIBUTION = /\b(FDIC|CEIC|Quarterly Banking Profile|CoStar|CBRE|JLL|Cushman|Gartner|Jack Henry|Federal Reserve|OCC|CFPB|NCUA|FinCEN|Treasury|GAO|BLS|Census|ABA|ICBA|McKinsey|Deloitte|PwC|Accenture|Forrester|IDC|Cornerstone|survey|study|according to)\b/i;
+  const exact = (token) => registry.claims.find((c) => c.match.includes(token));
+  let courseFiles = [];
+  try {
+    courseFiles = [...walk(join(ROOT, COURSE_DIR))].filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'));
+  } catch { /* no course content */ }
+  for (const file of courseFiles) {
+    const rel = relative(ROOT, file);
+    const text = readFileSync(file, 'utf8');
+    const illustrative = /claims-check:\s*illustrative/.test(text);
+    text.split('\n').forEach((line, i) => {
+      for (const m of line.matchAll(STAT)) {
+        const token = m[0];
+        if (ATTRIBUTION.test(line)) {
+          if (!exact(token)) {
+            errors.push(`UNREGISTERED STAT: "${token}" at ${rel}:${i + 1} is attributed to a source but has no registry entry - register it from the primary source or remove the attribution.`);
+          }
+        } else if (!illustrative) {
+          errors.push(`UNREGISTERED STAT: "${token}" at ${rel}:${i + 1} - register it, rewrite without the figure, or mark the file "claims-check: illustrative" if it holds example numbers.`);
+        }
+      }
+    });
   }
 }
 

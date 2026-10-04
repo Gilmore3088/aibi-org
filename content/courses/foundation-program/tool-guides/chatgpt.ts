@@ -12,6 +12,9 @@ export const chatgptGuide: ToolGuide = {
   tagline:
     'The widely adopted default — strong on drafting, summarizing, and custom GPTs that carry your institution into every chat.',
   url: 'https://chatgpt.com',
+  pricingUrl: 'https://chatgpt.com/pricing',
+  verifiedOn: '2026-10-04',
+  reviewBy: '2027-01-04',
 
   gettingStarted: {
     steps: [
@@ -22,62 +25,50 @@ export const chatgptGuide: ToolGuide = {
       'Use a new chat for each distinct task — each chat is a clean context.',
     ],
     firstSessionNote:
-      'You land on the free tier (GPT-4o with daily rate limits) by default. The ChatGPT iOS and Android apps are fully functional and support file upload and voice input. Avoid saving sensitive conversations to your browser history.',
+      'You start on the Free plan, which has usage limits. The iOS and Android apps support file upload and voice. Before your first real task, turn off model training in Settings → Data Controls.',
   },
 
   pricing: [
     {
       tierName: 'Free',
-      cost: '$0/month',
+      cost: '$0',
       keyLimits: [
-        'GPT-4o with daily message limits',
-        'Unlimited GPT-4o mini',
-        '~8K token context window',
-        'File uploads limited',
-        'Conversations may be used for training unless opted out (Settings → Data Controls)',
+        'Usage limits on the newest models',
+        'Conversations may be used for training unless you opt out (Settings → Data Controls)',
       ],
       bankingVerdict:
-        'Sufficient for individual contributors exploring AI with non-sensitive tasks. Set Custom Instructions and opt out of training data on first sign-in. Not appropriate for any task involving institution data.',
+        'Enough to learn on with public, non-sensitive text. Opt out of training on day one. Not for institution data.',
     },
     {
-      tierName: 'Plus',
-      cost: '$20/month',
+      tierName: 'Go, Plus, Pro',
+      cost: 'Individual plans · see pricing page',
       keyLimits: [
-        'Full GPT-4o access',
-        '~128K token context window',
-        'Up to 10 file uploads per chat',
-        'Deep Research (limited monthly quota)',
-        'DALL-E image generation',
-        'Create and use custom GPTs',
-        'Conversations not used for training by default',
+        'Higher limits, file uploads, projects, custom GPTs, deep research',
+        'Personal accounts: your institution has no admin control',
       ],
       bankingVerdict:
-        'The right tier for compliance, lending, and operations staff who run 5+ AI-assisted tasks daily. Custom GPTs alone justify the cost for a power user.',
+        'Fine for learning at home. A personal paid plan is still a personal account, so it does not make institution data safe.',
     },
     {
-      tierName: 'Team',
-      cost: '$25/user/month',
+      tierName: 'Business',
+      cost: '$25/user/month monthly · $20 billed annually (standard seats)',
       keyLimits: [
-        'Everything in Plus, with admin console',
-        'Admin-managed conversation retention',
-        'Shared custom GPTs across the workspace',
-        'Conversations not used for training (admin-enforced)',
+        'Admin console and shared workspace (formerly called Team)',
+        'Business data is not used for training by default',
+        'Shared GPTs and projects across the team',
       ],
       bankingVerdict:
-        'For departments sharing custom GPTs and needing admin visibility (audit trail, retention controls). The natural starting point when a team moves past individual experimentation.',
+        'The first plan a bank should consider for real work, because IT controls it. Have your vendor-management process review it first.',
     },
     {
       tierName: 'Enterprise',
-      cost: 'Contact OpenAI sales',
+      cost: 'Annual contract · contact OpenAI',
       keyLimits: [
-        'SOC 2 compliant',
-        'BAA available',
-        '0-day retention option',
-        'SSO + audit logs',
-        'Dedicated workspace',
+        'SSO, audit logs, and retention controls',
+        'Contractual data-processing terms',
       ],
       bankingVerdict:
-        'The only tier appropriate for institutions that need to process Tier 2 (internal) data through ChatGPT. Smaller community banks should evaluate whether NotebookLM (free, document-grounded) covers the use cases first.',
+        'For institutions that want contract terms covering internal data. Weigh it against the AI already inside tools you license.',
     },
   ],
 
@@ -124,10 +115,10 @@ export const chatgptGuide: ToolGuide = {
       number: 3,
       title: 'Deep Research for CRE lending market analysis',
       description:
-        "Use ChatGPT's Deep Research feature (Plus/Team required) to compile a sourced market analysis on commercial real estate lending trends in your target geography.",
+        "Use ChatGPT's deep research mode (paid plans; limits vary by plan) to compile a sourced market analysis on commercial real estate lending trends in your target geography.",
       steps: [
-        'Confirm you have a ChatGPT Plus or Team subscription (Deep Research is not available on the free tier).',
-        'Open a new chat and click the "Deep Research" option before submitting.',
+        'Check that your plan includes deep research and how many runs it allows this month.',
+        'Open a new chat and choose deep research from the tools menu before submitting.',
         'Submit the prompt below, substituting your target geography and property type.',
         'Review the research report and its citations. Open each linked source to verify the data.',
         'Use the output as a starting brief for your lending team — not as a standalone underwriting document.',
@@ -158,20 +149,20 @@ export const chatgptGuide: ToolGuide = {
       verifyBefore:
         'Confirm PII redaction is complete before upload. Verify all ratio formulas against your credit policy. ChatGPT may misread table formatting — cross-check raw figures against the uploaded document.',
       dataWarning:
-        'PII redaction is non-negotiable. Customer identity in a borrower financial statement crosses into GLBA territory and is not appropriate for any ChatGPT tier below Enterprise with a signed BAA.',
+        'PII redaction is non-negotiable. Customer identity in a borrower financial statement is GLBA-protected and does not belong in any AI tool your institution has not approved for it.',
     },
     {
       number: 5,
       title: 'Create a custom GPT for your department',
       description:
-        "Build a department-specific custom GPT (Plus/Team required) that carries your institution's policies, terminology, and formatting standards into every interaction.",
+        "Build a department-specific custom GPT (paid plans) that carries your institution's policies, terminology, and formatting standards into every interaction.",
       steps: [
-        'Confirm you have a ChatGPT Plus or Team subscription.',
-        'Navigate to chatgpt.com → your profile icon → "My GPTs" → "Create a GPT".',
+        'Confirm your plan can create GPTs. On Business, check whether your admin allows sharing.',
+        'Open GPTs in the sidebar and choose Create.',
         'In the Configure tab, fill in the Name, Description, and Instructions fields using the guidance in the prompt below.',
         'Upload reference documents (your policy manual excerpt, product sheet, or compliance checklist) under "Knowledge".',
-        'Set Capabilities: enable Web Browsing only if staff need current rate data; disable DALL-E and Code Interpreter to reduce distraction.',
-        'Under "Additional Settings," enable "Only people with a link" sharing for internal use.',
+        'Set capabilities: turn on web search only if staff need current information; turn off image generation unless the team needs it.',
+        'Share it only inside your workspace, not by public link.',
         'Test with 10 representative staff questions before releasing.',
       ],
       prompt:
@@ -186,24 +177,23 @@ export const chatgptGuide: ToolGuide = {
   customInstructions: {
     available: true,
     howTo:
-      'Click your profile icon (bottom-left on desktop) → "Custom Instructions". You will see two text fields: one for context about you, one for how ChatGPT should respond. These persist across all new chats and save you from re-explaining your role every session. Custom Instructions are visible to OpenAI — do not include confidential institution data or customer information.',
+      'Settings → Personalization → Custom instructions. One field covers who you are, one covers how ChatGPT should respond. They apply to every new chat. They are stored by OpenAI, so keep confidential institution data and customer information out.',
     bankingExample:
       'WHAT TO KNOW ABOUT YOU:\nI am a [YOUR ROLE] at [INSTITUTION NAME], a community [bank / credit union] with approximately $[ASSET SIZE] in assets, headquartered in [STATE]. We serve [primary market: rural / suburban / commercial / agricultural]. My primary responsibilities include [2–3 key duties]. Our primary federal regulator is [OCC / FDIC / Federal Reserve / NCUA]. We are subject to [CRA / BSA-AML / Reg B / HMDA — list applicable]. I often work with: [call reports, loan files, board reports, member communications, policy documents].\n\nHOW TO RESPOND:\n- Lead with the most actionable information first.\n- Use plain language (8th-grade reading level) for member-facing drafts; use precise regulatory terminology for internal compliance work.\n- Present lists and comparisons in tables when possible.\n- Always flag when a response involves regulatory interpretation and recommend human compliance review.\n- Do not speculate about regulatory intent or provide legal advice.\n- When citing a regulation, include the specific section number (e.g., Reg DD §1030.4).\n- If you are uncertain about a fact, say so explicitly — do not fabricate sources.\n- Keep responses concise. If a detailed breakdown is needed, ask before expanding.',
   },
 
   dataSafety: {
     summary:
-      "OpenAI's data handling varies by tier. Free conversations may be used for training unless opted out. Plus and Team do not use conversations for training by default. Enterprise offers BAA + 0-day retention.",
+      "OpenAI's data handling depends on the plan. Personal plans (Free, Go, Plus, Pro) may use conversations for training unless you opt out. Business and Enterprise data is not used for training by default.",
     details: [
-      'Free tier: conversations may be reviewed by OpenAI staff for safety and quality. Training opt-out is in Settings → Data Controls → "Improve the model for everyone".',
-      'Plus: conversations are not used for training by default. Still subject to OpenAI\'s standard retention policy.',
-      'Team: admin can enforce retention settings. Conversations are not used for training.',
-      'Enterprise: SOC 2 compliant, 0-day retention option, BAA available. Required for any Tier 2 (internal) data processing.',
-      'Never paste into ChatGPT (any tier below Enterprise with BAA): customer names/SSNs/account numbers, loan application details with borrower identity, unredacted financial statements, non-public board minutes, examination findings or MRAs, core system credentials, or material non-public information.',
+      'Personal plans: training opt-out is in Settings → Data Controls. Conversations may still be reviewed for safety.',
+      'Business: admins manage the workspace; business data is not used for training by default.',
+      'Enterprise: adds SSO, audit logs, retention controls, and contract terms. Your vendor-management review decides what data it may hold.',
+      'Never paste into ChatGPT unless your institution has approved the plan for that data: customer names/SSNs/account numbers, loan application details with borrower identity, unredacted financial statements, non-public board minutes, examination findings or MRAs, core system credentials, or material non-public information.',
       'Safe-practice redaction checklist before uploading any document: replace customer names with placeholders, mask SSNs/EINs/account numbers/addresses, remove "Confidential Supervisory Information" text, remove examiner names and MRA/MRE language, replace institution name with a generic label if not required.',
     ],
     bankingVerdict:
-      "Appropriate for Tier 1 (public) tasks on any tier. Tier 2 (internal) tasks require Enterprise with BAA. Use of ChatGPT with non-public institution data should be covered by your AI use policy — if your institution does not have one, flag to compliance and use the AiBI-Foundation model policy template.",
+      "Appropriate for Tier 1 (public) tasks on any plan. Tier 2 (internal) tasks need a Business or Enterprise workspace your institution has approved. Use of ChatGPT with non-public institution data should be covered by your AI use policy — if your institution does not have one, flag to compliance and use the AiBI-Foundation model policy template.",
   },
 
   proTips: [
@@ -217,7 +207,7 @@ export const chatgptGuide: ToolGuide = {
     },
     {
       number: 3,
-      tip: 'When a response is 80% right, use "Revise the second section only — keep everything else" rather than regenerating. Targeted revisions are faster and preserve what worked.',
+      tip: 'When a response is mostly right, use "Revise the second section only — keep everything else" rather than regenerating. Targeted revisions are faster and preserve what worked.',
     },
     {
       number: 4,

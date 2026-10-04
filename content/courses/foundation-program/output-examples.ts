@@ -1,6 +1,10 @@
 // AiBI-Foundation Output Gallery — Exemplary AI outputs for each banking role
 // These show learners what EXCELLENCE looks like in their department.
 // Each example is realistic, banking-specific, and drawn from real skill workflows.
+//
+// claims-check: illustrative — institutions, people, and figures in these
+// sample outputs are invented to show format. Any figure attributed to a real
+// source (FDIC, Gartner, ...) must still be in content/claims/registry.json.
 
 import type { PromptRole, PromptPlatform } from './prompt-library';
 
@@ -209,15 +213,15 @@ vacancy trends, and cap rate movement relevant to loan underwriting in this segm
 | Avg. Asking Rent (NNN) — Inline | $18.40/sf | $14.20/sf |
 | New Construction Deliveries (12mo) | -38% YoY | -52% YoY |
 
-Sources: CoStar Q1 2026 Retail Report; CBRE Midwest Retail Outlook Q1 2026.
-[VERIFY: Confirm figures against most recent CoStar subscriber data before credit committee use.]
+Sources: [YOUR MARKET DATA SOURCE, with its date — e.g., your licensed market report].
+[ILLUSTRATIVE: every figure in this example is invented to show the format. Replace each one with your licensed data before credit committee use.]
 
 ---
 
 ## Trend Analysis
 
 **Vacancy:** National retail vacancy for neighborhood and community centers stabilized at
-6.9% in Q4 2025 (CoStar) following the post-pandemic correction. Midwest secondary markets
+6.9% in Q4 2025 [illustrative] following the post-pandemic correction. Midwest secondary markets
 lag the coastal recovery by 6–8 quarters, with inline vacancies 200–300 bps higher than
 comparable coastal metro submarkets. Grocery-anchored centers are the exception — anchor
 retention remains strong, and food/beverage tenants continue absorbing available inline space.
@@ -256,10 +260,8 @@ this category.
 
 ## Sources
 
-- CoStar Retail Market Report Q1 2026 (subscriber required)
-- CBRE U.S. Retail Outlook Q1 2026 (public)
-- JLL Retail Market Statistics Q4 2025 (public)
-- Cushman & Wakefield Midwest Retail MarketBeat Q1 2026 (public)
+- [Each market report you used, with publisher and date — e.g., your licensed
+  CoStar data and the public CBRE, JLL, or Cushman & Wakefield outlooks]
 
 [All market data requires verification against current institutional data sources before
 use in credit decisions. This brief is a research starting point, not a credit opinion.]`,
@@ -836,7 +838,7 @@ determine whether we close the year at or below target.
 4. **Personnel expense: within 1.5% of budget all of Q1** — Headcount plan is on track.
    Implication: No staffing variance risk to 2026 efficiency target as currently structured.
 
-5. **Community bank peer median ~65% (FDIC); industry-wide ~55.7% (Q4 2024 FDIC QPB)** —
+5. **Community bank peer median ~65% (FDIC); industry-wide ~56.0% (FDIC Quarterly Banking Profile, Q1 2026)** —
    The institution is at the community bank median and 8+ points above the industry-wide
    figure. Implication: Path to continued improvement runs through revenue growth, not
    expense reduction alone.
@@ -1294,7 +1296,7 @@ If AUP is approved and rollout begins, recommend a board-level update at the Jun
       },
       {
         heading: 'All statistics are sourced in-line using approved sources',
-        detail: 'The 57% skill gap figure is attributed to Gartner via Jack Henry 2025 — the exact source noted in CLAUDE.md. The M365 data boundary claim is a verifiable product specification, not an opinion.',
+        detail: 'The 57% skill gap figure is attributed to Gartner via Jack Henry 2025 — a source registered, with a review date, in the claims registry. The M365 data boundary claim is a verifiable product specification, not an opinion.',
       },
       {
         heading: 'RISK FLAG on inaction is the most important point in the memo',
@@ -1500,7 +1502,7 @@ SLIDE 4 — THE EFFICIENCY OPPORTUNITY
 Current Performance
 - Efficiency ratio: [FDIC EFFICIENCY RATIO]% (FDIC BankFind Suite, Q4 2025)
 - Community bank peer median: ~65% (FDIC CEIC data, 1992–2025)
-- Industry-wide benchmark: ~55.7% (FDIC Quarterly Banking Profile, Q4 2024)
+- Industry-wide benchmark: ~56.0% (FDIC Quarterly Banking Profile, Q1 2026)
 - Gap to peer median: [CALCULATE: current ratio minus 65%] basis points
 
 What the Gap Means
@@ -1619,7 +1621,7 @@ Total non-interest expense (NIE): $[NIE]M — FDIC BankFind Suite Q4 2025
 Total revenue (NII + non-interest income): $[REVENUE]M — FDIC BankFind Suite Q4 2025
 Current efficiency ratio: [NIE ÷ REVENUE × 100]% — FDIC BankFind Suite Q4 2025
 Community bank peer median: ~65% (FDIC CEIC data, 1992–2025)
-Industry-wide benchmark: ~55.7% (FDIC Quarterly Banking Profile, Q4 2024)
+Industry-wide benchmark: ~56.0% (FDIC Quarterly Banking Profile, Q1 2026)
 
 ---
 

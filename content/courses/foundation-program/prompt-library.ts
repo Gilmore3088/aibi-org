@@ -92,8 +92,14 @@ export interface MiniTutorial {
   readonly whatToWatchFor: string;
 }
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Platform metadata — colors use CSS variables for brand consistency
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 export const PLATFORM_META: Record<
@@ -145,8 +151,14 @@ export const SAFETY_LEVEL_LABELS: Record<PromptSafetyLevel, string> = {
   red: 'Red',
 } as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Module 3 — "First Try" prompts
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const m3Prompts: readonly Prompt[] = [
@@ -229,8 +241,14 @@ After the table, provide a two-sentence executive summary suitable for opening a
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Module 4 — "Feature Discovery" role-specific prompts
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const m4Prompts: readonly Prompt[] = [
@@ -431,8 +449,14 @@ Expectations — limits:
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Module 7 — "Starter Skill" complete tutorials
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const m7Prompts: readonly Prompt[] = [
@@ -668,8 +692,14 @@ Expectations — limits:
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Additional reference prompts (browsable library)
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const additionalPrompts: readonly Prompt[] = [
@@ -765,8 +795,14 @@ Expectations — limits:
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // S-level gated prompts — visible to AiBI-Foundation completers but unlocked at AiBI-S
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const sLevelPrompts: readonly Prompt[] = [
@@ -884,8 +920,14 @@ Expectations — limits:
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // L-level gated prompts — visible to AiBI-S completers but unlocked at AiBI-L
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 const lLevelPrompts: readonly Prompt[] = [
@@ -897,7 +939,7 @@ const lLevelPrompts: readonly Prompt[] = [
     difficulty: 'advanced',
     relatedModule: 9,
     timeEstimate: '35 minutes',
-    expectedOutput: 'A complete 10-slide board presentation outline with speaker notes, data placeholders keyed to FDIC BankFind Suite and Jack Henry research, risk disclosures, and a board resolution template for AI governance policy adoption.',
+    expectedOutput: 'A complete 10-slide board presentation outline with speaker notes, data placeholders keyed to FDIC BankFind Suite and the dated sources you supply, risk disclosures, and a board resolution template for AI governance policy adoption.',
     promptText: `You are an AI Strategy Advisor preparing a board-level presentation for a community bank CEO. The audience is a 7-person board of directors with mixed technical backgrounds: 2 former bankers, 2 business owners, 1 attorney, 1 CPA, and 1 technology executive.
 
 The bank's profile: $[ASSET SIZE]M in assets, $[FTE COUNT] FTE, efficiency ratio of [EFFICIENCY RATIO]% (source: FDIC BankFind Suite). The board has not received a formal AI strategy presentation before.
@@ -910,7 +952,7 @@ Objective: Produce a complete 10-slide board presentation outline. For each slid
 
 Slide structure:
 1. Why AI, Why Now — market context using sourced statistics
-2. What Our Peers Are Doing — community bank AI adoption data (cite Jack Henry 2025 report)
+2. What Our Peers Are Doing — community bank AI adoption data (cite the named, dated survey in [PEER SURVEY])
 3. What We Are Already Doing — current AI tool inventory (use [TOOL LIST] placeholder)
 4. The Efficiency Opportunity — ROI model using institution's own FTE count and efficiency ratio
 5. Regulatory Landscape — what examiners are looking for (SR 26-2, TPRM, AIEOG Lexicon)
@@ -923,7 +965,7 @@ Slide structure:
 After the outline, produce a draft board resolution (two paragraphs) authorizing the bank's AI governance framework and designating an AI oversight committee.
 
 Expectations — limits:
-- All statistics must cite named sources. Use Jack Henry 2025, FDIC Quarterly Banking Profile Q4 2024, and Gartner via Jack Henry where applicable. Do not fabricate benchmarks.
+- All statistics must cite named, dated sources. Use only the sources I list here: [SOURCES — e.g., the latest FDIC Quarterly Banking Profile, a named industry survey with its year]. Mark any slide that needs a figure I have not given you as [NEED SOURCE]. Do not fabricate benchmarks.
 - The efficiency ratio slide must use the institution's actual FDIC-reported figure, not an industry average. Insert [FDIC EFFICIENCY RATIO] as a placeholder if not provided.
 - Do not use "AI-powered," "cutting-edge," or "revolutionary." Directors have seen too many technology presentations that overpromised.
 - The risk slide must include regulatory risk of inaction (operating without a governance framework while staff use consumer AI) — not just risk of action
@@ -948,18 +990,18 @@ Institution data (pull from FDIC BankFind Suite at banks.data.fdic.gov):
 - Total FTE: [FTE COUNT]
 - Average cost per FTE (burdened): $[COST PER FTE]
 
-Community bank median efficiency ratio: ~65% (FDIC CEIC data, 1992-2025)
-Industry-wide efficiency ratio: ~55.7% (FDIC Quarterly Banking Profile Q4 2024)
+Peer median efficiency ratio: [PEER MEDIAN]% (your asset-size peer group from FDIC BankFind Suite or your UBPR peer report; note the quarter)
+Industry-wide efficiency ratio: [INDUSTRY RATIO]% (latest FDIC Quarterly Banking Profile at fdic.gov; note the quarter)
 
 Objective: Produce a three-scenario efficiency ratio model showing projected impact of AI adoption on the institution's efficiency ratio over 24 months.
 
 For each scenario (Conservative / Base / Optimistic), model:
-1. Productivity assumption: hours saved per FTE per week (Conservative: 1.5 hrs, Base: 3 hrs, Optimistic: 5 hrs) — source: Jack Henry 2025 Getting Started in AI
+1. Productivity assumption: hours saved per FTE per week (Conservative: 1.5 hrs, Base: 3 hrs, Optimistic: 5 hrs) — illustrative starting assumptions; replace them with hours measured in your own pilot
 2. Dollar value of productivity gain: FTE count × hours/week × burdened hourly rate × 50 working weeks
 3. Projected non-interest expense reduction (assume 60% of productivity gain flows to NIE reduction in Year 1, 80% in Year 2 as processes are restructured)
 4. Projected efficiency ratio at 12 months and 24 months
 5. Basis points of improvement vs. current ratio
-6. Gap to community bank median (65%) and industry benchmark (55.7%)
+6. Gap to the peer median and the industry-wide ratio given above
 
 Format output as:
 - A summary table (scenario × metric × Year 1 × Year 2)
@@ -968,7 +1010,7 @@ Format output as:
 - Sensitivity note: what has to be true for the Optimistic scenario to materialize
 
 Expectations — limits:
-- All productivity assumptions must cite a source. Use Jack Henry 2025 or Gartner via Jack Henry.
+- Label every productivity assumption as either measured (with where it was measured) or illustrative. Do not attribute an assumption to a survey I have not given you.
 - The model must show the gap to peer benchmarks — the goal is not just improvement but convergence toward the industry median
 - Do not present cost reduction as guaranteed. Frame as "projected under stated assumptions" throughout.
 - Include a VERIFY placeholder wherever institution-specific data is required: [VERIFY: pull from FDIC BankFind Suite]
@@ -977,8 +1019,14 @@ Expectations — limits:
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // All prompts combined
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 export const ALL_PROMPTS: readonly Prompt[] = [
@@ -994,8 +1042,14 @@ export function getPromptById(id: string): Prompt | null {
   return ALL_PROMPTS.find((p) => p.id === id) ?? null;
 }
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Module 3 — Mini Tutorials
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 export const M3_TUTORIALS: readonly MiniTutorial[] = [
@@ -1012,7 +1066,7 @@ export const M3_TUTORIALS: readonly MiniTutorial[] = [
       {
         stepNumber: 1,
         instruction: 'Open ChatGPT',
-        detail: 'Navigate to chat.openai.com and sign in. If you have a paid account (Plus or Team), you will have access to GPT-4. Free accounts use GPT-3.5 — the exercise works with either model, but outputs will differ in depth.',
+        detail: 'Go to chatgpt.com and sign in. Any plan works for this exercise; paid plans have higher limits, so your output may differ from a colleague\'s.',
         screenshotPlaceholder: 'ChatGPT home screen with new conversation',
       },
       {
@@ -1066,7 +1120,7 @@ export const M3_TUTORIALS: readonly MiniTutorial[] = [
       {
         stepNumber: 4,
         instruction: 'Edit and personalize',
-        detail: 'AI-generated email drafts are starting points, not final products. Add the customer\'s name, adjust the tone to match your institution\'s voice, and verify that all rate and product information is current. The value is in the 80% of the draft that is structurally sound — you add the 20% that makes it personal.',
+        detail: 'AI-generated email drafts are starting points, not final products. Add the customer\'s name, adjust the tone to match your institution\'s voice, and verify that all rate and product information is current. The value is in the structure the draft gives you — you add the details that make it personal.',
       },
     ],
     prompt: m3Prompts[1],
@@ -1112,8 +1166,14 @@ export const M3_TUTORIALS: readonly MiniTutorial[] = [
   },
 ] as const;
 
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 // Module 7 — Starter Skill Tutorials
+// claims-check: illustrative — percentages in these prompts are example
+// thresholds and assumptions the learner replaces, not statistics.
+
 // ---------------------------------------------------------------------------
 
 export const M7_TUTORIALS: readonly MiniTutorial[] = [
@@ -1294,7 +1354,7 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
       },
     ],
     prompt: m7Prompts[4],
-    whatWentWell: 'Producing copy for three channels simultaneously saves significant time. The built-in compliance constraints mean the first draft is usually 80-90% ready for compliance review — compared to the typical cycle of marketing draft, compliance rejection, rewrite, re-review. The "[COMPLIANCE CHECK]" flags create a productive workflow between marketing and compliance teams.',
+    whatWentWell: 'Producing copy for three channels simultaneously saves significant time. The built-in compliance constraints mean the first draft is usually much closer to ready for compliance review — compared to the typical cycle of marketing draft, compliance rejection, rewrite, re-review. The "[COMPLIANCE CHECK]" flags create a productive workflow between marketing and compliance teams.',
     whatToWatchFor: 'AI-generated marketing copy tends toward generic superlatives unless constrained. The prompt specifically prohibits "guaranteed," "free" without qualification, and competitor comparisons — but review every draft for subtler compliance issues. Also: the disclosures section is a starting point, not legal advice. Your compliance team must verify that all required regulatory disclosures are included for the specific product type.',
   },
 ] as const;
