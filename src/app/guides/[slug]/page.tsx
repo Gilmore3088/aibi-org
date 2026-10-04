@@ -105,6 +105,7 @@ export default async function GuidePage({ params }: Params) {
         activePath="/resources"
         ctaSource={`sticky-mobile-cta-guide-${meta.slug}`}
       >
+        <main className="mk-post-main">
         <article className="mk-container mk-post">
           <header className="mk-post-head">
             <p className="mk-k">
@@ -180,6 +181,7 @@ export default async function GuidePage({ params }: Params) {
             </GuideCta>
           </div>
         </section>
+        </main>
       </ArticleShell>
     </>
   );

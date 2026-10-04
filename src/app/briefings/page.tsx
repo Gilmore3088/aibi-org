@@ -47,6 +47,7 @@ export default async function BriefingsPage() {
   return (
     <div className="mockup-scope ax-page">
       <SiteHeader activePath="/briefings" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
+      <main>
 
       <header className="ax-masthead">
         <div className="mk-container">
@@ -131,6 +132,7 @@ export default async function BriefingsPage() {
           />
         </div>
       </AxSection>
+      </main>
     </div>
   );
 }

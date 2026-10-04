@@ -126,6 +126,7 @@ export default function ForInstitutionsPage() {
   return (
     <div className="mockup-scope ax-page">
       <SiteHeader activePath="/for-institutions" cta={{ label: 'Take assessment', href: PRIMARY_ENTRY_PATH }} />
+      <main>
 
       <AxHero
         cmd="rollout --institution community-bank --seats 10+"
@@ -269,6 +270,7 @@ export default function ForInstitutionsPage() {
         </div>
       </section>
 
+      </main>
       <StickyMobileCta label="Take the free assessment" href={PRIMARY_ENTRY_PATH} source="institutions-sticky" />
     </div>
   );

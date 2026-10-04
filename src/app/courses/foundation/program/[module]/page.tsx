@@ -469,7 +469,7 @@ export default async function ModulePage(props: ModulePageParams) {
           <ModuleTabs
             moduleNumber={moduleNum}
             learnContent={
-              <section id="st-takeaway" aria-labelledby="st-takeaway-h" style={{ scrollMarginTop: 160 }}>
+              <section key="learn" id="st-takeaway" aria-labelledby="st-takeaway-h" style={{ scrollMarginTop: 160 }}>
                 <h2
                   id="st-takeaway-h"
                   style={{ fontFamily: MOCKUP_FONT, fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold-deep)', margin: '0 0 16px' }}
@@ -501,6 +501,7 @@ export default async function ModulePage(props: ModulePageParams) {
             practiceContent={
               (
                 <section
+                  key="practice"
                   id="st-sandbox"
                   aria-labelledby="st-sandbox-h"
                   className="foundation-module-page__lab-section"
@@ -554,6 +555,7 @@ export default async function ModulePage(props: ModulePageParams) {
             }
             applyContent={
               <section
+                key="apply"
                 id="st-submit"
                 aria-labelledby="st-submit-h"
                 className="foundation-module-page__submit-section"
@@ -582,6 +584,7 @@ export default async function ModulePage(props: ModulePageParams) {
             }
             saveContent={
               <section
+                key="save"
                 id="st-saved"
                 aria-labelledby="st-saved-h"
                 className="foundation-module-page__submit-section"

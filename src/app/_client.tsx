@@ -27,6 +27,7 @@ export default function HomePage() {
   return (
     <div className="mockup-scope hm">
       <SiteHeader activePath="/" />
+      <main>
 
       <section className="hm-hero">
         <div className="mk-container hm-hero-inner">
@@ -96,6 +97,7 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
+      </main>
     </div>
   );
 }

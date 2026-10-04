@@ -130,4 +130,11 @@ describe('ResourcesExperience', () => {
         .getByRole('button', { name: /Get Word for The BSA\/AML SAR Narrative Scaffold/i }),
     ).toBeTruthy();
   });
+
+  // Server-rendered landmark: screen readers and the skip link land in <main>
+  // before any client JS runs (LayoutChrome only patches it in after hydration).
+  it('renders exactly one main landmark', () => {
+    const { container } = render(<ResourcesExperience />);
+    expect(container.querySelectorAll('main')).toHaveLength(1);
+  });
 });

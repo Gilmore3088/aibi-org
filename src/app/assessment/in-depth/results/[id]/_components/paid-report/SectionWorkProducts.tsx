@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { DIMENSION_LABELS, type Dimension } from '@content/assessments/v4/types';
 import { orderWorkProducts, type WorkProduct } from '@content/assessments/v4/work-products';
@@ -138,6 +139,7 @@ function AddAllToToolbox({
   products: readonly WorkProduct[];
   roleLabel: string;
 }): JSX.Element {
+  const router = useRouter();
   type S = 'idle' | 'saving' | 'done' | 'auth' | 'upgrade' | 'error';
   const [status, setStatus] = useState<S>('idle');
   const [n, setN] = useState(0);
@@ -193,7 +195,7 @@ function AddAllToToolbox({
             if (res.status === 401) {
               setStatus('auth');
               setTimeout(() => {
-                window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+                router.push('/auth/login?next=' + encodeURIComponent(window.location.pathname));
               }, 800);
               return;
             }

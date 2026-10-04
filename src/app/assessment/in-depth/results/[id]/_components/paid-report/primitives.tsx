@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { INK, GOLD_DEEP } from '@/lib/brand/colors';
 import { GOLD_SOFT, LINE, btnPrimary, btnOutline } from './constants';
@@ -77,6 +78,7 @@ export function SaveToToolboxButton({
   prompt: string;
   rule: string;
 }): JSX.Element {
+  const router = useRouter();
   type SaveStatus =
     | 'idle'
     | 'saving'
@@ -133,8 +135,7 @@ export function SaveToToolboxButton({
           if (res.status === 401) {
             setStatus('auth-required');
             setTimeout(() => {
-              window.location.href =
-                '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+              router.push('/auth/login?next=' + encodeURIComponent(window.location.pathname));
             }, 800);
             return;
           }

@@ -2,6 +2,9 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import PracticeSandboxPage from './_client';
 
+const push = vi.fn();
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+
 describe('PracticeSandboxPage', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -48,6 +51,22 @@ describe('PracticeSandboxPage', () => {
       prompt: expect.stringContaining('frontline job aid'),
     }));
     expect(await screen.findByText(/Draft job aid from the public model/i)).toBeTruthy();
+  });
+
+  it('sends Save to Toolbox to sign-in once the output is reviewed', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ text: 'Draft job aid from the public model. Review before use.' }),
+    }));
+    push.mockClear();
+
+    render(<PracticeSandboxPage />);
+    fireEvent.click(screen.getAllByRole('button', { name: /Run Scenario/i })[0]);
+    await screen.findByText(/Draft job aid from the public model/i);
+    for (const box of screen.getAllByRole('checkbox')) fireEvent.click(box);
+    fireEvent.click(screen.getByRole('button', { name: /Save to Toolbox/i }));
+
+    expect(push).toHaveBeenCalledWith('/auth/login?next=/dashboard/toolbox');
   });
 
   it('surfaces a server PII block as a safety warning, never as "demo busy" sample output', async () => {

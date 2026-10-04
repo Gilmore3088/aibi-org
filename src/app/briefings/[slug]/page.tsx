@@ -86,6 +86,7 @@ export default async function BriefingPage({ params }: Params) {
         activePath="/briefings"
         closing
       >
+        <main className="mk-post-main">
         <article className="mk-container mk-post">
           <header className="mk-post-head">
             <p className="mk-k">
@@ -116,6 +117,7 @@ export default async function BriefingPage({ params }: Params) {
             </footer>
           )}
         </article>
+        </main>
       </ArticleShell>
     </>
   );

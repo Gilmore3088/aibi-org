@@ -161,6 +161,11 @@ class Session {
       const text = m.text();
       if (/Failed to load resource|ERR_FAILED|net::/.test(text)) return; // duplicated by network capture
       this.recordError('console_error', text.slice(0, 240), this.page.url());
+      if (process.env.WAVE_DEBUG_HYDRATION && /hydrat/i.test(text)) {
+        Promise.all(m.args().map((a) => a.jsonValue().catch(() => ''))).then((args) =>
+          fs.appendFileSync(path.join(OUT, 'hydration-debug.txt'), `\n### ${this.p.id} ${this.page.url()}\n${args.map(String).join('\n')}\n`),
+        );
+      }
     });
     this.page.on('response', async (r) => {
       const url = r.url();
@@ -205,7 +210,10 @@ class Session {
     this.shots += 1;
     const file = `${this.p.id}-${String(this.shots).padStart(2, '0')}-${tag.replace(/[^a-z0-9]+/gi, '-').slice(0, 40)}.png`;
     try {
-      await this.page.screenshot({ path: path.join(SHOTS, file), fullPage: false });
+      // caret: 'initial' stops Playwright injecting style="caret-color: transparent"
+      // into inputs, which React reports as a hydration mismatch when a
+      // screenshot lands before hydration.
+      await this.page.screenshot({ path: path.join(SHOTS, file), fullPage: false, caret: 'initial' });
       return `shots/${file}`;
     } catch {
       return null;
