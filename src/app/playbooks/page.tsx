@@ -6,14 +6,14 @@ import { PLAYBOOK_FOCUS, PLAYBOOK_INDEX, PLAYBOOKS } from './data';
 export const metadata: Metadata = {
   title: 'Role Playbooks — The AI Banking Institute',
   description:
-    'Nine role playbooks for community banks and credit unions — compliance, retail, marketing, lending, BSA/AML, IT/InfoSec, executive, operations, and training/HR. Reviewed prompts and reusable templates.',
+    'Nine role playbooks for community banks and credit unions, each with fill-in-the-blank AI skills that work in any AI tool and in Claude for Excel, PowerPoint, Word and Outlook.',
 };
 
 const INSIDE = [
-  { title: 'Use cases', body: 'Where the role can use AI, the risk of each, and the document it leaves.' },
-  { title: 'Workflow', body: 'Four steps from idea to approved, reviewable work.' },
-  { title: 'Checklist', body: 'What a reviewer checks before AI output is used.' },
-  { title: 'Templates', body: 'Ready-to-use files you can open and adapt today.' },
+  { title: 'Learn', body: 'Where AI helps in the role, and what to check before anything goes out.' },
+  { title: 'Test', body: 'Sort real examples green, yellow or red. Check a prompt for customer data.' },
+  { title: 'Skills', body: 'Fill-in-the-blank skills for the role, plus everyday and Excel and PowerPoint skills.' },
+  { title: 'Add to Claude', body: 'Download any skill. It works in Claude chat, Excel, PowerPoint, Word and Outlook.' },
 ] as const;
 
 export default function PlaybooksIndexPage() {
@@ -24,7 +24,7 @@ export default function PlaybooksIndexPage() {
       <AxHero
         cmd={`playbooks --roles ${PLAYBOOK_INDEX.length}`}
         title="A playbook for every seat at the bank."
-        lede="Each one maps the work AI can help with, the review it needs, and the documents your team keeps."
+        lede="Each one is a set of AI skills for the job: fill in the blanks, copy the prompt, or add it to Claude."
         actions={
           <>
             <Button variant="gold" size="lg" href="#roles">
@@ -97,7 +97,7 @@ export default function PlaybooksIndexPage() {
           <h2 className="ax-display">
             Not sure where to start? <span className="ax-gold">Score your readiness.</span>
           </h2>
-          <p className="ax-muted">Twelve questions. Your results point to the playbook for your role.</p>
+          <p className="ax-muted">Finish it and the playbook for your role unlocks.</p>
           <div className="ax-actions">
             <Button variant="gold" size="lg" href="/assessment/take">
               Take the free assessment <ArrowGlyph />

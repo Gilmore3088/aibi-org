@@ -45,6 +45,7 @@ import {
   parseFreeAssetBand,
 } from '@content/assessments/v3/asset-bands';
 import { redactEmail } from '@/lib/email/redact';
+import { setPlaybookRoleCookie } from '@/lib/skills/access';
 
 // Per-IP hourly backstop against scripted abuse. Deliberately NOT the
 // launch-gate's literal "5/hr": the assessment is promoted at in-person
@@ -482,10 +483,11 @@ export async function POST(request: Request) {
     console.log('[capture-email] email-send guard rejected — not sending');
   }
 
-  return captureResponse({
+  // A finished free assessment unlocks the playbook for the chosen role.
+  return setPlaybookRoleCookie(captureResponse({
     ok: true,
     profileId,
     mailerliteTagAdded: mailerliteTagged,
     magicLinkUrl,
-  }, email);
+  }, email), role);
 }

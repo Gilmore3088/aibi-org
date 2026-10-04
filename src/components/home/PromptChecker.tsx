@@ -28,9 +28,9 @@ function Bracketed({ text }: { readonly text: string }) {
   );
 }
 
-export function PromptChecker() {
+export function PromptChecker({ example = EXAMPLE_PROMPT }: { readonly example?: string } = {}) {
   const inputId = useId();
-  const [text, setText] = useState(EXAMPLE_PROMPT);
+  const [text, setText] = useState(example);
   const [copied, setCopied] = useState(false);
   const findings = useMemo(() => detect(text), [text]);
   const safer = useMemo(() => sanitize(text, findings), [text, findings]);
@@ -65,7 +65,7 @@ export function PromptChecker() {
                 Your prompt
               </label>
               <span className="hm-check-actions">
-                <button type="button" onClick={() => setText(EXAMPLE_PROMPT)}>
+                <button type="button" onClick={() => setText(example)}>
                   example
                 </button>
                 <button type="button" onClick={() => setText('')}>

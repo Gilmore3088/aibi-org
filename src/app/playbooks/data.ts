@@ -155,7 +155,7 @@ export const PLAYBOOKS: Record<RoleSlug, PlaybookData> = {
   retail: {
     slug: 'retail',
     eyebrow: 'Branch / Retail Playbook',
-    title: 'Coach your frontline. Recover from hiccups. Move members.',
+    title: 'Coach the frontline. Fix the hiccups.',
     lede: 'Coaching scripts, service recovery flows, and one-page references your frontline can use.',
     snapTitle: 'Retail Enablement Map',
     snapQuick: [

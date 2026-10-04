@@ -12,7 +12,8 @@
 //   4. The same statistic rule applies to briefings and guides MDX
 //      (content/briefings, content/guides) -
 //      the auto-publish surface. Code fences and JSX tags are stripped first.
-//   5. Course content (content/courses/foundation-program): any percentage
+//   5. Course content (content/courses/foundation-program) and the skills
+//      library (content/skills): any percentage
 //      attributed to a source must be registered; unattributed ones are
 //      allowed only in files marked "claims-check: illustrative".
 //
@@ -160,21 +161,32 @@ for (const dir of EMAIL_DIRS) {
 //   - any other percentage is allowed only in a file that declares
 //     "claims-check: illustrative" in a comment, saying why.
 {
-  const COURSE_DIR = 'content/courses/foundation-program';
+  // content/skills: every example in a skill is invented by rule
+  // (content/skills/AUTHORING.md), so unattributed figures are illustrative
+  // there; a figure credited to a source still has to be registered.
+  const COURSE_DIRS = [
+    { dir: 'content/courses/foundation-program', illustrative: false },
+    { dir: 'content/skills', illustrative: true },
+  ];
   const ATTRIBUTION = /\b(FDIC|CEIC|Quarterly Banking Profile|CoStar|CBRE|JLL|Cushman|Gartner|Jack Henry|Federal Reserve|OCC|CFPB|NCUA|FinCEN|Treasury|GAO|BLS|Census|ABA|ICBA|McKinsey|Deloitte|PwC|Accenture|Forrester|IDC|Cornerstone|survey|study|according to)\b/i;
   const exact = (token) => registry.claims.find((c) => c.match.includes(token));
-  let courseFiles = [];
-  try {
-    courseFiles = [...walk(join(ROOT, COURSE_DIR))].filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'));
-  } catch { /* no course content */ }
-  for (const file of courseFiles) {
+  const courseFiles = COURSE_DIRS.flatMap(({ dir, illustrative }) => {
+    try {
+      return [...walk(join(ROOT, dir))]
+        .filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+        .map((file) => ({ file, illustrative }));
+    } catch { return []; }
+  });
+  for (const { file, illustrative: dirIllustrative } of courseFiles) {
     const rel = relative(ROOT, file);
     const text = readFileSync(file, 'utf8');
-    const illustrative = /claims-check:\s*illustrative/.test(text);
+    const illustrative = dirIllustrative || /claims-check:\s*illustrative/.test(text);
     text.split('\n').forEach((line, i) => {
       for (const m of line.matchAll(STAT)) {
         const token = m[0];
-        if (ATTRIBUTION.test(line)) {
+        // "Member FDIC" / "FDIC-insured" are required ad statements, not
+        // sources; a sample ad carrying them is not citing a statistic.
+        if (ATTRIBUTION.test(line.replace(/Member FDIC|FDIC[- ]insured|NCUA[- ]insured|Federally insured by NCUA/gi, ''))) {
           if (!exact(token)) {
             errors.push(`UNREGISTERED STAT: "${token}" at ${rel}:${i + 1} is attributed to a source but has no registry entry - register it from the primary source or remove the attribution.`);
           }
