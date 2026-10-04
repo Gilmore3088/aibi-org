@@ -11,6 +11,7 @@ import { BANKER_CARDS } from '@/lib/pdf/BankerCardDocument';
 import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -19,7 +20,7 @@ interface RouteContext {
   readonly params: Promise<{ readonly card: string }>;
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { card } = await context.params;
   const data = BANKER_CARDS[card];
   if (!data) {
@@ -66,3 +67,6 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

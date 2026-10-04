@@ -170,6 +170,27 @@
 .ax-article .mk-post-sources a { color: #2A3442; text-decoration-color: rgba(160, 122, 40, 0.6); }
 .ax-article .mk-post { padding-top: 0; padding-bottom: 88px; }
 
+/* MDX prose lists: Tailwind preflight strips markers; restore them. */
+.ax-article .mk-prose ul { list-style: disc; }
+.ax-article .mk-prose ol { list-style: decimal; }
+.ax-article .mk-prose li::marker { color: var(--gold-deep); }
+.ax-article .mk-prose td { vertical-align: top; }
+.ax-article .mk-prose td:first-child { font-weight: 600; color: var(--ink); }
+
+/* Guides (/guides/[slug]) — FAQ, related links, editorial note. */
+.ax-article .mk-guide-faq { margin-top: 56px; }
+.ax-article .mk-guide-faq dl { margin: 0; }
+.ax-article .mk-guide-faq dl > div { padding: 20px 0; border-top: 1px solid rgba(7, 26, 47, 0.14); }
+.ax-article .mk-guide-faq dt { font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.3; color: var(--ink); margin: 0 0 8px; }
+.ax-article .mk-guide-faq dd { margin: 0; max-width: 68ch; }
+.ax-article .mk-guide-note { margin: 16px 0 0; font-size: 0.875rem; line-height: 1.6; color: #4B5563; max-width: 68ch; }
+.ax-article .mk-guide-related { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(7, 26, 47, 0.14); }
+.ax-article .mk-guide-related h2 { counter-increment: none; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #4B5563; margin: 0 0 12px; }
+.ax-article .mk-guide-related h2::before { content: none; }
+.ax-article .mk-guide-related ul { list-style: none; margin: 0; padding: 0; }
+.ax-article .mk-guide-related li { margin: 0 0 10px; }
+.ax-article .mk-guide-related a { font-family: var(--font-serif); font-size: 1.125rem; color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+
 /* Closing band */
 .ax-article-close { background: var(--ink); color: var(--cream); padding: 88px 0; text-align: center; }
 .ax-article-close .ax-k { color: var(--gold-soft); }

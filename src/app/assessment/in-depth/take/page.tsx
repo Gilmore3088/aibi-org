@@ -9,6 +9,7 @@
 // useAssessmentInDepth hook to step through all 48 questions.
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createServerClient as ssrCreateServerClient } from '@supabase/ssr';
@@ -31,11 +32,20 @@ export default async function InDepthTakePage() {
       <main className="px-6 py-20">
         <div className="mx-auto max-w-xl text-center">
           <h1 className="font-serif text-3xl text-[color:var(--ink)] mb-4">
-            Service unavailable
+            The assessment is temporarily unavailable
           </h1>
           <p className="text-[color:var(--ink)]/75">
-            The assessment isn&rsquo;t configured in this environment. Try again
-            shortly.
+            Your purchase and any answers you have saved are safe. Please try
+            again in a few minutes.
+          </p>
+          {/* Never strand a buyer on an outage screen (persona wave 3). */}
+          <p className="mt-6 flex flex-wrap justify-center gap-4">
+            <Link href="/assessment/in-depth/take" className="font-semibold text-[color:var(--ink)] underline underline-offset-4">
+              Try again
+            </Link>
+            <Link href="/support/purchase-help" className="font-semibold text-[color:var(--ink)] underline underline-offset-4">
+              Contact support
+            </Link>
           </p>
         </div>
       </main>

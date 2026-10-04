@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { getFreeResource } from '@/lib/resources/freeResources';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const runtime = 'nodejs';
 
@@ -35,7 +36,7 @@ function expectedWordRoute(slug: string): string {
   return `${WORD_ROUTE_PREFIX}${slug}${WORD_ROUTE_SUFFIX}`;
 }
 
-export async function GET(_request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(_request: Request, context: RouteContext): Promise<Response> {
   const { slug } = await context.params;
   const resource = getFreeResource(slug);
 
@@ -67,3 +68,6 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
     return NextResponse.json({ error: 'Word resource not available.' }, { status: 503 });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

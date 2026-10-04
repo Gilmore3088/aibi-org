@@ -83,7 +83,7 @@
     },
     {
       "slug": "banker-prompt-formula-card",
-      "title": "Banker Prompt Formula Card",
+      "title": "The CORE Prompt Card for Bankers",
       "audience": ["All roles"],
       "category": "artifact",
       "funnelSegment": "skill-building",
@@ -462,7 +462,7 @@
       "variants": { "pdf": "aibi-skill-template-library.pdf", "word": null, "zip": null },
       "zipMembership": [],
       "canonicalRoute": "/api/courses/artifacts/skill-template-library",
-      "sourceCitations": ["AiBI Foundation curriculum", "RTFC skill framework"],
+      "sourceCitations": ["AiBI Foundation curriculum", "CORE prompt framework"],
       "gatePolicy": "paid-entitlement",
       "assessmentMapping": { "roles": ["operations", "compliance", "lending", "marketing"], "tierLabels": ["Early Stage", "Building Momentum"], "topGaps": ["skill-building", "workflow"] },
       "status": "public"

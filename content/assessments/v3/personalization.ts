@@ -282,15 +282,15 @@ export const GAP_CONTENT: Record<Dimension, GapContent> = {
   },
   'prompting-skill': {
     oneLine: 'You ask AI vague questions and get vague answers.',
-    nextStep: 'Start by adding role, format, source, and a self-check instruction to your next prompt — and save it if it works.',
+    nextStep: 'Write your next prompt with the four CORE parts (context, objective, resources, expectations) plus a self-check instruction — and save it if it works.',
     explanation:
-      "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is a small kit of patterns — role, format, source, check, edit — that you reuse until they're reflex.",
+      "The difference between a useless AI answer and a useful one is usually the prompt. Most \"AI is overrated\" experiences are one prompt rewrite away from working. The fix is one structure, CORE (context, objective, resources, expectations), plus a check and an edit, reused until it's reflex.",
     impacts: [
       'You give up on tasks that AI could actually help with',
       'Each prompt feels like starting from scratch instead of building on what worked last time',
     ],
     whatGoodLooksLike: [
-      'You reliably get structured, useful answers because your prompts include role, format, source, and a self-check',
+      'You reliably get structured, useful answers because your prompts cover all four CORE parts and ask for a self-check',
       'You save the prompts that work and reuse them as your personal template library',
     ],
   },
@@ -485,19 +485,19 @@ export const RECOMMENDATIONS: Record<Dimension, Recommendation> = {
     ],
   },
   'prompting-skill': {
-    title: 'Adopt the five-part prompt frame for one week',
+    title: 'Write every prompt in CORE for one week',
     riskLevel: 'Low',
     timeSaved: 'Turns generic AI answers into useful ones the first time',
     owner: 'You',
     explanation:
-      "Every prompt for real work should include five things: the role AI is playing, the format you want back, the source material, an explicit \"check your work\" instruction, and what you will edit. Apply it to one task at a time. After a week you will have five prompts that work.",
+      "Every prompt for real work should cover the four CORE parts: context (the role AI is playing and who it is for), objective (the exact task), resources (the only material it may use), and expectations (the format you want back and the limits). Then add an explicit \"check your work\" instruction and decide what you will edit. Apply it to one task at a time. After a week you will have five prompts that work.",
     whyRightNow: [
       'Directly addresses your gap in Prompting Skill',
       'Saves the time currently spent rewriting bad answers',
       'Compounds — each pattern you learn applies to the next task',
     ],
     inPractice:
-      'A five-line template. Fill in role, format, source, self-check, edit. Reuse for every prompt. Save the ones that work to a personal prompt library.',
+      'A CORE prompt template: context, objective, resources, expectations, then a self-check and an edit. Reuse for every prompt. Save the ones that work to a personal prompt library.',
     worksBestFor: [
       'Compliance review summaries',
       'Loan-narrative drafting',
@@ -718,10 +718,11 @@ Tone: matter-of-fact, no scare quotes. Length: fits on a single printed page.`,
     label: 'Five-pattern prompting starter kit',
     prompt: `Help me draft five reusable prompt templates for my work at a community bank as a [YOUR ROLE].
 
-Each template should follow this five-part shape:
-- Role (what role AI is playing — analyst, drafter, reviewer, summarizer)
-- Format (what shape I want the answer in)
-- Source material (what I will paste in)
+Each template should follow the CORE structure, then add a check and an edit:
+- Context (what role AI is playing — analyst, drafter, reviewer, summarizer — and who the answer is for)
+- Objective (the exact task)
+- Resources (the only material it may use; what I will paste in)
+- Expectations (what shape I want the answer in, and the limits)
 - Self-check instruction (what AI should verify in its own answer)
 - What I will edit (where my judgment overrides AI)
 

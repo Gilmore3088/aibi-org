@@ -208,4 +208,47 @@ describe('AIPracticeSandbox', () => {
     const runStep = screen.getByText('3. Run').closest('li') ?? screen.getByText('3. Run').parentElement;
     expect(runStep?.textContent ?? '').not.toMatch(/done/i);
   });
+
+  it('tells the lab coach to label prompts in CORE', async () => {
+    const calls: RequestInit[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async (_url: string, init?: RequestInit) => {
+        if (init?.method === 'POST') {
+          calls.push(init);
+          return { ok: false, status: 401, json: async () => ({}) } as Response;
+        }
+        return { ok: true, text: async () => '## Scenario 1\nA synthetic note.' } as Response;
+      }),
+    );
+    render(<AIPracticeSandbox moduleId="aibi-p-module-1" product="foundation" sandboxConfig={sandboxConfig} />);
+    fireEvent.click(screen.getByRole('button', { name: 'No customer data' }));
+    await waitFor(() => expect(screen.getByText('Prediction saved')).toBeInTheDocument());
+    fireEvent.click(screen.getAllByRole('button', { name: 'Use this start' })[0]);
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+    await waitFor(() => expect(calls.length).toBe(1));
+    const body = JSON.parse(String(calls[0].body)) as { systemPrompt: string };
+    expect(body.systemPrompt).toContain('CORE prompt framework (Context, Objective, Resources, Expectations)');
+    expect(body.systemPrompt).toContain('Role -> Context, Task -> Objective');
+  });
+
+  it('shows the older-label mapping only when the loaded material uses RTFC labels', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: true, text: async () => '# Exception Report Summarizer -- RTFC Prompt' } as Response),
+    );
+    const { unmount } = render(
+      <AIPracticeSandbox moduleId="aibi-p-module-14" product="foundation" sandboxConfig={sandboxConfig} />,
+    );
+    expect(await screen.findByTestId('older-label-note')).toHaveTextContent('Read Role as Context, Task as Objective');
+    unmount();
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: true, text: async () => '## Scenario 1\nA synthetic note.' } as Response),
+    );
+    render(<AIPracticeSandbox moduleId="aibi-p-module-1" product="foundation" sandboxConfig={sandboxConfig} />);
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    expect(screen.queryByTestId('older-label-note')).toBeNull();
+  });
 });

@@ -179,7 +179,7 @@ export function WinsForm({ form, submitting, error, successMsg, onField, onSubmi
               type="text"
               required
               maxLength={100}
-              placeholder='e.g. "RTFC Framework" or "custom workflow"'
+              placeholder='e.g. "CORE prompt card" or "custom workflow"'
               value={form.skillName}
               onChange={(e) => onField('skillName', e.target.value)}
               style={inputStyle}

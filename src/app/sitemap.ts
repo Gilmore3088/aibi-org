@@ -3,6 +3,7 @@ import { PLAYBOOK_INDEX } from './playbooks/data';
 import { TEMPLATES } from './resources/templates/data';
 import { PLAYBOOK_ASSETS } from '@content/playbook-assets/data';
 import { listAllBriefings } from '@content/briefings/_lib/registry';
+import { listGuides } from '@content/guides/_lib/registry';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
@@ -129,5 +130,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
   ];
 
-  return [...staticEntries, ...briefingEntries];
+  // Guides: evergreen search-intent pages. lastModified tracks the guide's
+  // own review date so crawlers re-fetch only what actually changed.
+  const guides = await listGuides();
+  const guideEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/guides`,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    },
+    ...guides.map((g) => ({
+      url: `${SITE_URL}/guides/${g.slug}`,
+      lastModified: new Date(`${g.updated}T12:00:00Z`),
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
+  ];
+
+  return [...staticEntries, ...briefingEntries, ...guideEntries];
 }

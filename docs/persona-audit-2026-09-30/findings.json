@@ -1,0 +1,501 @@
+{
+  "title": "Persona Waves · Sep 30",
+  "runDate": "2026-09-30",
+  "scope": "Three local 100-persona runs on a dev build with the course enrollment bypass: core journeys, the features wave 1 skipped, and every remaining public page (90 of 90). Re-run in full on 2026-10-03 after main's home-page rebuild and rebrand, and again on 2026-10-04 on the merged code after the CORE framework work. No Supabase, Stripe, or AI-provider keys and no outbound network, so payment, inquiry, lab, certificate and some form flows are marked as not tested.",
+  "findings": [
+    {
+      "id": "next-module",
+      "title": "No way forward at the end of a module",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Course",
+      "summary": "Modules run Understand → Try → Build → Save, but the only Next-module button sat at the bottom of Build. On phones the module list is folded away, so learners finishing Save saw no way to continue.",
+      "evidence": [
+        "All 16 mobile learners hit it, 3–10 times each",
+        "Save ended with “Next: carry it into …” and no link",
+        "After the fix, 5 mobile learners re-run: 0 dead ends (were 3–10 each)"
+      ],
+      "fix": "Save now ends with “Replay, then continue · Module N”. It unlocks in the same visit when Build completes the module. Commit 3a20bbae, 5 new tests.",
+      "before": "shots/P001-01-no-next-module-link.png",
+      "after": "shots/after-fix-save-step-next-link.png"
+    },
+    {
+      "id": "exam-b",
+      "title": "Exam could be passed by always choosing “b”",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Certification",
+      "summary": "37 of 41 exam answers were “b” and options were never shuffled. Answering “b” to every question scored 83%, “Advanced”.",
+      "evidence": [
+        "Probe answered b ×12 → 83% Advanced",
+        "Question bank: 37 b, 2 a, 2 c"
+      ],
+      "fix": "Options are shuffled every time an exam is drawn and lettered by position; scoring keys are unchanged. A test proves fixed-position guessing stays near chance."
+    },
+    {
+      "id": "exam-longest",
+      "title": "Exam’s correct answer is almost always the longest",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Certification",
+      "summary": "In 39 of 40 questions the correct option is the longest. Even with shuffling, “pick the longest answer” passes. Distractors need rewriting to similar length and specificity.",
+      "evidence": [
+        "39 of 40 parsed questions before",
+        "6 of 40 (15%) after; shortest 2 of 40"
+      ],
+      "fix": "Rewrote 117 distractors in 39 questions as plausible, specific mistakes of similar length. Correct answers, keys and explanations unchanged. Guard tests fail if correct-is-longest or correct-is-shortest exceeds 40%. Commit b3350028. Subject-matter review still recommended."
+    },
+    {
+      "id": "sample-send",
+      "title": "Sample report “Send PDF” was fake",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Assessment",
+      "summary": "The form said “Summary on its way. Check your inbox” but sent nothing and captured no lead.",
+      "evidence": [
+        "No network request on submit"
+      ],
+      "fix": "Now posts to /api/capture-email with the sample report; offers a direct download if sending fails. 2 tests."
+    },
+    {
+      "id": "certificate-link",
+      "title": "Course home never links to the certificate",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Course",
+      "summary": "All 10 completers had to type the certificate address. The course home has no link to the final packet, certificate, or post-assessment. Only the end-of-module-18 card and the dashboard link to the packet.",
+      "evidence": [
+        "10 of 10 completers typed /courses/foundation/program/certificate",
+        "Course home HTML contains no submit, certificate, or post-assessment link"
+      ],
+      "fix": "Course home now shows a “Course complete” card linking to submit packet, certificate, and growth check. The certificate outage screen also links to the packet and support."
+    },
+    {
+      "id": "free-download",
+      "title": "Free downloads failed whenever the database was unreachable",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Resources",
+      "summary": "The download route returned 503 before reaching its own static-file fallback, and visitors landed on a raw JSON error page.",
+      "evidence": [
+        "Prompt card, playbook and template downloads returned 503 locally"
+      ],
+      "fix": "Free files are served straight from the deploy; paid files stay gated. 2 tests. Raw-JSON error pages for other failures remain open (plan B2)."
+    },
+    {
+      "id": "module3-gate",
+      "title": "Module 3 save is locked behind a prompt score",
+      "status": "watch",
+      "severity": "low",
+      "area": "Course",
+      "summary": "Checked in code and by hand: the workshop offers “Use starter prompt” and hints. After 6 attempts it says “no penalty” and still offers “Save my prompt & complete”. Synthetic learners missed it because the harness clicked widgets in random order.",
+      "evidence": [
+        "6 of 30 synthetic learners could not save module 3",
+        "Attempts are capped at 6"
+      ],
+      "fix": "No product change needed. Keep one wave-3 check with a real learner flow.",
+      "before": "shots/P026-03-no-save-button.png"
+    },
+    {
+      "id": "auth-wording",
+      "title": "Account pages showed a developer error to visitors",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Account",
+      "summary": "Sign-up, sign-in and password reset showed “Auth is not configured. Set Supabase environment variables.” when auth was down.",
+      "fix": "Replaced with a plain message and the support email."
+    },
+    {
+      "id": "settings-hint",
+      "title": "Course settings Save disabled with no explanation",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Course",
+      "summary": "Save stays disabled until all three profile questions are answered, with nothing saying so.",
+      "fix": "Adds “Answer all three questions to save.”"
+    },
+    {
+      "id": "react-key",
+      "title": "React “unique key” warning on every module page",
+      "status": "closed",
+      "severity": "low",
+      "area": "Course",
+      "summary": "Development-only console warning on every module page. Not visible to learners, but it hides real warnings. It comes from content ModulePage passes into ModuleTabs; the tab bar’s own keys are fine.",
+      "evidence": [
+        "Seen by 36 of 40 learners"
+      ],
+      "fix": "Investigated: every list is keyed, and bisecting shows the warning persists with the suspect components removed. It is a React 19 development-mode quirk with server-to-client elements, and production builds do not emit it. Re-check the preview console."
+    },
+    {
+      "id": "main-landmark",
+      "title": "Marketing pages have no main landmark",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Accessibility",
+      "summary": "“Skip to main content” targets a plain div, and the home, assessment, resources, courses, institutions, practice, and verify pages have no <main> element. Course pages already have their own, so check nesting before changing the shared wrapper.",
+      "evidence": [
+        "26 personas saw it on the home page alone",
+        "After: exactly one main landmark on 10 page types"
+      ],
+      "fix": "LayoutChrome gives #main-content role=main only when the page has no <main> of its own. Commit 1ceaecef, with tests."
+    },
+    {
+      "id": "indepth-cta",
+      "title": "In-Depth upgrade not found from some free results",
+      "status": "closed",
+      "severity": "low",
+      "area": "Assessment",
+      "summary": "3 of 8 In-Depth buyers found no upgrade button on their free result and typed the address. The other 5 found “Get 90-day playbook”. May depend on the result variant, or be a harness miss.",
+      "evidence": [
+        "3 of 8 assessment-to-In-Depth personas"
+      ],
+      "fix": "The In-Depth call to action is on every result tier. The 3 buyers who missed it were non-emailing personas stuck at the email gate. The harness now uses the gate’s “View your summary without email” exit."
+    },
+    {
+      "id": "prompt-card",
+      "title": "“Download prompt card” gave no file or message",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Resources",
+      "summary": "On the Prompt Like a Banker page, clicking Download produced no file and no confirmation for 3 personas. Most likely the download route needs the database, which was missing here. Root cause was the database-only download path; now served from the deploy.",
+      "evidence": [
+        "3 resource hunters"
+      ],
+      "before": "shots/P031-03-download-no-file.png"
+    },
+    {
+      "id": "download-json",
+      "title": "Failed downloads showed raw JSON",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Downloads",
+      "summary": "Downloads are plain links, so when a file route failed the visitor saw {\"error\":\"Service not configured.\"} and nothing else.",
+      "evidence": [
+        "Seen on resource, template, playbook and prompt-card downloads in waves 1 and 2",
+        "Final audit found 4 more course file routes, including the per-module artifact linked from every module"
+      ],
+      "fix": "withReadableDownloadErrors wraps all 14 visitor-facing file routes. A failed page load gets a short page that says what happened, with Try again, Sign in, See pricing or Browse the library, plus Go back and Contact support. Script callers still get JSON. A malformed link says the link may be out of date. Commits 9e8f8b0b and 62e31d75, 8 tests, checked live."
+    },
+    {
+      "id": "outage-screens",
+      "title": "Two outage screens with no way forward",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Toolbox / Assessment",
+      "summary": "Wave 3 found the toolbox library skill page throwing a 500 on a database error, and the In-Depth assessment saying it “isn’t configured in this environment” with no next step.",
+      "evidence": [
+        "Wave 3 first run: 92/100 reached value, 5 rage-quits",
+        "Wave 3 after fixes: 100/100, 0 rage-quits, 0 dead ends"
+      ],
+      "fix": "Both now show plain “temporarily unavailable” copy with Try again or Back to library, plus Contact support. Commit 69194753."
+    },
+    {
+      "id": "help-widget-restored",
+      "title": "Home “Can we help you today?” widget was removed by the rebuild",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Home",
+      "summary": "Main's home rebuild (#607) dropped the widget. In the fresh run, 10 visitors who came for it had nothing to use, and 4 rage-quit.",
+      "evidence": [
+        "Fresh run: 10 no-value, 4 of 5 feature-wave rage-quits",
+        "Final run: 0 rage-quits in the features wave"
+      ],
+      "fix": "Restored below the free-tools section (owner decision), with a test. Commit 427fad06."
+    },
+    {
+      "id": "visitor-safe-errors",
+      "title": "Developer error text reached visitors during outages",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Site-wide",
+      "summary": "28 pages show the API error text verbatim, so messages like “Service not configured.” or “Payment system not configured.” reached visitors whenever a service was down.",
+      "evidence": [
+        "Seen on course settings, checkout, toolbox saves and AI feedback"
+      ],
+      "fix": "Every visitor-facing route now says what is unavailable and what to do (try again, or email). Cron and webhook responses are unchanged. Commit fb6e7825."
+    },
+    {
+      "id": "exam-price",
+      "title": "Exam result quoted the course at $97",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Certification",
+      "summary": "Low scorers were told “Start with the AI Foundations course ($97)”. The course is AiBI-Foundation at $295 everywhere else.",
+      "evidence": [
+        "Found reading the exam result screen during triage"
+      ],
+      "fix": "Copy corrected, with a guard test. Commit 71770f09."
+    },
+    {
+      "id": "gate-fallback",
+      "title": "Free downloads walled off when email failed",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Downloads",
+      "summary": "If the email service failed, the download gate showed “Request failed (502)” and the visitor could not get a free, static file.",
+      "evidence": [
+        "Gate code path, verified with two tests"
+      ],
+      "fix": "Now says “We couldn’t send it by email just now” with a direct download link. A rejected address still gets a plain message. Commit e50e9131."
+    },
+    {
+      "id": "workbook-next",
+      "title": "Efficiency workbook’s only next steps were email links",
+      "status": "fixed",
+      "severity": "low",
+      "area": "For institutions",
+      "summary": "Executives finishing the workbook could only email us.",
+      "evidence": [
+        "3 no-forward-path dead ends"
+      ],
+      "fix": "Adds “See team training options” and “take the free readiness assessment”. Commit 427fad06."
+    },
+    {
+      "id": "rep-hint",
+      "title": "Practice-rep Submit disabled with no reason",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Practice",
+      "summary": "The button needs 20 characters and said nothing.",
+      "evidence": [
+        "Coverage wave"
+      ],
+      "fix": "Hint under the button, wired with aria-describedby, with a test. Commit 427fad06."
+    },
+    {
+      "id": "paperwork-header",
+      "title": "“Take the paperwork” home section header",
+      "status": "fixed",
+      "severity": "low",
+      "area": "Home",
+      "summary": "Vague wordplay over the free-downloads section; to a banker, “paperwork” sounds like a burden.",
+      "evidence": [
+        "Owner feedback"
+      ],
+      "fix": "Now “Tools your team can use today.” Commit fb4c1cc3."
+    },
+    {
+      "id": "exam-rtfc",
+      "title": "Six prompt frameworks; the course teaches one (CORE)",
+      "status": "fixed",
+      "severity": "medium",
+      "area": "Course, exam, downloads",
+      "summary": "The course teaches CORE (Context, Objective, Resources, Expectations). The exam tested RTFC, the Transformation Report described a five-part RTFC, and the free cards, guides, galleries, prompt cards and a paid PDF each taught their own structure.",
+      "evidence": [
+        "Exam topic “Prompting & the RTFC Framework” (8 questions) vs modules 3–4 on CORE",
+        "Inventory found RTFC (4- and 5-part), the Banker Prompt Formula, a “5-line” method, “RCFC + R”, [ROLE]/[TASK] samples and labeled Role/Task fields",
+        "After: guard test clean, 17 pages walked with no older framework visible, 89 PDFs and the kit ZIPs scanned clean"
+      ],
+      "fix": "Owner chose CORE (2026-10-03). Single definition in content/frameworks/core.ts and a guard test that fails the build on any other framework name or part list. Exam questions rewritten in CORE (awaiting James’s review), Banker card retitled “The CORE Prompt Card for Bankers” (same URL), every page, sample and download moved to CORE and rebuilt with the repo’s scripts. Lab sample files left untouched per CLAUDE.md; the lab maps older labels instead. Plan: docs/prompt-framework-consistency-plan.md."
+    },
+    {
+      "id": "stale-pdfs",
+      "title": "Served PDFs drifted from their sources",
+      "status": "fixed",
+      "severity": "high",
+      "area": "Downloads",
+      "summary": "Several served PDFs had no generator in the repo, so source fixes never reached them. Some still cited SR 11-7 as current guidance, which CLAUDE.md forbids.",
+      "evidence": [
+        "Four starter artifacts and two large-print PDFs cited SR 11-7 as current; their sources had been corrected",
+        "The paid Skill Template Library and the prompt cards PDF had no generator at all",
+        "After: all 89 PDFs scanned, no SR 11-7 cited as current"
+      ],
+      "fix": "Main fixed the starter artifacts and three cards in #606 and #609 with a new starter generator. This branch added generators for the Skill Template Library and the prompt cards, rebuilt the large-print set and the kits, and gave every PDF generator a local-fonts option so they render the brand fonts offline."
+    }
+  ],
+  "notTested": [
+    {
+      "flow": "$99 In-Depth checkout",
+      "saw": "503 “Payment system not configured.”",
+      "next": "Re-run on a preview with Stripe test keys"
+    },
+    {
+      "flow": "$295 Foundation checkout",
+      "saw": "Purchase page forwards into the course (test bypass treats everyone as enrolled)",
+      "next": "Same preview run"
+    },
+    {
+      "flow": "Institution inquiry",
+      "saw": "502, and the page shows an “email us directly” fallback",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Resource downloads",
+      "saw": "503 from the download route",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "AiBI Lab in modules",
+      "saw": "401: the test bypass has no signed-in learner",
+      "next": "Preview with a seeded learner"
+    },
+    {
+      "flow": "Certificate page",
+      "saw": "“The certificate service is not configured”",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Assessment resume link",
+      "saw": "503, with “Resume links are temporarily unavailable” shown",
+      "next": "Preview with Supabase"
+    },
+    {
+      "flow": "Purchase-help support request",
+      "saw": "503, with “Support intake is temporarily unavailable” shown",
+      "next": "Preview with Supabase"
+    }
+  ],
+  "housekeeping": [
+    {
+      "item": "46 finished branches",
+      "state": "kept",
+      "detail": "Owner runs docs/persona-audit-2026-09-30/delete-finished-branches.sh (decision 2026-10-01). Re-verified: 25 in main, 21 with merged PRs; codex/pending-persona-support-work kept (PR #516 unmerged). This session can only push its own branch."
+    },
+    {
+      "item": "5 branches with unmerged work: unified",
+      "state": "done",
+      "detail": "Merged into this branch: repo-cleanup-pruning (≈20 MB of auth screenshots removed, old reports moved to archive/) and both video-tool branches (video-studio/ and walkthrough/, excluded from the site build). From rescue/2026-08-15, the email-redaction fix was ported; the rest stays as an archived record by decision, since its edits predate 37 newer commits. feature/home-refocus stays separate by decision, to be reviewed and shipped as its own change."
+    },
+    {
+      "item": "Dependabot",
+      "state": "done",
+      "detail": "Merged #571, #584, #583, #582, #579, #578, #581. Main then merged #589 in full, including Stripe 22.6.2; this branch follows main. dependabot.yml keeps Stripe out of the routine group, so future Stripe upgrades get a checkout and webhook test by hand. TypeScript 7 (#574) is open as a major upgrade."
+    },
+    {
+      "item": "Major upgrades",
+      "state": "kept",
+      "detail": "TypeScript 7 (#574) left open."
+    },
+    {
+      "item": "Expired claim",
+      "state": "done",
+      "detail": "motley-fool-digital-76 re-verified against fool.com. The survey says 76% are likely to switch banks for one that better meets their needs, not \"for a better digital experience\". Site copy now matches the source; review date 2027-03-30. Main had re-dated the claim separately (#586); the merge keeps the corrected wording."
+    }
+  ],
+  "plan": {
+    "done": "Final run on 2026-10-04 on the merged code (CORE work plus main's #605–#612): core 83/100, features 84/100, coverage 100/100, 0 rage-quits in every wave. Coverage had 0 dead ends. Features' 7 were two harness steps left stale by main's redesign (the workbook link now reads “See the assumptions”; the course preview is now a Module 1 build, not a quiz); with the steps updated, the 9 affected personas re-ran with 0 dead ends. Core's one was a single save timeout (332 of 333 saved). Every remaining no-value persona needs a key this build lacks (Stripe, database, AI) or is an explorer with no goal.",
+    "definition": [
+      "0 rage-quits across all three waves",
+      "Every goal-directed persona reaches value (explorers excluded)",
+      "0 product dead ends: no page without a way forward, no raw error",
+      "Every failure shows a plain message and a next step"
+    ],
+    "steps": [
+      {
+        "p": "P0",
+        "id": "A1",
+        "title": "Run all three waves on a configured preview",
+        "detail": "Deferred by the owner on 2026-10-01 as a follow-up. Blocked here: this sandbox cannot reach *.vercel.app and has no keys. Runbook in e2e/persona-wave/README.md. Every remaining “env” row becomes a real result: checkout, inquiries, downloads, lab, certificate, resume links, support, quick wins, accounts, cookbook, exam saving.",
+        "status": "blocked"
+      },
+      {
+        "p": "P1",
+        "id": "B1",
+        "title": "Rewrite exam distractors",
+        "detail": "Done. Correct-is-longest went from 39/40 to 6/40, with guard tests. Subject-matter review of the new distractors recommended.",
+        "status": "done"
+      },
+      {
+        "p": "P1",
+        "id": "B2",
+        "title": "No raw JSON for failed downloads",
+        "detail": "Done. All 14 visitor-facing file routes show a readable page with next steps; script callers keep JSON.",
+        "status": "done"
+      },
+      {
+        "p": "P2",
+        "id": "B4",
+        "title": "Silent artifact saves",
+        "detail": "Closed. Did not reproduce by hand; the harness timeout was fixed. Re-check on the preview.",
+        "status": "closed"
+      },
+      {
+        "p": "P2",
+        "id": "B5",
+        "title": "In-Depth button on every free result",
+        "detail": "Closed. The call to action is on every tier; the harness missed the “View your summary without email” exit.",
+        "status": "closed"
+      },
+      {
+        "p": "P2",
+        "id": "B7",
+        "title": "Main landmark on marketing pages",
+        "detail": "Done. Exactly one main landmark on 10 page types.",
+        "status": "done"
+      },
+      {
+        "p": "P2",
+        "id": "B8",
+        "title": "React key warning on module pages",
+        "detail": "Closed. Dev-only React 19 quirk; production builds do not emit it.",
+        "status": "closed"
+      },
+      {
+        "p": "P3",
+        "id": "C1",
+        "title": "Wave 3: the last 40 pages",
+        "detail": "Done. 34 public pages at 2–3 personas each: 100/100 value, 0 rage-quits, 0 dead ends. Two outage screens fixed.",
+        "status": "done"
+      },
+      {
+        "p": "P1",
+        "id": "E1",
+        "title": "One prompt framework (CORE)",
+        "detail": "Done in seven audited steps. Exam questions await James’s review before merge.",
+        "status": "done"
+      }
+    ],
+    "verification": [
+      [
+        "Wave 1 (core): reached value",
+        "82 / 100",
+        "83 / 100"
+      ],
+      [
+        "Wave 1 (core): dead ends",
+        "21",
+        "1 (one save timeout; 332/333 saved)"
+      ],
+      [
+        "Wave 2 (features): reached value",
+        "71 / 100",
+        "84 / 100"
+      ],
+      [
+        "Wave 2 (features): rage-quits",
+        "5",
+        "0"
+      ],
+      [
+        "Wave 2 (features): dead ends",
+        "57",
+        "7 → 0 (stale harness steps; 9 re-ran clean)"
+      ],
+      [
+        "Wave 3 (coverage): reached value",
+        "100 / 100",
+        "100 / 100"
+      ],
+      [
+        "Wave 3 (coverage): dead ends",
+        "18",
+        "0"
+      ],
+      [
+        "Public pages covered",
+        "57 / 90",
+        "90 / 90"
+      ],
+      [
+        "Prompt frameworks taught",
+        "6",
+        "1 (CORE)"
+      ],
+      [
+        "PDFs citing SR 11-7 as current",
+        "6",
+        "0"
+      ]
+    ]
+  }
+}

@@ -19,6 +19,7 @@ import { createServiceRoleClient, isSupabaseConfigured } from '@/lib/supabase/cl
 import { hashIp } from '@/lib/ai-harness/rate-limit';
 import { TEMPLATE_FILES } from '@/app/courses/foundation/program/_lib/skillDiagnosisData';
 import { getRequestIpFromHeaders } from '@/lib/api/rate-limit';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -29,7 +30,7 @@ interface RouteContext {
   readonly params: Promise<{ readonly name: string }>;
 }
 
-export async function GET(request: Request, context: RouteContext): Promise<Response> {
+async function handleGET(request: Request, context: RouteContext): Promise<Response> {
   const { name } = await context.params;
 
   // Allowlist: only the files the UI actually offers, and never a path that
@@ -79,3 +80,5 @@ export async function GET(request: Request, context: RouteContext): Promise<Resp
     },
   });
 }
+
+export const GET = withReadableDownloadErrors(handleGET);

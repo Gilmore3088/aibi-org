@@ -132,12 +132,12 @@ export async function POST(request: Request) {
 
   if (!foundationPriceId) {
     console.error('[create-checkout] STRIPE_FOUNDATION_PRICE_ID (or legacy STRIPE_AIBIP_PRICE_ID / STRIPE_FOUNDATIONS_PRICE_ID) is not set.');
-    return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.' }, { status: 503 });
   }
 
   if (mode === 'institution' && !foundationInstitutionPriceId) {
     console.error('[create-checkout] STRIPE_FOUNDATION_INSTITUTION_PRICE_ID (or legacy STRIPE_AIBIP_INSTITUTION_PRICE_ID) is not set.');
-    return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
+    return NextResponse.json({ error: 'Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.' }, { status: 503 });
   }
 
   const origin = getOrigin(request);
@@ -210,7 +210,7 @@ export async function POST(request: Request) {
     const institutionName = (body.institution_name as string).trim();
 
     if (!foundationInstitutionPriceId) {
-      return NextResponse.json({ error: 'Payment system not configured.' }, { status: 503 });
+      return NextResponse.json({ error: 'Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.' }, { status: 503 });
     }
 
     const session = await stripe.checkout.sessions.create({

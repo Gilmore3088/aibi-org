@@ -168,7 +168,7 @@ For each key point, provide:
 2. Which institution functions are affected (lending, operations, IT, compliance)
 3. The practical action required within the next 90 days
 
-Constraints:
+Expectations — limits:
 - Do not cite specific regulation numbers unless you can verify them. If unsure, write "[verify citation]" instead.
 - Keep the summary under 400 words.
 - Use plain language — no jargon that a board member could not understand.
@@ -194,7 +194,7 @@ Include:
 3. Two alternative options the customer can explore (CD ladder, relationship pricing)
 4. A direct phone number and name for follow-up (use [BANKER NAME] and [PHONE] placeholders)
 
-Constraints:
+Expectations — limits:
 - Do not make claims about rates being "competitive" or "best available" — let the customer decide.
 - Do not use exclamation points or marketing language. This is a service communication, not a sales email.
 - Keep under 200 words.`,
@@ -216,10 +216,10 @@ Your task:
 2. For each provision, provide: a plain-language summary (one sentence), the affected department(s), and whether it requires staff training or process changes
 3. Flag any provisions that are ambiguous or could be interpreted multiple ways — these need committee discussion
 
-Format: A Markdown table with columns:
+Expectations — format: A Markdown table with columns:
 | Provision | Summary | Affected Dept | Action Required | Ambiguity Flag |
 
-Constraints:
+Expectations — limits:
 - Do not rewrite the policy. Summarize and flag — do not recommend changes.
 - If you are unsure whether a provision requires action, flag it as "[NEEDS REVIEW]" rather than guessing.
 - Do not include provisions that are purely administrative (e.g., document revision dates, signature blocks).
@@ -280,7 +280,7 @@ I am a compliance officer at a community bank and need to brief my CEO on our ex
 4. Three specific compliance risks a community bank should assess in its current overdraft program
 5. Peer comparison: how are other community banks ($300M-$1B) modifying their overdraft programs in response
 
-Constraints:
+Expectations — limits:
 - Every factual claim must have a citation with URL. No unsourced statements.
 - Distinguish between final rules, proposed rules, and guidance — these have different compliance obligations.
 - Do not provide legal advice. Frame findings as "areas for review" not "required changes."
@@ -326,7 +326,7 @@ NEXT MEETING
 
 ---
 
-Constraints:
+Expectations — limits:
 - Always ask for missing information rather than guessing names or dates.
 - If a decision was discussed but not finalized, put it in Parking Lot, not Decisions Made.
 - Keep Discussion Notes under 300 words. Focus on reasoning behind decisions, not the discussion itself.
@@ -355,7 +355,7 @@ You are a community bank CFO analyst preparing a quarterly board report. Produce
 
 4. An executive summary paragraph (under 100 words) highlighting the three most significant balance sheet movements
 
-Constraints:
+Expectations — limits:
 - Do not fabricate explanations. If the cause of a variance is not evident from the data alone, write "Requires management discussion — cause not apparent from financial data."
 - Use thousands ($000s) for all dollar figures.
 - Do not calculate or display ratios unless specifically asked. This is a variance report, not a ratio analysis.
@@ -390,7 +390,7 @@ Each post must include:
 - A call to action directing to [BRANCH/URL]
 - Appropriate regulatory language: "APY accurate as of [DATE]. Rate may change. $[AMOUNT] minimum to open. FDIC insured."
 
-Constraints:
+Expectations — limits:
 - Do not use the phrase "limited time" unless the product actually has an expiration date.
 - Do not compare our rate to competitors by name.
 - Do not promise returns or use the word "guaranteed" in connection with variable rates.
@@ -449,7 +449,7 @@ const m7Prompts: readonly Prompt[] = [
 
 Context: I am providing you with a list of documents in a commercial loan file. My institution uses a standard 22-item documentation checklist for CRE loans. The output will be reviewed by a loan officer before submission to the loan committee.
 
-Task: Compare the provided document list against the standard CRE loan documentation checklist below and produce a gap analysis.
+Objective: Compare the provided document list against the standard CRE loan documentation checklist below and produce a gap analysis.
 
 Standard CRE Documentation Checklist:
 1. Signed loan application
@@ -475,7 +475,7 @@ Standard CRE Documentation Checklist:
 21. Loan presentation / credit memo
 22. Compliance checklist (HMDA, CRA, fair lending if applicable)
 
-Format: A Markdown table with columns:
+Expectations — format: A Markdown table with columns:
 | # | Document | Status | Staleness Risk | Priority |
 Where Status = Present / Missing / Expired / Not Applicable
 Staleness Risk = Current / Approaching Expiry / Stale / N/A
@@ -485,12 +485,12 @@ After the table, provide:
 - A one-paragraph summary of overall file readiness (suitable for the loan officer's memo)
 - A count: [X] of 22 items present, [Y] missing, [Z] expired
 
-Constraints:
+Expectations — limits:
 - Do not assess the quality or adequacy of any document — only its presence or absence.
 - If a document type is not applicable (e.g., Environmental Phase I for an office refinance with no change in use), mark as "Not Applicable" with a brief reason.
 - Do not make loan approval recommendations. This is a documentation completeness tool, not a credit decision tool.
 - Flag any item marked "Expired" with the staleness threshold (e.g., "PFS older than 90 days").`,
-    tags: ['skill-builder', 'loan-documentation', 'checklist', 'RTFC'],
+    tags: ['skill-builder', 'loan-documentation', 'checklist', 'CORE'],
   },
   {
     id: 'm7-operations-exception-report',
@@ -505,13 +505,13 @@ Constraints:
 
 Context: I will provide you with today's exception report (typically 15-40 line items from our core system export). Each exception includes: date, account number (masked), exception type, dollar amount, and originating department. The output will be used to prioritize the operations team's morning triage.
 
-Task:
+Objective:
 1. Group exceptions by category (overdraft, ACH return, wire hold, dormant account activity, large transaction, new account, other)
 2. Within each category, sort by dollar amount descending
 3. Identify any patterns: multiple exceptions on the same account, unusual volume in any category vs. typical daily counts, or dollar amounts exceeding $10,000 (BSA/AML reporting threshold)
 4. Produce a recommended triage sequence (what to handle first, second, third) based on regulatory urgency, dollar exposure, and customer impact
 
-Format:
+Expectations — format:
 EXCEPTION SUMMARY — [DATE]
 Total exceptions: [count]
 [Category breakdown table]
@@ -524,12 +524,12 @@ PRIORITY TRIAGE SEQUENCE
 PATTERN ALERTS
 - [Any unusual patterns detected]
 
-Constraints:
+Expectations — limits:
 - Never display full account numbers. Use last-four masking: ****1234.
 - If any single transaction exceeds $10,000 in cash or cash equivalents, flag it as "[CTR REVIEW]" — do not assess whether a CTR is required; that is a BSA officer decision.
 - Do not dismiss any exception as "routine" — categorize and rank all of them. Ops staff make the judgment call; you provide the organized data.
 - If the report contains customer names, replace them with "[Customer]" in your output.`,
-    tags: ['skill-builder', 'exception-report', 'triage', 'RTFC'],
+    tags: ['skill-builder', 'exception-report', 'triage', 'CORE'],
   },
   {
     id: 'm7-compliance-sar-narrative',
@@ -544,14 +544,14 @@ Constraints:
 
 Context: I will provide you with an investigation summary containing: subject information (sanitized), transaction details, investigative findings, and the triggering alert. My institution files approximately 40-60 SARs per year. The output will be reviewed and edited by the BSA Officer before filing — this is a draft, not a final filing.
 
-Task: Draft a SAR narrative that addresses all five elements required by FinCEN:
+Objective: Draft a SAR narrative that addresses all five elements required by FinCEN:
 1. Who is conducting the suspicious activity?
 2. What instruments or mechanisms are being used?
 3. When did the activity occur (dates, times, frequency)?
 4. Where did the activity take place (branches, channels, jurisdictions)?
 5. Why is the activity suspicious (what makes it inconsistent with expected behavior)?
 
-Format:
+Expectations — format:
 SAR NARRATIVE — DRAFT
 Filing Type: [Initial / Continuing / Amendment]
 Subject: [As provided]
@@ -562,14 +562,14 @@ Date Range: [As provided]
 BSA OFFICER REVIEW FLAGS
 - [Items requiring BSA officer judgment or additional investigation]
 
-Constraints:
+Expectations — limits:
 - This is a DRAFT. Mark it clearly as "DRAFT — REQUIRES BSA OFFICER REVIEW BEFORE FILING" at the top and bottom.
 - Do not make a determination of criminal activity. Describe the facts and explain why they are suspicious — the determination is a law enforcement function.
 - Use precise language: "appears inconsistent with" rather than "is suspicious." The narrative supports the filing; it does not make accusations.
 - Do not include information you are unsure about. Flag gaps as "[VERIFY: additional detail needed on X]."
 - Write in third person, past tense. Do not use "we" or "our bank."
 - Do not cite specific criminal statutes. Describe behavior patterns; let law enforcement determine applicable statutes.`,
-    tags: ['skill-builder', 'SAR', 'BSA-AML', 'compliance', 'RTFC'],
+    tags: ['skill-builder', 'SAR', 'BSA-AML', 'compliance', 'CORE'],
   },
   {
     id: 'm7-finance-variance-analysis',
@@ -584,7 +584,7 @@ Constraints:
 
 Context: I will provide you with the current month's income statement alongside the budget and prior year comparative. The output will be incorporated into the monthly board report package. The board includes directors who are not financial professionals — clarity and plain language are essential.
 
-Task:
+Objective:
 1. Identify all line items where actual vs. budget variance exceeds 5% AND $25,000 (both thresholds must be met — small dollar variances on large percentage swings are not material for board reporting)
 2. For each material variance, provide:
    - Dollar and percentage variance
@@ -594,7 +594,7 @@ Task:
 3. Compare material variances to the same month in the prior year to identify emerging trends
 4. Produce a three-sentence CFO commentary paragraph suitable for the board report cover letter
 
-Format:
+Expectations — format:
 MONTHLY VARIANCE REPORT — [MONTH/YEAR]
 
 MATERIAL VARIANCES
@@ -606,13 +606,13 @@ TREND COMPARISON (vs. Prior Year Same Month)
 CFO COMMENTARY (for board report cover letter)
 [Three sentences maximum]
 
-Constraints:
+Expectations — limits:
 - Use thousands ($000s) for all figures. Round to nearest thousand.
 - "Favorable" means higher revenue or lower expense. "Unfavorable" is the opposite. Do not reverse this convention.
 - Do not speculate on causes beyond what the financial data supports. If the cause is not apparent, write "Requires management discussion — cause not evident from financial data."
 - Do not recommend budget adjustments. Variance analysis describes what happened; budget revision is a management decision.
 - If provision for loan losses shows a material variance, always flag it as "[ALLL REVIEW — discuss with Chief Credit Officer]" regardless of direction.`,
-    tags: ['skill-builder', 'variance-analysis', 'board-reporting', 'RTFC'],
+    tags: ['skill-builder', 'variance-analysis', 'board-reporting', 'CORE'],
   },
   {
     id: 'm7-marketing-campaign-copy',
@@ -627,7 +627,7 @@ Constraints:
 
 Context: My institution is a community bank serving [REGION]. We are launching a campaign for [PRODUCT TYPE: e.g., home equity line of credit, business checking, CD special]. The campaign will run across direct mail, email, and branch lobby materials. All copy must pass compliance review before production.
 
-Task: Create a campaign copy package with the following components:
+Objective: Create a campaign copy package with the following components:
 
 1. THREE headline options (each under 12 words, no superlatives, no guarantees)
 2. Direct mail body copy (150-200 words, professional but warm community bank tone)
@@ -635,7 +635,7 @@ Task: Create a campaign copy package with the following components:
 4. Branch lobby flyer copy (75-100 words, scannable with bullet points)
 5. Required disclosures section (Reg DD for deposits, TILA for credit products, UDAP-compliant language)
 
-Format:
+Expectations — format:
 CAMPAIGN COPY PACKAGE — [PRODUCT NAME]
 
 HEADLINES
@@ -656,7 +656,7 @@ BRANCH FLYER
 REQUIRED DISCLOSURES
 [regulatory disclosures appropriate to product type]
 
-Constraints:
+Expectations — limits:
 - Never use "free" without qualification (UDAP risk). If there are conditions, state them.
 - Do not use "guaranteed" with any variable-rate product.
 - All rate references must include: APY or APR as appropriate, effective date, and minimum balance/amount if applicable.
@@ -664,7 +664,7 @@ Constraints:
 - Do not promise approval or pre-qualification in marketing copy.
 - Mark any claim that needs compliance verification with "[COMPLIANCE CHECK]."
 - No exclamation points. No emojis. Community bank institutional tone.`,
-    tags: ['skill-builder', 'campaign-copy', 'marketing', 'RTFC'],
+    tags: ['skill-builder', 'campaign-copy', 'marketing', 'CORE'],
   },
 ] as const;
 
@@ -693,7 +693,7 @@ Produce a one-page board update with these sections:
 4. Peer Context (how our adoption compares to community banks in the $300M-$1B range — use general industry knowledge, not fabricated benchmarks)
 5. Recommended Next Steps (2-3 specific, actionable items with estimated cost and timeline)
 
-Constraints:
+Expectations — limits:
 - Board members range from tech-savvy to tech-skeptical. Use plain language throughout.
 - Do not use the phrase "AI-powered" or "cutting-edge." These trigger skepticism in experienced directors.
 - Quantify everything possible. "Staff report saving time" is weak. "Four lending staff report saving 45 minutes per week on document review" is board-ready.
@@ -721,7 +721,7 @@ When answering:
 2. Suggest one cross-sell opportunity if relevant (e.g., customer asking about checking may benefit from knowing about our savings products)
 3. Flag any answer that involves compliance-sensitive information with "[VERIFY WITH COMPLIANCE BEFORE QUOTING TO CUSTOMER]"
 
-Constraints:
+Expectations — limits:
 - Only answer based on the product information I have provided. If I have not given you information about a product, say "I do not have current information on [product]. Check the product sheet or ask your supervisor."
 - Never provide specific rate quotes unless I have given you current rates. Rates change; stale rates create Reg DD issues.
 - Never advise a customer to close an account at another institution. That is the customer's decision.
@@ -745,7 +745,7 @@ After setting this, upload your institution's current product rate sheet and fee
 
 The vendor provides: [DESCRIBE VENDOR SERVICE — e.g., AI-powered document extraction for loan processing, AI chatbot for customer service, AI credit scoring model].
 
-Task: Generate a due diligence questionnaire I can send to this vendor covering these risk domains:
+Objective: Generate a due diligence questionnaire I can send to this vendor covering these risk domains:
 
 1. Data Security & Privacy (5 questions — where is data stored, encrypted, who has access, retention, deletion)
 2. Model Governance (5 questions — model validation, bias testing, explainability, drift monitoring, audit trails)
@@ -754,9 +754,9 @@ Task: Generate a due diligence questionnaire I can send to this vendor covering 
 5. Contractual Protections (4 questions — indemnification, data ownership, subcontractor oversight, termination rights)
 6. Financial Viability (3 questions — funding status, insurance, reference clients in banking)
 
-Format: Numbered questionnaire organized by section, with each question on its own line. Include a brief instruction header explaining the purpose and expected response format.
+Expectations — format: Numbered questionnaire organized by section, with each question on its own line. Include a brief instruction header explaining the purpose and expected response format.
 
-Constraints:
+Expectations — limits:
 - Frame questions as requests for documentation, not yes/no questions. "Provide your SOC 2 Type II report" not "Do you have a SOC 2?"
 - Do not ask about proprietary model architecture — vendors will not disclose this. Focus on governance, outputs, and controls.
 - Include a question about the vendor's own use of customer data for model training — this is the single most important data privacy question for banking AI vendors.
@@ -786,7 +786,7 @@ Context: The team currently runs three separate AI skills in isolation:
 2. Exception Analyzer — prioritizes each day's exception report by regulatory urgency and dollar exposure
 3. Routing and Notification Composer — drafts triage assignments and supervisor alerts
 
-Task: Design a workflow orchestration spec that chains all three skills into a single morning operations routine, running sequentially with defined handoffs.
+Objective: Design a workflow orchestration spec that chains all three skills into a single morning operations routine, running sequentially with defined handoffs.
 
 For each stage, specify:
 - Input: what data enters the stage (source, format, any conditioning required)
@@ -799,7 +799,7 @@ Then produce:
 - A supervisor escalation trigger (conditions that bypass normal routing and go directly to the manager)
 - A daily time estimate for the full orchestrated workflow vs. the current manual process
 
-Constraints:
+Expectations — limits:
 - No customer PII in any stage output — use account masking throughout
 - CTR review flag (transactions over $10,000) must be preserved through all three stages; it cannot be cleared by the workflow
 - The orchestration must be executable by a non-technical operations manager — no code, no API calls, no automation platforms required
@@ -819,7 +819,7 @@ Constraints:
 
 Your institution follows SR 26-2 model risk management guidance, interagency TPRM principles (OCC Bulletin 2023-17), and the AIEOG AI Lexicon definitions for explainability and human-in-the-loop controls.
 
-Task: Produce a 5-question scoring framework — one master question per domain — that yields a 100-point vendor evaluation score. Each question must:
+Objective: Produce a 5-question scoring framework — one master question per domain — that yields a 100-point vendor evaluation score. Each question must:
 
 1. State the evaluation criterion in plain language
 2. Define a 4-tier response scale with specific point values (0 / partial / full / exceeds)
@@ -839,7 +839,7 @@ After the scorecard, produce:
 - One hard-stop criterion: if the ECOA/Reg B explainability score is zero, the vendor is disqualified from any credit-decision use case regardless of total score
 - A one-paragraph recommendation narrative template for the board risk committee
 
-Constraints:
+Expectations — limits:
 - All regulatory citations must be specific and correct. Use "SR 26-2" not "Fed guidance." Use "AIEOG AI Lexicon" not "industry definitions."
 - The HITL definition must match the AIEOG Lexicon: a human with appropriate authority, information, and time to intervene before the AI decision takes effect
 - Do not create criteria that a vendor can satisfy with marketing materials alone. Evidence must be documentary (SOC 2, validation reports, contract language)`,
@@ -861,7 +861,7 @@ Context: The department has completed AiBI-Foundation and individual staff have 
 - Ensures skills are reviewed, approved, and compliant before shared use
 - Identifies skills that are stale, superseded, or no longer compliant
 
-Task: Produce a complete Team Skill Library management template with four components:
+Objective: Produce a complete Team Skill Library management template with four components:
 
 1. SKILL REGISTRY FORMAT
 A standardized one-page skill record for each skill in the library. Include fields for: skill name, use case description, platform, author, review date, compliance status, data classification tier(s), known limitations, and version number.
@@ -875,7 +875,7 @@ A checklist the department head runs every quarter to verify: skills are current
 4. SKILL DEPRECATION POLICY
 Criteria for retiring a skill from the library: trigger conditions, notification process, and archival procedure (skills should be archived, not deleted — they may be useful for audit trail purposes).
 
-Constraints:
+Expectations — limits:
 - The template must be usable by a department head with no IT support. No automation, no databases, no code.
 - All compliance language must reference the three-tier data classification framework (Tier 1 public / Tier 2 internal / Tier 3 restricted)
 - Include a field for "last tested against current platform version" — platforms update frequently and skills degrade without maintenance
@@ -902,7 +902,7 @@ const lLevelPrompts: readonly Prompt[] = [
 
 The bank's profile: $[ASSET SIZE]M in assets, $[FTE COUNT] FTE, efficiency ratio of [EFFICIENCY RATIO]% (source: FDIC BankFind Suite). The board has not received a formal AI strategy presentation before.
 
-Task: Produce a complete 10-slide board presentation outline. For each slide, provide:
+Objective: Produce a complete 10-slide board presentation outline. For each slide, provide:
 - Slide title
 - Three to five bullet points (the actual content, not placeholders)
 - Speaker notes (2-3 sentences the CEO can use verbatim)
@@ -922,7 +922,7 @@ Slide structure:
 
 After the outline, produce a draft board resolution (two paragraphs) authorizing the bank's AI governance framework and designating an AI oversight committee.
 
-Constraints:
+Expectations — limits:
 - All statistics must cite named sources. Use Jack Henry 2025, FDIC Quarterly Banking Profile Q4 2024, and Gartner via Jack Henry where applicable. Do not fabricate benchmarks.
 - The efficiency ratio slide must use the institution's actual FDIC-reported figure, not an industry average. Insert [FDIC EFFICIENCY RATIO] as a placeholder if not provided.
 - Do not use "AI-powered," "cutting-edge," or "revolutionary." Directors have seen too many technology presentations that overpromised.
@@ -951,7 +951,7 @@ Institution data (pull from FDIC BankFind Suite at banks.data.fdic.gov):
 Community bank median efficiency ratio: ~65% (FDIC CEIC data, 1992-2025)
 Industry-wide efficiency ratio: ~55.7% (FDIC Quarterly Banking Profile Q4 2024)
 
-Task: Produce a three-scenario efficiency ratio model showing projected impact of AI adoption on the institution's efficiency ratio over 24 months.
+Objective: Produce a three-scenario efficiency ratio model showing projected impact of AI adoption on the institution's efficiency ratio over 24 months.
 
 For each scenario (Conservative / Base / Optimistic), model:
 1. Productivity assumption: hours saved per FTE per week (Conservative: 1.5 hrs, Base: 3 hrs, Optimistic: 5 hrs) — source: Jack Henry 2025 Getting Started in AI
@@ -967,7 +967,7 @@ Format output as:
 - Key assumption list with citations
 - Sensitivity note: what has to be true for the Optimistic scenario to materialize
 
-Constraints:
+Expectations — limits:
 - All productivity assumptions must cite a source. Use Jack Henry 2025 or Gartner via Jack Henry.
 - The model must show the gap to peer benchmarks — the goal is not just improvement but convergence toward the industry median
 - Do not present cost reduction as guaranteed. Frame as "projected under stated assumptions" throughout.
@@ -1125,7 +1125,7 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
     difficulty: 'advanced',
     relatedModule: 7,
     timeEstimate: '20 minutes',
-    introduction: 'This tutorial walks you through building a complete lending skill using the RTFC Framework. By the end, you will have a reusable prompt that checks any commercial loan file for missing or expired documentation — saving 15-20 minutes per file review.',
+    introduction: 'This tutorial walks you through building a complete lending skill using CORE. By the end, you will have a reusable prompt that checks any commercial loan file for missing or expired documentation — saving 15-20 minutes per file review.',
     steps: [
       {
         stepNumber: 1,
@@ -1135,7 +1135,7 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
       {
         stepNumber: 2,
         instruction: 'Paste the skill prompt into the Project Instructions',
-        detail: 'Open your new Project\'s settings and paste the complete prompt below into the Custom Instructions field. This prompt uses all four RTFC components: Role (Senior Credit Analyst), Task (gap analysis against 22-item checklist), Format (Markdown table), and Constraints (no quality assessment, no approval recommendations).',
+        detail: 'Open your new Project\'s settings and paste the complete prompt below into the Custom Instructions field. This prompt uses all four CORE parts: Context (a senior credit analyst reviewing a CRE file for a loan officer), Objective (a gap analysis against the 22-item checklist), Resources (the document list you provide and the checklist in the prompt, nothing else), and Expectations (a Markdown table, no quality assessment, no approval recommendations).',
       },
       {
         stepNumber: 3,
@@ -1146,11 +1146,11 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
       {
         stepNumber: 4,
         instruction: 'Improve the output',
-        detail: 'Review the gap analysis. If items are miscategorized, add clarifying language to the Task component. If the priority ratings seem off, add a constraint specifying your institution\'s priority rules (e.g., "Appraisal and flood determination are always Critical priority"). Save the updated instructions. This is the iteration cycle: test, review, refine.',
+        detail: 'Review the gap analysis. If items are miscategorized, add clarifying language to the Objective. If the priority ratings seem off, add a limit to the Expectations specifying your institution\'s priority rules (e.g., "Appraisal and flood determination are always Critical priority"). Save the updated instructions. This is the iteration cycle: test, review, refine.',
       },
     ],
     prompt: m7Prompts[0],
-    whatWentWell: 'A well-built loan file skill replaces a manual process that takes 15-20 minutes per file with a 2-minute AI check. The RTFC structure ensures consistent output across different loan officers and file compositions. The 22-item checklist embedded in the prompt means nothing gets missed — even items that experienced loan officers might overlook through familiarity.',
+    whatWentWell: 'A well-built loan file skill replaces a manual process that takes 15-20 minutes per file with a 2-minute AI check. The CORE structure ensures consistent output across different loan officers and file compositions. The 22-item checklist embedded in the prompt means nothing gets missed — even items that experienced loan officers might overlook through familiarity.',
     whatToWatchFor: 'This skill checks documentation presence, not quality. A "present" appraisal that is 18 months old is flagged for staleness, but an appraisal with methodological problems will show as "present" and pass this check. Document quality review remains a human judgment task. Also: do not upload actual loan files to consumer AI tools. Use document lists only, with all PII removed.',
   },
   {
@@ -1171,7 +1171,7 @@ export const M7_TUTORIALS: readonly MiniTutorial[] = [
       {
         stepNumber: 2,
         instruction: 'Paste the skill prompt into Project Instructions',
-        detail: 'The prompt establishes the Role (Operations Manager with 10 years of triage experience), the Task (categorize, sort, identify patterns, recommend triage sequence), the Format (three-section output: summary, triage sequence, pattern alerts), and the Constraints (mask account numbers, flag CTR thresholds, never dismiss exceptions as routine).',
+        detail: 'The prompt sets the Context (an operations manager with 10 years of triage experience), the Objective (categorize, sort, identify patterns, recommend a triage sequence), the Resources (only the exception report you paste in), and the Expectations (a three-section output of summary, triage sequence and pattern alerts; mask account numbers, flag CTR thresholds, never dismiss exceptions as routine).',
       },
       {
         stepNumber: 3,

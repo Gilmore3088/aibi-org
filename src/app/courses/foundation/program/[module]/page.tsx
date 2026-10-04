@@ -29,6 +29,7 @@ import { LearnSection } from '../_components/LearnSection';
 import { BuildGuide } from '@/components/courses/BuildGuide';
 import { MICRO_MODULES_BY_NUMBER } from '@content/courses/foundation-program/micro-modules';
 import { ModuleContentClient } from '../_components/ModuleContentClient';
+import { SaveStepNavigation } from '../_components/SaveStepNavigation';
 import { ModuleTabs } from '../_components/ModuleTabs';
 import {
   CourseShell,
@@ -597,6 +598,11 @@ export default async function ModulePage(props: ModulePageParams) {
                   totalModules={modules.length}
                   isAlreadyCompleted={isAlreadyCompleted}
                   artifactLabel={artifactFirst?.saved ?? mod.keyOutput}
+                />
+                <SaveStepNavigation
+                  moduleNumber={moduleNum}
+                  isLastModule={isLastModule}
+                  isAlreadyCompleted={isAlreadyCompleted}
                 />
               </section>
             }

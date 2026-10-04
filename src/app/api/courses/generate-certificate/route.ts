@@ -23,6 +23,7 @@ import {
 } from '@/lib/certificates/issue';
 import { buildCertificatePdfBuffer } from '@/lib/certificates/pdf';
 import { rateLimitOrFail } from '@/lib/api/rate-limit';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 function jsonError(message: string, status: number): Response {
   return new Response(JSON.stringify({ error: message }), {
@@ -157,7 +158,7 @@ export async function POST(request: Request): Promise<Response> {
 // GET — Learner download: verifies enrollment ownership (T-08-04)
 // Query: ?enrollmentId=...
 // ============================================================
-export async function GET(request: Request): Promise<Response> {
+async function handleGET(request: Request): Promise<Response> {
   if (!isSupabaseConfigured()) {
     return jsonError('Service not configured.', 503);
   }
@@ -218,3 +219,6 @@ export async function GET(request: Request): Promise<Response> {
   const pdfBuffer = await buildCertificatePdfBuffer(cert, new URL(request.url).origin);
   return pdfResponse(pdfBuffer, cert.certificate_id, 200, false);
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

@@ -21,6 +21,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { getStarterArtifact } from '../content/assessments/v2/starter-artifacts.ts';
 import { DIMENSION_LABELS } from '../content/assessments/v2/types.ts';
+import { launchOptions, serveLocalBrandFonts } from './lib/brand-fonts.mjs';
 
 const ROOT = process.cwd();
 const BRAND_CSS_PATH = resolve(ROOT, 'public/downloads/source/_brand.css');
@@ -133,12 +134,11 @@ async function main() {
   }
   const dimensions = only ?? allDimensions;
 
-  // PW_EXECUTABLE_PATH: render against a specific pre-installed Chromium when
-  // the bundled browser version differs from the @playwright/test pin.
-  const browser = await chromium.launch(
-    process.env.PW_EXECUTABLE_PATH ? { executablePath: process.env.PW_EXECUTABLE_PATH } : {},
-  );
-  const page = await (await browser.newContext()).newPage();
+  // See scripts/lib/brand-fonts.mjs for PW_EXECUTABLE_PATH and PW_LOCAL_FONTS.
+  const browser = await chromium.launch(launchOptions());
+  const ctx = await browser.newContext();
+  await serveLocalBrandFonts(ctx, ROOT);
+  const page = await ctx.newPage();
 
   for (const dimension of dimensions) {
     const { title, subtitle, body } = getStarterArtifact(dimension);

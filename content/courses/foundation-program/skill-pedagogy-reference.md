@@ -16,7 +16,7 @@
 | 4 | Missing gotcha section | Not capturing failure patterns | Document every failure you've seen. This IS the value |
 | 5 | Monolithic blob | Everything in one file | SKILL.md under 500 lines. Move references to separate files |
 
-### 2. Extended Skill Anatomy (enhances RTFC framework)
+### 2. Extended Skill Anatomy (builds on the CORE prompt: Context, Objective, Resources, Expectations)
 
 | Component | What It Does | Banking Adaptation |
 |-----------|-------------|-------------------|

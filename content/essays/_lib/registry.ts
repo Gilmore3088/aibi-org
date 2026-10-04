@@ -84,7 +84,7 @@ export const LEGACY_ESSAYS: readonly (EssayMeta & { readonly legacyHref: string 
   {
     slug: "members-will-switch",
     title: "Members will switch. The question is to whom.",
-    dek: "84% would switch FIs for AI-driven financial insights. 76% would switch for a better digital experience. Reading the consumer survey data against community-bank retention.",
+    dek: "84% would switch FIs for AI-driven financial insights. 76% would switch banks for one that better meets their needs. Reading the consumer survey data against community-bank retention.",
     date: "2026-03-21",
     category: "Member impact",
     readMinutes: 9,

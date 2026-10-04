@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Banker Prompt Formula Card - The AI Banking Institute</title>
+<title>The CORE Prompt Card for Bankers - The AI Banking Institute</title>
 <link rel="stylesheet" href="_brand.css">
 <style>
   .cover h1 { font-size: 38pt; max-width: 6.4in; }
@@ -21,34 +21,30 @@
     <div class="seal-text"><div class="seal-name">The AI Banking Institute</div><div class="seal-tag">Turning Bankers into Builders</div></div>
   </div>
   <div>
-    <div class="kicker">Desk reference - v1</div>
-    <h1>The Banker Prompt Formula</h1>
-    <p class="lede">A one-page structure for turning vague AI requests into safe, review-ready banker prompts.</p>
+    <div class="kicker">Desk reference - v2</div>
+    <h1>The CORE Prompt Card for Bankers</h1>
+    <p class="lede">Context, Objective, Resources, Expectations. The four-part structure the AiBI-Foundation course teaches, for turning vague AI requests into safe, review-ready banker prompts.</p>
   </div>
   <div class="footer-row"><div>The AI Banking Institute - 2026</div><div>AIBankingInstitute.com</div></div>
 </section>
 
 <section class="page">
   <div class="section-kicker">Prompt structure</div>
-  <h2>Role. Task. Source. Format. Constraints. Review.</h2>
-  <p>Use this formula before every work prompt. It helps the banker define the job, strip sensitive inputs, require a useful format, and keep responsibility with a human reviewer.</p>
-  <div class="formula">
-    <div class="card"><div class="num">Role</div><h4>Who should AI act as?</h4><p>Example: "You are assisting a branch operations trainer." Do not ask AI to act as the final approver, lender, investigator, compliance officer, or legal authority.</p></div>
-    <div class="card"><div class="num">Task</div><h4>What should it produce?</h4><p>Draft, summarize, rewrite, extract, compare, checklist, critique, scenario, data-to-narrative, or solution brief. Use draft support, not decisions.</p></div>
-    <div class="card"><div class="num">Source</div><h4>What approved material should it use?</h4><p>Name the public, internal, redacted, or synthetic source. If the source contains sensitive data, stop and reclassify before prompting.</p></div>
-    <div class="card"><div class="num">Constraints</div><h4>What must it not do?</h4><p>Do not invent facts, rates, fees, dates, policy requirements, legal conclusions, fraud findings, or credit reasons.</p></div>
-    <div class="card"><div class="num">Format</div><h4>What format should the answer use?</h4><p>Bullets, table, checklist, email draft, script, FAQ, SOP, memo, markdown, or evidence packet. Pick the format before generating.</p></div>
-    <div class="card"><div class="num">Review</div><h4>What needs human review?</h4><p>Mark uncertain items [VERIFY]. Name the reviewer and escalation trigger before copying output downstream.</p></div>
-  </div>
-
-  <h3>Copy-ready starter</h3>
-  <div class="prompt-box">You are assisting [ROLE] with [TASK].
-Use only [APPROVED SOURCE].
-Do not use or request prohibited data.
-Return [OUTPUT FORMAT].
-Do not invent facts or make a decision. Preserve source meaning. Mark uncertain items [VERIFY].
-[REVIEWER] will review before final use.
-Escalate if [TRIGGER] appears.</div>
+ <h2>Context. Objective. Resources. Expectations.</h2>
+ <p>Use CORE before every work prompt. It helps the banker define the job, strip sensitive inputs, require a useful format, and keep responsibility with a human reviewer. Skip a part and you can predict what breaks.</p>
+ <div class="formula">
+ <div class="card"><div class="num">Context</div><h4>Who is AI helping, and for whom?</h4><p>Example: "You are assisting a branch operations trainer preparing material for new tellers." Do not ask AI to act as the final approver, lender, investigator, compliance officer, or legal authority.</p></div>
+ <div class="card"><div class="num">Objective</div><h4>What exactly should it produce?</h4><p>Draft, summarize, rewrite, extract, compare, checklist, critique, scenario, data-to-narrative, or solution brief. Name the task, not just the topic. Use draft support, not decisions.</p></div>
+ <div class="card"><div class="num">Resources</div><h4>What approved material may it use?</h4><p>Name the public, internal, redacted, or synthetic source, and tell it not to guess beyond it. Use placeholders for anything sensitive. If the source contains sensitive data, stop and reclassify before prompting.</p></div>
+ <div class="card"><div class="num">Expectations</div><h4>What shape, what limits, who checks it?</h4><p>Pick the format first: bullets, table, checklist, email draft, script, FAQ, SOP, memo, or evidence packet. Do not invent facts, rates, fees, dates, policy requirements, legal conclusions, fraud findings, or credit reasons. Mark uncertain items [VERIFY]. Name the reviewer and the escalation trigger before copying output downstream.</p></div>
+ </div>
+ <h3>Copy-ready starter</h3>
+ <div class="prompt-box">Context: You are assisting [ROLE] with work for [AUDIENCE].
+Objective: [TASK: draft, summarize, rewrite, extract, compare, or checklist].
+Resources: Use only [APPROVED SOURCE]. Do not use or request prohibited data.
+Expectations: Return [OUTPUT FORMAT]. Do not invent facts or make a decision.
+Preserve source meaning. Mark uncertain items [VERIFY].
+[REVIEWER] will review before final use. Escalate if [TRIGGER] appears.</div>
 </section>
 
 <div hidden>

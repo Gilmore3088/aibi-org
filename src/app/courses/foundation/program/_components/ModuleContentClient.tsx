@@ -17,6 +17,7 @@ import {
 } from './ActivitySection';
 import { CompletionCTA } from './CompletionCTA';
 import { ModuleNavigation } from './ModuleNavigation';
+import { MODULE_COMPLETED_EVENT, moduleCompletedStorageKey } from './SaveStepNavigation';
 
 export interface ModuleContentClientProps {
   readonly activities: readonly Activity[];
@@ -46,6 +47,18 @@ export function ModuleContentClient({
   const handleAllActivitiesComplete = useCallback(() => {
     setModuleComplete(true);
   }, []);
+
+  // Tell the Save step (a separate, possibly unmounted tab panel) that this
+  // module is now complete so it can offer the next-module link.
+  useEffect(() => {
+    if (!moduleComplete || isAlreadyCompleted || typeof window === 'undefined') return;
+    try {
+      window.sessionStorage.setItem(moduleCompletedStorageKey(moduleNumber), '1');
+    } catch {
+      // Storage is optional; the event still reaches a mounted Save step.
+    }
+    window.dispatchEvent(new CustomEvent(MODULE_COMPLETED_EVENT, { detail: { moduleNumber } }));
+  }, [moduleComplete, isAlreadyCompleted, moduleNumber]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

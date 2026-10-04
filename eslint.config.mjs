@@ -16,7 +16,8 @@ const eslintConfig = [
   // only ignores node_modules + .git by default, so .next et al. are listed
   // explicitly (next lint scoped these for us under the old eslintrc).
   {
-    ignores: ['.next/**', 'out/**', 'build/**', 'coverage/**', 'next-env.d.ts'],
+    // video-studio/ and walkthrough/ are standalone Remotion projects with their own deps.
+    ignores: ['.next/**', 'out/**', 'build/**', 'coverage/**', 'next-env.d.ts', 'video-studio/**', 'walkthrough/**'],
   },
   ...coreWebVitals,
   ...typescript,

@@ -59,7 +59,7 @@ export const SKILLS: readonly CurriculumSkill[] = [
   {
     slug: "prompt-with-pattern",
     verb: "Prompt with a repeatable pattern",
-    note: "Role context, task, constraints, format. Build one reusable role prompt for the work you do most often.",
+    note: "Context, objective, resources, expectations. Build one reusable role prompt for the work you do most often.",
     modules: [4, 5, 6],
   },
   {

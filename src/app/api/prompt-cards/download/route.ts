@@ -2,11 +2,12 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { rateLimitOrFail, getRequestIp } from '@/lib/api/rate-limit';
 import { logStaticResourceDownload } from '@/lib/resources/downloadLogging';
+import { withReadableDownloadErrors } from '@/lib/api/readableDownloadErrors';
 
 const PDF_FILENAME = 'AiBI-Prompt-Cards.pdf';
 const PDF_PATH = join(process.cwd(), 'public', 'downloads', 'aibi-prompt-cards.pdf');
 
-export async function GET(request: Request): Promise<Response> {
+async function handleGET(request: Request): Promise<Response> {
   // Static PDF serving avoids the React PDF render path that fails in production,
   // while still throttling the lead-capture asset against scrape-abuse.
   const limited = await rateLimitOrFail({
@@ -40,3 +41,6 @@ export async function GET(request: Request): Promise<Response> {
     });
   }
 }
+
+// Browser page loads get a readable page instead of raw JSON on failure.
+export const GET = withReadableDownloadErrors(handleGET);

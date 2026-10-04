@@ -12,31 +12,26 @@ export const metadata: Metadata = {
   description: ARTICLE_DESCRIPTION,
 };
 
-const FIVE_COMPONENTS = [
-  {
-    label: 'Role',
-    bad: '"Help me review this."',
-    good: '"You are a Senior Compliance Officer at a community bank with expertise in BSA/AML and ECOA/Reg B."',
-  },
+const SKILL_PARTS = [
   {
     label: 'Context',
-    bad: 'None — AI makes generic assumptions.',
-    good: '"For a $450M community bank subject to FFIEC examination with a commercial real estate loan portfolio."',
+    bad: '"Help me review this." The AI makes generic assumptions.',
+    good: '"You are a Senior Compliance Officer at a $450M community bank subject to FFIEC examination, with expertise in BSA/AML and ECOA/Reg B."',
   },
   {
-    label: 'Task',
+    label: 'Objective',
     bad: '"Summarize this."',
     good: '"Extract three primary risk factors from the collateral section and flag missing documentation against the standard 17-item checklist."',
   },
   {
-    label: 'Format',
-    bad: '"Write a long email."',
-    good: '"A two-column table: Risk Factor | Recommended Mitigation. Maximum five rows."',
+    label: 'Resources',
+    bad: 'None named. The AI fills gaps from general knowledge.',
+    good: '"Use only the attached collateral section and the 17-item checklist. If something is not in them, say so; do not guess."',
   },
   {
-    label: 'Constraints',
-    bad: 'None — AI can produce any output type.',
-    good: '"Never provide a definitive compliance determination. Flag regulatory findings with [REQUIRES HUMAN REVIEW]. Do not use informal language."',
+    label: 'Expectations',
+    bad: '"Write a long email." No limits.',
+    good: '"A two-column table: Risk Factor | Recommended Mitigation. Maximum five rows. Never provide a definitive compliance determination. Flag regulatory findings with [REQUIRES HUMAN REVIEW]."',
   },
 ] as const;
 
@@ -80,7 +75,7 @@ export default function TheSkillNotThePromptArticle() {
           items={[
             {
               label: 'What changes',
-              body: 'Role, context, task, format, and constraints stop living in one person’s memory.',
+              body: 'The context, objective, resources, and expectations stop living in one person’s memory.',
             },
             {
               label: 'Why it matters',
@@ -145,8 +140,8 @@ export default function TheSkillNotThePromptArticle() {
             standing order is an instruction that executes automatically
             every time specified conditions arise. You define the conditions
             once; the system executes against them without re-briefing. A
-            skill is the AI equivalent: you define the role, context, task,
-            format, and constraints once, and the AI executes against those
+            skill is the AI equivalent: you define the context, objective,
+            resources, and expectations once, and the AI executes against those
             definitions every time it encounters the same type of input.
           </p>
           <p>
@@ -169,21 +164,22 @@ export default function TheSkillNotThePromptArticle() {
           </p>
 
           <h2 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] pt-6">
-            The five components of a banking skill.
+            The four parts of a banking skill.
           </h2>
           <p>
-            Every robust banking AI skill contains five components. Missing
-            any one of them degrades the quality and consistency of outputs.
-            The AiBI-Foundation curriculum calls this the five-component anatomy,
-            simplified in practice to the RTFC Framework (Role, Task, Format,
-            Constraint), with Context embedded in Role.
+            Every robust banking AI skill is built on the four parts of the
+            CORE prompt the course teaches from Module&nbsp;3: Context,
+            Objective, Resources, Expectations. Missing any one of them
+            degrades the quality and consistency of outputs. A skill adds
+            what a one-off prompt lacks: it is saved, reused, and checked the
+            same way every time.
           </p>
         </section>
 
         <RiskMatrix
           eyebrow="Skill anatomy"
-          title="Each component removes one source of variation."
-          rows={FIVE_COMPONENTS.map((component) => ({
+          title="Each part removes one source of variation."
+          rows={SKILL_PARTS.map((component) => ({
             label: component.label,
             risk: component.bad,
             action: component.good,
@@ -275,14 +271,15 @@ export default function TheSkillNotThePromptArticle() {
             Identify that workflow. Document what the current best prompt
             looks like &mdash; the one that produces the most useful output
             on the first try. That draft prompt is already 80% of a skill.
-            Adding a proper Role definition, tightening the Task
-            specification, formalizing the Format, and adding three to five
-            Constraints turns it into a repeatable, institutional-grade tool.
+            Sharpening the Context, tightening the Objective, naming the
+            Resources it may use, and setting the Expectations, including three
+            to five firm limits, turns it into a repeatable, institutional-grade
+            tool.
           </p>
           <p>
-            The AiBI-Foundation curriculum&rsquo;s Module 7 skill builder takes
-            that process from a blank page to a deployable Markdown file
-            in 30 minutes. The resulting file can be loaded into ChatGPT,
+            Module 13 of the AiBI-Foundation curriculum takes that process
+            from a blank page to a saved skill template. The result can be
+            loaded into ChatGPT,
             Claude, Gemini, or any AI platform that supports custom
             instructions &mdash; immediately, on the same day it is built.
           </p>
@@ -298,13 +295,14 @@ export default function TheSkillNotThePromptArticle() {
             AiBI-Foundation Certification
           </p>
           <h3 className="font-serif text-3xl md:text-4xl text-[color:var(--ink)] mb-4">
-            Build your first institutional skill in Module&nbsp;7.
+            Build your first institutional skill in Module&nbsp;13.
           </h3>
           <p className="text-[color:var(--ink)]/75 max-w-xl mx-auto mb-6 leading-relaxed">
-            The AiBI-Foundation certification covers the full five-component
-            skill anatomy, the RTFC Framework, and a guided skill-builder that
-            produces a deployable Markdown file in 30 minutes. Twelve pre-built
-            skill templates across four banking roles are included.
+            The AiBI-Foundation certification teaches the CORE prompt
+            framework, then turns one of your own prompts into a reusable
+            skill with input rules, a human check and a stable output. The
+            Skill Template Library, with five pre-built skills across
+            operations, compliance, lending and marketing, is included.
           </p>
           <Link
             href="/courses"

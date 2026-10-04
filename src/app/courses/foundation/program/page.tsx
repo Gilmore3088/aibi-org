@@ -36,6 +36,7 @@ import { jsonLdString } from '@/lib/seo/jsonld';
 import { FOUNDATION_COURSE_JSONLD } from './_lib/programJsonLd';
 import { CourseStructure } from './_components/CourseStructure';
 import { StickyResumeBar } from './_home/StickyResumeBar';
+import { CourseCompletionCard } from './_home/CourseCompletionCard';
 import { CourseLaunchMap } from './_home/CourseLaunchMap';
 import { YourWorkStrip } from './_home/YourWorkStrip';
 import { ThisWeeksModule } from './_home/ThisWeeksModule';
@@ -135,6 +136,8 @@ export default async function CourseOverviewPage() {
           completedModules={completedModules}
           totalModules={totalModules}
         />
+
+        <CourseCompletionCard completedCount={completedCount} totalModules={totalModules} />
 
         <CourseLaunchMap
           currentModule={currentMod}

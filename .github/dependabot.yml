@@ -32,6 +32,10 @@ updates:
       # changed directives). Requires a dedicated migration — not safe to auto-bump.
       - dependency-name: "tailwindcss"
         update-types: ["version-update:semver-major"]
+      # Stripe minors move the pinned API version (src/lib/stripe.ts
+      # apiVersion), which changes live payment behavior. Upgrade by hand
+      # with a checkout + webhook test, not in the routine group.
+      - dependency-name: "stripe"
 
   # GitHub Actions used by the CI workflows (e2e, gitleaks, lighthouse, etc.)
   - package-ecosystem: "github-actions"

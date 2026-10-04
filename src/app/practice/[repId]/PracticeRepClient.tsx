@@ -146,10 +146,16 @@ export function PracticeRepClient({ rep }: PracticeRepClientProps) {
                 type="button"
                 onClick={handleSubmit}
                 disabled={response.trim().length < 20}
+                aria-describedby={response.trim().length < 20 ? 'rep-submit-hint' : undefined}
                 className="px-6 py-3 bg-[color:var(--gold)] text-[color:var(--cream)] disabled:opacity-40 disabled:cursor-not-allowed font-sans text-[0.6875rem] font-semibold uppercase tracking-[1.2px] rounded-[2px] hover:bg-[color:var(--gold-2)] transition-colors"
               >
                 Submit Practice Rep
               </button>
+              {response.trim().length < 20 && saveState === 'idle' && (
+                <p id="rep-submit-hint" className="text-xs text-[color:var(--slate-600)]">
+                  Write at least a sentence (20 characters) to submit and see the model answer.
+                </p>
+              )}
               {saveState !== 'idle' && (
                 <p className="text-xs text-[color:var(--slate-600)]">
                   {saveState === 'saved'

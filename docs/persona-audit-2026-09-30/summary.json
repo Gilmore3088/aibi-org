@@ -1,0 +1,1615 @@
+{
+ "meta": {
+  "set": "core",
+  "base": "http://localhost:3000",
+  "seed": 20260930,
+  "startedAt": "2026-10-03T15:27:23.713Z",
+  "durationMs": 2330224,
+  "personas": 100,
+  "concurrency": 3
+ },
+ "totals": {
+  "personas": 100,
+  "reachedValue": 80,
+  "reachedValuePct": "80%",
+  "medianClicksToValue": 2,
+  "medianSecondsToValue": 13,
+  "avgExperience": 96,
+  "jsExceptions": 0,
+  "productDeadEnds": 4,
+  "personasWithDeadEnd": 4,
+  "frustratedQuits": 2,
+  "harnessCrashes": 0
+ },
+ "outcomes": {
+  "behavior": 40,
+  "goal-finished": 54,
+  "patience": 4,
+  "frustration": 2
+ },
+ "quitReasons": {
+  "frustrated after slow_page": 1,
+  "frustrated after no_download_path": 1
+ },
+ "journeys": [
+  {
+   "journey": "course-sampler",
+   "label": "Buys course, samples 1-2 modules",
+   "n": 10,
+   "reachedValuePct": "100%",
+   "reachedValue": 10,
+   "medianClicksToValue": 1,
+   "medianSecondsToValue": 8,
+   "medianValueIndex": 8,
+   "avgExperience": 99,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "course-quitter",
+   "label": "Buys course, stalls around module 3-5",
+   "n": 10,
+   "reachedValuePct": "100%",
+   "reachedValue": 10,
+   "medianClicksToValue": 1,
+   "medianSecondsToValue": 5,
+   "medianValueIndex": 18,
+   "avgExperience": 99,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "course-steady",
+   "label": "Works through 6-12 modules",
+   "n": 10,
+   "reachedValuePct": "100%",
+   "reachedValue": 10,
+   "medianClicksToValue": 1,
+   "medianSecondsToValue": 10,
+   "medianValueIndex": 38,
+   "avgExperience": 96,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "course-completer",
+   "label": "Completes all 18 modules + certificate",
+   "n": 10,
+   "reachedValuePct": "100%",
+   "reachedValue": 10,
+   "medianClicksToValue": 1,
+   "medianSecondsToValue": 4,
+   "medianValueIndex": 77,
+   "avgExperience": 96,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "course-shopper",
+   "label": "Evaluates the course and tries to buy",
+   "n": 8,
+   "reachedValuePct": "0%",
+   "reachedValue": 0,
+   "medianClicksToValue": null,
+   "medianSecondsToValue": null,
+   "medianValueIndex": 0,
+   "avgExperience": 98,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "free-assessment",
+   "label": "Takes the free assessment",
+   "n": 14,
+   "reachedValuePct": "93%",
+   "reachedValue": 13,
+   "medianClicksToValue": 15,
+   "medianSecondsToValue": 18,
+   "medianValueIndex": 4,
+   "avgExperience": 99,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "assessment-to-indepth",
+   "label": "Free assessment then $99 In-Depth",
+   "n": 8,
+   "reachedValuePct": "88%",
+   "reachedValue": 7,
+   "medianClicksToValue": 15,
+   "medianSecondsToValue": 14,
+   "medianValueIndex": 3,
+   "avgExperience": 95,
+   "frustratedQuits": 1,
+   "crashes": 0
+  },
+  {
+   "journey": "resource-hunter",
+   "label": "Hunts for a free template/download",
+   "n": 10,
+   "reachedValuePct": "90%",
+   "reachedValue": 9,
+   "medianClicksToValue": 4,
+   "medianSecondsToValue": 30,
+   "medianValueIndex": 6,
+   "avgExperience": 91,
+   "frustratedQuits": 1,
+   "crashes": 0
+  },
+  {
+   "journey": "practice-tinkerer",
+   "label": "Tries the AI practice sandbox",
+   "n": 5,
+   "reachedValuePct": "100%",
+   "reachedValue": 5,
+   "medianClicksToValue": 3,
+   "medianSecondsToValue": 14,
+   "medianValueIndex": 1,
+   "avgExperience": 99,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "institution-buyer",
+   "label": "Evaluates a team/institution rollout",
+   "n": 5,
+   "reachedValuePct": "0%",
+   "reachedValue": 0,
+   "medianClicksToValue": null,
+   "medianSecondsToValue": null,
+   "medianValueIndex": 0,
+   "avgExperience": 94,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "pricing-skeptic",
+   "label": "Compares price and ROI, then decides",
+   "n": 5,
+   "reachedValuePct": "100%",
+   "reachedValue": 5,
+   "medianClicksToValue": 2,
+   "medianSecondsToValue": 12,
+   "medianValueIndex": 2,
+   "avgExperience": 95,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "cert-verifier",
+   "label": "Verifies a certificate",
+   "n": 2,
+   "reachedValuePct": "50%",
+   "reachedValue": 1,
+   "medianClicksToValue": 2,
+   "medianSecondsToValue": 11,
+   "medianValueIndex": 1,
+   "avgExperience": 90,
+   "frustratedQuits": 0,
+   "crashes": 0
+  },
+  {
+   "journey": "explorer",
+   "label": "Pure random walk, no goal",
+   "n": 3,
+   "reachedValuePct": "0%",
+   "reachedValue": 0,
+   "medianClicksToValue": null,
+   "medianSecondsToValue": null,
+   "medianValueIndex": 0,
+   "avgExperience": 85,
+   "frustratedQuits": 0,
+   "crashes": 0
+  }
+ ],
+ "issues": [
+  {
+   "kind": "console_error",
+   "detail": "Each child in a list should have a unique \"key\" prop.%s%s See https://react.dev/link/warning-keys for more information. \n\nCheck the render method of `ModuleTabs`.  It was passed a child from ModulePage.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P001",
+    "P002",
+    "P007",
+    "P014",
+    "P015",
+    "P020",
+    "P022",
+    "P026",
+    "P032",
+    "P035",
+    "P036",
+    "P037",
+    "P039",
+    "P041",
+    "P042",
+    "P043",
+    "P044",
+    "P053",
+    "P058",
+    "P059",
+    "P060",
+    "P061",
+    "P063",
+    "P065",
+    "P067",
+    "P071",
+    "P075",
+    "P076",
+    "P077",
+    "P078",
+    "P081",
+    "P086",
+    "P087",
+    "P092",
+    "P093",
+    "P096"
+   ],
+   "paths": [
+    "/courses/foundation/program/2"
+   ],
+   "count": 36,
+   "shot": null,
+   "body": "",
+   "impact": 18
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses/foundation/program took 8.1s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P001",
+    "P032",
+    "P053",
+    "P059",
+    "P060",
+    "P071",
+    "P075",
+    "P076",
+    "P077",
+    "P086",
+    "P092",
+    "P093",
+    "P096"
+   ],
+   "paths": [
+    "/courses/foundation/program"
+   ],
+   "count": 14,
+   "shot": "shots/P032-01-slow-page.png",
+   "impact": 3.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses/foundation/program/18 took 11.7s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P022",
+    "P032",
+    "P041",
+    "P063",
+    "P067",
+    "P077",
+    "P078",
+    "P081",
+    "P087",
+    "P092",
+    "P096"
+   ],
+   "paths": [
+    "/courses/foundation/program/18",
+    "/courses/foundation/program/1",
+    "/courses/foundation/program/2",
+    "/courses/foundation/program/13",
+    "/courses/foundation/program/12",
+    "/courses/foundation/program/10"
+   ],
+   "count": 14,
+   "shot": "shots/P032-02-slow-page.png",
+   "impact": 2.75
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/ took 12.8s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P033",
+    "P064",
+    "P070",
+    "P072",
+    "P083",
+    "P088",
+    "P091",
+    "P095",
+    "P097"
+   ],
+   "paths": [
+    "/"
+   ],
+   "count": 9,
+   "shot": "shots/P033-01-slow-page.png",
+   "impact": 2.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources took 11.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P029",
+    "P030",
+    "P031",
+    "P062",
+    "P073",
+    "P084",
+    "P091"
+   ],
+   "paths": [
+    "/resources"
+   ],
+   "count": 8,
+   "shot": "shots/P029-02-slow-page.png",
+   "impact": 1.75
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/assessment took 10.3s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P038",
+    "P049",
+    "P054",
+    "P080",
+    "P090"
+   ],
+   "paths": [
+    "/assessment"
+   ],
+   "count": 6,
+   "shot": "shots/P038-01-slow-page.png",
+   "impact": 1.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses/foundation/program/submit took 12.1s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P020",
+    "P041",
+    "P059",
+    "P081"
+   ],
+   "paths": [
+    "/courses/foundation/program/submit"
+   ],
+   "count": 4,
+   "shot": null,
+   "impact": 1
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/assessment/take took 13.1s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P027",
+    "P034",
+    "P090",
+    "P099"
+   ],
+   "paths": [
+    "/assessment/take"
+   ],
+   "count": 4,
+   "shot": "shots/P027-01-slow-page.png",
+   "impact": 1
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/pricing took 15.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030",
+    "P048",
+    "P066",
+    "P072"
+   ],
+   "paths": [
+    "/pricing"
+   ],
+   "count": 4,
+   "shot": "shots/P030-05-slow-page.png",
+   "impact": 1
+  },
+  {
+   "kind": "unclickable",
+   "detail": "open resource: locator.click: Timeout 12000ms exceeded.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P031",
+    "P097"
+   ],
+   "paths": [
+    "/resources/prompting-foundation",
+    "/resources"
+   ],
+   "count": 2,
+   "shot": "shots/P031-02-unclickable.png",
+   "impact": 1
+  },
+  {
+   "kind": "verify_no_answer",
+   "detail": "no clear verify result",
+   "env": false,
+   "severity": 1,
+   "personas": [
+    "P082"
+   ],
+   "paths": [
+    "/verify"
+   ],
+   "count": 1,
+   "shot": "shots/P082-02-verify-no-answer.png",
+   "impact": 1
+  },
+  {
+   "kind": "checkout_no_response",
+   "detail": "buy In-Depth $99: click did nothing observable",
+   "env": false,
+   "severity": 1,
+   "personas": [
+    "P089"
+   ],
+   "paths": [
+    "/assessment/in-depth"
+   ],
+   "count": 1,
+   "shot": "shots/P089-01-checkout-no-response.png",
+   "impact": 1
+  },
+  {
+   "kind": "unclickable",
+   "detail": "Resources nav: locator.click: Timeout 12000ms exceeded.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P091",
+    "P097"
+   ],
+   "paths": [
+    "/",
+    "/resources"
+   ],
+   "count": 2,
+   "shot": "shots/P097-02-unclickable.png",
+   "impact": 1
+  },
+  {
+   "kind": "console_error",
+   "detail": "A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P091",
+    "P097"
+   ],
+   "paths": [
+    "/"
+   ],
+   "count": 2,
+   "shot": null,
+   "body": "",
+   "impact": 1
+  },
+  {
+   "kind": "no_download_path",
+   "detail": "resource page has no download CTA and little content",
+   "env": false,
+   "severity": 1,
+   "personas": [
+    "P097"
+   ],
+   "paths": [
+    "/playbooks/marketing"
+   ],
+   "count": 1,
+   "shot": "shots/P097-04-no-download-path.png",
+   "impact": 1
+  },
+  {
+   "kind": "inquiry_no_response",
+   "detail": "form submit produced no request",
+   "env": false,
+   "severity": 1,
+   "personas": [
+    "P098"
+   ],
+   "paths": [
+    "/for-institutions"
+   ],
+   "count": 1,
+   "shot": "shots/P098-04-inquiry-no-response.png",
+   "impact": 1
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/for-institutions took 8.4s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030",
+    "P070",
+    "P098"
+   ],
+   "paths": [
+    "/for-institutions"
+   ],
+   "count": 3,
+   "shot": "shots/P030-03-slow-page.png",
+   "impact": 0.75
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses took 11.9s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P033",
+    "P074",
+    "P083"
+   ],
+   "paths": [
+    "/courses"
+   ],
+   "count": 3,
+   "shot": "shots/P033-02-slow-page.png",
+   "impact": 0.75
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/security/it-approval took 11.6s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030",
+    "P070"
+   ],
+   "paths": [
+    "/security/it-approval"
+   ],
+   "count": 2,
+   "shot": "shots/P030-01-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/practice took 10.4s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030",
+    "P088"
+   ],
+   "paths": [
+    "/practice"
+   ],
+   "count": 2,
+   "shot": "shots/P030-04-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "download_no_file",
+   "detail": "clicked download, no file or confirmation",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P031"
+   ],
+   "paths": [
+    "/resources/prompting-foundation"
+   ],
+   "count": 1,
+   "shot": "shots/P031-03-download-no-file.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "unclickable",
+   "detail": "open module 1 from course menu: locator.click: Timeout 12000ms exceeded.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P044"
+   ],
+   "paths": [
+    "/courses/foundation/program/8"
+   ],
+   "count": 1,
+   "shot": "shots/P044-01-unclickable.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses/foundation/program/toolkit took 10.7s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P044",
+    "P096"
+   ],
+   "paths": [
+    "/courses/foundation/program/toolkit"
+   ],
+   "count": 2,
+   "shot": "shots/P044-02-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/courses/foundation/program/purchase took 8.1s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P066",
+    "P095"
+   ],
+   "paths": [
+    "/courses/foundation/program/purchase"
+   ],
+   "count": 2,
+   "shot": "shots/P066-02-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/verify took 15.9s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P070",
+    "P082"
+   ],
+   "paths": [
+    "/verify"
+   ],
+   "count": 2,
+   "shot": "shots/P070-04-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "unclickable",
+   "detail": "download resource: locator.click: Timeout 12000ms exceeded.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P073"
+   ],
+   "paths": [
+    "/prompt-cards"
+   ],
+   "count": 1,
+   "shot": "shots/P073-03-unclickable.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/security/data-handling took 9.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P084",
+    "P098"
+   ],
+   "paths": [
+    "/security/data-handling"
+   ],
+   "count": 2,
+   "shot": "shots/P084-04-slow-page.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "unclickable",
+   "detail": "start free assessment: locator.click: Timeout 12000ms exceeded.",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P090"
+   ],
+   "paths": [
+    "/assessment/take"
+   ],
+   "count": 1,
+   "shot": null,
+   "impact": 0.5
+  },
+  {
+   "kind": "no_click_path",
+   "detail": "had to type URL /assessment (Assessment nav)",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P090"
+   ],
+   "paths": [
+    "/assessment"
+   ],
+   "count": 1,
+   "shot": "shots/P090-03-no-click-path.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "no_click_path",
+   "detail": "had to type URL /assessment/take (start assessment)",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P090"
+   ],
+   "paths": [
+    "/assessment/take"
+   ],
+   "count": 1,
+   "shot": "shots/P090-05-no-click-path.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "no_click_path",
+   "detail": "had to type URL /resources (Resources nav)",
+   "env": false,
+   "severity": 0.5,
+   "personas": [
+    "P091"
+   ],
+   "paths": [
+    "/resources"
+   ],
+   "count": 1,
+   "shot": "shots/P091-03-no-click-path.png",
+   "impact": 0.5
+  },
+  {
+   "kind": "a11y_no_main_landmark",
+   "detail": "/ has no <main> landmark (skip link targets a div)",
+   "env": false,
+   "severity": 0,
+   "personas": [
+    "P031",
+    "P091",
+    "P097"
+   ],
+   "paths": [
+    "/"
+   ],
+   "count": 3,
+   "shot": null,
+   "impact": 0.30000000000000004
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources/templates/ai-use-policy-starter took 11.5s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P029"
+   ],
+   "paths": [
+    "/resources/templates/ai-use-policy-starter"
+   ],
+   "count": 1,
+   "shot": "shots/P029-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks/bsa-aml took 8.3s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P029"
+   ],
+   "paths": [
+    "/playbooks/bsa-aml"
+   ],
+   "count": 1,
+   "shot": "shots/P029-03-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/references took 9.5s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030"
+   ],
+   "paths": [
+    "/references"
+   ],
+   "count": 1,
+   "shot": "shots/P030-02-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/certifications took 9.1s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P030"
+   ],
+   "paths": [
+    "/certifications"
+   ],
+   "count": 1,
+   "shot": null,
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources/templates/board-briefing-checklist took 10.2s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P031"
+   ],
+   "paths": [
+    "/resources/templates/board-briefing-checklist"
+   ],
+   "count": 1,
+   "shot": "shots/P031-05-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks/retail took 8.6s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P050"
+   ],
+   "paths": [
+    "/playbooks/retail"
+   ],
+   "count": 1,
+   "shot": "shots/P050-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks/bsa-aml/sar-narrative-template took 14.6s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P069"
+   ],
+   "paths": [
+    "/playbooks/bsa-aml/sar-narrative-template"
+   ],
+   "count": 1,
+   "shot": "shots/P069-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks took 21.3s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P069"
+   ],
+   "paths": [
+    "/playbooks"
+   ],
+   "count": 1,
+   "shot": "shots/P069-02-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/prompt-cards took 10.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P073"
+   ],
+   "paths": [
+    "/prompt-cards"
+   ],
+   "count": 1,
+   "shot": "shots/P073-02-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks/lending took 11.4s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P079"
+   ],
+   "paths": [
+    "/playbooks/lending"
+   ],
+   "count": 1,
+   "shot": "shots/P079-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/dashboard/toolbox took 9.6s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P081"
+   ],
+   "paths": [
+    "/dashboard/toolbox"
+   ],
+   "count": 1,
+   "shot": "shots/P081-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/security took 9.3s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P084"
+   ],
+   "paths": [
+    "/security"
+   ],
+   "count": 1,
+   "shot": "shots/P084-02-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources/templates/ai-use-case-inventory took 10.8s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P084"
+   ],
+   "paths": [
+    "/resources/templates/ai-use-case-inventory"
+   ],
+   "count": 1,
+   "shot": "shots/P084-03-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/playbooks/infosec took 15.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P091"
+   ],
+   "paths": [
+    "/playbooks/infosec"
+   ],
+   "count": 1,
+   "shot": "shots/P091-05-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources/templates/cdfi-grant-ai-evidence-checklist took 10.7s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P091"
+   ],
+   "paths": [
+    "/resources/templates/cdfi-grant-ai-evidence-checklist"
+   ],
+   "count": 1,
+   "shot": "shots/P091-06-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/for-institutions/samples/efficiency-ratio-workbook took 19.0s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P098"
+   ],
+   "paths": [
+    "/for-institutions/samples/efficiency-ratio-workbook"
+   ],
+   "count": 1,
+   "shot": "shots/P098-03-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "slow_page",
+   "detail": "/resources/templates/ai-workflow-sop took 10.5s",
+   "env": false,
+   "severity": 0.25,
+   "personas": [
+    "P100"
+   ],
+   "paths": [
+    "/resources/templates/ai-workflow-sop"
+   ],
+   "count": 1,
+   "shot": "shots/P100-01-slow-page.png",
+   "impact": 0.25
+  },
+  {
+   "kind": "two_click_path",
+   "detail": "Pricing nav: reached /pricing via the home page",
+   "env": false,
+   "severity": 0,
+   "personas": [
+    "P066",
+    "P072"
+   ],
+   "paths": [
+    "/pricing"
+   ],
+   "count": 2,
+   "shot": null,
+   "impact": 0.2
+  },
+  {
+   "kind": "two_click_path",
+   "detail": "Training nav: reached /courses via the home page",
+   "env": false,
+   "severity": 0,
+   "personas": [
+    "P018"
+   ],
+   "paths": [
+    "/courses"
+   ],
+   "count": 1,
+   "shot": null,
+   "impact": 0.1
+  },
+  {
+   "kind": "two_click_path",
+   "detail": "Practice nav: reached /practice via the home page",
+   "env": false,
+   "severity": 0,
+   "personas": [
+    "P088"
+   ],
+   "paths": [
+    "/practice"
+   ],
+   "count": 1,
+   "shot": null,
+   "impact": 0.1
+  },
+  {
+   "kind": "two_click_path",
+   "detail": "For Institutions nav: reached /for-institutions via the home page",
+   "env": false,
+   "severity": 0,
+   "personas": [
+    "P099"
+   ],
+   "paths": [
+    "/for-institutions"
+   ],
+   "count": 1,
+   "shot": null,
+   "impact": 0.1
+  },
+  {
+   "kind": "lab_run_failed",
+   "detail": "module 3: 401 {\"error\":\"Authentication required.\"}",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P001",
+    "P007",
+    "P014",
+    "P015",
+    "P020",
+    "P022",
+    "P026",
+    "P032",
+    "P035",
+    "P036",
+    "P037",
+    "P039",
+    "P041",
+    "P042",
+    "P043",
+    "P044",
+    "P058",
+    "P059",
+    "P060",
+    "P061",
+    "P063",
+    "P065",
+    "P067",
+    "P075",
+    "P076",
+    "P077",
+    "P078",
+    "P081",
+    "P086",
+    "P087",
+    "P092",
+    "P096"
+   ],
+   "paths": [
+    "/courses/foundation/program/3",
+    "/courses/foundation/program/5",
+    "/courses/foundation/program/7",
+    "/courses/foundation/program/11",
+    "/courses/foundation/program/12",
+    "/courses/foundation/program/14"
+   ],
+   "count": 138,
+   "shot": "shots/P001-01-lab-run-failed.png",
+   "impact": 16
+  },
+  {
+   "kind": "api_http_error",
+   "detail": "401 POST /api/sandbox/chat",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P001",
+    "P007",
+    "P014",
+    "P015",
+    "P020",
+    "P022",
+    "P026",
+    "P032",
+    "P035",
+    "P036",
+    "P037",
+    "P039",
+    "P041",
+    "P042",
+    "P043",
+    "P044",
+    "P058",
+    "P059",
+    "P060",
+    "P061",
+    "P063",
+    "P065",
+    "P067",
+    "P075",
+    "P076",
+    "P077",
+    "P078",
+    "P081",
+    "P086",
+    "P087",
+    "P092",
+    "P096"
+   ],
+   "paths": [
+    "/api/sandbox/chat"
+   ],
+   "count": 32,
+   "shot": null,
+   "body": "{\"error\":\"Authentication required.\"}",
+   "impact": 16
+  },
+  {
+   "kind": "bypass_enrolled_redirect",
+   "detail": "purchase page forwarded to course (dev enrollment bypass) — Foundation checkout untestable here",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P010",
+    "P018",
+    "P033",
+    "P034",
+    "P040",
+    "P048",
+    "P049",
+    "P056",
+    "P066",
+    "P074",
+    "P083",
+    "P095"
+   ],
+   "paths": [
+    "/courses/foundation/program/18"
+   ],
+   "count": 12,
+   "shot": "shots/P010-01-bypass-enrolled-redirect.png",
+   "impact": 6
+  },
+  {
+   "kind": "checkout_failed",
+   "detail": "buy In-Depth $99: 503 /api/checkout/in-depth {\"error\":\"Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.\"}",
+   "env": true,
+   "severity": 1,
+   "personas": [
+    "P009",
+    "P011",
+    "P017",
+    "P052"
+   ],
+   "paths": [
+    "/assessment/in-depth"
+   ],
+   "count": 4,
+   "shot": "shots/P009-01-checkout-failed.png",
+   "impact": 4
+  },
+  {
+   "kind": "inquiry_failed",
+   "detail": "502 /api/inquiry",
+   "env": true,
+   "severity": 1,
+   "personas": [
+    "P019",
+    "P024",
+    "P057",
+    "P099"
+   ],
+   "paths": [
+    "/for-institutions"
+   ],
+   "count": 4,
+   "shot": "shots/P019-01-inquiry-failed.png",
+   "impact": 4
+  },
+  {
+   "kind": "api_http_error",
+   "detail": "500 POST /api/playground/run",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P004",
+    "P045",
+    "P046",
+    "P088",
+    "P094"
+   ],
+   "paths": [
+    "/api/playground/run"
+   ],
+   "count": 5,
+   "shot": null,
+   "body": "{\"error\":\"The public demo model is temporarily unavailable. Please try again later.\"}",
+   "impact": 2.5
+  },
+  {
+   "kind": "api_http_error",
+   "detail": "503 POST /api/checkout/in-depth",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P009",
+    "P011",
+    "P017",
+    "P052"
+   ],
+   "paths": [
+    "/api/checkout/in-depth"
+   ],
+   "count": 4,
+   "shot": null,
+   "body": "{\"error\":\"Checkout is temporarily unavailable. Please try again in a few minutes, or email hello@aibankinginstitute.com to enroll.\"}",
+   "impact": 2
+  },
+  {
+   "kind": "api_http_error",
+   "detail": "502 POST /api/inquiry",
+   "env": true,
+   "severity": 0.5,
+   "personas": [
+    "P019",
+    "P024",
+    "P057",
+    "P099"
+   ],
+   "paths": [
+    "/api/inquiry"
+   ],
+   "count": 4,
+   "shot": null,
+   "body": "{\"error\":\"Your inquiry could not be recorded right now. Email us directly at hello@aibankinginstitute.com and we will reply within one business day.\"}",
+   "impact": 2
+  }
+ ],
+ "course": {
+  "learners": 40,
+  "modulesAttempted": 333,
+  "modulesPlanned": 333,
+  "tryCompleted": 333,
+  "artifactsBuilt": 333,
+  "artifactsSaved": 333,
+  "certificates": 10,
+  "completerCount": 10,
+  "reachedPlannedDepth": 40,
+  "saveApiStatuses": {
+   "201": 333
+  },
+  "moduleStats": [
+   {
+    "number": 1,
+    "title": "Module 1: What AI Can and Cannot Do",
+    "attempted": 40,
+    "tryDone": 40,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 40,
+    "completed": 40,
+    "medianSeconds": 6,
+    "medianClicks": 16,
+    "words": 591,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 2,
+    "title": "Module 2: Rewrite a Low-Risk Message",
+    "attempted": 36,
+    "tryDone": 36,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 36,
+    "completed": 36,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 842,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 3,
+    "title": "",
+    "attempted": 30,
+    "tryDone": 30,
+    "tryWidget": "0/4moves",
+    "buildFields": 0,
+    "artifactSaved": 30,
+    "completed": 30,
+    "medianSeconds": 37,
+    "medianClicks": 68,
+    "words": 935,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 4,
+    "title": "Module 4: Build Your First Prompt",
+    "attempted": 28,
+    "tryDone": 28,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 28,
+    "completed": 28,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 890,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 5,
+    "title": "Module 5: Add Context and Constraints",
+    "attempted": 25,
+    "tryDone": 25,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 25,
+    "completed": 25,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 860,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 6,
+    "title": "Module 6: Ask for Structured Output",
+    "attempted": 20,
+    "tryDone": 20,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 20,
+    "completed": 20,
+    "medianSeconds": 6,
+    "medianClicks": 16,
+    "words": 568,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 7,
+    "title": "",
+    "attempted": 18,
+    "tryDone": 18,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 18,
+    "completed": 18,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 846,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 8,
+    "title": "",
+    "attempted": 18,
+    "tryDone": 18,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 18,
+    "completed": 18,
+    "medianSeconds": 8,
+    "medianClicks": 16,
+    "words": 844,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 9,
+    "title": "Module 9: Turn a Prompt Into a Template",
+    "attempted": 17,
+    "tryDone": 17,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 17,
+    "completed": 17,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 873,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 10,
+    "title": "Module 10: Build a Role-Based Prompt",
+    "attempted": 15,
+    "tryDone": 15,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 15,
+    "completed": 15,
+    "medianSeconds": 5,
+    "medianClicks": 16,
+    "words": 575,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 11,
+    "title": "Module 11: Choose the Right AI Use Case",
+    "attempted": 14,
+    "tryDone": 14,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 14,
+    "completed": 14,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 859,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 12,
+    "title": "Module 12: Apply Data-Safety Boundaries",
+    "attempted": 12,
+    "tryDone": 12,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 12,
+    "completed": 12,
+    "medianSeconds": 7,
+    "medianClicks": 20,
+    "words": 839,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 13,
+    "title": "Module 13: Build a Simple Reusable Skill",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 5,
+    "medianClicks": 16,
+    "words": 649,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 14,
+    "title": "Module 14: Map a Workflow Before Automating",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 820,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 15,
+    "title": "Module 15: Set the Human Review Gate",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 7,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 8,
+    "medianClicks": 17,
+    "words": 872,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 16,
+    "title": "Module 16: Keep the Proof",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 7,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 5,
+    "medianClicks": 17,
+    "words": 578,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 17,
+    "title": "Module 17: Create the Reusable Workflow Kit",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 7,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 6,
+    "medianClicks": 17,
+    "words": 588,
+    "saveStatuses": "201",
+    "saveError": ""
+   },
+   {
+    "number": 18,
+    "title": "Module 18: Final Foundation Packet Review",
+    "attempted": 10,
+    "tryDone": 10,
+    "tryWidget": "0/4moves",
+    "buildFields": 6,
+    "artifactSaved": 10,
+    "completed": 10,
+    "medianSeconds": 8,
+    "medianClicks": 20,
+    "words": 869,
+    "saveStatuses": "201",
+    "saveError": ""
+   }
+  ]
+ }
+}

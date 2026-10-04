@@ -61,22 +61,19 @@ const CATEGORIES: { icon: typeof ChatIcon; ct: string; title: string; desc: stri
   { icon: BadgeIcon, ct: '2 cards', title: 'Reference Cards', desc: 'Short summaries of rules and standards. The one-pagers you wish your compliance team would write.', items: [['SR 26-2 in 1 page', 'Reference'], ['AIEOG Lexicon', 'Reference']] },
 ];
 
-const PROMPT_BODY = `[ROLE] You are a community bank compliance officer producing a one-page frontline guide for tellers.
+const PROMPT_BODY = `[CONTEXT] You are a community bank compliance officer producing a one-page frontline guide for tellers. Audience: {{audience}}
 
-[INPUT] Source procedure: {{procedure_text}}
-Target audience: {{audience}}
-
-[TASK]
+[OBJECTIVE]
 1. Identify the three most common scenarios a teller will encounter.
 2. For each scenario, write a single-sentence instruction in plain English.
 3. List the exact triggers that should escalate to compliance.
 
-[FORMAT]
+[RESOURCES] Use only this source procedure: {{procedure_text}}
+
+[EXPECTATIONS]
 - Title: "{{topic}}: Quick Guide"
 - Three numbered scenarios, each 1–2 sentences
 - "Escalate if:" section with up to four triggers
-
-[REVIEW]
 - Flag any phrase that loses legal meaning when simplified.
 - Flag any escalation trigger that isn't in the source procedure.
 - Append a review tag at the bottom: "Reviewed by [name] on [date]"`;
