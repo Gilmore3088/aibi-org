@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   SiteHeader,
   Section,
@@ -115,6 +116,7 @@ const FALLBACK_OUTPUT = [
 ].join('\n');
 
 export default function PracticeSandboxPage() {
+  const router = useRouter();
   const [role, setRole] = useState<Role>('Operations');
   const [scenarioId, setScenarioId] = useState(SCENARIOS.Operations[0].id);
   const [prompt, setPrompt] = useState(SCENARIOS.Operations[0].prompt);
@@ -241,7 +243,7 @@ export default function PracticeSandboxPage() {
   }
   function downloadOut() {
     setSaved(true);
-    window.location.href = '/auth/login?next=/dashboard/toolbox';
+    router.push('/auth/login?next=/dashboard/toolbox');
   }
 
   return (

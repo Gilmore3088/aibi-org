@@ -279,6 +279,7 @@ export function ResourcesExperience() {
     <div className="mockup-scope ax-page rx-resources-page">
       <ResourceSkipLinks />
       <SiteHeader activePath="/resources" />
+      <main>
 
       <section className="mk-hero rx-hero" id="start-here">
         <div className="mk-deco">
@@ -445,6 +446,7 @@ export function ResourcesExperience() {
         ]}
       />
 
+      </main>
       <StickyMobileCta
         label="Get readiness score"
         href="/assessment"

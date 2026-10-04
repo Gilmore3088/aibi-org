@@ -33,6 +33,7 @@ WAVE_BASE_URL=https://<preview>.vercel.app npm run e2e:persona-wave
 | `WAVE_SLOW_MS` | `5000` | Page settle time counted as "slow" (use ~8000 on `next dev`) |
 | `WAVE_PREWARM` | `true` | Hit every route once first so dev compile time isn't billed to personas |
 | `WAVE_OUT` | `e2e/persona-wave/out/<timestamp>` | Output directory (gitignored) |
+| `WAVE_DEBUG_HYDRATION` | — | Set to `1` to write React's full hydration-mismatch diff to `<out>/hydration-debug.txt` |
 | `WAVE_VERCEL_BYPASS` | — | Vercel "Protection Bypass for Automation" secret, for a preview behind deployment protection |
 | `WAVE_CHROMIUM_PATH` | `/opt/pw-browsers/chromium` if present | Browser binary |
 

@@ -53,4 +53,11 @@ describe('ForInstitutionsPage', () => {
     expect(mailtoLinks).toHaveLength(0);
     expect(screen.queryByText(/gated for QA|production-like cohorts|pass end-to-end QA/i)).toBeNull();
   });
+
+  // Server-rendered landmark: screen readers and the skip link land in <main>
+  // before any client JS runs (LayoutChrome only patches it in after hydration).
+  it('renders exactly one main landmark', () => {
+    const { container } = render(<ForInstitutionsPage />);
+    expect(container.querySelectorAll('main')).toHaveLength(1);
+  });
 });

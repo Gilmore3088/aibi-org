@@ -141,13 +141,14 @@ function Field({
 // 'production'. The dashboard's preview-auth-bypass handles the same case
 // in deployed previews; this just saves a click during local development.
 function DevSkipButton() {
+  const router = useRouter();
   if (process.env.NODE_ENV !== 'development') return null;
   return (
     <button
       type="button"
       onClick={() => {
         sessionStorage.setItem('aibi-dev-auth', 'true');
-        window.location.href = '/dashboard';
+        router.push('/dashboard');
       }}
       style={{ ...ghostBtnStyle, borderStyle: 'dashed', marginTop: 12 }}
     >

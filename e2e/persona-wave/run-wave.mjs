@@ -161,6 +161,11 @@ class Session {
       const text = m.text();
       if (/Failed to load resource|ERR_FAILED|net::/.test(text)) return; // duplicated by network capture
       this.recordError('console_error', text.slice(0, 240), this.page.url());
+      if (process.env.WAVE_DEBUG_HYDRATION && /hydrat/i.test(text)) {
+        Promise.all(m.args().map((a) => a.jsonValue().catch(() => ''))).then((args) =>
+          fs.appendFileSync(path.join(OUT, 'hydration-debug.txt'), `\n### ${this.p.id} ${this.page.url()}\n${args.map(String).join('\n')}\n`),
+        );
+      }
     });
     this.page.on('response', async (r) => {
       const url = r.url();

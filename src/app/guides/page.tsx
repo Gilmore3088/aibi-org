@@ -36,6 +36,7 @@ export default async function GuidesIndex() {
         }}
       />
       <SiteHeader activePath="/resources" cta={{ label: 'Get readiness score', href: '/assessment/take' }} />
+      <main>
 
       <header className="ax-masthead">
         <div className="mk-container">
@@ -68,6 +69,7 @@ export default async function GuidesIndex() {
           </div>
         </AxSection>
       ))}
+      </main>
     </div>
   );
 }

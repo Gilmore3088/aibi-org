@@ -52,6 +52,7 @@ export default function CoursesIndexPage({
           href: "/courses/foundation/program/purchase",
         }}
       />
+      <main>
 
       <AxHero
         cmd={`course foundation --modules ${facts.moduleCount} --data synthetic`}
@@ -164,6 +165,7 @@ export default function CoursesIndexPage({
           </div>
         </div>
       </section>
+      </main>
     </div>
   );
 }
