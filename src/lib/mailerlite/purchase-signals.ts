@@ -22,6 +22,14 @@ const SIGNAL_FIELD: Record<PurchaseSignal, string> = {
   foundation: 'foundation_enrolled',
 };
 
+// Buyers also join a Customer group so the In-Depth follow-up and Foundation
+// onboarding automations (trigger: subscriber joins group) fire. Env vars are
+// optional: unset means the field is still written and no group is joined.
+const SIGNAL_GROUP_ENV: Record<PurchaseSignal, string> = {
+  in_depth: 'MAILERLITE_GROUP_ID_CUSTOMER_IN_DEPTH',
+  foundation: 'MAILERLITE_GROUP_ID_CUSTOMER_FOUNDATION',
+};
+
 export interface PurchaseSignalResult {
   readonly status: 'marked' | 'skipped' | 'failed';
   readonly reason?: string;
@@ -39,6 +47,8 @@ export async function markPurchaseSignal(
     return { status: 'skipped', reason: 'no-api-key' };
   }
 
+  const groupId = process.env[SIGNAL_GROUP_ENV[signal]];
+
   try {
     // POST /subscribers upserts by email and merges fields without touching
     // group membership, so a buyer who was never a lead still gets a row.
@@ -52,6 +62,7 @@ export async function markPurchaseSignal(
       body: JSON.stringify({
         email: email.trim().toLowerCase(),
         fields: { [SIGNAL_FIELD[signal]]: new Date().toISOString().slice(0, 10) },
+        ...(groupId ? { groups: [groupId] } : {}),
       }),
     });
     if (!res.ok) {
