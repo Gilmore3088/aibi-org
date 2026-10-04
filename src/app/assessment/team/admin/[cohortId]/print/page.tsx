@@ -4,7 +4,7 @@ import { TeamAdminDashboard } from '../../../_components/TeamAdminDashboard';
 import { loadTeamAdminData } from '../../_lib/loadTeamAdmin';
 
 export const metadata: Metadata = {
-  title: 'Team Assessment Printable Report | The AI Banking Institute',
+  title: 'Team Assessment Printable Report',
   robots: { index: false, follow: false },
 };
 

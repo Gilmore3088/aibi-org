@@ -6,7 +6,7 @@ import { BRAND, PRINCIPLES } from '@content/copy';
 import { REGULATIONS } from '@content/regulations';
 
 export const metadata: Metadata = {
-  title: 'About — The AI Banking Institute',
+  title: 'About',
   description:
     'How The AI Banking Institute helps community banks and credit unions turn AI interest into safe, reviewable work.',
   alternates: { canonical: '/about' },

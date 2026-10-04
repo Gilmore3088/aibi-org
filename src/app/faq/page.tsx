@@ -11,7 +11,7 @@ import { FAQAccordion, MockupShell } from '@/components/mockup';
 import { faqPageJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 
 export const metadata: Metadata = {
-  title: 'FAQ — The AI Banking Institute',
+  title: 'FAQ',
   description:
     'Common questions about the AI Readiness Assessment, the In-Depth Assessment, the AiBI-Foundation course, and the credential.',
   alternates: { canonical: '/faq' },

@@ -11,7 +11,7 @@ import { listGuides } from '@content/guides/_lib/registry';
 import { breadcrumbListJsonLd, jsonLdString } from '@/lib/seo/jsonld';
 
 export const metadata: Metadata = {
-  title: 'AI Guides for Community Banks and Credit Unions — The AI Banking Institute',
+  title: 'AI Guides for Community Banks and Credit Unions',
   description:
     'Practical, sourced guides to AI policy, vendor review, data safety, and examiner readiness for community banks and credit unions.',
   alternates: { canonical: '/guides' },

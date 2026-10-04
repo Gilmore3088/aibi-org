@@ -29,7 +29,8 @@ import { PurchaseFinalCTA } from './_components/PurchaseFinalCTA';
 import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
 export const metadata: Metadata = {
-  title: 'Enroll in AiBI-Foundation | The AI Banking Institute',
+  alternates: { canonical: '/courses/foundation/program/purchase' },
+  title: 'Enroll in AiBI-Foundation',
   description:
     'Enroll in the AiBI-Foundation course. Eighteen bite-sized modules, practical artifacts, and a credential mapped to public references; not regulator-endorsed.',
 };

@@ -8,7 +8,7 @@ import type { Dimension } from '@content/assessments/v4/types';
 import { PaidReport } from '@/app/assessment/in-depth/results/[id]/_components/PaidReport';
 
 export const metadata: Metadata = {
-  title: 'Team Assessment Personal Report | The AI Banking Institute',
+  title: 'Team Assessment Personal Report',
   robots: { index: false, follow: false },
 };
 

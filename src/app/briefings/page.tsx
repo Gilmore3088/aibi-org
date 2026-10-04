@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     canonical: '/briefings',
     types: { 'application/rss+xml': '/briefings/feed.xml' },
   },
-  title: 'Briefings — The AI Banking Institute',
+  title: 'Briefings',
   description:
     'Daily pulse briefings and weekly deep dives on AI in banking: what regulators, banks, fintechs, and the AI companies are doing — and what it means for community institutions.',
 };

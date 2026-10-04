@@ -7,6 +7,13 @@ import { listGuides } from '@content/guides/_lib/registry';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aibankinginstitute.com';
 
+// Date the static marketing pages' content was last reviewed. This is a fixed
+// value on purpose: `new Date()` stamped every URL with the build time, so all
+// 104 entries changed on every deploy and crawlers learned to ignore lastmod.
+// Bump this when page copy changes in a way worth re-crawling. Briefings and
+// guides carry their own dates below.
+const STATIC_CONTENT_LAST_MODIFIED = '2026-10-04';
+
 // Only canonical, non-redirected, publicly-marketable routes. Routes that
 // 301 elsewhere (handled by next.config.mjs) are intentionally excluded so
 // search engines index the destination directly.
@@ -101,7 +108,7 @@ const ROUTES = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
+  const lastModified = new Date(`${STATIC_CONTENT_LAST_MODIFIED}T12:00:00Z`);
   const staticEntries = ROUTES.map((r) => ({
     url: `${SITE_URL}${r.path}`,
     lastModified,

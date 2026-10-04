@@ -32,4 +32,14 @@ describe('sitemap', () => {
     const urls = (await sitemap()).map((e) => e.url);
     expect(new Set(urls).size).toBe(urls.length);
   });
+
+  it('does not stamp the build time on lastmod, so dates stay stable between deploys', async () => {
+    const entries = await sitemap();
+    const home = entries.find((e) => e.url.endsWith('.com/') || e.url.endsWith('.com'));
+    expect(home).toBeDefined();
+    const age = Date.now() - (home!.lastModified as Date).getTime();
+    // A fixed review date is at least a few seconds old on any run; a build-time
+    // stamp would be ~0. Guards against reverting to `new Date()`.
+    expect(age).toBeGreaterThan(60_000);
+  });
 });

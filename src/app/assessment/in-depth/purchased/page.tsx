@@ -19,7 +19,7 @@ import { EmailSignInLink } from './_components/EmailSignInLink';
 import { InstitutionContextForm } from './_components/InstitutionContextForm';
 
 export const metadata: Metadata = {
-  title: 'Purchase confirmed | The AI Banking Institute',
+  title: 'Purchase confirmed',
   description:
     'Your In-Depth AI Readiness Assessment is ready. Sign in to start the 48-question diagnostic.',
   robots: { index: false, follow: false },

@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import './design-system.css';
 
 export const metadata: Metadata = {
-  title: 'Design System — The AI Banking Institute',
+  title: 'Design System',
   description: 'Internal Ledger design system reference. Not for external distribution.',
   robots: { index: false, follow: false },
 };

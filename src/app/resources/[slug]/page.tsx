@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   return {
     title: mod.meta.title,
     description: mod.meta.dek ?? mod.meta.title,
+    alternates: { canonical: `/resources/${slug}` },
   };
 }
 

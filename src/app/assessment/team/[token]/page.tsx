@@ -4,7 +4,7 @@ import { getTeamCohortByToken } from '@/lib/team-assessment/db';
 import { TeamAssessmentClient } from '../_components/TeamAssessmentClient';
 
 export const metadata: Metadata = {
-  title: 'Team AI Readiness Assessment | The AI Banking Institute',
+  title: 'Team AI Readiness Assessment',
   description: 'Complete your institution’s paid Team AI Readiness Assessment.',
   robots: { index: false, follow: false },
 };

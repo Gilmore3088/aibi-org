@@ -217,7 +217,7 @@ function ReferralPanel({
 }
 
 export const metadata = {
-  title: 'Your Certificate — AiBI-Foundation | The AI Banking Institute',
+  title: 'Your Certificate — AiBI-Foundation',
   description: 'Download your AiBI-Foundation certificate.',
 };
 

@@ -13,7 +13,7 @@ import { PostAssessmentClient } from './_PostAssessmentClient';
 import { foundationCourseConfig } from '@content/courses/foundation-program';
 
 export const metadata: Metadata = {
-  title: 'Measure Your Growth | AiBI-Foundation | The AI Banking Institute',
+  title: 'Measure Your Growth | AiBI-Foundation',
   description:
     'Take the post-course assessment to measure how your AI readiness has changed after completing the AiBI-Foundation course.',
 };

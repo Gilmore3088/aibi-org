@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { BRAND } from '@content/copy';
 import HomePage from './_client';
 
-const TITLE = `${BRAND.name} — ${BRAND.tagline}`;
+// Keyword-led title (60 chars). The tagline stays in on-page copy and the brand
+// is carried by og:site_name and the logo.
+const TITLE = 'AI Banking Institute: AI Readiness for Banks & Credit Unions';
 const DESCRIPTION =
   'Free individual AI readiness assessment for people working in community banks and credit unions. Score, tier, and starter artifact in three minutes.';
 

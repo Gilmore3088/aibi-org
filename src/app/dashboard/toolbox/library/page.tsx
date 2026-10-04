@@ -13,7 +13,7 @@ import type { ToolboxKind } from '@/lib/toolbox/types';
 import { ALL_PROMPTS } from '@content/courses/foundation-program/prompt-library';
 
 export const metadata: Metadata = {
-  title: 'Toolbox Library | The AI Banking Institute',
+  title: 'Toolbox Library',
   description:
     'Banker-vetted prompts and skills from the AiBI curriculum. Fork any one into your personal Toolbox to edit and run.',
 };

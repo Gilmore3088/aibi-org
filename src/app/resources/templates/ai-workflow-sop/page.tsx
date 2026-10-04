@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { WorkflowSopBuilder } from './WorkflowSopBuilder';
 
 export const metadata: Metadata = {
-  title: 'The Bank AI Workflow SOP Template | The AI Banking Institute',
+  title: 'The Bank AI Workflow SOP Template',
   description:
     'Interactive working template for documenting one AI-assisted workflow: human review, data handling, vendor controls, monitoring thresholds, and shutoff triggers.',
   alternates: { canonical: 'https://www.aibankinginstitute.com/resources/templates/ai-workflow-sop' },

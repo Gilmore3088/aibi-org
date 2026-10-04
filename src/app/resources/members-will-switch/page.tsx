@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
-  title: 'Members Will Switch. The Question Is To Whom.',
+  alternates: { canonical: '/resources/members-will-switch' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'Members Will Switch. The Question Is To Whom.' },
   description:
     '84% of consumers say they would switch financial institutions for AI-driven financial insights. 76% would switch banks for one that better meets their needs. The community bank retention story in 2026.',
 };

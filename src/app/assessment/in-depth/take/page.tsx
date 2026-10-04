@@ -18,7 +18,7 @@ import { findEnrollmentByEmailOrUserIdWithRetry } from '@/lib/enrollment/findEnr
 import { InDepthRunner } from './_components/InDepthRunner';
 
 export const metadata: Metadata = {
-  title: 'In-Depth AI Readiness Assessment | The AI Banking Institute',
+  title: 'In-Depth AI Readiness Assessment',
   description:
     'Forty-eight questions across the eight readiness dimensions. Returns a personalized report with per-dimension root causes, a deep-dive on your lowest-scoring dimensions, and a 90-day action register.',
   robots: { index: false, follow: false },

@@ -12,7 +12,7 @@ import { OutputGalleryClient } from './OutputGalleryClient';
 import { getEnrollment } from '../_lib/getEnrollment';
 
 export const metadata: Metadata = {
-  title: 'Output Gallery | AiBI-Foundation | The AI Banking Institute',
+  title: 'Output Gallery | AiBI-Foundation',
   description:
     'See what excellent AI outputs look like in every banking department. Role-specific examples from lending, operations, compliance, finance, marketing, and IT. Part of the AiBI-Foundation course.',
 };

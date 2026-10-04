@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
 
 export const metadata: Metadata = {
-  title: 'AI Use Disclaimer — The AI Banking Institute',
+  title: 'AI Use Disclaimer',
   description: 'How we use AI in our own work, what we expect from learners, and where AI ends and human review begins.',
   alternates: { canonical: '/ai-use-disclaimer' },
 };

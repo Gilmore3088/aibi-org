@@ -9,7 +9,7 @@ import { TEAM_ASSESSMENT_SLICE_MIN, TEAM_ASSESSMENT_UNLOCK_COMPLETIONS } from '@
 import { TeamCopyButton } from '../_components/TeamCopyButton';
 
 export const metadata: Metadata = {
-  title: 'Team Assessment Purchased | The AI Banking Institute',
+  title: 'Team Assessment Purchased',
   robots: { index: false, follow: false },
 };
 

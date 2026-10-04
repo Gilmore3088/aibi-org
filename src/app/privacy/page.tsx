@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
 
 export const metadata: Metadata = {
-  title: 'Privacy — The AI Banking Institute',
+  title: 'Privacy',
   description: 'How The AI Banking Institute collects, uses, and protects your data.',
   alternates: { canonical: '/privacy' },
 };

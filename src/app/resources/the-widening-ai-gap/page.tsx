@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { ArticleShell } from "@/components/mockup";
 
 export const metadata: Metadata = {
-  title: 'The Widening AI Gap — What the Evident AI Index Means for Community Banks',
+  alternates: { canonical: '/resources/the-widening-ai-gap' },
+  // Short, brand-free page title (<= 60 chars); H1 and JSON-LD keep the long form.
+  title: { absolute: 'The Widening AI Gap: What It Means for Community Banks' },
   description:
     'The October 2025 Evident AI Index shows the top-10 global banks accelerating AI maturity 2.3× faster than the rest of the industry. Here is what that means for community banks and credit unions.',
 };

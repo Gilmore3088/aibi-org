@@ -7,7 +7,7 @@ import { isTeamAssessmentSelfServeEnabled } from '@/lib/team-assessment/self-ser
 import { TeamCheckoutForm } from './_components/TeamCheckoutForm';
 
 export const metadata: Metadata = {
-  title: 'Team AI Readiness Assessment | The AI Banking Institute',
+  title: 'Team AI Readiness Assessment',
   description:
     'An assisted 48-question AI readiness assessment for teams, departments, and institution-wide rollout planning.',
   alternates: { canonical: '/assessment/team' },

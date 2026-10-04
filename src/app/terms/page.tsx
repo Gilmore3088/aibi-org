@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { MockupShell } from '@/components/mockup';
 
 export const metadata: Metadata = {
-  title: 'Terms — The AI Banking Institute',
+  title: 'Terms',
   description: 'Terms of service for The AI Banking Institute.',
   alternates: { canonical: '/terms' },
 };
