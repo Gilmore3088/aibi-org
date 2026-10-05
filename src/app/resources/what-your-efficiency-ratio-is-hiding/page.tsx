@@ -27,9 +27,9 @@ const STAT_CARDS = [
     source: 'FDIC CEIC / Quarterly Banking Profile, calculated',
   },
   {
-    figure: '66%',
-    label: 'of banks currently discussing AI budget allocation',
-    source: 'Bank Director 2024 Technology Survey (via Jack Henry)',
+    figure: '72%',
+    label: 'of banks under $100B say they have implemented generative AI',
+    source: 'Bank Director 2026 Technology Survey (sponsored by Jack Henry)',
   },
 ] as const;
 
@@ -271,9 +271,10 @@ export default function EfficiencyRatioArticle() {
           <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> FDIC CEIC data, 1992&ndash;2025 (community
             bank median efficiency ratio ~65%). FDIC Quarterly Banking Profile
-            Q4 2024 (industry-wide efficiency ratio ~55.7%). Bank Director 2024
-            Technology Survey (via Jack Henry &amp; Associates) — 66% of banks
-            discussing AI budget. Getting Started in AI, Jack Henry &amp;
+            Q4 2024 (industry-wide efficiency ratio ~55.7%). Bank Director 2026
+            Technology Survey, sponsored by Jack Henry &amp; Associates (June&ndash;July
+            2026; 72% of banks under $100B have implemented generative AI;
+            verified October 2026). Getting Started in AI, Jack Henry &amp;
             Associates, 2025, citing Gartner Peer Community data (48% lack
             clarity on AI business impacts; 55% have no governance framework).
             AI Playbook for Banks and Credit Unions, Cornerstone Advisors,

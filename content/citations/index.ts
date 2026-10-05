@@ -35,13 +35,14 @@ export interface Citation {
 
 export const CITATIONS: readonly Citation[] = [
   {
-    slug: "bank-director-budget",
-    value: "66%",
-    claim: "of community banks are discussing AI in their budget",
-    publication: "2024 Technology Survey",
-    publisher: "Bank Director (via Jack Henry & Associates)",
-    year: 2025,
-    short: "Bank Director, 2024 Technology Survey (via Jack Henry, 2025)",
+    slug: "bank-director-genai",
+    value: "72%",
+    claim: "of banks under $100 billion in assets say they have implemented generative AI",
+    publication: "2026 Technology Survey",
+    publisher: "Bank Director (sponsored by Jack Henry & Associates)",
+    year: 2026,
+    short: "Bank Director, 2026 Technology Survey (June–July 2026)",
+    url: "https://www.bankdirector.com/wp-content/uploads/2026/09/2026TechReport-Open-Version.pdf",
   },
   {
     slug: "gartner-skills-gap",

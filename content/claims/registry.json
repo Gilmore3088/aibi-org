@@ -105,15 +105,16 @@
       ]
     },
     {
-      "id": "bank-director-ai-budget-66",
-      "claim": "66% of banks are discussing AI budget allocation (Bank Director 2024 Technology Survey, via Jack Henry). Figure still circulating and accurate as cited in Aug 2026; Bank Director 2026 Risk / Compensation surveys offer fresher numbers.",
-      "source": "Bank Director 2024 Technology Survey",
-      "url": "https://www.emarketer.com/content/two-thirds-of-bank-execs-budgeting-ai",
-      "asOf": "2024-09-01",
-      "verified": "2026-08-10",
-      "reviewBy": "2026-11-10",
+      "id": "bank-director-2026-tech-ai",
+      "claim": "72% of respondents say their bank has implemented generative AI; 59% say their bank has appointed an executive or team responsible for AI oversight (Bank Director 2026 Technology Survey, sponsored by Jack Henry & Associates; 136 independent directors, CEOs, COOs and senior technology executives of U.S. banks below $100 billion in assets, surveyed June-July 2026; released September 15, 2026). Supersedes the 2024 edition's '66% discussing AI budget allocation' figure, which the 2026 report does not repeat.",
+      "source": "Bank Director 2026 Technology Survey (sponsored by Jack Henry & Associates)",
+      "url": "https://www.bankdirector.com/wp-content/uploads/2026/09/2026TechReport-Open-Version.pdf",
+      "asOf": "2026-07-31",
+      "verified": "2026-10-05",
+      "reviewBy": "2027-04-05",
       "match": [
-        "66%",
+        "72%",
+        "59%",
         "Bank Director"
       ]
     },
