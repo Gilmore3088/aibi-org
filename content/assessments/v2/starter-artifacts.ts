@@ -254,9 +254,11 @@ AI tools already in use across the institution and roughly how many
 staff use them. (You wrote this in the AI use map, if you have one.)
 
 **2. What our peers are doing.** One sentence with one citation. Per
-Bank Director's 2024 Technology Survey, 66% of community banks are
-discussing AI budget. Naming this neutrally — "two-thirds of our peer
-group is in the conversation" — sets the table without selling.
+Bank Director's 2026 Technology Survey, 72% of banks under $100 billion
+in assets say they have implemented generative AI, and 59% have named an
+executive or team responsible for AI oversight. Naming this neutrally —
+"most of our peer group has started, and most have named an owner" —
+sets the table without selling.
 
 **3. What we know we do not know.** Three to five bullets. Examples:
 "We do not have a written acceptable-use policy. We do not know
@@ -293,7 +295,7 @@ as clearly as the action.
 
 ## Citations
 
-- Bank Director 2024 Technology Survey, via Jack Henry & Associates 2025
+- Bank Director 2026 Technology Survey, sponsored by Jack Henry & Associates (surveyed June–July 2026)
 - SR 26-2 Revised Guidance on Model Risk Management, FRB / OCC / FDIC (supersedes SR 11-7)
 - Interagency Guidance on Third-Party Relationships: Risk Management, FDIC / OCC / Fed, 2023
 `,
