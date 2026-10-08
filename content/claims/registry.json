@@ -332,6 +332,18 @@
       "match": [
         "novel and rapidly evolving"
       ]
+    },
+    {
+      "id": "openai-team-tasks-service-account",
+      "claim": "OpenAI's help-center guidance says ChatGPT team tasks (Business and Enterprise) run in the cloud under the team's service account using saved instructions and team-enabled connections; each connection's designated account determines reachable data and actions; sharing a plugin is separate from connecting an account; pausing or deleting a task should not be relied on to interrupt an active run. Product documentation changes often - re-verify before reuse.",
+      "source": "OpenAI Help Center - Creating and managing team tasks in ChatGPT",
+      "url": "https://help.openai.com/en/articles/20001540-creating-and-managing-team-tasks-in-chatgpt",
+      "asOf": "2026-10-05",
+      "verified": "2026-10-06",
+      "reviewBy": "2027-01-06",
+      "match": [
+        "team's service account"
+      ]
     }
   ]
 }
