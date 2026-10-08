@@ -332,6 +332,30 @@
       "match": [
         "novel and rapidly evolving"
       ]
+    },
+    {
+      "id": "fsc-korea-breach-response-2026-10",
+      "claim": "On October 2, 2026 Korea's Financial Services Commission held an emergency response meeting after the September 30 Shinhan Bank data leak and further cyberattacks on Kookmin Bank and other major financial firms. It directed firms to check every externally accessible system regardless of whether it serves customers or what kind of service it is, to close any path to internal information (especially personal-data lookups) that lacks authentication, and to share threat information such as attacker IPs and methods; it will provide a vulnerability checklist and require self-inspection reports, and is still analyzing the cause and methods. The notice does not attribute the attacks to AI.",
+      "source": "Financial Services Commission (Korea), press reference, October 2, 2026 (Korean)",
+      "url": "https://www.fsc.go.kr/no010101/87869",
+      "asOf": "2026-10-02",
+      "verified": "2026-10-05",
+      "reviewBy": "2027-04-05",
+      "match": [
+        "regardless of whether it serves"
+      ]
+    },
+    {
+      "id": "gemini-4-argon-attack-surface",
+      "claim": "Google announced Gemini 4 Argon on September 30, 2026, rolling out first to trusted cyber defenders. Google reports that on a black-box penetration-testing benchmark of live web systems without source code it outperforms its prior model in discovering the attack surface, identifying vulnerabilities, and producing proof-of-concept evidence, and says it is strengthening safeguards to prevent bad actors from using it for cyber attacks before broad release.",
+      "source": "Google, The Keyword blog (September 30, 2026)",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+      "asOf": "2026-09-30",
+      "verified": "2026-10-05",
+      "reviewBy": "2027-01-05",
+      "match": [
+        "discovering the attack surface"
+      ]
     }
   ]
 }

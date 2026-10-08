@@ -1,0 +1,68 @@
+export const meta = {
+  slug: "korea-breaches-side-doors",
+  title: "After Korea's bank breaches, the first order was to find every side door.",
+  dek: "After a run of breaches at major Korean banks, the regulator told every firm to inventory all of its internet-facing systems, not just the ones customers use. It is the right checklist for a community bank too.",
+  date: "2026-10-05",
+  category: "Banks",
+  readMinutes: 3,
+  author: "AiBI Research Desk",
+  tier: "pulse",
+  sources: [
+    {
+      label: "Financial Services Commission (Korea) — emergency situation response meeting on recent financial-sector intrusion threats (October 2, 2026; Korean)",
+      url: "https://www.fsc.go.kr/no010101/87869",
+    },
+    {
+      label: "Google — Gemini 4 Argon: our next era of frontier intelligence (September 30, 2026)",
+      url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+    },
+  ],
+};
+
+**What happened.** On October 2, Korea's Financial Services Commission called
+an emergency meeting with the Financial Supervisory Service, the Financial
+Security Institute, major banks, and card companies after a September 30 data
+leak at Shinhan Bank and further cyberattacks on
+Kookmin Bank and other large financial firms. Its notice gave the industry
+three instructions. Find every IT system reachable from the internet and check
+its vulnerabilities and access controls, regardless of whether it serves
+customers or what kind of service it is. Close any path that reaches internal
+information without authentication, especially lookups of personal data. And
+share attacker IP addresses and methods quickly. The FSC will issue a
+vulnerability checklist and require firms to report their self-inspection
+results. It says it is still analyzing how the attacks worked; its notice does
+not attribute them to AI.
+
+**Why it matters to you.** Read the first instruction again: *regardless of
+whether it serves customers.* Your online and mobile banking get tested, by
+your digital-banking provider, your core vendor, and your annual penetration
+test. The systems that slip through are the others: a portal for loan brokers
+or auto dealers, a staff web app, a vendor-hosted rate or application page
+under your name, an old test site nobody turned off. They often touch customer
+data, and they rarely have an owner in the inventory.
+
+That gap matters more as finding it gets cheaper. On September 30, Google
+announced Gemini 4 Argon and released it first to vetted cyber defenders. It
+reports that on a black-box test of live web systems, the model beat its
+predecessor at discovering the attack surface, identifying vulnerabilities,
+and producing proof-of-concept evidence. Google built it for defense and says
+it is strengthening safeguards specifically to keep bad actors from using it
+for cyberattacks. That tells you the capability cuts both ways. Mapping an
+institution's forgotten doors is becoming automated work.
+
+**What to do with it.** Three moves this week:
+
+1. **Ask for the full list.** Have IT or your managed service provider list
+   every system reachable from the internet, including vendor-hosted pages
+   that carry your name. If the answer is only the customer channels, the
+   list is incomplete.
+2. **Test the lookups.** For each system that touches customer data, confirm
+   that no path returns it without authentication. That is the exact weakness
+   the FSC told Korean firms to hunt.
+3. **Ask your testers what they use.** Ask your penetration tester or security
+   provider whether their external attack-surface work now uses AI-assisted
+   tools. The tooling on both sides is improving; your annual test should
+   keep pace.
+
+Korea's regulator is still investigating. You don't need its final report to
+run its checklist.
