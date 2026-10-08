@@ -88,6 +88,7 @@
   "overrides": {
     "postcss": "$postcss",
     "undici": "^7.30.0",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.4",
+    "postcss-selector-parser": "^7.1.6"
   }
 }
