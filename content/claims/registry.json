@@ -8,7 +8,7 @@
       "source": "Federal Reserve SR letter 26-2",
       "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
       "asOf": "2026-04-17",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "SR 26-2",
@@ -21,7 +21,7 @@
       "source": "Federal Reserve SR letter 11-7 (superseded)",
       "url": "https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm",
       "asOf": "2026-04-17",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "SR 11-7",
@@ -42,7 +42,7 @@
       "source": "FSSCC / Treasury press release",
       "url": "https://fsscc.org/wp-content/uploads/2026/02/AIEOG-AI-Lexicon-February-2026.pdf",
       "asOf": "2026-02-19",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "AIEOG"
@@ -54,7 +54,7 @@
       "source": "Treasury / FSSCC AI deliverables",
       "url": "https://fsscc.org/aieog-ai-deliverables/",
       "asOf": "2026-02-19",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "FS AI RMF",
@@ -67,7 +67,7 @@
       "source": "Federal Register",
       "url": "https://www.federalregister.gov/documents/2023/06/09/2023-12340/interagency-guidance-on-third-party-relationships-risk-management",
       "asOf": "2023-06-09",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "Interagency TPRM",
@@ -82,7 +82,7 @@
       "source": "US Government Accountability Office",
       "url": "https://www.gao.gov/products/gao-25-107197",
       "asOf": "2025-05-01",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "GAO-25-107197"
@@ -149,7 +149,7 @@
       "source": "Personetics 'Understanding Consumer Demand in the AI-Banking Era'",
       "url": "https://personetics.com/resource-center/84-of-bank-customers-would-switch-for-ai-powered-insights/",
       "asOf": "2025-02-25",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "84%",
@@ -175,7 +175,7 @@
       "source": "Federal Reserve SR letter 21-8",
       "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2108.htm",
       "asOf": "2021-04-09",
-      "verified": "2026-08-10",
+      "verified": "2026-10-11",
       "reviewBy": "2027-02-10",
       "match": [
         "SR 21-8",
@@ -301,7 +301,7 @@
       "source": "Federal Register, FR Doc. 2026-18859",
       "url": "https://www.federalregister.gov/documents/2026/09/15/2026-18859/proposed-third-party-risk-management-guidance",
       "asOf": "2026-09-15",
-      "verified": "2026-10-03",
+      "verified": "2026-10-11",
       "reviewBy": "2026-11-30",
       "match": [
         "2026-18859",
