@@ -55,7 +55,7 @@
     "geist": "^1.7.2",
     "next": "15.5.27",
     "openai": "^7.27.0",
-    "puppeteer-core": "^25.12.0",
+    "puppeteer-core": "^25.16.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "stripe": "^22.6.2"
