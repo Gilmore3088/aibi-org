@@ -311,14 +311,12 @@ export default function AIGovernanceWithoutJargonArticle() {
             The governance gap is not a knowledge gap.
           </h2>
           <p>
-            The Gartner Peer Community survey (via Jack Henry &amp; Associates,
-            2025) found that 55% of financial institutions have no AI
-            governance framework yet. This is not primarily a knowledge
-            problem &mdash; the frameworks described above are publicly
-            available and free to read. It is a translation problem: the
-            distance between a 40-page regulatory guidance document and a
-            practical policy a loan officer can follow is not bridged by
-            publishing more guidance.
+            In a 2023 Gartner Peer Community survey of 200 IT and data leaders
+            across industries, 55% said their organizations had not yet
+            implemented an AI governance framework. The survey excluded leaders
+            whose organizations had no plans for one and did not report a
+            bank-specific result. For community banks, the practical question
+            is how to turn guidance into procedures staff can follow.
           </p>
           <p>
             The most effective governance frameworks at community banks are
@@ -329,9 +327,8 @@ export default function AIGovernanceWithoutJargonArticle() {
             can maintain without a law degree. That is the translation work.
           </p>
           <p>
-            The 55% of institutions without a governance framework are not
-            waiting for more regulation. They are waiting for someone to make
-            the existing frameworks usable.
+            Start with one workflow. Write down who can use AI, what they can
+            share, and who reviews the output before it affects a customer.
           </p>
         </section>
 
@@ -375,9 +372,7 @@ export default function AIGovernanceWithoutJargonArticle() {
             SR 11-7, 2011). Interagency Third-Party Risk
             Management Guidance, 2023. Equal Credit Opportunity Act /
             Regulation B, CFPB. Bank Secrecy Act / Anti-Money Laundering
-            requirements, FinCEN. Getting Started in AI, Jack Henry &amp;
-            Associates, 2025, citing Gartner Peer Community data. Figures
-            verified as of April 2026.
+            requirements, FinCEN. Gartner Peer Community, <a href="https://static.pulse.qa/omirs/ai-governance-frameworks-responsible-ai-33q.pdf">AI Governance Frameworks for Responsible AI</a> (2023).
           </p>
         </footer>
       </article>

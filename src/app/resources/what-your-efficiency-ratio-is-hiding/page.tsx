@@ -228,14 +228,17 @@ export default function EfficiencyRatioArticle() {
             gain is real. The regulatory exposure is manageable. That is the
             right starting point: not because the credit and compliance use
             cases are not worth pursuing, but because they require governance
-            infrastructure that most community banks do not yet have in place.
+            controls before deployment.
           </p>
           <p>
-            The Gartner data (via Jack Henry, 2025) shows 48% of institutions
-            lack clarity on AI business impacts and 55% have no AI governance
-            framework. Those two numbers are connected. You cannot measure
-            business impact on a workflow that is not governed. The sequence
-            matters: governance first, deployment second, measurement third.
+            In a 2023 cross-industry Gartner Peer Community survey, 48% of
+            the 192 respondents who reported AI governance implementation
+            challenges cited unclear business impact. Separately, 55% of the
+            full 200-person sample, which excluded organizations with no
+            framework and no plans for one, said they had not implemented
+            a framework. Neither result is a bank-specific estimate, and the
+            survey does not establish a causal link. For a new bank workflow,
+            set controls and define how to measure success before deployment.
           </p>
         </section>
 
@@ -273,9 +276,7 @@ export default function EfficiencyRatioArticle() {
             bank median efficiency ratio ~65%). FDIC Quarterly Banking Profile
             Q4 2024 (industry-wide efficiency ratio ~55.7%). Bank Director 2024
             Technology Survey (via Jack Henry &amp; Associates) — 66% of banks
-            discussing AI budget. Getting Started in AI, Jack Henry &amp;
-            Associates, 2025, citing Gartner Peer Community data (48% lack
-            clarity on AI business impacts; 55% have no governance framework).
+            discussing AI budget. Gartner Peer Community, <a href="https://static.pulse.qa/omirs/ai-governance-frameworks-responsible-ai-33q.pdf">AI Governance Frameworks for Responsible AI</a> (2023).
             AI Playbook for Banks and Credit Unions, Cornerstone Advisors,
             2025 (use case categories, tool references: Ocrolus, Informatica,
             Fathom, Zoom AI Companion, UiPath, Pega, Power Automate, Nintex).

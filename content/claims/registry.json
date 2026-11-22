@@ -90,12 +90,12 @@
     },
     {
       "id": "gartner-jack-henry-governance-stats",
-      "claim": "55% of FIs have no AI governance framework; 57% report team-level skill gaps; 48% say leadership lacks clarity on AI's business impact (Gartner Peer Community data, via Jack Henry, 2025). A 2026 Jack Henry Strategy Benchmark now exists; refresh or knowingly retain the 2025 citation.",
-      "source": "Jack Henry 'Getting Started in AI' (2025), citing Gartner Peer Community",
-      "url": "https://discover.jackhenry.com/strategy-benchmark-study-2026",
-      "asOf": "2025-06-01",
-      "verified": "2026-08-10",
-      "reviewBy": "2026-11-10",
+      "claim": "In Gartner's cross-industry survey of 200 IT and data and analytics leaders at organizations with an implemented or planned AI governance framework, 55% said a framework was not yet in place. Among the 192 who reported implementation challenges, 57% cited skills gaps and 48% cited unclear AI business impact. The survey did not report a bank-specific result.",
+      "source": "Gartner Peer Community, AI Governance Frameworks for Responsible AI (2023)",
+      "url": "https://static.pulse.qa/omirs/ai-governance-frameworks-responsible-ai-33q.pdf",
+      "asOf": "2023-03-20",
+      "verified": "2026-11-22",
+      "reviewBy": "2027-02-22",
       "match": [
         "55%",
         "57%",

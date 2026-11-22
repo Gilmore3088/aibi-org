@@ -370,12 +370,12 @@ export default function SixWaysAIFailsArticle() {
             Community banks and credit unions operate in a regulatory
             environment that requires documentation, validation, and
             human-in-the-loop oversight for any AI system that influences
-            a material decision. The Gartner Peer Community survey (via
-            Jack Henry &amp; Associates, 2025) found that 55% of financial
-            institutions have no AI governance framework yet. That means
-            more than half of community institutions have staff using AI
-            tools without an institutional standard for recognizing and
-            responding to these six patterns.
+            a material decision. In a 2023 Gartner Peer Community survey,
+            55% of 200 IT and data leaders whose organizations had
+            implemented or planned an AI governance framework said it was not
+            yet in place. The result was cross-industry, not bank-specific.
+            A useful safeguard for banks is to define how staff should
+            recognize, report, and respond to these six patterns.
           </p>
           <p>
             The six patterns are not equally likely to appear in every
@@ -423,9 +423,8 @@ export default function SixWaysAIFailsArticle() {
             FSSCC, February 2026 (hallucination, third-party AI risk, HITL,
             explainability definitions). GAO-25-107197, US Government
             Accountability Office, May 2025 (no comprehensive AI-specific
-            banking framework confirmed). Getting Started in AI, Jack Henry &amp;
-            Associates, 2025, citing Gartner Peer Community data (55% of FIs
-            have no AI governance framework). SR 26-2, Federal Reserve / OCC / FDIC,
+            banking framework confirmed). Gartner Peer Community, <a href="https://static.pulse.qa/omirs/ai-governance-frameworks-responsible-ai-33q.pdf">AI Governance Frameworks for Responsible AI</a> (2023).
+            SR 26-2, Federal Reserve / OCC / FDIC,
             April 2026 (revised model risk management guidance; supersedes
             SR 11-7, 2011). ECOA / Regulation B,
             CFPB (adverse action requirements). Figures verified as of
