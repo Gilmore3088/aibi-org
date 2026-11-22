@@ -1243,10 +1243,9 @@ existing ad hoc use without an institutional framework. Inaction carries its own
    the pattern is ungoverned.
    Implication: Acceptable Use Policy must exist before adoption is normalized further.
 
-3. **57% of financial institutions report AI skill gaps (Gartner, via Jack Henry 2025)** —
-   Industry data confirms this is a common challenge, not an outlier condition.
-   Implication: Staff training investment is the industry-standard response, not an
-   exception spend.
+3. **57% of 192 respondents reporting AI governance implementation challenges cited skills gaps (Gartner Peer Community, 2023)** —
+   The survey covered multiple industries, not banks specifically.
+   Implication: Assess our own staff skill gaps before setting a training budget.
 
 4. **M365 Copilot data boundary: Microsoft 365 tenant only** —
    Copilot does not train on institutional data. Customer PII does not leave the
@@ -1296,7 +1295,7 @@ If AUP is approved and rollout begins, recommend a board-level update at the Jun
       },
       {
         heading: 'All statistics are sourced in-line using approved sources',
-        detail: 'The 57% skill gap figure is attributed to Gartner via Jack Henry 2025 — a source registered, with a review date, in the claims registry. The M365 data boundary claim is a verifiable product specification, not an opinion.',
+        detail: 'The 57% skill gap figure is attributed to the original 2023 Gartner Peer Community survey and states the cross-industry sample and denominator. The M365 data boundary claim is a verifiable product specification, not an opinion.',
       },
       {
         heading: 'RISK FLAG on inaction is the most important point in the memo',

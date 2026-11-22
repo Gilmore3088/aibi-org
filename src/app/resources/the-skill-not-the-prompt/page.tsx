@@ -248,12 +248,11 @@ export default function TheSkillNotThePromptArticle() {
             workflows that any trained staff member can use.
           </p>
           <p>
-            The Gartner Peer Community survey (via Jack Henry &amp;
-            Associates, 2025) found that 57% of financial institutions
-            struggle with AI skill gaps. The usual interpretation is that
-            staff need more AI training. The less obvious interpretation:
-            institutions that build and share skill libraries are closing
-            the capability gap institutionally, not just individually.
+            In a 2023 cross-industry Gartner Peer Community survey, 57% of
+            the 192 respondents who reported AI governance implementation
+            challenges named skills gaps. That is not a bank-specific rate.
+            Training helps individuals; a shared skill library gives the
+            whole team a way to reuse what they learn.
             The banker who builds the skill teaches everyone who uses it.
           </p>
 
@@ -317,9 +316,8 @@ export default function TheSkillNotThePromptArticle() {
         <footer className="mt-16 pt-8 border-t border-[color:var(--ink)]/10">
           <p className="font-mono text-xs text-[color:var(--ink)]/70 leading-relaxed">
             <strong>Sources:</strong> AiBI-Foundation curriculum, Modules 6
-            and 7: Anatomy of a Skill and Write Your First Skill. Getting Started
-            in AI, Jack Henry &amp; Associates, 2025, citing Gartner Peer
-            Community data (57% of FIs struggle with AI skill gaps). Platform
+            and 7: Anatomy of a Skill and Write Your First Skill. Gartner Peer
+            Community, <a href="https://static.pulse.qa/omirs/ai-governance-frameworks-responsible-ai-33q.pdf">AI Governance Frameworks for Responsible AI</a> (2023). Platform
             configuration references: ChatGPT (Custom Instructions / Projects /
             GPTs), Claude (Projects with system prompts), Gemini (Gems),
             Perplexity (Spaces), Microsoft 365 Copilot (admin-configured).

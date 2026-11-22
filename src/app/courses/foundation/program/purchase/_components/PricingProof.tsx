@@ -1,11 +1,13 @@
 // PricingProof — pricing block paired with one reviewer quote and one
 // sourced statistic. Operator swaps quote text + attribution later;
-// the statistic is the Gartner-via-Jack-Henry 57% AI skills gap stat
-// from the CLAUDE.md sourced-statistics table.
+// the statistic comes from the centralized citation registry.
 
 import type { ReactNode } from 'react';
+import { citation } from '@content/citations';
 import { INTER_STACK_VAR as INTER_STACK } from '@/lib/ui/fonts';
 
+
+const skillsGap = citation('gartner-skills-gap');
 
 interface PricingProofProps {
   enrollButton: ReactNode;
@@ -201,7 +203,7 @@ export function PricingProof({
               color: 'var(--ink)',
             }}
           >
-            57%
+            {skillsGap.value}
           </div>
           <p
             style={{
@@ -213,8 +215,7 @@ export function PricingProof({
               maxWidth: '40ch',
             }}
           >
-            of financial institutions report struggling with AI skill gaps in
-            their workforce.
+            {skillsGap.claim}.
           </p>
           <p
             style={{
@@ -225,7 +226,7 @@ export function PricingProof({
               letterSpacing: '0.02em',
             }}
           >
-            Gartner Peer Community, via Jack Henry &amp; Associates, 2025.
+            <a href={skillsGap.url}>{skillsGap.short}</a>.
           </p>
         </div>
       </div>

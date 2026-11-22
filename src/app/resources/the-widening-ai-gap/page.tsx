@@ -194,8 +194,7 @@ export default function WideningGapArticle() {
             <strong>Sources:</strong> Evident AI Index &mdash; Key Findings Report,
             October 2025 (Evident Insights Ltd, n=50 banks). FDIC Quarterly
             Banking Profile Q4 2024. Bank Director 2024 Technology Survey (via
-            Jack Henry). Gartner Peer Community AI skill gap data (via Jack
-            Henry). Figures verified as of April 2026.
+            Jack Henry). Figures verified as of April 2026.
           </p>
         </footer>
       </article>
